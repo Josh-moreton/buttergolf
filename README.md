@@ -99,6 +99,7 @@ pnpm check-types
 ### Metro Configuration (Expo)
 
 The iOS app uses a custom `metro.config.js` that:
+
 - Watches all files in the monorepo (workspace root)
 - Resolves modules from both project and workspace `node_modules`
 - Disables hierarchical lookup for consistent resolution
@@ -107,6 +108,7 @@ The iOS app uses a custom `metro.config.js` that:
 ### Shared Packages
 
 The `@repo/ui` package is configured to work with both React (web) and React Native (iOS):
+
 - Uses peer dependencies for framework compatibility
 - React Native is marked as optional for web-only usage
 - Components can be imported in both Next.js and Expo apps
@@ -114,6 +116,7 @@ The `@repo/ui` package is configured to work with both React (web) and React Nat
 ### Turborepo Configuration
 
 The `turbo.json` is configured to:
+
 - Handle both Next.js (`.next/**`) and Expo (`.expo/**`) build outputs
 - Support persistent dev servers for both platforms
 - Run tasks with proper dependency ordering
