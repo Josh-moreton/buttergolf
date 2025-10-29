@@ -11,7 +11,7 @@ This monorepo uses:
 
 ## Key Configuration Files
 
-### 1. Metro Config (`apps/ios/metro.config.js`)
+### 1. Metro Config (`apps/mobile/metro.config.js`)
 
 This is the most critical file for Expo in a monorepo. It tells Metro (React Native's bundler) how to find and resolve modules across the workspace.
 
@@ -47,7 +47,7 @@ Defines how tasks are run and cached:
 
 **Solution:**
 
-1. Ensure the package is listed in `apps/ios/package.json` dependencies
+1. Ensure the package is listed in `apps/mobile/package.json` dependencies
 2. Run `pnpm install` from the root
 3. Clear Metro cache: `cd apps/ios && pnpm start --clear`
 
@@ -57,7 +57,7 @@ Defines how tasks are run and cached:
 
 **Solution:**
 
-- Check React versions in both `apps/web/package.json` and `apps/ios/package.json`
+- Check React versions in both `apps/web/package.json` and `apps/mobile/package.json`
 - Expo has specific React version requirements - use the version recommended by your Expo SDK
 - The `@repo/ui` package uses peer dependencies to avoid version conflicts
 
@@ -78,7 +78,7 @@ Defines how tasks are run and cached:
 **Solution:**
 
 ```sh
-cd apps/ios
+cd apps/mobile
 rm -rf node_modules/.cache
 pnpm start --clear
 ```
@@ -110,7 +110,7 @@ pnpm dev
 pnpm dev:web
 
 # Mobile only
-pnpm dev:ios
+pnpm dev:mobile
 ```
 
 ### Adding a New Shared Package
@@ -164,7 +164,7 @@ pnpm build
 ### Test Expo Metro Config
 
 ```sh
-cd apps/ios
+cd apps/mobile
 pnpm start
 # Press 'i' for iOS simulator
 # Press 'a' for Android emulator

@@ -9,7 +9,7 @@ This Turborepo includes the following packages/apps:
 ### Apps and Packages
 
 - `web`: a [Next.js](https://nextjs.org/) app for the website
-- `ios`: an [Expo](https://expo.dev/) app for iOS/Android mobile experience
+- `mobile`: an [Expo](https://expo.dev/) app for iOS/Android mobile experience
 - `@repo/ui`: a shared React component library compatible with both web and React Native
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
@@ -54,8 +54,8 @@ Run specific apps:
 # Web app only
 pnpm dev:web
 
-# iOS/mobile app only
-pnpm dev:ios
+# Mobile app only
+pnpm dev:mobile
 ```
 
 Or use turbo filters directly:
@@ -64,8 +64,8 @@ Or use turbo filters directly:
 # Web app
 pnpm turbo dev --filter=web
 
-# iOS app
-pnpm turbo dev --filter=ios
+# Mobile app
+pnpm turbo dev --filter=mobile
 ```
 
 ### Build
@@ -81,7 +81,7 @@ Build a specific app:
 ```sh
 pnpm turbo build --filter=web
 # or
-pnpm turbo build --filter=ios
+pnpm turbo build --filter=mobile
 ```
 
 ### Linting & Type Checking

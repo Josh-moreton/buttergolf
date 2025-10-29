@@ -6,18 +6,18 @@ Your ButterGolf monorepo is now properly configured for Next.js (web) and Expo (
 
 ### 1. Metro Configuration for Expo ✅
 
-- Created `apps/ios/metro.config.js` with monorepo-aware settings
+- Created `apps/mobile/metro.config.js` with monorepo-aware settings
 - Configured workspace watching and module resolution
 - Integrated with Turborepo cache
 
 ### 2. Babel Configuration ✅
 
-- Created `apps/ios/babel.config.js` for React Native
+- Created `apps/mobile/babel.config.js` for React Native
 
 ### 3. Package Updates ✅
 
-- Added `@repo/ui` to both web and iOS apps
-- Added `dev` and `check-types` scripts to iOS app
+- Added `@repo/ui` to both web and mobile apps
+- Added `dev` and `check-types` scripts to mobile app
 - Updated `@repo/ui` to support both React and React Native
 - Created central exports file for UI package
 
@@ -49,7 +49,7 @@ pnpm dev
 
 # Or run individually
 pnpm dev:web   # Next.js on http://localhost:3000
-pnpm dev:ios   # Expo - scan QR code or press 'i' for iOS simulator
+pnpm dev:mobile   # Expo - scan QR code or press 'i' for iOS simulator
 ```
 
 ## Next Steps
@@ -84,7 +84,7 @@ You can now import from `@repo/ui` in both apps:
 import { Button } from '@repo/ui';
 ```
 
-**In mobile app (`apps/ios/app/(tabs)/index.tsx`):**
+**In mobile app (`apps/mobile/App.tsx`):**
 
 ```tsx
 import { Button } from '@repo/ui';
