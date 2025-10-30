@@ -28,12 +28,14 @@ buttergolf/
    - Standard Expo preset
 
 3. **TypeScript Config** (`apps/mobile/tsconfig.json`)
-  - Path mappings for `@my-scope/ui`
-   - Proper Expo type support
+
+- Path mappings for `@my-scope/ui`
+- Proper Expo type support
 
 4. **Package Dependencies**
-  - `@my-scope/ui` added to both apps
-   - Workspace protocol (`workspace:*`) used
+
+- `@my-scope/ui` added to both apps
+- Workspace protocol (`workspace:*`) used
 
 5. **Turborepo** (`turbo.json`)
    - Handles both Next.js and Expo outputs

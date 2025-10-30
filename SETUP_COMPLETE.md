@@ -18,6 +18,7 @@ Your ButterGolf monorepo is now properly configured for Next.js (web) and Expo (
 
  Updated `@my-scope/ui` to support both React and React Native
  Added `@my-scope/ui` to both web and mobile apps
+
 - Created central exports file for UI package
 
 - Updated `turbo.json` to handle Expo build outputs (`.expo/**`)
@@ -26,11 +27,14 @@ Your ButterGolf monorepo is now properly configured for Next.js (web) and Expo (
 - Configured proper caching for both platforms
 
 ### 5. Root Package Scripts ✅
+
 import { Button } from '@my-scope/ui';
+
 - Added `dev:web` - run only web app
 - Added `dev:ios` - run only mobile app
 - Added `clean` and `clean-install` - clear caches and reinstall
 import { Button } from '@my-scope/ui';
+
 ### 6. Documentation ✅
 
 - Updated main README.md with monorepo instructions
