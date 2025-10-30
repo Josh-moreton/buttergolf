@@ -33,3 +33,6 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Note: Solito navigation works automatically with Next.js App Router
+// The Link component from 'solito/link' wraps Next.js Link for cross-platform compatibility

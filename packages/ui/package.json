@@ -17,6 +17,7 @@
     "@tamagui/button": "^1.135.6",
     "@tamagui/config": "^1.135.6",
     "@tamagui/core": "^1.135.6",
+    "@tamagui/shorthands": "^1.135.6",
     "@tamagui/stacks": "^1.135.6",
     "@tamagui/text": "^1.135.6",
     "@tamagui/theme": "^1.135.6",

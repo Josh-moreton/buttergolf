@@ -2,6 +2,9 @@
     "extends": "@buttergolf/typescript-config/react-library.json",
     "compilerOptions": {
         "jsx": "react-jsx",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
             "@buttergolf/app/*": [

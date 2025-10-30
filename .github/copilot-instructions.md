@@ -626,9 +626,9 @@ When generating new code:
 - Follow compound component pattern for complex UIs
 - Always wrap in TamaguiProvider when creating new entry points
 
-## Tamagui
+## Tamagui Documentation
 
-If you want all docs as a single document, see https://tamagui.dev/llms-full.txt.
+If you want all docs as a single document, see docs/TAMAGUI_DOCUMENTATION.md.
 
 > Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.
 
