@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+export const dynamic = 'force-dynamic'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
+import AuthHeader from './_components/AuthHeader'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +29,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextTamaguiProvider>
+          <AuthHeader />
           {children}
         </NextTamaguiProvider>
       </body>
