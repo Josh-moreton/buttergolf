@@ -20,7 +20,7 @@ pnpm clean-install
 pnpm dev:web
 ```
 
-Open http://localhost:3000 - you should see the Tamagui components working.
+Open <http://localhost:3000> - you should see the Tamagui components working.
 
 ## 4. Test Mobile App
 
@@ -44,16 +44,19 @@ Then press `i` for iOS simulator or `a` for Android emulator.
 ### 📝 Remaining TODOs
 
 #### High Priority
+
 - [x] Rename `@my-scope` to `@buttergolf` ✅ COMPLETE
 - [ ] Create `apps/web/public/tamagui.css` directory (for production builds)
 - [ ] Test both web and mobile apps work correctly
 
 #### Medium Priority  
+
 - [ ] Customize Tamagui themes in `packages/ui/tamagui.config.ts`
 - [ ] Add more optimized components following the Button pattern
 - [ ] Set up shared ESLint/TS configs in apps
 
 #### Nice to Have
+
 - [ ] Set up Turborepo remote caching
 - [ ] Add more development helper scripts
 - [ ] Consider Tamagui Studio for theme editing
@@ -79,6 +82,7 @@ pnpm lint          # Lint all packages
 ## Performance Tips
 
 1. The compiler will log optimization stats - look for lines like:
+
    ```
    » app.tsx 16ms · 1 optimized · 1 flattened
    ```
@@ -90,6 +94,7 @@ pnpm lint          # Lint all packages
 ## Need Help?
 
 Check out:
+
 - The generated `REVIEW_RECOMMENDATIONS.md` for full details
 - [Tamagui Docs](https://tamagui.dev)
 - [Turborepo Docs](https://turbo.build/repo/docs)
