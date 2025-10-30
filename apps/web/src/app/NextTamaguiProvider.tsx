@@ -2,7 +2,12 @@
 
 import { NextTamaguiProvider as BaseProvider } from '@buttergolf/app'
 import type { ReactNode } from 'react'
+import { ClerkProvider } from '@clerk/nextjs'
 
-export function NextTamaguiProvider({ children }: { children: ReactNode }) {
-	return <BaseProvider>{children}</BaseProvider>
+export function NextTamaguiProvider({ children }: Readonly<{ children: ReactNode }>) {
+	return (
+		<ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+			<BaseProvider>{children}</BaseProvider>
+		</ClerkProvider>
+	)
 }

@@ -3,7 +3,6 @@
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -14,8 +13,11 @@ datasource db {
 // Example models - customize for your ButterGolf app
 model User {
     id        String   @id @default(cuid())
+    // Clerk user identifier for federated auth
+    clerkId   String   @unique
     email     String   @unique
     name      String?
+    imageUrl  String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     rounds    Round[]
