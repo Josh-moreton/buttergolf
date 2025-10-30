@@ -1,4 +1,4 @@
-import type { config } from '@buttergolf/ui'
+import { config } from '../tamagui.config'
 
 export type Conf = typeof config
 

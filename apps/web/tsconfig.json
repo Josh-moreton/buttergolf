@@ -17,9 +17,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "types": [
-      "@tamagui/types"
-    ],
     "plugins": [
       {
         "name": "next"
@@ -47,6 +44,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
+    "types.d.ts",
     "../../tamagui.d.ts"
   ],
   "exclude": [

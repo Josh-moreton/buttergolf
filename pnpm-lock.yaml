@@ -65,6 +65,9 @@ importers:
       '@tamagui/babel-plugin':
         specifier: ^1.135.6
         version: 1.135.6(react-dom@19.2.0(react@19.2.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.2.0))(react@19.2.0)
+      '@tamagui/types':
+        specifier: ^1.135.6
+        version: 1.135.6
       '@types/react':
         specifier: ~19.1.0
         version: 19.1.0

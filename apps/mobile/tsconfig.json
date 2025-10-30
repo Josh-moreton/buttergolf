@@ -2,12 +2,16 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": [
-      "@tamagui/types"
-    ],
+    "skipLibCheck": true,
     "paths": {
-      "@my-scope/ui": [
+      "@buttergolf/ui": [
         "../../packages/ui/src"
+      ],
+      "@buttergolf/app": [
+        "../../packages/app/src"
+      ],
+      "@buttergolf/db": [
+        "../../packages/db/src"
       ],
       "tamagui.config": [
         "../../packages/ui/tamagui.config.ts"
@@ -22,6 +26,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
+    "types.d.ts",
     "../../tamagui.d.ts"
   ],
   "exclude": [

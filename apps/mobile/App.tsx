@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
-import { TamaguiProvider } from 'tamagui'
-import { config, Button, Text } from '@buttergolf/ui'
+import { TamaguiProvider, config, Button, Text } from '@buttergolf/ui'
 
 export default function App() {
   return (
