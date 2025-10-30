@@ -1,7 +1,16 @@
 const { withTamagui } = require('@tamagui/next-plugin')
 
-module.exports = function (name, { defaultConfig }) {
-  let config = {
+module.exports = function (_name, { defaultConfig }) {
+  const tamaguiPlugin = withTamagui({
+    config: '../../packages/ui/tamagui.config.ts',
+    components: ['tamagui'],
+    appDir: true,
+    outputCSS:
+      process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+    disableExtraction: process.env.NODE_ENV === 'development',
+  })
+
+  const nextConfig = tamaguiPlugin({
     ...defaultConfig,
     transpilePackages: [
       '@buttergolf/ui',
@@ -15,18 +24,21 @@ module.exports = function (name, { defaultConfig }) {
       '@tamagui/text',
       '@tamagui/config',
     ],
-  }
-
-  const tamaguiPlugin = withTamagui({
-    config: '../../packages/ui/tamagui.config.ts',
-    components: ['tamagui'],
-    appDir: true,
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-    disableExtraction: process.env.NODE_ENV === 'development',
   })
 
-  return {
-    ...config,
-    ...tamaguiPlugin(config),
+  const existingWebpack = nextConfig.webpack
+
+  nextConfig.webpack = (webpackConfig, context) => {
+    if (typeof existingWebpack === 'function') {
+      webpackConfig = existingWebpack(webpackConfig, context)
+    }
+
+    webpackConfig.resolve = webpackConfig.resolve || {}
+    webpackConfig.resolve.alias = webpackConfig.resolve.alias || {}
+    webpackConfig.resolve.alias['react-native$'] = 'react-native-web'
+
+    return webpackConfig
   }
+
+  return nextConfig
 }

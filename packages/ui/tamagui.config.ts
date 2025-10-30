@@ -1,13 +1,15 @@
-import { createTamagui } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v4'
+import { shorthands } from '@tamagui/shorthands'
+import { createTamagui } from 'tamagui'
 
-// Use v4 config with shorthands included
-export const config = createTamagui(defaultConfig)
+export const config = createTamagui({
+    ...defaultConfig,
+    shorthands: {
+        ...(defaultConfig.shorthands ?? {}),
+        ...shorthands,
+    },
+})
 
 export type AppConfig = typeof config
-
-declare module 'tamagui' {
-    interface TamaguiCustomConfig extends AppConfig { }
-}
 
 export default config

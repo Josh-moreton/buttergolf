@@ -3,6 +3,9 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "baseUrl": ".",
+        "types": [
+            "@tamagui/types"
+        ],
         "paths": {
             "@buttergolf/app/*": [
                 "src/*"
@@ -10,7 +13,9 @@
         }
     },
     "include": [
-        "src"
+        "src",
+        "../ui/tamagui.config.ts",
+        "../../tamagui.d.ts"
     ],
     "exclude": [
         "node_modules"

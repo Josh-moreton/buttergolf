@@ -1,10 +1,30 @@
+import { StyleSheet, Text, View } from 'react-native'
+
 export function RoundsScreen() {
   return (
-    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <h2>Your Rounds</h2>
-      <p>
+    <View style={styles.container}>
+      <Text style={styles.heading}>
+        Your Rounds
+      </Text>
+      <Text style={styles.copy}>
         Round tracking coming soon! This will connect to your Prisma database.
-      </p>
-    </div>
+      </Text>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+  },
+  heading: {
+    marginBottom: 16,
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  copy: {
+    lineHeight: 22,
+    fontSize: 16,
+  },
+})

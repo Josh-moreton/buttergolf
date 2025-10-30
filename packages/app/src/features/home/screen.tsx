@@ -1,37 +1,48 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from 'solito/link'
+import { StyleSheet, Text, View } from 'react-native'
 
 export function HomeScreen() {
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      padding: '20px',
-      gap: '16px'
-    }}>
-      <h1>ButterGolf ⛳</h1>
-      <p style={{ textAlign: 'center' }}>
+    <View style={styles.container}>
+      <Text style={[styles.title, styles.titleText]}>
+        ButterGolf ⛳
+      </Text>
+      <Text style={styles.tagline}>
         Track your golf rounds with ease
-      </p>
+      </Text>
       <Link href="/rounds">
-        <button
-          style={{
-            padding: '12px 24px',
-            fontSize: '16px',
-            borderRadius: '8px',
-            border: 'none',
-            backgroundColor: '#007bff',
-            color: 'white',
-            cursor: 'pointer'
-          }}
-        >
+  <Text style={styles.link}>
           View Rounds
-        </button>
+        </Text>
       </Link>
-    </div>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+  },
+  title: {
+    marginBottom: 16,
+  },
+  titleText: {
+    fontSize: 28,
+    fontWeight: '600',
+  },
+  tagline: {
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  link: {
+    color: '#1d4ed8',
+    fontWeight: '600',
+  },
+})
