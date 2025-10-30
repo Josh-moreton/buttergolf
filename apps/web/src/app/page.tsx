@@ -1,5 +1,5 @@
-import { HomeScreen } from '@buttergolf/app'
-
 export default function Page() {
-  return <HomeScreen />
+  // Render client boundary that imports @buttergolf/app on the client only
+  const HomeClient = require('./_components/HomeClient').default
+  return <HomeClient />
 }
