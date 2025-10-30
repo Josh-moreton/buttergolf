@@ -5,11 +5,13 @@
 ### The Root Cause - TypeScript Module Resolution (NOT Turborepo)
 
 **Problem**: TypeScript was unable to resolve Tamagui exports, showing errors like:
+
 ```
 Module '"tamagui"' has no exported member 'Button'
 ```
 
-**Root Cause**: 
+**Root Cause**:
+
 - Tamagui publishes as ESM with `"type": "module"` in its package.json
 - Tamagui uses re-export patterns: `tamagui` → `@tamagui/button` → `Button`
 - Your TypeScript configs used `"moduleResolution": "NodeNext"` which follows Node.js CommonJS-style module resolution
@@ -17,6 +19,7 @@ Module '"tamagui"' has no exported member 'Button'
 
 **Solution**:
 Changed `packages/ui/tsconfig.json` to use:
+
 ```json
 {
   "compilerOptions": {
@@ -33,9 +36,11 @@ This tells TypeScript to use bundler-style module resolution, which properly han
 ## Configuration Issues Fixed
 
 ### 1. ✅ Tamagui Module Resolution (Critical)
+
 **File**: `packages/ui/tsconfig.json`
 
 **Changes**:
+
 - Added `"moduleResolution": "Bundler"`
 - Added `"module": "ESNext"`
 - Added `"skipLibCheck": true"`
@@ -46,11 +51,13 @@ This tells TypeScript to use bundler-style module resolution, which properly han
 ---
 
 ### 2. ✅ Inconsistent Path Aliases (Critical)
+
 **Files**: `apps/web/tsconfig.json`, `apps/mobile/tsconfig.json`
 
 **Problem**: Both files had leftover `@my-scope/*` path aliases from the original template.
 
 **Changes**:
+
 ```diff
 - "@my-scope/*": ["../../packages/*/src"]
 + "@buttergolf/*": ["../../packages/*/src"]
@@ -61,9 +68,11 @@ This tells TypeScript to use bundler-style module resolution, which properly han
 ---
 
 ### 3. ✅ Tamagui Component Exports (Critical)
+
 **Files**: `packages/ui/src/components/Button.tsx`, `packages/ui/src/components/Text.tsx`
 
 **Changes**:
+
 ```typescript
 // Button.tsx
 export { Button } from 'tamagui'
@@ -79,9 +88,11 @@ export type { ParagraphProps as TextProps } from 'tamagui'
 ---
 
 ### 4. ✅ Tamagui Config Module Augmentation (Critical)
+
 **File**: `packages/ui/tamagui.config.ts`
 
 **Changes**:
+
 ```typescript
 import { createTamagui } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v4'
@@ -98,9 +109,11 @@ declare module 'tamagui' {
 ---
 
 ### 5. ✅ TamaguiProvider Export (Important)
+
 **File**: `packages/ui/src/index.ts`
 
 **Added**:
+
 ```typescript
 export { TamaguiProvider } from 'tamagui'
 ```
@@ -110,9 +123,11 @@ export { TamaguiProvider } from 'tamagui'
 ---
 
 ### 6. ✅ Mobile App TamaguiProvider Import (Important)
+
 **File**: `apps/mobile/App.tsx`
 
 **Changes**:
+
 ```diff
 - import { TamaguiProvider } from 'tamagui'
 + import { TamaguiProvider, config, Button, Text } from '@buttergolf/ui'
@@ -123,9 +138,11 @@ export { TamaguiProvider } from 'tamagui'
 ---
 
 ### 7. ✅ Missing Dependencies (Important)
+
 **Files**: `packages/app/package.json`, `apps/web/package.json`
 
 **Changes**:
+
 - Added `next@^16.0.1` as devDependency to `packages/app`
 - Added `react-native@0.81.5` as devDependency to `apps/web`
 
@@ -134,9 +151,11 @@ export { TamaguiProvider } from 'tamagui'
 ---
 
 ### 8. ✅ Solito Version Alignment (Minor)
+
 **File**: `packages/app/package.json`
 
 **Changes**:
+
 ```diff
 - "solito": "^4.3.2"
 + "solito": "^5.0.0"
@@ -155,6 +174,7 @@ pnpm check-types
 ```
 
 **Output**:
+
 ```
 Tasks:    4 successful, 4 total
 Cached:    2 cached, 4 total
@@ -172,6 +192,7 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
 #### Shared Base Configs (`packages/typescript-config/`)
 
 1. **`base.json`**:
+
    ```json
    {
      "compilerOptions": {
@@ -185,6 +206,7 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
    ```
 
 2. **`react-library.json`**:
+
    ```json
    {
      "extends": "./base.json",
@@ -195,6 +217,7 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
    ```
 
 3. **`nextjs.json`**:
+
    ```json
    {
      "extends": "./base.json",
@@ -256,12 +279,14 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
 ### Correct Import Pattern
 
 **✅ Do this**:
+
 ```typescript
 // Import from main 'tamagui' package
 import { Button, Text, styled, createTamagui } from 'tamagui'
 ```
 
 **❌ Don't do this**:
+
 ```typescript
 // Don't import from individual @tamagui/* packages
 import { Button } from '@tamagui/button'
@@ -279,12 +304,14 @@ The `tamagui` package re-exports all components from individual `@tamagui/*` pac
 ### NodeNext vs Bundler
 
 **`"moduleResolution": "NodeNext"`** (Node.js-style):
+
 - Follows Node.js module resolution algorithm
 - Designed for CommonJS and Node.js ESM
 - Struggles with complex re-export chains in ESM packages
 - Best for: Node.js servers, CLI tools
 
 **`"moduleResolution": "Bundler"`** (Modern bundlers):
+
 - Designed for webpack, Vite, Metro, etc.
 - Handles ESM re-exports seamlessly
 - Supports package.json `exports` field properly
@@ -304,6 +331,7 @@ The `tamagui` package re-exports all components from individual `@tamagui/*` pac
 ### 1. Standardize Module Resolution (Optional)
 
 Consider updating `packages/typescript-config/base.json` to use:
+
 ```json
 {
   "compilerOptions": {
@@ -314,17 +342,20 @@ Consider updating `packages/typescript-config/base.json` to use:
 ```
 
 **Pros**:
+
 - Consistent across all packages
 - Better ESM support
 - Aligns with modern JavaScript practices
 
 **Cons**:
+
 - May require testing with Prisma and other Node.js tools
 - Could affect how types are resolved in non-bundler environments
 
 ### 2. Create Separate Base Config for UI Libraries (Optional)
 
 Create `packages/typescript-config/ui-library.json`:
+
 ```json
 {
   "extends": "./react-library.json",
@@ -337,6 +368,7 @@ Create `packages/typescript-config/ui-library.json`:
 ```
 
 Then use it in `packages/ui/tsconfig.json`:
+
 ```json
 {
   "extends": "@buttergolf/typescript-config/ui-library.json"
@@ -344,6 +376,7 @@ Then use it in `packages/ui/tsconfig.json`:
 ```
 
 **Benefits**:
+
 - Removes need for overrides in `packages/ui`
 - Makes pattern reusable for future UI packages
 - Centralizes "bundler-style" config
@@ -351,14 +384,16 @@ Then use it in `packages/ui/tsconfig.json`:
 ### 3. Update Tamagui to Latest (Optional)
 
 Current: `^1.135.6`  
-Latest: Check https://github.com/tamagui/tamagui/releases
+Latest: Check <https://github.com/tamagui/tamagui/releases>
 
 **Benefits**:
+
 - Bug fixes
 - Performance improvements
 - New features
 
 **Considerations**:
+
 - Review changelog for breaking changes
 - Test thoroughly on both web and mobile
 
