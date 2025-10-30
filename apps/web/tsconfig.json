@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@my-scope/ui": ["../../packages/ui/src"],
+      "@my-scope/*": ["../../packages/*/src"]
     }
   },
   "include": [

@@ -43,7 +43,7 @@ Defines how tasks are run and cached:
 
 ### Issue 1: Module not found in Expo app
 
-**Problem:** Expo can't find a shared package like `@repo/ui`
+**Problem:** Expo can't find a shared package like `@my-scope/ui`
 
 **Solution:**
 
@@ -59,7 +59,7 @@ Defines how tasks are run and cached:
 
 - Check React versions in both `apps/web/package.json` and `apps/mobile/package.json`
 - Expo has specific React version requirements - use the version recommended by your Expo SDK
-- The `@repo/ui` package uses peer dependencies to avoid version conflicts
+- The `@my-scope/ui` package uses peer dependencies to avoid version conflicts
 
 ### Issue 3: TypeScript errors in shared packages
 

@@ -28,11 +28,11 @@ buttergolf/
    - Standard Expo preset
 
 3. **TypeScript Config** (`apps/mobile/tsconfig.json`)
-   - Path mappings for `@repo/ui`
+  - Path mappings for `@my-scope/ui`
    - Proper Expo type support
 
 4. **Package Dependencies**
-   - `@repo/ui` added to both apps
+  - `@my-scope/ui` added to both apps
    - Workspace protocol (`workspace:*`) used
 
 5. **Turborepo** (`turbo.json`)
@@ -75,7 +75,7 @@ After running `pnpm dev:mobile`, you'll see a QR code. Then:
 
 ## 🎨 Using Shared UI Components
 
-The `@repo/ui` package is already linked to both apps!
+The `@my-scope/ui` package is already linked to both apps!
 
 ### Current Components
 
@@ -114,7 +114,7 @@ export function Text({ children }: TextProps) {
 Then use it in both apps:
 
 ```tsx
-import { Text } from '@repo/ui';
+import { Text } from '@my-scope/ui';
 ```
 
 ## 🛠️ Development Commands

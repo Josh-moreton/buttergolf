@@ -1,13 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet, View } from 'react-native'
+import { TamaguiProvider } from 'tamagui'
+import { config, Button, Text } from '@my-scope/ui'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <TamaguiProvider config={config}>
+      <View style={styles.container}>
+        <Text>Hello from mobile (Tamagui)</Text>
+        <Button onPress={() => console.log('pressed')}>Press me</Button>
+        <StatusBar style="auto" />
+      </View>
+    </TamaguiProvider>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -16,5 +21,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 16,
   },
-});
+})

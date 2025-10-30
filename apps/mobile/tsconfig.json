@@ -3,9 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@repo/ui": [
+      "@my-scope/ui": [
         "../../packages/ui/src"
-      ]
+      ],
+      "@my-scope/*": ["../../packages/*/src"]
     }
   },
   "include": [

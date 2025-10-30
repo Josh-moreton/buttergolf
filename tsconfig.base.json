@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@my-scope/ui": ["packages/ui/src"],
+      "@my-scope/*": ["packages/*/src"],
+      "@/*": ["apps/web/src/*"]
+    },
+    "jsx": "react-jsx",
+    "moduleResolution": "Node",
+    "target": "ES2022",
+    "module": "ESNext",
+    "strict": true,
+    "skipLibCheck": true
+  }
+}

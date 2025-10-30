@@ -10,7 +10,7 @@ This Turborepo includes the following packages/apps:
 
 - `web`: a [Next.js](https://nextjs.org/) app for the website
 - `mobile`: an [Expo](https://expo.dev/) app for iOS/Android mobile experience
-- `@repo/ui`: a shared React component library compatible with both web and React Native
+- `@my-scope/ui`: a shared React component library compatible with both web and React Native
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
@@ -107,7 +107,7 @@ The iOS app uses a custom `metro.config.js` that:
 
 ### Shared Packages
 
-The `@repo/ui` package is configured to work with both React (web) and React Native (iOS):
+The `@my-scope/ui` package is configured to work with both React (web) and React Native (iOS):
 
 - Uses peer dependencies for framework compatibility
 - React Native is marked as optional for web-only usage

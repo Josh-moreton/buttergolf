@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+import { TamaguiProvider } from 'tamagui'
+import { config, Button, Text } from '@my-scope/ui'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <TamaguiProvider config={config}>
+          <div style={{ padding: 12 }}>
+            <Text>Hello from web (Tamagui)</Text>
+            <Button onPress={() => alert('Tamagui button clicked')}>Click me</Button>
+          </div>
+          {children}
+        </TamaguiProvider>
       </body>
     </html>
   );
