@@ -27,6 +27,8 @@ out/
 build
 dist
 
+# Tamagui
+.tamagui
 
 # Debug
 npm-debug.log*

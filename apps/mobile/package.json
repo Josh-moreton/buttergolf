@@ -12,7 +12,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-  "@my-scope/ui": "workspace:*",
+    "@buttergolf/ui": "workspace:*",
     "expo": "~54.0.20",
     "expo-status-bar": "~3.0.8",
     "react": "19.2.0",
@@ -22,7 +22,9 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@tamagui/babel-plugin": "^1.135.6",
     "@types/react": "~19.1.0",
+    "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^9.38.0",
     "typescript": "~5.9.2"
   },

@@ -1,9 +1,9 @@
 import { createTamagui } from 'tamagui'
-import { config as configBase } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 
 // You can also use a subset of the config, or create your own
 export const config = createTamagui({
-    ...configBase,
+    ...defaultConfig,
     // Override or extend the base config here
 })
 

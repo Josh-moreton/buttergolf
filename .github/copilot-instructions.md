@@ -54,9 +54,9 @@ pnpm lint          # Lint all packages
 
 ## Package Naming Convention
 
-All internal packages use the `@my-scope/` namespace:
-- `@my-scope/ui` - Cross-platform UI components
-- Use workspace protocol: `"@my-scope/ui": "workspace:*"`
+All internal packages use the `@buttergolf/` namespace:
+- `@buttergolf/ui` - Cross-platform UI components
+- Use workspace protocol: `"@buttergolf/ui": "workspace:*"`
 
 ## Tamagui Configuration
 
@@ -105,7 +105,7 @@ function MyComponent() {
 
 ### Tamagui Package Structure
 
-The `@my-scope/ui` package is source-first (no build step):
+The `@buttergolf/ui` package is source-first (no build step):
 ```json
 {
   "main": "src/index.ts",
@@ -136,7 +136,7 @@ export type { ButtonProps } from '@tamagui/button'
 // next.config.ts
 const config: NextConfig = {
   transpilePackages: [
-    '@my-scope/ui',
+    '@buttergolf/ui',
     'react-native-web',
     '@tamagui/core',
     'tamagui',
@@ -155,7 +155,7 @@ const config: NextConfig = {
 ```tsx
 // apps/web/src/app/layout.tsx
 import { TamaguiProvider } from 'tamagui'
-import { config } from '@my-scope/ui'
+import { config } from '@buttergolf/ui'
 
 export default function RootLayout({ children }) {
   return (
@@ -208,7 +208,7 @@ module.exports = {
       {
         root: ['./'],
         alias: {
-          '@my-scope/ui': '../../packages/ui/src',
+          '@buttergolf/ui': '../../packages/ui/src',
         },
       },
     ],
@@ -221,8 +221,8 @@ module.exports = {
 
 ### Import Pattern
 ```tsx
-// Always import from @my-scope/ui for cross-platform components
-import { Button, Text } from '@my-scope/ui'
+// Always import from @buttergolf/ui for cross-platform components
+import { Button, Text } from '@buttergolf/ui'
 
 function MyScreen() {
   return (
@@ -240,7 +240,7 @@ function MyScreen() {
 Both platforms require wrapping the app in `TamaguiProvider`:
 ```tsx
 import { TamaguiProvider } from 'tamagui'
-import { config } from '@my-scope/ui' // or your tamagui.config
+import { config } from '@buttergolf/ui' // or your tamagui.config
 
 function App() {
   return (
@@ -356,8 +356,8 @@ All path mappings are centralized in `/tsconfig.base.json`:
 {
   "compilerOptions": {
     "paths": {
-      "@my-scope/ui": ["packages/ui/src"],
-      "@my-scope/*": ["packages/*/src"]
+      "@buttergolf/ui": ["packages/ui/src"],
+      "@buttergolf/*": ["packages/*/src"]
     }
   }
 }
@@ -456,7 +456,7 @@ Located at `/turbo.json`:
 pnpm add <package> -w
 
 # Specific app or package
-pnpm add <package> --filter @my-scope/ui
+pnpm add <package> --filter @buttergolf/ui
 pnpm add <package> --filter web
 pnpm add <package> --filter mobile
 ```
@@ -474,7 +474,7 @@ pnpm up -r
 
 ### TypeScript Errors
 - Check path mappings in `tsconfig.base.json`
-- Ensure all `@my-scope/*` packages are properly defined
+- Ensure all `@buttergolf/*` packages are properly defined
 - Verify peer dependencies are satisfied
 
 ### Module Resolution Issues
@@ -498,7 +498,7 @@ pnpm up -r
 
 ## Best Practices
 
-1. **Always use Tamagui components** from `@my-scope/ui` for cross-platform consistency
+1. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
 2. **Keep React versions aligned** across web and mobile (currently 19.2.0)
 3. **Use workspace protocol** for internal dependencies: `"workspace:*"`
 4. **Export types** alongside components for better DX
