@@ -4,6 +4,8 @@
 
 ButterGolf is a cross-platform application built with a modern monorepo architecture, supporting both web (Next.js) and mobile (Expo) platforms. The project leverages Tamagui for cross-platform UI components and styling, ensuring a consistent user experience across all platforms.
 
+This guide also documents our authentication setup using Clerk for both platforms, how it integrates with Prisma, and patterns to follow when adding new features in this turborepo.
+
 ## Architecture
 
 ### Monorepo Structure
@@ -30,6 +32,7 @@ ButterGolf is a cross-platform application built with a modern monorepo architec
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
+- **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
 
 ## Critical Commands
 
@@ -59,6 +62,9 @@ pnpm db:push            # Push schema to database (dev)
 pnpm db:migrate:dev     # Create and apply migration
 pnpm db:studio          # Open Prisma Studio GUI
 pnpm db:seed            # Seed database with sample data
+ 
+# Auth (Clerk)
+# See docs/AUTH_SETUP_CLERK.md for details. Ensure env vars are set before running apps.
 ```
 
 ## Package Naming Convention
@@ -579,6 +585,80 @@ pnpm --filter @buttergolf/db prisma-postgres-create-database --name buttergolf
 - Use `pnpm db:studio` to view/edit data in a GUI
 - The `.prisma` folder is in `.gitignore`
 - Each app/package that uses the database imports the singleton client from `@buttergolf/db`
+
+## Authentication (Clerk)
+
+We use Clerk for user auth on both platforms. The web app uses `@clerk/nextjs`; the Expo app uses `@clerk/clerk-expo`. User records are synchronized to our database via a Clerk webhook and the `User` model includes a `clerkId` to map identities.
+
+### Packages
+
+- Web: `@clerk/nextjs`, `svix` (webhook signature verification)
+- Mobile: `@clerk/clerk-expo`, `expo-auth-session`, `expo-secure-store`
+
+### Environment variables
+
+Place values in your shell or in environment files (see `.env.example` and `docs/AUTH_SETUP_CLERK.md`).
+
+- Web (Next.js)
+  - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+  - `CLERK_SECRET_KEY`
+  - `CLERK_WEBHOOK_SECRET` (for the user sync webhook)
+- Mobile (Expo)
+  - `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY`
+
+Important: Only publishable keys may be exposed to the client (`NEXT_PUBLIC_*` / `EXPO_PUBLIC_*`). Keep secret keys server-only.
+
+### Web wiring (Next.js App Router)
+
+- Provider: `apps/web/src/app/NextTamaguiProvider.tsx`
+  - Wraps the app in `<ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>` and then our Tamagui provider.
+- Header: `apps/web/src/app/_components/AuthHeader.tsx`
+  - Shows SignedOut `SignInButton` and SignedIn `UserButton`, plus simple navigation.
+- Auth routes:
+  - Sign-in: `apps/web/src/app/sign-in/[[...sign-in]]/page.tsx`
+  - Sign-up: `apps/web/src/app/sign-up/[[...sign-up]]/page.tsx`
+- Protecting routes (server components):
+  - Example: `apps/web/src/app/rounds/page.tsx`
+  - Use `const { userId } = await auth(); if (!userId) redirect('/sign-in')`
+- SSG vs SSR with Clerk:
+  - The root layout/page are marked `export const dynamic = 'force-dynamic'` to avoid needing the Clerk publishable key at build time. If you provide build-time env vars for Clerk, you can remove the flag on a page-by-page basis to re-enable SSG.
+
+### Webhook (user sync to Prisma)
+
+- Route: `apps/web/src/app/api/clerk/webhook/route.ts`
+- Verifies Svix signature using `svix` lib and upserts users into Prisma:
+  - `where: { clerkId }`
+  - Sets `email`, `name`, `imageUrl`
+- Events: `user.created`, `user.updated`
+- Prisma schema has `User.clerkId @unique` (see `packages/db/prisma/schema.prisma`).
+
+### Mobile wiring (Expo)
+
+- Provider: `apps/mobile/App.tsx`
+  - Wraps the app in `<ClerkProvider publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY} tokenCache={SecureStore}>`
+  - Uses `<SignedIn>` to render navigation and `<SignedOut>` to render a simple OAuth screen.
+- OAuth sign-in (dev friendly):
+  - Uses `useOAuth({ strategy: 'oauth_google' })` and, on iOS, `oauth_apple`.
+  - Note: `useOAuth` is being deprecated upstream; the code is annotated and can be migrated later to the new API when convenient.
+- Deep linking scheme:
+  - `apps/mobile/app.json` includes `"scheme": "buttergolf"`.
+  - With the Expo Auth Session proxy (default in dev), no extra dashboard redirect URL is required.
+
+### Local development flow
+
+1. Set env variables (see `.env.example` and `docs/AUTH_SETUP_CLERK.md`).
+2. Start web: `pnpm dev:web` and visit `/sign-in` or use the header button.
+3. Start mobile: `pnpm dev:mobile` and sign in with Google/Apple.
+4. (Optional) Configure the Clerk webhook to `http://localhost:3000/api/clerk/webhook` with events `user.created` and `user.updated` to sync users into Prisma.
+
+### Notes and patterns
+
+- Use server checks with `auth()` and `redirect()` in App Router pages to protect content.
+- Keep the DB source of truth synced by webhook; do not create new `PrismaClient` instances outside `@buttergolf/db`.
+- If you hit build-time errors about "Missing publishableKey", either set the build-time env vars or mark the page/layout as `dynamic` as above.
+- When adding new protected routes, follow the `rounds/page.tsx` pattern.
+
+For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
 ## Documentation References
 
