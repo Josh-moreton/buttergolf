@@ -9,16 +9,17 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@buttergolf/ui": "workspace:*",
     "@buttergolf/db": "workspace:*",
-    "solito": "^4.3.2",
-    "tamagui": "^1.135.6",
+    "@buttergolf/ui": "workspace:*",
     "react": "19.2.0",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "solito": "^4.3.2",
+    "tamagui": "^1.135.6"
   },
   "devDependencies": {
     "@buttergolf/typescript-config": "workspace:*",
     "@types/react": "^19.2.0",
+    "next": "^16.0.1",
     "typescript": "5.9.2"
   }
 }
