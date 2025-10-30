@@ -14,6 +14,8 @@ cp .env.example .env
 
 Edit `.env` and set your `DATABASE_URL`.
 
+If you are using the shared Neon instance, populate the additional variables shown in `.env.example` (`DATABASE_URL_UNPOOLED`, `POSTGRES_PRISMA_URL`, etc.) so Prisma and downstream clients can choose between pooled and direct connections.
+
 ### 2. Install Dependencies
 
 From the root of the monorepo:

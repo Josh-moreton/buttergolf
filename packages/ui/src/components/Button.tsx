@@ -1,3 +1,3 @@
-// Re-export Button from Tamagui
-export { Button } from '@tamagui/button'
-export type { ButtonProps } from '@tamagui/button'
+// Re-export Button from Tamagui UI
+export { Button } from 'tamagui'
+export type { ButtonProps } from 'tamagui'

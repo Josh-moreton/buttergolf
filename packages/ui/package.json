@@ -17,7 +17,9 @@
     "@tamagui/button": "^1.135.6",
     "@tamagui/config": "^1.135.6",
     "@tamagui/core": "^1.135.6",
+    "@tamagui/stacks": "^1.135.6",
     "@tamagui/text": "^1.135.6",
+    "@tamagui/theme": "^1.135.6",
     "tamagui": "^1.135.6"
   },
   "devDependencies": {
@@ -31,8 +33,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "peerDependenciesMeta": {
     "react-native": {

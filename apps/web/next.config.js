@@ -5,7 +5,10 @@ module.exports = function (name, { defaultConfig }) {
     ...defaultConfig,
     transpilePackages: [
       '@buttergolf/ui',
+      '@buttergolf/app',
+      'solito',
       'tamagui',
+      'react-native',
       'react-native-web',
       '@tamagui/core',
       '@tamagui/button',
