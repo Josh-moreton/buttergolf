@@ -29,7 +29,7 @@
       "@buttergolf/ui": [
         "../../packages/ui/src"
       ],
-      "@my-scope/*": [
+      "@buttergolf/*": [
         "../../packages/*/src"
       ]
     }
