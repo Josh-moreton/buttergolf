@@ -1,6 +1,10 @@
-// Export Tamagui components
+export * from 'tamagui'
+export * from '@tamagui/toast'
+
+export { config } from '@buttergolf/config'
+export type { AppConfig } from '@buttergolf/config'
+
 export { Button } from './components/Button'
+export type { ButtonProps } from './components/Button'
 export { Text } from './components/Text'
-export { TamaguiProvider } from 'tamagui'
-export { config } from '../tamagui.config'
-export type { AppConfig } from '../tamagui.config'
+export type { TextProps } from './components/Text'

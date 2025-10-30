@@ -1,32 +1,65 @@
 const { withTamagui } = require('@tamagui/next-plugin')
+const { join } = require('node:path')
+const path = require('node:path')
 
-module.exports = function (name, { defaultConfig }) {
-  let config = {
-    ...defaultConfig,
-    transpilePackages: [
-      '@buttergolf/ui',
-      '@buttergolf/app',
-      'solito',
-      'tamagui',
-      'react-native',
-      'react-native-web',
-      '@tamagui/core',
-      '@tamagui/button',
-      '@tamagui/text',
-      '@tamagui/config',
-    ],
-  }
+const boolVals = {
+  true: true,
+  false: false,
+}
 
-  const tamaguiPlugin = withTamagui({
-    config: '../../packages/ui/tamagui.config.ts',
-    components: ['tamagui'],
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
+
+const plugins = [
+  withTamagui({
+    config: '../../packages/config/src/tamagui.config.ts',
+    components: ['tamagui', '@buttergolf/ui'],
     appDir: true,
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-    disableExtraction: process.env.NODE_ENV === 'development',
-  })
+    logTimings: true,
+    disableExtraction,
+    shouldExtract: (path) => {
+      if (path.includes(join('packages', 'app'))) {
+        return true
+      }
+    },
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
+  }),
+]
 
-  return {
-    ...config,
-    ...tamaguiPlugin(config),
+module.exports = () => {
+  /** @type {import('next').NextConfig} */
+  let config = {
+    transpilePackages: [
+      '@buttergolf/app',
+      '@buttergolf/config',
+      '@buttergolf/ui',
+      'react-native-web',
+      'solito',
+      'expo-linking',
+      'expo-constants',
+      'expo-modules-core',
+    ],
+    experimental: {
+      scrollRestoration: true,
+    },
+    webpack: (webpackConfig, { isServer }) => {
+      // Map React Native to React Native Web for web builds
+      webpackConfig.resolve.alias = {
+        ...webpackConfig.resolve.alias,
+        'react-native$': 'react-native-web',
+      }
+
+      return webpackConfig
+    },
   }
+
+  for (const plugin of plugins) {
+    config = {
+      ...config,
+      ...plugin(config),
+    }
+  }
+
+  return config
 }

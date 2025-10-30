@@ -1,25 +1,26 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, View } from 'react-native'
-import { TamaguiProvider, config, Button, Text } from '@buttergolf/ui'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { Provider, HomeScreen, RoundsScreen } from '@buttergolf/app'
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
-    <TamaguiProvider config={config}>
-      <View style={styles.container}>
-        <Text>Hello from mobile (Tamagui)</Text>
-        <Button onPress={() => console.log('pressed')}>Press me</Button>
-        <StatusBar style="auto" />
-      </View>
-    </TamaguiProvider>
+    <Provider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen 
+            name="Home" 
+            component={HomeScreen}
+            options={{ title: 'ButterGolf' }}
+          />
+          <Stack.Screen 
+            name="Rounds" 
+            component={RoundsScreen}
+            options={{ title: 'Your Rounds' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-})

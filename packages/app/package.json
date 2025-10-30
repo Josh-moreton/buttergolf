@@ -11,6 +11,9 @@
   "dependencies": {
     "@buttergolf/db": "workspace:*",
     "@buttergolf/ui": "workspace:*",
+    "@tamagui/font-inter": "^1.135.6",
+    "@tamagui/next-theme": "^1.135.6",
+    "@tamagui/polyfill-dev": "^1.135.6",
     "react": "19.2.0",
     "react-native": "0.81.5",
     "solito": "^5.0.0",

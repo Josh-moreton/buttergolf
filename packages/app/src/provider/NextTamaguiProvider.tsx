@@ -1,0 +1,66 @@
+'use client'
+
+import '@tamagui/core/reset.css'
+import '@tamagui/font-inter/css/400.css'
+import '@tamagui/font-inter/css/700.css'
+import '@tamagui/polyfill-dev'
+
+import type { ReactNode } from 'react'
+import { StyleSheet } from 'react-native'
+import { useServerInsertedHTML } from 'next/navigation'
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { config } from '@buttergolf/ui'
+
+import { Provider } from './Provider'
+
+export function NextTamaguiProvider({ children }: Readonly<{ children: ReactNode }>) {
+  const [theme, setTheme] = useRootTheme()
+
+  useServerInsertedHTML(() => {
+    // @ts-ignore
+    const rnwStyle = StyleSheet.getSheet()
+
+    return (
+      <>
+        {process.env.NODE_ENV === 'production' && (
+          <link rel="stylesheet" href="/tamagui.css" />
+        )}
+        {rnwStyle && (
+          <style id={rnwStyle.id} dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }} />
+        )}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: config.getNewCSS(),
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: config.getCSS({
+              exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+            }),
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            // avoid flash of animated things on enter:
+            __html: `document.documentElement.classList.add('t_unmounted')`,
+          }}
+        />
+      </>
+    )
+  })
+
+  return (
+    <NextThemeProvider
+      skipNextHead
+      defaultTheme="light"
+      onChangeTheme={(next) => {
+        setTheme(next as any)
+      }}
+    >
+      <Provider disableRootThemeClass defaultTheme={theme || 'light'}>
+        {children}
+      </Provider>
+    </NextThemeProvider>
+  )
+}

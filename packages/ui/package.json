@@ -14,20 +14,16 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@tamagui/button": "^1.135.6",
-    "@tamagui/config": "^1.135.6",
-    "@tamagui/core": "^1.135.6",
-    "@tamagui/stacks": "^1.135.6",
-    "@tamagui/text": "^1.135.6",
-    "@tamagui/theme": "^1.135.6",
+    "@buttergolf/config": "workspace:*",
+    "@tamagui/toast": "^1.135.6",
     "tamagui": "^1.135.6"
   },
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",
     "@buttergolf/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
-    "@types/react": "19.1.0",
-    "@types/react-dom": "19.1.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "eslint": "^9.38.0",
     "typescript": "5.9.2"
   },

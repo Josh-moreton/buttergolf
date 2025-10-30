@@ -1,10 +1,21 @@
+'use client'
+
+import { Button, H2, Text, YStack } from '@buttergolf/ui'
+import { useLink } from 'solito/navigation'
+import { routes } from '../../navigation'
+
 export function RoundsScreen() {
+  const homeLink = useLink({ href: routes.home })
+
   return (
-    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <h2>Your Rounds</h2>
-      <p>
+    <YStack flex={1} padding="$4" gap="$4" backgroundColor="$background">
+      <H2>Your Rounds</H2>
+      <Text fontSize="$4" color="$color">
         Round tracking coming soon! This will connect to your Prisma database.
-      </p>
-    </div>
+      </Text>
+      <Button {...homeLink} size="$3">
+        Back to Home
+      </Button>
+    </YStack>
   )
 }

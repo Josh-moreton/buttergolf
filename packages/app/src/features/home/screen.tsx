@@ -1,37 +1,28 @@
 'use client'
 
-import Link from 'next/link'
+import { Button, H1, Text, YStack } from '@buttergolf/ui'
+import { useLink } from 'solito/navigation'
+import { routes } from '../../navigation'
 
 export function HomeScreen() {
+  const roundsLink = useLink({ href: routes.rounds })
+
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      padding: '20px',
-      gap: '16px'
-    }}>
-      <h1>ButterGolf ⛳</h1>
-      <p style={{ textAlign: 'center' }}>
+    <YStack
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      padding="$4"
+      gap="$4"
+      backgroundColor="$background"
+    >
+      <H1 textAlign="center">ButterGolf ⛳</H1>
+      <Text textAlign="center" fontSize="$5" color="$color">
         Track your golf rounds with ease
-      </p>
-      <Link href="/rounds">
-        <button
-          style={{
-            padding: '12px 24px',
-            fontSize: '16px',
-            borderRadius: '8px',
-            border: 'none',
-            backgroundColor: '#007bff',
-            color: 'white',
-            cursor: 'pointer'
-          }}
-        >
-          View Rounds
-        </button>
-      </Link>
-    </div>
+      </Text>
+      <Button {...roundsLink} size="$4" theme="blue">
+        View Rounds
+      </Button>
+    </YStack>
   )
 }

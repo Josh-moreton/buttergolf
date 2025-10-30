@@ -1,5 +1,4 @@
-import { RoundsScreen } from '@buttergolf/app'
-
 export default function Page() {
-  return <RoundsScreen />
+  const RoundsClient = require('../_components/RoundsClient').default
+  return <RoundsClient />
 }
