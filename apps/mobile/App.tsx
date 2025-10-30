@@ -1,13 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { TamaguiProvider, config } from '@buttergolf/ui'
-import { HomeScreen, RoundsScreen } from '@buttergolf/app'
+import { Provider, HomeScreen, RoundsScreen } from '@buttergolf/app'
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
-    <TamaguiProvider config={config} defaultTheme="light">
+    <Provider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen 
@@ -22,6 +21,6 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </TamaguiProvider>
+    </Provider>
   )
 }

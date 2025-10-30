@@ -1,32 +1,45 @@
 const { withTamagui } = require('@tamagui/next-plugin')
+const { join } = require('node:path')
 
-module.exports = function (name, { defaultConfig }) {
-  let config = {
-    ...defaultConfig,
-    transpilePackages: [
-      '@buttergolf/ui',
-      '@buttergolf/app',
-      'solito',
-      'tamagui',
-      'react-native',
-      'react-native-web',
-      '@tamagui/core',
-      '@tamagui/button',
-      '@tamagui/text',
-      '@tamagui/config',
-    ],
-  }
+const disableExtraction =
+  process.env.DISABLE_EXTRACTION === 'true' || process.env.NODE_ENV === 'development'
 
-  const tamaguiPlugin = withTamagui({
-    config: '../../packages/ui/tamagui.config.ts',
-    components: ['tamagui'],
+const plugins = [
+  withTamagui({
+    config: '../../packages/config/src/tamagui.config.ts',
+    components: ['tamagui', '@buttergolf/ui'],
     appDir: true,
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-    disableExtraction: process.env.NODE_ENV === 'development',
-  })
+    disableExtraction,
+    shouldExtract: (path) => path.includes(join('packages', 'app')),
+  }),
+]
 
-  return {
-    ...config,
-    ...tamaguiPlugin(config),
+const createNextConfig = () => {
+  /** @type {import('next').NextConfig} */
+  let config = {
+    transpilePackages: [
+      '@buttergolf/app',
+      '@buttergolf/config',
+      '@buttergolf/ui',
+      'react-native',
+      'react-native-web',
+      'solito',
+      'tamagui',
+    ],
+    experimental: {
+      scrollRestoration: true,
+    },
   }
+
+  for (const plugin of plugins) {
+    config = {
+      ...config,
+      ...plugin(config),
+    }
+  }
+
+  return config
 }
+
+module.exports = createNextConfig
