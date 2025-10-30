@@ -200,4 +200,4 @@ See `packages/app/src/features/test/screen.tsx` for a working example demonstrat
 
 - [Tamagui Shorthands Documentation](https://tamagui.dev/docs/core/configuration#shorthands)
 - [Tamagui Core Concepts](https://tamagui.dev/docs/intro/introduction)
-- [Full Tamagui Documentation](https://tamagui.dev/llms-full.txt)
+- [Tamagui Component Documentation](https://tamagui.dev/docs/components/stacks)

@@ -98,105 +98,15 @@ import { YStack, XStack, Text, Button } from '@buttergolf/ui'
 </YStack>
 ```
 
-## 🔧 Previous Solutions (Now Resolved)
+## 📋 Next Steps
 
-### Option 1: Use Full Property Names (Temporary Fix)
+Now that Tamagui shorthands are working, you can:
 
-Replace shorthands with full names until we fix the config:
-
-```tsx
-// Instead of:
-<YStack f={1} jc="center" ai="center" p="$4">
-
-// Use:
-<YStack flex={1} style={{ justifyContent: 'center', alignItems: 'center', padding: '$4' }}>
-```
-
-### Option 2: Install `@tamagui/shorthands` and Configure
-
-```bash
-pnpm add @tamagui/shorthands --filter @buttergolf/ui
-```
-
-Then update `packages/ui/tamagui.config.ts`:
-
-```typescript
-import { createTamagui } from 'tamagui'
-import { shorthands } from '@tamagui/shorthands'
-import { defaultConfig } from '@tamagui/config/v4'
-
-export const config = createTamagui({
-  ...defaultConfig,
-  shorthands,
-})
-```
-
-### Option 3: Copy Tamagui Starter-Free Exact Config
-
-The starter-free template has a working Tamagui setup. We could:
-
-1. Copy their exact `tamagui.config.ts`
-2. Copy their TypeScript configuration
-3. Ensure all the same packages are installed
-
-### Option 4: Use `@tamagui/config/v3` Instead
-
-The v4 config might have issues. Try v3:
-
-```typescript
-import { defaultConfig } from '@tamagui/config/v3'
-```
-
-## 📋 Next Steps (Recommended)
-
-### 1. **Quick Fix: Use Full Props**
-
-Update the screen components to use full property names so we can continue:
-
-```tsx
-// packages/app/src/features/home/screen.tsx
-<YStack 
-  flex={1}
-  style={{
-    justifyContent: 'center',
-    alignItems: 'center',
-  }}
-  padding="$4"
-  gap="$4"
->
-```
-
-### 2. **Test the Build**
-
-Verify the app builds and deploys to Vercel:
-
-```bash
-pnpm build
-```
-
-### 3. **Add Mobile Support**
-
-Once web works, update `apps/mobile/App.tsx` to use the same screens:
-
-```tsx
-import { HomeScreen } from '@buttergolf/app'
-
-export default function App() {
-  return (
-    <TamaguiProvider config={config}>
-      <HomeScreen />
-    </TamaguiProvider>
-  )
-}
-```
-
-### 4. **Fix Shorthands (Later)**
-
-After deployment works, we can circle back and fix the shorthand configuration properly by either:
-
-- Following Option 2 above (install @tamagui/shorthands)
-- Comparing with starter-free's exact configuration
-- Reaching out to Tamagui community/Discord for help
+1. **Use Shorthands Everywhere** - Refactor existing components to use concise shorthand props
+2. **Build and Test** - Run `pnpm build` to verify everything compiles
+3. **Add More Features** - Create new screens in `packages/app/src/features/`
+4. **Mobile Development** - Test on mobile with `cd apps/mobile && pnpm start`
+5. **Deploy** - Push to Vercel with `vercel --prod`
 
 ## 🎯 Benefits of Current Setup
 
