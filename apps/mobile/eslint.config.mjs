@@ -11,7 +11,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.config({
-    extends: ["expo", "@repo/eslint-config/react-internal"],
+    extends: ["expo", "@buttergolf/eslint-config/react-internal"],
   }),
 ];
 

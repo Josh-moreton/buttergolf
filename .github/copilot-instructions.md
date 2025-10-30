@@ -14,11 +14,13 @@ ButterGolf is a cross-platform application built with a modern monorepo architec
   - `apps/mobile` - Expo ~54.0.20 mobile application (iOS/Android)
 - **Packages**:
   - `packages/ui` - Shared Tamagui-based cross-platform UI components
+  - `packages/db` - Prisma database client and schema (PostgreSQL)
   - `packages/eslint-config` - Shared ESLint configurations
   - `packages/typescript-config` - Shared TypeScript configurations
 
 ### Technology Stack
 - **UI Framework**: Tamagui 1.135.6 for cross-platform UI components and theming
+- **Database**: Prisma 6.x with PostgreSQL
 - **React**: 19.2.0 (aligned across web and mobile)
 - **React Native**: 0.81.5
 - **React Native Web**: 0.21.2 (enables React Native components on web)
@@ -50,12 +52,22 @@ pnpm clean         # Clean build outputs
 
 # Linting
 pnpm lint          # Lint all packages
+
+# Database (Prisma)
+pnpm db:generate        # Generate Prisma Client
+pnpm db:push            # Push schema to database (dev)
+pnpm db:migrate:dev     # Create and apply migration
+pnpm db:studio          # Open Prisma Studio GUI
+pnpm db:seed            # Seed database with sample data
 ```
 
 ## Package Naming Convention
 
 All internal packages use the `@buttergolf/` namespace:
 - `@buttergolf/ui` - Cross-platform UI components
+- `@buttergolf/db` - Prisma database client
+- `@buttergolf/eslint-config` - Shared ESLint configurations
+- `@buttergolf/typescript-config` - Shared TypeScript configurations
 - Use workspace protocol: `"@buttergolf/ui": "workspace:*"`
 
 ## Tamagui Configuration
@@ -488,10 +500,91 @@ pnpm up -r
 - Ensure `@tamagui/babel-plugin` is in babel config (mobile)
 - Verify `transpilePackages` includes all Tamagui packages (web)
 
+## Database (Prisma)
+
+### Package: `@buttergolf/db`
+
+The database package uses Prisma 6.x as the ORM with PostgreSQL.
+
+**Key Files**:
+- `packages/db/prisma/schema.prisma` - Database schema
+- `packages/db/src/index.ts` - Prisma Client singleton export
+- `packages/db/prisma/seed.ts` - Database seeding script
+- `packages/db/.env` - Database connection string
+
+**Schema Models** (example - customize for your app):
+- `User` - User accounts
+- `Round` - Golf rounds played
+- `Hole` - Individual hole scores
+
+### Using the Database in Apps
+
+1. **Add to dependencies**:
+```json
+{
+  "dependencies": {
+    "@buttergolf/db": "workspace:*"
+  }
+}
+```
+
+2. **Import and use**:
+```typescript
+import { prisma } from '@buttergolf/db'
+
+// Query data
+const users = await prisma.user.findMany()
+
+// Create data
+const round = await prisma.round.create({
+  data: {
+    userId: user.id,
+    courseName: 'Pebble Beach',
+    score: 72,
+  }
+})
+```
+
+### Database Workflow
+
+1. **Modify schema**: Edit `packages/db/prisma/schema.prisma`
+2. **Generate client**: `pnpm db:generate`
+3. **Push to database**: `pnpm db:push` (dev) or `pnpm db:migrate:dev --name change-name` (with migration)
+4. **Seed data**: `pnpm db:seed` (optional)
+
+### Database Setup Options
+
+**Local PostgreSQL with Docker**:
+```bash
+docker run --name buttergolf-postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_DB=buttergolf \
+  -p 5432:5432 \
+  -d postgres:16
+```
+
+**Prisma Postgres (Cloud)**:
+```bash
+pnpm --filter @buttergolf/db prisma-platform-login
+pnpm --filter @buttergolf/db prisma-postgres-create-database --name buttergolf
+```
+
+**Other providers**: Supabase, Neon, Railway, etc. - just update `DATABASE_URL` in `.env`
+
+### Important Notes
+
+- The Prisma Client is generated to `node_modules/.prisma/client` (not committed)
+- Always run `pnpm db:generate` after schema changes
+- Use `pnpm db:studio` to view/edit data in a GUI
+- The `.prisma` folder is in `.gitignore`
+- Each app/package that uses the database imports the singleton client from `@buttergolf/db`
+
 ## Documentation References
 
 - **Tamagui Full Documentation**: https://tamagui.dev/llms-full.txt
 - **Tamagui Core Concepts**: https://tamagui.dev/docs/intro/introduction
+- **Prisma Documentation**: https://www.prisma.io/docs
 - **Expo Documentation**: https://docs.expo.dev/
 - **Next.js Documentation**: https://nextjs.org/docs
 - **Turborepo Documentation**: https://turbo.build/repo/docs
@@ -508,6 +601,9 @@ pnpm up -r
 8. **Keep Metro and Babel configs** in sync with Tamagui requirements
 9. **Run type checking** regularly during development
 10. **Use `name` prop** on styled components for better compiler optimization
+11. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+12. **Run `pnpm db:generate`** after any schema changes
+13. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
 
 ## Known Issues & Gotchas
 

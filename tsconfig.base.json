@@ -5,6 +5,9 @@
             "@buttergolf/ui": [
                 "packages/ui/src"
             ],
+            "@buttergolf/db": [
+                "packages/db/src"
+            ],
             "@buttergolf/*": [
                 "packages/*/src"
             ],

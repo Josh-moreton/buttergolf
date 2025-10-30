@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// Example models - customize for your ButterGolf app
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    rounds    Round[]
+
+    @@map("users")
+}
+
+model Round {
+    id         String   @id @default(cuid())
+    userId     String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    courseName String
+    date       DateTime @default(now())
+    score      Int?
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    holes      Hole[]
+
+    @@map("rounds")
+}
+
+model Hole {
+    id         String   @id @default(cuid())
+    roundId    String
+    round      Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+    holeNumber Int
+    par        Int
+    strokes    Int
+    createdAt  DateTime @default(now())
+
+    @@map("holes")
+}
