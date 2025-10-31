@@ -67,44 +67,45 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       position={isActive ? "relative" : "absolute"}
       width="100%"
       height="100%"
-      $sm={{ flexDirection: "column-reverse" }}
-      $md={{ flexDirection: "row" }}
+      flexDirection="row"
       alignItems="center"
-      paddingHorizontal="$6"
-      paddingVertical="$8"
+      paddingHorizontal="$8"
+      paddingVertical="$6"
     >
-      <YStack flex={1} gap="$4" maxWidth={400}>
-        <XStack alignItems="center" gap="$4">
-          <Text fontSize={52} fontWeight="700" color="#3C50E0">
+      <YStack flex={1} gap="$3" maxWidth={420} paddingRight="$4">
+        <XStack alignItems="flex-start" gap="$3">
+          <Text fontSize={64} fontWeight="700" color="#3C50E0" lineHeight={64}>
             {item.discount}%
           </Text>
-          <YStack>
-            <Text fontSize={18} fontWeight="600" textTransform="uppercase">
+          <YStack marginTop="$2">
+            <Text fontSize={16} fontWeight="600" textTransform="uppercase" color="#1C274C">
               SALE
             </Text>
-            <Text fontSize={18} fontWeight="600" textTransform="uppercase">
+            <Text fontSize={16} fontWeight="600" textTransform="uppercase" color="#1C274C">
               OFF
             </Text>
           </YStack>
         </XStack>
 
-  <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-          <Text fontSize={24} fontWeight="700" color="$color" hoverStyle={{ color: "#3C50E0" }}>
+        <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
+          <Text fontSize={28} fontWeight="700" color="#1C274C" hoverStyle={{ color: "#3C50E0" }}>
             {item.title}
           </Text>
         </Link>
 
-        <Text color="$color" opacity={0.7}>
+        <Text color="#1C274C" opacity={0.6} fontSize={15}>
           {item.description}
         </Text>
 
-  <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
+        <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Button
             backgroundColor="#1C274C"
             color="white"
             paddingHorizontal="$8"
             paddingVertical="$3"
-            hoverStyle={{ backgroundColor: "#495270" }}
+            borderRadius="$3"
+            marginTop="$2"
+            hoverStyle={{ backgroundColor: "#3C50E0" }}
           >
             Shop Now
           </Button>
@@ -114,16 +115,14 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       <YStack flex={1} alignItems="center" justifyContent="center">
         <Image
           source={{ uri: item.image }}
-          width={320}
-          height={400}
+          width={380}
+          height={380}
           objectFit="contain"
         />
       </YStack>
     </XStack>
   )
-}
-
-function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0] }>) {
+}function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0] }>) {
   return (
     <Link
       href={`/products/${item.slug}`}
@@ -132,46 +131,48 @@ function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0]
       <Card
         flex={1}
         height="100%"
-        backgroundColor="$background"
-        borderWidth={1}
-        borderColor="$borderColor"
-        borderRadius="$6"
-        padding="$0"
+        backgroundColor="#F6F7FB"
+        borderWidth={0}
+        borderRadius="$4"
+        padding="$5"
         overflow="hidden"
         cursor="pointer"
         animation="quick"
         hoverStyle={{
-          scale: 1.03,
-          borderColor: "#3C50E0",
+          scale: 1.02,
           shadowColor: "$shadowColor",
-          shadowRadius: 12,
-          shadowOffset: { width: 0, height: 4 },
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 2 },
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <XStack alignItems="center" gap="$4" padding="$6">
-          <YStack flex={1} gap="$3">
-            <Text fontSize={20} fontWeight="700" color="$color" numberOfLines={2}>
+        <YStack height="100%" justifyContent="space-between">
+          {/* Top: Text content */}
+          <YStack gap="$2">
+            <Text fontSize={18} fontWeight="700" color="#1C274C" numberOfLines={2}>
               {item.title}
             </Text>
-            <Text fontSize={14} color="$color" opacity={0.7}>
+            <Text fontSize={13} color="#1C274C" opacity={0.6}>
               {item.subtitle}
             </Text>
+          </YStack>
 
-            <YStack gap="$1" marginTop="$6">
-              <Text fontSize={10} fontWeight="600" textTransform="uppercase" opacity={0.6}>
+          {/* Bottom: Price and Image side by side */}
+          <XStack alignItems="flex-end" justifyContent="space-between" marginTop="$4">
+            <YStack gap="$1">
+              <Text fontSize={10} fontWeight="600" textTransform="uppercase" opacity={0.5} color="#1C274C">
                 LIMITED TIME OFFER
               </Text>
               <XStack alignItems="center" gap="$2">
-                <Text fontSize={24} fontWeight="800" color="$color">
+                <Text fontSize={22} fontWeight="800" color="#1C274C">
                   £{item.price}
                 </Text>
                 {Boolean(item.originalPrice) && (
                   <Text
-                    fontSize={18}
+                    fontSize={16}
                     fontWeight="500"
-                    color="$color"
-                    opacity={0.5}
+                    color="#1C274C"
+                    opacity={0.4}
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}
@@ -179,17 +180,15 @@ function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0]
                 )}
               </XStack>
             </YStack>
-          </YStack>
 
-          <YStack width={170}>
             <Image
               source={{ uri: item.image }}
-              width={170}
-              height={210}
+              width={110}
+              height={110}
               objectFit="contain"
             />
-          </YStack>
-        </XStack>
+          </XStack>
+        </YStack>
       </Card>
     </Link>
   )
