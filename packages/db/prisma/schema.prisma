@@ -10,43 +10,77 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// Example models - customize for your ButterGolf app
+// Marketplace models for ButterGolf
 model User {
-    id        String   @id @default(cuid())
+    id        String    @id @default(cuid())
     // Clerk user identifier for federated auth
-    clerkId   String   @unique
-    email     String   @unique
+    clerkId   String    @unique
+    email     String    @unique
     name      String?
     imageUrl  String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    rounds    Round[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    // Marketplace relations
+    products  Product[]
 
     @@map("users")
 }
 
-model Round {
-    id         String   @id @default(cuid())
-    userId     String
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    courseName String
-    date       DateTime @default(now())
-    score      Int?
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-    holes      Hole[]
+model Category {
+    id          String    @id @default(cuid())
+    name        String    @unique
+    slug        String    @unique
+    description String?
+    imageUrl    String?
+    sortOrder   Int       @default(0)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    products    Product[]
 
-    @@map("rounds")
+    @@map("categories")
 }
 
-model Hole {
-    id         String   @id @default(cuid())
-    roundId    String
-    round      Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
-    holeNumber Int
-    par        Int
-    strokes    Int
-    createdAt  DateTime @default(now())
+model Product {
+    id          String           @id @default(cuid())
+    title       String
+    description String
+    price       Float
+    condition   ProductCondition
+    brand       String?
+    model       String?
+    userId      String
+    user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    categoryId  String
+    category    Category         @relation(fields: [categoryId], references: [id])
+    images      ProductImage[]
+    isSold      Boolean          @default(false)
+    views       Int              @default(0)
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
 
-    @@map("holes")
+    @@index([categoryId])
+    @@index([userId])
+    @@index([isSold])
+    @@map("products")
+}
+
+model ProductImage {
+    id        String   @id @default(cuid())
+    url       String
+    productId String
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    sortOrder Int      @default(0)
+    createdAt DateTime @default(now())
+
+    @@index([productId])
+    @@map("product_images")
+}
+
+enum ProductCondition {
+    NEW
+    LIKE_NEW
+    EXCELLENT
+    GOOD
+    FAIR
+    POOR
 }

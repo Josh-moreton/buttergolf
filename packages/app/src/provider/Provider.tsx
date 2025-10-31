@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { useColorScheme } from 'react-native'
-import { TamaguiProvider, type TamaguiProviderProps, config } from '@buttergolf/ui'
+import { TamaguiProvider, type TamaguiProviderProps } from 'tamagui'
+import { config } from '@buttergolf/ui'
 
 export type ProviderProps = PropsWithChildren<
   Omit<TamaguiProviderProps, 'config' | 'children'> & {
