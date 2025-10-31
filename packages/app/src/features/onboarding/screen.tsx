@@ -136,7 +136,7 @@ export function OnboardingScreen({
           textAlign="center"
           color="$text"
           lineHeight="$8"
-          style={{ fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif' }}
+          fontFamily="$serif"
           paddingHorizontal="$4"
         >
           From old clubs to new rounds — buy, sell, and play smarter.
