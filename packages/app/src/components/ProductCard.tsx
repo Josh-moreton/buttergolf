@@ -35,10 +35,10 @@ export function ProductCard({
           source={{ uri: imageUrl }}
           width="100%"
           height={200}
-          resizeMode="cover"
+          objectFit="cover"
           borderTopLeftRadius="$4"
           borderTopRightRadius="$4"
-          backgroundColor="$gray3"
+          backgroundColor="$background"
         />
       </Card.Header>
       <Card.Footer padding="$3">
@@ -52,12 +52,12 @@ export function ProductCard({
             {title}
           </Text>
           {condition && (
-            <Text fontSize="$2" color="$gray11">
+            <Text fontSize="$2" color="$color">
               {condition}
             </Text>
           )}
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$5" fontWeight="700" color="$blue10">
+            <Text fontSize="$5" fontWeight="700">
               ${price.toFixed(2)}
             </Text>
           </XStack>
