@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
-import AuthHeader from './_components/AuthHeader'
+import { MarketplaceHeader } from './_components/header/MarketplaceHeader'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ButterGolf",
-  description: "Your golf companion app",
+  description: "P2P Marketplace for Golf Equipment",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextTamaguiProvider>
-          <AuthHeader />
+          <MarketplaceHeader />
           {children}
         </NextTamaguiProvider>
       </body>
