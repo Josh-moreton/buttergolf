@@ -10,7 +10,7 @@ This guide also documents our authentication setup using Clerk for both platform
 
 ### Monorepo Structure
 - **Build System**: Turborepo 2.5.8 for build orchestration and caching
-- **Package Manager**: pnpm 9.0.0 with workspace protocol
+- **Package Manager**: pnpm 10.20.0 with workspace protocol
 - **Apps**:
   - `apps/web` - Next.js 16.0.1 (App Router) web application
   - `apps/mobile` - Expo ~54.0.20 mobile application (iOS/Android)

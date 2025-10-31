@@ -21,7 +21,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 ### Prerequisites
 
 - Node.js >= 18
-- pnpm 9.0.0 (specified in package.json)
+- pnpm 10.20.0 (managed via package.json "packageManager")
 
 ### Installation
 
