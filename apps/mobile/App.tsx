@@ -1,11 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Provider, HomeScreen, RoundsScreen } from '@buttergolf/app'
+import { Provider, HomeScreen, RoundsScreen, OnboardingScreen } from '@buttergolf/app'
 // eslint-disable-next-line deprecation/deprecation
 import { ClerkProvider, SignedIn, SignedOut, useOAuth } from '@clerk/clerk-expo'
 import * as SecureStore from 'expo-secure-store'
-import { Button, YStack, Text } from '@buttergolf/ui'
+import { YStack } from '@buttergolf/ui'
 import { Platform } from 'react-native'
+import { useState } from 'react'
 
 const Stack = createNativeStackNavigator()
 
@@ -50,20 +51,23 @@ export default function App() {
           </NavigationContainer>
         </SignedIn>
         <SignedOut>
-          <OAuthSignIn />
+          <OnboardingFlow />
         </SignedOut>
       </Provider>
     </ClerkProvider>
   )
 }
 
-function OAuthSignIn() {
+function OnboardingFlow() {
+  const [showAuth, setShowAuth] = useState(false)
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup')
+  
   // eslint-disable-next-line deprecation/deprecation
   const { startOAuthFlow: startGoogle } = useOAuth({ strategy: 'oauth_google' })
   // eslint-disable-next-line deprecation/deprecation
   const { startOAuthFlow: startApple } = useOAuth({ strategy: 'oauth_apple' })
 
-  const onPress = async (provider: 'google' | 'apple') => {
+  const handleOAuth = async (provider: 'google' | 'apple') => {
     const start = provider === 'google' ? startGoogle : startApple
     const { createdSessionId, setActive, signIn, signUp } = await start()
 
@@ -75,17 +79,47 @@ function OAuthSignIn() {
     }
   }
 
+  if (showAuth) {
+    // Show authentication options after user clicks CTA
+    return (
+      <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$6" backgroundColor="$bg">
+        <OnboardingScreen
+          onSkip={() => setShowAuth(false)}
+          onSignUp={() => handleOAuth('google')}
+          onSignIn={() => {
+            if (Platform.OS === 'ios') {
+              handleOAuth('apple')
+            } else {
+              handleOAuth('google')
+            }
+          }}
+          onAbout={() => {
+            // In a real app, this would navigate to an about page
+            console.log('Navigate to about page')
+          }}
+        />
+      </YStack>
+    )
+  }
+
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$6" backgroundColor="$background">
-      <Text fontSize="$6" fontWeight="700">Sign in to ButterGolf</Text>
-      <Button size="$5" theme="blue" onPress={() => onPress('google')}>
-        Continue with Google
-      </Button>
-      {Platform.OS === 'ios' && (
-        <Button size="$5" onPress={() => onPress('apple')}>
-          Continue with Apple
-        </Button>
-      )}
-    </YStack>
+    <OnboardingScreen
+      onSkip={() => {
+        // Skip goes directly to auth
+        setShowAuth(true)
+      }}
+      onSignUp={() => {
+        setAuthMode('signup')
+        setShowAuth(true)
+      }}
+      onSignIn={() => {
+        setAuthMode('signin')
+        setShowAuth(true)
+      }}
+      onAbout={() => {
+        // In a real app, this would navigate to an about page
+        console.log('Navigate to about page')
+      }}
+    />
   )
 }
