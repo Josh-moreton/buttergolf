@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mobile",
-    "slug": "mobile",
+    "slug": "buttergolf",
     "scheme": "buttergolf",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,6 +26,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2d353b01-94f4-4a97-88fc-545e1faff923"
+      }
+    },
+    "owner": "vortexalchemist"
   }
 }
