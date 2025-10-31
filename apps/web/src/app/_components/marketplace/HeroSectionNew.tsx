@@ -14,7 +14,7 @@ const CAROUSEL_ITEMS = [
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800",
     price: 349,
     originalPrice: 449,
-    link: "/listing/1",
+    slug: "taylormade-stealth-2-driver-10-5",
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const CAROUSEL_ITEMS = [
     image: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=800",
     price: 699,
     originalPrice: 999,
-    link: "/listing/2",
+    slug: "titleist-t200-irons-5-pw",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const CAROUSEL_ITEMS = [
     image: "https://images.unsplash.com/photo-1593111774240-d529f12a662c?w=800",
     price: 279,
     originalPrice: 329,
-    link: "/listing/3",
+    slug: "scotty-cameron-newport-2-putter",
   },
 ]
 
@@ -46,7 +46,7 @@ const FEATURED_CARDS = [
     price: 599,
     originalPrice: 799,
     image: "https://images.unsplash.com/photo-1530028828-25e8270d5d47?w=400",
-    link: "/listing/4",
+    slug: "callaway-rogue-st",
   },
   {
     id: 2,
@@ -55,7 +55,7 @@ const FEATURED_CARDS = [
     price: 149,
     originalPrice: 189,
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400",
-    link: "/listing/5",
+    slug: "ping-hoofer-stand-bag-black",
   },
 ]
 
@@ -88,7 +88,7 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           </YStack>
         </XStack>
 
-        <Link href={item.link} style={{ textDecoration: "none" }}>
+  <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Text fontSize={24} fontWeight="700" color="$color" hoverStyle={{ color: "#3C50E0" }}>
             {item.title}
           </Text>
@@ -98,7 +98,7 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           {item.description}
         </Text>
 
-        <Link href={item.link} style={{ textDecoration: "none" }}>
+  <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Button
             backgroundColor="#1C274C"
             color="white"
@@ -126,7 +126,7 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
 function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0] }>) {
   return (
     <Link
-      href={item.link}
+      href={`/products/${item.slug}`}
       style={{ textDecoration: "none", width: "100%", height: "100%", display: "block" }}
     >
       <Card

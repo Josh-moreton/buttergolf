@@ -8,6 +8,7 @@ type Listing = {
   price: number
   image: string
   condition: "NEW" | "LIKE_NEW" | "EXCELLENT" | "GOOD" | "FAIR"
+  slug: string
 }
 
 const MOCK_LISTINGS: Listing[] = [
@@ -17,6 +18,7 @@ const MOCK_LISTINGS: Listing[] = [
     price: 349,
     image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1000",
     condition: "EXCELLENT",
+    slug: "taylormade-stealth-2-driver-10-5",
   },
   {
     id: "2",
@@ -24,6 +26,7 @@ const MOCK_LISTINGS: Listing[] = [
     price: 699,
     image: "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
     condition: "GOOD",
+    slug: "titleist-t200-irons-5-pw",
   },
   {
     id: "3",
@@ -31,6 +34,7 @@ const MOCK_LISTINGS: Listing[] = [
     price: 279,
     image: "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
     condition: "LIKE_NEW",
+    slug: "scotty-cameron-newport-2-putter",
   },
   {
     id: "4",
@@ -38,27 +42,32 @@ const MOCK_LISTINGS: Listing[] = [
     price: 149,
     image: "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
     condition: "EXCELLENT",
+    slug: "ping-hoofer-stand-bag-black",
   },
 ]
 
+import Link from "next/link"
+
 function ListingCard({ item }: Readonly<{ item: Listing }>) {
   return (
-    <Card padding="$0" borderRadius="$4" overflow="hidden">
-      <Image
-        source={{ uri: item.image }}
-        width="100%"
-        height={180}
-        objectFit="cover"
-      />
-      <YStack padding="$4" gap="$2">
-        <Text fontWeight="700" numberOfLines={2}>{item.title}</Text>
-        <XStack alignItems="center" justifyContent="space-between">
-          <Text fontSize="$7" fontWeight="800">£{item.price}</Text>
-          <Text fontSize="$2" opacity={0.7}>{item.condition.replace("_", " ")}</Text>
-        </XStack>
-        <Button size="$3">Add to cart</Button>
-      </YStack>
-    </Card>
+    <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
+      <Card padding="$0" borderRadius="$4" overflow="hidden" cursor="pointer" hoverStyle={{ scale: 1.01 }}>
+        <Image
+          source={{ uri: item.image }}
+          width="100%"
+          height={180}
+          objectFit="cover"
+        />
+        <YStack padding="$4" gap="$2">
+          <Text fontWeight="700" numberOfLines={2}>{item.title}</Text>
+          <XStack alignItems="center" justifyContent="space-between">
+            <Text fontSize="$7" fontWeight="800">£{item.price}</Text>
+            <Text fontSize="$2" opacity={0.7}>{item.condition.replace("_", " ")}</Text>
+          </XStack>
+          <Button size="$3" variant="outlined">View details</Button>
+        </YStack>
+      </Card>
+    </Link>
   )
 }
 
