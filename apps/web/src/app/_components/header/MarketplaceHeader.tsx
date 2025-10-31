@@ -13,10 +13,13 @@ import {
   CartIcon,
   MenuIcon,
 } from "./icons"
+import { SignInModal } from "../auth/SignInModal"
 
 export function MarketplaceHeader() {
   const [stickyMenu, setStickyMenu] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in")
 
   // Wishlist and cart counts (placeholder - will wire to state later)
   const wishlistCount = 0
@@ -68,7 +71,12 @@ export function MarketplaceHeader() {
 
           <XStack gap="$3" alignItems="center">
             <SignedOut>
-              <Link href="/sign-up" style={{ textDecoration: "none" }}>
+              <XStack
+                tag="button"
+                cursor="pointer"
+                {...{ style: { background: "none", border: "none" } }}
+                onPress={() => { setAuthMode("sign-up"); setAuthOpen(true) }}
+              >
                 <Text
                   color="white"
                   fontSize={14}
@@ -80,8 +88,13 @@ export function MarketplaceHeader() {
                 >
                   Create an account
                 </Text>
-              </Link>
-              <Link href="/sign-in" style={{ textDecoration: "none" }}>
+              </XStack>
+              <XStack
+                tag="button"
+                cursor="pointer"
+                {...{ style: { background: "none", border: "none" } }}
+                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+              >
                 <Text
                   color="white"
                   fontSize={14}
@@ -91,7 +104,7 @@ export function MarketplaceHeader() {
                 >
                   Sign In
                 </Text>
-              </Link>
+              </XStack>
             </SignedOut>
             <SignedIn>
               <Text color="white" fontSize={14} fontWeight="500">
@@ -149,11 +162,16 @@ export function MarketplaceHeader() {
             </XStack>
 
             <SignedOut>
-              <Link href="/sign-in" style={{ textDecoration: "none" }}>
-                <XStack cursor="pointer" hoverStyle={{ opacity: 0.7 }}>
-                  <UserIcon />
-                </XStack>
-              </Link>
+              <XStack
+                tag="button"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.7 }}
+                {...{ style: { background: "none", border: "none" } }}
+                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+                aria-label="Sign in"
+              >
+                <UserIcon />
+              </XStack>
             </SignedOut>
 
             <SignedIn>
@@ -223,6 +241,8 @@ export function MarketplaceHeader() {
           </XStack>
         </XStack>
       </XStack>
+      {/* Auth modal */}
+      <SignInModal open={authOpen} onClose={() => setAuthOpen(false)} mode={authMode} />
     </YStack>
   )
 }
