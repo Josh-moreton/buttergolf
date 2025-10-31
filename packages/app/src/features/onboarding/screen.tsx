@@ -103,13 +103,16 @@ export function OnboardingScreen({
       {/* Carousel */}
       <YStack flex={1} justifyContent="center" overflow="hidden">
         <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View style={[{ flexDirection: 'row', gap: GAP }, animatedStyle]}>
+          <Animated.View style={[{ flexDirection: 'row' }, animatedStyle]}>
             {items.map((item, index) => (
               <View
                 key={`${item.id}-${index}`}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                style={{ backgroundColor: item.color }}
+                style={{
+                  backgroundColor: item.color,
+                  marginRight: index !== items.length - 1 ? GAP : 0,
+                }}
                 borderRadius="$4"
                 shadowColor="$shadowColor"
                 shadowRadius={8}
@@ -136,7 +139,7 @@ export function OnboardingScreen({
           textAlign="center"
           color="$text"
           lineHeight="$8"
-          fontFamily="$serif"
+          style={{ fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif' }}
           paddingHorizontal="$4"
         >
           From old clubs to new rounds — buy, sell, and play smarter.
