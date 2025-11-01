@@ -1,14 +1,23 @@
 'use client'
 
-import React from 'react'
-import { Dimensions, Platform, Pressable, ScrollView } from 'react-native'
-import { YStack, XStack, Text, Button, View } from 'tamagui'
+import React, { useEffect } from 'react'
+import { Platform, Dimensions, AccessibilityInfo } from 'react-native'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  Easing,
+  cancelAnimation,
+} from 'react-native-reanimated'
+import { YStack, Text, Button, View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: SCREEN_W } = Dimensions.get('window')
 
 const CARD_WIDTH = Math.round(SCREEN_W * 0.32)
 const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4)
+const GAP = 12
 
 // Premium placeholder cards with golf equipment themed colors
 // Carefully chosen palette for visual appeal
@@ -17,7 +26,9 @@ const images = [
   { id: 'ball', color: '#dfe6e9', label: 'Golf Ball' },
   { id: 'bag', color: '#636e72', label: 'Golf Bag' },
   { id: 'shoes', color: '#b2bec3', label: 'Golf Shoes' },
-]
+  { id: 'cart', color: '#74b9ff', label: 'Golf Cart' },
+  { id: 'gloves', color: '#a29bfe', label: 'Golf Gloves' },
+] as const
 
 interface OnboardingScreenProps {
   onSkip?: () => void
@@ -33,8 +44,44 @@ export function OnboardingScreen({
   onAbout,
 }: Readonly<OnboardingScreenProps>) {
   const insets = useSafeAreaInsets()
-  // Show a subset of cards for clean, premium look (no animation for Expo Go compat)
-  const displayItems = images.slice(0, 4)
+  
+  // Duplicate images array for seamless infinite loop
+  const items = [...images, ...images]
+  const singleWidth = images.length * (CARD_WIDTH + GAP)
+  const translateX = useSharedValue(0)
+  const [reduceMotion, setReduceMotion] = React.useState(false)
+
+  useEffect(() => {
+    // Check for reduce motion setting
+    if (Platform.OS !== 'web') {
+      AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+        setReduceMotion(enabled ?? false)
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (reduceMotion) {
+      cancelAnimation(translateX)
+      return
+    }
+
+    // Gentle 18-20 second scroll duration
+    const duration = Math.max(18000, Math.floor(singleWidth * 24))
+    translateX.value = withRepeat(
+      withTiming(-singleWidth, { duration, easing: Easing.linear }),
+      -1,
+      false
+    )
+
+    return () => {
+      cancelAnimation(translateX)
+    }
+  }, [reduceMotion, singleWidth, translateX])
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }))
 
   return (
     <YStack
@@ -43,40 +90,29 @@ export function OnboardingScreen({
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
-      {/* Skip Button */}
-      <XStack justifyContent="flex-end" paddingHorizontal="$4" paddingTop="$3">
-        <Pressable
-          onPress={onSkip}
-          // eslint-disable-next-line deprecation/deprecation
-          accessibilityLabel="Skip onboarding"
-          accessibilityRole="button"
-        >
-          <Text fontSize="$5" color="$muted" fontWeight="500">
-            Skip
-          </Text>
-        </Pressable>
-      </XStack>
-
-      {/* Product Showcase - Premium static carousel */}
-      <YStack flex={1} justifyContent="center" alignItems="center" paddingVertical="$8">
-        <XStack gap="$3" paddingHorizontal="$5">
-          {displayItems.map((item) => (
-            <View
-              key={item.id}
-              width={CARD_WIDTH}
-              height={CARD_HEIGHT}
-              borderRadius={18}
-              style={{
-                backgroundColor: item.color,
-                shadowColor: '#000',
-                shadowRadius: 16,
-                shadowOffset: { width: 0, height: 8 },
-                shadowOpacity: 0.18,
-                elevation: 12,
-              }}
-            />
-          ))}
-        </XStack>
+      {/* Auto-scrolling Product Carousel */}
+      <YStack flex={1} justifyContent="center" paddingVertical="$8">
+        <View height={CARD_HEIGHT} overflow="hidden">
+          <Animated.View style={[{ flexDirection: 'row' }, animatedStyle]}>
+            {items.map((item, index) => (
+              <View
+                key={`${item.id}-${index}`}
+                width={CARD_WIDTH}
+                height={CARD_HEIGHT}
+                borderRadius={18}
+                style={{
+                  backgroundColor: item.color,
+                  marginRight: index < items.length - 1 ? GAP : 0,
+                  shadowColor: '#000',
+                  shadowRadius: 16,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.18,
+                  elevation: 12,
+                }}
+              />
+            ))}
+          </Animated.View>
+        </View>
         <Text
           fontSize="$2"
           color="$muted"
@@ -167,16 +203,17 @@ export function OnboardingScreen({
         </YStack>
 
         {/* Footer */}
-        <Pressable
+        <Button
+          unstyled
           onPress={onAbout}
+          padding="$3"
           // eslint-disable-next-line deprecation/deprecation
           accessibilityLabel="About Butter Golf: Our platform"
-          accessibilityRole="button"
         >
           <Text fontSize="$4" color="$muted" textAlign="center">
             About Butter Golf: Our platform
           </Text>
-        </Pressable>
+        </Button>
       </YStack>
     </YStack>
   )
