@@ -1,15 +1,7 @@
 'use client'
 
-import React, { useEffect } from 'react'
-import { Platform, Dimensions, AccessibilityInfo } from 'react-native'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-  cancelAnimation,
-} from 'react-native-reanimated'
+import React, { useEffect, useRef } from 'react'
+import { Platform, Dimensions, AccessibilityInfo, Animated, Easing } from 'react-native'
 import { YStack, Text, Button, View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -48,7 +40,7 @@ export function OnboardingScreen({
   // Duplicate images array for seamless infinite loop
   const items = [...images, ...images]
   const singleWidth = images.length * (CARD_WIDTH + GAP)
-  const translateX = useSharedValue(0)
+  const translateX = useRef(new Animated.Value(0)).current
   const [reduceMotion, setReduceMotion] = React.useState(false)
 
   useEffect(() => {
@@ -62,26 +54,28 @@ export function OnboardingScreen({
 
   useEffect(() => {
     if (reduceMotion) {
-      cancelAnimation(translateX)
+      translateX.stopAnimation()
       return
     }
 
     // Gentle 18-20 second scroll duration
     const duration = Math.max(18000, Math.floor(singleWidth * 24))
-    translateX.value = withRepeat(
-      withTiming(-singleWidth, { duration, easing: Easing.linear }),
-      -1,
-      false
+    
+    const animation = Animated.loop(
+      Animated.timing(translateX, {
+        toValue: -singleWidth,
+        duration,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
     )
+    
+    animation.start()
 
     return () => {
-      cancelAnimation(translateX)
+      animation.stop()
     }
   }, [reduceMotion, singleWidth, translateX])
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }))
 
   return (
     <YStack
@@ -93,7 +87,7 @@ export function OnboardingScreen({
       {/* Auto-scrolling Product Carousel */}
       <YStack flex={1} justifyContent="center" paddingVertical="$8">
         <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View style={[{ flexDirection: 'row' }, animatedStyle]}>
+          <Animated.View style={{ flexDirection: 'row', transform: [{ translateX }] }}>
             {items.map((item, index) => (
               <View
                 key={`${item.id}-${index}`}
