@@ -1,33 +1,22 @@
 'use client'
 
-import React, { useEffect } from 'react'
-import { Dimensions, Platform, AccessibilityInfo, Pressable } from 'react-native'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-  cancelAnimation,
-} from 'react-native-reanimated'
+import React from 'react'
+import { Dimensions, Platform, Pressable, ScrollView } from 'react-native'
 import { YStack, XStack, Text, Button, View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: SCREEN_W } = Dimensions.get('window')
 
-const CARD_WIDTH = Math.round(SCREEN_W * 0.28)
-const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.33)
-const GAP = 12
+const CARD_WIDTH = Math.round(SCREEN_W * 0.32)
+const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4)
 
-// Placeholder images with golf equipment themed colors
-// In production, these would be actual image requires
+// Premium placeholder cards with golf equipment themed colors
+// Carefully chosen palette for visual appeal
 const images = [
-  { id: 'club', color: '#2c3e50', label: 'Golf Club' },
-  { id: 'ball', color: '#ecf0f1', label: 'Golf Ball' },
-  { id: 'bag', color: '#34495e', label: 'Golf Bag' },
-  { id: 'feet', color: '#95a5a6', label: 'Golf Shoes' },
-  { id: 'scooter', color: '#7f8c8d', label: 'Golf Cart' },
-  { id: 'accessory', color: '#bdc3c7', label: 'Accessory' },
+  { id: 'club', color: '#2d3436', label: 'Golf Club' },
+  { id: 'ball', color: '#dfe6e9', label: 'Golf Ball' },
+  { id: 'bag', color: '#636e72', label: 'Golf Bag' },
+  { id: 'shoes', color: '#b2bec3', label: 'Golf Shoes' },
 ]
 
 interface OnboardingScreenProps {
@@ -42,43 +31,10 @@ export function OnboardingScreen({
   onSignUp,
   onSignIn,
   onAbout,
-}: OnboardingScreenProps) {
+}: Readonly<OnboardingScreenProps>) {
   const insets = useSafeAreaInsets()
-  const items = [...images, ...images]
-  const singleWidth = images.length * (CARD_WIDTH + GAP)
-  const translateX = useSharedValue(0)
-  const [reduceMotion, setReduceMotion] = React.useState(false)
-
-  useEffect(() => {
-    // Check for reduce motion setting
-    if (Platform.OS !== 'web') {
-      AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-        setReduceMotion(enabled ?? false)
-      })
-    }
-  }, [])
-
-  useEffect(() => {
-    if (reduceMotion) {
-      cancelAnimation(translateX)
-      return
-    }
-
-    const duration = Math.max(18000, Math.floor(singleWidth * 24))
-    translateX.value = withRepeat(
-      withTiming(-singleWidth, { duration, easing: Easing.linear }),
-      -1,
-      false
-    )
-
-    return () => {
-      cancelAnimation(translateX)
-    }
-  }, [reduceMotion, singleWidth, translateX])
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }))
+  // Show a subset of cards for clean, premium look (no animation for Expo Go compat)
+  const displayItems = images.slice(0, 4)
 
   return (
     <YStack
@@ -91,6 +47,7 @@ export function OnboardingScreen({
       <XStack justifyContent="flex-end" paddingHorizontal="$4" paddingTop="$3">
         <Pressable
           onPress={onSkip}
+          // eslint-disable-next-line deprecation/deprecation
           accessibilityLabel="Skip onboarding"
           accessibilityRole="button"
         >
@@ -100,32 +57,36 @@ export function OnboardingScreen({
         </Pressable>
       </XStack>
 
-      {/* Carousel */}
-      <YStack flex={1} justifyContent="center" overflow="hidden">
-        <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View style={[{ flexDirection: 'row' }, animatedStyle]}>
-            {items.map((item, index) => (
-              <View
-                key={`${item.id}-${index}`}
-                width={CARD_WIDTH}
-                height={CARD_HEIGHT}
-                style={{
-                  backgroundColor: item.color,
-                  marginRight: index !== items.length - 1 ? GAP : 0,
-                }}
-                borderRadius="$4"
-                shadowColor="$shadowColor"
-                shadowRadius={8}
-                shadowOffset={{ width: 0, height: 4 }}
-                accessible
-                accessibilityLabel={item.label}
-              />
-            ))}
-          </Animated.View>
-        </View>
-      </YStack>
-
-      {/* Content Section */}
+      {/* Product Showcase - Premium static carousel */}
+      <YStack flex={1} justifyContent="center" alignItems="center" paddingVertical="$8">
+        <XStack gap="$3" paddingHorizontal="$5">
+          {displayItems.map((item) => (
+            <View
+              key={item.id}
+              width={CARD_WIDTH}
+              height={CARD_HEIGHT}
+              borderRadius={18}
+              style={{
+                backgroundColor: item.color,
+                shadowColor: '#000',
+                shadowRadius: 16,
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: 0.18,
+                elevation: 12,
+              }}
+            />
+          ))}
+        </XStack>
+        <Text
+          fontSize="$2"
+          color="$muted"
+          marginTop="$5"
+          textAlign="center"
+          fontWeight="500"
+        >
+          Browse thousands of pre-loved golf items
+        </Text>
+      </YStack>      {/* Content Section */}
       <YStack
         gap="$6"
         paddingHorizontal="$6"
@@ -133,54 +94,73 @@ export function OnboardingScreen({
         alignItems="center"
       >
         {/* Headline */}
-        <Text
-          fontSize="$8"
-          fontWeight="600"
-          textAlign="center"
-          color="$text"
-          lineHeight="$8"
-          style={{ fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif' }}
-          paddingHorizontal="$4"
-        >
-          From old clubs to new rounds — buy, sell, and play smarter.
-        </Text>
+        <YStack gap="$2" paddingHorizontal="$5">
+          <Text
+            fontSize="$9"
+            fontWeight="700"
+            textAlign="center"
+            color="$text"
+            lineHeight={36}
+            fontFamily={(Platform.OS === 'ios' ? 'Georgia' : 'serif') as any}
+          >
+            From old clubs to new rounds
+          </Text>
+          <Text
+            fontSize="$5"
+            fontWeight="500"
+            textAlign="center"
+            color="$muted"
+            lineHeight={22}
+          >
+            Buy, sell, and play smarter
+          </Text>
+        </YStack>
 
         {/* CTAs */}
-        <YStack gap="$3" width="100%" maxWidth={400}>
+        <YStack gap="$3" width="100%" maxWidth={420} paddingHorizontal="$5">
           <Button
             size="$5"
+            height={56}
             backgroundColor="$green500"
             color="white"
-            fontWeight="600"
-            borderRadius="$4"
+            fontSize="$6"
+            fontWeight="700"
+            borderRadius={16}
             pressStyle={{
               backgroundColor: '$green700',
-              scale: 0.98,
+              scale: 0.97,
+              opacity: 0.9,
             }}
             onPress={onSignUp}
-            accessible
+            // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="Sign up to Butter Golf"
-            accessibilityRole="button"
+            style={{
+              shadowColor: '$green500',
+              shadowRadius: 12,
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+            }}
           >
             Sign up to Butter Golf
           </Button>
 
           <Button
             size="$5"
+            height={56}
             backgroundColor="transparent"
             borderColor="$text"
             borderWidth={2}
             color="$text"
+            fontSize="$5"
             fontWeight="600"
-            borderRadius="$4"
+            borderRadius={16}
             pressStyle={{
-              backgroundColor: '$bg',
-              scale: 0.98,
+              backgroundColor: 'rgba(15, 23, 32, 0.04)',
+              scale: 0.97,
             }}
             onPress={onSignIn}
-            accessible
+            // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="I already have an account"
-            accessibilityRole="button"
           >
             I already have an account
           </Button>
@@ -189,6 +169,7 @@ export function OnboardingScreen({
         {/* Footer */}
         <Pressable
           onPress={onAbout}
+          // eslint-disable-next-line deprecation/deprecation
           accessibilityLabel="About Butter Golf: Our platform"
           accessibilityRole="button"
         >
