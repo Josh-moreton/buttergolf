@@ -12,7 +12,7 @@ module.exports = function (api) {
           },
         },
       ],
-      // Optional but recommended: Tamagui babel plugin for native optimizations
+      // Tamagui babel plugin for native optimizations
       [
         '@tamagui/babel-plugin',
         {
@@ -23,8 +23,6 @@ module.exports = function (api) {
           disableExtraction: process.env.NODE_ENV === 'development',
         },
       ],
-      // React Native Reanimated plugin - must be last
-      'react-native-reanimated/plugin',
     ],
   }
 }
