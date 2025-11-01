@@ -15,7 +15,7 @@
     "@buttergolf/ui": "workspace:*",
     "@clerk/clerk-expo": "^2.17.3",
     "@react-navigation/native": "^7.1.19",
-    "@react-navigation/native-stack": "^7.6.1",
+    "@react-navigation/native-stack": "^7.6.2",
     "burnt": "^0.13.0",
     "expo": "~54.0.20",
     "expo-auth-session": "^7.0.8",
