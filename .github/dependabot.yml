@@ -1,11 +1,117 @@
-# To get started with Dependabot version updates, you'll need to specify which d
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
+# Dependabot configuration for ButterGolf monorepo
+# Automatically checks for dependency updates across all packages
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Root workspace dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      dev-dependencies:
+        patterns:
+          - "prettier"
+          - "turbo"
+          - "typescript"
+
+  # Web app (Next.js)
+  - package-ecosystem: "npm"
+    directory: "/apps/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      nextjs:
+        patterns:
+          - "next"
+          - "@next/*"
+      clerk:
+        patterns:
+          - "@clerk/*"
+          - "svix"
+
+  # Mobile app (Expo)
+  - package-ecosystem: "npm"
+    directory: "/apps/mobile"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      expo:
+        patterns:
+          - "expo"
+          - "expo-*"
+      react-native:
+        patterns:
+          - "react-native"
+          - "react-native-*"
+      clerk:
+        patterns:
+          - "@clerk/*"
+      navigation:
+        patterns:
+          - "@react-navigation/*"
+
+  # UI package
+  - package-ecosystem: "npm"
+    directory: "/packages/ui"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      tamagui:
+        patterns:
+          - "tamagui"
+          - "@tamagui/*"
+
+  # Database package (Prisma)
+  - package-ecosystem: "npm"
+    directory: "/packages/db"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+
+  # App package (shared features)
+  - package-ecosystem: "npm"
+    directory: "/packages/app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+
+  # Config package
+  - package-ecosystem: "npm"
+    directory: "/packages/config"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      tamagui:
+        patterns:
+          - "tamagui"
+          - "@tamagui/*"
+
+  # GitHub Actions workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
