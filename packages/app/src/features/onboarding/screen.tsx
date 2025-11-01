@@ -152,9 +152,6 @@ export function OnboardingScreen({
             size="$5"
             height={56}
             backgroundColor="$green500"
-            color="white"
-            fontSize="$6"
-            fontWeight="700"
             borderRadius={16}
             pressStyle={{
               backgroundColor: '$green700',
@@ -171,7 +168,9 @@ export function OnboardingScreen({
               shadowOpacity: 0.3,
             }}
           >
-            Sign up to Butter Golf
+            <Text color="white" fontSize="$6" fontWeight="700">
+              Sign up to Butter Golf
+            </Text>
           </Button>
 
           <Button
@@ -180,9 +179,6 @@ export function OnboardingScreen({
             backgroundColor="transparent"
             borderColor="$text"
             borderWidth={2}
-            color="$text"
-            fontSize="$5"
-            fontWeight="600"
             borderRadius={16}
             pressStyle={{
               backgroundColor: 'rgba(15, 23, 32, 0.04)',
@@ -192,7 +188,9 @@ export function OnboardingScreen({
             // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="I already have an account"
           >
-            I already have an account
+            <Text color="$text" fontSize="$5" fontWeight="600">
+              I already have an account
+            </Text>
           </Button>
         </YStack>
 
