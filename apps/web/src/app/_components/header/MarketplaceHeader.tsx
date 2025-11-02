@@ -60,7 +60,7 @@ export function MarketplaceHeader() {
         <Row
           width="100%"
           maxWidth={1280}
-          justify="between"
+          {...{ justify: "between" as any }}
           align="center"
         >
           <Row display="none" $lg={{ display: "flex" }}>
@@ -74,7 +74,7 @@ export function MarketplaceHeader() {
             </Text>
           </Row>
 
-          <Row gap="$3" align="center">
+          <Row {...{ gap: "sm" as any }} align="center">
             <SignedOut>
               <Row
                 tag="button"
@@ -134,12 +134,12 @@ export function MarketplaceHeader() {
         <Row
           width="100%"
           maxWidth={1280}
-          justify="between"
+          {...{ justify: "between" as any }}
           align="center"
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Row align="center" gap="$2" paddingVertical="$2">
+            <Row align="center" {...{ gap: "xs" as any }} paddingVertical="$2">
               <Text
                 fontSize={24}
                 fontWeight="800"
@@ -174,7 +174,7 @@ export function MarketplaceHeader() {
           </Row>
 
           {/* Action Buttons */}
-          <Row gap="$3" align="center">
+          <Row {...{ gap: "sm" as any }} align="center">
             <Row
               tag="button"
               cursor="pointer"

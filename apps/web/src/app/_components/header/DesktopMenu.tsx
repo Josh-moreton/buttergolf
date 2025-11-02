@@ -17,7 +17,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
   const pathname = usePathname()
 
   return (
-    <Row tag="nav" gap="$6" align="center">
+    <Row tag="nav" {...{ gap: "xl" as any }} align="center">
       {menuData.map((menuItem) => {
         const hasSubmenu = Boolean(menuItem.submenu)
         const isActive = menuItem.path && pathname.split("?")[0] === menuItem.path.split("?")[0]
@@ -35,7 +35,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                 <Row
                   tag="button"
                   align="center"
-                  gap="$1"
+                  {...{ gap: "xs" as any }}
                   cursor="pointer"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
                   {...{ style: { background: "none", border: "none" } }}

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { SignIn, SignUp } from "@clerk/nextjs"
-import { YStack } from "@buttergolf/ui"
+import { Column } from "@buttergolf/ui"
 
 type AuthMode = "sign-in" | "sign-up"
 

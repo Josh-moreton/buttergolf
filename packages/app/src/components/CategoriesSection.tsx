@@ -27,7 +27,7 @@ export function CategoriesSection() {
       borderBottomWidth={1}
       borderBottomColor="$border"
     >
-      <Row gap="$2">
+      <Row {...{ gap: "xs" as any }}>
         {categories.map((category, index) => (
           <CategoryButton
             key={category}

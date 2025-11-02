@@ -72,8 +72,8 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       paddingHorizontal="$8"
       paddingVertical="$6"
     >
-      <Column flex={1} gap="$3" maxWidth={420} paddingRight="$4">
-        <Row align="start" gap="$3">
+      <Column flex={1} {...{ gap: "sm" as any }} maxWidth={420} paddingRight="$4">
+        <Row align="start" {...{ gap: "sm" as any }}>
           <Text fontSize={64} fontWeight="700" {...{ color: "$info" as any }} lineHeight={64}>
             {item.discount}%
           </Text>
@@ -146,9 +146,9 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <Column height="100%" justify="between">
+        <Column height="100%" {...{ justify: "between" as any }}>
           {/* Top: Text content */}
-          <Column gap="$2">
+          <Column {...{ gap: "xs" as any }}>
             <Text fontSize={18} fontWeight="700" {...{ color: "$text" as any }} numberOfLines={2}>
               {item.title}
             </Text>
@@ -158,12 +158,12 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           </Column>
 
           {/* Bottom: Price and Image side by side */}
-          <Row align="end" justify="between" marginTop="$4">
-            <Column gap="$1">
+          <Row align="end" {...{ justify: "between" as any }} marginTop="$4">
+            <Column {...{ gap: "xs" as any }}>
               <Text fontSize={10} fontWeight="600" textTransform="uppercase" {...{ color: "$textMuted" as any }}>
                 LIMITED TIME OFFER
               </Text>
-              <Row align="center" gap="$2">
+              <Row align="center" {...{ gap: "xs" as any }}>
                 <Text fontSize={22} fontWeight="800" {...{ color: "$text" as any }}>
                   £{item.price}
                 </Text>
@@ -208,7 +208,7 @@ export function HeroSectionNew() {
     <Column backgroundColor="$background" paddingVertical="$12">
       <Column maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
         <Row
-          gap="$5"
+          {...{ gap: "xl" as any }}
           flexDirection="column"
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
@@ -245,7 +245,7 @@ export function HeroSectionNew() {
               bottom="$4"
               left="50%"
               {...{ style: { transform: "translateX(-50%)" } }}
-              gap="$2"
+              {...{ gap: "xs" as any }}
               zIndex={10}
             >
               {CAROUSEL_ITEMS.map((item, index) => (
@@ -265,7 +265,7 @@ export function HeroSectionNew() {
 
           {/* Featured Cards - 1/3 width on desktop */}
           <Column
-            gap="$4"
+            {...{ gap: "lg" as any }}
             flexDirection="column"
             width="100%"
             $xl={{ 

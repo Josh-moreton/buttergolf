@@ -58,9 +58,9 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           height={180}
           objectFit="cover"
         />
-        <Column {...{ padding: 16 as any }} gap="$2">
+        <Column {...{ padding: 16 as any }} {...{ gap: "xs" as any }}>
           <Text fontWeight="700" numberOfLines={2}>{item.title}</Text>
-          <Row align="center" justify="between">
+          <Row align="center" {...{ justify: "between" as any }}>
             <Text fontSize="$7" fontWeight="800">£{item.price}</Text>
             <Text fontSize="$2" opacity={0.7}>{item.condition.replace("_", " ")}</Text>
           </Row>
@@ -74,12 +74,12 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
 export function RecentlyListedSection() {
   return (
     <Column paddingVertical="$6">
-      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" gap="$4">
-        <Row align="center" justify="between">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" {...{ gap: "lg" as any }}>
+        <Row align="center" {...{ justify: "between" as any }}>
           <Text fontSize="$8" fontWeight="700">Recently listed</Text>
           <Button tone="outline" size="md">View all</Button>
         </Row>
-        <Row gap="$4" wrap={true}>
+        <Row {...{ gap: "lg" as any }} wrap={true}>
           {MOCK_LISTINGS.map((l) => (
             <Column key={l.id} width="100%" $sm={{ width: "100%" }} $md={{ width: "48%" }} $lg={{ width: "23%" }}>
               <ListingCard item={l} />

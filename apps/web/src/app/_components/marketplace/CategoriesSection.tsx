@@ -17,10 +17,10 @@ const CATEGORIES = [
 export function CategoriesSection() {
   return (
     <Column paddingVertical="$6">
-      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" gap="$4">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" {...{ gap: "lg" as any }}>
         <Text fontSize="$8" fontWeight="700">Shop by category</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Row gap="$3" paddingVertical="$2">
+          <Row {...{ gap: "sm" as any }} paddingVertical="$2">
             {CATEGORIES.map((c) => (
               <Card key={c.key} {...{ padding: 16 as any }} borderRadius="$4">
                 <Button size="md" tone="outline">

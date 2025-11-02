@@ -11,7 +11,7 @@ export default function ThemeTestPage() {
       <Column backgroundColor="$background" minHeight="100vh" padding="$4">
         {/* Theme Toggle Header */}
         <Row 
-          justify="between" 
+          {...{ justify: "between" as any }} 
           align="center" 
           padding="$4"
           backgroundColor="$surface"
@@ -36,38 +36,38 @@ export default function ThemeTestPage() {
         </Row>
 
         {/* Theme Color Showcase */}
-        <Column gap="$4">
+        <Column {...{ gap: "lg" as any }}>
           <Card>
-            <Column gap="$3" padding="$4">
+            <Column {...{ gap: "sm" as any }} padding="$4">
               <Text size="lg" weight="bold">Semantic Colors</Text>
               
-              <Row gap="$3" wrap={true}>
-                <Column gap="$2" padding="$3" backgroundColor="$primary" borderRadius="$4" minWidth={120}>
+              <Row {...{ gap: "sm" as any }} wrap={true}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$primary" borderRadius="$4" minWidth={120}>
                   <Text {...{ color: "inverse" as any }} weight="semibold">Primary</Text>
                   <Text {...{ color: "inverse" as any }} size="xs">Brand Color</Text>
                 </Column>
                 
-                <Column gap="$2" padding="$3" backgroundColor="$secondary" borderRadius="$4" minWidth={120}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$secondary" borderRadius="$4" minWidth={120}>
                   <Text weight="semibold">Secondary</Text>
                   <Text size="xs">Accent Color</Text>
                 </Column>
                 
-                <Column gap="$2" padding="$3" backgroundColor="$info" borderRadius="$4" minWidth={120}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$info" borderRadius="$4" minWidth={120}>
                   <Text {...{ color: "inverse" as any }} weight="semibold">Info</Text>
                   <Text {...{ color: "inverse" as any }} size="xs">Information</Text>
                 </Column>
                 
-                <Column gap="$2" padding="$3" backgroundColor="$success" borderRadius="$4" minWidth={120}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$success" borderRadius="$4" minWidth={120}>
                   <Text {...{ color: "inverse" as any }} weight="semibold">Success</Text>
                   <Text {...{ color: "inverse" as any }} size="xs">Positive State</Text>
                 </Column>
                 
-                <Column gap="$2" padding="$3" backgroundColor="$warning" borderRadius="$4" minWidth={120}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$warning" borderRadius="$4" minWidth={120}>
                   <Text weight="semibold">Warning</Text>
                   <Text size="xs">Caution State</Text>
                 </Column>
                 
-                <Column gap="$2" padding="$3" backgroundColor="$error" borderRadius="$4" minWidth={120}>
+                <Column {...{ gap: "xs" as any }} padding="$3" backgroundColor="$error" borderRadius="$4" minWidth={120}>
                   <Text {...{ color: "inverse" as any }} weight="semibold">Error</Text>
                   <Text {...{ color: "inverse" as any }} size="xs">Error State</Text>
                 </Column>
@@ -76,7 +76,7 @@ export default function ThemeTestPage() {
           </Card>
 
           <Card>
-            <Column gap="$3" padding="$4">
+            <Column {...{ gap: "sm" as any }} padding="$4">
               <Text size="lg" weight="bold">Text Colors</Text>
               <Text {...{ color: "default" as any }} size="md">Default Text Color</Text>
               <Text {...{ color: "secondary" as any }} size="md">Secondary Text Color</Text>
@@ -89,9 +89,9 @@ export default function ThemeTestPage() {
           </Card>
 
           <Card>
-            <Column gap="$3" padding="$4">
+            <Column {...{ gap: "sm" as any }} padding="$4">
               <Text size="lg" weight="bold">Surface & Border Colors</Text>
-              <Column gap="$2">
+              <Column {...{ gap: "xs" as any }}>
                 <Column padding="$3" backgroundColor="$background" borderRadius="$4" borderWidth={1} borderColor="$border">
                   <Text>Background with Border</Text>
                 </Column>

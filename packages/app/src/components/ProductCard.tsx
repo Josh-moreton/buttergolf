@@ -49,7 +49,7 @@ export function ProductCard({
         />
       </CardHeader>
       <CardFooter {...{ padding: '$md' as any }} noBorder>
-        <Column gap="$2" width="100%">
+        <Column {...{ gap: "xs" as any }} width="100%">
           <Text
             size="md"
             weight="semibold"
@@ -63,7 +63,7 @@ export function ProductCard({
               {condition}
             </Text>
           )}
-          <Row justify="between" align="center">
+          <Row {...{ justify: "between" as any }} align="center">
             <Text size="lg" weight="bold" {...{ color: '$primary' as any }}>
               ${price.toFixed(2)}
             </Text>

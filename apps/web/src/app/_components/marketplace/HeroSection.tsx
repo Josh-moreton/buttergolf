@@ -9,10 +9,10 @@ export function HeroSection() {
         <Row
           $sm={{ flexDirection: "column" }}
           $lg={{ flexDirection: "row" }}
-          gap="$6"
+          {...{ gap: "xl" as any }}
           align="center"
         >
-          <Column flex={1} gap="$4">
+          <Column flex={1} {...{ gap: "lg" as any }}>
             <Text fontSize="$10" fontWeight="800" lineHeight={44}>
               Buy & sell golf clubs peer‑to‑peer
             </Text>
@@ -20,13 +20,13 @@ export function HeroSection() {
               Find great deals on drivers, irons, putters and more — or list your
               gear in minutes.
             </Text>
-            <Row gap="$3" wrap={true}>
+            <Row {...{ gap: "sm" as any }} wrap={true}>
               <Button size="lg">Browse listings</Button>
               <Button size="lg" tone="outline">Sell your clubs</Button>
             </Row>
           </Column>
 
-          <Column flex={1} gap="$4">
+          <Column flex={1} {...{ gap: "lg" as any }}>
             <Card backgroundColor="$background" {...{ padding: 0 as any }}>
               <Image
                 source={{ uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200" }}
@@ -36,7 +36,7 @@ export function HeroSection() {
                 borderRadius="$4"
               />
             </Card>
-            <Row gap="$4" $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
+            <Row {...{ gap: "lg" as any }} $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
               <Card flex={1} {...{ padding: 16 as any }}>
                 <Text fontWeight="700">Featured</Text>
                 <Text>Hot deals this week</Text>

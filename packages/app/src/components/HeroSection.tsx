@@ -10,11 +10,11 @@ export function HeroSection() {
       paddingVertical="$8"
       paddingHorizontal="$4"
       align="center"
-      gap="$4"
+      {...{ gap: "lg" as any }}
       borderBottomWidth={1}
       borderBottomColor="$border"
     >
-      <Column align="center" gap="$3" maxWidth={800}>
+      <Column align="center" {...{ gap: "sm" as any }} maxWidth={800}>
         <H1 size="$10" textAlign="center" fontWeight="700" color="$text">
           Ready to declutter your golf bag?
         </H1>
@@ -25,7 +25,7 @@ export function HeroSection() {
 
       <SearchBar />
 
-      <Row gap="$3" wrap={true} justify="center">
+      <Row {...{ gap: "sm" as any }} wrap justify="center">
         <Button 
           size="$4" 
           backgroundColor="$primary" 

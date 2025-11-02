@@ -1,6 +1,6 @@
 "use client"
 
-import { YStack } from "@buttergolf/ui"
+import { Column } from "@buttergolf/ui"
 import { HeroSectionNew } from "./marketplace/HeroSectionNew"
 import { CategoriesSection } from "./marketplace/CategoriesSection"
 import { RecentlyListedSection } from "./marketplace/RecentlyListedSection"

@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from 'react'
 import { Platform, Dimensions, AccessibilityInfo, Animated, Easing } from 'react-native'
-import { Column, Text, Button, View } from 'tamagui'
+import { Text, Button, View } from 'tamagui'
+import { Column } from '@buttergolf/ui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: SCREEN_W } = Dimensions.get('window')
@@ -118,13 +119,13 @@ export function OnboardingScreen({
         </Text>
       </Column>      {/* Content Section */}
       <Column
-        gap="$6"
+        {...{ gap: "lg" as any }}
         paddingHorizontal="$6"
         paddingBottom="$4"
         align="center"
       >
         {/* Headline */}
-        <Column gap="$2" paddingHorizontal="$5">
+        <Column {...{ gap: "xs" as any }} paddingHorizontal="$5">
           <Text
             fontSize="$9"
             fontWeight="700"
@@ -147,7 +148,7 @@ export function OnboardingScreen({
         </Column>
 
         {/* CTAs */}
-        <Column gap="$3" width="100%" maxWidth={420} paddingHorizontal="$5">
+        <Column {...{ gap: "sm" as any }} width="100%" maxWidth={420} paddingHorizontal="$5">
           <Button
             size="$5"
             height={56}
