@@ -10,7 +10,7 @@ export function NewsletterSection() {
         <Text opacity={0.8} color="$color">Get the latest listings and price drops in your inbox</Text>
         <XStack gap="$3" $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
           <Input flex={1} size="$5" placeholder="you@example.com" />
-          <Button size="$5" theme="blue">Subscribe</Button>
+          <Button size="$5">Subscribe</Button>
         </XStack>
       </YStack>
     </YStack>

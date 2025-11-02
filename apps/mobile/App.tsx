@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Provider, HomeScreen, RoundsScreen } from '@buttergolf/app'
+import { Provider, HomeScreen, RoundsScreen, routes } from '@buttergolf/app'
 import { OnboardingScreen } from '@buttergolf/app/src/features/onboarding'
 import { View as RNView, Text as RNText, Pressable as RNPressable, Platform } from 'react-native'
 // eslint-disable-next-line deprecation/deprecation
@@ -11,6 +11,25 @@ import { Button, Text } from '@buttergolf/ui'
 // Platform imported above with RN components
 
 const Stack = createNativeStackNavigator()
+
+// Solito linking configuration - connects Solito routes to React Navigation
+const linking = {
+  prefixes: ['buttergolf://', 'https://buttergolf.com', 'exp://'],
+  config: {
+    screens: {
+      Home: {
+        path: routes.home,
+        exact: true,
+      },
+      Rounds: {
+        path: routes.rounds.slice(1), // Remove leading '/' for React Navigation
+        exact: true,
+      },
+      // Add more routes here as you create them
+      // RoundDetail: routes.roundDetail.replace('[id]', ':id'),
+    },
+  },
+}
 
 function SignOutButton() {
   const { signOut } = useAuth()
@@ -67,7 +86,7 @@ export default function App() {
         {/* Wrap app content in Tamagui Provider so SignedOut onboarding can use UI components */}
         <Provider>
           <SignedIn>
-            <NavigationContainer>
+            <NavigationContainer linking={linking}>
               <Stack.Navigator>
                 <Stack.Screen
                   name="Home"

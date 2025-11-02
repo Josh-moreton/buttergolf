@@ -1,18 +1,13 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+import { config as reactInternalConfig } from "@buttergolf/eslint-config/react-internal";
 
 const eslintConfig = [
-  ...compat.config({
-    extends: ["expo", "@buttergolf/eslint-config/react-internal"],
-  }),
+  ...reactInternalConfig,
+  {
+    // Expo-specific overrides can go here if needed
+    rules: {
+      // Add any Expo-specific rule customizations
+    },
+  },
 ];
 
 export default eslintConfig;

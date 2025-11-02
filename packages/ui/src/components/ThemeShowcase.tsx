@@ -9,8 +9,8 @@ import { Button, Card, H2, H3, Paragraph, Separator, Theme, XStack, YStack } fro
 
 export function ThemeShowcase() {
   return (
-    <YStack space="$6" padding="$4" backgroundColor="$background">
-      <YStack space="$3">
+    <YStack gap="$6" padding="$4" backgroundColor="$background">
+      <YStack gap="$3">
         <H2 color="$color">Golf Marketplace Theme</H2>
         <Paragraph color="$color11">
           A polished MVP theme with golf-inspired colors and professional styling.
@@ -20,12 +20,13 @@ export function ThemeShowcase() {
       <Separator borderColor="$borderColor" />
 
       {/* Color Scale Demo */}
-      <YStack space="$3">
+      <YStack gap="$3">
         <H3 color="$color">Color Scale (1-12)</H3>
-        <XStack space="$2" flexWrap="wrap">
+        <XStack gap="$2" flexWrap="wrap">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
             <Card
               key={num}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               backgroundColor={`$color${num}` as any}
               padding="$3"
               minWidth={80}
@@ -45,9 +46,9 @@ export function ThemeShowcase() {
       <Separator borderColor="$borderColor" />
 
       {/* Button Variants */}
-      <YStack space="$3">
+      <YStack gap="$3">
         <H3 color="$color">Button Styles</H3>
-        <XStack space="$2" flexWrap="wrap">
+        <XStack gap="$2" flexWrap="wrap">
           <Button backgroundColor="$color9">Primary</Button>
           <Button backgroundColor="$color7">Secondary</Button>
           <Button backgroundColor="$color11">Dark</Button>
@@ -60,18 +61,18 @@ export function ThemeShowcase() {
       <Separator borderColor="$borderColor" />
 
       {/* Theme Variants */}
-      <YStack space="$3">
+      <YStack gap="$3">
         <H3 color="$color">Theme Variants</H3>
-        <XStack space="$3" flexWrap="wrap">
+        <XStack gap="$3" flexWrap="wrap">
           <Theme name="green">
-            <Card padding="$4" space="$2" backgroundColor="$backgroundStrong">
+            <Card padding="$4" gap="$2" backgroundColor="$backgroundStrong">
               <Paragraph color="$color" fontWeight="bold">Green Theme</Paragraph>
               <Button backgroundColor="$color9">Action</Button>
             </Card>
           </Theme>
           
           <Theme name="amber">
-            <Card padding="$4" space="$2" backgroundColor="$backgroundStrong">
+            <Card padding="$4" gap="$2" backgroundColor="$backgroundStrong">
               <Paragraph color="$color" fontWeight="bold">Amber Theme</Paragraph>
               <Button backgroundColor="$color9">Premium</Button>
             </Card>
@@ -82,7 +83,7 @@ export function ThemeShowcase() {
       <Separator borderColor="$borderColor" />
 
       {/* Interactive States */}
-      <YStack space="$3">
+      <YStack gap="$3">
         <H3 color="$color">Interactive States</H3>
         <Button
           backgroundColor="$color9"
@@ -106,7 +107,7 @@ export function ThemeShowcase() {
       <Separator borderColor="$borderColor" />
 
       {/* Card Example */}
-      <YStack space="$3">
+      <YStack gap="$3">
         <H3 color="$color">Product Card Example</H3>
         <Card
           backgroundColor="$backgroundStrong"
@@ -120,16 +121,16 @@ export function ThemeShowcase() {
             shadowOffset: { width: 0, height: 4 },
           }}
         >
-          <YStack space="$3">
+          <YStack gap="$3">
             <H3 color="$color">Premium Golf Club Set</H3>
             <Paragraph color="$color11">
               Professional-grade titanium driver, fairway woods, and irons.
             </Paragraph>
-            <XStack space="$2" justifyContent="space-between" alignItems="center">
+            <XStack gap="$2" justifyContent="space-between" alignItems="center">
               <Paragraph color="$color" fontSize="$8" fontWeight="bold">
                 $1,299
               </Paragraph>
-              <XStack space="$2">
+              <XStack gap="$2">
                 <Button flex={1}>Details</Button>
                 <Theme name="amber">
                   <Button flex={1}>Buy Now</Button>
