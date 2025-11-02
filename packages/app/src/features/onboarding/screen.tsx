@@ -119,13 +119,13 @@ export function OnboardingScreen({
         </Text>
       </YStack>      {/* Content Section */}
       <YStack
-        {...{ gap: "lg" as any }}
+        gap="$lg"
         paddingHorizontal="$6"
         paddingBottom="$4"
         alignItems="center"
       >
         {/* Headline */}
-        <YStack {...{ gap: "xs" as any }} paddingHorizontal="$5">
+        <YStack gap="$xs" paddingHorizontal="$5">
           <Text
             fontSize="$9"
             fontWeight="700"
@@ -148,7 +148,7 @@ export function OnboardingScreen({
         </YStack>
 
         {/* CTAs */}
-        <YStack {...{ gap: "sm" as any }} width="100%" maxWidth={420} paddingHorizontal="$5">
+        <YStack gap="$sm" width="100%" maxWidth={420} paddingHorizontal="$5">
           <Button
             size="$5"
             height={56}

@@ -188,7 +188,7 @@ function FeaturedProductCard({
       >
         <YStack height="100%" justifyContent="space-between">
           {/* Top: Text content */}
-          <YStack {...{ gap: "xs" as any }}>
+          <YStack gap="$xs">
             <Text
               size="lg"
               weight="bold"
@@ -208,7 +208,7 @@ function FeaturedProductCard({
             justifyContent="space-between"
             marginTop="$4"
           >
-            <YStack {...{ gap: "xs" as any }}>
+            <YStack gap="$xs">
               <Text
                 size="xs"
                 fontSize={10}
@@ -218,7 +218,7 @@ function FeaturedProductCard({
               >
                 LIMITED TIME OFFER
               </Text>
-              <XStack alignItems="center" {...{ gap: "xs" as any }}>
+              <XStack alignItems="center" gap="$xs">
                 <Text
                   size="xl"
                   fontSize={22}
@@ -274,7 +274,7 @@ export function HeroSectionNew() {
         width="100%"
       >
         <YStack
-          {...{ gap: "xl" as any }}
+          gap="$xl"
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
         >
@@ -310,7 +310,7 @@ export function HeroSectionNew() {
               bottom="$4"
               left="50%"
               {...{ style: { transform: "translateX(-50%)" } }}
-              {...{ gap: "xs" as any }}
+              gap="$xs"
               zIndex={10}
             >
               {CAROUSEL_ITEMS.map((item, index) => (
@@ -330,7 +330,7 @@ export function HeroSectionNew() {
 
           {/* Featured Cards - 1/3 width on desktop */}
           <YStack
-            {...{ gap: "lg" as any }}
+            gap="$lg"
             width="100%"
             $xl={{
               flexGrow: 1,

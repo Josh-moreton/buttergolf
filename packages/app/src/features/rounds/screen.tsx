@@ -8,7 +8,7 @@ export function RoundsScreen() {
   const homeLink = useLink({ href: routes.home })
 
   return (
-    <YStack flex={1} padding="$4" {...{ gap: "lg" as any }} backgroundColor="$background">
+    <YStack flex={1} padding="$4" gap="$lg" backgroundColor="$background">
       <H2>Your Rounds</H2>
       <Text size="md">
         Round tracking coming soon! This will connect to your Prisma database.
