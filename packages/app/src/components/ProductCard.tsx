@@ -3,6 +3,7 @@
 import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@buttergolf/ui'
 
 export interface ProductCardProps {
+  id: string
   title: string
   price: number
   imageUrl: string
