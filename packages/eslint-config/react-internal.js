@@ -3,7 +3,6 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
-import deprecation from "eslint-plugin-deprecation";
 import globals from "globals";
 import { config as baseConfig } from "./base.js";
 
@@ -24,22 +23,18 @@ export const config = [
         ...globals.serviceworker,
         ...globals.browser,
       },
-      parserOptions: {
-        projectService: true,
-      },
     },
   },
   {
     plugins: {
       "react-hooks": pluginReactHooks,
-      deprecation,
+      // deprecation: Not compatible with ESLint 9 yet
     },
     settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
-      "deprecation/deprecation": "warn",
     },
   },
 ];

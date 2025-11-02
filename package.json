@@ -19,7 +19,6 @@
     "clean-install": "pnpm clean && pnpm install"
   },
   "devDependencies": {
-    "eslint-plugin-deprecation": "^3.0.0",
     "prettier": "^3.6.2",
     "turbo": "^2.5.8",
     "typescript": "5.9.2"
