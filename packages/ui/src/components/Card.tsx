@@ -23,7 +23,7 @@
 import { styled, GetProps, YStack } from 'tamagui'
 import { Card as TamaguiCard, CardHeader as TamaguiCardHeader, CardFooter as TamaguiCardFooter } from '@tamagui/card'
 
-export const Card = styled(TamaguiCard, {
+const CardBase = styled(TamaguiCard, {
   name: 'Card',
   
   // Base styles
@@ -189,14 +189,18 @@ export const CardFooter = styled(TamaguiCardFooter, {
   },
 })
 
-export type CardProps = GetProps<typeof Card>
+// Attach subcomponents to Card for compound component pattern
+export const Card = CardBase as typeof CardBase & {
+  Header: typeof CardHeader
+  Body: typeof CardBody
+  Footer: typeof CardFooter
+}
+
+Card.Header = CardHeader
+Card.Body = CardBody
+Card.Footer = CardFooter
+
+export type CardProps = GetProps<typeof CardBase>
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardBodyProps = GetProps<typeof CardBody>
 export type CardFooterProps = GetProps<typeof CardFooter>
-
-// Attach subcomponents to Card for compound component pattern
-Object.assign(Card, {
-  Header: CardHeader,
-  Body: CardBody,
-  Footer: CardFooter,
-})

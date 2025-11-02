@@ -21,9 +21,9 @@ export type { ButtonProps } from './components/Button'
 export { Text, Heading, Label } from './components/Text'
 export type { TextProps, HeadingProps, LabelProps } from './components/Text'
 
-// Layout Components (re-exports of Tamagui base components)
-export { XStack, YStack, View } from './components/Layout'
-export type { XStackProps, YStackProps, ViewProps } from './components/Layout'
+// Layout Components (semantic components with variants)
+export { Row, Column, Container, Spacer, XStack, YStack, View } from './components/Layout'
+export type { RowProps, ColumnProps, ContainerProps, SpacerProps, XStackProps, YStackProps, ViewProps } from './components/Layout'
 
 // Card Components
 export { Card, CardHeader, CardBody, CardFooter } from './components/Card'
