@@ -52,7 +52,7 @@ export function MarketplaceHeader() {
     >
       {/* Top Bar - Dark Background */}
       <XStack
-        backgroundColor="#1C274C"
+        backgroundColor="$textDark"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
         justifyContent="center"
@@ -84,7 +84,7 @@ export function MarketplaceHeader() {
                   paddingRight="$3"
                   borderRightWidth={1}
                   borderColor="rgba(255,255,255,0.2)"
-                  hoverStyle={{ color: "#93C5FD" }}
+                  hoverStyle={{ color: "$blueLight" }}
                 >
                   Create an account
                 </Text>
@@ -100,7 +100,7 @@ export function MarketplaceHeader() {
                   fontSize={14}
                   fontWeight="500"
                   paddingLeft="$3"
-                  hoverStyle={{ color: "#93C5FD" }}
+                  hoverStyle={{ color: "$blueLight" }}
                 >
                   Sign In
                 </Text>
@@ -130,7 +130,7 @@ export function MarketplaceHeader() {
                 ButterGolf
               </Text>
               <XStack
-                backgroundColor="#02AAA4"
+                backgroundColor="$teal"
                 paddingHorizontal="$3"
                 paddingVertical="$1"
                 borderRadius="$3"
@@ -189,7 +189,7 @@ export function MarketplaceHeader() {
                     right={-6}
                     width={18}
                     height={18}
-                    backgroundColor="#DC2626"
+                    backgroundColor="$red"
                     borderRadius={9}
                     alignItems="center"
                     justifyContent="center"
@@ -212,7 +212,7 @@ export function MarketplaceHeader() {
                     right={-6}
                     width={18}
                     height={18}
-                    backgroundColor="#DC2626"
+                    backgroundColor="$red"
                     borderRadius={9}
                     alignItems="center"
                     justifyContent="center"
