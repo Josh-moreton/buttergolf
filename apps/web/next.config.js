@@ -14,7 +14,7 @@ const plugins = [
     config: '../../packages/config/src/tamagui.config.ts',
     components: ['tamagui', '@buttergolf/ui'],
     appDir: true,
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+    outputCSS: './public/tamagui.css',
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {

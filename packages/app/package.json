@@ -9,6 +9,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@buttergolf/config": "workspace:*",
     "@buttergolf/db": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@tamagui/font-inter": "catalog:",

@@ -22,21 +22,14 @@ export function NextTamaguiProvider({ children }: Readonly<{ children: ReactNode
 
     return (
       <>
-        {process.env.NODE_ENV === 'production' && (
-          <link rel="stylesheet" href="/tamagui.css" />
-        )}
+        <link rel="stylesheet" href="/tamagui.css" />
         {rnwStyle && (
           <style id={rnwStyle.id} dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }} />
         )}
         <style
           dangerouslySetInnerHTML={{
-            __html: config.getNewCSS(),
-          }}
-        />
-        <style
-          dangerouslySetInnerHTML={{
             __html: config.getCSS({
-              exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+              exclude: 'design-system',
             }),
           }}
         />
