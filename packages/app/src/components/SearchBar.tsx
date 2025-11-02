@@ -11,7 +11,7 @@ export interface SearchBarProps {
 export function SearchBar({
   placeholder = 'Search for golf equipment...',
   onSearch,
-}: SearchBarProps) {
+}: Readonly<SearchBarProps>) {
   return (
     <XStack
       width="100%"
@@ -25,12 +25,12 @@ export function SearchBar({
         placeholder={placeholder}
         borderRadius="$10"
         paddingLeft="$4"
-        backgroundColor="$backgroundStrong"
-        borderColor="$borderColor"
-        color="$color"
-        placeholderTextColor="$color11"
+        backgroundColor="$surface"
+        borderColor="$border"
+        color="$text"
+        placeholderTextColor="$textMuted"
         focusStyle={{
-          borderColor: '$borderColorFocus',
+          borderColor: '$borderFocus',
           borderWidth: 2,
         }}
       />
@@ -38,10 +38,10 @@ export function SearchBar({
         size="$4"
         icon={Search}
         borderRadius="$10"
-        backgroundColor="$color9"
-        color="$background"
-        hoverStyle={{ backgroundColor: '$color10' }}
-        pressStyle={{ backgroundColor: '$color11' }}
+        backgroundColor="$primary"
+        color="$textInverse"
+        hoverStyle={{ backgroundColor: '$primaryHover' }}
+        pressStyle={{ backgroundColor: '$primaryPress' }}
         onPress={() => onSearch?.('')}
       >
         Search

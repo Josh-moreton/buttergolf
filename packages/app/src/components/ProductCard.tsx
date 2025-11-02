@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Image, Text, YStack, XStack } from '@buttergolf/ui'
+import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@buttergolf/ui'
 
 export interface ProductCardProps {
   id: string
@@ -17,17 +17,16 @@ export function ProductCard({
   imageUrl,
   condition,
   onPress,
-}: ProductCardProps) {
+}: Readonly<ProductCardProps>) {
   return (
     <Card
-      elevate
-      size="$4"
-      bordered
+      variant="elevated"
+      {...{ padding: 0 as any }}
       animation="bouncy"
-      backgroundColor="$backgroundStrong"
-      borderColor="$borderColor"
+      backgroundColor="$surface"
+      borderColor="$border"
       hoverStyle={{
-        borderColor: '$borderColorHover',
+        borderColor: '$borderHover',
         shadowColor: '$shadowColorHover',
         shadowRadius: 12,
       }}
@@ -36,8 +35,9 @@ export function ProductCard({
       onPress={onPress}
       width="100%"
       maxWidth={280}
+      interactive
     >
-      <Card.Header padding="$0">
+      <CardHeader {...{ padding: 0 as any }} noBorder>
         <Image
           source={{ uri: imageUrl }}
           width="100%"
@@ -45,32 +45,31 @@ export function ProductCard({
           objectFit="cover"
           borderTopLeftRadius="$4"
           borderTopRightRadius="$4"
-          backgroundColor="$color2"
+          backgroundColor="$background"
         />
-      </Card.Header>
-      <Card.Footer padding="$3">
+      </CardHeader>
+      <CardFooter {...{ padding: '$md' as any }} noBorder>
         <YStack gap="$2" width="100%">
           <Text
-            fontSize="$4"
-            fontWeight="600"
+            size="md"
+            weight="semibold"
             numberOfLines={2}
             ellipse
-            color="$color"
           >
             {title}
           </Text>
           {condition && (
-            <Text fontSize="$2" color="$color11">
+            <Text size="xs" {...{ color: '$textSecondary' as any }}>
               {condition}
             </Text>
           )}
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$5" fontWeight="700" color="$color12">
+            <Text size="lg" weight="bold" {...{ color: '$primary' as any }}>
               ${price.toFixed(2)}
             </Text>
           </XStack>
         </YStack>
-      </Card.Footer>
+      </CardFooter>
     </Card>
   )
 }

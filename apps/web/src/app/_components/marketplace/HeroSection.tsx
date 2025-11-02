@@ -31,8 +31,8 @@ export function HeroSection() {
               <Image
                 source={{ uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200" }}
                 width="100%"
-                height={260}
-                resizeMode="cover"
+                height={240}
+                objectFit="cover"
                 borderRadius="$4"
               />
             </Card>
