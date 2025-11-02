@@ -10,7 +10,7 @@ interface ProductGridProps {
 
 export function ProductGrid({ title, products }: ProductGridProps) {
   return (
-    <Column gap="lg" fullWidth padding="$4" maxWidth={1280} alignSelf="center">
+    <Column gap="$lg" fullWidth padding="$4" maxWidth={1280} alignSelf="center">
       {title && (
         <Heading level={2}>
           {title}
@@ -18,7 +18,7 @@ export function ProductGrid({ title, products }: ProductGridProps) {
       )}
       <Row
         wrap
-        gap="lg"
+        gap="$lg"
         justify="start"
       >
         {products.map((product) => (

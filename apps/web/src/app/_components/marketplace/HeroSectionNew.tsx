@@ -83,7 +83,7 @@ function CarouselSlide({
             fontSize={64}
             weight="bold"
             lineHeight={64}
-            {...{ color: "primary" as any }}
+            color="primary"
           >
             {item.discount.toString()}%
           </Text>
@@ -92,7 +92,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="default"
             >
               SALE
             </Text>
@@ -100,7 +100,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="default"
             >
               OFF
             </Text>
@@ -115,14 +115,14 @@ function CarouselSlide({
             size="xl"
             fontSize={28}
             weight="bold"
-            {...{ color: "default" as any }}
+            color="default"
             {...{ hoverStyle: { color: "$info" } as any }}
           >
             {item.title}
           </Text>
         </Link>
 
-        <Text {...{ color: "secondary" as any }} size="sm" fontSize={15}>
+        <Text color="secondary" size="sm" fontSize={15}>
           {item.description}
         </Text>
 
@@ -192,12 +192,12 @@ function FeaturedProductCard({
             <Text
               size="lg"
               weight="bold"
-              {...{ color: "default" as any }}
+              color="default"
               numberOfLines={2}
             >
               {item.title}
             </Text>
-            <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
+            <Text size="xs" fontSize={13} color="secondary">
               {item.subtitle}
             </Text>
           </YStack>
@@ -214,7 +214,7 @@ function FeaturedProductCard({
                 fontSize={10}
                 weight="semibold"
                 textTransform="uppercase"
-                {...{ color: "muted" as any }}
+                color="muted"
               >
                 LIMITED TIME OFFER
               </Text>
@@ -224,7 +224,7 @@ function FeaturedProductCard({
                   fontSize={22}
                   weight="bold"
                   fontWeight="800"
-                  {...{ color: "default" as any }}
+                  color="default"
                 >
                   £{item.price}
                 </Text>
@@ -232,7 +232,7 @@ function FeaturedProductCard({
                   <Text
                     size="md"
                     weight="medium"
-                    {...{ color: "muted" as any }}
+                    color="muted"
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}

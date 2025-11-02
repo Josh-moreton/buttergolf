@@ -49,7 +49,7 @@ export function ProductCard({
         />
       </Card.Header>
       <Card.Footer padding="md" noBorder>
-        <Column gap="xs" fullWidth>
+        <Column gap="$xs" fullWidth>
           <Text
             size="md"
             weight="semibold"
