@@ -24,6 +24,9 @@ export const config = [
         ...globals.serviceworker,
         ...globals.browser,
       },
+      parserOptions: {
+        projectService: true,
+      },
     },
   },
   {
