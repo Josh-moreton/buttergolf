@@ -79,9 +79,13 @@ All internal packages use the `@buttergolf/` namespace:
 ## Tamagui Configuration
 
 ### Core Config Location
-- **Config File**: `/tamagui.config.ts` (root level)
-- **Base Config**: Extends `@tamagui/config/v3`
+- **Config Package**: `packages/config` - Dedicated package for Tamagui configuration
+- **Config File**: `packages/config/src/tamagui.config.ts` (source of truth)
+- **Base Config**: Extends `@tamagui/config/v4` (using latest v4)
+- **Re-export**: `packages/ui/tamagui.config.ts` - Thin re-export for backward compatibility
 - **TypeScript Paths**: Defined in `/tsconfig.base.json`
+
+**Note**: The dedicated `@buttergolf/config` package allows proper versioning and reusability across the monorepo.
 
 ### Key Tamagui Concepts
 
