@@ -20,7 +20,7 @@
     "react-native-web": "^0.21.2",
     "solito": "^5.0.0",
     "svix": "^1.81.0",
-    "tamagui": "^1.135.6"
+    "tamagui": "^1.135.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
