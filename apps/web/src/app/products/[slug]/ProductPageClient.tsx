@@ -13,11 +13,11 @@ export default function ProductPageClient({
         {/* Breadcrumbs */}
         <XStack gap="$xs" alignItems="center">
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Text color="$info" hoverStyle={{ color: "$infoLight" as any }}>Home</Text>
+            <Text color="$info" hoverStyle={{ color: "$infoLight" }}>Home</Text>
           </Link>
           <Text color="$textMuted">/</Text>
           <Link href="/products" style={{ textDecoration: "none" }}>
-            <Text color="$info" hoverStyle={{ color: "$infoLight" as any }}>Products</Text>
+            <Text color="$info" hoverStyle={{ color: "$infoLight" }}>Products</Text>
           </Link>
           <Text color="$textMuted">/</Text>
           <Text fontWeight="700">{product.title}</Text>
