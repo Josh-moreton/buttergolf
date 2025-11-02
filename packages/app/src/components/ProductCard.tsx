@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@buttergolf/ui'
+import { Card, CardHeader, CardFooter, Image, Text, Row, Column } from '@buttergolf/ui'
 
 export interface ProductCardProps {
   id: string
@@ -49,7 +49,7 @@ export function ProductCard({
         />
       </CardHeader>
       <CardFooter {...{ padding: '$md' as any }} noBorder>
-        <YStack gap="$2" width="100%">
+        <Column gap="$2" width="100%">
           <Text
             size="md"
             weight="semibold"
@@ -63,12 +63,12 @@ export function ProductCard({
               {condition}
             </Text>
           )}
-          <XStack justifyContent="space-between" alignItems="center">
+          <Row justify="between" align="center">
             <Text size="lg" weight="bold" {...{ color: '$primary' as any }}>
               ${price.toFixed(2)}
             </Text>
-          </XStack>
-        </YStack>
+          </Row>
+        </Column>
       </CardFooter>
     </Card>
   )

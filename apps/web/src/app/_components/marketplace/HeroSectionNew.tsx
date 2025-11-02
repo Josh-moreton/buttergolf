@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Button, Text, YStack, XStack, Card, Image } from "@buttergolf/ui"
+import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui"
 
 // Mock carousel data
 const CAROUSEL_ITEMS = [
@@ -61,31 +61,31 @@ const FEATURED_CARDS = [
 
 function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEMS[0]; isActive: boolean }>) {
   return (
-    <XStack
+    <Row
       animation="lazy"
       opacity={isActive ? 1 : 0}
       position={isActive ? "relative" : "absolute"}
       width="100%"
       height="100%"
       flexDirection="row"
-      alignItems="center"
+      align="center"
       paddingHorizontal="$8"
       paddingVertical="$6"
     >
-      <YStack flex={1} gap="$3" maxWidth={420} paddingRight="$4">
-        <XStack alignItems="flex-start" gap="$3">
+      <Column flex={1} gap="$3" maxWidth={420} paddingRight="$4">
+        <Row align="start" gap="$3">
           <Text fontSize={64} fontWeight="700" {...{ color: "$info" as any }} lineHeight={64}>
             {item.discount}%
           </Text>
-          <YStack marginTop="$2">
+          <Column marginTop="$2">
             <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
               SALE
             </Text>
             <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
               OFF
             </Text>
-          </YStack>
-        </XStack>
+          </Column>
+        </Row>
 
         <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Text fontSize={28} fontWeight="700" {...{ color: "$text" as any }} hoverStyle={{ color: "$info" as any }}>
@@ -110,17 +110,17 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
             Shop Now
           </Button>
         </Link>
-      </YStack>
+      </Column>
 
-      <YStack flex={1} alignItems="center" justifyContent="center">
+      <Column flex={1} align="center" justify="center">
         <Image
           source={{ uri: item.image }}
           width={380}
           height={380}
           objectFit="contain"
         />
-      </YStack>
-    </XStack>
+      </Column>
+    </Row>
   )
 }function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0] }>) {
   return (
@@ -146,24 +146,24 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <YStack height="100%" justifyContent="space-between">
+        <Column height="100%" justify="between">
           {/* Top: Text content */}
-          <YStack gap="$2">
+          <Column gap="$2">
             <Text fontSize={18} fontWeight="700" {...{ color: "$text" as any }} numberOfLines={2}>
               {item.title}
             </Text>
             <Text fontSize={13} {...{ color: "$textSecondary" as any }}>
               {item.subtitle}
             </Text>
-          </YStack>
+          </Column>
 
           {/* Bottom: Price and Image side by side */}
-          <XStack alignItems="flex-end" justifyContent="space-between" marginTop="$4">
-            <YStack gap="$1">
+          <Row align="end" justify="between" marginTop="$4">
+            <Column gap="$1">
               <Text fontSize={10} fontWeight="600" textTransform="uppercase" {...{ color: "$textMuted" as any }}>
                 LIMITED TIME OFFER
               </Text>
-              <XStack alignItems="center" gap="$2">
+              <Row align="center" gap="$2">
                 <Text fontSize={22} fontWeight="800" {...{ color: "$text" as any }}>
                   £{item.price}
                 </Text>
@@ -177,8 +177,8 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
                     £{item.originalPrice}
                   </Text>
                 )}
-              </XStack>
-            </YStack>
+              </Row>
+            </Column>
 
             <Image
               source={{ uri: item.image }}
@@ -186,8 +186,8 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
               height={110}
               objectFit="contain"
             />
-          </XStack>
-        </YStack>
+          </Row>
+        </Column>
       </Card>
     </Link>
   )
@@ -205,16 +205,16 @@ export function HeroSectionNew() {
   }, [])
 
   return (
-    <YStack backgroundColor="$background" paddingVertical="$12">
-      <YStack maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
-        <XStack
+    <Column backgroundColor="$background" paddingVertical="$12">
+      <Column maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
+        <Row
           gap="$5"
           flexDirection="column"
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
         >
           {/* Carousel - 2/3 width on desktop */}
-          <YStack
+          <Column
             backgroundColor="$surface"
             borderWidth={1}
             borderColor="$border"
@@ -240,7 +240,7 @@ export function HeroSectionNew() {
             ))}
 
             {/* Pagination Dots */}
-            <XStack
+            <Row
               position="absolute"
               bottom="$4"
               left="50%"
@@ -249,7 +249,7 @@ export function HeroSectionNew() {
               zIndex={10}
             >
               {CAROUSEL_ITEMS.map((item, index) => (
-                <XStack
+                <Row
                   key={`dot-${item.id}`}
                   width={index === activeSlide ? 24 : 8}
                   height={8}
@@ -260,11 +260,11 @@ export function HeroSectionNew() {
                   animation="quick"
                 />
               ))}
-            </XStack>
-          </YStack>
+            </Row>
+          </Column>
 
           {/* Featured Cards - 1/3 width on desktop */}
-          <YStack
+          <Column
             gap="$4"
             flexDirection="column"
             width="100%"
@@ -280,7 +280,7 @@ export function HeroSectionNew() {
             }}
           >
             {FEATURED_CARDS.map((card) => (
-              <YStack
+              <Column
                 key={card.id}
                 flex={1}
                 minWidth="45%"
@@ -291,11 +291,11 @@ export function HeroSectionNew() {
                 }}
               >
                 <FeaturedProductCard item={card} />
-              </YStack>
+              </Column>
             ))}
-          </YStack>
-        </XStack>
-      </YStack>
-    </YStack>
+          </Column>
+        </Row>
+      </Column>
+    </Column>
   )
 }

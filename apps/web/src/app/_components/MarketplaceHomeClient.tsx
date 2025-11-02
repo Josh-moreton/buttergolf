@@ -9,12 +9,12 @@ import { FooterSection } from "./marketplace/FooterSection"
 
 export default function MarketplaceHomeClient() {
   return (
-    <YStack paddingTop={140}>
+    <Column paddingTop={140}>
       <HeroSectionNew />
       <CategoriesSection />
       <RecentlyListedSection />
       <NewsletterSection />
       <FooterSection />
-    </YStack>
+    </Column>
   )
 }

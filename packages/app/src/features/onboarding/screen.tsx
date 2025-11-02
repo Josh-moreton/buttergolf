@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import { Platform, Dimensions, AccessibilityInfo, Animated, Easing } from 'react-native'
-import { YStack, Text, Button, View } from 'tamagui'
+import { Column, Text, Button, View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: SCREEN_W } = Dimensions.get('window')
@@ -78,14 +78,14 @@ export function OnboardingScreen({
   }, [reduceMotion, singleWidth, translateX])
 
   return (
-    <YStack
+    <Column
       flex={1}
       backgroundColor="$background"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
       {/* Auto-scrolling Product Carousel */}
-      <YStack flex={1} justifyContent="center" paddingVertical="$8">
+      <Column flex={1} justify="center" paddingVertical="$8">
         <View height={CARD_HEIGHT} overflow="hidden">
           <Animated.View style={{ flexDirection: 'row', transform: [{ translateX }] }}>
             {items.map((item, index) => (
@@ -116,15 +116,15 @@ export function OnboardingScreen({
         >
           Browse thousands of pre-loved golf items
         </Text>
-      </YStack>      {/* Content Section */}
-      <YStack
+      </Column>      {/* Content Section */}
+      <Column
         gap="$6"
         paddingHorizontal="$6"
         paddingBottom="$4"
-        alignItems="center"
+        align="center"
       >
         {/* Headline */}
-        <YStack gap="$2" paddingHorizontal="$5">
+        <Column gap="$2" paddingHorizontal="$5">
           <Text
             fontSize="$9"
             fontWeight="700"
@@ -144,10 +144,10 @@ export function OnboardingScreen({
           >
             Buy, sell, and play smarter
           </Text>
-        </YStack>
+        </Column>
 
         {/* CTAs */}
-        <YStack gap="$3" width="100%" maxWidth={420} paddingHorizontal="$5">
+        <Column gap="$3" width="100%" maxWidth={420} paddingHorizontal="$5">
           <Button
             size="$5"
             height={56}
@@ -190,7 +190,7 @@ export function OnboardingScreen({
               I already have an account
             </Text>
           </Button>
-        </YStack>
+        </Column>
 
         {/* Footer */}
         <Button
@@ -203,7 +203,7 @@ export function OnboardingScreen({
             About Butter Golf: Our platform
           </Text>
         </Button>
-      </YStack>
-    </YStack>
+      </Column>
+    </Column>
   )
 }
