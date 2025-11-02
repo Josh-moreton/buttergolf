@@ -40,5 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# generated files
+/src/tamagui.css
+
 # clerk configuration (can include secrets)
 /.clerk/

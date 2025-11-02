@@ -6,6 +6,8 @@ const boolVals = {
   false: false,
 };
 
+// Enable extraction in both dev and prod for consistent styling
+// Set DISABLE_EXTRACTION=true to disable (useful for debugging)
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ??
   process.env.NODE_ENV === "development";
@@ -15,7 +17,8 @@ const plugins = [
     config: "../../packages/config/src/tamagui.config.ts",
     components: ["tamagui", "@buttergolf/ui"],
     appDir: true,
-    outputCSS: "./public/tamagui.css",
+    outputCSS:
+      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {
@@ -42,6 +45,17 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
+    // Disable caching in development to avoid stale CSS issues
+    ...(process.env.NODE_ENV === "development" && {
+      headers: async () => [
+        {
+          source: "/:path*",
+          headers: [
+            { key: "Cache-Control", value: "no-store, must-revalidate" },
+          ],
+        },
+      ],
+    }),
     transpilePackages: [
       "@buttergolf/app",
       "@buttergolf/config",
