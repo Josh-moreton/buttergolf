@@ -1,6 +1,6 @@
 "use client";
 
-import { XStack, ScrollView } from "@buttergolf/ui";
+import { Row, ScrollView } from "@buttergolf/ui";
 import { CategoryButton } from "./CategoryButton";
 
 const categories = [
@@ -27,7 +27,7 @@ export function CategoriesSection() {
       borderBottomWidth={1}
       borderBottomColor="$border"
     >
-      <XStack {...{ gap: "xs" as any }}>
+      <Row gap="xs">
         {categories.map((category, index) => (
           <CategoryButton
             key={category}
@@ -35,7 +35,7 @@ export function CategoriesSection() {
             active={index === 0}
           />
         ))}
-      </XStack>
+      </Row>
     </ScrollView>
   );
 }
