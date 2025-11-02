@@ -53,23 +53,23 @@ export default function ProductPage() {
       <YStack paddingTop={160} alignItems="center" justifyContent="center" minHeight="60vh">
         <Text fontSize="$8" fontWeight="700">Product not found</Text>
         <Link href="/" style={{ textDecoration: "none", marginTop: 12 }}>
-          <Text color="#3C50E0">Go back home</Text>
+          <Text color="$blue" hoverStyle={{ color: "$blueLight" }}>Go back home</Text>
         </Link>
       </YStack>
     )
   }
 
   return (
-    <YStack paddingTop={140} backgroundColor="#F7F7F7">
+    <YStack paddingTop="$16" backgroundColor="$bgGray">
       <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" paddingVertical="$6" gap="$4">
         {/* Breadcrumbs */}
         <XStack gap="$2" alignItems="center">
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Text color="#3C50E0">Home</Text>
+            <Text color="$blue" hoverStyle={{ color: "$blueLight" }}>Home</Text>
           </Link>
           <Text opacity={0.5}>/</Text>
           <Link href="/products" style={{ textDecoration: "none" }}>
-            <Text color="#3C50E0">Products</Text>
+            <Text color="$blue" hoverStyle={{ color: "$blueLight" }}>Products</Text>
           </Link>
           <Text opacity={0.5}>/</Text>
           <Text fontWeight="700">{product.title}</Text>

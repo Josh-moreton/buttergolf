@@ -12,14 +12,14 @@ const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4)
 const GAP = 12
 
 // Premium placeholder cards with golf equipment themed colors
-// Carefully chosen palette for visual appeal
+// Using theme tokens for consistency
 const images = [
-  { id: 'club', color: '#2d3436', label: 'Golf Club' },
-  { id: 'ball', color: '#dfe6e9', label: 'Golf Ball' },
-  { id: 'bag', color: '#636e72', label: 'Golf Bag' },
-  { id: 'shoes', color: '#b2bec3', label: 'Golf Shoes' },
-  { id: 'cart', color: '#74b9ff', label: 'Golf Cart' },
-  { id: 'gloves', color: '#a29bfe', label: 'Golf Gloves' },
+  { id: 'club', color: '$gray700', label: 'Golf Club' },
+  { id: 'ball', color: '$gray100', label: 'Golf Ball' },
+  { id: 'bag', color: '$gray500', label: 'Golf Bag' },
+  { id: 'shoes', color: '$gray300', label: 'Golf Shoes' },
+  { id: 'cart', color: '$accentBlue', label: 'Golf Cart' },
+  { id: 'gloves', color: '$accentPurple', label: 'Golf Gloves' },
 ] as const
 
 interface OnboardingScreenProps {

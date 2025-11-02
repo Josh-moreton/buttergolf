@@ -133,6 +133,52 @@ pnpm turbo login
 pnpm turbo link
 ```
 
+## Design System & Styling
+
+This project uses [Tamagui](https://tamagui.dev) for cross-platform UI components and theming. **Always use theme tokens instead of hardcoded values.**
+
+### Quick Start
+```tsx
+// ✅ Good - Using theme tokens
+<YStack backgroundColor="$bg" padding="$4">
+  <Text color="$text" fontSize="$5">Hello</Text>
+</YStack>
+
+// ❌ Bad - Hardcoded values
+<YStack backgroundColor="#fbfbf9" padding={16}>
+  <Text color="#0f1720">Hello</Text>
+</YStack>
+```
+
+### Documentation
+- **[Tamagui Best Practices](./docs/TAMAGUI_BEST_PRACTICES.md)** - Component creation, styling patterns, and token usage
+- **[Migration Example](./docs/MIGRATION_EXAMPLE.md)** - Step-by-step guide to migrate from hardcoded values
+- **[Usage Audit](./docs/TAMAGUI_USAGE_AUDIT.md)** - Detailed analysis and recommendations
+- **[Contributing Guide](./CONTRIBUTING.md)** - Development guidelines
+
+### Run Tamagui Audit
+```sh
+node scripts/audit-tamagui-usage.js
+```
+
+## Database
+
+This project uses Prisma with PostgreSQL. See [docs/AUTH_SETUP_CLERK.md](./docs/AUTH_SETUP_CLERK.md) for full setup.
+
+```sh
+# Generate Prisma Client
+pnpm db:generate
+
+# Push schema changes (development)
+pnpm db:push
+
+# Create migration (production)
+pnpm db:migrate:dev --name migration-name
+
+# Open Prisma Studio
+pnpm db:studio
+```
+
 ## Useful Links
 
 Learn more about the power of Turborepo:

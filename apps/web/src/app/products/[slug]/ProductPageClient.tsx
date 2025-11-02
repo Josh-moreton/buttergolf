@@ -8,16 +8,16 @@ export default function ProductPageClient({
   slug,
 }: Readonly<{ product: any; slug: string }>) {
   return (
-    <YStack paddingTop={140} backgroundColor="#F7F7F7">
+    <YStack paddingTop="$16" backgroundColor="$bgGray">
       <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" paddingVertical="$6" gap="$4">
         {/* Breadcrumbs */}
         <XStack gap="$2" alignItems="center">
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Text color="#3C50E0">Home</Text>
+            <Text color="$blue" hoverStyle={{ color: "$blueLight" }}>Home</Text>
           </Link>
           <Text opacity={0.5}>/</Text>
           <Link href="/products" style={{ textDecoration: "none" }}>
-            <Text color="#3C50E0">Products</Text>
+            <Text color="$blue" hoverStyle={{ color: "$blueLight" }}>Products</Text>
           </Link>
           <Text opacity={0.5}>/</Text>
           <Text fontWeight="700">{product.title}</Text>
