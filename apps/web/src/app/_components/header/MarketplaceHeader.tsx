@@ -53,7 +53,12 @@ export function MarketplaceHeader() {
         paddingHorizontal="$4"
         justifyContent="center"
       >
-        <XStack width="100%" maxWidth={1280} justifyContent="space-between" alignItems="center">
+        <XStack
+          width="100%"
+          maxWidth={1280}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <XStack display="none" $lg={{ display: "flex" }}>
             <Text color="inverse" size="sm" weight="medium">
               Get free delivery on orders over £100
@@ -119,7 +124,12 @@ export function MarketplaceHeader() {
         $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
         justifyContent="center"
       >
-        <XStack width="100%" maxWidth={1280} justifyContent="space-between" alignItems="center">
+        <XStack
+          width="100%"
+          maxWidth={1280}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
             <XStack
@@ -205,7 +215,12 @@ export function MarketplaceHeader() {
             </SignedOut>
 
             <SignedIn>
-              <XStack minWidth={44} minHeight={44} alignItems="center" justifyContent="center">
+              <XStack
+                minWidth={44}
+                minHeight={44}
+                alignItems="center"
+                justifyContent="center"
+              >
                 <UserButton />
               </XStack>
             </SignedIn>

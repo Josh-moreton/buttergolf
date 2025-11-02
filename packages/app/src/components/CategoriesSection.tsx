@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { XStack, ScrollView } from '@buttergolf/ui'
-import { CategoryButton } from './CategoryButton'
+import { XStack, ScrollView } from "@buttergolf/ui";
+import { CategoryButton } from "./CategoryButton";
 
 const categories = [
-  'All',
-  'Drivers',
-  'Irons',
-  'Wedges',
-  'Putters',
-  'Woods',
-  'Hybrids',
-  'Bags',
-  'Balls',
-  'Apparel',
-  'Accessories',
-]
+  "All",
+  "Drivers",
+  "Irons",
+  "Wedges",
+  "Putters",
+  "Woods",
+  "Hybrids",
+  "Bags",
+  "Balls",
+  "Apparel",
+  "Accessories",
+];
 
 export function CategoriesSection() {
   return (
@@ -37,5 +37,5 @@ export function CategoriesSection() {
         ))}
       </XStack>
     </ScrollView>
-  )
+  );
 }

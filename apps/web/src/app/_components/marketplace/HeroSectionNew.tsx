@@ -76,12 +76,7 @@ function CarouselSlide({
       paddingHorizontal="$8"
       paddingVertical="$6"
     >
-      <YStack
-        flex={1}
-        gap="$3"
-        maxWidth={420}
-        paddingRight="$4"
-      >
+      <YStack flex={1} gap="$3" maxWidth={420} paddingRight="$4">
         <XStack alignItems="flex-start" gap="$3">
           <Text
             size="xl"
@@ -208,7 +203,11 @@ function FeaturedProductCard({
           </YStack>
 
           {/* Bottom: Price and Image side by side */}
-          <XStack alignItems="flex-end" justifyContent="space-between" marginTop="$4">
+          <XStack
+            alignItems="flex-end"
+            justifyContent="space-between"
+            marginTop="$4"
+          >
             <YStack {...{ gap: "xs" as any }}>
               <Text
                 size="xs"
