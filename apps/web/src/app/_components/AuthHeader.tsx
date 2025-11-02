@@ -21,7 +21,6 @@ export default function AuthHeader() {
             </SignInButton>
           </SignedOut>
           <SignedIn>
-            {/* eslint-disable-next-line deprecation/deprecation */}
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </XStack>

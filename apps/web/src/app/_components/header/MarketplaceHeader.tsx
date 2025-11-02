@@ -175,7 +175,6 @@ export function MarketplaceHeader() {
             </SignedOut>
 
             <SignedIn>
-              {/* eslint-disable-next-line deprecation/deprecation */}
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
 

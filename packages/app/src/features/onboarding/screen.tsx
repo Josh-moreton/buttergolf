@@ -159,7 +159,6 @@ export function OnboardingScreen({
               opacity: 0.9,
             }}
             onPress={onSignUp}
-            // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="Sign up to Butter Golf"
             style={{
               shadowColor: '$color9',
@@ -185,7 +184,6 @@ export function OnboardingScreen({
               scale: 0.97,
             }}
             onPress={onSignIn}
-            // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="I already have an account"
           >
             <Text color="$color12" fontSize="$5" fontWeight="600">
@@ -199,7 +197,6 @@ export function OnboardingScreen({
           unstyled
           onPress={onAbout}
           padding="$3"
-          // eslint-disable-next-line deprecation/deprecation
           accessibilityLabel="About Butter Golf: Our platform"
         >
           <Text fontSize="$4" color="$color11" textAlign="center">
