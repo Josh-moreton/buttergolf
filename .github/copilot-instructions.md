@@ -9,6 +9,7 @@ This guide also documents our authentication setup using Clerk for both platform
 ## Architecture
 
 ### Monorepo Structure
+
 - **Build System**: Turborepo 2.5.8 for build orchestration and caching
 - **Package Manager**: pnpm 10.20.0 with workspace protocol
 - **Apps**:
@@ -21,6 +22,7 @@ This guide also documents our authentication setup using Clerk for both platform
   - `packages/typescript-config` - Shared TypeScript configurations
 
 ### Technology Stack
+
 - **UI Framework**: Tamagui 1.135.6 for cross-platform UI components and theming
 - **Database**: Prisma 6.x with PostgreSQL
 - **React**: 19.2.0 (aligned across web and mobile)
@@ -28,7 +30,7 @@ This guide also documents our authentication setup using Clerk for both platform
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
 - **Styling**: Tailwind CSS v4 (web), Tamagui (cross-platform)
-- **Bundlers**: 
+- **Bundlers**:
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
@@ -62,7 +64,7 @@ pnpm db:push            # Push schema to database (dev)
 pnpm db:migrate:dev     # Create and apply migration
 pnpm db:studio          # Open Prisma Studio GUI
 pnpm db:seed            # Seed database with sample data
- 
+
 # Auth (Clerk)
 # See docs/AUTH_SETUP_CLERK.md for details. Ensure env vars are set before running apps.
 ```
@@ -70,6 +72,7 @@ pnpm db:seed            # Seed database with sample data
 ## Package Naming Convention
 
 All internal packages use the `@buttergolf/` namespace:
+
 - `@buttergolf/ui` - Cross-platform UI components
 - `@buttergolf/db` - Prisma database client
 - `@buttergolf/eslint-config` - Shared ESLint configurations
@@ -79,6 +82,7 @@ All internal packages use the `@buttergolf/` namespace:
 ## Tamagui Configuration & Theme System
 
 ### Core Config Location
+
 - **Config Package**: `packages/config` - Dedicated package for Tamagui configuration
 - **Config File**: `packages/config/src/tamagui.config.ts` (source of truth)
 - **Base Config**: Extends `@tamagui/config/v4` (using latest v4)
@@ -94,6 +98,7 @@ Our design system uses a comprehensive token system with semantic naming for mai
 #### Color Tokens
 
 **Brand Colors (10-shade scales)**:
+
 ```tsx
 // Primary Brand (Green) - Golf course inspired
 $green50 to $green900     // 10 shades from lightest to darkest
@@ -113,66 +118,73 @@ $secondaryFocus: $amber400
 ```
 
 **Semantic Status Colors**:
+
 ```tsx
-$success: $teal500        // Positive actions/states
-$successLight: $teal100   // Light background
-$successDark: $teal700    // Dark variant
+$success: $teal500; // Positive actions/states
+$successLight: $teal100; // Light background
+$successDark: $teal700; // Dark variant
 
-$error: $red600           // Error states
-$errorLight: $red100      // Error backgrounds
-$errorDark: $red700       // Dark error
+$error: $red600; // Error states
+$errorLight: $red100; // Error backgrounds
+$errorDark: $red700; // Dark error
 
-$warning: $amber400       // Warning states
-$warningLight: $amber100
-$warningDark: $amber700
+$warning: $amber400; // Warning states
+$warningLight: $amber100;
+$warningDark: $amber700;
 
-$info: $blue500           // Informational states
-$infoLight: $blue100
-$infoDark: $blue700
+$info: $blue500; // Informational states
+$infoLight: $blue100;
+$infoDark: $blue700;
 ```
 
 **Neutral Colors (Gray scale)**:
+
 ```tsx
 $gray50 to $gray900       // 10 shades for text, borders, backgrounds
 ```
 
 **Text Colors (Semantic)**:
+
 ```tsx
-$text: $gray900           // Primary text (dark in light theme)
-$textSecondary: $gray700  // Secondary text
-$textTertiary: $gray600   // Tertiary text
-$textMuted: $gray500      // Muted/placeholder text
-$textInverse: $white      // Text on dark backgrounds
+$text: $gray900; // Primary text (dark in light theme)
+$textSecondary: $gray700; // Secondary text
+$textTertiary: $gray600; // Tertiary text
+$textMuted: $gray500; // Muted/placeholder text
+$textInverse: $white; // Text on dark backgrounds
 ```
 
 **Background Colors**:
+
 ```tsx
-$background: $offWhite    // Main app background (#fbfbf9)
-$backgroundHover          // Hover state backgrounds
-$backgroundPress          // Press state backgrounds
-$backgroundFocus          // Focus state backgrounds
-$surface: $white          // Surface/card backgrounds
-$card: '#F6F7FB'          // Card-specific background
-$cardHover                // Card hover state
+$background: $offWhite; // Main app background (#fbfbf9)
+$backgroundHover; // Hover state backgrounds
+$backgroundPress; // Press state backgrounds
+$backgroundFocus; // Focus state backgrounds
+$surface: $white; // Surface/card backgrounds
+$card: "#F6F7FB"; // Card-specific background
+$cardHover; // Card hover state
 ```
 
 **Border Colors**:
+
 ```tsx
-$border: $gray300         // Default borders
-$borderHover: $gray400    // Hover state borders
-$borderFocus: $green500   // Focus state borders (uses primary)
-$borderPress: $green600   // Press state borders
+$border: $gray300; // Default borders
+$borderHover: $gray400; // Hover state borders
+$borderFocus: $green500; // Focus state borders (uses primary)
+$borderPress: $green600; // Press state borders
 ```
 
 **Shadow Colors**:
+
 ```tsx
-$shadowColor              // Default shadow
-$shadowColorHover         // Hover state shadow
-$shadowColorPress         // Press state shadow
-$shadowColorFocus         // Focus state shadow (with primary tint)
+$shadowColor; // Default shadow
+$shadowColorHover; // Hover state shadow
+$shadowColorPress; // Press state shadow
+$shadowColorFocus; // Focus state shadow (with primary tint)
 ```
 
 #### Spacing Tokens
+
 ```tsx
 $xs: 4px
 $sm: 8px
@@ -184,6 +196,7 @@ $3xl: 64px
 ```
 
 #### Size Tokens
+
 ```tsx
 // Component-specific sizes
 $buttonSm: 32px
@@ -199,6 +212,7 @@ $iconXl: 32px
 ```
 
 #### Radius Tokens
+
 ```tsx
 $xs: 2px
 $sm: 4px
@@ -210,76 +224,83 @@ $full: 9999px    // Perfect circles
 ```
 
 #### Z-Index Tokens
+
 ```tsx
-$dropdown: 1000
-$sticky: 1020
-$fixed: 1030
-$modalBackdrop: 1040
-$modal: 1050
-$popover: 1060
-$tooltip: 1070
+$dropdown: 1000;
+$sticky: 1020;
+$fixed: 1030;
+$modalBackdrop: 1040;
+$modal: 1050;
+$popover: 1060;
+$tooltip: 1070;
 ```
 
 ### Theme System
 
 **Light Theme** (default):
+
 - Background: Off-white (#fbfbf9) for reduced eye strain
 - Text: Dark gray (#111827) for readability
 - Primary: Green 500 for brand consistency
 - All semantic colors optimized for light backgrounds
 
 **Dark Theme**:
+
 - Background: Dark gray (#111827)
 - Text: Light gray (#f9fafb)
 - Primary: Green 400 (lighter for dark backgrounds)
 - All semantic colors adjusted for dark backgrounds with proper contrast
 
 **Theme Switching**:
+
 ```tsx
-import { Theme } from '@buttergolf/ui'
+import { Theme } from "@buttergolf/ui";
 
 // Use dark theme for a section
 <Theme name="dark">
   <View backgroundColor="$background">
     <Text color="$text">Automatically uses dark theme tokens</Text>
   </View>
-</Theme>
+</Theme>;
 ```
 
 ### Key Tamagui Concepts
 
 #### Component Creation
+
 ```tsx
 // Use styled() for optimized components
-import { View, styled } from 'tamagui'
+import { View, styled } from "tamagui";
 
 export const Button = styled(View, {
-  name: 'Button', // Required for compiler optimization
-  backgroundColor: '$background',
+  name: "Button", // Required for compiler optimization
+  backgroundColor: "$background",
   pressStyle: {
-    backgroundColor: '$backgroundPress',
+    backgroundColor: "$backgroundPress",
   },
   variants: {
     size: {
-      sm: { height: '$8', paddingHorizontal: '$3' },
-      md: { height: '$10', paddingHorizontal: '$4' },
-      lg: { height: '$12', paddingHorizontal: '$5' },
+      sm: { height: "$8", paddingHorizontal: "$3" },
+      md: { height: "$10", paddingHorizontal: "$4" },
+      lg: { height: "$12", paddingHorizontal: "$5" },
     },
   },
-})
+});
 ```
 
 #### Theme Access
+
 ```tsx
-import { useTheme } from 'tamagui'
+import { useTheme } from "tamagui";
 
 function MyComponent() {
-  const theme = useTheme()
-  return <View backgroundColor={theme.background.val} />
+  const theme = useTheme();
+  return <View backgroundColor={theme.background.val} />;
 }
 ```
 
 #### Token Usage
+
 - Prefix tokens with `$`: `fontSize="$lg"`, `padding="$4"`
 - Tokens are defined in your Tamagui config
 - Available token categories: `size`, `space`, `color`, `radius`, `zIndex`
@@ -287,6 +308,7 @@ function MyComponent() {
 ### Tamagui Package Structure
 
 The `@buttergolf/ui` package is source-first (no build step):
+
 ```json
 {
   "main": "src/index.ts",
@@ -298,10 +320,11 @@ The `@buttergolf/ui` package is source-first (no build step):
 ```
 
 **Important**: Components must be re-exports from Tamagui packages:
+
 ```tsx
 // packages/ui/src/components/Button.tsx
-export { Button } from '@tamagui/button'
-export type { ButtonProps } from '@tamagui/button'
+export { Button } from "@tamagui/button";
+export type { ButtonProps } from "@tamagui/button";
 ```
 
 ## Platform-Specific Patterns
@@ -309,34 +332,37 @@ export type { ButtonProps } from '@tamagui/button'
 ### Next.js (Web) Configuration
 
 **Key Files**:
+
 - `/apps/web/next.config.ts`
 - `/apps/web/src/app/layout.tsx`
 
 **Critical Next.js + Tamagui Setup**:
+
 ```typescript
 // next.config.ts
 const config: NextConfig = {
   transpilePackages: [
-    '@buttergolf/ui',
-    'react-native-web',
-    '@tamagui/core',
-    'tamagui',
+    "@buttergolf/ui",
+    "react-native-web",
+    "@tamagui/core",
+    "tamagui",
   ],
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'react-native$': 'react-native-web',
-    }
-    return config
+      "react-native$": "react-native-web",
+    };
+    return config;
   },
-}
+};
 ```
 
 **Root Layout Pattern**:
+
 ```tsx
 // apps/web/src/app/layout.tsx
-import { TamaguiProvider } from 'tamagui'
-import { config } from '@buttergolf/ui'
+import { TamaguiProvider } from "tamagui";
+import { config } from "@buttergolf/ui";
 
 export default function RootLayout({ children }) {
   return (
@@ -347,112 +373,118 @@ export default function RootLayout({ children }) {
         </TamaguiProvider>
       </body>
     </html>
-  )
+  );
 }
 ```
 
 ### Expo (Mobile) Configuration
 
 **Key Files**:
+
 - `/apps/mobile/metro.config.js`
 - `/apps/mobile/babel.config.js`
 - `/apps/mobile/App.tsx`
 
 **Metro Configuration**:
 The Metro config is workspace-aware and watches the root:
+
 ```javascript
 // metro.config.js
-const { getDefaultConfig } = require('expo/metro-config')
-const path = require('path')
+const { getDefaultConfig } = require("expo/metro-config");
+const path = require("path");
 
-const projectRoot = __dirname
-const workspaceRoot = path.resolve(projectRoot, '../..')
+const projectRoot = __dirname;
+const workspaceRoot = path.resolve(projectRoot, "../..");
 
-const config = getDefaultConfig(projectRoot)
+const config = getDefaultConfig(projectRoot);
 
-config.watchFolders = [workspaceRoot]
+config.watchFolders = [workspaceRoot];
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
-]
-config.resolver.disableHierarchicalLookup = true
+  path.resolve(projectRoot, "node_modules"),
+  path.resolve(workspaceRoot, "node_modules"),
+];
+config.resolver.disableHierarchicalLookup = true;
 ```
 
 **Babel Configuration**:
+
 ```javascript
 // babel.config.js
 module.exports = {
-  presets: ['babel-preset-expo'],
+  presets: ["babel-preset-expo"],
   plugins: [
     [
-      'module-resolver',
+      "module-resolver",
       {
-        root: ['./'],
+        root: ["./"],
         alias: {
-          '@buttergolf/ui': '../../packages/ui/src',
+          "@buttergolf/ui": "../../packages/ui/src",
         },
       },
     ],
-    'tamagui/babel',
+    "tamagui/babel",
   ],
-}
+};
 ```
 
 ## Cross-Platform Component Patterns
 
 ### Import Pattern
+
 ```tsx
 // Always import from @buttergolf/ui for cross-platform components
-import { Button, Text } from '@buttergolf/ui'
+import { Button, Text } from "@buttergolf/ui";
 
 function MyScreen() {
   return (
     <View>
       <Text>Hello World</Text>
-      <Button onPress={() => console.log('pressed')}>
-        Click me
-      </Button>
+      <Button onPress={() => console.log("pressed")}>Click me</Button>
     </View>
-  )
+  );
 }
 ```
 
 ### Tamagui Provider Usage
+
 Both platforms require wrapping the app in `TamaguiProvider`:
+
 ```tsx
-import { TamaguiProvider } from 'tamagui'
-import { config } from '@buttergolf/ui' // or your tamagui.config
+import { TamaguiProvider } from "tamagui";
+import { config } from "@buttergolf/ui"; // or your tamagui.config
 
 function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       {/* Your app */}
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
 ### Media Queries (Cross-Platform)
+
 ```tsx
-import { useMedia } from 'tamagui'
+import { useMedia } from "tamagui";
 
 function ResponsiveComponent() {
-  const media = useMedia()
-  
+  const media = useMedia();
+
   return (
     <View
       width="100%"
-      $gtMd={{ width: '50%' }}  // Greater than medium breakpoint
+      $gtMd={{ width: "50%" }} // Greater than medium breakpoint
     >
       {media.gtMd ? <DesktopView /> : <MobileView />}
     </View>
-  )
+  );
 }
 ```
 
 ### Theme Switching (Cross-Platform)
+
 ```tsx
-import { Theme } from 'tamagui'
+import { Theme } from "tamagui";
 
 function ThemedComponent() {
   return (
@@ -461,7 +493,7 @@ function ThemedComponent() {
         <Text color="$color">Dark theme content</Text>
       </View>
     </Theme>
-  )
+  );
 }
 ```
 
@@ -602,65 +634,67 @@ Some Tamagui props have strict typing that doesn't accept our semantic tokens. U
 ### Creating New Components
 
 1. **Add to `packages/ui/src/components/`**:
+
 ```tsx
 // packages/ui/src/components/MyComponent.tsx
-import { styled, GetProps, View } from 'tamagui'
+import { styled, GetProps, View } from "tamagui";
 
 export const MyComponent = styled(View, {
-  name: 'MyComponent',  // Required for compiler optimization
-  
+  name: "MyComponent", // Required for compiler optimization
+
   // Base styles using semantic tokens
-  backgroundColor: '$surface',
-  borderRadius: '$md',
+  backgroundColor: "$surface",
+  borderRadius: "$md",
   borderWidth: 1,
-  borderColor: '$border',
-  padding: '$md',
-  
+  borderColor: "$border",
+  padding: "$md",
+
   // Interactive states
   hoverStyle: {
-    borderColor: '$borderHover',
+    borderColor: "$borderHover",
   },
-  
+
   pressStyle: {
-    backgroundColor: '$backgroundPress',
+    backgroundColor: "$backgroundPress",
   },
-  
+
   focusStyle: {
-    borderColor: '$borderFocus',
+    borderColor: "$borderFocus",
     borderWidth: 2,
   },
-  
+
   variants: {
     size: {
-      sm: { padding: '$sm' },
-      md: { padding: '$md' },
-      lg: { padding: '$lg' },
+      sm: { padding: "$sm" },
+      md: { padding: "$md" },
+      lg: { padding: "$lg" },
     },
-    
+
     tone: {
-      primary: { 
-        borderColor: '$primary',
-        backgroundColor: '$primaryLight',
+      primary: {
+        borderColor: "$primary",
+        backgroundColor: "$primaryLight",
       },
       error: {
-        borderColor: '$error',
-        backgroundColor: '$errorLight',
+        borderColor: "$error",
+        backgroundColor: "$errorLight",
       },
     },
   } as const,
-  
-  defaultVariants: {
-    size: 'md',
-  },
-})
 
-export type MyComponentProps = GetProps<typeof MyComponent>
+  defaultVariants: {
+    size: "md",
+  },
+});
+
+export type MyComponentProps = GetProps<typeof MyComponent>;
 ```
 
 2. **Export from `packages/ui/src/index.ts`**:
+
 ```tsx
-export { MyComponent } from './components/MyComponent'
-export type { MyComponentProps } from './components/MyComponent'
+export { MyComponent } from "./components/MyComponent";
+export type { MyComponentProps } from "./components/MyComponent";
 ```
 
 3. **Document in `packages/ui/README.md`** with usage examples
@@ -668,84 +702,88 @@ export type { MyComponentProps } from './components/MyComponent'
 ### Component API Reference
 
 #### Button
+
 ```tsx
 <Button
-  size="sm | md | lg"           // Size variant (default: md)
-  tone="primary | secondary | outline | ghost | success | error"  // Style variant
-  fullWidth={boolean}            // Full width button
-  disabled={boolean}             // Disabled state
-  loading={boolean}              // Loading state
+  size="sm | md | lg" // Size variant (default: md)
+  tone="primary | secondary | outline | ghost | success | error" // Style variant
+  fullWidth={boolean} // Full width button
+  disabled={boolean} // Disabled state
+  loading={boolean} // Loading state
 >
   Button Text
 </Button>
 ```
 
 #### Text
+
 ```tsx
 <Text
-  size="xs | sm | md | lg | xl"                    // Font size (default: md)
+  size="xs | sm | md | lg | xl" // Font size (default: md)
   color="default | secondary | tertiary | muted | inverse | primary | error | success | warning"
-  weight="normal | medium | semibold | bold"       // Font weight
-  align="left | center | right"                    // Text alignment
-  truncate={boolean}                               // Truncate with ellipsis
+  weight="normal | medium | semibold | bold" // Font weight
+  align="left | center | right" // Text alignment
+  truncate={boolean} // Truncate with ellipsis
 >
   Text content
 </Text>
 ```
 
 #### Heading
+
 ```tsx
 <Heading
-  level={1 | 2 | 3 | 4 | 5 | 6}                   // Heading level (h1-h6)
-  color="default | primary | secondary"            // Color variant
-  align="left | center | right"                    // Text alignment
+  level={1 | 2 | 3 | 4 | 5 | 6} // Heading level (h1-h6)
+  color="default | primary | secondary" // Color variant
+  align="left | center | right" // Text alignment
 >
   Heading text
 </Heading>
 ```
 
 #### Row (Horizontal Layout)
+
 ```tsx
 <Row
-  gap="xs | sm | md | lg | xl"                    // Gap between children
-  align="start | center | end | stretch | baseline"  // Align items
-  justify="start | center | end | between | around | evenly"  // Justify content
-  wrap={boolean}                                   // Allow wrapping
-  fullWidth={boolean}                              // Full width
+  gap="xs | sm | md | lg | xl" // Gap between children
+  align="start | center | end | stretch | baseline" // Align items
+  justify="start | center | end | between | around | evenly" // Justify content
+  wrap={boolean} // Allow wrapping
+  fullWidth={boolean} // Full width
 >
   {children}
 </Row>
 ```
 
 #### Column (Vertical Layout)
+
 ```tsx
 <Column
-  gap="xs | sm | md | lg | xl"                    // Gap between children
-  align="start | center | end | stretch"           // Align items
-  justify="start | center | end | between | around | evenly"  // Justify content
-  fullWidth={boolean}                              // Full width
-  fullHeight={boolean}                             // Full height
+  gap="xs | sm | md | lg | xl" // Gap between children
+  align="start | center | end | stretch" // Align items
+  justify="start | center | end | between | around | evenly" // Justify content
+  fullWidth={boolean} // Full width
+  fullHeight={boolean} // Full height
 >
   {children}
 </Column>
 ```
 
 #### Card
+
 ```tsx
 <Card
-  variant="elevated | outlined | filled | ghost"  // Card style (default: elevated)
-  padding="none | xs | sm | md | lg | xl"         // Padding (default: md)
-  interactive={boolean}                            // Adds hover/press effects
-  fullWidth={boolean}                              // Full width
+  variant="elevated | outlined | filled | ghost" // Card style (default: elevated)
+  padding="none | xs | sm | md | lg | xl" // Padding (default: md)
+  interactive={boolean} // Adds hover/press effects
+  fullWidth={boolean} // Full width
 >
   <Card.Header padding="md" noBorder={boolean}>
     Header content
   </Card.Header>
-  
-  <Card.Body padding="md">
-    Main content
-  </Card.Body>
-  
+
+  <Card.Body padding="md">Main content</Card.Body>
+
   <Card.Footer padding="md" align="left | center | right" noBorder={boolean}>
     Footer content
   </Card.Footer>
@@ -753,70 +791,77 @@ export type { MyComponentProps } from './components/MyComponent'
 ```
 
 #### Input
+
 ```tsx
 <Input
-  size="sm | md | lg"              // Size variant (default: md)
-  error={boolean}                  // Error state
-  success={boolean}                // Success state
-  disabled={boolean}               // Disabled state
-  fullWidth={boolean}              // Full width
-  placeholder="..."                // Placeholder text
+  size="sm | md | lg" // Size variant (default: md)
+  error={boolean} // Error state
+  success={boolean} // Success state
+  disabled={boolean} // Disabled state
+  fullWidth={boolean} // Full width
+  placeholder="..." // Placeholder text
 />
 ```
 
 #### Badge
+
 ```tsx
 <Badge
   variant="primary | secondary | success | error | warning | info | neutral | outline"
-  size="sm | md | lg"              // Size variant (default: md)
-  dot={boolean}                    // Minimal dot indicator
+  size="sm | md | lg" // Size variant (default: md)
+  dot={boolean} // Minimal dot indicator
 >
   Badge text
 </Badge>
 ```
 
 #### Container
+
 ```tsx
 <Container
-  maxWidth="sm | md | lg | xl | 2xl | full"      // Max width (default: lg)
-  padding="none | xs | sm | md | lg | xl"         // Horizontal padding (default: md)
-  center={boolean}                                 // Center align content
+  maxWidth="sm | md | lg | xl | 2xl | full" // Max width (default: lg)
+  padding="none | xs | sm | md | lg | xl" // Horizontal padding (default: md)
+  center={boolean} // Center align content
 >
   {children}
 </Container>
 ```
 
 ### Compound Components Pattern
+
 For complex components with sub-components:
+
 ```tsx
 // packages/ui/src/components/Accordion.tsx
-import { createStyledContext, styled, YStack } from 'tamagui'
+import { createStyledContext, styled, YStack } from "tamagui";
 
 const AccordionContext = createStyledContext({
-  size: '$md' as any,
-})
+  size: "$md" as any,
+});
 
 export const AccordionFrame = styled(YStack, {
   context: AccordionContext,
-})
+});
 
 export const AccordionItem = styled(YStack, {
   context: AccordionContext,
   // Uses context.size
-})
+});
 
 // Main export
 export const Accordion = AccordionFrame as typeof AccordionFrame & {
-  Item: typeof AccordionItem
-}
+  Item: typeof AccordionItem;
+};
 
-Accordion.Item = AccordionItem
+Accordion.Item = AccordionItem;
 ```
 
 ## TypeScript Configuration
 
 ### Path Mappings
+
 All path mappings are centralized in `/tsconfig.base.json`:
+
 ```json
 {
   "compilerOptions": {
@@ -831,6 +876,7 @@ All path mappings are centralized in `/tsconfig.base.json`:
 Each app extends this base configuration.
 
 ### Type Checking
+
 - Run `pnpm check-types` before committing
 - Strict mode is enabled across the workspace
 - No implicit any, unused locals, or unused parameters allowed
@@ -840,69 +886,77 @@ Each app extends this base configuration.
 ### Tamagui Styling Patterns
 
 1. **Inline Styles with Tokens**:
+
 ```tsx
 <View
   backgroundColor="$blue10"
   padding="$4"
   borderRadius="$4"
   hoverStyle={{
-    backgroundColor: '$blue11',
+    backgroundColor: "$blue11",
   }}
 />
 ```
 
 2. **Media Queries**:
+
 ```tsx
 <View
   width={200}
-  $sm={{ width: 300 }}  // Small screens
-  $md={{ width: 400 }}  // Medium screens
-  $lg={{ width: 500 }}  // Large screens
+  $sm={{ width: 300 }} // Small screens
+  $md={{ width: 400 }} // Medium screens
+  $lg={{ width: 500 }} // Large screens
 />
 ```
 
 3. **Pseudo States**:
+
 ```tsx
 <Button
   backgroundColor="$blue10"
-  hoverStyle={{ backgroundColor: '$blue11' }}
-  pressStyle={{ backgroundColor: '$blue9' }}
-  focusStyle={{ borderColor: '$blue8' }}
+  hoverStyle={{ backgroundColor: "$blue11" }}
+  pressStyle={{ backgroundColor: "$blue9" }}
+  focusStyle={{ borderColor: "$blue8" }}
 />
 ```
 
 4. **Group Styling**:
+
 ```tsx
 <View group="card">
-  <Text $group-card-hover={{ color: '$blue10' }}>
+  <Text $group-card-hover={{ color: "$blue10" }}>
     Hover the parent to see me change
   </Text>
 </View>
 ```
 
 ### Tailwind CSS (Web Only)
+
 Used in Next.js for web-specific styling when Tamagui doesn't fit:
+
 ```tsx
-<div className="container mx-auto px-4">
-  {/* Tailwind classes */}
-</div>
+<div className="container mx-auto px-4">{/* Tailwind classes */}</div>
 ```
 
 ## Build & Compilation
 
 ### Turborepo Configuration
+
 Located at `/turbo.json`:
+
 - Defines task pipelines
 - Manages build outputs: `.next`, `.expo`
 - Caches build artifacts
 - Persistent tasks: `dev`, `start`
 
 ### Build Outputs
+
 - **Web**: `.next/` (gitignored)
 - **Mobile**: `.expo/` (gitignored)
 - **Tamagui**: `.tamagui/` (gitignored) - generated component builds
 
 ### Performance Optimization
+
 - Tamagui compiler extracts styles to CSS at build time
 - Metro bundler configured for monorepo with workspace watching
 - Next.js transpiles packages for web compatibility
@@ -910,12 +964,14 @@ Located at `/turbo.json`:
 ## Common Workflows
 
 ### Adding a New Feature
+
 1. Create cross-platform UI components in `packages/ui`
 2. Use components in both `apps/web` and `apps/mobile`
 3. Test on both platforms before committing
 4. Run type checking: `pnpm check-types`
 
 ### Adding Dependencies
+
 ```bash
 # Root workspace
 pnpm add <package> -w
@@ -927,6 +983,7 @@ pnpm add <package> --filter mobile
 ```
 
 ### Updating Dependencies
+
 ```bash
 # Update all Tamagui packages (keep versions aligned)
 pnpm up '@tamagui/*@latest' -r
@@ -938,16 +995,19 @@ pnpm up -r
 ## Debugging
 
 ### TypeScript Errors
+
 - Check path mappings in `tsconfig.base.json`
 - Ensure all `@buttergolf/*` packages are properly defined
 - Verify peer dependencies are satisfied
 
 ### Module Resolution Issues
+
 - Clear Metro bundler cache: `pnpm dev:mobile --clear`
 - Clear Next.js cache: `rm -rf apps/web/.next`
 - Reinstall dependencies: `pnpm clean-install`
 
 ### Tamagui Specific
+
 - Verify Tamagui config is exported correctly from `tamagui.config.ts`
 - Check that all apps have `TamaguiProvider` at the root
 - Ensure `@tamagui/babel-plugin` is in babel config (mobile)
@@ -960,12 +1020,14 @@ pnpm up -r
 The database package uses Prisma 6.x as the ORM with PostgreSQL.
 
 **Key Files**:
+
 - `packages/db/prisma/schema.prisma` - Database schema
 - `packages/db/src/index.ts` - Prisma Client singleton export
 - `packages/db/prisma/seed.ts` - Database seeding script
 - `packages/db/.env` - Database connection string
 
 **Schema Models** (example - customize for your app):
+
 - `User` - User accounts
 - `Round` - Golf rounds played
 - `Hole` - Individual hole scores
@@ -973,6 +1035,7 @@ The database package uses Prisma 6.x as the ORM with PostgreSQL.
 ### Using the Database in Apps
 
 1. **Add to dependencies**:
+
 ```json
 {
   "dependencies": {
@@ -982,20 +1045,21 @@ The database package uses Prisma 6.x as the ORM with PostgreSQL.
 ```
 
 2. **Import and use**:
+
 ```typescript
-import { prisma } from '@buttergolf/db'
+import { prisma } from "@buttergolf/db";
 
 // Query data
-const users = await prisma.user.findMany()
+const users = await prisma.user.findMany();
 
 // Create data
 const round = await prisma.round.create({
   data: {
     userId: user.id,
-    courseName: 'Pebble Beach',
+    courseName: "Pebble Beach",
     score: 72,
-  }
-})
+  },
+});
 ```
 
 ### Database Workflow
@@ -1008,6 +1072,7 @@ const round = await prisma.round.create({
 ### Database Setup Options
 
 **Local PostgreSQL with Docker**:
+
 ```bash
 docker run --name buttergolf-postgres \
   -e POSTGRES_PASSWORD=postgres \
@@ -1018,6 +1083,7 @@ docker run --name buttergolf-postgres \
 ```
 
 **Prisma Postgres (Cloud)**:
+
 ```bash
 pnpm --filter @buttergolf/db prisma-platform-login
 pnpm --filter @buttergolf/db prisma-postgres-create-database --name buttergolf
@@ -1134,12 +1200,13 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 **CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:
 
 #### 1️⃣ **Custom Variants** (Preferred for Component APIs)
+
 Variants are **named options** defined in `styled()` components. They use **plain strings WITHOUT `$`** that map to tokens internally.
 
 ```tsx
 // ✅ CORRECT - Using custom variants (NO $ prefix)
 <Row gap="md">              // "md" is a variant option
-<Button size="lg">          // "lg" is a variant option  
+<Button size="lg">          // "lg" is a variant option
 <Text color="muted">        // "muted" is a variant option
 <Card padding="lg">         // "lg" is a variant option
 
@@ -1156,6 +1223,7 @@ const Row = styled(XStack, {
 **When to use:** Component props that have a fixed set of semantic options (size, color schemes, spacing scales).
 
 #### 2️⃣ **Direct Token Props** (For Flexible Layout/Styling)
+
 Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component.
 
 ```tsx
@@ -1172,6 +1240,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 ### When to Use Which Pattern
 
 #### ✅ Use Custom Variants For:
+
 1. **Component identity** - Button size/tone, Input size, Card variant
 2. **Semantic options** - Text colors (muted, secondary), layout gaps (sm, md, lg)
 3. **Design system boundaries** - Enforcing approved sizes/colors/spacing
@@ -1179,6 +1248,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 5. **Better DX** - Autocomplete, type safety, prevents one-offs
 
 #### ✅ Use Direct Tokens For:
+
 1. **Layout spacing** - padding, margin on containers
 2. **Geometric props** - borderRadius, borderWidth, width, height
 3. **One-off containers** - Temporary View/YStack wrappers
@@ -1280,19 +1350,20 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 
 Use this matrix when creating or updating components:
 
-| Property Type | Use Variant | Use Direct Token | Example |
-|--------------|-------------|------------------|---------|
-| **Spacing (gap, padding)** | ✅ If defining layout component | ⚠️ For one-off containers | `<Row gap="md">` vs `<View padding="$4">` |
-| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>` |
-| **Colors** | ✅ For semantic colors | ❌ Never use direct | `<Text color="muted">` not `color="$gray500"` |
-| **Typography (fontSize)** | ✅ For component variants | ⚠️ For direct styling | `<Text size="sm">` vs `<Text fontSize="$3">` |
-| **Border radius** | ⚠️ Rare (use defaults) | ✅ For geometric control | Usually inherit, or `borderRadius="$md"` |
-| **Alignment** | ✅ Always use variants | ❌ Never direct | `<Row align="center">` never `alignItems="center"` |
-| **Component state** | ✅ Always (tone, variant) | ❌ Never | `<Button tone="primary">` never manual colors |
+| Property Type              | Use Variant                      | Use Direct Token           | Example                                            |
+| -------------------------- | -------------------------------- | -------------------------- | -------------------------------------------------- |
+| **Spacing (gap, padding)** | ✅ If defining layout component  | ⚠️ For one-off containers  | `<Row gap="md">` vs `<View padding="$4">`          |
+| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>`       |
+| **Colors**                 | ✅ For semantic colors           | ❌ Never use direct        | `<Text color="muted">` not `color="$gray500"`      |
+| **Typography (fontSize)**  | ✅ For component variants        | ⚠️ For direct styling      | `<Text size="sm">` vs `<Text fontSize="$3">`       |
+| **Border radius**          | ⚠️ Rare (use defaults)           | ✅ For geometric control   | Usually inherit, or `borderRadius="$md"`           |
+| **Alignment**              | ✅ Always use variants           | ❌ Never direct            | `<Row align="center">` never `alignItems="center"` |
+| **Component state**        | ✅ Always (tone, variant)        | ❌ Never                   | `<Button tone="primary">` never manual colors      |
 
 **Legend:**
+
 - ✅ Preferred approach
-- ⚠️ Use case dependent  
+- ⚠️ Use case dependent
 - ❌ Avoid/Never
 
 ### Variant Design Guidelines
@@ -1302,11 +1373,9 @@ When creating a new component, add variants for:
 1. **Must Have:**
    - `size` - If component has sizing (sm, md, lg)
    - `variant` or `tone` - Visual style variations
-   
 2. **Should Have:**
    - Component-specific semantics (e.g., `align` for Row, `level` for Heading)
    - Common states (active, disabled) if not in base component
-   
 3. **Nice to Have:**
    - `fullWidth` / `fullHeight` - If commonly needed
    - Spacing variants if component commonly wraps content
@@ -1344,6 +1413,7 @@ When creating a new component, add variants for:
 ## Code Generation Hints
 
 When generating new code:
+
 - Default to Tamagui components over React Native primitives
 - Use `styled()` for component definitions
 - Include `name` property for compiler optimization
@@ -1361,6 +1431,7 @@ When generating new code:
 ## Common UI Patterns
 
 ### Form with Validation
+
 ```tsx
 <Column gap="lg" fullWidth>
   <Column gap="xs">
@@ -1368,18 +1439,14 @@ When generating new code:
       <Label htmlFor="email">Email</Label>
       <Text color="error">*</Text>
     </Row>
-    <Input
-      id="email"
-      type="email"
-      size="md"
-      error={!!emailError}
-      fullWidth
-    />
+    <Input id="email" type="email" size="md" error={!!emailError} fullWidth />
     {emailError && (
-      <Text size="sm" color="error">{emailError}</Text>
+      <Text size="sm" color="error">
+        {emailError}
+      </Text>
     )}
   </Column>
-  
+
   <Button size="lg" tone="primary" fullWidth>
     Submit
   </Button>
@@ -1387,6 +1454,7 @@ When generating new code:
 ```
 
 ### Product Card
+
 ```tsx
 <Card variant="elevated" padding="none" fullWidth>
   <Card.Header padding="none" noBorder>
@@ -1398,7 +1466,7 @@ When generating new code:
       borderTopRightRadius="$lg"
     />
   </Card.Header>
-  
+
   <Card.Body padding="lg">
     <Column gap="sm">
       <Heading level={4}>{product.name}</Heading>
@@ -1411,7 +1479,7 @@ When generating new code:
       </Row>
     </Column>
   </Card.Body>
-  
+
   <Card.Footer align="right">
     <Button tone="outline" size="md">
       Add to Cart
@@ -1421,6 +1489,7 @@ When generating new code:
 ```
 
 ### Dashboard Stats
+
 ```tsx
 <Row gap="lg" wrap>
   <Card variant="filled" padding="lg" flex={1}>
@@ -1430,10 +1499,12 @@ When generating new code:
         <Text color="secondary">Active Users</Text>
       </Row>
       <Heading level={2}>1,234</Heading>
-      <Text size="sm" color="success">+12% from last month</Text>
+      <Text size="sm" color="success">
+        +12% from last month
+      </Text>
     </Column>
   </Card>
-  
+
   <Card variant="filled" padding="lg" flex={1}>
     <Column gap="sm">
       <Row align="center" gap="sm">
@@ -1441,13 +1512,16 @@ When generating new code:
         <Text color="secondary">Revenue</Text>
       </Row>
       <Heading level={2}>$45.2K</Heading>
-      <Text size="sm" color="info">+8% from last month</Text>
+      <Text size="sm" color="info">
+        +8% from last month
+      </Text>
     </Column>
   </Card>
 </Row>
 ```
 
 ### Loading State
+
 ```tsx
 <Card variant="elevated" padding="lg">
   <Column gap="md" align="center">
@@ -1458,15 +1532,14 @@ When generating new code:
 ```
 
 ### Alert/Notification
+
 ```tsx
 <Card variant="outlined" padding="md">
   <Row gap="md" align="start">
     <Badge variant="error" size="sm" />
     <Column gap="xs" flex={1}>
       <Text weight="semibold">Error</Text>
-      <Text color="secondary">
-        Something went wrong. Please try again.
-      </Text>
+      <Text color="secondary">Something went wrong. Please try again.</Text>
     </Column>
     <Button tone="ghost" size="sm">
       Dismiss
@@ -1476,15 +1549,16 @@ When generating new code:
 ```
 
 ### Responsive Layout
+
 ```tsx
 <Container maxWidth="lg">
   <Column
     gap="md"
-    $gtMd={{ gap: "lg" }}  // Larger gap on desktop
+    $gtMd={{ gap: "lg" }} // Larger gap on desktop
   >
     <Row
       flexDirection="column"
-      $gtSm={{ flexDirection: "row" }}  // Horizontal on tablet+
+      $gtSm={{ flexDirection: "row" }} // Horizontal on tablet+
       gap="md"
     >
       <Column flex={1}>Content 1</Column>
@@ -1532,6 +1606,7 @@ Documentation about Tamagui's optimizing compiler:
 All component documentation can be accessed at https://tamagui.dev/ui/[component-name]
 
 Available components:
+
 - [Accordion](https://tamagui.dev/ui/accordion.md): Expandable content sections
 - [AlertDialog](https://tamagui.dev/ui/alert-dialog.md): Modal dialog for important actions
 - [Anchor](https://tamagui.dev/ui/anchor.md): Link component with styling options
