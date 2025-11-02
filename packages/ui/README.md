@@ -177,63 +177,65 @@ import { Label } from '@buttergolf/ui'
 
 ### Layout Components
 
-#### Row (Horizontal Layout)
+**Note**: We use Tamagui's base XStack/YStack components directly instead of custom wrappers.
+
+#### XStack (Horizontal Layout)
 
 ```tsx
-import { Row } from '@buttergolf/ui'
+import { XStack } from '@buttergolf/ui'
 
-<Row gap="md" align="center" justify="between">
+<XStack gap="$4" alignItems="center" justifyContent="space-between">
   <Text>Left</Text>
   <Button>Right</Button>
-</Row>
+</XStack>
 ```
 
-**Props**:
-- `gap`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'` - Space between children
-- `align`: `'start' | 'center' | 'end' | 'stretch' | 'baseline'` - Align items
-- `justify`: `'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'` - Justify content
-- `wrap`: `boolean` - Allow wrapping
-- `fullWidth`: `boolean` - Full width
+**Common Props**:
+- `gap`: Token values like `$2`, `$3`, `$4`, `$6`, `$8`
+- `alignItems`: `'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline'`
+- `justifyContent`: `'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly'`
+- `flexWrap`: `'wrap' | 'nowrap'`
+- `width`, `height`, `flex`, etc. - All Tamagui props supported
 
-#### Column (Vertical Layout)
+#### YStack (Vertical Layout)
 
 ```tsx
-import { Column } from '@buttergolf/ui'
+import { YStack } from '@buttergolf/ui'
 
-<Column gap="lg" align="center">
+<YStack gap="$6" alignItems="center">
   <Heading level={2}>Title</Heading>
   <Text>Content</Text>
   <Button>Action</Button>
-</Column>
+</YStack>
 ```
 
-#### Container
+#### Container Pattern
 
 ```tsx
-import { Container } from '@buttergolf/ui'
+import { YStack } from '@buttergolf/ui'
 
-// Max widths: sm (640), md (768), lg (1024), xl (1280), 2xl (1536), full
-<Container maxWidth="lg" padding="md">
+// Use YStack with constrained width
+<YStack maxWidth={1024} width="100%" marginHorizontal="auto" paddingHorizontal="$4">
   <Text>Constrained content</Text>
-</Container>
+</YStack>
 ```
 
-#### Spacer
+#### Spacer Pattern
 
 ```tsx
-import { Spacer } from '@buttergolf/ui'
+import { View, XStack, YStack } from '@buttergolf/ui'
 
-<Row>
+<XStack>
   <Text>Left</Text>
-  <Spacer flex />  {/* Flexible spacer */}
+  <View flex={1} />  {/* Flexible spacer */}
   <Text>Right</Text>
-</Row>
+</XStack>
 
-<Column>
+<YStack>
   <Text>Item 1</Text>
-  <Spacer size="md" />  {/* Fixed spacer */}
+  <View height="$4" />  {/* Fixed spacer */}
   <Text>Item 2</Text>
-</Column>
+</YStack>
 ```
 
 ### Card

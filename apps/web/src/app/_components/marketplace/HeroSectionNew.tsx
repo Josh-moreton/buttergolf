@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui";
+import { Button, Text, XStack, YStack, Card, Image } from "@buttergolf/ui";
 
 // Mock carousel data
 const CAROUSEL_ITEMS = [
@@ -66,23 +66,23 @@ function CarouselSlide({
   isActive,
 }: Readonly<{ item: (typeof CAROUSEL_ITEMS)[0]; isActive: boolean }>) {
   return (
-    <Row
+    <XStack
       animation="lazy"
       opacity={isActive ? 1 : 0}
       position={isActive ? "relative" : "absolute"}
       width="100%"
       height="100%"
-      align="center"
+      alignItems="center"
       paddingHorizontal="$8"
       paddingVertical="$6"
     >
-      <Column
+      <YStack
         flex={1}
-        {...{ gap: "sm" as any }}
+        gap="$3"
         maxWidth={420}
         paddingRight="$4"
       >
-        <Row align="start" {...{ gap: "sm" as any }}>
+        <XStack alignItems="flex-start" gap="$3">
           <Text
             size="xl"
             fontSize={64}
@@ -90,9 +90,9 @@ function CarouselSlide({
             lineHeight={64}
             {...{ color: "primary" as any }}
           >
-            {item.discount}%
+            {item.discount.toString()}%
           </Text>
-          <Column marginTop="$2">
+          <YStack marginTop="$2">
             <Text
               size="md"
               weight="semibold"
@@ -109,8 +109,8 @@ function CarouselSlide({
             >
               OFF
             </Text>
-          </Column>
-        </Row>
+          </YStack>
+        </XStack>
 
         <Link
           href={`/products/${item.slug}`}
@@ -147,17 +147,17 @@ function CarouselSlide({
             Shop Now
           </Button>
         </Link>
-      </Column>
+      </YStack>
 
-      <Column flex={1} align="center" justify="center">
+      <YStack flex={1} alignItems="center" justifyContent="center">
         <Image
           source={{ uri: item.image }}
           width={380}
           height={380}
           objectFit="contain"
         />
-      </Column>
-    </Row>
+      </YStack>
+    </XStack>
   );
 }
 function FeaturedProductCard({
@@ -191,9 +191,9 @@ function FeaturedProductCard({
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <Column height="100%" justify="between">
+        <YStack height="100%" justifyContent="space-between">
           {/* Top: Text content */}
-          <Column {...{ gap: "xs" as any }}>
+          <YStack {...{ gap: "xs" as any }}>
             <Text
               size="lg"
               weight="bold"
@@ -205,11 +205,11 @@ function FeaturedProductCard({
             <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
               {item.subtitle}
             </Text>
-          </Column>
+          </YStack>
 
           {/* Bottom: Price and Image side by side */}
-          <Row align="end" justify="between" marginTop="$4">
-            <Column {...{ gap: "xs" as any }}>
+          <XStack alignItems="flex-end" justifyContent="space-between" marginTop="$4">
+            <YStack {...{ gap: "xs" as any }}>
               <Text
                 size="xs"
                 fontSize={10}
@@ -219,7 +219,7 @@ function FeaturedProductCard({
               >
                 LIMITED TIME OFFER
               </Text>
-              <Row align="center" {...{ gap: "xs" as any }}>
+              <XStack alignItems="center" {...{ gap: "xs" as any }}>
                 <Text
                   size="xl"
                   fontSize={22}
@@ -239,8 +239,8 @@ function FeaturedProductCard({
                     £{item.originalPrice}
                   </Text>
                 )}
-              </Row>
-            </Column>
+              </XStack>
+            </YStack>
 
             <Image
               source={{ uri: item.image }}
@@ -248,8 +248,8 @@ function FeaturedProductCard({
               height={110}
               objectFit="contain"
             />
-          </Row>
-        </Column>
+          </XStack>
+        </YStack>
       </Card>
     </Link>
   );
@@ -267,20 +267,20 @@ export function HeroSectionNew() {
   }, []);
 
   return (
-    <Column backgroundColor="$background" paddingVertical="$12">
-      <Column
+    <YStack backgroundColor="$background" paddingVertical="$12">
+      <YStack
         maxWidth={1280}
         marginHorizontal="auto"
         paddingHorizontal="$4"
         width="100%"
       >
-        <Column
+        <YStack
           {...{ gap: "xl" as any }}
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
         >
           {/* Carousel - 2/3 width on desktop */}
-          <Column
+          <YStack
             backgroundColor="$surface"
             borderWidth={1}
             borderColor="$border"
@@ -306,7 +306,7 @@ export function HeroSectionNew() {
             ))}
 
             {/* Pagination Dots */}
-            <Row
+            <XStack
               position="absolute"
               bottom="$4"
               left="50%"
@@ -315,7 +315,7 @@ export function HeroSectionNew() {
               zIndex={10}
             >
               {CAROUSEL_ITEMS.map((item, index) => (
-                <Row
+                <XStack
                   key={`dot-${item.id}`}
                   width={index === activeSlide ? 24 : 8}
                   height={8}
@@ -326,11 +326,11 @@ export function HeroSectionNew() {
                   animation="quick"
                 />
               ))}
-            </Row>
-          </Column>
+            </XStack>
+          </YStack>
 
           {/* Featured Cards - 1/3 width on desktop */}
-          <Column
+          <YStack
             {...{ gap: "lg" as any }}
             width="100%"
             $xl={{
@@ -344,7 +344,7 @@ export function HeroSectionNew() {
             }}
           >
             {FEATURED_CARDS.map((card) => (
-              <Column
+              <YStack
                 key={card.id}
                 flex={1}
                 minWidth="45%"
@@ -355,11 +355,11 @@ export function HeroSectionNew() {
                 }}
               >
                 <FeaturedProductCard item={card} />
-              </Column>
+              </YStack>
             ))}
-          </Column>
-        </Column>
-      </Column>
-    </Column>
+          </YStack>
+        </YStack>
+      </YStack>
+    </YStack>
   );
 }

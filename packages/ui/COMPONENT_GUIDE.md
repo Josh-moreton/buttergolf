@@ -209,54 +209,57 @@ Success (Teal)        Info (Blue)           Error (Red)
 
 ## 📐 Layout Components
 
-### Row (Horizontal)
+**Note**: We use Tamagui's base XStack/YStack components directly. They have all the features we need built-in.
+
+### XStack (Horizontal - flexDirection: row)
 ```tsx
-<Row gap="md" align="center" justify="between">
+<XStack gap="$4" alignItems="center" justifyContent="space-between">
   <Text>Left</Text>
   <Button>Right</Button>
-</Row>
+</XStack>
 
-// Gap options: xs, sm, md, lg, xl
-// Align: start, center, end, stretch, baseline
-// Justify: start, center, end, between, around, evenly
+// Gap: Use tokens like $2, $3, $4, $6, $8
+// alignItems: flex-start, center, flex-end, stretch, baseline
+// justifyContent: flex-start, center, flex-end, space-between, space-around, space-evenly
+// flexWrap: wrap, nowrap
 ```
 
-### Column (Vertical)
+### YStack (Vertical - flexDirection: column)
 ```tsx
-<Column gap="lg" align="stretch">
+<YStack gap="$6" alignItems="stretch">
   <Heading level={2}>Title</Heading>
   <Text>Content</Text>
   <Button>Action</Button>
-</Column>
+</YStack>
 
-// Gap options: xs, sm, md, lg, xl
-// Align: start, center, end, stretch
-// Justify: start, center, end, between, around, evenly
+// Gap: Use tokens like $2, $3, $4, $6, $8
+// alignItems: flex-start, center, flex-end, stretch
+// justifyContent: flex-start, center, flex-end, space-between, space-around, space-evenly
 ```
 
-### Container
+### Container Pattern
 ```tsx
-<Container maxWidth="lg" padding="md">
+<YStack maxWidth={1024} width="100%" marginHorizontal="auto" paddingHorizontal="$4">
   {/* Constrained width content */}
-</Container>
+</YStack>
 
-// Max widths: sm (640), md (768), lg (1024), xl (1280), 2xl (1536)
-// Padding: none, xs, sm, md, lg, xl
+// Common maxWidths: 640, 768, 1024, 1280, 1536
+// Padding: Use tokens like $2, $3, $4, $6, $8
 ```
 
-### Spacer
+### Spacer Pattern
 ```tsx
-<Row>
+<XStack>
   <Text>Left</Text>
-  <Spacer flex />  {/* Takes remaining space */}
+  <View flex={1} />  {/* Takes remaining space */}
   <Text>Right</Text>
-</Row>
+</XStack>
 
-<Column>
+<YStack>
   <Text>Item 1</Text>
   <Spacer size="md" />  {/* 16px gap */}
   <Text>Item 2</Text>
-</Column>
+</YStack>
 
 // Sizes: xs, sm, md, lg, xl
 ```
@@ -267,13 +270,13 @@ Success (Teal)        Info (Blue)           Error (Red)
 
 ### Form Example
 ```tsx
-<Column gap="lg" fullWidth>
+<YStack gap="$6" fullWidth>
   {/* Email field */}
-  <Column gap="xs">
-    <Row gap="xs">
+  <YStack gap="$2">
+    <XStack gap="$2">
       <Label htmlFor="email">Email</Label>
       <Text color="error">*</Text>
-    </Row>
+    </XStack>
     <Input
       id="email"
       type="email"
@@ -285,10 +288,10 @@ Success (Teal)        Info (Blue)           Error (Red)
     {emailError && (
       <Text size="sm" color="error">{emailError}</Text>
     )}
-  </Column>
+  </YStack>
 
   {/* Password field */}
-  <Column gap="xs">
+  <YStack gap="$2">
     <Label htmlFor="password">Password</Label>
     <Input
       id="password"
@@ -297,13 +300,13 @@ Success (Teal)        Info (Blue)           Error (Red)
       placeholder="••••••••"
       fullWidth
     />
-  </Column>
+  </YStack>
 
   {/* Submit button */}
   <Button size="lg" tone="primary" fullWidth>
     Sign In
   </Button>
-</Column>
+</YStack>
 ```
 
 ### Product Card Example
@@ -320,16 +323,16 @@ Success (Teal)        Info (Blue)           Error (Red)
   </Card.Header>
   
   <Card.Body padding="lg">
-    <Column gap="sm">
+    <YStack gap="$3">
       <Heading level={4}>{product.name}</Heading>
       <Text color="secondary">{product.category}</Text>
-      <Row align="center" justify="between">
+      <XStack alignItems="center" justifyContent="space-between">
         <Text size="xl" weight="bold">
           ${product.price}
         </Text>
         <Badge variant="success">In Stock</Badge>
-      </Row>
-    </Column>
+      </XStack>
+    </YStack>
   </Card.Body>
   
   <Card.Footer align="right">
@@ -342,70 +345,70 @@ Success (Teal)        Info (Blue)           Error (Red)
 
 ### Dashboard Stats Example
 ```tsx
-<Row gap="lg" wrap>
+<XStack gap="$6" wrap>
   {/* Stat card 1 */}
   <Card variant="filled" padding="lg" flex={1}>
-    <Column gap="sm">
-      <Row align="center" gap="sm">
+    <YStack gap="$3">
+      <XStack alignItems="center" gap="$3">
         <Badge variant="success" dot />
         <Text color="secondary">Active Users</Text>
-      </Row>
+      </XStack>
       <Heading level={2}>1,234</Heading>
       <Text size="sm" color="success">+12% from last month</Text>
-    </Column>
+    </YStack>
   </Card>
 
   {/* Stat card 2 */}
   <Card variant="filled" padding="lg" flex={1}>
-    <Column gap="sm">
-      <Row align="center" gap="sm">
+    <YStack gap="$3">
+      <XStack alignItems="center" gap="$3">
         <Badge variant="info" dot />
         <Text color="secondary">Revenue</Text>
-      </Row>
+      </XStack>
       <Heading level={2}>$45.2K</Heading>
       <Text size="sm" color="info">+8% from last month</Text>
-    </Column>
+    </YStack>
   </Card>
 
   {/* Stat card 3 */}
   <Card variant="filled" padding="lg" flex={1}>
-    <Column gap="sm">
-      <Row align="center" gap="sm">
+    <YStack gap="$3">
+      <XStack alignItems="center" gap="$3">
         <Badge variant="warning" dot />
         <Text color="secondary">Pending</Text>
-      </Row>
+      </XStack>
       <Heading level={2}>23</Heading>
       <Text size="sm" color="warning">Needs attention</Text>
-    </Column>
+    </YStack>
   </Card>
-</Row>
+</XStack>
 ```
 
 ### Loading State Example
 ```tsx
 <Card variant="elevated" padding="lg">
-  <Column gap="md" align="center">
+  <YStack gap="$4" alignItems="center">
     <Spinner size="lg" color="$primary" />
     <Text color="secondary">Loading content...</Text>
-  </Column>
+  </YStack>
 </Card>
 ```
 
 ### Alert Example
 ```tsx
 <Card variant="outlined" padding="md">
-  <Row gap="md" align="start">
+  <XStack gap="$4" alignItems="flex-start">
     <Badge variant="error" size="sm" />
-    <Column gap="xs" flex={1}>
+    <YStack gap="$2" flex={1}>
       <Text weight="semibold">Error</Text>
       <Text color="secondary">
         Something went wrong. Please try again.
       </Text>
-    </Column>
+    </YStack>
     <Button tone="ghost" size="sm">
       Dismiss
     </Button>
-  </Row>
+  </XStack>
 </Card>
 ```
 
@@ -416,19 +419,19 @@ Success (Teal)        Info (Blue)           Error (Red)
 ### Mobile First
 ```tsx
 <Container maxWidth="lg">
-  <Column
-    gap="md"
+  <YStack
+    gap="$4"
     $gtMd={{ gap: "lg" }}  // Larger gap on desktop
   >
-    <Row
+    <XStack
       flexDirection="column"
       $gtSm={{ flexDirection: "row" }}  // Horizontal on tablet+
-      gap="md"
+      gap="$4"
     >
-      <Column flex={1}>Content 1</Column>
-      <Column flex={1}>Content 2</Column>
-    </Row>
-  </Column>
+      <YStack flex={1}>Content 1</YStack>
+      <YStack flex={1}>Content 2</YStack>
+    </XStack>
+  </YStack>
 </Container>
 ```
 
@@ -489,22 +492,22 @@ Spinners: sm=16px, md=20px, lg=24px
 ### Common Patterns
 ```tsx
 // Full-width form field
-<Column gap="xs" fullWidth>
+<YStack gap="$2" fullWidth>
   <Label>Field Name</Label>
   <Input fullWidth />
-</Column>
+</YStack>
 
 // Action row
-<Row justify="end" gap="md">
+<XStack justify="end" gap="$4">
   <Button tone="ghost">Cancel</Button>
   <Button tone="primary">Submit</Button>
-</Row>
+</XStack>
 
 // Status indicator
-<Row align="center" gap="xs">
+<XStack alignItems="center" gap="$2">
   <Badge variant="success" dot />
   <Text>Active</Text>
-</Row>
+</XStack>
 
 // Card with action
 <Card variant="elevated">

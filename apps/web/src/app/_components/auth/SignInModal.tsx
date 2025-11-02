@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { SignIn, SignUp } from "@clerk/nextjs"
-import { Column } from "@buttergolf/ui"
+import { YStack } from "@buttergolf/ui"
 
 type AuthMode = "sign-in" | "sign-up"
 
@@ -28,22 +28,22 @@ export function SignInModal({
   if (!open) return null
 
   return (
-    <Column
+    <YStack
       {...{ style: { position: "fixed", inset: 0 as any, backdropFilter: "blur(6px)" } }}
       backgroundColor="rgba(0,0,0,0.35)"
       zIndex={100}
-      align="center"
-      justify="center"
+      alignItems="center"
+      justifyContent="center"
       onPress={onClose}
     >
       {/* Content wrapper only to stop propagation - no extra chrome */}
-      <Column onPress={(e) => e.stopPropagation()}>
+      <YStack onPress={(e) => e.stopPropagation()}>
         {mode === "sign-up" ? (
           <SignUp routing="hash" signInUrl="/sign-in" />
         ) : (
           <SignIn routing="hash" signUpUrl="/sign-up" />
         )}
-      </Column>
-    </Column>
+      </YStack>
+    </YStack>
   )
 }

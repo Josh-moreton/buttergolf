@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Image, Text, Row, Column } from '@buttergolf/ui'
+import { Card, Image, Text, XStack, YStack } from '@buttergolf/ui'
 
 // Use compound component pattern
 const CardHeader = (Card as any).Header
@@ -53,7 +53,7 @@ export function ProductCard({
         />
       </CardHeader>
       <CardFooter {...{ padding: '$md' as any }} noBorder>
-        <Column {...{ gap: "xs" as any }} width="100%">
+        <YStack {...{ gap: "xs" as any }} width="100%">
           <Text
             size="md"
             weight="semibold"
@@ -67,12 +67,12 @@ export function ProductCard({
               {condition}
             </Text>
           )}
-          <Row {...{ justify: "between" as any }} align="center">
+          <XStack {...{ justify: "between" as any }} alignItems="center">
             <Text size="lg" weight="bold" {...{ color: '$primary' as any }}>
               ${price.toFixed(2)}
             </Text>
-          </Row>
-        </Column>
+          </XStack>
+        </YStack>
       </CardFooter>
     </Card>
   )

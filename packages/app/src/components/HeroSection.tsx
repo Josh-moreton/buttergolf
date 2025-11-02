@@ -1,31 +1,31 @@
 'use client'
 
-import { Column, H1, H3, Button, Row } from '@buttergolf/ui'
+import { YStack, H1, H3, Button, XStack } from '@buttergolf/ui'
 import { SearchBar } from './SearchBar'
 
 export function HeroSection() {
   return (
-    <Column
+    <YStack
       backgroundColor="$surface"
       paddingVertical="$8"
       paddingHorizontal="$4"
-      align="center"
+      alignItems="center"
       {...{ gap: "lg" as any }}
       borderBottomWidth={1}
       borderBottomColor="$border"
     >
-      <Column align="center" {...{ gap: "sm" as any }} maxWidth={800}>
+      <YStack alignItems="center" {...{ gap: "sm" as any }} maxWidth={800}>
         <H1 size="$10" textAlign="center" fontWeight="700" color="$text">
           Ready to declutter your golf bag?
         </H1>
         <H3 size="$6" textAlign="center" color="$textSecondary" fontWeight="400">
           Buy and sell pre-owned golf equipment with ease
         </H3>
-      </Column>
+      </YStack>
 
       <SearchBar />
 
-      <Row {...{ gap: "sm" as any }} wrap justify="center">
+      <XStack {...{ gap: "sm" as any }} flexWrap="wrap" justifyContent="center">
         <Button 
           size="$4" 
           backgroundColor="$primary" 
@@ -46,7 +46,7 @@ export function HeroSection() {
         >
           Learn how it works
         </Button>
-      </Row>
-    </Column>
+      </XStack>
+    </YStack>
   )
 }
