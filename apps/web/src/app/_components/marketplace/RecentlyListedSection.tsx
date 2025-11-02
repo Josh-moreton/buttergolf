@@ -55,7 +55,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
   return (
     <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
       <Card
-        {...{ padding: 0 as any }}
+        padding={0}
         borderRadius="$4"
         overflow="hidden"
         cursor="pointer"
@@ -67,7 +67,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           height={180}
           objectFit="cover"
         />
-        <YStack {...{ padding: 16 as any }} {...{ gap: "xs" as any }}>
+        <YStack padding="$md" gap="$xs">
           <Text weight="bold" numberOfLines={2}>
             {item.title}
           </Text>
@@ -95,7 +95,7 @@ export function RecentlyListedSection() {
         maxWidth={1200}
         marginHorizontal="auto"
         paddingHorizontal="$4"
-        {...{ gap: "lg" as any }}
+        gap="$lg"
       >
         <XStack alignItems="center" justifyContent="space-between">
           <Text fontSize="$8" weight="bold">
@@ -105,7 +105,7 @@ export function RecentlyListedSection() {
             View all
           </Button>
         </XStack>
-        <XStack {...{ gap: "$6" as any }} flexWrap="wrap">
+        <XStack gap="$$6" flexWrap="wrap">
           {MOCK_LISTINGS.map((l) => (
             <YStack
               key={l.id}

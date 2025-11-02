@@ -83,7 +83,7 @@ function CarouselSlide({
             fontSize={64}
             weight="bold"
             lineHeight={64}
-            {...{ color: "primary" as any }}
+            color="$primary"
           >
             {item.discount.toString()}%
           </Text>
@@ -92,7 +92,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="$text"
             >
               SALE
             </Text>
@@ -100,7 +100,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="$text"
             >
               OFF
             </Text>
@@ -115,14 +115,14 @@ function CarouselSlide({
             size="xl"
             fontSize={28}
             weight="bold"
-            {...{ color: "default" as any }}
-            {...{ hoverStyle: { color: "$info" } as any }}
+            color="$text"
+            hoverStyle={{ color: "$info" }}
           >
             {item.title}
           </Text>
         </Link>
 
-        <Text {...{ color: "secondary" as any }} size="sm" fontSize={15}>
+        <Text color="$textSecondary" size="sm" fontSize={15}>
           {item.description}
         </Text>
 
@@ -174,7 +174,7 @@ function FeaturedProductCard({
         backgroundColor="$card"
         borderWidth={0}
         borderRadius="$4"
-        {...{ padding: "$5" as any }}
+        padding="$5"
         overflow="hidden"
         cursor="pointer"
         animation="quick"
@@ -188,16 +188,11 @@ function FeaturedProductCard({
       >
         <YStack height="100%" justifyContent="space-between">
           {/* Top: Text content */}
-          <YStack {...{ gap: "xs" as any }}>
-            <Text
-              size="lg"
-              weight="bold"
-              {...{ color: "default" as any }}
-              numberOfLines={2}
-            >
+          <YStack gap="$xs">
+            <Text size="lg" weight="bold" color="$text" numberOfLines={2}>
               {item.title}
             </Text>
-            <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
+            <Text size="xs" fontSize={13} color="$textSecondary">
               {item.subtitle}
             </Text>
           </YStack>
@@ -208,23 +203,23 @@ function FeaturedProductCard({
             justifyContent="space-between"
             marginTop="$4"
           >
-            <YStack {...{ gap: "xs" as any }}>
+            <YStack gap="$xs">
               <Text
                 size="xs"
                 fontSize={10}
                 weight="semibold"
                 textTransform="uppercase"
-                {...{ color: "muted" as any }}
+                color="$textMuted"
               >
                 LIMITED TIME OFFER
               </Text>
-              <XStack alignItems="center" {...{ gap: "xs" as any }}>
+              <XStack alignItems="center" gap="$xs">
                 <Text
                   size="xl"
                   fontSize={22}
                   weight="bold"
                   fontWeight="800"
-                  {...{ color: "default" as any }}
+                  color="$text"
                 >
                   £{item.price}
                 </Text>
@@ -232,7 +227,7 @@ function FeaturedProductCard({
                   <Text
                     size="md"
                     weight="medium"
-                    {...{ color: "muted" as any }}
+                    color="$textMuted"
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}
@@ -274,7 +269,7 @@ export function HeroSectionNew() {
         width="100%"
       >
         <YStack
-          {...{ gap: "xl" as any }}
+          gap="$xl"
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
         >
@@ -310,7 +305,7 @@ export function HeroSectionNew() {
               bottom="$4"
               left="50%"
               {...{ style: { transform: "translateX(-50%)" } }}
-              {...{ gap: "xs" as any }}
+              gap="$xs"
               zIndex={10}
             >
               {CAROUSEL_ITEMS.map((item, index) => (
@@ -330,7 +325,7 @@ export function HeroSectionNew() {
 
           {/* Featured Cards - 1/3 width on desktop */}
           <YStack
-            {...{ gap: "lg" as any }}
+            gap="$lg"
             width="100%"
             $xl={{
               flexGrow: 1,

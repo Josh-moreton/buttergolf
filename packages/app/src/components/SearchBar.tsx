@@ -16,7 +16,7 @@ export function SearchBar({
     <Row
       fullWidth
       maxWidth={600}
-      gap="xs"
+      gap="$xs"
       align="center"
     >
       <Input

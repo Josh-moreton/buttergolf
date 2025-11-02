@@ -326,13 +326,130 @@ const darkTheme = {
     white: brandColors.white,
 }
 
+// Sub-theme for active states (light mode)
+// When using <Theme name="active">, it will use light_active in light mode
+const light_active = {
+    ...lightTheme,
+    // Override specific colors for active state
+    color: brandColors.green500,
+    colorHover: brandColors.green600,
+    colorPress: brandColors.green700,
+    colorFocus: brandColors.green500,
+
+    // Keep background subtle
+    background: brandColors.green50,
+    backgroundHover: brandColors.green100,
+    backgroundPress: brandColors.green200,
+}
+
+// Sub-theme for active states (dark mode)
+// When using <Theme name="active">, it will use dark_active in dark mode
+const dark_active = {
+    ...darkTheme,
+    // Override specific colors for active state
+    color: brandColors.green400,
+    colorHover: brandColors.green300,
+    colorPress: brandColors.green500,
+    colorFocus: brandColors.green400,
+
+    // Keep background subtle
+    background: brandColors.gray800,
+    backgroundHover: brandColors.gray700,
+    backgroundPress: brandColors.gray600,
+}
+
+// Sub-theme for error states (light mode)
+const light_error = {
+    ...lightTheme,
+    color: brandColors.red600,
+    colorHover: brandColors.red700,
+    colorPress: brandColors.red800,
+    background: brandColors.red50,
+    backgroundHover: brandColors.red100,
+    border: brandColors.red300,
+}
+
+// Sub-theme for error states (dark mode)
+const dark_error = {
+    ...darkTheme,
+    color: brandColors.red400,
+    colorHover: brandColors.red300,
+    colorPress: brandColors.red500,
+    background: brandColors.red900,
+    backgroundHover: brandColors.red800,
+    border: brandColors.red700,
+}
+
+// Sub-theme for success states (light mode)
+const light_success = {
+    ...lightTheme,
+    color: brandColors.teal600,
+    colorHover: brandColors.teal700,
+    colorPress: brandColors.teal800,
+    background: brandColors.teal50,
+    backgroundHover: brandColors.teal100,
+    border: brandColors.teal300,
+}
+
+// Sub-theme for success states (dark mode)
+const dark_success = {
+    ...darkTheme,
+    color: brandColors.teal400,
+    colorHover: brandColors.teal300,
+    colorPress: brandColors.teal500,
+    background: brandColors.teal900,
+    backgroundHover: brandColors.teal800,
+    border: brandColors.teal700,
+}
+
+// Sub-theme for warning states (light mode)
+const light_warning = {
+    ...lightTheme,
+    color: brandColors.amber700,
+    colorHover: brandColors.amber800,
+    colorPress: brandColors.amber900,
+    background: brandColors.amber50,
+    backgroundHover: brandColors.amber100,
+    border: brandColors.amber300,
+}
+
+// Sub-theme for warning states (dark mode)
+const dark_warning = {
+    ...darkTheme,
+    color: brandColors.amber300,
+    colorHover: brandColors.amber200,
+    colorPress: brandColors.amber400,
+    background: brandColors.amber900,
+    backgroundHover: brandColors.amber800,
+    border: brandColors.amber700,
+}
+
 export const config = createTamagui({
     ...defaultConfig,
     tokens: customTokens,
     themes: {
+        // Base themes
         light: lightTheme,
         dark: darkTheme,
+
+        // Active state sub-themes
+        light_active,
+        dark_active,
+
+        // Error state sub-themes
+        light_error,
+        dark_error,
+
+        // Success state sub-themes
+        light_success,
+        dark_success,
+
+        // Warning state sub-themes
+        light_warning,
+        dark_warning,
     },
+    // Include fonts from defaultConfig
+    fonts: defaultConfig.fonts,
     settings: {
         ...defaultConfig.settings,
         onlyAllowShorthands: false,

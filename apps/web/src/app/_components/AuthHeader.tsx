@@ -19,7 +19,7 @@ export default function AuthHeader() {
             ButterGolf
           </Text>
         </Link>
-        <XStack alignItems="center" {...{ gap: "sm" as any }}>
+        <XStack alignItems="center" gap="$sm">
           <Link href="/rounds">
             <Button size="md" tone="outline">
               Rounds

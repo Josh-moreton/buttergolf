@@ -156,27 +156,13 @@ export const Container = styled(TamaguiYStack, {
 });
 
 // Spacer - Flexible space component
+// Use directly with props: <Spacer flex={1} /> or <Spacer width="$md" height="$md" />
+// width, height, and flex are native props - use direct tokens, not variants
 export const Spacer = styled(TamaguiView, {
   name: "Spacer",
 
-  variants: {
-    size: {
-      xs: { flex: 0, width: "$xs", height: "$xs" },
-      sm: { flex: 0, width: "$sm", height: "$sm" },
-      md: { flex: 0, width: "$md", height: "$md" },
-      lg: { flex: 0, width: "$lg", height: "$lg" },
-      xl: { flex: 0, width: "$xl", height: "$xl" },
-    },
-
-    flex: {
-      true: { flex: 1 },
-      false: { flex: 0 },
-    },
-  } as const,
-
-  defaultVariants: {
-    flex: true,
-  },
+  // Default to flex spacer
+  flex: 1,
 });
 
 export type RowProps = GetProps<typeof Row>;
