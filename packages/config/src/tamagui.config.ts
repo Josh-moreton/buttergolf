@@ -43,7 +43,6 @@ export const config = createTamagui({
     tokens: {
         ...defaultTokens,
         color: {
-            ...defaultConfig.tokens.color,
             ...butterGolfColors,
         },
     },
