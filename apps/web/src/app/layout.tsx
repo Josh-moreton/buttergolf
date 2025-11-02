@@ -4,6 +4,7 @@ import './globals.css'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 import { MarketplaceHeader } from './_components/header/MarketplaceHeader'
 import { AppPromoBanner } from './_components/AppPromoBanner'
+import { ServiceWorkerRegistration } from './_components/ServiceWorkerRegistration'
 
 // Using system fonts for better performance and reliability
 const fontVariables = '--font-geist-sans --font-geist-mono';
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         <NextTamaguiProvider>
+          <ServiceWorkerRegistration />
           <MarketplaceHeader />
           <AppPromoBanner />
           {children}

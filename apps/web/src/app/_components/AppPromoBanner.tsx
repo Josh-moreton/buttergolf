@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
 export function AppPromoBanner() {
@@ -13,13 +13,23 @@ export function AppPromoBanner() {
   const [isIOS, setIsIOS] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
 
+  const trackEvent = (eventName: string, properties?: Record<string, string | boolean>) => {
+    // TODO: Integrate with your analytics service
+    console.log('Analytics Event:', eventName, properties)
+    
+    // Example: window.gtag?.('event', eventName, properties)
+    // Example: window.analytics?.track(eventName, properties)
+  }
+
   useEffect(() => {
     // Check if running in standalone mode (already installed)
     const standalone = window.matchMedia('(display-mode: standalone)').matches
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsStandalone(standalone)
 
     // Check if iOS
-    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !('MSStream' in window)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsIOS(iOS)
 
     // Don't show banner if already dismissed or installed
@@ -55,15 +65,8 @@ export function AppPromoBanner() {
       clearTimeout(timer)
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
+   
   }, [])
-
-  const trackEvent = (eventName: string, properties?: Record<string, any>) => {
-    // TODO: Integrate with your analytics service
-    console.log('Analytics Event:', eventName, properties)
-    
-    // Example: window.gtag?.('event', eventName, properties)
-    // Example: window.analytics?.track(eventName, properties)
-  }
 
   const handleInstall = async () => {
     trackEvent('app_banner_clicked', { platform: isIOS ? 'ios' : 'android' })

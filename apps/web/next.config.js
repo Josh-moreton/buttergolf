@@ -1,6 +1,5 @@
 const { withTamagui } = require('@tamagui/next-plugin')
 const { join } = require('node:path')
-const path = require('node:path')
 
 const boolVals = {
   true: true,
@@ -49,7 +48,7 @@ module.exports = () => {
     experimental: {
       scrollRestoration: true,
     },
-    webpack: (webpackConfig, { isServer }) => {
+    webpack: (webpackConfig) => {
       // Map React Native to React Native Web for web builds
       webpackConfig.resolve.alias = {
         ...webpackConfig.resolve.alias,
