@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider, HomeScreen, RoundsScreen, routes } from '@buttergolf/app'
 import { OnboardingScreen } from '@buttergolf/app/src/features/onboarding'
 import { View as RNView, Text as RNText, Pressable as RNPressable, Platform } from 'react-native'
-// eslint-disable-next-line deprecation/deprecation
 import { ClerkProvider, SignedIn, SignedOut, useOAuth, useAuth } from '@clerk/clerk-expo'
 import * as SecureStore from 'expo-secure-store'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -115,9 +114,7 @@ export default function App() {
 }
 
 function OnboardingFlow() {
-  // eslint-disable-next-line deprecation/deprecation
   const { startOAuthFlow: startGoogle } = useOAuth({ strategy: 'oauth_google' })
-  // eslint-disable-next-line deprecation/deprecation
   const { startOAuthFlow: startApple } = useOAuth({ strategy: 'oauth_apple' })
 
   const handleOAuth = async (provider: 'google' | 'apple') => {

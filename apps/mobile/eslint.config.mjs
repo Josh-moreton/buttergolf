@@ -3,7 +3,15 @@ import { config as reactInternalConfig } from "@buttergolf/eslint-config/react-i
 const eslintConfig = [
   ...reactInternalConfig,
   {
-    // Expo-specific overrides can go here if needed
+    files: ["*.config.js", "*.config.mjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+      "no-undef": "off", // Config files run in Node.js
+      "turbo/no-undeclared-env-vars": "off",
+    },
+  },
+  {
+    // Expo-specific overrides
     rules: {
       // Add any Expo-specific rule customizations
     },

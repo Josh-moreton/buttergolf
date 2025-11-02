@@ -28,6 +28,7 @@ export const config = [
   {
     plugins: {
       "react-hooks": pluginReactHooks,
+      // deprecation: Not compatible with ESLint 9 yet
     },
     settings: { react: { version: "detect" } },
     rules: {
