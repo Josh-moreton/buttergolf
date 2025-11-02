@@ -1,30 +1,35 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { XStack, YStack, Text } from "@buttergolf/ui"
-import type { MenuItem } from "./menuData"
-import { ChevronDownIcon } from "./icons"
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { Row, Column, Text } from "@buttergolf/ui";
+import type { MenuItem } from "./menuData";
+import { ChevronDownIcon } from "./icons";
 
 interface DesktopMenuProps {
-  menuData: MenuItem[]
-  stickyMenu: boolean
+  menuData: MenuItem[];
+  stickyMenu: boolean;
 }
 
-export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>) {
-  const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
-  const pathname = usePathname()
+export function DesktopMenu({
+  menuData,
+  stickyMenu,
+}: Readonly<DesktopMenuProps>) {
+  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  const pathname = usePathname();
 
   return (
-    <XStack tag="nav" {...{ gap: "xl" as any }} alignItems="center">
+    <Row tag="nav" gap="$xl" align="center">
       {menuData.map((menuItem) => {
-        const hasSubmenu = Boolean(menuItem.submenu)
-        const isActive = menuItem.path && pathname.split("?")[0] === menuItem.path.split("?")[0]
-        const menuIndex = menuData.indexOf(menuItem)
+        const hasSubmenu = Boolean(menuItem.submenu);
+        const isActive =
+          menuItem.path &&
+          pathname.split("?")[0] === menuItem.path.split("?")[0];
+        const menuIndex = menuData.indexOf(menuItem);
 
         return (
-          <YStack
+          <Column
             key={menuItem.title}
             position="relative"
             onMouseEnter={() => setActiveDropdown(menuIndex)}
@@ -32,10 +37,10 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
           >
             {hasSubmenu ? (
               <>
-                <XStack
+                <Row
                   tag="button"
-                  alignItems="center"
-                  {...{ gap: "xs" as any }}
+                  align="center"
+                  gap="$xs"
                   cursor="pointer"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
                   {...{ style: { background: "none", border: "none" } }}
@@ -47,17 +52,19 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   >
                     {menuItem.title}
                   </Text>
-                  <YStack
+                  <Column
                     transform={
-                      activeDropdown === menuIndex ? [{ rotate: "180deg" }] : undefined
+                      activeDropdown === menuIndex
+                        ? [{ rotate: "180deg" }]
+                        : undefined
                     }
                     animation="quick"
                   >
                     <ChevronDownIcon />
-                  </YStack>
-                </XStack>
+                  </Column>
+                </Row>
 
-                <YStack
+                <Column
                   position="absolute"
                   left={0}
                   top="100%"
@@ -82,7 +89,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                       href={subItem.path || "#"}
                       style={{ textDecoration: "none" }}
                     >
-                      <XStack
+                      <Row
                         paddingHorizontal="$4"
                         paddingVertical="$2"
                         borderRadius="$3"
@@ -91,22 +98,26 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                         <Text
                           size="sm"
                           weight="medium"
-                          {...{ color: (
-                            subItem.path &&
-                            pathname.split("?")[0] === subItem.path.split("?")[0]
+                          {...{
+                            color: (subItem.path &&
+                            pathname.split("?")[0] ===
+                              subItem.path.split("?")[0]
                               ? "primary"
-                              : "default"
-                          ) as any }}
+                              : "default") as any,
+                          }}
                         >
                           {subItem.title}
                         </Text>
-                      </XStack>
+                      </Row>
                     </Link>
                   ))}
-                </YStack>
+                </Column>
               </>
             ) : (
-              <Link href={menuItem.path || "#"} style={{ textDecoration: "none" }}>
+              <Link
+                href={menuItem.path || "#"}
+                style={{ textDecoration: "none" }}
+              >
                 <Text
                   size="sm"
                   weight="medium"
@@ -117,9 +128,9 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                 </Text>
               </Link>
             )}
-          </YStack>
-        )
+          </Column>
+        );
       })}
-    </XStack>
-  )
+    </Row>
+  );
 }
