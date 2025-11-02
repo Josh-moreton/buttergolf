@@ -17,11 +17,10 @@ export default function AuthHeader() {
           </Link>
           <SignedOut>
             <SignInButton>
-              <Button size="md" tone="primary">Sign in</Button>
+              <Button size="$3">Sign in</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
-            {/* eslint-disable-next-line deprecation/deprecation */}
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </XStack>

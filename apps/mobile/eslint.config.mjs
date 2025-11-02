@@ -1,18 +1,21 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+import { config as reactInternalConfig } from "@buttergolf/eslint-config/react-internal";
 
 const eslintConfig = [
-  ...compat.config({
-    extends: ["expo", "@buttergolf/eslint-config/react-internal"],
-  }),
+  ...reactInternalConfig,
+  {
+    files: ["*.config.js", "*.config.mjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+      "no-undef": "off", // Config files run in Node.js
+      "turbo/no-undeclared-env-vars": "off",
+    },
+  },
+  {
+    // Expo-specific overrides
+    rules: {
+      // Add any Expo-specific rule customizations
+    },
+  },
 ];
 
 export default eslintConfig;

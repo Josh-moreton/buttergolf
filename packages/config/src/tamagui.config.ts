@@ -1,4 +1,4 @@
-import { defaultConfig, tokens as defaultTokens } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v4'
 import { themes as defaultThemes } from '@tamagui/themes'
 import { createTamagui } from 'tamagui'
 
@@ -153,11 +153,9 @@ export const config = createTamagui({
         },
     },
     tokens: {
-        ...defaultTokens,
-        color: {
-            ...defaultTokens.color,
-            ...butterGolfColors,
-        },
+        ...defaultConfig.tokens,
+        // Add custom color tokens (separate from theme colors)
+        color: butterGolfColors,
     },
     settings: {
         ...defaultConfig.settings,
