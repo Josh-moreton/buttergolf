@@ -12,7 +12,7 @@ export function CategoryButton({
   label,
   active = false,
   onPress,
-}: CategoryButtonProps) {
+}: Readonly<CategoryButtonProps>) {
   return (
     <Button
       size="$3"

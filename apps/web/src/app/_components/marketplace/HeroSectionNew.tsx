@@ -279,9 +279,9 @@ export function HeroSectionNew() {
               minHeight: 500,
             }}
           >
-            {FEATURED_CARDS.map((card, index) => (
+            {FEATURED_CARDS.map((card) => (
               <YStack
-                key={index}
+                key={card.id}
                 flex={1}
                 minWidth="45%"
                 $xl={{ 

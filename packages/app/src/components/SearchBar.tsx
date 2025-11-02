@@ -11,7 +11,7 @@ export interface SearchBarProps {
 export function SearchBar({
   placeholder = 'Search for golf equipment...',
   onSearch,
-}: SearchBarProps) {
+}: Readonly<SearchBarProps>) {
   return (
     <XStack
       width="100%"

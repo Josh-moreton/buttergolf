@@ -159,7 +159,7 @@ export function OnboardingScreen({
               opacity: 0.9,
             }}
             onPress={onSignUp}
-            accessibilityLabel="Sign up to Butter Golf"
+            aria-label="Sign up to Butter Golf"
             style={{
               shadowColor: '$primary',
               shadowRadius: 12,
@@ -184,7 +184,7 @@ export function OnboardingScreen({
               scale: 0.97,
             }}
             onPress={onSignIn}
-            accessibilityLabel="I already have an account"
+            aria-label="I already have an account"
           >
             <Text color="$text" fontSize="$5" fontWeight="600">
               I already have an account
@@ -197,7 +197,7 @@ export function OnboardingScreen({
           unstyled
           onPress={onAbout}
           padding="$3"
-          accessibilityLabel="About Butter Golf: Our platform"
+          aria-label="About Butter Golf: Our platform"
         >
           <Text fontSize="$4" color="$textSecondary" textAlign="center">
             About Butter Golf: Our platform

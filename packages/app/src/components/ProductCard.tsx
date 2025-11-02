@@ -3,7 +3,6 @@
 import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@buttergolf/ui'
 
 export interface ProductCardProps {
-  id: string
   title: string
   price: number
   imageUrl: string
@@ -17,7 +16,7 @@ export function ProductCard({
   imageUrl,
   condition,
   onPress,
-}: ProductCardProps) {
+}: Readonly<ProductCardProps>) {
   return (
     <Card
       variant="elevated"
