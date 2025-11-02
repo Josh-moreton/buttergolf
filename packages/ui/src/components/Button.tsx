@@ -12,8 +12,7 @@
  * ```
  */
 
-import { styled, GetProps } from 'tamagui'
-import { Button as TamaguiButton } from 'tamagui'
+import { styled, GetProps, Button as TamaguiButton } from 'tamagui'
 
 export const Button = styled(TamaguiButton, {
   name: 'Button',
@@ -192,4 +191,3 @@ export const Button = styled(TamaguiButton, {
 })
 
 export type ButtonProps = GetProps<typeof Button>
-export { TamaguiButton }

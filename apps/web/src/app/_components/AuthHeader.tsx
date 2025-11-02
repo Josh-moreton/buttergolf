@@ -6,7 +6,7 @@ import Link from "next/link"
 
 export default function AuthHeader() {
   return (
-    <YStack width="100%" padding="$3" borderBottomWidth={1} borderColor="$borderColor" backgroundColor="$background">
+    <YStack width="100%" padding="$3" borderBottomWidth={1} borderColor="$border" backgroundColor="$background">
       <XStack alignItems="center" justifyContent="space-between">
         <Link href="/">
           <Text fontSize="$5" fontWeight="700">ButterGolf</Text>
@@ -21,7 +21,7 @@ export default function AuthHeader() {
             </SignInButton>
           </SignedOut>
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
+            <UserButton />
           </SignedIn>
         </XStack>
       </XStack>

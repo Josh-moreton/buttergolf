@@ -14,7 +14,7 @@
  * ```
  */
 
-import { styled, GetProps, Text as TamaguiText, H1, H2, H3, H4, H5, H6, Label as TamaguiLabel } from 'tamagui'
+import { styled, GetProps, Text as TamaguiText, Label as TamaguiLabel } from 'tamagui'
 
 // Base Text Component
 export const Text = styled(TamaguiText, {
@@ -241,6 +241,3 @@ export const Label = styled(TamaguiLabel, {
 export type TextProps = GetProps<typeof Text>
 export type HeadingProps = GetProps<typeof Heading>
 export type LabelProps = GetProps<typeof Label>
-
-// Re-export native heading components for direct use
-export { H1, H2, H3, H4, H5, H6 }

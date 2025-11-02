@@ -14,15 +14,15 @@ export { config } from '@buttergolf/config'
 export type { AppConfig } from '@buttergolf/config'
 
 // Button Components
-export { Button, TamaguiButton } from './components/Button'
+export { Button } from './components/Button'
 export type { ButtonProps } from './components/Button'
 
 // Typography Components
-export { Text, Heading, Label, H1, H2, H3, H4, H5, H6 } from './components/Text'
+export { Text, Heading, Label } from './components/Text'
 export type { TextProps, HeadingProps, LabelProps } from './components/Text'
 
 // Layout Components
-export { Row, Column, Container, Spacer, XStack, YStack } from './components/Layout'
+export { Row, Column, Container, Spacer } from './components/Layout'
 export type { RowProps, ColumnProps, ContainerProps, SpacerProps } from './components/Layout'
 
 // Card Components
@@ -44,4 +44,3 @@ export { Image } from './components/Image'
 export type { ImageProps } from './components/Image'
 export { ScrollView } from './components/ScrollView'
 export type { ScrollViewProps } from './components/ScrollView'
-export { ThemeShowcase } from './components/ThemeShowcase'

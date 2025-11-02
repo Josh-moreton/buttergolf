@@ -201,6 +201,3 @@ export type RowProps = GetProps<typeof Row>
 export type ColumnProps = GetProps<typeof Column>
 export type ContainerProps = GetProps<typeof Container>
 export type SpacerProps = GetProps<typeof Spacer>
-
-// Re-export XStack and YStack for direct use
-export { XStack, YStack }
