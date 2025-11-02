@@ -11,7 +11,7 @@
   "dependencies": {
     "@buttergolf/db": "workspace:*",
     "@buttergolf/ui": "workspace:*",
-    "@tamagui/font-inter": "^1.135.6",
+    "@tamagui/font-inter": "^1.135.7",
     "@tamagui/lucide-icons": "^1.135.7",
     "@tamagui/next-theme": "^1.135.6",
     "@tamagui/polyfill-dev": "^1.135.6",
