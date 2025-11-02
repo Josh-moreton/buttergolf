@@ -13,7 +13,7 @@
     "@buttergolf/app": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@clerk/nextjs": "^6.34.1",
-    "@tamagui/core": "^1.135.6",
+    "@tamagui/core": "^1.135.7",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
