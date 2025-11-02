@@ -18,14 +18,20 @@ export function CategoryButton({
       size="$3"
       paddingHorizontal="$4"
       borderRadius="$10"
-      theme={active ? 'blue' : undefined}
-      backgroundColor={active ? '$blue10' : '$backgroundPress'}
-      borderColor={active ? '$blue10' : '$borderColor'}
-      pressStyle={{ scale: 0.97 }}
+      backgroundColor={active ? '$color9' : '$backgroundPress'}
+      borderColor={active ? '$color9' : '$borderColor'}
+      hoverStyle={{
+        backgroundColor: active ? '$color10' : '$backgroundHover',
+        borderColor: active ? '$color10' : '$borderColorHover',
+      }}
+      pressStyle={{ 
+        scale: 0.97,
+        backgroundColor: active ? '$color11' : '$backgroundPress',
+      }}
       onPress={onPress}
     >
       <Text
-        color={active ? '$color' : '$color'}
+        color={active ? '$background' : '$color'}
         fontWeight={active ? '600' : '400'}
       >
         {label}

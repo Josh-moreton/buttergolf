@@ -1,12 +1,12 @@
 'use client'
 
-import { YStack, H1, H3, Button, XStack } from '@buttergolf/ui'
+import { YStack, H1, H3, Button, XStack, Theme } from '@buttergolf/ui'
 import { SearchBar } from './SearchBar'
 
 export function HeroSection() {
   return (
     <YStack
-      backgroundColor="$background"
+      backgroundColor="$color1"
       paddingVertical="$8"
       paddingHorizontal="$4"
       alignItems="center"
@@ -15,10 +15,10 @@ export function HeroSection() {
       borderBottomColor="$borderColor"
     >
       <YStack alignItems="center" gap="$3" maxWidth={800}>
-        <H1 size="$10" textAlign="center" fontWeight="700">
+        <H1 size="$10" textAlign="center" fontWeight="700" color="$color12">
           Ready to declutter your golf bag?
         </H1>
-        <H3 size="$6" textAlign="center" opacity={0.7} fontWeight="400">
+        <H3 size="$6" textAlign="center" color="$color11" fontWeight="400">
           Buy and sell pre-owned golf equipment with ease
         </H3>
       </YStack>
@@ -26,17 +26,28 @@ export function HeroSection() {
       <SearchBar />
 
       <XStack gap="$3" flexWrap="wrap" justifyContent="center">
-        <Button size="$4" theme="blue" borderRadius="$10">
+        <Button 
+          size="$4" 
+          backgroundColor="$color9" 
+          color="$background"
+          borderRadius="$10"
+          hoverStyle={{ backgroundColor: '$color10' }}
+          pressStyle={{ backgroundColor: '$color11' }}
+        >
           Sell now
         </Button>
-        <Button
-          size="$4"
-          variant="outlined"
-          borderRadius="$10"
-          borderColor="$blue10"
-        >
-          Learn how it works
-        </Button>
+        <Theme name="amber">
+          <Button
+            size="$4"
+            backgroundColor="$color9"
+            color="$color12"
+            borderRadius="$10"
+            hoverStyle={{ backgroundColor: '$color10' }}
+            pressStyle={{ backgroundColor: '$color11' }}
+          >
+            Learn how it works
+          </Button>
+        </Theme>
       </XStack>
     </YStack>
   )

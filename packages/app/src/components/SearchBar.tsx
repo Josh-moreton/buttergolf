@@ -25,13 +25,23 @@ export function SearchBar({
         placeholder={placeholder}
         borderRadius="$10"
         paddingLeft="$4"
-        backgroundColor="$background"
+        backgroundColor="$backgroundStrong"
+        borderColor="$borderColor"
+        color="$color"
+        placeholderTextColor="$color11"
+        focusStyle={{
+          borderColor: '$borderColorFocus',
+          borderWidth: 2,
+        }}
       />
       <Button
         size="$4"
         icon={Search}
         borderRadius="$10"
-        theme="blue"
+        backgroundColor="$color9"
+        color="$background"
+        hoverStyle={{ backgroundColor: '$color10' }}
+        pressStyle={{ backgroundColor: '$color11' }}
         onPress={() => onSearch?.('')}
       >
         Search
