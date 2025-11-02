@@ -17,7 +17,7 @@ export default function AuthHeader() {
           </Link>
           <SignedOut>
             <SignInButton>
-              <Button size="$3" theme="blue">Sign in</Button>
+              <Button size="$3">Sign in</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>

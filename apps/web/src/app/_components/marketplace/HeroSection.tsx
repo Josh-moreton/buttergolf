@@ -21,7 +21,7 @@ export function HeroSection() {
               gear in minutes.
             </Text>
             <XStack gap="$3" flexWrap="wrap">
-              <Button size="$5" theme="blue">Browse listings</Button>
+              <Button size="$5">Browse listings</Button>
               <Button size="$5" variant="outlined">Sell your clubs</Button>
             </XStack>
           </YStack>
