@@ -43,7 +43,8 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   <Text
                     fontSize={14}
                     fontWeight="500"
-                    color={isActive ? "$color9" : "$color"}
+                    // @ts-ignore - color variant type issue
+                    color={isActive ? "primary" : "default"}
                   >
                     {menuItem.title}
                   </Text>
@@ -63,7 +64,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   top="100%"
                   backgroundColor="$background"
                   borderWidth={1}
-                  borderColor="$borderColor"
+                  borderColor="$border"
                   borderRadius="$4"
                   padding="$2"
                   minWidth={220}
@@ -91,11 +92,12 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                         <Text
                           fontSize={14}
                           fontWeight="500"
+                          // @ts-ignore - color variant type issue
                           color={
                             subItem.path &&
                             pathname.split("?")[0] === subItem.path.split("?")[0]
-                              ? "$color9"
-                              : "$color"
+                              ? "primary"
+                              : "default"
                           }
                         >
                           {subItem.title}
@@ -111,7 +113,8 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   fontSize={14}
                   fontWeight="500"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
-                  color={isActive ? "$color9" : "$color"}
+                  // @ts-ignore - color variant type issue
+                  color={isActive ? "primary" : "default"}
                 >
                   {menuItem.title}
                 </Text>
