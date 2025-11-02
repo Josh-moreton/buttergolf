@@ -222,14 +222,8 @@ export const Label = styled(TamaguiLabel, {
       },
     },
 
-    required: {
-      true: {
-        '::after': {
-          content: '" *"',
-          color: '$error',
-        },
-      },
-    },
+    // Note: For required indicators, use a separate Text component for cross-platform compatibility
+    // Example: <Row><Label>Name</Label><Text color="$error">*</Text></Row>
 
     disabled: {
       true: {

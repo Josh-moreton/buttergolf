@@ -168,24 +168,24 @@ export const Spacer = styled(View, {
   variants: {
     size: {
       xs: { 
-        width: 4, 
-        height: 4,
+        width: '$1', 
+        height: '$1',
       },
       sm: { 
-        width: 8, 
-        height: 8,
+        width: '$2', 
+        height: '$2',
       },
       md: { 
-        width: 16, 
-        height: 16,
+        width: '$4', 
+        height: '$4',
       },
       lg: { 
-        width: 24, 
-        height: 24,
+        width: '$6', 
+        height: '$6',
       },
       xl: { 
-        width: 32, 
-        height: 32,
+        width: '$8', 
+        height: '$8',
       },
     },
 

@@ -312,10 +312,8 @@ export const config = createTamagui({
     // Enable animations by default
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
-    // Dev-specific optimizations
-    ...(process.env.NODE_ENV === 'development' && {
-      fastSchemeChange: true,
-    }),
+    // Dev-specific optimizations (extracted for better tree-shaking)
+    fastSchemeChange: process.env.NODE_ENV === 'development',
   },
 })
 

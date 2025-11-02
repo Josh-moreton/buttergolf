@@ -26,12 +26,10 @@ export const Input = styled(TamaguiInput, {
   fontFamily: '$body',
   outlineWidth: 0,
   
-  // Focus styles
+  // Focus styles (using border for better cross-platform support)
   focusStyle: {
     borderColor: '$borderFocus',
-    outlineColor: '$borderFocus',
-    outlineWidth: 2,
-    outlineOffset: 0,
+    borderWidth: 2,
   },
   
   // Hover styles
@@ -71,7 +69,7 @@ export const Input = styled(TamaguiInput, {
         
         focusStyle: {
           borderColor: '$error',
-          outlineColor: '$error',
+          borderWidth: 2,
         },
         
         hoverStyle: {
@@ -86,7 +84,7 @@ export const Input = styled(TamaguiInput, {
         
         focusStyle: {
           borderColor: '$success',
-          outlineColor: '$success',
+          borderWidth: 2,
         },
       },
     },

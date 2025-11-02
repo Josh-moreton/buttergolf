@@ -22,13 +22,16 @@ export const Spinner = styled(TamaguiSpinner, {
   variants: {
     size: {
       sm: {
-        size: 'small',
+        width: '$4',
+        height: '$4',
       },
       md: {
-        size: 'medium',
+        width: '$5',
+        height: '$5',
       },
       lg: {
-        size: 'large',
+        width: '$6',
+        height: '$6',
       },
     },
   } as const,

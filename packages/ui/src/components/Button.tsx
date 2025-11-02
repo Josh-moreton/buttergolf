@@ -76,9 +76,9 @@ export const Button = styled(TamaguiButton, {
         },
         
         focusStyle: {
-          outlineColor: '$primaryFocus',
-          outlineWidth: 2,
-          outlineOffset: 2,
+          shadowColor: '$primaryFocus',
+          shadowRadius: 4,
+          shadowOffset: { width: 0, height: 0 },
         },
       },
 
@@ -96,9 +96,9 @@ export const Button = styled(TamaguiButton, {
         },
         
         focusStyle: {
-          outlineColor: '$secondaryFocus',
-          outlineWidth: 2,
-          outlineOffset: 2,
+          shadowColor: '$secondaryFocus',
+          shadowRadius: 4,
+          shadowOffset: { width: 0, height: 0 },
         },
       },
 
@@ -119,9 +119,8 @@ export const Button = styled(TamaguiButton, {
         },
         
         focusStyle: {
-          outlineColor: '$primaryFocus',
-          outlineWidth: 2,
-          outlineOffset: 2,
+          borderWidth: 2,
+          borderColor: '$primaryFocus',
         },
       },
 
@@ -139,9 +138,7 @@ export const Button = styled(TamaguiButton, {
         },
         
         focusStyle: {
-          outlineColor: '$borderFocus',
-          outlineWidth: 2,
-          outlineOffset: 2,
+          backgroundColor: '$backgroundPress',
         },
       },
 
