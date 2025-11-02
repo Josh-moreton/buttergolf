@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { YStack, XStack, Text, Image, Button, Card } from "@buttergolf/ui"
+import { Row, Column, Text, Image, Button, Card } from "@buttergolf/ui"
 
 // Temporary mock fetcher – replace with Prisma once models exist
 const MOCK = {
@@ -50,20 +50,20 @@ export default function ProductPage() {
   const product = (MOCK as Record<string, any>)[slug as string]
   if (!product) {
     return (
-      <YStack paddingTop={160} alignItems="center" justifyContent="center" minHeight="60vh">
+      <Column paddingTop={160} align="center" justify="center" minHeight="60vh">
         <Text fontSize="$8" fontWeight="700">Product not found</Text>
         <Link href="/" style={{ textDecoration: "none", marginTop: 12 }}>
           <Text {...{ color: "$info" as any }} hoverStyle={{ color: "$infoLight" as any }}>Go back home</Text>
         </Link>
-      </YStack>
+      </Column>
     )
   }
 
   return (
-    <YStack paddingTop="$16" backgroundColor="$background">
-      <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" paddingVertical="$6" gap="$4">
+    <Column paddingTop="$16" backgroundColor="$background">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" paddingVertical="$6" {...{ gap: "lg" as any }}>
         {/* Breadcrumbs */}
-        <XStack gap="$2" alignItems="center">
+        <Row {...{ gap: "xs" as any }} align="center">
           <Link href="/" style={{ textDecoration: "none" }}>
             <Text {...{ color: "$info" as any }} hoverStyle={{ color: "$infoLight" as any }}>Home</Text>
           </Link>
@@ -73,35 +73,35 @@ export default function ProductPage() {
           </Link>
           <Text {...{ color: "$textMuted" as any }}>/</Text>
           <Text fontWeight="700">{product.title}</Text>
-        </XStack>
+        </Row>
 
-        <XStack gap="$6" flexDirection="column" $xl={{ flexDirection: "row" }}>
+        <Row {...{ gap: "xl" as any }} flexDirection="column" $xl={{ flexDirection: "row" }}>
           {/* Left: Image */}
           <Card flexBasis="0%" $xl={{ flex: 1 }} overflow="hidden" bordered elevate>
             <Image source={{ uri: product.image }} width="100%" height={520} objectFit="cover" />
           </Card>
 
           {/* Right: Details */}
-          <YStack flexBasis="0%" $xl={{ flex: 1 }} gap="$4">
+          <Column flexBasis="0%" $xl={{ flex: 1 }} {...{ gap: "lg" as any }}>
             <Text fontSize="$9" fontWeight="800">{product.title}</Text>
-            <XStack gap="$3" alignItems="center">
+            <Row {...{ gap: "sm" as any }} align="center">
               <Text fontSize="$8" fontWeight="800">£{product.price}</Text>
               <Text {...{ color: "$textSecondary" as any }}>{String(product.condition).replace("_", " ")}</Text>
-            </XStack>
+            </Row>
             <Text {...{ color: "$textSecondary" as any }}>{product.description}</Text>
 
-            <XStack gap="$3">
+            <Row {...{ gap: "sm" as any }}>
               <Button size="$4">Add to cart</Button>
               <Button size="$4" variant="outlined">Add to wishlist</Button>
-            </XStack>
+            </Row>
 
-            <YStack gap="$2">
+            <Column {...{ gap: "xs" as any }}>
               <Text fontWeight="700">Specifications</Text>
               <Text {...{ color: "$textSecondary" as any }}>• Shaft: Regular flex\n• Grip: Standard\n• Hand: Right</Text>
-            </YStack>
-          </YStack>
-        </XStack>
-      </YStack>
-    </YStack>
+            </Column>
+          </Column>
+        </Row>
+      </Column>
+    </Column>
   )
 }

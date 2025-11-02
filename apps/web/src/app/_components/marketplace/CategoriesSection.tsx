@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Text, YStack, XStack, ScrollView, Card } from "@buttergolf/ui"
+import { Button, Text, Row, Column, ScrollView, Card } from "@buttergolf/ui"
 
 const CATEGORIES = [
   { key: "drivers", label: "Drivers" },
@@ -16,11 +16,11 @@ const CATEGORIES = [
 
 export function CategoriesSection() {
   return (
-    <YStack paddingVertical="$6">
-      <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" gap="$4">
+    <Column paddingVertical="$6">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" {...{ gap: "lg" as any }}>
         <Text fontSize="$8" fontWeight="700">Shop by category</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <XStack gap="$3" paddingVertical="$2">
+          <Row {...{ gap: "sm" as any }} paddingVertical="$2">
             {CATEGORIES.map((c) => (
               <Card key={c.key} {...{ padding: 16 as any }} borderRadius="$4">
                 <Button size="md" tone="outline">
@@ -28,9 +28,9 @@ export function CategoriesSection() {
                 </Button>
               </Card>
             ))}
-          </XStack>
+          </Row>
         </ScrollView>
-      </YStack>
-    </YStack>
+      </Column>
+    </Column>
   )
 }

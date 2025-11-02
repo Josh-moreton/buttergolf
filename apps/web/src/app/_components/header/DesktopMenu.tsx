@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { YStack, XStack, Text } from "@buttergolf/ui"
+import { Row, Column, Text } from "@buttergolf/ui"
 import type { MenuItem } from "./menuData"
 import { ChevronDownIcon } from "./icons"
 
@@ -17,14 +17,14 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
   const pathname = usePathname()
 
   return (
-    <XStack tag="nav" gap="$6" alignItems="center">
+    <Row tag="nav" {...{ gap: "xl" as any }} align="center">
       {menuData.map((menuItem) => {
         const hasSubmenu = Boolean(menuItem.submenu)
         const isActive = menuItem.path && pathname.split("?")[0] === menuItem.path.split("?")[0]
         const menuIndex = menuData.indexOf(menuItem)
 
         return (
-          <YStack
+          <Column
             key={menuItem.title}
             position="relative"
             onMouseEnter={() => setActiveDropdown(menuIndex)}
@@ -32,10 +32,10 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
           >
             {hasSubmenu ? (
               <>
-                <XStack
+                <Row
                   tag="button"
-                  alignItems="center"
-                  gap="$1"
+                  align="center"
+                  {...{ gap: "xs" as any }}
                   cursor="pointer"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
                   {...{ style: { background: "none", border: "none" } }}
@@ -48,17 +48,17 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   >
                     {menuItem.title}
                   </Text>
-                  <YStack
+                  <Column
                     transform={
                       activeDropdown === menuIndex ? [{ rotate: "180deg" }] : undefined
                     }
                     animation="quick"
                   >
                     <ChevronDownIcon />
-                  </YStack>
-                </XStack>
+                  </Column>
+                </Row>
 
-                <YStack
+                <Column
                   position="absolute"
                   left={0}
                   top="100%"
@@ -83,7 +83,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                       href={subItem.path || "#"}
                       style={{ textDecoration: "none" }}
                     >
-                      <XStack
+                      <Row
                         paddingHorizontal="$4"
                         paddingVertical="$2"
                         borderRadius="$3"
@@ -102,10 +102,10 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                         >
                           {subItem.title}
                         </Text>
-                      </XStack>
+                      </Row>
                     </Link>
                   ))}
-                </YStack>
+                </Column>
               </>
             ) : (
               <Link href={menuItem.path || "#"} style={{ textDecoration: "none" }}>
@@ -120,9 +120,9 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                 </Text>
               </Link>
             )}
-          </YStack>
+          </Column>
         )
       })}
-    </XStack>
+    </Row>
   )
 }

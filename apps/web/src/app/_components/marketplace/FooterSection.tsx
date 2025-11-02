@@ -1,29 +1,29 @@
 "use client"
 
-import { Text, YStack, XStack } from "@buttergolf/ui"
+import { Text, Row, Column } from "@buttergolf/ui"
 
 export function FooterSection() {
   return (
-    <YStack paddingVertical="$8" borderTopWidth={1} borderColor="$border">
-      <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" gap="$6">
-        <XStack gap="$8" $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
-          <YStack flex={1} gap="$2">
+    <Column paddingVertical="$8" borderTopWidth={1} borderColor="$border">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" {...{ gap: "xl" as any }}>
+        <Row {...{ gap: "2xl" as any }} $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
+          <Column flex={1} {...{ gap: "xs" as any }}>
             <Text fontWeight="800">ButterGolf</Text>
             <Text>Peer‑to‑peer marketplace for golf gear.</Text>
-          </YStack>
-          <YStack flex={1} gap="$2">
+          </Column>
+          <Column flex={1} {...{ gap: "xs" as any }}>
             <Text fontWeight="700">Help</Text>
             <Text>Support</Text>
             <Text>Safety</Text>
-          </YStack>
-          <YStack flex={1} gap="$2">
+          </Column>
+          <Column flex={1} {...{ gap: "xs" as any }}>
             <Text fontWeight="700">Company</Text>
             <Text>About</Text>
             <Text>Contact</Text>
-          </YStack>
-        </XStack>
+          </Column>
+        </Row>
         <Text opacity={0.7}>© {new Date().getFullYear()} ButterGolf</Text>
-      </YStack>
-    </YStack>
+      </Column>
+    </Column>
   )
 }

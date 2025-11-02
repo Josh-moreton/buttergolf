@@ -1,18 +1,18 @@
 "use client"
 
-import { Button, Text, YStack, XStack, Card, Image } from "@buttergolf/ui"
+import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui"
 
 export function HeroSection() {
   return (
-    <YStack backgroundColor="$background" paddingVertical="$10">
-      <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4">
-        <XStack
+    <Column backgroundColor="$background" paddingVertical="$10">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4">
+        <Row
           $sm={{ flexDirection: "column" }}
           $lg={{ flexDirection: "row" }}
-          gap="$6"
-          alignItems="center"
+          {...{ gap: "xl" as any }}
+          align="center"
         >
-          <YStack flex={1} gap="$4">
+          <Column flex={1} {...{ gap: "lg" as any }}>
             <Text fontSize="$10" fontWeight="800" lineHeight={44}>
               Buy & sell golf clubs peer‑to‑peer
             </Text>
@@ -20,13 +20,13 @@ export function HeroSection() {
               Find great deals on drivers, irons, putters and more — or list your
               gear in minutes.
             </Text>
-            <XStack gap="$3" flexWrap="wrap">
+            <Row {...{ gap: "sm" as any }} wrap={true}>
               <Button size="lg">Browse listings</Button>
               <Button size="lg" tone="outline">Sell your clubs</Button>
-            </XStack>
-          </YStack>
+            </Row>
+          </Column>
 
-          <YStack flex={1} gap="$4">
+          <Column flex={1} {...{ gap: "lg" as any }}>
             <Card backgroundColor="$background" {...{ padding: 0 as any }}>
               <Image
                 source={{ uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200" }}
@@ -36,7 +36,7 @@ export function HeroSection() {
                 borderRadius="$4"
               />
             </Card>
-            <XStack gap="$4" $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
+            <Row {...{ gap: "lg" as any }} $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
               <Card flex={1} {...{ padding: 16 as any }}>
                 <Text fontWeight="700">Featured</Text>
                 <Text>Hot deals this week</Text>
@@ -45,10 +45,10 @@ export function HeroSection() {
                 <Text fontWeight="700">Fast listing</Text>
                 <Text>Create a post in 60 seconds</Text>
               </Card>
-            </XStack>
-          </YStack>
-        </XStack>
-      </YStack>
-    </YStack>
+            </Row>
+          </Column>
+        </Row>
+      </Column>
+    </Column>
   )
 }

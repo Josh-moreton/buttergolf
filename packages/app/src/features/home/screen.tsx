@@ -1,6 +1,6 @@
 'use client'
 
-import { YStack, ScrollView } from '@buttergolf/ui'
+import { Column, ScrollView } from '@buttergolf/ui'
 import { HeroSection } from '../../components/HeroSection'
 import { CategoriesSection } from '../../components/CategoriesSection'
 import { ProductGrid } from '../../components/ProductGrid'
@@ -69,12 +69,12 @@ const sampleProducts: ProductCardProps[] = [
 export function HomeScreen() {
   return (
     <ScrollView flex={1} backgroundColor="$background">
-      <YStack flex={1}>
+      <Column flex={1}>
         <HeroSection />
         <CategoriesSection />
         <ProductGrid title="Featured Items" products={sampleProducts} />
         <ProductGrid title="Recently Added" products={sampleProducts.slice(0, 4)} />
-      </YStack>
+      </Column>
     </ScrollView>
   )
 }
