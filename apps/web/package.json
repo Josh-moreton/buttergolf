@@ -13,18 +13,18 @@
     "@buttergolf/app": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@clerk/nextjs": "^6.34.1",
-    "@tamagui/core": "^1.135.7",
+    "@tamagui/core": "catalog:",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native-web": "^0.21.2",
     "solito": "^5.0.0",
     "svix": "^1.81.0",
-    "tamagui": "^1.135.7"
+    "tamagui": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@tamagui/next-plugin": "^1.135.7",
+    "@tamagui/next-plugin": "catalog:",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

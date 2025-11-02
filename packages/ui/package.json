@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@buttergolf/config": "workspace:*",
-    "@tamagui/card": "^1.135.7",
-    "@tamagui/toast": "^1.135.7",
-    "tamagui": "^1.135.7"
+    "@tamagui/card": "catalog:",
+    "@tamagui/toast": "catalog:",
+    "tamagui": "catalog:"
   },
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",
