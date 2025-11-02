@@ -448,6 +448,8 @@ export const config = createTamagui({
         light_warning,
         dark_warning,
     },
+    // Include fonts from defaultConfig
+    fonts: defaultConfig.fonts,
     settings: {
         ...defaultConfig.settings,
         onlyAllowShorthands: false,
