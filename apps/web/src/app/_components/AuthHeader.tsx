@@ -13,11 +13,11 @@ export default function AuthHeader() {
         </Link>
         <XStack alignItems="center" gap="$3">
           <Link href="/rounds">
-            <Button size="$3" variant="outlined">Rounds</Button>
+            <Button size="md" tone="outline">Rounds</Button>
           </Link>
           <SignedOut>
             <SignInButton>
-              <Button size="$3" theme="blue">Sign in</Button>
+              <Button size="md" tone="primary">Sign in</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
