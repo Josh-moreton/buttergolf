@@ -67,7 +67,6 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       position={isActive ? "relative" : "absolute"}
       width="100%"
       height="100%"
-      flexDirection="row"
       align="center"
       paddingHorizontal="$8"
       paddingVertical="$6"
@@ -207,9 +206,8 @@ export function HeroSectionNew() {
   return (
     <Column backgroundColor="$background" paddingVertical="$12">
       <Column maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
-        <Row
+        <Column
           {...{ gap: "xl" as any }}
-          flexDirection="column"
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
           width="100%"
         >
@@ -266,13 +264,11 @@ export function HeroSectionNew() {
           {/* Featured Cards - 1/3 width on desktop */}
           <Column
             {...{ gap: "lg" as any }}
-            flexDirection="column"
             width="100%"
             $xl={{ 
               flexGrow: 1,
               flexShrink: 1,
               flexBasis: '0%',
-              flexDirection: "column",
               minWidth: 0,
               width: "auto",
               alignSelf: 'stretch',
@@ -294,7 +290,7 @@ export function HeroSectionNew() {
               </Column>
             ))}
           </Column>
-        </Row>
+        </Column>
       </Column>
     </Column>
   )

@@ -1,6 +1,10 @@
 'use client'
 
-import { Card, CardHeader, CardFooter, Image, Text, Row, Column } from '@buttergolf/ui'
+import { Card, Image, Text, Row, Column } from '@buttergolf/ui'
+
+// Use compound component pattern
+const CardHeader = (Card as any).Header
+const CardFooter = (Card as any).Footer
 
 export interface ProductCardProps {
   id: string
