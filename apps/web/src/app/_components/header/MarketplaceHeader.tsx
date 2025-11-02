@@ -50,9 +50,9 @@ export function MarketplaceHeader() {
         shadowOffset: { width: 0, height: 2 },
       })}
     >
-      {/* Top Bar - Dark Background */}
+      {/* Top Bar - Dark Theme Background */}
       <XStack
-        backgroundColor="$textDark"
+        backgroundColor="$color12"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
         justifyContent="center"
@@ -64,7 +64,7 @@ export function MarketplaceHeader() {
           alignItems="center"
         >
           <XStack display="none" $lg={{ display: "flex" }}>
-            <Text color="white" fontSize={14} fontWeight="500">
+            <Text color="$color1" fontSize={14} fontWeight="500">
               Get free delivery on orders over £100
             </Text>
           </XStack>
@@ -78,13 +78,13 @@ export function MarketplaceHeader() {
                 onPress={() => { setAuthMode("sign-up"); setAuthOpen(true) }}
               >
                 <Text
-                  color="white"
+                  color="$color1"
                   fontSize={14}
                   fontWeight="500"
                   paddingRight="$3"
                   borderRightWidth={1}
-                  borderColor="rgba(255,255,255,0.2)"
-                  hoverStyle={{ color: "$blueLight" }}
+                  borderColor="$color9"
+                  hoverStyle={{ color: "$color9" }}
                 >
                   Create an account
                 </Text>
@@ -96,18 +96,18 @@ export function MarketplaceHeader() {
                 onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
               >
                 <Text
-                  color="white"
+                  color="$color1"
                   fontSize={14}
                   fontWeight="500"
                   paddingLeft="$3"
-                  hoverStyle={{ color: "$blueLight" }}
+                  hoverStyle={{ color: "$color9" }}
                 >
                   Sign In
                 </Text>
               </XStack>
             </SignedOut>
             <SignedIn>
-              <Text color="white" fontSize={14} fontWeight="500">
+              <Text color="$color1" fontSize={14} fontWeight="500">
                 Welcome back!
               </Text>
             </SignedIn>
@@ -126,18 +126,18 @@ export function MarketplaceHeader() {
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
             <XStack alignItems="center" gap="$2" paddingVertical="$2">
-              <Text fontSize={24} fontWeight="800" color="$color">
+              <Text fontSize={24} fontWeight="800" color="$color12">
                 ButterGolf
               </Text>
               <XStack
-                backgroundColor="$teal"
+                backgroundColor="$color9"
                 paddingHorizontal="$3"
                 paddingVertical="$1"
                 borderRadius="$3"
                 borderTopRightRadius="$4"
                 borderBottomRightRadius="$4"
               >
-                <Text color="white" fontSize={14} fontWeight="500">
+                <Text color="$background" fontSize={14} fontWeight="500">
                   Beta
                 </Text>
               </XStack>
@@ -189,12 +189,12 @@ export function MarketplaceHeader() {
                     right={-6}
                     width={18}
                     height={18}
-                    backgroundColor="$red"
+                    backgroundColor="$color9"
                     borderRadius={9}
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Text color="white" fontSize={10} fontWeight="400">
+                    <Text color="$background" fontSize={10} fontWeight="400">
                       {wishlistCount}
                     </Text>
                   </XStack>
@@ -212,12 +212,12 @@ export function MarketplaceHeader() {
                     right={-6}
                     width={18}
                     height={18}
-                    backgroundColor="$red"
+                    backgroundColor="$color9"
                     borderRadius={9}
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Text color="white" fontSize={10} fontWeight="400">
+                    <Text color="$background" fontSize={10} fontWeight="400">
                       {cartCount}
                     </Text>
                   </XStack>

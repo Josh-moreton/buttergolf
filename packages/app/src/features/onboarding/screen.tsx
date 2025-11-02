@@ -80,7 +80,7 @@ export function OnboardingScreen({
   return (
     <YStack
       flex={1}
-      backgroundColor="$bg"
+      backgroundColor="$background"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
@@ -109,7 +109,7 @@ export function OnboardingScreen({
         </View>
         <Text
           fontSize="$2"
-          color="$muted"
+          color="$color11"
           marginTop="$5"
           textAlign="center"
           fontWeight="500"
@@ -129,7 +129,7 @@ export function OnboardingScreen({
             fontSize="$9"
             fontWeight="700"
             textAlign="center"
-            color="$text"
+            color="$color12"
             lineHeight={36}
             fontFamily={(Platform.OS === 'ios' ? 'Georgia' : 'serif') as any}
           >
@@ -139,7 +139,7 @@ export function OnboardingScreen({
             fontSize="$5"
             fontWeight="500"
             textAlign="center"
-            color="$muted"
+            color="$color11"
             lineHeight={22}
           >
             Buy, sell, and play smarter
@@ -151,10 +151,10 @@ export function OnboardingScreen({
           <Button
             size="$5"
             height={56}
-            backgroundColor="$green500"
+            backgroundColor="$color9"
             borderRadius={16}
             pressStyle={{
-              backgroundColor: '$green700',
+              backgroundColor: '$color11',
               scale: 0.97,
               opacity: 0.9,
             }}
@@ -162,13 +162,13 @@ export function OnboardingScreen({
             // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="Sign up to Butter Golf"
             style={{
-              shadowColor: '$green500',
+              shadowColor: '$color9',
               shadowRadius: 12,
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.3,
             }}
           >
-            <Text color="white" fontSize="$6" fontWeight="700">
+            <Text color="$background" fontSize="$6" fontWeight="700">
               Sign up to Butter Golf
             </Text>
           </Button>
@@ -177,18 +177,18 @@ export function OnboardingScreen({
             size="$5"
             height={56}
             backgroundColor="transparent"
-            borderColor="$text"
+            borderColor="$color12"
             borderWidth={2}
             borderRadius={16}
             pressStyle={{
-              backgroundColor: 'rgba(15, 23, 32, 0.04)',
+              backgroundColor: '$color2',
               scale: 0.97,
             }}
             onPress={onSignIn}
             // eslint-disable-next-line deprecation/deprecation
             accessibilityLabel="I already have an account"
           >
-            <Text color="$text" fontSize="$5" fontWeight="600">
+            <Text color="$color12" fontSize="$5" fontWeight="600">
               I already have an account
             </Text>
           </Button>
@@ -202,7 +202,7 @@ export function OnboardingScreen({
           // eslint-disable-next-line deprecation/deprecation
           accessibilityLabel="About Butter Golf: Our platform"
         >
-          <Text fontSize="$4" color="$muted" textAlign="center">
+          <Text fontSize="$4" color="$color11" textAlign="center">
             About Butter Golf: Our platform
           </Text>
         </Button>

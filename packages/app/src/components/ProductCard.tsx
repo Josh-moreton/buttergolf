@@ -24,6 +24,13 @@ export function ProductCard({
       size="$4"
       bordered
       animation="bouncy"
+      backgroundColor="$backgroundStrong"
+      borderColor="$borderColor"
+      hoverStyle={{
+        borderColor: '$borderColorHover',
+        shadowColor: '$shadowColorHover',
+        shadowRadius: 12,
+      }}
       pressStyle={{ scale: 0.98 }}
       cursor="pointer"
       onPress={onPress}
@@ -38,7 +45,7 @@ export function ProductCard({
           objectFit="cover"
           borderTopLeftRadius="$4"
           borderTopRightRadius="$4"
-          backgroundColor="$background"
+          backgroundColor="$color2"
         />
       </Card.Header>
       <Card.Footer padding="$3">
@@ -48,16 +55,17 @@ export function ProductCard({
             fontWeight="600"
             numberOfLines={2}
             ellipse
+            color="$color"
           >
             {title}
           </Text>
           {condition && (
-            <Text fontSize="$2" color="$color">
+            <Text fontSize="$2" color="$color11">
               {condition}
             </Text>
           )}
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$5" fontWeight="700">
+            <Text fontSize="$5" fontWeight="700" color="$color12">
               ${price.toFixed(2)}
             </Text>
           </XStack>

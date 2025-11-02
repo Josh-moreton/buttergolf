@@ -43,7 +43,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   <Text
                     fontSize={14}
                     fontWeight="500"
-                    color={isActive ? "$blue10" : "$color"}
+                    color={isActive ? "$color9" : "$color"}
                   >
                     {menuItem.title}
                   </Text>
@@ -94,7 +94,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                           color={
                             subItem.path &&
                             pathname.split("?")[0] === subItem.path.split("?")[0]
-                              ? "$blue10"
+                              ? "$color9"
                               : "$color"
                           }
                         >
@@ -111,7 +111,7 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   fontSize={14}
                   fontWeight="500"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
-                  color={isActive ? "$blue10" : "$color"}
+                  color={isActive ? "$color9" : "$color"}
                 >
                   {menuItem.title}
                 </Text>
