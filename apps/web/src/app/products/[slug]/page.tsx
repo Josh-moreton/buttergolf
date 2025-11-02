@@ -60,7 +60,7 @@ export default function ProductPage() {
   }
 
   return (
-    <YStack paddingTop={140} backgroundColor="$bgGray">
+    <YStack paddingTop="$16" backgroundColor="$bgGray">
       <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" paddingVertical="$6" gap="$4">
         {/* Breadcrumbs */}
         <XStack gap="$2" alignItems="center">
