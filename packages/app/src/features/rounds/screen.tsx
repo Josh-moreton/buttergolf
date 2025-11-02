@@ -10,7 +10,7 @@ export function RoundsScreen() {
   return (
     <YStack flex={1} padding="$4" gap="$4" backgroundColor="$background">
       <H2>Your Rounds</H2>
-      <Text fontSize="$4" color="$color">
+      <Text size="md">
         Round tracking coming soon! This will connect to your Prisma database.
       </Text>
       <Button {...homeLink} size="$3">

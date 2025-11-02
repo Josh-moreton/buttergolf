@@ -74,38 +74,38 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
     >
       <YStack flex={1} gap="$3" maxWidth={420} paddingRight="$4">
         <XStack alignItems="flex-start" gap="$3">
-          <Text fontSize={64} fontWeight="700" color="$blue" lineHeight={64}>
+          <Text fontSize={64} fontWeight="700" {...{ color: "$info" as any }} lineHeight={64}>
             {item.discount}%
           </Text>
           <YStack marginTop="$2">
-            <Text fontSize={16} fontWeight="600" textTransform="uppercase" color="$textDark">
+            <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
               SALE
             </Text>
-            <Text fontSize={16} fontWeight="600" textTransform="uppercase" color="$textDark">
+            <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
               OFF
             </Text>
           </YStack>
         </XStack>
 
         <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-          <Text fontSize={28} fontWeight="700" color="$textDark" hoverStyle={{ color: "$blue" }}>
+          <Text fontSize={28} fontWeight="700" {...{ color: "$text" as any }} hoverStyle={{ color: "$info" as any }}>
             {item.title}
           </Text>
         </Link>
 
-        <Text color="$textDark" opacity={0.6} fontSize={15}>
+        <Text {...{ color: "$textSecondary" as any }} fontSize={15}>
           {item.description}
         </Text>
 
         <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Button
-            backgroundColor="$textDark"
-            color="white"
+            backgroundColor="$text"
+            {...{ color: "$textInverse" as any }}
             paddingHorizontal="$8"
             paddingVertical="$3"
             borderRadius="$3"
             marginTop="$2"
-            hoverStyle={{ backgroundColor: "$blue" }}
+            hoverStyle={{ backgroundColor: "$info" }}
           >
             Shop Now
           </Button>
@@ -131,10 +131,10 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       <Card
         flex={1}
         height="100%"
-        backgroundColor="$bgCard"
+        backgroundColor="$card"
         borderWidth={0}
         borderRadius="$4"
-        padding="$5"
+        {...{ padding: '$5' as any }}
         overflow="hidden"
         cursor="pointer"
         animation="quick"
@@ -149,10 +149,10 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         <YStack height="100%" justifyContent="space-between">
           {/* Top: Text content */}
           <YStack gap="$2">
-            <Text fontSize={18} fontWeight="700" color="$textDark" numberOfLines={2}>
+            <Text fontSize={18} fontWeight="700" {...{ color: "$text" as any }} numberOfLines={2}>
               {item.title}
             </Text>
-            <Text fontSize={13} color="$textDark" opacity={0.6}>
+            <Text fontSize={13} {...{ color: "$textSecondary" as any }}>
               {item.subtitle}
             </Text>
           </YStack>
@@ -160,19 +160,18 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           {/* Bottom: Price and Image side by side */}
           <XStack alignItems="flex-end" justifyContent="space-between" marginTop="$4">
             <YStack gap="$1">
-              <Text fontSize={10} fontWeight="600" textTransform="uppercase" opacity={0.5} color="$textDark">
+              <Text fontSize={10} fontWeight="600" textTransform="uppercase" {...{ color: "$textMuted" as any }}>
                 LIMITED TIME OFFER
               </Text>
               <XStack alignItems="center" gap="$2">
-                <Text fontSize={22} fontWeight="800" color="$textDark">
+                <Text fontSize={22} fontWeight="800" {...{ color: "$text" as any }}>
                   £{item.price}
                 </Text>
                 {Boolean(item.originalPrice) && (
                   <Text
                     fontSize={16}
                     fontWeight="500"
-                    color="$textDark"
-                    opacity={0.4}
+                    {...{ color: "$textMuted" as any }}
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}
@@ -206,7 +205,7 @@ export function HeroSectionNew() {
   }, [])
 
   return (
-    <YStack backgroundColor="$bgGray" paddingVertical="$12">
+    <YStack backgroundColor="$background" paddingVertical="$12">
       <YStack maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
         <XStack
           gap="$5"
@@ -216,9 +215,9 @@ export function HeroSectionNew() {
         >
           {/* Carousel - 2/3 width on desktop */}
           <YStack
-            backgroundColor="$background"
+            backgroundColor="$surface"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="$border"
             borderRadius="$6"
             overflow="hidden"
             position="relative"
@@ -255,7 +254,7 @@ export function HeroSectionNew() {
                   width={index === activeSlide ? 24 : 8}
                   height={8}
                   borderRadius={4}
-                  backgroundColor={index === activeSlide ? "$blue" : "$gray400"}
+                  backgroundColor={index === activeSlide ? "$info" : "$border"}
                   cursor="pointer"
                   onPress={() => setActiveSlide(index)}
                   animation="quick"
