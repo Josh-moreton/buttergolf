@@ -36,9 +36,9 @@ export default function LayoutHarnessPage() {
             <Column gap="sm" fullWidth>
               <Text weight="semibold">Gap variants:</Text>
               <Row gap="xs" wrap>
-                <Badge variant="primary"><Text size="xs">xs gap</Text></Badge>
-                <Badge variant="primary"><Text size="xs">xs gap</Text></Badge>
-                <Badge variant="primary"><Text size="xs">xs gap</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">xs gap</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">xs gap</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">xs gap</Text></Badge>
               </Row>
               <Row gap="sm" wrap>
                 <Badge variant="secondary"><Text size="xs">sm gap</Text></Badge>
@@ -107,9 +107,9 @@ export default function LayoutHarnessPage() {
             <Row gap="lg" wrap fullWidth>
               <Column gap="xs" borderWidth={1} borderColor="$border" padding="md" flex={1}>
                 <Text weight="semibold">gap="xs"</Text>
-                <Badge variant="primary"><Text size="xs">Item 1</Text></Badge>
-                <Badge variant="primary"><Text size="xs">Item 2</Text></Badge>
-                <Badge variant="primary"><Text size="xs">Item 3</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">Item 1</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">Item 2</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">Item 3</Text></Badge>
               </Column>
               
               <Column gap="sm" borderWidth={1} borderColor="$border" padding="md" flex={1}>
@@ -138,7 +138,7 @@ export default function LayoutHarnessPage() {
               <Text weight="semibold">Alignment variants:</Text>
               <Column gap="xs" align="start" fullWidth borderWidth={1} borderColor="$border" padding="sm">
                 <Text>align="start"</Text>
-                <Badge variant="primary"><Text size="xs">Badge</Text></Badge>
+                <Badge variant="primary"><Text size="xs" color="inverse">Badge</Text></Badge>
               </Column>
               <Column gap="xs" align="center" fullWidth borderWidth={1} borderColor="$border" padding="sm">
                 <Text>align="center"</Text>
@@ -236,7 +236,7 @@ export default function LayoutHarnessPage() {
               </Text>
               
               <Row gap="md" wrap fullWidth>
-                <Card variant="outlined" padding="none" style={{ minWidth: 280 }}>
+                <Card variant="outlined" padding="none" minWidth={280}>
                   <Card.Header padding="sm">
                     <Text weight="bold">Outlined Card</Text>
                   </Card.Header>
@@ -248,7 +248,7 @@ export default function LayoutHarnessPage() {
                   </Card.Footer>
                 </Card>
 
-                <Card variant="filled" padding="none" style={{ minWidth: 280 }}>
+                <Card variant="filled" padding="none" minWidth={280}>
                   <Card.Header padding="sm">
                     <Text weight="bold">Filled Card</Text>
                   </Card.Header>
@@ -260,7 +260,7 @@ export default function LayoutHarnessPage() {
                   </Card.Footer>
                 </Card>
 
-                <Card variant="ghost" padding="none" style={{ minWidth: 280 }}>
+                <Card variant="ghost" padding="none" minWidth={280}>
                   <Card.Header padding="sm" noBorder>
                     <Text weight="bold">Ghost Card</Text>
                   </Card.Header>
@@ -347,16 +347,16 @@ export default function LayoutHarnessPage() {
               wrap
               fullWidth
             >
-              <Card variant="filled" padding="md" flex={1} style={{ minWidth: 250 }}>
+              <Card variant="filled" padding="md" flex={1} minWidth={250}>
                 <Column gap="sm">
-                  <Badge variant="primary"><Text size="xs">Card 1</Text></Badge>
+                  <Badge variant="primary"><Text size="xs" color="inverse">Card 1</Text></Badge>
                   <Text size="sm">
                     This card will stack on mobile and sit side-by-side on larger screens
                   </Text>
                 </Column>
               </Card>
               
-              <Card variant="filled" padding="md" flex={1} style={{ minWidth: 250 }}>
+              <Card variant="filled" padding="md" flex={1} minWidth={250}>
                 <Column gap="sm">
                   <Badge variant="secondary"><Text size="xs">Card 2</Text></Badge>
                   <Text size="sm">
@@ -365,7 +365,7 @@ export default function LayoutHarnessPage() {
                 </Column>
               </Card>
               
-              <Card variant="filled" padding="md" flex={1} style={{ minWidth: 250 }}>
+              <Card variant="filled" padding="md" flex={1} minWidth={250}>
                 <Column gap="sm">
                   <Badge variant="success"><Text size="xs">Card 3</Text></Badge>
                   <Text size="sm">

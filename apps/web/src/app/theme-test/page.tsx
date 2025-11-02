@@ -21,7 +21,7 @@ export default function ThemeTestPage() {
           borderColor="$border"
         >
           <Column>
-            <Heading level={1} fontSize="$8">Theme Testing</Heading>
+            <Heading level={1}>Theme Testing</Heading>
             <Text color="secondary">
               Current theme: <strong>{theme}</strong>
             </Text>

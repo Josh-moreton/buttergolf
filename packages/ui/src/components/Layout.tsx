@@ -33,6 +33,7 @@ export const Row = styled(TamaguiXStack, {
   
   variants: {
     gap: {
+      none: { gap: 0 },
       xs: { gap: '$xs' },
       sm: { gap: '$sm' },
       md: { gap: '$md' },
@@ -84,6 +85,7 @@ export const Column = styled(TamaguiYStack, {
   
   variants: {
     gap: {
+      none: { gap: 0 },
       xs: { gap: '$xs' },
       sm: { gap: '$sm' },
       md: { gap: '$md' },
@@ -164,9 +166,6 @@ export const Container = styled(TamaguiYStack, {
 // Spacer - Flexible space component
 export const Spacer = styled(TamaguiView, {
   name: 'Spacer',
-  
-  // Base styles
-  flex: 1,
   
   variants: {
     size: {

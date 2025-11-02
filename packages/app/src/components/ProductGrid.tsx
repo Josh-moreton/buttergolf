@@ -12,7 +12,7 @@ export function ProductGrid({ title, products }: ProductGridProps) {
   return (
     <Column gap="lg" fullWidth padding="$4" maxWidth={1280} alignSelf="center">
       {title && (
-        <Heading level={2} size="$8" fontWeight="600">
+        <Heading level={2}>
           {title}
         </Heading>
       )}
