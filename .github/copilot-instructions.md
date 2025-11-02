@@ -251,18 +251,41 @@ $tooltip: 1070;
 - Primary: Green 400 (lighter for dark backgrounds)
 - All semantic colors adjusted for dark backgrounds with proper contrast
 
-**Theme Switching**:
+**Sub-Themes for State Changes**:
+
+Tamagui automatically looks for sub-themes matching the pattern `[currentTheme]_[subThemeName]`. We have the following sub-themes:
+
+- `light_active` / `dark_active` - For active/selected states (menu items, tabs, etc.)
+- `light_error` / `dark_error` - For error states
+- `light_success` / `dark_success` - For success states
+- `light_warning` / `dark_warning` - For warning states
+
+**Theme Switching & State-Based Styling**:
 
 ```tsx
-import { Theme } from "@buttergolf/ui";
+import { Theme } from "tamagui";
 
-// Use dark theme for a section
+// ✅ CORRECT - Use Theme component for state-based styling
+<Theme name={isActive ? "active" : null}>
+  <Text>Menu Item</Text>  {/* Automatically gets active theme colors */}
+</Theme>
+
+// ✅ CORRECT - Static theme switching
 <Theme name="dark">
   <View backgroundColor="$background">
     <Text color="$text">Automatically uses dark theme tokens</Text>
   </View>
-</Theme>;
+</Theme>
+
+// ❌ WRONG - Don't use conditional variant props (causes TypeScript errors)
+<Text color={isActive ? "primary" : "default"}>Menu Item</Text>
+
+// ❌ WRONG - Don't use conditional expressions with variants
+const color: "primary" | "default" = isActive ? "primary" : "default"
+<Text color={color}>Menu Item</Text>
 ```
+
+**Key Learning**: When you need to change styling based on state (active, hover, selected, etc.), wrap the component in a `<Theme>` component instead of using conditional variant props. This is type-safe, performant, and the proper Tamagui pattern.
 
 ### Key Tamagui Concepts
 

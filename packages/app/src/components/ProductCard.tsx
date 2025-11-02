@@ -21,7 +21,7 @@ export function ProductCard({
   return (
     <Card
       variant="elevated"
-      padding="none"
+      padding={0}
       animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
@@ -37,7 +37,7 @@ export function ProductCard({
       maxWidth={280}
       interactive
     >
-      <Card.Header padding="none" noBorder>
+      <Card.Header padding={0} noBorder>
         <Image
           source={{ uri: imageUrl }}
           width="100%"
@@ -48,7 +48,7 @@ export function ProductCard({
           backgroundColor="$background"
         />
       </Card.Header>
-      <Card.Footer padding="md" noBorder>
+      <Card.Footer padding="$md" noBorder>
         <Column gap="$xs" fullWidth>
           <Text
             size="md"
@@ -59,12 +59,12 @@ export function ProductCard({
             {title}
           </Text>
           {condition && (
-            <Text size="xs" color="secondary">
+            <Text size="xs" color="$textSecondary">
               {condition}
             </Text>
           )}
           <Row justify="between" align="center">
-            <Text size="lg" weight="bold" color="primary">
+            <Text size="lg" weight="bold" color="$primary">
               ${price.toFixed(2)}
             </Text>
           </Row>

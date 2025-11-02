@@ -55,7 +55,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
   return (
     <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
       <Card
-        {...{ padding: 0 as any }}
+        padding={0}
         borderRadius="$4"
         overflow="hidden"
         cursor="pointer"
@@ -67,7 +67,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           height={180}
           objectFit="cover"
         />
-        <YStack {...{ padding: 16 as any }} gap="$xs">
+        <YStack padding="$md" gap="$xs">
           <Text weight="bold" numberOfLines={2}>
             {item.title}
           </Text>

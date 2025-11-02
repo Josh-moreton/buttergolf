@@ -29,7 +29,7 @@ export function HeroSection() {
           </YStack>
 
           <YStack flex={1} gap="$lg">
-            <Card backgroundColor="$background" {...{ padding: "none" as any }}>
+            <Card backgroundColor="$background" padding={"none" as const}>
               <Image
                 source={{
                   uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200",
@@ -45,11 +45,11 @@ export function HeroSection() {
               $sm={{ flexDirection: "column" }}
               $md={{ flexDirection: "row" }}
             >
-              <Card flex={1} {...{ padding: "md" as any }}>
+              <Card flex={1} padding="$md">
                 <Text fontWeight="700">Featured</Text>
                 <Text>Hot deals this week</Text>
               </Card>
-              <Card flex={1} {...{ padding: "md" as any }}>
+              <Card flex={1} padding="$md">
                 <Text fontWeight="700">Fast listing</Text>
                 <Text>Create a post in 60 seconds</Text>
               </Card>
