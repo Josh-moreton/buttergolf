@@ -61,11 +61,6 @@ export const Row = styled(XStack, {
       true: { width: '100%' },
     },
   } as const,
-
-  defaultVariants: {
-    align: 'start',
-    justify: 'start',
-  },
 })
 
 /**
@@ -109,11 +104,6 @@ export const Column = styled(YStack, {
       true: { height: '100%' },
     },
   } as const,
-
-  defaultVariants: {
-    align: 'start',
-    justify: 'start',
-  },
 })
 
 /**

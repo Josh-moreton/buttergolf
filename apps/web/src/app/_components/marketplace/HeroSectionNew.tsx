@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui";
 
 // Mock carousel data
 const CAROUSEL_ITEMS = [
@@ -10,7 +10,8 @@ const CAROUSEL_ITEMS = [
     id: 1,
     discount: 20,
     title: "TaylorMade Stealth 2 Driver",
-    description: "Barely used, perfect condition with headcover and adjustment tool included",
+    description:
+      "Barely used, perfect condition with headcover and adjustment tool included",
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800",
     price: 349,
     originalPrice: 449,
@@ -30,13 +31,14 @@ const CAROUSEL_ITEMS = [
     id: 3,
     discount: 15,
     title: "Scotty Cameron Putter",
-    description: "Like new Newport 2, SuperStroke grip, with original packaging",
+    description:
+      "Like new Newport 2, SuperStroke grip, with original packaging",
     image: "https://images.unsplash.com/photo-1593111774240-d529f12a662c?w=800",
     price: 279,
     originalPrice: 329,
     slug: "scotty-cameron-newport-2-putter",
   },
-]
+];
 
 const FEATURED_CARDS = [
   {
@@ -57,9 +59,12 @@ const FEATURED_CARDS = [
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400",
     slug: "ping-hoofer-stand-bag-black",
   },
-]
+];
 
-function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEMS[0]; isActive: boolean }>) {
+function CarouselSlide({
+  item,
+  isActive,
+}: Readonly<{ item: (typeof CAROUSEL_ITEMS)[0]; isActive: boolean }>) {
   return (
     <Row
       animation="lazy"
@@ -71,23 +76,53 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
       paddingHorizontal="$8"
       paddingVertical="$6"
     >
-      <Column flex={1} {...{ gap: "sm" as any }} maxWidth={420} paddingRight="$4">
+      <Column
+        flex={1}
+        {...{ gap: "sm" as any }}
+        maxWidth={420}
+        paddingRight="$4"
+      >
         <Row align="start" {...{ gap: "sm" as any }}>
-          <Text size="xl" fontSize={64} weight="bold" lineHeight={64} {...{ color: "primary" as any }}>
+          <Text
+            size="xl"
+            fontSize={64}
+            weight="bold"
+            lineHeight={64}
+            {...{ color: "primary" as any }}
+          >
             {item.discount}%
           </Text>
           <Column marginTop="$2">
-            <Text size="md" weight="semibold" textTransform="uppercase" {...{ color: "default" as any }}>
+            <Text
+              size="md"
+              weight="semibold"
+              textTransform="uppercase"
+              {...{ color: "default" as any }}
+            >
               SALE
             </Text>
-            <Text size="md" weight="semibold" textTransform="uppercase" {...{ color: "default" as any }}>
+            <Text
+              size="md"
+              weight="semibold"
+              textTransform="uppercase"
+              {...{ color: "default" as any }}
+            >
               OFF
             </Text>
           </Column>
         </Row>
 
-        <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-          <Text size="xl" fontSize={28} weight="bold" {...{ color: "default" as any }} {...{ hoverStyle: { color: "$info" } as any }}>
+        <Link
+          href={`/products/${item.slug}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Text
+            size="xl"
+            fontSize={28}
+            weight="bold"
+            {...{ color: "default" as any }}
+            {...{ hoverStyle: { color: "$info" } as any }}
+          >
             {item.title}
           </Text>
         </Link>
@@ -96,7 +131,10 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           {item.description}
         </Text>
 
-        <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
+        <Link
+          href={`/products/${item.slug}`}
+          style={{ textDecoration: "none" }}
+        >
           <Button
             backgroundColor="$text"
             color="$textInverse"
@@ -120,12 +158,20 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         />
       </Column>
     </Row>
-  )
-}function FeaturedProductCard({ item }: Readonly<{ item: typeof FEATURED_CARDS[0] }>) {
+  );
+}
+function FeaturedProductCard({
+  item,
+}: Readonly<{ item: (typeof FEATURED_CARDS)[0] }>) {
   return (
     <Link
       href={`/products/${item.slug}`}
-      style={{ textDecoration: "none", width: "100%", height: "100%", display: "block" }}
+      style={{
+        textDecoration: "none",
+        width: "100%",
+        height: "100%",
+        display: "block",
+      }}
     >
       <Card
         flex={1}
@@ -133,7 +179,7 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         backgroundColor="$card"
         borderWidth={0}
         borderRadius="$4"
-        {...{ padding: '$5' as any }}
+        {...{ padding: "$5" as any }}
         overflow="hidden"
         cursor="pointer"
         animation="quick"
@@ -145,10 +191,15 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <Column height="100%" {...{ justify: "between" as any }}>
+        <Column height="100%" justify="between">
           {/* Top: Text content */}
           <Column {...{ gap: "xs" as any }}>
-            <Text size="lg" weight="bold" {...{ color: "default" as any }} numberOfLines={2}>
+            <Text
+              size="lg"
+              weight="bold"
+              {...{ color: "default" as any }}
+              numberOfLines={2}
+            >
               {item.title}
             </Text>
             <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
@@ -157,13 +208,25 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           </Column>
 
           {/* Bottom: Price and Image side by side */}
-          <Row align="end" {...{ justify: "between" as any }} marginTop="$4">
+          <Row align="end" justify="between" marginTop="$4">
             <Column {...{ gap: "xs" as any }}>
-              <Text size="xs" fontSize={10} weight="semibold" textTransform="uppercase" {...{ color: "muted" as any }}>
+              <Text
+                size="xs"
+                fontSize={10}
+                weight="semibold"
+                textTransform="uppercase"
+                {...{ color: "muted" as any }}
+              >
                 LIMITED TIME OFFER
               </Text>
               <Row align="center" {...{ gap: "xs" as any }}>
-                <Text size="xl" fontSize={22} weight="bold" fontWeight="800" {...{ color: "default" as any }}>
+                <Text
+                  size="xl"
+                  fontSize={22}
+                  weight="bold"
+                  fontWeight="800"
+                  {...{ color: "default" as any }}
+                >
                   £{item.price}
                 </Text>
                 {Boolean(item.originalPrice) && (
@@ -189,23 +252,28 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         </Column>
       </Card>
     </Link>
-  )
+  );
 }
 
 export function HeroSectionNew() {
-  const [activeSlide, setActiveSlide] = useState(0)
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length)
-    }, 4000) // Change slide every 4 seconds
+      setActiveSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
+    }, 4000); // Change slide every 4 seconds
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Column backgroundColor="$background" paddingVertical="$12">
-      <Column maxWidth={1280} marginHorizontal="auto" paddingHorizontal="$4" width="100%">
+      <Column
+        maxWidth={1280}
+        marginHorizontal="auto"
+        paddingHorizontal="$4"
+        width="100%"
+      >
         <Column
           {...{ gap: "xl" as any }}
           $xl={{ flexDirection: "row", alignItems: "stretch" }}
@@ -221,10 +289,10 @@ export function HeroSectionNew() {
             position="relative"
             minHeight={500}
             width="100%"
-            $xl={{ 
+            $xl={{
               flexGrow: 2,
               flexShrink: 1,
-              flexBasis: '0%',
+              flexBasis: "0%",
               minWidth: 0,
               width: "auto",
             }}
@@ -265,13 +333,13 @@ export function HeroSectionNew() {
           <Column
             {...{ gap: "lg" as any }}
             width="100%"
-            $xl={{ 
+            $xl={{
               flexGrow: 1,
               flexShrink: 1,
-              flexBasis: '0%',
+              flexBasis: "0%",
               minWidth: 0,
               width: "auto",
-              alignSelf: 'stretch',
+              alignSelf: "stretch",
               minHeight: 500,
             }}
           >
@@ -280,7 +348,7 @@ export function HeroSectionNew() {
                 key={card.id}
                 flex={1}
                 minWidth="45%"
-                $xl={{ 
+                $xl={{
                   flex: 1,
                   minWidth: 0,
                   width: "100%",
@@ -293,5 +361,5 @@ export function HeroSectionNew() {
         </Column>
       </Column>
     </Column>
-  )
+  );
 }

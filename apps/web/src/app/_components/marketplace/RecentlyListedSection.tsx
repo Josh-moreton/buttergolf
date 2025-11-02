@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui"
+import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui";
 
 type Listing = {
-  id: string
-  title: string
-  price: number
-  image: string
-  condition: "NEW" | "LIKE_NEW" | "EXCELLENT" | "GOOD" | "FAIR"
-  slug: string
-}
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  condition: "NEW" | "LIKE_NEW" | "EXCELLENT" | "GOOD" | "FAIR";
+  slug: string;
+};
 
 const MOCK_LISTINGS: Listing[] = [
   {
@@ -24,7 +24,8 @@ const MOCK_LISTINGS: Listing[] = [
     id: "2",
     title: "Titleist T200 Irons 5-PW",
     price: 699,
-    image: "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
+    image:
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
     condition: "GOOD",
     slug: "titleist-t200-irons-5-pw",
   },
@@ -32,7 +33,8 @@ const MOCK_LISTINGS: Listing[] = [
     id: "3",
     title: "Scotty Cameron Newport 2 Putter",
     price: 279,
-    image: "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
+    image:
+      "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
     condition: "LIKE_NEW",
     slug: "scotty-cameron-newport-2-putter",
   },
@@ -40,18 +42,25 @@ const MOCK_LISTINGS: Listing[] = [
     id: "4",
     title: "Ping Hoofer Stand Bag (Black)",
     price: 149,
-    image: "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
+    image:
+      "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
     condition: "EXCELLENT",
     slug: "ping-hoofer-stand-bag-black",
   },
-]
+];
 
-import Link from "next/link"
+import Link from "next/link";
 
 function ListingCard({ item }: Readonly<{ item: Listing }>) {
   return (
     <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-      <Card {...{ padding: 0 as any }} borderRadius="$4" overflow="hidden" cursor="pointer" hoverStyle={{ scale: 1.01 }}>
+      <Card
+        {...{ padding: 0 as any }}
+        borderRadius="$4"
+        overflow="hidden"
+        cursor="pointer"
+        hoverStyle={{ scale: 1.01 }}
+      >
         <Image
           source={{ uri: item.image }}
           width="100%"
@@ -59,34 +68,57 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           objectFit="cover"
         />
         <Column {...{ padding: 16 as any }} {...{ gap: "xs" as any }}>
-          <Text weight="bold" numberOfLines={2}>{item.title}</Text>
-          <Row align="center" {...{ justify: "between" as any }}>
-            <Text fontSize="$7" weight="bold" fontWeight="800">£{item.price}</Text>
-            <Text fontSize="$2" opacity={0.7}>{item.condition.replace("_", " ")}</Text>
+          <Text weight="bold" numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Row align="center" justify="between">
+            <Text fontSize="$7" weight="bold" fontWeight="800">
+              £{item.price}
+            </Text>
+            <Text fontSize="$2" opacity={0.7}>
+              {item.condition.replace("_", " ")}
+            </Text>
           </Row>
-          <Button size="md" tone="outline">View details</Button>
+          <Button size="md" tone="outline">
+            View details
+          </Button>
         </Column>
       </Card>
     </Link>
-  )
+  );
 }
 
 export function RecentlyListedSection() {
   return (
     <Column paddingVertical="$6">
-      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" {...{ gap: "lg" as any }}>
-        <Row align="center" {...{ justify: "between" as any }}>
-          <Text fontSize="$8" weight="bold">Recently listed</Text>
-          <Button tone="outline" size="md">View all</Button>
+      <Column
+        maxWidth={1200}
+        marginHorizontal="auto"
+        paddingHorizontal="$4"
+        {...{ gap: "lg" as any }}
+      >
+        <Row align="center" justify="between">
+          <Text fontSize="$8" weight="bold">
+            Recently listed
+          </Text>
+          <Button tone="outline" size="md">
+            View all
+          </Button>
         </Row>
         <Row {...{ gap: "lg" as any }} wrap={true}>
           {MOCK_LISTINGS.map((l) => (
-            <Column key={l.id} width="100%" $sm={{ width: "100%" }} $md={{ width: "48%" }} $lg={{ width: "23%" }}>
+            <Column
+              key={l.id}
+              width="100%"
+              $sm={{ width: "100%" }}
+              $md={{ width: "48%" }}
+              $lg={{ width: "23%" }}
+            >
               <ListingCard item={l} />
             </Column>
           ))}
         </Row>
       </Column>
     </Column>
-  )
+  );
 }

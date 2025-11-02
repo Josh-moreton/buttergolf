@@ -1,39 +1,33 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
-import { Row, Column, Text } from "@buttergolf/ui"
-import { menuData } from "./menuData"
-import { DesktopMenu } from "./DesktopMenu"
-import {
-  SearchIcon,
-  UserIcon,
-  HeartIcon,
-  CartIcon,
-  MenuIcon,
-} from "./icons"
-import { SignInModal } from "../auth/SignInModal"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Row, Column, Text } from "@buttergolf/ui";
+import { menuData } from "./menuData";
+import { DesktopMenu } from "./DesktopMenu";
+import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon } from "./icons";
+import { SignInModal } from "../auth/SignInModal";
 
 export function MarketplaceHeader() {
-  const [stickyMenu, setStickyMenu] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [authOpen, setAuthOpen] = useState(false)
-  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in")
+  const [stickyMenu, setStickyMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   // Wishlist and cart counts (placeholder - will wire to state later)
-  const wishlistCount = 0
-  const cartCount = 0
+  const wishlistCount = 0;
+  const cartCount = 0;
 
   // Sticky menu handler
   useEffect(() => {
     const handleStickyMenu = () => {
-      setStickyMenu(window.scrollY >= 80)
-    }
+      setStickyMenu(window.scrollY >= 80);
+    };
 
-    window.addEventListener("scroll", handleStickyMenu)
-    return () => window.removeEventListener("scroll", handleStickyMenu)
-  }, [])
+    window.addEventListener("scroll", handleStickyMenu);
+    return () => window.removeEventListener("scroll", handleStickyMenu);
+  }, []);
 
   return (
     <Column
@@ -59,38 +53,32 @@ export function MarketplaceHeader() {
         paddingHorizontal="$4"
         justify="center"
       >
-        <Row
-          width="100%"
-          maxWidth={1280}
-          {...{ justify: "between" as any }}
-          align="center"
-        >
+        <Row width="100%" maxWidth={1280} justify="between" align="center">
           <Row display="none" $lg={{ display: "flex" }}>
-            <Text
-              {...{ color: "inverse" as any }}
-              size="sm"
-              weight="medium"
-            >
+            <Text color="inverse" size="sm" weight="medium">
               Get free delivery on orders over £100
             </Text>
           </Row>
 
-          <Row {...{ gap: "sm" as any }} align="center">
+          <Row gap="sm" align="center">
             <SignedOut>
               <Row
                 tag="button"
                 cursor="pointer"
-                {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-up"); setAuthOpen(true) }}
+                style={{ background: "none", border: "none" }}
+                onPress={() => {
+                  setAuthMode("sign-up");
+                  setAuthOpen(true);
+                }}
               >
                 <Text
-                  {...{ color: "inverse" as any }}
+                  color="inverse"
                   size="sm"
                   weight="medium"
                   paddingRight="$3"
                   borderRightWidth={1}
                   borderColor="$border"
-                  {...{ hoverStyle: { color: "$textInverse" } as any }}
+                  hoverStyle={{ color: "$textInverse" }}
                 >
                   Create an account
                 </Text>
@@ -98,26 +86,25 @@ export function MarketplaceHeader() {
               <Row
                 tag="button"
                 cursor="pointer"
-                {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+                style={{ background: "none", border: "none" }}
+                onPress={() => {
+                  setAuthMode("sign-in");
+                  setAuthOpen(true);
+                }}
               >
                 <Text
-                  {...{ color: "inverse" as any }}
+                  color="inverse"
                   size="sm"
                   weight="medium"
                   paddingLeft="$3"
-                  {...{ hoverStyle: { color: "$textInverse" } as any }}
+                  hoverStyle={{ color: "$textInverse" }}
                 >
                   Sign In
                 </Text>
               </Row>
             </SignedOut>
             <SignedIn>
-              <Text
-                {...{ color: "inverse" as any }}
-                size="sm"
-                weight="medium"
-              >
+              <Text color="inverse" size="sm" weight="medium">
                 Welcome back!
               </Text>
             </SignedIn>
@@ -126,23 +113,18 @@ export function MarketplaceHeader() {
       </Row>
 
       {/* Main Header */}
-      <Row 
+      <Row
         paddingHorizontal="$3"
         paddingVertical="$3"
         $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
         justify="center"
       >
-        <Row
-          width="100%"
-          maxWidth={1280}
-          {...{ justify: "between" as any }}
-          align="center"
-        >
+        <Row width="100%" maxWidth={1280} justify="between" align="center">
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Row 
-              align="center" 
-              {...{ gap: "xs" as any }}
+            <Row
+              align="center"
+              gap="xs"
               paddingVertical="$2"
               // Ensure minimum touch target size
               minHeight={44}
@@ -152,7 +134,7 @@ export function MarketplaceHeader() {
                 $md={{ fontSize: 24 }}
                 weight="bold"
                 fontWeight="800"
-                {...{ color: "default" as any }}
+                color="default"
               >
                 ButterGolf
               </Text>
@@ -169,7 +151,7 @@ export function MarketplaceHeader() {
                   size="xs"
                   $md={{ size: "sm" }}
                   weight="medium"
-                  {...{ color: "inverse" as any }}
+                  color="inverse"
                 >
                   Beta
                 </Text>
@@ -183,7 +165,11 @@ export function MarketplaceHeader() {
           </Row>
 
           {/* Action Buttons - Improved touch targets */}
-          <Row {...{ gap: "xs" as any }} $md={{ gap: "sm" as any }} align="center">
+          <Row
+            gap="xs"
+            $md={{ gap: "sm" }}
+            align="center"
+          >
             <Row
               tag="button"
               cursor="pointer"
@@ -211,8 +197,12 @@ export function MarketplaceHeader() {
                 align="center"
                 justify="center"
                 {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+                onPress={() => {
+                  setAuthMode("sign-in");
+                  setAuthOpen(true);
+                }}
                 aria-label="Sign in"
+                style={{ background: "none", border: "none" }}
               >
                 <UserIcon />
               </Row>
@@ -225,9 +215,9 @@ export function MarketplaceHeader() {
             </SignedIn>
 
             <Link href="/wishlist" style={{ textDecoration: "none" }}>
-              <Row 
-                position="relative" 
-                cursor="pointer" 
+              <Row
+                position="relative"
+                cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
@@ -262,9 +252,9 @@ export function MarketplaceHeader() {
             </Link>
 
             <Link href="/cart" style={{ textDecoration: "none" }}>
-              <Row 
-                position="relative" 
-                cursor="pointer" 
+              <Row
+                position="relative"
+                cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
@@ -320,7 +310,11 @@ export function MarketplaceHeader() {
         </Row>
       </Row>
       {/* Auth modal */}
-      <SignInModal open={authOpen} onClose={() => setAuthOpen(false)} mode={authMode} />
+      <SignInModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        mode={authMode}
+      />
     </Column>
-  )
+  );
 }
