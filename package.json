@@ -19,22 +19,13 @@
     "clean-install": "pnpm clean && pnpm install"
   },
   "devDependencies": {
+    "check-dependency-version-consistency": "^5.0.1",
     "prettier": "^3.6.2",
     "turbo": "^2.6.0",
-    "typescript": "5.9.3"
+    "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.20.0",
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "19.1.0",
-      "react-dom": "19.1.0"
-    }
   }
 }

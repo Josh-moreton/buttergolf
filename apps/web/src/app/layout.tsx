@@ -1,23 +1,44 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 export const dynamic = 'force-dynamic'
-import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 import { MarketplaceHeader } from './_components/header/MarketplaceHeader'
+import { AppPromoBanner } from './_components/AppPromoBanner'
+import { ServiceWorkerRegistration } from './_components/ServiceWorkerRegistration'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// Using system fonts for better performance and reliability
+const fontVariables = '--font-geist-sans --font-geist-mono';
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#13a063',
+}
 
 export const metadata: Metadata = {
   title: "ButterGolf",
   description: "P2P Marketplace for Golf Equipment",
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'ButterGolf',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'ButterGolf',
+    title: 'ButterGolf - P2P Golf Equipment Marketplace',
+    description: 'Buy and sell golf equipment with fellow golfers',
+  },
+  other: {
+    'apple-itunes-app': 'app-id=YOUR_APP_ID', // TODO: Replace with actual App Store ID when available
+    'mobile-web-app-capable': 'yes',
+  },
 };
 
 export default function RootLayout({
@@ -27,9 +48,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <NextTamaguiProvider>
+          <ServiceWorkerRegistration />
           <MarketplaceHeader />
+          <AppPromoBanner />
           {children}
         </NextTamaguiProvider>
       </body>

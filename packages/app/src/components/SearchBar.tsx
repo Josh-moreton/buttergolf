@@ -14,9 +14,9 @@ export function SearchBar({
 }: Readonly<SearchBarProps>) {
   return (
     <Row
-      width="100%"
+      fullWidth
       maxWidth={600}
-      {...{ gap: "xs" as any }}
+      gap="xs"
       align="center"
     >
       <Input

@@ -2,10 +2,6 @@
 
 import { Card, Image, Text, Row, Column } from '@buttergolf/ui'
 
-// Use compound component pattern
-const CardHeader = (Card as any).Header
-const CardFooter = (Card as any).Footer
-
 export interface ProductCardProps {
   id: string
   title: string
@@ -25,7 +21,7 @@ export function ProductCard({
   return (
     <Card
       variant="elevated"
-      {...{ padding: 0 as any }}
+      padding="none"
       animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
@@ -41,7 +37,7 @@ export function ProductCard({
       maxWidth={280}
       interactive
     >
-      <CardHeader {...{ padding: 0 as any }} noBorder>
+      <Card.Header padding="none" noBorder>
         <Image
           source={{ uri: imageUrl }}
           width="100%"
@@ -51,9 +47,9 @@ export function ProductCard({
           borderTopRightRadius="$4"
           backgroundColor="$background"
         />
-      </CardHeader>
-      <CardFooter {...{ padding: '$md' as any }} noBorder>
-        <Column {...{ gap: "xs" as any }} width="100%">
+      </Card.Header>
+      <Card.Footer padding="md" noBorder>
+        <Column gap="xs" fullWidth>
           <Text
             size="md"
             weight="semibold"
@@ -63,17 +59,17 @@ export function ProductCard({
             {title}
           </Text>
           {condition && (
-            <Text size="xs" {...{ color: '$textSecondary' as any }}>
+            <Text size="xs" color="secondary">
               {condition}
             </Text>
           )}
-          <Row {...{ justify: "between" as any }} align="center">
-            <Text size="lg" weight="bold" {...{ color: '$primary' as any }}>
+          <Row justify="between" align="center">
+            <Text size="lg" weight="bold" color="primary">
               ${price.toFixed(2)}
             </Text>
           </Row>
         </Column>
-      </CardFooter>
+      </Card.Footer>
     </Card>
   )
 }

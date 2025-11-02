@@ -9,21 +9,22 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@buttergolf/config": "workspace:*",
     "@buttergolf/db": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@tamagui/font-inter": "catalog:",
     "@tamagui/lucide-icons": "catalog:",
     "@tamagui/next-theme": "catalog:",
     "@tamagui/polyfill-dev": "catalog:",
-    "react": "19.2.0",
-    "react-native": "0.82.1",
-    "solito": "^5.0.0",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "solito": "catalog:",
     "tamagui": "catalog:"
   },
   "devDependencies": {
     "@buttergolf/typescript-config": "workspace:*",
-    "@types/react": "^19.2.2",
-    "next": "^16.0.1",
-    "typescript": "5.9.3"
+    "@types/react": "catalog:",
+    "next": "catalog:",
+    "typescript": "catalog:"
   }
 }
