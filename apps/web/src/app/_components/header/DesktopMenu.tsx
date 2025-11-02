@@ -41,10 +41,9 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                   {...{ style: { background: "none", border: "none" } }}
                 >
                   <Text
-                    fontSize={14}
-                    fontWeight="500"
-                    // @ts-ignore - color variant type issue
-                    color={isActive ? "primary" : "default"}
+                    size="sm"
+                    weight="medium"
+                    {...{ color: (isActive ? "primary" : "default") as any }}
                   >
                     {menuItem.title}
                   </Text>
@@ -90,15 +89,14 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
                         hoverStyle={{ backgroundColor: "$backgroundHover" }}
                       >
                         <Text
-                          fontSize={14}
-                          fontWeight="500"
-                          // @ts-ignore - color variant type issue
-                          color={
+                          size="sm"
+                          weight="medium"
+                          {...{ color: (
                             subItem.path &&
                             pathname.split("?")[0] === subItem.path.split("?")[0]
                               ? "primary"
                               : "default"
-                          }
+                          ) as any }}
                         >
                           {subItem.title}
                         </Text>
@@ -110,11 +108,10 @@ export function DesktopMenu({ menuData, stickyMenu }: Readonly<DesktopMenuProps>
             ) : (
               <Link href={menuItem.path || "#"} style={{ textDecoration: "none" }}>
                 <Text
-                  fontSize={14}
-                  fontWeight="500"
+                  size="sm"
+                  weight="medium"
                   paddingVertical={stickyMenu ? "$4" : "$6"}
-                  // @ts-ignore - color variant type issue
-                  color={isActive ? "primary" : "default"}
+                  {...{ color: (isActive ? "primary" : "default") as any }}
                 >
                   {menuItem.title}
                 </Text>

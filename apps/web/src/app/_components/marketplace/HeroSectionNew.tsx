@@ -73,33 +73,33 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
     >
       <Column flex={1} {...{ gap: "sm" as any }} maxWidth={420} paddingRight="$4">
         <Row align="start" {...{ gap: "sm" as any }}>
-          <Text fontSize={64} fontWeight="700" {...{ color: "$info" as any }} lineHeight={64}>
+          <Text size="xl" fontSize={64} weight="bold" lineHeight={64} {...{ color: "primary" as any }}>
             {item.discount}%
           </Text>
           <Column marginTop="$2">
-            <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
+            <Text size="md" weight="semibold" textTransform="uppercase" {...{ color: "default" as any }}>
               SALE
             </Text>
-            <Text fontSize={16} fontWeight="600" textTransform="uppercase" {...{ color: "$text" as any }}>
+            <Text size="md" weight="semibold" textTransform="uppercase" {...{ color: "default" as any }}>
               OFF
             </Text>
           </Column>
         </Row>
 
         <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-          <Text fontSize={28} fontWeight="700" {...{ color: "$text" as any }} hoverStyle={{ color: "$info" as any }}>
+          <Text size="xl" fontSize={28} weight="bold" {...{ color: "default" as any }} {...{ hoverStyle: { color: "$info" } as any }}>
             {item.title}
           </Text>
         </Link>
 
-        <Text {...{ color: "$textSecondary" as any }} fontSize={15}>
+        <Text {...{ color: "secondary" as any }} size="sm" fontSize={15}>
           {item.description}
         </Text>
 
         <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
           <Button
             backgroundColor="$text"
-            {...{ color: "$textInverse" as any }}
+            color="$textInverse"
             paddingHorizontal="$8"
             paddingVertical="$3"
             borderRadius="$3"
@@ -148,10 +148,10 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
         <Column height="100%" {...{ justify: "between" as any }}>
           {/* Top: Text content */}
           <Column {...{ gap: "xs" as any }}>
-            <Text fontSize={18} fontWeight="700" {...{ color: "$text" as any }} numberOfLines={2}>
+            <Text size="lg" weight="bold" {...{ color: "default" as any }} numberOfLines={2}>
               {item.title}
             </Text>
-            <Text fontSize={13} {...{ color: "$textSecondary" as any }}>
+            <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
               {item.subtitle}
             </Text>
           </Column>
@@ -159,18 +159,18 @@ function CarouselSlide({ item, isActive }: Readonly<{ item: typeof CAROUSEL_ITEM
           {/* Bottom: Price and Image side by side */}
           <Row align="end" {...{ justify: "between" as any }} marginTop="$4">
             <Column {...{ gap: "xs" as any }}>
-              <Text fontSize={10} fontWeight="600" textTransform="uppercase" {...{ color: "$textMuted" as any }}>
+              <Text size="xs" fontSize={10} weight="semibold" textTransform="uppercase" {...{ color: "muted" as any }}>
                 LIMITED TIME OFFER
               </Text>
               <Row align="center" {...{ gap: "xs" as any }}>
-                <Text fontSize={22} fontWeight="800" {...{ color: "$text" as any }}>
+                <Text size="xl" fontSize={22} weight="bold" fontWeight="800" {...{ color: "default" as any }}>
                   £{item.price}
                 </Text>
                 {Boolean(item.originalPrice) && (
                   <Text
-                    fontSize={16}
-                    fontWeight="500"
-                    {...{ color: "$textMuted" as any }}
+                    size="md"
+                    weight="medium"
+                    {...{ color: "muted" as any }}
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}

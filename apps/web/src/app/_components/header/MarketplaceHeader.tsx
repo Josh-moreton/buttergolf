@@ -67,10 +67,9 @@ export function MarketplaceHeader() {
         >
           <Row display="none" $lg={{ display: "flex" }}>
             <Text
-              // @ts-ignore - color variant type issue
-              color="inverse"
-              fontSize={14}
-              fontWeight="500"
+              {...{ color: "inverse" as any }}
+              size="sm"
+              weight="medium"
             >
               Get free delivery on orders over £100
             </Text>
@@ -85,15 +84,13 @@ export function MarketplaceHeader() {
                 onPress={() => { setAuthMode("sign-up"); setAuthOpen(true) }}
               >
                 <Text
-                  // @ts-ignore - color variant type issue
-                  color="inverse"
-                  fontSize={14}
-                  fontWeight="500"
+                  {...{ color: "inverse" as any }}
+                  size="sm"
+                  weight="medium"
                   paddingRight="$3"
                   borderRightWidth={1}
                   borderColor="$border"
-                  // @ts-ignore - hoverStyle type issue
-                  hoverStyle={{ color: "$textInverse" }}
+                  {...{ hoverStyle: { color: "$textInverse" } as any }}
                 >
                   Create an account
                 </Text>
@@ -105,13 +102,11 @@ export function MarketplaceHeader() {
                 onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
               >
                 <Text
-                  // @ts-ignore - color variant type issue
-                  color="inverse"
-                  fontSize={14}
-                  fontWeight="500"
+                  {...{ color: "inverse" as any }}
+                  size="sm"
+                  weight="medium"
                   paddingLeft="$3"
-                  // @ts-ignore - hoverStyle type issue
-                  hoverStyle={{ color: "$textInverse" }}
+                  {...{ hoverStyle: { color: "$textInverse" } as any }}
                 >
                   Sign In
                 </Text>
@@ -119,10 +114,9 @@ export function MarketplaceHeader() {
             </SignedOut>
             <SignedIn>
               <Text
-                // @ts-ignore - color variant type issue
-                color="inverse"
-                fontSize={14}
-                fontWeight="500"
+                {...{ color: "inverse" as any }}
+                size="sm"
+                weight="medium"
               >
                 Welcome back!
               </Text>
@@ -148,17 +142,17 @@ export function MarketplaceHeader() {
           <Link href="/" style={{ textDecoration: "none" }}>
             <Row 
               align="center" 
-              {...{ gap: "xs" as any }} 
+              {...{ gap: "xs" as any }}
               paddingVertical="$2"
               // Ensure minimum touch target size
               minHeight={44}
             >
               <Text
-                fontSize={20}
+                size="lg"
                 $md={{ fontSize: 24 }}
+                weight="bold"
                 fontWeight="800"
-                // @ts-ignore - color variant type issue
-                color="default"
+                {...{ color: "default" as any }}
               >
                 ButterGolf
               </Text>
@@ -172,11 +166,10 @@ export function MarketplaceHeader() {
                 borderBottomRightRadius="$4"
               >
                 <Text
-                  fontSize={12}
-                  $md={{ fontSize: 14 }}
-                  fontWeight="500"
-                  // @ts-ignore - color variant type issue
-                  color="inverse"
+                  size="xs"
+                  $md={{ size: "sm" }}
+                  weight="medium"
+                  {...{ color: "inverse" as any }}
                 >
                   Beta
                 </Text>
@@ -190,7 +183,7 @@ export function MarketplaceHeader() {
           </Row>
 
           {/* Action Buttons - Improved touch targets */}
-          <Row {...{ gap: "xs" as any }} $md={{ gap: "sm" }} align="center">
+          <Row {...{ gap: "xs" as any }} $md={{ gap: "sm" as any }} align="center">
             <Row
               tag="button"
               cursor="pointer"
@@ -256,10 +249,10 @@ export function MarketplaceHeader() {
                     justify="center"
                   >
                     <Text
+                      size="xs"
                       fontSize={10}
-                      fontWeight="400"
-                      // @ts-ignore - color variant type issue
-                      color="inverse"
+                      weight="normal"
+                      {...{ color: "inverse" as any }}
                     >
                       {wishlistCount}
                     </Text>
@@ -293,10 +286,10 @@ export function MarketplaceHeader() {
                     justify="center"
                   >
                     <Text
+                      size="xs"
                       fontSize={10}
-                      fontWeight="400"
-                      // @ts-ignore - color variant type issue
-                      color="inverse"
+                      weight="normal"
+                      {...{ color: "inverse" as any }}
                     >
                       {cartCount}
                     </Text>
