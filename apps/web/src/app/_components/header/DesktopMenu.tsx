@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Row, Column, Text } from "@buttergolf/ui";
+import { Theme } from "tamagui";
 import type { MenuItem } from "./menuData";
 import { ChevronDownIcon } from "./icons";
 
@@ -37,32 +38,30 @@ export function DesktopMenu({
           >
             {hasSubmenu ? (
               <>
-                <Row
-                  tag="button"
-                  align="center"
-                  gap="$xs"
-                  cursor="pointer"
-                  paddingVertical={stickyMenu ? "$4" : "$6"}
-                  {...{ style: { background: "none", border: "none" } }}
-                >
-                  <Text
-                    size="sm"
-                    weight="medium"
-                    {...{ color: (isActive ? "primary" : "default") as any }}
+                <Theme name={isActive ? "active" : null}>
+                  <Row
+                    tag="button"
+                    align="center"
+                    gap="$xs"
+                    cursor="pointer"
+                    paddingVertical={stickyMenu ? "$4" : "$6"}
+                    {...{ style: { background: "none", border: "none" } }}
                   >
-                    {menuItem.title}
-                  </Text>
-                  <Column
-                    transform={
-                      activeDropdown === menuIndex
-                        ? [{ rotate: "180deg" }]
-                        : undefined
-                    }
-                    animation="quick"
-                  >
-                    <ChevronDownIcon />
-                  </Column>
-                </Row>
+                    <Text size="sm" weight="medium">
+                      {menuItem.title}
+                    </Text>
+                    <Column
+                      transform={
+                        activeDropdown === menuIndex
+                          ? [{ rotate: "180deg" }]
+                          : undefined
+                      }
+                      animation="quick"
+                    >
+                      <ChevronDownIcon />
+                    </Column>
+                  </Row>
+                </Theme>
 
                 <Column
                   position="absolute"
@@ -114,19 +113,20 @@ export function DesktopMenu({
                 </Column>
               </>
             ) : (
-              <Link
-                href={menuItem.path || "#"}
-                style={{ textDecoration: "none" }}
-              >
-                <Text
-                  size="sm"
-                  weight="medium"
-                  paddingVertical={stickyMenu ? "$4" : "$6"}
-                  {...{ color: (isActive ? "primary" : "default") as any }}
+              <Theme name={isActive ? "active" : null}>
+                <Link
+                  href={menuItem.path || "#"}
+                  style={{ textDecoration: "none" }}
                 >
-                  {menuItem.title}
-                </Text>
-              </Link>
+                  <Text
+                    size="sm"
+                    weight="medium"
+                    paddingVertical={stickyMenu ? "$4" : "$6"}
+                  >
+                    {menuItem.title}
+                  </Text>
+                </Link>
+              </Theme>
             )}
           </Column>
         );

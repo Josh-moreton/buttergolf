@@ -60,7 +60,7 @@ export function MarketplaceHeader() {
           alignItems="center"
         >
           <XStack display="none" $lg={{ display: "flex" }}>
-            <Text color="inverse" size="sm" weight="medium">
+            <Text color="$textInverse" size="sm" weight="medium">
               Get free delivery on orders over £100
             </Text>
           </XStack>
@@ -77,7 +77,7 @@ export function MarketplaceHeader() {
                 }}
               >
                 <Text
-                  color="inverse"
+                  color="$textInverse"
                   size="sm"
                   weight="medium"
                   paddingRight="$3"
@@ -98,7 +98,7 @@ export function MarketplaceHeader() {
                 }}
               >
                 <Text
-                  color="inverse"
+                  color="$textInverse"
                   size="sm"
                   weight="medium"
                   paddingLeft="$3"
@@ -109,7 +109,7 @@ export function MarketplaceHeader() {
               </XStack>
             </SignedOut>
             <SignedIn>
-              <Text color="inverse" size="sm" weight="medium">
+              <Text color="$textInverse" size="sm" weight="medium">
                 Welcome back!
               </Text>
             </SignedIn>
@@ -144,7 +144,7 @@ export function MarketplaceHeader() {
                 $md={{ fontSize: 24 }}
                 weight="bold"
                 fontWeight="800"
-                color="default"
+                color="$text"
               >
                 ButterGolf
               </Text>
@@ -161,7 +161,7 @@ export function MarketplaceHeader() {
                   size="xs"
                   $md={{ size: "sm" }}
                   weight="medium"
-                  color="inverse"
+                  color="$textInverse"
                 >
                   Beta
                 </Text>
@@ -253,7 +253,7 @@ export function MarketplaceHeader() {
                       size="xs"
                       fontSize={10}
                       weight="normal"
-                      color="inverse"
+                      color="$textInverse"
                     >
                       {wishlistCount}
                     </Text>
@@ -290,7 +290,7 @@ export function MarketplaceHeader() {
                       size="xs"
                       fontSize={10}
                       weight="normal"
-                      color="inverse"
+                      color="$textInverse"
                     >
                       {cartCount}
                     </Text>

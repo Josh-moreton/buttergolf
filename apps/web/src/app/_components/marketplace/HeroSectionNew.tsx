@@ -83,7 +83,7 @@ function CarouselSlide({
             fontSize={64}
             weight="bold"
             lineHeight={64}
-            {...{ color: "primary" as any }}
+            color="$primary"
           >
             {item.discount.toString()}%
           </Text>
@@ -92,7 +92,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="$text"
             >
               SALE
             </Text>
@@ -100,7 +100,7 @@ function CarouselSlide({
               size="md"
               weight="semibold"
               textTransform="uppercase"
-              {...{ color: "default" as any }}
+              color="$text"
             >
               OFF
             </Text>
@@ -115,14 +115,14 @@ function CarouselSlide({
             size="xl"
             fontSize={28}
             weight="bold"
-            {...{ color: "default" as any }}
-            {...{ hoverStyle: { color: "$info" } as any }}
+            color="$text"
+            hoverStyle={{ color: "$info" }}
           >
             {item.title}
           </Text>
         </Link>
 
-        <Text {...{ color: "secondary" as any }} size="sm" fontSize={15}>
+        <Text color="$textSecondary" size="sm" fontSize={15}>
           {item.description}
         </Text>
 
@@ -174,7 +174,7 @@ function FeaturedProductCard({
         backgroundColor="$card"
         borderWidth={0}
         borderRadius="$4"
-        {...{ padding: "$5" as any }}
+        padding="$5"
         overflow="hidden"
         cursor="pointer"
         animation="quick"
@@ -189,15 +189,10 @@ function FeaturedProductCard({
         <YStack height="100%" justifyContent="space-between">
           {/* Top: Text content */}
           <YStack gap="$xs">
-            <Text
-              size="lg"
-              weight="bold"
-              {...{ color: "default" as any }}
-              numberOfLines={2}
-            >
+            <Text size="lg" weight="bold" color="$text" numberOfLines={2}>
               {item.title}
             </Text>
-            <Text size="xs" fontSize={13} {...{ color: "secondary" as any }}>
+            <Text size="xs" fontSize={13} color="$textSecondary">
               {item.subtitle}
             </Text>
           </YStack>
@@ -214,7 +209,7 @@ function FeaturedProductCard({
                 fontSize={10}
                 weight="semibold"
                 textTransform="uppercase"
-                {...{ color: "muted" as any }}
+                color="$textMuted"
               >
                 LIMITED TIME OFFER
               </Text>
@@ -224,7 +219,7 @@ function FeaturedProductCard({
                   fontSize={22}
                   weight="bold"
                   fontWeight="800"
-                  {...{ color: "default" as any }}
+                  color="$text"
                 >
                   £{item.price}
                 </Text>
@@ -232,7 +227,7 @@ function FeaturedProductCard({
                   <Text
                     size="md"
                     weight="medium"
-                    {...{ color: "muted" as any }}
+                    color="$textMuted"
                     textDecorationLine="line-through"
                   >
                     £{item.originalPrice}

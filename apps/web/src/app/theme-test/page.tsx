@@ -22,7 +22,7 @@ export default function ThemeTestPage() {
         >
           <Column>
             <Heading level={1}>Theme Testing</Heading>
-            <Text color="secondary">
+            <Text color="$textSecondary">
               Current theme: <strong>{theme}</strong>
             </Text>
           </Column>
@@ -43,8 +43,8 @@ export default function ThemeTestPage() {
               
               <Row gap="sm" wrap>
                 <Column gap="xs" padding="$3" backgroundColor="$primary" borderRadius="$4" minWidth={120}>
-                  <Text color="inverse" weight="semibold">Primary</Text>
-                  <Text color="inverse" size="xs">Brand Color</Text>
+                  <Text color="$textInverse" weight="semibold">Primary</Text>
+                  <Text color="$textInverse" size="xs">Brand Color</Text>
                 </Column>
                 
                 <Column gap="xs" padding="$3" backgroundColor="$secondary" borderRadius="$4" minWidth={120}>
@@ -53,13 +53,13 @@ export default function ThemeTestPage() {
                 </Column>
                 
                 <Column gap="xs" padding="$3" backgroundColor="$info" borderRadius="$4" minWidth={120}>
-                  <Text color="inverse" weight="semibold">Info</Text>
-                  <Text color="inverse" size="xs">Information</Text>
+                  <Text color="$textInverse" weight="semibold">Info</Text>
+                  <Text color="$textInverse" size="xs">Information</Text>
                 </Column>
                 
                 <Column gap="xs" padding="$3" backgroundColor="$success" borderRadius="$4" minWidth={120}>
-                  <Text color="inverse" weight="semibold">Success</Text>
-                  <Text color="inverse" size="xs">Positive State</Text>
+                  <Text color="$textInverse" weight="semibold">Success</Text>
+                  <Text color="$textInverse" size="xs">Positive State</Text>
                 </Column>
                 
                 <Column gap="xs" padding="$3" backgroundColor="$warning" borderRadius="$4" minWidth={120}>
@@ -68,8 +68,8 @@ export default function ThemeTestPage() {
                 </Column>
                 
                 <Column gap="xs" padding="$3" backgroundColor="$error" borderRadius="$4" minWidth={120}>
-                  <Text color="inverse" weight="semibold">Error</Text>
-                  <Text color="inverse" size="xs">Error State</Text>
+                  <Text color="$textInverse" weight="semibold">Error</Text>
+                  <Text color="$textInverse" size="xs">Error State</Text>
                 </Column>
               </Row>
             </Column>
@@ -78,12 +78,12 @@ export default function ThemeTestPage() {
           <Card>
             <Column gap="sm" padding="$4">
               <Text size="lg" weight="bold">Text Colors</Text>
-              <Text color="default" size="md">Default Text Color</Text>
-              <Text color="secondary" size="md">Secondary Text Color</Text>
-              <Text color="tertiary" size="md">Tertiary Text Color</Text>
-              <Text color="muted" size="md">Muted Text Color</Text>
+              <Text color="$text" size="md">Default Text Color</Text>
+              <Text color="$textSecondary" size="md">Secondary Text Color</Text>
+              <Text color="$textTertiary" size="md">Tertiary Text Color</Text>
+              <Text color="$textMuted" size="md">Muted Text Color</Text>
               <Column backgroundColor="$text" padding="$3" borderRadius="$4">
-                <Text color="inverse" size="md">Inverse Text Color</Text>
+                <Text color="$textInverse" size="md">Inverse Text Color</Text>
               </Column>
             </Column>
           </Card>
