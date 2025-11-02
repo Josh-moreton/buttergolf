@@ -576,13 +576,13 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ```tsx
 // ✅ CORRECT - Use semantic layout components
-<Column gap="lg" align="stretch">
+<Column gap="$lg" align="stretch">
   <Heading level={2}>Title</Heading>
   <Text>Description</Text>
   <Button>Action</Button>
 </Column>
 
-<Row gap="md" align="center" justify="between">
+<Row gap="$md" align="center" justify="between">
   <Text>Left content</Text>
   <Button>Right action</Button>
 </Row>
@@ -1199,35 +1199,38 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
 **CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:
 
-#### 1️⃣ **Custom Variants** (Preferred for Component APIs)
+#### 1️⃣ **Custom Variants** (For NEW Component APIs Only)
 
 Variants are **named options** defined in `styled()` components. They use **plain strings WITHOUT `$`** that map to tokens internally.
 
 ```tsx
 // ✅ CORRECT - Using custom variants (NO $ prefix)
-<Row gap="md">              // "md" is a variant option
 <Button size="lg">          // "lg" is a variant option
 <Text color="muted">        // "muted" is a variant option
 <Card padding="lg">         // "lg" is a variant option
 
 // Defined in styled() like this:
-const Row = styled(XStack, {
+const Button = styled(View, {
   variants: {
-    gap: {
-      md: { gap: '$md' },   // "md" (key) → maps to → "$md" (token)
+    size: {
+      lg: { height: '$10', paddingHorizontal: '$4' },
     }
   }
 })
 ```
 
-**When to use:** Component props that have a fixed set of semantic options (size, color schemes, spacing scales).
+**⚠️ IMPORTANT:** Never create variants for props that **already exist on the base component** (like `gap`, `padding`, `margin`). This causes TypeScript intersection type errors!
 
-#### 2️⃣ **Direct Token Props** (For Flexible Layout/Styling)
+**When to use:** Component-specific props that have a fixed set of semantic options (button size/tone, card variant, text color schemes).
 
-Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component.
+#### 2️⃣ **Direct Token Props** (For Layout & Styling)
+
+Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component. This is how Tamagui's built-in components work.
 
 ```tsx
 // ✅ CORRECT - Using direct token props (WITH $ prefix)
+<Row gap="$xl">                         // Use tokens directly - gap is native to XStack
+<Column gap="$lg">                      // Use tokens directly - gap is native to YStack
 <View padding="$md">                    // Direct token reference
 <YStack gap="$4">                       // Direct token reference
 <Text fontSize="$5">                    // Direct token reference
@@ -1235,16 +1238,16 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View borderRadius="$lg">               // Direct token reference
 ```
 
-**When to use:** One-off styling, layout composition, geometric properties where variants aren't defined.
+**When to use:** Layout spacing (gap, padding, margin), geometric properties (width, height, borderRadius), and any prop that exists natively on the base component.
 
 ### When to Use Which Pattern
 
 #### ✅ Use Custom Variants For:
 
 1. **Component identity** - Button size/tone, Input size, Card variant
-2. **Semantic options** - Text colors (muted, secondary), layout gaps (sm, md, lg)
-3. **Design system boundaries** - Enforcing approved sizes/colors/spacing
-4. **Common patterns** - Row/Column gap, Container maxWidth
+2. **Semantic options** - Text colors (muted, secondary)
+3. **Design system boundaries** - Enforcing approved sizes/colors
+4. **Component-specific props** - Container maxWidth, Card padding
 5. **Better DX** - Autocomplete, type safety, prevents one-offs
 
 #### ✅ Use Direct Tokens For:
@@ -1260,10 +1263,10 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 ```tsx
 // ✅ CORRECT - Mixed usage based on context
 
-// Layout components use variants (semantic, constrained)
-<Row gap="md" align="center">          // gap="md" - variant
-  <Column gap="lg">                     // gap="lg" - variant
-    <Text color="muted" size="sm">      // color="muted" - variant
+// Layout components use DIRECT TOKENS for native props
+<Row gap="$md" align="center">          // gap="$md" - direct token (native prop)
+  <Column gap="$lg">                     // gap="$lg" - direct token (native prop)
+    <Text color="muted" size="sm">       // color="muted" - variant (component-specific)
       Helper text
     </Text>
   </Column>
@@ -1291,22 +1294,26 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 ### Token Usage Cheat Sheet
 
 ```tsx
-// ✅ CORRECT - Variants (NO $ prefix)
-<Row gap="md">                    // Layout component variant
-<Button size="lg">                // Button component variant
-<Text color="muted">              // Text component variant
-<Card padding="lg">               // Card component variant
-<Container maxWidth="lg">         // Container component variant
-
-// ✅ CORRECT - Direct tokens (WITH $ prefix)
-<View padding="$md">              // Direct prop on primitive
+// ✅ CORRECT - Direct tokens (WITH $ prefix) for layout components
+<Row gap="$xl">                   // Row/Column use DIRECT tokens (gap is native to XStack)
+<Column gap="$lg">                // Don't use variants for native props!
 <YStack gap="$4">                 // Direct prop on primitive
+<View padding="$md">              // Direct prop on primitive
 <Text fontSize="$5">              // Direct prop (not using size variant)
 <View borderRadius="$lg">         // Direct geometric prop
 <View backgroundColor="$surface"> // Direct color token
 
+// ✅ CORRECT - Custom variants (NO $ prefix) for component-specific props
+<Button size="lg">                // Button component variant
+<Text color="muted">              // Text component variant
+<Card padding="lg">               // Card component variant (custom, not native padding)
+<Container maxWidth="lg">         // Container component variant
+
+// ❌ WRONG - Creating variants for native props
+<Row gap="md">                    // ❌ gap exists natively, use gap="$md"
+<Column gap="lg">                 // ❌ gap exists natively, use gap="$lg"
+
 // ❌ WRONG - Mixing them up
-<Row gap="$md">                   // ❌ Don't use $ with variants
 <Button size="$lg">               // ❌ Don't use $ with variants
 <Text color="$textMuted">         // ❌ Use variant name "muted"
 <View padding="md">               // ❌ Missing $ for direct prop
@@ -1327,7 +1334,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
   <Card.Header><Heading level={3}>Title</Heading></Card.Header>
   <Card.Body><Text>Content</Text></Card.Body>
 </Card>
-<Row gap="md" align="center">
+<Row gap="$md" align="center">
   <Text>Label</Text>
   <Spacer flex />
   <Button>Action</Button>
@@ -1336,6 +1343,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 // ❌ WRONG Component Usage
 <Button paddingHorizontal="$5" backgroundColor="$green500">Submit</Button>
 <Text fontSize="$3" color="$gray500">Helper text</Text>
+<Row gap="md">Wrong - use gap="$md"</Row>
 <Card elevate size="$4" bordered>
   <CardHeader padding="$3">Title</CardHeader>
 </Card>
@@ -1352,7 +1360,7 @@ Use this matrix when creating or updating components:
 
 | Property Type              | Use Variant                      | Use Direct Token           | Example                                            |
 | -------------------------- | -------------------------------- | -------------------------- | -------------------------------------------------- |
-| **Spacing (gap, padding)** | ✅ If defining layout component  | ⚠️ For one-off containers  | `<Row gap="md">` vs `<View padding="$4">`          |
+| **Spacing (gap, padding)** | ❌ DON'T (native props)          | ✅ Always use tokens       | `<Row gap="$md">` (gap is native to XStack)        |
 | **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>`       |
 | **Colors**                 | ✅ For semantic colors           | ❌ Never use direct        | `<Text color="muted">` not `color="$gray500"`      |
 | **Typography (fontSize)**  | ✅ For component variants        | ⚠️ For direct styling      | `<Text size="sm">` vs `<Text fontSize="$3">`       |
@@ -1433,9 +1441,9 @@ When generating new code:
 ### Form with Validation
 
 ```tsx
-<Column gap="lg" fullWidth>
-  <Column gap="xs">
-    <Row gap="xs">
+<Column gap="$lg" fullWidth>
+  <Column gap="$xs">
+    <Row gap="$xs">
       <Label htmlFor="email">Email</Label>
       <Text color="error">*</Text>
     </Row>
@@ -1468,7 +1476,7 @@ When generating new code:
   </Card.Header>
 
   <Card.Body padding="lg">
-    <Column gap="sm">
+    <Column gap="$sm">
       <Heading level={4}>{product.name}</Heading>
       <Text color="secondary">{product.category}</Text>
       <Row align="center" justify="between">
@@ -1491,10 +1499,10 @@ When generating new code:
 ### Dashboard Stats
 
 ```tsx
-<Row gap="lg" wrap>
+<Row gap="$lg" wrap>
   <Card variant="filled" padding="lg" flex={1}>
-    <Column gap="sm">
-      <Row align="center" gap="sm">
+    <Column gap="$sm">
+      <Row align="center" gap="$sm">
         <Badge variant="success" dot />
         <Text color="secondary">Active Users</Text>
       </Row>
@@ -1506,8 +1514,8 @@ When generating new code:
   </Card>
 
   <Card variant="filled" padding="lg" flex={1}>
-    <Column gap="sm">
-      <Row align="center" gap="sm">
+    <Column gap="$sm">
+      <Row align="center" gap="$sm">
         <Badge variant="info" dot />
         <Text color="secondary">Revenue</Text>
       </Row>
@@ -1524,7 +1532,7 @@ When generating new code:
 
 ```tsx
 <Card variant="elevated" padding="lg">
-  <Column gap="md" align="center">
+  <Column gap="$md" align="center">
     <Spinner size="lg" color="$primary" />
     <Text color="secondary">Loading content...</Text>
   </Column>
@@ -1535,9 +1543,9 @@ When generating new code:
 
 ```tsx
 <Card variant="outlined" padding="md">
-  <Row gap="md" align="start">
+  <Row gap="$md" align="start">
     <Badge variant="error" size="sm" />
-    <Column gap="xs" flex={1}>
+    <Column gap="$xs" flex={1}>
       <Text weight="semibold">Error</Text>
       <Text color="secondary">Something went wrong. Please try again.</Text>
     </Column>
@@ -1553,13 +1561,13 @@ When generating new code:
 ```tsx
 <Container maxWidth="lg">
   <Column
-    gap="md"
-    $gtMd={{ gap: "lg" }} // Larger gap on desktop
+    gap="$md"
+    $gtMd={{ gap: "$lg" }} // Larger gap on desktop
   >
     <Row
       flexDirection="column"
       $gtSm={{ flexDirection: "row" }} // Horizontal on tablet+
-      gap="md"
+      gap="$md"
     >
       <Column flex={1}>Content 1</Column>
       <Column flex={1}>Content 2</Column>
