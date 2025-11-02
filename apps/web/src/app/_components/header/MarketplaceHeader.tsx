@@ -50,8 +50,10 @@ export function MarketplaceHeader() {
         shadowOffset: { width: 0, height: 2 },
       })}
     >
-      {/* Top Bar - Dark Theme Background */}
+      {/* Top Bar - Hidden on mobile for cleaner UX */}
       <Row
+        display="none"
+        $md={{ display: "flex" }}
         backgroundColor="$primary"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
@@ -130,7 +132,12 @@ export function MarketplaceHeader() {
       </Row>
 
       {/* Main Header */}
-      <Row paddingHorizontal="$4" paddingVertical="$4" justify="center">
+      <Row 
+        paddingHorizontal="$3"
+        paddingVertical="$3"
+        $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
+        justify="center"
+      >
         <Row
           width="100%"
           maxWidth={1280}
@@ -139,9 +146,16 @@ export function MarketplaceHeader() {
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Row align="center" {...{ gap: "xs" as any }} paddingVertical="$2">
+            <Row 
+              align="center" 
+              {...{ gap: "xs" as any }} 
+              paddingVertical="$2"
+              // Ensure minimum touch target size
+              minHeight={44}
+            >
               <Text
-                fontSize={24}
+                fontSize={20}
+                $md={{ fontSize: 24 }}
                 fontWeight="800"
                 // @ts-ignore - color variant type issue
                 color="default"
@@ -150,14 +164,16 @@ export function MarketplaceHeader() {
               </Text>
               <Row
                 backgroundColor="$primary"
-                paddingHorizontal="$3"
-                paddingVertical="$1"
+                paddingHorizontal="$2"
+                paddingVertical="$0.5"
+                $md={{ paddingHorizontal: "$3", paddingVertical: "$1" }}
                 borderRadius="$3"
                 borderTopRightRadius="$4"
                 borderBottomRightRadius="$4"
               >
                 <Text
-                  fontSize={14}
+                  fontSize={12}
+                  $md={{ fontSize: 14 }}
                   fontWeight="500"
                   // @ts-ignore - color variant type issue
                   color="inverse"
@@ -173,12 +189,18 @@ export function MarketplaceHeader() {
             <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
           </Row>
 
-          {/* Action Buttons */}
-          <Row {...{ gap: "sm" as any }} align="center">
+          {/* Action Buttons - Improved touch targets */}
+          <Row {...{ gap: "xs" as any }} $md={{ gap: "sm" }} align="center">
             <Row
               tag="button"
               cursor="pointer"
               hoverStyle={{ opacity: 0.7 }}
+              // Minimum 44px touch target
+              padding="$2"
+              minWidth={44}
+              minHeight={44}
+              align="center"
+              justify="center"
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Search"
             >
@@ -190,6 +212,11 @@ export function MarketplaceHeader() {
                 tag="button"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                align="center"
+                justify="center"
                 {...{ style: { background: "none", border: "none" } }}
                 onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
                 aria-label="Sign in"
@@ -199,17 +226,28 @@ export function MarketplaceHeader() {
             </SignedOut>
 
             <SignedIn>
-              <UserButton />
+              <Row minWidth={44} minHeight={44} align="center" justify="center">
+                <UserButton />
+              </Row>
             </SignedIn>
 
             <Link href="/wishlist" style={{ textDecoration: "none" }}>
-              <Row position="relative" cursor="pointer" hoverStyle={{ opacity: 0.7 }}>
+              <Row 
+                position="relative" 
+                cursor="pointer" 
+                hoverStyle={{ opacity: 0.7 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                align="center"
+                justify="center"
+              >
                 <HeartIcon />
                 {wishlistCount > 0 && (
                   <Row
                     position="absolute"
-                    top={-6}
-                    right={-6}
+                    top={4}
+                    right={4}
                     width={18}
                     height={18}
                     backgroundColor="$primary"
@@ -231,13 +269,22 @@ export function MarketplaceHeader() {
             </Link>
 
             <Link href="/cart" style={{ textDecoration: "none" }}>
-              <Row position="relative" cursor="pointer" hoverStyle={{ opacity: 0.7 }}>
+              <Row 
+                position="relative" 
+                cursor="pointer" 
+                hoverStyle={{ opacity: 0.7 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                align="center"
+                justify="center"
+              >
                 <CartIcon />
                 {cartCount > 0 && (
                   <Row
                     position="absolute"
-                    top={-6}
-                    right={-6}
+                    top={4}
+                    right={4}
                     width={18}
                     height={18}
                     backgroundColor="$primary"
@@ -265,6 +312,11 @@ export function MarketplaceHeader() {
               tag="button"
               cursor="pointer"
               hoverStyle={{ opacity: 0.7 }}
+              padding="$2"
+              minWidth={44}
+              minHeight={44}
+              align="center"
+              justify="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"
