@@ -13,7 +13,7 @@
     "@buttergolf/ui": "workspace:*",
     "@tamagui/font-inter": "^1.135.7",
     "@tamagui/lucide-icons": "^1.135.7",
-    "@tamagui/next-theme": "^1.135.6",
+    "@tamagui/next-theme": "^1.135.7",
     "@tamagui/polyfill-dev": "^1.135.6",
     "react": "19.2.0",
     "react-native": "0.82.1",
