@@ -22,7 +22,7 @@ catalog:
   # React Ecosystem
   "react": "19.2.0"
   "react-dom": "19.2.0"
-  "react-native": "0.81.5"
+  "react-native": "0.82.1"
   "react-native-web": "^0.21.2"
   "react-native-safe-area-context": "^5.6.2"
   "react-native-screens": "~4.16.0"
@@ -34,13 +34,13 @@ catalog:
   "next": "16.0.1"
 
   # TypeScript
-  "typescript": "5.9.2"
+  "typescript": "5.9.3"
   "@types/react": "^19.2.0"
   "@types/react-dom": "^19.2.0"
   "@types/node": "^22.15.3"
 
   # ESLint
-  "eslint": "^9.38.0"
+  "eslint": "^9.39.0"
   "eslint-config-expo": "^10.0.0"
 
   # Prisma (Database ORM)
