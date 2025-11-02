@@ -16,7 +16,7 @@ module.exports = function (api) {
       [
         '@tamagui/babel-plugin',
         {
-          components: ['tamagui'],
+          components: ['tamagui', '@buttergolf/ui'],
           // Use the shared Tamagui config used by both Web (Next plugin) and Mobile
           config: '../../packages/config/src/tamagui.config.ts',
           logTimings: true,

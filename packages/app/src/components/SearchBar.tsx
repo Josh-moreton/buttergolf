@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, XStack, Button } from '@buttergolf/ui'
+import { Input, Row, Button } from '@buttergolf/ui'
 import { Search } from '@tamagui/lucide-icons'
 
 export interface SearchBarProps {
@@ -13,11 +13,11 @@ export function SearchBar({
   onSearch,
 }: Readonly<SearchBarProps>) {
   return (
-    <XStack
-      width="100%"
+    <Row
+      fullWidth
       maxWidth={600}
-      {...{ gap: "xs" as any }}
-      alignItems="center"
+      gap="xs"
+      align="center"
     >
       <Input
         flex={1}
@@ -46,6 +46,6 @@ export function SearchBar({
       >
         Search
       </Button>
-    </XStack>
+    </Row>
   )
 }
