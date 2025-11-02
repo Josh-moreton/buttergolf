@@ -22,8 +22,8 @@ export function CategoriesSection() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <XStack gap="$3" paddingVertical="$2">
             {CATEGORIES.map((c) => (
-              <Card key={c.key} padding="$4" borderRadius="$4">
-                <Button size="$3" variant="outlined">
+              <Card key={c.key} {...{ padding: 16 as any }} borderRadius="$4">
+                <Button size="md" tone="outline">
                   {c.label}
                 </Button>
               </Card>

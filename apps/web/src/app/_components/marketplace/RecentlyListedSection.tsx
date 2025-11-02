@@ -51,20 +51,20 @@ import Link from "next/link"
 function ListingCard({ item }: Readonly<{ item: Listing }>) {
   return (
     <Link href={`/products/${item.slug}`} style={{ textDecoration: "none" }}>
-      <Card padding="$0" borderRadius="$4" overflow="hidden" cursor="pointer" hoverStyle={{ scale: 1.01 }}>
+      <Card {...{ padding: 0 as any }} borderRadius="$4" overflow="hidden" cursor="pointer" hoverStyle={{ scale: 1.01 }}>
         <Image
           source={{ uri: item.image }}
           width="100%"
           height={180}
           objectFit="cover"
         />
-        <YStack padding="$4" gap="$2">
+        <YStack {...{ padding: 16 as any }} gap="$2">
           <Text fontWeight="700" numberOfLines={2}>{item.title}</Text>
           <XStack alignItems="center" justifyContent="space-between">
             <Text fontSize="$7" fontWeight="800">£{item.price}</Text>
             <Text fontSize="$2" opacity={0.7}>{item.condition.replace("_", " ")}</Text>
           </XStack>
-          <Button size="$3" variant="outlined">View details</Button>
+          <Button size="md" tone="outline">View details</Button>
         </YStack>
       </Card>
     </Link>
@@ -77,7 +77,7 @@ export function RecentlyListedSection() {
       <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4" gap="$4">
         <XStack alignItems="center" justifyContent="space-between">
           <Text fontSize="$8" fontWeight="700">Recently listed</Text>
-          <Button variant="outlined" size="$3">View all</Button>
+          <Button tone="outline" size="md">View all</Button>
         </XStack>
         <XStack gap="$4" flexWrap="wrap">
           {MOCK_LISTINGS.map((l) => (

@@ -1,24 +1,24 @@
 'use client'
 
-import { YStack, H1, H3, Button, XStack, Theme } from '@buttergolf/ui'
+import { YStack, H1, H3, Button, XStack } from '@buttergolf/ui'
 import { SearchBar } from './SearchBar'
 
 export function HeroSection() {
   return (
     <YStack
-      backgroundColor="$color1"
+      backgroundColor="$surface"
       paddingVertical="$8"
       paddingHorizontal="$4"
       alignItems="center"
       gap="$4"
       borderBottomWidth={1}
-      borderBottomColor="$borderColor"
+      borderBottomColor="$border"
     >
       <YStack alignItems="center" gap="$3" maxWidth={800}>
-        <H1 size="$10" textAlign="center" fontWeight="700" color="$color12">
+        <H1 size="$10" textAlign="center" fontWeight="700" color="$text">
           Ready to declutter your golf bag?
         </H1>
-        <H3 size="$6" textAlign="center" color="$color11" fontWeight="400">
+        <H3 size="$6" textAlign="center" color="$textSecondary" fontWeight="400">
           Buy and sell pre-owned golf equipment with ease
         </H3>
       </YStack>
@@ -28,26 +28,24 @@ export function HeroSection() {
       <XStack gap="$3" flexWrap="wrap" justifyContent="center">
         <Button 
           size="$4" 
-          backgroundColor="$color9" 
-          color="$background"
+          backgroundColor="$primary" 
+          color="$textInverse"
           borderRadius="$10"
-          hoverStyle={{ backgroundColor: '$color10' }}
-          pressStyle={{ backgroundColor: '$color11' }}
+          hoverStyle={{ backgroundColor: '$primaryHover' }}
+          pressStyle={{ backgroundColor: '$primaryPress' }}
         >
           Sell now
         </Button>
-        <Theme name="amber">
-          <Button
-            size="$4"
-            backgroundColor="$color9"
-            color="$color12"
-            borderRadius="$10"
-            hoverStyle={{ backgroundColor: '$color10' }}
-            pressStyle={{ backgroundColor: '$color11' }}
-          >
-            Learn how it works
-          </Button>
-        </Theme>
+        <Button
+          size="$4"
+          backgroundColor="$secondary"
+          color="$text"
+          borderRadius="$10"
+          hoverStyle={{ backgroundColor: '$secondaryHover' }}
+          pressStyle={{ backgroundColor: '$secondaryPress' }}
+        >
+          Learn how it works
+        </Button>
       </XStack>
     </YStack>
   )

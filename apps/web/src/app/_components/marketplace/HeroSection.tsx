@@ -16,34 +16,34 @@ export function HeroSection() {
             <Text fontSize="$10" fontWeight="800" lineHeight={44}>
               Buy & sell golf clubs peer‑to‑peer
             </Text>
-            <Text color="$color" fontSize="$6">
+            <Text fontSize="$6">
               Find great deals on drivers, irons, putters and more — or list your
               gear in minutes.
             </Text>
             <XStack gap="$3" flexWrap="wrap">
-              <Button size="$5">Browse listings</Button>
-              <Button size="$5" variant="outlined">Sell your clubs</Button>
+              <Button size="lg">Browse listings</Button>
+              <Button size="lg" tone="outline">Sell your clubs</Button>
             </XStack>
           </YStack>
 
           <YStack flex={1} gap="$4">
-            <Card backgroundColor="$background" padding="$0">
+            <Card backgroundColor="$background" {...{ padding: 0 as any }}>
               <Image
                 source={{ uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200" }}
                 width="100%"
-                height={260}
-                resizeMode="cover"
+                height={240}
+                objectFit="cover"
                 borderRadius="$4"
               />
             </Card>
             <XStack gap="$4" $sm={{ flexDirection: "column" }} $md={{ flexDirection: "row" }}>
-              <Card flex={1} padding="$4">
+              <Card flex={1} {...{ padding: 16 as any }}>
                 <Text fontWeight="700">Featured</Text>
-                <Text color="$color">Hot deals this week</Text>
+                <Text>Hot deals this week</Text>
               </Card>
-              <Card flex={1} padding="$4">
+              <Card flex={1} {...{ padding: 16 as any }}>
                 <Text fontWeight="700">Fast listing</Text>
-                <Text color="$color">Create a post in 60 seconds</Text>
+                <Text>Create a post in 60 seconds</Text>
               </Card>
             </XStack>
           </YStack>

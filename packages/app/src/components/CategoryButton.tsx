@@ -12,30 +12,29 @@ export function CategoryButton({
   label,
   active = false,
   onPress,
-}: CategoryButtonProps) {
+}: Readonly<CategoryButtonProps>) {
   return (
     <Button
       size="$3"
       paddingHorizontal="$4"
       borderRadius="$10"
-      backgroundColor={active ? '$color9' : '$backgroundPress'}
-      borderColor={active ? '$color9' : '$borderColor'}
+      backgroundColor={active ? '$primary' : '$backgroundPress'}
+      borderColor={active ? '$primary' : '$border'}
       hoverStyle={{
-        backgroundColor: active ? '$color10' : '$backgroundHover',
-        borderColor: active ? '$color10' : '$borderColorHover',
+        backgroundColor: active ? '$primaryHover' : '$backgroundHover',
+        borderColor: active ? '$primaryHover' : '$borderHover',
       }}
       pressStyle={{ 
         scale: 0.97,
-        backgroundColor: active ? '$color11' : '$backgroundPress',
+        backgroundColor: active ? '$primaryPress' : '$backgroundPress',
       }}
       onPress={onPress}
     >
-      <Text
-        color={active ? '$background' : '$color'}
-        fontWeight={active ? '600' : '400'}
-      >
-        {label}
-      </Text>
+      {active ? (
+        <Text {...{ color: '$textInverse' as any }} weight="semibold">{label}</Text>
+      ) : (
+        <Text weight="normal">{label}</Text>
+      )}
     </Button>
   )
 }

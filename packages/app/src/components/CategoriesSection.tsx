@@ -25,7 +25,7 @@ export function CategoriesSection() {
       paddingVertical="$4"
       paddingHorizontal="$4"
       borderBottomWidth={1}
-      borderBottomColor="$borderColor"
+      borderBottomColor="$border"
     >
       <XStack gap="$2">
         {categories.map((category, index) => (

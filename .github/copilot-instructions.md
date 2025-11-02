@@ -76,7 +76,7 @@ All internal packages use the `@buttergolf/` namespace:
 - `@buttergolf/typescript-config` - Shared TypeScript configurations
 - Use workspace protocol: `"@buttergolf/ui": "workspace:*"`
 
-## Tamagui Configuration
+## Tamagui Configuration & Theme System
 
 ### Core Config Location
 - **Config Package**: `packages/config` - Dedicated package for Tamagui configuration
@@ -86,6 +86,165 @@ All internal packages use the `@buttergolf/` namespace:
 - **TypeScript Paths**: Defined in `/tsconfig.base.json`
 
 **Note**: The dedicated `@buttergolf/config` package allows proper versioning and reusability across the monorepo.
+
+### Complete Token System
+
+Our design system uses a comprehensive token system with semantic naming for maintainability and theme consistency.
+
+#### Color Tokens
+
+**Brand Colors (10-shade scales)**:
+```tsx
+// Primary Brand (Green) - Golf course inspired
+$green50 to $green900     // 10 shades from lightest to darkest
+$primary: $green500       // Main brand color (#13a063)
+$primaryLight: $green100  // Light variant for backgrounds
+$primaryHover: $green600  // Hover state
+$primaryPress: $green700  // Press/active state
+$primaryFocus: $green500  // Focus state
+
+// Secondary Brand (Amber/Gold) - Premium accent
+$amber50 to $amber900     // 10 shades
+$secondary: $amber400     // Main secondary color (#f2b705)
+$secondaryLight: $amber100
+$secondaryHover: $amber500
+$secondaryPress: $amber600
+$secondaryFocus: $amber400
+```
+
+**Semantic Status Colors**:
+```tsx
+$success: $teal500        // Positive actions/states
+$successLight: $teal100   // Light background
+$successDark: $teal700    // Dark variant
+
+$error: $red600           // Error states
+$errorLight: $red100      // Error backgrounds
+$errorDark: $red700       // Dark error
+
+$warning: $amber400       // Warning states
+$warningLight: $amber100
+$warningDark: $amber700
+
+$info: $blue500           // Informational states
+$infoLight: $blue100
+$infoDark: $blue700
+```
+
+**Neutral Colors (Gray scale)**:
+```tsx
+$gray50 to $gray900       // 10 shades for text, borders, backgrounds
+```
+
+**Text Colors (Semantic)**:
+```tsx
+$text: $gray900           // Primary text (dark in light theme)
+$textSecondary: $gray700  // Secondary text
+$textTertiary: $gray600   // Tertiary text
+$textMuted: $gray500      // Muted/placeholder text
+$textInverse: $white      // Text on dark backgrounds
+```
+
+**Background Colors**:
+```tsx
+$background: $offWhite    // Main app background (#fbfbf9)
+$backgroundHover          // Hover state backgrounds
+$backgroundPress          // Press state backgrounds
+$backgroundFocus          // Focus state backgrounds
+$surface: $white          // Surface/card backgrounds
+$card: '#F6F7FB'          // Card-specific background
+$cardHover                // Card hover state
+```
+
+**Border Colors**:
+```tsx
+$border: $gray300         // Default borders
+$borderHover: $gray400    // Hover state borders
+$borderFocus: $green500   // Focus state borders (uses primary)
+$borderPress: $green600   // Press state borders
+```
+
+**Shadow Colors**:
+```tsx
+$shadowColor              // Default shadow
+$shadowColorHover         // Hover state shadow
+$shadowColorPress         // Press state shadow
+$shadowColorFocus         // Focus state shadow (with primary tint)
+```
+
+#### Spacing Tokens
+```tsx
+$xs: 4px
+$sm: 8px
+$md: 16px
+$lg: 24px
+$xl: 32px
+$2xl: 48px
+$3xl: 64px
+```
+
+#### Size Tokens
+```tsx
+// Component-specific sizes
+$buttonSm: 32px
+$buttonMd: 40px
+$buttonLg: 48px
+$inputSm: 32px
+$inputMd: 40px
+$inputLg: 48px
+$iconSm: 16px
+$iconMd: 20px
+$iconLg: 24px
+$iconXl: 32px
+```
+
+#### Radius Tokens
+```tsx
+$xs: 2px
+$sm: 4px
+$md: 8px
+$lg: 12px
+$xl: 16px
+$2xl: 24px
+$full: 9999px    // Perfect circles
+```
+
+#### Z-Index Tokens
+```tsx
+$dropdown: 1000
+$sticky: 1020
+$fixed: 1030
+$modalBackdrop: 1040
+$modal: 1050
+$popover: 1060
+$tooltip: 1070
+```
+
+### Theme System
+
+**Light Theme** (default):
+- Background: Off-white (#fbfbf9) for reduced eye strain
+- Text: Dark gray (#111827) for readability
+- Primary: Green 500 for brand consistency
+- All semantic colors optimized for light backgrounds
+
+**Dark Theme**:
+- Background: Dark gray (#111827)
+- Text: Light gray (#f9fafb)
+- Primary: Green 400 (lighter for dark backgrounds)
+- All semantic colors adjusted for dark backgrounds with proper contrast
+
+**Theme Switching**:
+```tsx
+import { Theme } from '@buttergolf/ui'
+
+// Use dark theme for a section
+<Theme name="dark">
+  <View backgroundColor="$background">
+    <Text color="$text">Automatically uses dark theme tokens</Text>
+  </View>
+</Theme>
+```
 
 ### Key Tamagui Concepts
 
@@ -308,40 +467,324 @@ function ThemedComponent() {
 
 ## Component Library Guidelines
 
+### Production-Ready Component Library
+
+We have **8 hardened component families** in `packages/ui` (~1,500 lines of production code):
+
+1. **Button** - 6 tones (primary, secondary, outline, ghost, success, error), 3 sizes
+2. **Typography** - Text, Heading (h1-h6), Label with full variants
+3. **Layout** - Row, Column, Container, Spacer for flexible layouts
+4. **Card** - 4 variants (elevated, outlined, filled, ghost) with compound components
+5. **Input** - 3 sizes with validation states (error, success, disabled)
+6. **Badge** - 8 variants for status indicators
+7. **Spinner** - Loading indicators with size variants
+8. **Image & ScrollView** - Enhanced re-exports with proper typing
+
+### Critical Component Usage Patterns
+
+#### ✅ **ALWAYS Use Semantic Tokens**
+
+```tsx
+// ✅ CORRECT - Use semantic tokens
+<Button backgroundColor="$primary" color="$textInverse">
+  Submit
+</Button>
+
+<Text color="$textMuted">Helper text</Text>
+
+<View borderColor="$border" backgroundColor="$surface">
+  Content
+</View>
+
+// ❌ WRONG - Never use numbered colors or raw hex
+<Button backgroundColor="$green500">Submit</Button>  // Too specific
+<Button backgroundColor="#13a063">Submit</Button>    // No theming
+<Text color="$color">Text</Text>                     // Old token name
+<View borderColor="$borderColor">Content</View>      // Old token name
+```
+
+#### ✅ **ALWAYS Use Component Variants**
+
+```tsx
+// ✅ CORRECT - Use built-in variants
+<Button size="lg" tone="primary">Submit</Button>
+<Text size="sm" color="muted">Helper text</Text>
+<Card variant="elevated" padding="lg">Content</Card>
+<Input size="md" error fullWidth />
+
+// ❌ WRONG - Don't manually style with primitives
+<Button paddingHorizontal="$5" height={48}>Submit</Button>
+<Text fontSize="$3" color="$gray500">Helper text</Text>
+```
+
+#### ✅ **ALWAYS Use Compound Components for Cards**
+
+```tsx
+// ✅ CORRECT - Use compound components
+<Card variant="elevated">
+  <Card.Header>
+    <Heading level={3}>Title</Heading>
+  </Card.Header>
+  <Card.Body>
+    <Text>Content</Text>
+  </Card.Body>
+  <Card.Footer align="right">
+    <Button>Action</Button>
+  </Card.Footer>
+</Card>
+
+// ❌ WRONG - Don't use old CardHeader/CardFooter imports
+<Card>
+  <CardHeader padding="$4">Title</CardHeader>
+  <CardBody>Content</CardBody>
+</Card>
+```
+
+#### ✅ **ALWAYS Use Layout Components**
+
+```tsx
+// ✅ CORRECT - Use semantic layout components
+<Column gap="lg" align="stretch">
+  <Heading level={2}>Title</Heading>
+  <Text>Description</Text>
+  <Button>Action</Button>
+</Column>
+
+<Row gap="md" align="center" justify="between">
+  <Text>Left content</Text>
+  <Button>Right action</Button>
+</Row>
+
+<Container maxWidth="lg" padding="md">
+  <Text>Constrained content</Text>
+</Container>
+
+// ❌ WRONG - Don't use raw YStack/XStack with manual styling
+<YStack gap="$6" alignItems="stretch">
+  <Text marginBottom="$4">Title</Text>
+  <Text>Content</Text>
+</YStack>
+```
+
+#### ✅ **Text Color Variants**
+
+```tsx
+// Available Text color variants (use these instead of token names)
+<Text color="default">Default text</Text>        // $text
+<Text color="secondary">Secondary text</Text>     // $textSecondary
+<Text color="tertiary">Tertiary text</Text>       // $textTertiary
+<Text color="muted">Muted text</Text>             // $textMuted
+<Text color="inverse">Inverse text</Text>         // $textInverse (for dark backgrounds)
+<Text color="primary">Primary colored</Text>      // $primary
+<Text color="success">Success message</Text>      // $success
+<Text color="error">Error message</Text>          // $error
+<Text color="warning">Warning message</Text>      // $warning
+
+// ❌ WRONG - Don't use old token names directly
+<Text color="$color">Text</Text>           // Old token
+<Text color="$color11">Text</Text>         // Numbered color
+<Text color="$textDark">Text</Text>        // Old token
+```
+
+#### ⚠️ **Type Safety Workarounds**
+
+Some Tamagui props have strict typing that doesn't accept our semantic tokens. Use type assertions when needed:
+
+```tsx
+// When you need to use semantic tokens that TypeScript doesn't accept
+<Text {...{ color: "muted" as any }}>Muted text</Text>
+<View {...{ backgroundColor: "$surface" as any }}>Content</View>
+
+// Or use inline style objects
+<Text style={{ color: "$textMuted" }}>Text</Text>
+```
+
 ### Creating New Components
 
 1. **Add to `packages/ui/src/components/`**:
 ```tsx
-// packages/ui/src/components/Card.tsx
-import { styled, YStack } from 'tamagui'
+// packages/ui/src/components/MyComponent.tsx
+import { styled, GetProps, View } from 'tamagui'
 
-export const Card = styled(YStack, {
-  name: 'Card',
-  backgroundColor: '$background',
-  borderRadius: '$4',
-  padding: '$4',
-  shadowColor: '$shadowColor',
-  shadowRadius: 8,
-  shadowOffset: { width: 0, height: 4 },
+export const MyComponent = styled(View, {
+  name: 'MyComponent',  // Required for compiler optimization
+  
+  // Base styles using semantic tokens
+  backgroundColor: '$surface',
+  borderRadius: '$md',
+  borderWidth: 1,
+  borderColor: '$border',
+  padding: '$md',
+  
+  // Interactive states
+  hoverStyle: {
+    borderColor: '$borderHover',
+  },
+  
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+  
+  focusStyle: {
+    borderColor: '$borderFocus',
+    borderWidth: 2,
+  },
   
   variants: {
-    elevated: {
-      true: {
-        shadowRadius: 16,
-        shadowOffset: { width: 0, height: 8 },
+    size: {
+      sm: { padding: '$sm' },
+      md: { padding: '$md' },
+      lg: { padding: '$lg' },
+    },
+    
+    tone: {
+      primary: { 
+        borderColor: '$primary',
+        backgroundColor: '$primaryLight',
+      },
+      error: {
+        borderColor: '$error',
+        backgroundColor: '$errorLight',
       },
     },
+  } as const,
+  
+  defaultVariants: {
+    size: 'md',
   },
 })
+
+export type MyComponentProps = GetProps<typeof MyComponent>
 ```
 
 2. **Export from `packages/ui/src/index.ts`**:
 ```tsx
-export { Card } from './components/Card'
-export type { CardProps } from './components/Card'
+export { MyComponent } from './components/MyComponent'
+export type { MyComponentProps } from './components/MyComponent'
 ```
 
-3. **Component Types**: Always export component types for consumers
+3. **Document in `packages/ui/README.md`** with usage examples
+
+### Component API Reference
+
+#### Button
+```tsx
+<Button
+  size="sm | md | lg"           // Size variant (default: md)
+  tone="primary | secondary | outline | ghost | success | error"  // Style variant
+  fullWidth={boolean}            // Full width button
+  disabled={boolean}             // Disabled state
+  loading={boolean}              // Loading state
+>
+  Button Text
+</Button>
+```
+
+#### Text
+```tsx
+<Text
+  size="xs | sm | md | lg | xl"                    // Font size (default: md)
+  color="default | secondary | tertiary | muted | inverse | primary | error | success | warning"
+  weight="normal | medium | semibold | bold"       // Font weight
+  align="left | center | right"                    // Text alignment
+  truncate={boolean}                               // Truncate with ellipsis
+>
+  Text content
+</Text>
+```
+
+#### Heading
+```tsx
+<Heading
+  level={1 | 2 | 3 | 4 | 5 | 6}                   // Heading level (h1-h6)
+  color="default | primary | secondary"            // Color variant
+  align="left | center | right"                    // Text alignment
+>
+  Heading text
+</Heading>
+```
+
+#### Row (Horizontal Layout)
+```tsx
+<Row
+  gap="xs | sm | md | lg | xl"                    // Gap between children
+  align="start | center | end | stretch | baseline"  // Align items
+  justify="start | center | end | between | around | evenly"  // Justify content
+  wrap={boolean}                                   // Allow wrapping
+  fullWidth={boolean}                              // Full width
+>
+  {children}
+</Row>
+```
+
+#### Column (Vertical Layout)
+```tsx
+<Column
+  gap="xs | sm | md | lg | xl"                    // Gap between children
+  align="start | center | end | stretch"           // Align items
+  justify="start | center | end | between | around | evenly"  // Justify content
+  fullWidth={boolean}                              // Full width
+  fullHeight={boolean}                             // Full height
+>
+  {children}
+</Column>
+```
+
+#### Card
+```tsx
+<Card
+  variant="elevated | outlined | filled | ghost"  // Card style (default: elevated)
+  padding="none | xs | sm | md | lg | xl"         // Padding (default: md)
+  interactive={boolean}                            // Adds hover/press effects
+  fullWidth={boolean}                              // Full width
+>
+  <Card.Header padding="md" noBorder={boolean}>
+    Header content
+  </Card.Header>
+  
+  <Card.Body padding="md">
+    Main content
+  </Card.Body>
+  
+  <Card.Footer padding="md" align="left | center | right" noBorder={boolean}>
+    Footer content
+  </Card.Footer>
+</Card>
+```
+
+#### Input
+```tsx
+<Input
+  size="sm | md | lg"              // Size variant (default: md)
+  error={boolean}                  // Error state
+  success={boolean}                // Success state
+  disabled={boolean}               // Disabled state
+  fullWidth={boolean}              // Full width
+  placeholder="..."                // Placeholder text
+/>
+```
+
+#### Badge
+```tsx
+<Badge
+  variant="primary | secondary | success | error | warning | info | neutral | outline"
+  size="sm | md | lg"              // Size variant (default: md)
+  dot={boolean}                    // Minimal dot indicator
+>
+  Badge text
+</Badge>
+```
+
+#### Container
+```tsx
+<Container
+  maxWidth="sm | md | lg | xl | 2xl | full"      // Max width (default: lg)
+  padding="none | xs | sm | md | lg | xl"         // Horizontal padding (default: md)
+  center={boolean}                                 // Center align content
+>
+  {children}
+</Container>
+```
 
 ### Compound Components Pattern
 For complex components with sub-components:
@@ -675,19 +1118,85 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
 ## Best Practices
 
-1. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-2. **Keep React versions aligned** across web and mobile (currently 19.2.0)
-3. **Use workspace protocol** for internal dependencies: `"workspace:*"`
-4. **Export types** alongside components for better DX
-5. **Test on both platforms** before considering features complete
-6. **Use Tamagui tokens** (`$`) for all design system values
-7. **Leverage media queries** for responsive design instead of platform checks
-8. **Keep Metro and Babel configs** in sync with Tamagui requirements
-9. **Run type checking** regularly during development
-10. **Use `name` prop** on styled components for better compiler optimization
-11. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
-12. **Run `pnpm db:generate`** after any schema changes
-13. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+### Design System & Components
+
+1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$green500`, `$color`, `$borderColor`
+2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
+3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
+4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
+5. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
+6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
+7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, etc.
+8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+
+### Token Usage Cheat Sheet
+
+```tsx
+// ✅ CORRECT Token Usage
+backgroundColor="$primary"          // Brand color
+backgroundColor="$surface"          // Card/surface background
+backgroundColor="$background"       // Page background
+color="$text"                      // Primary text
+color="$textSecondary"             // Secondary text
+borderColor="$border"              // Default borders
+borderColor="$borderFocus"         // Focus state borders
+padding="$md"                      // Spacing
+borderRadius="$md"                 // Border radius
+gap="$lg"                          // Gap between items
+
+// ❌ WRONG Token Usage
+backgroundColor="$green500"        // Too specific
+backgroundColor="$bg"              // Old token
+color="$color"                     // Old token
+color="$textDark"                  // Old token
+borderColor="$borderColor"         // Old token
+borderColor="$gray300"             // Too specific
+padding="$4"                       // Use named sizes
+```
+
+### Component Usage Cheat Sheet
+
+```tsx
+// ✅ CORRECT Component Usage
+<Button size="lg" tone="primary">Submit</Button>
+<Text color="muted" size="sm">Helper text</Text>
+<Card variant="elevated" padding="lg">
+  <Card.Header><Heading level={3}>Title</Heading></Card.Header>
+  <Card.Body><Text>Content</Text></Card.Body>
+</Card>
+<Row gap="md" align="center">
+  <Text>Label</Text>
+  <Spacer flex />
+  <Button>Action</Button>
+</Row>
+
+// ❌ WRONG Component Usage
+<Button paddingHorizontal="$5" backgroundColor="$green500">Submit</Button>
+<Text fontSize="$3" color="$gray500">Helper text</Text>
+<Card elevate size="$4" bordered>
+  <CardHeader padding="$3">Title</CardHeader>
+</Card>
+<XStack gap="$4" alignItems="center">
+  <Text>Label</Text>
+  <View flex={1} />
+  <Button>Action</Button>
+</XStack>
+```
+
+### General Best Practices
+
+9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
+10. **Keep React versions aligned** across web and mobile (currently 19.2.0)
+11. **Use workspace protocol** for internal dependencies: `"workspace:*"`
+12. **Export types** alongside components for better DX
+13. **Test on both platforms** before considering features complete
+14. **Leverage media queries** for responsive design instead of platform checks
+15. **Keep Metro and Babel configs** in sync with Tamagui requirements
+16. **Run type checking** regularly during development
+17. **Use `name` prop** on styled components for better compiler optimization
+18. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+19. **Run `pnpm db:generate`** after any schema changes
+20. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
 
 ## Known Issues & Gotchas
 
@@ -704,11 +1213,151 @@ When generating new code:
 - Use `styled()` for component definitions
 - Include `name` property for compiler optimization
 - Export both component and type
-- Use tokens ($ prefix) for all style values
+- Use semantic tokens ($ prefix) - NEVER use numbered colors
+- ALWAYS use component variants instead of manual styling
+- ALWAYS use Text color variants (color="muted" not color="$textMuted")
+- ALWAYS use compound components for Cards
+- ALWAYS use layout components (Row, Column, Container)
 - Include responsive variants with media queries
 - Add hover/press/focus styles where appropriate
 - Follow compound component pattern for complex UIs
 - Always wrap in TamaguiProvider when creating new entry points
+
+## Common UI Patterns
+
+### Form with Validation
+```tsx
+<Column gap="lg" fullWidth>
+  <Column gap="xs">
+    <Row gap="xs">
+      <Label htmlFor="email">Email</Label>
+      <Text color="error">*</Text>
+    </Row>
+    <Input
+      id="email"
+      type="email"
+      size="md"
+      error={!!emailError}
+      fullWidth
+    />
+    {emailError && (
+      <Text size="sm" color="error">{emailError}</Text>
+    )}
+  </Column>
+  
+  <Button size="lg" tone="primary" fullWidth>
+    Submit
+  </Button>
+</Column>
+```
+
+### Product Card
+```tsx
+<Card variant="elevated" padding="none" fullWidth>
+  <Card.Header padding="none" noBorder>
+    <Image
+      source={{ uri: product.imageUrl }}
+      width="100%"
+      height={200}
+      borderTopLeftRadius="$lg"
+      borderTopRightRadius="$lg"
+    />
+  </Card.Header>
+  
+  <Card.Body padding="lg">
+    <Column gap="sm">
+      <Heading level={4}>{product.name}</Heading>
+      <Text color="secondary">{product.category}</Text>
+      <Row align="center" justify="between">
+        <Text size="xl" weight="bold">
+          ${product.price}
+        </Text>
+        <Badge variant="success">In Stock</Badge>
+      </Row>
+    </Column>
+  </Card.Body>
+  
+  <Card.Footer align="right">
+    <Button tone="outline" size="md">
+      Add to Cart
+    </Button>
+  </Card.Footer>
+</Card>
+```
+
+### Dashboard Stats
+```tsx
+<Row gap="lg" wrap>
+  <Card variant="filled" padding="lg" flex={1}>
+    <Column gap="sm">
+      <Row align="center" gap="sm">
+        <Badge variant="success" dot />
+        <Text color="secondary">Active Users</Text>
+      </Row>
+      <Heading level={2}>1,234</Heading>
+      <Text size="sm" color="success">+12% from last month</Text>
+    </Column>
+  </Card>
+  
+  <Card variant="filled" padding="lg" flex={1}>
+    <Column gap="sm">
+      <Row align="center" gap="sm">
+        <Badge variant="info" dot />
+        <Text color="secondary">Revenue</Text>
+      </Row>
+      <Heading level={2}>$45.2K</Heading>
+      <Text size="sm" color="info">+8% from last month</Text>
+    </Column>
+  </Card>
+</Row>
+```
+
+### Loading State
+```tsx
+<Card variant="elevated" padding="lg">
+  <Column gap="md" align="center">
+    <Spinner size="lg" color="$primary" />
+    <Text color="secondary">Loading content...</Text>
+  </Column>
+</Card>
+```
+
+### Alert/Notification
+```tsx
+<Card variant="outlined" padding="md">
+  <Row gap="md" align="start">
+    <Badge variant="error" size="sm" />
+    <Column gap="xs" flex={1}>
+      <Text weight="semibold">Error</Text>
+      <Text color="secondary">
+        Something went wrong. Please try again.
+      </Text>
+    </Column>
+    <Button tone="ghost" size="sm">
+      Dismiss
+    </Button>
+  </Row>
+</Card>
+```
+
+### Responsive Layout
+```tsx
+<Container maxWidth="lg">
+  <Column
+    gap="md"
+    $gtMd={{ gap: "lg" }}  // Larger gap on desktop
+  >
+    <Row
+      flexDirection="column"
+      $gtSm={{ flexDirection: "row" }}  // Horizontal on tablet+
+      gap="md"
+    >
+      <Column flex={1}>Content 1</Column>
+      <Column flex={1}>Content 2</Column>
+    </Row>
+  </Column>
+</Container>
+```
 
 ## Tamagui Documentation
 

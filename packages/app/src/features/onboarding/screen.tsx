@@ -109,7 +109,7 @@ export function OnboardingScreen({
         </View>
         <Text
           fontSize="$2"
-          color="$color11"
+          color="$textSecondary"
           marginTop="$5"
           textAlign="center"
           fontWeight="500"
@@ -129,7 +129,7 @@ export function OnboardingScreen({
             fontSize="$9"
             fontWeight="700"
             textAlign="center"
-            color="$color12"
+            color="$text"
             lineHeight={36}
             fontFamily={(Platform.OS === 'ios' ? 'Georgia' : 'serif') as any}
           >
@@ -139,7 +139,7 @@ export function OnboardingScreen({
             fontSize="$5"
             fontWeight="500"
             textAlign="center"
-            color="$color11"
+            color="$textSecondary"
             lineHeight={22}
           >
             Buy, sell, and play smarter
@@ -151,23 +151,23 @@ export function OnboardingScreen({
           <Button
             size="$5"
             height={56}
-            backgroundColor="$color9"
+            backgroundColor="$primary"
             borderRadius={16}
             pressStyle={{
-              backgroundColor: '$color11',
+              backgroundColor: '$primaryPress',
               scale: 0.97,
               opacity: 0.9,
             }}
             onPress={onSignUp}
-            accessibilityLabel="Sign up to Butter Golf"
+            aria-label="Sign up to Butter Golf"
             style={{
-              shadowColor: '$color9',
+              shadowColor: '$primary',
               shadowRadius: 12,
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.3,
             }}
           >
-            <Text color="$background" fontSize="$6" fontWeight="700">
+            <Text color="$textInverse" fontSize="$6" fontWeight="700">
               Sign up to Butter Golf
             </Text>
           </Button>
@@ -176,17 +176,17 @@ export function OnboardingScreen({
             size="$5"
             height={56}
             backgroundColor="transparent"
-            borderColor="$color12"
+            borderColor="$border"
             borderWidth={2}
             borderRadius={16}
             pressStyle={{
-              backgroundColor: '$color2',
+              backgroundColor: '$backgroundHover',
               scale: 0.97,
             }}
             onPress={onSignIn}
-            accessibilityLabel="I already have an account"
+            aria-label="I already have an account"
           >
-            <Text color="$color12" fontSize="$5" fontWeight="600">
+            <Text color="$text" fontSize="$5" fontWeight="600">
               I already have an account
             </Text>
           </Button>
@@ -197,9 +197,9 @@ export function OnboardingScreen({
           unstyled
           onPress={onAbout}
           padding="$3"
-          accessibilityLabel="About Butter Golf: Our platform"
+          aria-label="About Butter Golf: Our platform"
         >
-          <Text fontSize="$4" color="$color11" textAlign="center">
+          <Text fontSize="$4" color="$textSecondary" textAlign="center">
             About Butter Golf: Our platform
           </Text>
         </Button>
