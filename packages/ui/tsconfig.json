@@ -4,7 +4,10 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "declaration": false,
+    "declarationMap": false,
+    "isolatedModules": true
   },
   "include": [
     "src"
