@@ -1129,29 +1129,122 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, etc.
 8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
 
+### Understanding Variants vs Direct Token Props
+
+**CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:
+
+#### 1️⃣ **Custom Variants** (Preferred for Component APIs)
+Variants are **named options** defined in `styled()` components. They use **plain strings WITHOUT `$`** that map to tokens internally.
+
+```tsx
+// ✅ CORRECT - Using custom variants (NO $ prefix)
+<Row gap="md">              // "md" is a variant option
+<Button size="lg">          // "lg" is a variant option  
+<Text color="muted">        // "muted" is a variant option
+<Card padding="lg">         // "lg" is a variant option
+
+// Defined in styled() like this:
+const Row = styled(XStack, {
+  variants: {
+    gap: {
+      md: { gap: '$md' },   // "md" (key) → maps to → "$md" (token)
+    }
+  }
+})
+```
+
+**When to use:** Component props that have a fixed set of semantic options (size, color schemes, spacing scales).
+
+#### 2️⃣ **Direct Token Props** (For Flexible Layout/Styling)
+Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component.
+
+```tsx
+// ✅ CORRECT - Using direct token props (WITH $ prefix)
+<View padding="$md">                    // Direct token reference
+<YStack gap="$4">                       // Direct token reference
+<Text fontSize="$5">                    // Direct token reference
+<View backgroundColor="$surface">       // Direct token reference
+<View borderRadius="$lg">               // Direct token reference
+```
+
+**When to use:** One-off styling, layout composition, geometric properties where variants aren't defined.
+
+### When to Use Which Pattern
+
+#### ✅ Use Custom Variants For:
+1. **Component identity** - Button size/tone, Input size, Card variant
+2. **Semantic options** - Text colors (muted, secondary), layout gaps (sm, md, lg)
+3. **Design system boundaries** - Enforcing approved sizes/colors/spacing
+4. **Common patterns** - Row/Column gap, Container maxWidth
+5. **Better DX** - Autocomplete, type safety, prevents one-offs
+
+#### ✅ Use Direct Tokens For:
+1. **Layout spacing** - padding, margin on containers
+2. **Geometric props** - borderRadius, borderWidth, width, height
+3. **One-off containers** - Temporary View/YStack wrappers
+4. **Advanced layouts** - Complex positioning, absolute positioning
+5. **Prototyping** - Quick iteration before creating variants
+
+### Real-World Examples
+
+```tsx
+// ✅ CORRECT - Mixed usage based on context
+
+// Layout components use variants (semantic, constrained)
+<Row gap="md" align="center">          // gap="md" - variant
+  <Column gap="lg">                     // gap="lg" - variant
+    <Text color="muted" size="sm">      // color="muted" - variant
+      Helper text
+    </Text>
+  </Column>
+</Row>
+
+// Primitives use direct tokens (flexible, ad-hoc)
+<View padding="$4" backgroundColor="$surface" borderRadius="$md">
+  <YStack gap="$3">
+    <Text fontSize="$4">Direct token usage</Text>
+  </YStack>
+</View>
+
+// Components use their defined variants
+<Button size="lg" tone="primary">      // size/tone - variants
+  Submit
+</Button>
+
+<Card variant="elevated" padding="lg">  // variant/padding - variants
+  <Card.Body>
+    <Text>Content</Text>
+  </Card.Body>
+</Card>
+```
+
 ### Token Usage Cheat Sheet
 
 ```tsx
-// ✅ CORRECT Token Usage
-backgroundColor="$primary"          // Brand color
-backgroundColor="$surface"          // Card/surface background
-backgroundColor="$background"       // Page background
-color="$text"                      // Primary text
-color="$textSecondary"             // Secondary text
-borderColor="$border"              // Default borders
-borderColor="$borderFocus"         // Focus state borders
-padding="$md"                      // Spacing
-borderRadius="$md"                 // Border radius
-gap="$lg"                          // Gap between items
+// ✅ CORRECT - Variants (NO $ prefix)
+<Row gap="md">                    // Layout component variant
+<Button size="lg">                // Button component variant
+<Text color="muted">              // Text component variant
+<Card padding="lg">               // Card component variant
+<Container maxWidth="lg">         // Container component variant
 
-// ❌ WRONG Token Usage
-backgroundColor="$green500"        // Too specific
-backgroundColor="$bg"              // Old token
-color="$color"                     // Old token
-color="$textDark"                  // Old token
-borderColor="$borderColor"         // Old token
-borderColor="$gray300"             // Too specific
-padding="$4"                       // Use named sizes
+// ✅ CORRECT - Direct tokens (WITH $ prefix)
+<View padding="$md">              // Direct prop on primitive
+<YStack gap="$4">                 // Direct prop on primitive
+<Text fontSize="$5">              // Direct prop (not using size variant)
+<View borderRadius="$lg">         // Direct geometric prop
+<View backgroundColor="$surface"> // Direct color token
+
+// ❌ WRONG - Mixing them up
+<Row gap="$md">                   // ❌ Don't use $ with variants
+<Button size="$lg">               // ❌ Don't use $ with variants
+<Text color="$textMuted">         // ❌ Use variant name "muted"
+<View padding="md">               // ❌ Missing $ for direct prop
+
+// ❌ WRONG - Using specific/old tokens
+<View backgroundColor="$green500"> // ❌ Too specific, use semantic
+<Text color="$color">             // ❌ Old token name
+<View borderColor="$borderColor"> // ❌ Old token name
 ```
 
 ### Component Usage Cheat Sheet
@@ -1183,6 +1276,46 @@ padding="$4"                       // Use named sizes
 </XStack>
 ```
 
+### Component Design Decision Matrix
+
+Use this matrix when creating or updating components:
+
+| Property Type | Use Variant | Use Direct Token | Example |
+|--------------|-------------|------------------|---------|
+| **Spacing (gap, padding)** | ✅ If defining layout component | ⚠️ For one-off containers | `<Row gap="md">` vs `<View padding="$4">` |
+| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>` |
+| **Colors** | ✅ For semantic colors | ❌ Never use direct | `<Text color="muted">` not `color="$gray500"` |
+| **Typography (fontSize)** | ✅ For component variants | ⚠️ For direct styling | `<Text size="sm">` vs `<Text fontSize="$3">` |
+| **Border radius** | ⚠️ Rare (use defaults) | ✅ For geometric control | Usually inherit, or `borderRadius="$md"` |
+| **Alignment** | ✅ Always use variants | ❌ Never direct | `<Row align="center">` never `alignItems="center"` |
+| **Component state** | ✅ Always (tone, variant) | ❌ Never | `<Button tone="primary">` never manual colors |
+
+**Legend:**
+- ✅ Preferred approach
+- ⚠️ Use case dependent  
+- ❌ Avoid/Never
+
+### Variant Design Guidelines
+
+When creating a new component, add variants for:
+
+1. **Must Have:**
+   - `size` - If component has sizing (sm, md, lg)
+   - `variant` or `tone` - Visual style variations
+   
+2. **Should Have:**
+   - Component-specific semantics (e.g., `align` for Row, `level` for Heading)
+   - Common states (active, disabled) if not in base component
+   
+3. **Nice to Have:**
+   - `fullWidth` / `fullHeight` - If commonly needed
+   - Spacing variants if component commonly wraps content
+
+4. **Don't Variant:**
+   - One-off values (use direct props)
+   - Geometric properties (width, height numbers)
+   - Complex positioning (absolute, z-index)
+
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
@@ -1197,6 +1330,8 @@ padding="$4"                       // Use named sizes
 18. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
 19. **Run `pnpm db:generate`** after any schema changes
 20. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+21. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
+22. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
 
 ## Known Issues & Gotchas
 
