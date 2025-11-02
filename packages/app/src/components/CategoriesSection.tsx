@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { Row, ScrollView } from '@buttergolf/ui'
-import { CategoryButton } from './CategoryButton'
+import { XStack, ScrollView } from "@buttergolf/ui";
+import { CategoryButton } from "./CategoryButton";
 
 const categories = [
-  'All',
-  'Drivers',
-  'Irons',
-  'Wedges',
-  'Putters',
-  'Woods',
-  'Hybrids',
-  'Bags',
-  'Balls',
-  'Apparel',
-  'Accessories',
-]
+  "All",
+  "Drivers",
+  "Irons",
+  "Wedges",
+  "Putters",
+  "Woods",
+  "Hybrids",
+  "Bags",
+  "Balls",
+  "Apparel",
+  "Accessories",
+];
 
 export function CategoriesSection() {
   return (
@@ -27,7 +27,7 @@ export function CategoriesSection() {
       borderBottomWidth={1}
       borderBottomColor="$border"
     >
-      <Row {...{ gap: "xs" as any }}>
+      <XStack {...{ gap: "xs" as any }}>
         {categories.map((category, index) => (
           <CategoryButton
             key={category}
@@ -35,7 +35,7 @@ export function CategoriesSection() {
             active={index === 0}
           />
         ))}
-      </Row>
+      </XStack>
     </ScrollView>
-  )
+  );
 }

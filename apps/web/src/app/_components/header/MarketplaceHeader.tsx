@@ -1,42 +1,36 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
-import { Row, Column, Text } from "@buttergolf/ui"
-import { menuData } from "./menuData"
-import { DesktopMenu } from "./DesktopMenu"
-import {
-  SearchIcon,
-  UserIcon,
-  HeartIcon,
-  CartIcon,
-  MenuIcon,
-} from "./icons"
-import { SignInModal } from "../auth/SignInModal"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { XStack, YStack, Text } from "@buttergolf/ui";
+import { menuData } from "./menuData";
+import { DesktopMenu } from "./DesktopMenu";
+import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon } from "./icons";
+import { SignInModal } from "../auth/SignInModal";
 
 export function MarketplaceHeader() {
-  const [stickyMenu, setStickyMenu] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [authOpen, setAuthOpen] = useState(false)
-  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in")
+  const [stickyMenu, setStickyMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   // Wishlist and cart counts (placeholder - will wire to state later)
-  const wishlistCount = 0
-  const cartCount = 0
+  const wishlistCount = 0;
+  const cartCount = 0;
 
   // Sticky menu handler
   useEffect(() => {
     const handleStickyMenu = () => {
-      setStickyMenu(window.scrollY >= 80)
-    }
+      setStickyMenu(window.scrollY >= 80);
+    };
 
-    window.addEventListener("scroll", handleStickyMenu)
-    return () => window.removeEventListener("scroll", handleStickyMenu)
-  }, [])
+    window.addEventListener("scroll", handleStickyMenu);
+    return () => window.removeEventListener("scroll", handleStickyMenu);
+  }, []);
 
   return (
-    <Column
+    <YStack
       {...{ style: { position: "fixed" } }}
       top={0}
       left={0}
@@ -51,118 +45,110 @@ export function MarketplaceHeader() {
       })}
     >
       {/* Top Bar - Hidden on mobile for cleaner UX */}
-      <Row
+      <XStack
         display="none"
         $md={{ display: "flex" }}
         backgroundColor="$primary"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
-        justify="center"
+        justifyContent="center"
       >
-        <Row
+        <XStack
           width="100%"
           maxWidth={1280}
-          {...{ justify: "between" as any }}
-          align="center"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Row display="none" $lg={{ display: "flex" }}>
-            <Text
-              // @ts-ignore - color variant type issue
-              color="inverse"
-              fontSize={14}
-              fontWeight="500"
-            >
+          <XStack display="none" $lg={{ display: "flex" }}>
+            <Text color="inverse" size="sm" weight="medium">
               Get free delivery on orders over £100
             </Text>
-          </Row>
+          </XStack>
 
-          <Row {...{ gap: "sm" as any }} align="center">
+          <XStack gap="$3" alignItems="center">
             <SignedOut>
-              <Row
+              <XStack
                 tag="button"
                 cursor="pointer"
-                {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-up"); setAuthOpen(true) }}
+                style={{ background: "none", border: "none" }}
+                onPress={() => {
+                  setAuthMode("sign-up");
+                  setAuthOpen(true);
+                }}
               >
                 <Text
-                  // @ts-ignore - color variant type issue
                   color="inverse"
-                  fontSize={14}
-                  fontWeight="500"
+                  size="sm"
+                  weight="medium"
                   paddingRight="$3"
                   borderRightWidth={1}
                   borderColor="$border"
-                  // @ts-ignore - hoverStyle type issue
                   hoverStyle={{ color: "$textInverse" }}
                 >
                   Create an account
                 </Text>
-              </Row>
-              <Row
+              </XStack>
+              <XStack
                 tag="button"
                 cursor="pointer"
-                {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+                style={{ background: "none", border: "none" }}
+                onPress={() => {
+                  setAuthMode("sign-in");
+                  setAuthOpen(true);
+                }}
               >
                 <Text
-                  // @ts-ignore - color variant type issue
                   color="inverse"
-                  fontSize={14}
-                  fontWeight="500"
+                  size="sm"
+                  weight="medium"
                   paddingLeft="$3"
-                  // @ts-ignore - hoverStyle type issue
                   hoverStyle={{ color: "$textInverse" }}
                 >
                   Sign In
                 </Text>
-              </Row>
+              </XStack>
             </SignedOut>
             <SignedIn>
-              <Text
-                // @ts-ignore - color variant type issue
-                color="inverse"
-                fontSize={14}
-                fontWeight="500"
-              >
+              <Text color="inverse" size="sm" weight="medium">
                 Welcome back!
               </Text>
             </SignedIn>
-          </Row>
-        </Row>
-      </Row>
+          </XStack>
+        </XStack>
+      </XStack>
 
       {/* Main Header */}
-      <Row 
+      <XStack
         paddingHorizontal="$3"
         paddingVertical="$3"
         $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
-        justify="center"
+        justifyContent="center"
       >
-        <Row
+        <XStack
           width="100%"
           maxWidth={1280}
-          {...{ justify: "between" as any }}
-          align="center"
+          justifyContent="space-between"
+          alignItems="center"
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Row 
-              align="center" 
-              {...{ gap: "xs" as any }} 
+            <XStack
+              alignItems="center"
+              gap="$2"
               paddingVertical="$2"
               // Ensure minimum touch target size
               minHeight={44}
             >
               <Text
-                fontSize={20}
+                size="lg"
                 $md={{ fontSize: 24 }}
+                weight="bold"
                 fontWeight="800"
-                // @ts-ignore - color variant type issue
                 color="default"
               >
                 ButterGolf
               </Text>
-              <Row
+              <XStack
                 backgroundColor="$primary"
                 paddingHorizontal="$2"
                 paddingVertical="$0.5"
@@ -172,26 +158,25 @@ export function MarketplaceHeader() {
                 borderBottomRightRadius="$4"
               >
                 <Text
-                  fontSize={12}
-                  $md={{ fontSize: 14 }}
-                  fontWeight="500"
-                  // @ts-ignore - color variant type issue
+                  size="xs"
+                  $md={{ size: "sm" }}
+                  weight="medium"
                   color="inverse"
                 >
                   Beta
                 </Text>
-              </Row>
-            </Row>
+              </XStack>
+            </XStack>
           </Link>
 
           {/* Desktop Menu - Hidden on mobile */}
-          <Row display="none" $xl={{ display: "flex" }}>
+          <XStack display="none" $xl={{ display: "flex" }}>
             <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
-          </Row>
+          </XStack>
 
           {/* Action Buttons - Improved touch targets */}
-          <Row {...{ gap: "xs" as any }} $md={{ gap: "sm" }} align="center">
-            <Row
+          <XStack gap="$2" $md={{ gap: "$3" }} alignItems="center">
+            <XStack
               tag="button"
               cursor="pointer"
               hoverStyle={{ opacity: 0.7 }}
@@ -199,52 +184,61 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              align="center"
-              justify="center"
+              alignItems="center"
+              justifyContent="center"
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Search"
             >
               <SearchIcon />
-            </Row>
+            </XStack>
 
             <SignedOut>
-              <Row
+              <XStack
                 tag="button"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
                 {...{ style: { background: "none", border: "none" } }}
-                onPress={() => { setAuthMode("sign-in"); setAuthOpen(true) }}
+                onPress={() => {
+                  setAuthMode("sign-in");
+                  setAuthOpen(true);
+                }}
                 aria-label="Sign in"
+                style={{ background: "none", border: "none" }}
               >
                 <UserIcon />
-              </Row>
+              </XStack>
             </SignedOut>
 
             <SignedIn>
-              <Row minWidth={44} minHeight={44} align="center" justify="center">
+              <XStack
+                minWidth={44}
+                minHeight={44}
+                alignItems="center"
+                justifyContent="center"
+              >
                 <UserButton />
-              </Row>
+              </XStack>
             </SignedIn>
 
             <Link href="/wishlist" style={{ textDecoration: "none" }}>
-              <Row 
-                position="relative" 
-                cursor="pointer" 
+              <XStack
+                position="relative"
+                cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <HeartIcon />
                 {wishlistCount > 0 && (
-                  <Row
+                  <XStack
                     position="absolute"
                     top={4}
                     right={4}
@@ -252,36 +246,36 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    align="center"
-                    justify="center"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     <Text
+                      size="xs"
                       fontSize={10}
-                      fontWeight="400"
-                      // @ts-ignore - color variant type issue
+                      weight="normal"
                       color="inverse"
                     >
                       {wishlistCount}
                     </Text>
-                  </Row>
+                  </XStack>
                 )}
-              </Row>
+              </XStack>
             </Link>
 
             <Link href="/cart" style={{ textDecoration: "none" }}>
-              <Row 
-                position="relative" 
-                cursor="pointer" 
+              <XStack
+                position="relative"
+                cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <CartIcon />
                 {cartCount > 0 && (
-                  <Row
+                  <XStack
                     position="absolute"
                     top={4}
                     right={4}
@@ -289,24 +283,24 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    align="center"
-                    justify="center"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     <Text
+                      size="xs"
                       fontSize={10}
-                      fontWeight="400"
-                      // @ts-ignore - color variant type issue
+                      weight="normal"
                       color="inverse"
                     >
                       {cartCount}
                     </Text>
-                  </Row>
+                  </XStack>
                 )}
-              </Row>
+              </XStack>
             </Link>
 
             {/* Mobile Menu Toggle */}
-            <Row
+            <XStack
               display="flex"
               $xl={{ display: "none" }}
               tag="button"
@@ -315,19 +309,23 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              align="center"
-              justify="center"
+              alignItems="center"
+              justifyContent="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"
             >
               <MenuIcon />
-            </Row>
-          </Row>
-        </Row>
-      </Row>
+            </XStack>
+          </XStack>
+        </XStack>
+      </XStack>
       {/* Auth modal */}
-      <SignInModal open={authOpen} onClose={() => setAuthOpen(false)} mode={authMode} />
-    </Column>
-  )
+      <SignInModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        mode={authMode}
+      />
+    </YStack>
+  );
 }

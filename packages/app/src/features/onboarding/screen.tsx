@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Platform, Dimensions, AccessibilityInfo, Animated, Easing } from 'react-native'
 import { Text, Button, View } from 'tamagui'
-import { Column } from '@buttergolf/ui'
+import { YStack } from '@buttergolf/ui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: SCREEN_W } = Dimensions.get('window')
@@ -79,14 +79,14 @@ export function OnboardingScreen({
   }, [reduceMotion, singleWidth, translateX])
 
   return (
-    <Column
+    <YStack
       flex={1}
       backgroundColor="$background"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
       {/* Auto-scrolling Product Carousel */}
-      <Column flex={1} justify="center" paddingVertical="$8">
+      <YStack flex={1} justifyContent="center" paddingVertical="$8">
         <View height={CARD_HEIGHT} overflow="hidden">
           <Animated.View style={{ flexDirection: 'row', transform: [{ translateX }] }}>
             {items.map((item, index) => (
@@ -117,15 +117,15 @@ export function OnboardingScreen({
         >
           Browse thousands of pre-loved golf items
         </Text>
-      </Column>      {/* Content Section */}
-      <Column
+      </YStack>      {/* Content Section */}
+      <YStack
         {...{ gap: "lg" as any }}
         paddingHorizontal="$6"
         paddingBottom="$4"
-        align="center"
+        alignItems="center"
       >
         {/* Headline */}
-        <Column {...{ gap: "xs" as any }} paddingHorizontal="$5">
+        <YStack {...{ gap: "xs" as any }} paddingHorizontal="$5">
           <Text
             fontSize="$9"
             fontWeight="700"
@@ -145,10 +145,10 @@ export function OnboardingScreen({
           >
             Buy, sell, and play smarter
           </Text>
-        </Column>
+        </YStack>
 
         {/* CTAs */}
-        <Column {...{ gap: "sm" as any }} width="100%" maxWidth={420} paddingHorizontal="$5">
+        <YStack {...{ gap: "sm" as any }} width="100%" maxWidth={420} paddingHorizontal="$5">
           <Button
             size="$5"
             height={56}
@@ -191,7 +191,7 @@ export function OnboardingScreen({
               I already have an account
             </Text>
           </Button>
-        </Column>
+        </YStack>
 
         {/* Footer */}
         <Button
@@ -204,7 +204,7 @@ export function OnboardingScreen({
             About Butter Golf: Our platform
           </Text>
         </Button>
-      </Column>
-    </Column>
+      </YStack>
+    </YStack>
   )
 }
