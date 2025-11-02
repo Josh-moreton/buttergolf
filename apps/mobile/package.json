@@ -15,14 +15,14 @@
     "@buttergolf/ui": "workspace:*",
     "@clerk/clerk-expo": "^2.17.3",
     "@react-navigation/native": "^7.1.19",
-    "@react-navigation/native-stack": "^7.6.1",
+    "@react-navigation/native-stack": "^7.6.2",
     "burnt": "^0.13.0",
     "expo": "~54.0.20",
     "expo-auth-session": "^7.0.8",
     "expo-secure-store": "^15.0.7",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react-dom": "19.2.0",
     "react-native": "0.81.5",
     "react-native-safe-area-context": "^5.6.2",
     "react-native-screens": "~4.16.0",
@@ -31,12 +31,12 @@
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",
     "@buttergolf/typescript-config": "workspace:*",
-    "@tamagui/babel-plugin": "^1.135.6",
+    "@tamagui/babel-plugin": "catalog:",
     "@types/react": "~19.1.0",
     "babel-plugin-module-resolver": "^5.0.0",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.0",
     "eslint-config-expo": "^10.0.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.3"
   },
   "private": true
 }
