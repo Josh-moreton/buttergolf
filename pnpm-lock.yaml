@@ -97,8 +97,8 @@ catalogs:
       specifier: ^5.6.2
       version: 5.6.2
     react-native-screens:
-      specifier: ~4.16.0
-      version: 4.16.0
+      specifier: ~4.18.0
+      version: 4.18.0
     react-native-web:
       specifier: ^0.21.2
       version: 0.21.2
@@ -142,7 +142,7 @@ importers:
         version: 7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       '@react-navigation/native-stack':
         specifier: ^7.6.2
-        version: 7.6.2(@react-navigation/native@7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-safe-area-context@5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-screens@4.16.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
+        version: 7.6.2(@react-navigation/native@7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-safe-area-context@5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-screens@4.18.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       burnt:
         specifier: ^0.13.0
         version: 0.13.0(expo@54.0.21(@babel/core@7.28.5)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
@@ -172,7 +172,7 @@ importers:
         version: 5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       react-native-screens:
         specifier: 'catalog:'
-        version: 4.16.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
+        version: 4.18.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       solito:
         specifier: 'catalog:'
         version: 5.0.0
@@ -371,8 +371,8 @@ importers:
         specifier: ^9.34.0
         version: 9.39.0
       '@next/eslint-plugin-next':
-        specifier: ^15.5.0
-        version: 15.5.6
+        specifier: ^16.0.1
+        version: 16.0.1
       eslint:
         specifier: 'catalog:'
         version: 9.39.0(jiti@2.6.1)
@@ -1674,9 +1674,6 @@ packages:
 
   '@next/env@16.0.1':
     resolution: {integrity: sha512-LFvlK0TG2L3fEOX77OC35KowL8D7DlFF45C0OvKMC4hy8c/md1RC4UMNDlUGJqfCoCS2VWrZ4dSE6OjaX5+8mw==}
-
-  '@next/eslint-plugin-next@15.5.6':
-    resolution: {integrity: sha512-YxDvsT2fwy1j5gMqk3ppXlsgDopHnkM4BoxSVASbvvgh5zgsK8lvWerDzPip8k3WVzsTZ1O7A7si1KNfN4OZfQ==}
 
   '@next/eslint-plugin-next@16.0.1':
     resolution: {integrity: sha512-g4Cqmv/gyFEXNeVB2HkqDlYKfy+YrlM2k8AVIO/YQVEPfhVruH1VA99uT1zELLnPLIeOnx8IZ6Ddso0asfTIdw==}
@@ -5770,8 +5767,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-screens@4.16.0:
-    resolution: {integrity: sha512-yIAyh7F/9uWkOzCi1/2FqvNvK6Wb9Y1+Kzn16SuGfN9YFJDTbwlzGRvePCNTOX0recpLQF3kc2FmvMUhyTCH1Q==}
+  react-native-screens@4.18.0:
+    resolution: {integrity: sha512-mRTLWL7Uc1p/RFNveEIIrhP22oxHduC2ZnLr/2iHwBeYpGXR0rJZ7Bgc0ktxQSHRjWTPT70qc/7yd4r9960PBQ==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -8380,10 +8377,6 @@ snapshots:
 
   '@next/env@16.0.1': {}
 
-  '@next/eslint-plugin-next@15.5.6':
-    dependencies:
-      fast-glob: 3.3.1
-
   '@next/eslint-plugin-next@16.0.1':
     dependencies:
       fast-glob: 3.3.1
@@ -8685,7 +8678,7 @@ snapshots:
       use-latest-callback: 0.2.6(react@19.2.0)
       use-sync-external-store: 1.6.0(react@19.2.0)
 
-  '@react-navigation/native-stack@7.6.2(@react-navigation/native@7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-safe-area-context@5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-screens@4.16.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)':
+  '@react-navigation/native-stack@7.6.2(@react-navigation/native@7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-safe-area-context@5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-screens@4.18.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@react-navigation/elements': 2.8.1(@react-navigation/native@7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native-safe-area-context@5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       '@react-navigation/native': 7.1.19(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
@@ -8693,7 +8686,7 @@ snapshots:
       react: 19.2.0
       react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0)
       react-native-safe-area-context: 5.6.2(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
-      react-native-screens: 4.16.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
+      react-native-screens: 4.18.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       sf-symbols-typescript: 2.1.0
       warn-once: 0.1.1
     transitivePeerDependencies:
@@ -13751,12 +13744,11 @@ snapshots:
       react: 19.2.0
       react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0)
 
-  react-native-screens@4.16.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0):
+  react-native-screens@4.18.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-freeze: 1.0.4(react@19.2.0)
       react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0)
-      react-native-is-edge-to-edge: 1.2.1(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
       warn-once: 0.1.1
 
   react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0):
