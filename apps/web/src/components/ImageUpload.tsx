@@ -1,147 +1,230 @@
-'use client'
+"use client";
 
-import { useState, useRef } from 'react'
-import { Button, Text, YStack, XStack, Image, Spinner } from '@buttergolf/ui'
-import { useImageUpload } from '../hooks/useImageUpload'
+import { useState, useRef } from "react";
+import { Text, YStack, XStack, Image, Spinner, Column } from "@buttergolf/ui";
+import { useImageUpload } from "../hooks/useImageUpload";
 
 export interface ImageUploadProps {
-  onUploadComplete: (url: string) => void
-  maxImages?: number
-  currentImages?: string[]
+  onUploadComplete: (url: string) => void;
+  maxImages?: number;
+  currentImages?: string[];
 }
 
-export function ImageUpload({ 
-  onUploadComplete, 
+export function ImageUpload({
+  onUploadComplete,
   maxImages = 5,
-  currentImages = []
+  currentImages = [],
 }: Readonly<ImageUploadProps>) {
-  const { upload, uploading, error, progress } = useImageUpload()
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { upload, uploading, error, progress } = useImageUpload();
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // Check max images limit
     if (currentImages.length >= maxImages) {
-      alert(`You can only upload up to ${maxImages} images`)
-      return
+      alert(`You can only upload up to ${maxImages} images`);
+      return;
     }
-
-    // Create preview
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result as string)
-    }
-    reader.readAsDataURL(file)
 
     // Upload
     try {
-      const result = await upload(file)
-      onUploadComplete(result.url)
-      setPreviewUrl(null)
+      const result = await upload(file);
+      onUploadComplete(result.url);
     } catch (err) {
-      console.error('Upload error:', err)
-      setPreviewUrl(null)
+      console.error("Upload error:", err);
     }
 
     // Reset input
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = "";
     }
-  }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files?.[0]) {
+      const file = e.dataTransfer.files[0];
+
+      if (currentImages.length >= maxImages) {
+        alert(`You can only upload up to ${maxImages} images`);
+        return;
+      }
+
+      try {
+        const result = await upload(file);
+        onUploadComplete(result.url);
+      } catch (err) {
+        console.error("Upload error:", err);
+      }
+    }
+  };
 
   const handleButtonClick = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   return (
-    <YStack gap="$md">
+    <Column gap="$md">
       <input
         ref={fileInputRef}
         type="file"
         accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
 
-      <Button
-        onPress={handleButtonClick}
-        disabled={uploading || currentImages.length >= maxImages}
-        size="lg"
-        tone="outline"
+      {/* Large Upload Area */}
+      <Column
+        backgroundColor={dragActive ? "$primaryLight" : "$surface"}
+        borderWidth={2}
+        borderColor={dragActive ? "$primary" : "$border"}
+        borderStyle="dashed"
+        borderRadius="$xl"
+        padding="$10"
+        alignItems="center"
+        justifyContent="center"
+        minHeight={currentImages.length === 0 ? 280 : 180}
+        cursor="pointer"
+        animation="quick"
+        hoverStyle={{
+          borderColor: "$primary",
+          backgroundColor: "$primaryLight",
+        }}
+        onPress={
+          currentImages.length < maxImages ? handleButtonClick : undefined
+        }
+        {...{
+          onDragEnter: handleDrag,
+          onDragLeave: handleDrag,
+          onDragOver: handleDrag,
+          onDrop: handleDrop,
+        }}
       >
-        {uploading ? 'Uploading...' : `Upload Image (${currentImages.length}/${maxImages})`}
-      </Button>
-
-      {uploading && (
-        <YStack gap="$sm" alignItems="center">
-          <Spinner size="md" {...{ color: "$primary" as any }} />
-          <Text size="sm" {...{ color: "$textSecondary" as any }}>
-            Uploading... {progress.toString()}%
-          </Text>
-        </YStack>
-      )}
+        {uploading ? (
+          <Column gap="$md" alignItems="center">
+            <Spinner size="lg" {...{ color: "$primary" as any }} />
+            <Text
+              size="md"
+              {...{ color: "$textSecondary" as any }}
+              textAlign="center"
+            >
+              Uploading... {progress.toString()}%
+            </Text>
+          </Column>
+        ) : (
+          <Column gap="$md" alignItems="center" maxWidth={400}>
+            <YStack
+              width={64}
+              height={64}
+              borderRadius="$full"
+              backgroundColor="$primaryLight"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text fontSize={32}>+</Text>
+            </YStack>
+            <Column gap="$xs" alignItems="center">
+              <Text
+                size="lg"
+                weight="semibold"
+                textAlign="center"
+                {...{ color: "$text" as any }}
+              >
+                {currentImages.length === 0
+                  ? "Upload photos"
+                  : "Add more photos"}
+              </Text>
+              <Text
+                size="sm"
+                {...{ color: "$textSecondary" as any }}
+                textAlign="center"
+                lineHeight={20}
+              >
+                or drag and drop
+              </Text>
+            </Column>
+            <Text
+              size="xs"
+              {...{ color: "$textMuted" as any }}
+              textAlign="center"
+            >
+              {currentImages.length}/{maxImages} photos • Max 10MB each
+            </Text>
+          </Column>
+        )}
+      </Column>
 
       {error && (
-        <Text size="sm" {...{ color: "$error" as any }}>
+        <Text size="sm" {...{ color: "$error" as any }} textAlign="center">
           {error}
         </Text>
       )}
 
-      {previewUrl && (
-        <YStack
-          backgroundColor="$surface"
-          borderRadius="$lg"
-          padding="$md"
-          borderWidth={1}
-          borderColor="$border"
-        >
-          <Image
-            source={{ uri: previewUrl }}
-            width="100%"
-            height={200}
-            objectFit="cover"
-            borderRadius="$md"
-          />
-        </YStack>
-      )}
-
+      {/* Image Grid */}
       {currentImages.length > 0 && (
-        <YStack gap="$sm">
-          <Text size="sm" weight="semibold">
-            Uploaded Images:
-          </Text>
-          <XStack gap="$sm" flexWrap="wrap">
+        <Column gap="$sm">
+          <XStack gap="$md" flexWrap="wrap">
             {currentImages.map((url, index) => (
-              <YStack
+              <Column
                 key={url}
+                position="relative"
                 backgroundColor="$surface"
-                borderRadius="$md"
-                padding="$xs"
+                borderRadius="$lg"
+                overflow="hidden"
                 borderWidth={1}
                 borderColor="$border"
+                width={140}
+                height={140}
+                hoverStyle={{
+                  borderColor: "$primary",
+                }}
               >
                 <Image
                   source={{ uri: url }}
-                  width={80}
-                  height={80}
+                  width={140}
+                  height={140}
                   objectFit="cover"
-                  borderRadius="$sm"
                 />
-                <Text size="xs" {...{ color: "$textMuted" as any }} marginTop="$xs" textAlign="center">
-                  {index + 1}
-                </Text>
-              </YStack>
+                {index === 0 && (
+                  <YStack
+                    position="absolute"
+                    bottom={0}
+                    left={0}
+                    right={0}
+                    backgroundColor="rgba(0, 0, 0, 0.7)"
+                    padding="$xs"
+                  >
+                    <Text
+                      size="xs"
+                      {...{ color: "$textInverse" as any }}
+                      textAlign="center"
+                      fontWeight="600"
+                    >
+                      Cover photo
+                    </Text>
+                  </YStack>
+                )}
+              </Column>
             ))}
           </XStack>
-        </YStack>
+        </Column>
       )}
-
-      <Text size="xs" {...{ color: "$textMuted" as any }}>
-        Max file size: 10MB. Formats: JPEG, PNG, WebP, GIF
-      </Text>
-    </YStack>
-  )
+    </Column>
+  );
 }

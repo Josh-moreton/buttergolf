@@ -6,12 +6,12 @@ import { useUser } from "@clerk/nextjs";
 import {
   Column,
   Row,
-  Container,
   Heading,
   Text,
   Button,
   Input,
   Card,
+  YStack,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 
@@ -40,6 +40,29 @@ const CONDITIONS = [
   { value: "FAIR", label: "Fair" },
   { value: "POOR", label: "Poor" },
 ];
+
+// Label component for form fields
+const FormLabel = ({
+  children,
+  required,
+}: {
+  children: React.ReactNode;
+  required?: boolean;
+}) => (
+  <Row gap="$xs" marginBottom="$sm">
+    <Text size="md" weight="semibold" {...{ color: "$text" as any }}>
+      {children}
+    </Text>
+    {required && <Text {...{ color: "$error" as any }}>*</Text>}
+  </Row>
+);
+
+// Helper text component
+const HelperText = ({ children }: { children: React.ReactNode }) => (
+  <Text size="sm" {...{ color: "$textMuted" as any }} marginTop="$sm">
+    {children}
+  </Text>
+);
 
 export default function SellPage() {
   const router = useRouter();
@@ -128,236 +151,308 @@ export default function SellPage() {
   };
 
   return (
-    <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
-      <Column gap="$xl" paddingVertical="$10">
-        {/* Header */}
-        <Column gap="$md" align="center">
-          <Heading level={1}>Sell Your Golf Equipment</Heading>
-          <Text
-            {...{ color: "$textSecondary" as any }}
-            textAlign="center"
-            maxWidth={600}
+    <YStack
+      backgroundColor="$background"
+      minHeight="100vh"
+      alignItems="center"
+      width="100%"
+    >
+      <YStack width="100%" maxWidth={720} paddingHorizontal="$md">
+        <Column gap="$xl" paddingVertical="$10" width="100%">
+          {/* Header */}
+          <Column gap="$sm" align="center">
+            <Heading level={1}>Sell an item</Heading>
+          </Column>
+
+          {/* Main Form Card */}
+          <Card
+            variant="elevated"
+            {...{ padding: "none" as any }}
+            backgroundColor="$surface"
+            borderRadius="$xl"
+            overflow="hidden"
           >
-            List your pre-owned golf clubs, bags, and accessories. Reach
-            thousands of golfers looking for great deals.
-          </Text>
+            <form onSubmit={handleSubmit}>
+              <Column gap="$0">
+                {/* Photo Upload Section - Prominent at top */}
+                <Column
+                  gap="$lg"
+                  padding="$8"
+                  backgroundColor="$background"
+                  borderBottomWidth={1}
+                  borderBottomColor="$border"
+                >
+                  <ImageUpload
+                    onUploadComplete={handleImageUpload}
+                    currentImages={formData.images}
+                    maxImages={5}
+                  />
+                  <Card
+                    variant="filled"
+                    {...{ padding: "$md" as any }}
+                    backgroundColor="$infoLight"
+                    borderRadius="$md"
+                  >
+                    <Row gap="$sm" alignItems="flex-start">
+                      <Text fontSize={20}>📸</Text>
+                      <Text
+                        size="sm"
+                        {...{ color: "$text" as any }}
+                        lineHeight={20}
+                      >
+                        Catch your buyers' eye — use quality photos. Good
+                        lighting and clear images help your item sell faster!
+                      </Text>
+                    </Row>
+                  </Card>
+                </Column>
+
+                {/* Form Fields Section */}
+                <Column gap="$lg" padding="$8">
+                  {/* Title */}
+                  <Column gap="$xs">
+                    <FormLabel required>Title</FormLabel>
+                    <Input
+                      value={formData.title}
+                      onChangeText={(value) =>
+                        setFormData({ ...formData, title: value })
+                      }
+                      placeholder="e.g. White COS Jumper"
+                      size="md"
+                      fullWidth
+                      required
+                    />
+                    <HelperText>
+                      Include brand, model, and key details
+                    </HelperText>
+                  </Column>
+
+                  {/* Description */}
+                  <Column gap="$xs">
+                    <FormLabel required>Describe your item</FormLabel>
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. only worn a few times, true to size"
+                      required
+                      rows={4}
+                      style={{
+                        padding: "14px 16px",
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        borderRadius: "12px",
+                        border: "1px solid #d1d5db",
+                        backgroundColor: "white",
+                        width: "100%",
+                        fontFamily: "inherit",
+                        resize: "vertical",
+                        outline: "none",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = "#13a063";
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = "#d1d5db";
+                      }}
+                    />
+                    <HelperText>
+                      Be honest and detailed. Mention any wear, included
+                      accessories, and why you're selling.
+                    </HelperText>
+                  </Column>
+
+                  {/* Category */}
+                  <Column gap="$xs">
+                    <FormLabel required>Category</FormLabel>
+                    <select
+                      value={formData.categoryId}
+                      onChange={(e) =>
+                        setFormData({ ...formData, categoryId: e.target.value })
+                      }
+                      required
+                      style={{
+                        padding: "14px 16px",
+                        fontSize: "16px",
+                        borderRadius: "12px",
+                        border: "1px solid #d1d5db",
+                        backgroundColor: "white",
+                        width: "100%",
+                        cursor: "pointer",
+                        outline: "none",
+                        appearance: "none",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 12px center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "20px",
+                        paddingRight: "40px",
+                      }}
+                    >
+                      <option value="">Select a category</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </Column>
+
+                  {/* Brand & Model Row */}
+                  <Row gap="$md" flexWrap="wrap">
+                    <Column gap="$xs" flex={1} minWidth={200}>
+                      <FormLabel>Brand</FormLabel>
+                      <Input
+                        value={formData.brand}
+                        onChangeText={(value) =>
+                          setFormData({ ...formData, brand: value })
+                        }
+                        placeholder="e.g., TaylorMade"
+                        size="md"
+                        fullWidth
+                      />
+                    </Column>
+
+                    <Column gap="$xs" flex={1} minWidth={200}>
+                      <FormLabel>Model</FormLabel>
+                      <Input
+                        value={formData.model}
+                        onChangeText={(value) =>
+                          setFormData({ ...formData, model: value })
+                        }
+                        placeholder="e.g., Stealth 2"
+                        size="md"
+                        fullWidth
+                      />
+                    </Column>
+                  </Row>
+
+                  {/* Condition */}
+                  <Column gap="$xs">
+                    <FormLabel required>Condition</FormLabel>
+                    <select
+                      value={formData.condition}
+                      onChange={(e) =>
+                        setFormData({ ...formData, condition: e.target.value })
+                      }
+                      required
+                      style={{
+                        padding: "14px 16px",
+                        fontSize: "16px",
+                        borderRadius: "12px",
+                        border: "1px solid #d1d5db",
+                        backgroundColor: "white",
+                        width: "100%",
+                        cursor: "pointer",
+                        outline: "none",
+                        appearance: "none",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 12px center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "20px",
+                        paddingRight: "40px",
+                      }}
+                    >
+                      {CONDITIONS.map((cond) => (
+                        <option key={cond.value} value={cond.value}>
+                          {cond.label}
+                        </option>
+                      ))}
+                    </select>
+                  </Column>
+
+                  {/* Price */}
+                  <Column gap="$xs">
+                    <FormLabel required>Price</FormLabel>
+                    <Row gap="$sm" alignItems="center">
+                      <Text size="lg" weight="semibold">
+                        £
+                      </Text>
+                      <Input
+                        value={formData.price}
+                        onChangeText={(value) =>
+                          setFormData({ ...formData, price: value })
+                        }
+                        placeholder="0.00"
+                        size="md"
+                        fullWidth
+                        required
+                        inputMode="decimal"
+                      />
+                    </Row>
+                    <HelperText>Enter your asking price in GBP</HelperText>
+                  </Column>
+
+                  {/* Error Message */}
+                  {error && (
+                    <Card
+                      variant="filled"
+                      {...{
+                        padding: "$md" as any,
+                        backgroundColor: "$errorLight" as any,
+                      }}
+                      borderRadius="$md"
+                    >
+                      <Text {...{ color: "$error" as any }}>{error}</Text>
+                    </Card>
+                  )}
+                </Column>
+
+                {/* Action Buttons - Sticky footer style */}
+                <Column
+                  gap="$md"
+                  padding="$6"
+                  backgroundColor="$background"
+                  borderTopWidth={1}
+                  borderTopColor="$border"
+                >
+                  <Row gap="$md" justifyContent="space-between">
+                    <Button
+                      chromeless
+                      size="$5"
+                      onPress={() => router.push("/")}
+                      disabled={loading}
+                      flex={1}
+                    >
+                      Save draft
+                    </Button>
+                    <Button
+                      backgroundColor="$primary"
+                      color="$white"
+                      size="$5"
+                      disabled={loading}
+                      onPress={() => handleSubmit({} as React.FormEvent)}
+                      flex={1}
+                      hoverStyle={{ backgroundColor: "$primaryHover" }}
+                      pressStyle={{ backgroundColor: "$primaryPress" }}
+                    >
+                      {loading ? "Uploading..." : "Upload"}
+                    </Button>
+                  </Row>
+                  <Text
+                    size="xs"
+                    {...{ color: "$textMuted" as any }}
+                    textAlign="center"
+                  >
+                    What do you think of our upload process?{" "}
+                    <Text
+                      size="xs"
+                      {...{ color: "$primary" as any }}
+                      cursor="pointer"
+                    >
+                      Give feedback
+                    </Text>
+                  </Text>
+                </Column>
+              </Column>
+            </form>
+          </Card>
         </Column>
-
-        {/* Form */}
-        <Card variant="elevated" {...{ padding: "$lg" as any }}>
-          <form onSubmit={handleSubmit}>
-            <Column gap="$lg">
-              {/* Title */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Title</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <Input
-                  value={formData.title}
-                  onChangeText={(value) =>
-                    setFormData({ ...formData, title: value })
-                  }
-                  placeholder="e.g., TaylorMade Stealth 2 Driver"
-                  size="lg"
-                  fullWidth
-                  required
-                />
-                <Text size="xs" {...{ color: "$textMuted" as any }}>
-                  Include brand, model, and key details
-                </Text>
-              </Column>
-
-              {/* Category */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Category</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <select
-                  value={formData.categoryId}
-                  onChange={(e) =>
-                    setFormData({ ...formData, categoryId: e.target.value })
-                  }
-                  required
-                  style={{
-                    padding: "12px 16px",
-                    fontSize: "16px",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                    backgroundColor: "white",
-                    width: "100%",
-                  }}
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-              </Column>
-
-              {/* Brand & Model */}
-              <Row gap="$md" flexWrap="wrap">
-                <Column gap="$xs" flex={1} minWidth={200}>
-                  <Text weight="semibold">Brand</Text>
-                  <Input
-                    value={formData.brand}
-                    onChangeText={(value) =>
-                      setFormData({ ...formData, brand: value })
-                    }
-                    placeholder="e.g., TaylorMade"
-                    size="lg"
-                    fullWidth
-                  />
-                </Column>
-
-                <Column gap="$xs" flex={1} minWidth={200}>
-                  <Text weight="semibold">Model</Text>
-                  <Input
-                    value={formData.model}
-                    onChangeText={(value) =>
-                      setFormData({ ...formData, model: value })
-                    }
-                    placeholder="e.g., Stealth 2"
-                    size="lg"
-                    fullWidth
-                  />
-                </Column>
-              </Row>
-
-              {/* Condition */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Condition</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <select
-                  value={formData.condition}
-                  onChange={(e) =>
-                    setFormData({ ...formData, condition: e.target.value })
-                  }
-                  required
-                  style={{
-                    padding: "12px 16px",
-                    fontSize: "16px",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                    backgroundColor: "white",
-                    width: "100%",
-                  }}
-                >
-                  {CONDITIONS.map((cond) => (
-                    <option key={cond.value} value={cond.value}>
-                      {cond.label}
-                    </option>
-                  ))}
-                </select>
-              </Column>
-
-              {/* Description */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Description</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  placeholder="Describe the item's condition, history, and any included accessories..."
-                  required
-                  rows={6}
-                  style={{
-                    padding: "12px 16px",
-                    fontSize: "16px",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                    backgroundColor: "white",
-                    width: "100%",
-                    fontFamily: "inherit",
-                    resize: "vertical",
-                  }}
-                />
-                <Text size="xs" {...{ color: "$textMuted" as any }}>
-                  Be honest and detailed. Mention any wear, included
-                  accessories, and why you're selling.
-                </Text>
-              </Column>
-
-              {/* Price */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Price (£)</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <Input
-                  value={formData.price}
-                  onChangeText={(value) =>
-                    setFormData({ ...formData, price: value })
-                  }
-                  placeholder="0.00"
-                  size="lg"
-                  fullWidth
-                  required
-                  inputMode="decimal"
-                />
-                <Text size="xs" {...{ color: "$textMuted" as any }}>
-                  Enter your asking price in GBP
-                </Text>
-              </Column>
-
-              {/* Images */}
-              <Column gap="$xs">
-                <Row gap="$xs">
-                  <Text weight="semibold">Photos</Text>
-                  <Text {...{ color: "$error" as any }}>*</Text>
-                </Row>
-                <ImageUpload
-                  onUploadComplete={handleImageUpload}
-                  currentImages={formData.images}
-                  maxImages={5}
-                />
-              </Column>
-
-              {/* Error Message */}
-              {error && (
-                <Card
-                  variant="outlined"
-                  {...{
-                    padding: "$md" as any,
-                    backgroundColor: "$errorLight" as any,
-                  }}
-                >
-                  <Text {...{ color: "$error" as any }}>{error}</Text>
-                </Card>
-              )}
-
-              {/* Submit Button */}
-              <Row gap="$md" paddingTop="$md" justifyContent="flex-end">
-                <Button
-                  tone="outline"
-                  size="lg"
-                  onPress={() => router.push("/")}
-                  disabled={loading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  tone="primary"
-                  size="lg"
-                  disabled={loading}
-                  onPress={handleSubmit}
-                >
-                  {loading ? "Creating Listing..." : "Create Listing"}
-                </Button>
-              </Row>
-            </Column>
-          </form>
-        </Card>
-      </Column>
-    </Container>
+      </YStack>
+    </YStack>
   );
 }
