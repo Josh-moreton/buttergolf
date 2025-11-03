@@ -1,21 +1,20 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import {
-  Platform,
-  Dimensions,
-  AccessibilityInfo,
-  Animated,
-  Easing,
-} from "react-native";
+import { Platform, Dimensions, Animated, Easing } from "react-native";
 import { Text, Button, YStack, Image, View } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
-const CARD_WIDTH = Math.round(SCREEN_W * 0.32);
-const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4);
-const GAP = 12;
+// Grid configuration for 2 rows x 3 columns (Vinted style)
+const CARDS_PER_ROW = 3;
+const HORIZONTAL_PADDING = 16; // Side padding
+const GAP = 8; // Grid gap
+const AVAILABLE_WIDTH =
+  SCREEN_W - HORIZONTAL_PADDING * 2 - GAP * (CARDS_PER_ROW - 1);
+const CARD_WIDTH = Math.round(AVAILABLE_WIDTH / CARDS_PER_ROW);
+const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.2); // 1:1.2 ratio like Vinted
 
 // Golf equipment images for the carousel
 const images = [
@@ -66,32 +65,21 @@ export function OnboardingScreen({
 }: Readonly<OnboardingScreenProps>) {
   const insets = useSafeAreaInsets();
 
-  // Duplicate images array for seamless infinite loop
+  // Animation for gentle horizontal scroll
+  const translateXRow1 = useRef(new Animated.Value(0)).current;
+  const translateXRow2 = useRef(new Animated.Value(-CARD_WIDTH / 2)).current; // Offset second row
+
+  // Duplicate images for seamless loop
   const items = [...images, ...images];
   const singleWidth = images.length * (CARD_WIDTH + GAP);
-  const translateX = useRef(new Animated.Value(0)).current;
-  const [reduceMotion, setReduceMotion] = React.useState(false);
 
   useEffect(() => {
-    // Check for reduce motion setting
-    if (Platform.OS !== "web") {
-      AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-        setReduceMotion(enabled ?? false);
-      });
-    }
-  }, []);
+    // Doubled duration for slower, more relaxed movement (36-40 seconds)
+    const duration = Math.max(36000, Math.floor(singleWidth * 48));
 
-  useEffect(() => {
-    if (reduceMotion) {
-      translateX.stopAnimation();
-      return;
-    }
-
-    // Gentle 18-20 second scroll duration for smooth, relaxed movement
-    const duration = Math.max(18000, Math.floor(singleWidth * 24));
-
-    const animation = Animated.loop(
-      Animated.timing(translateX, {
+    // First row animation
+    const animationRow1 = Animated.loop(
+      Animated.timing(translateXRow1, {
         toValue: -singleWidth,
         duration,
         easing: Easing.linear,
@@ -99,48 +87,75 @@ export function OnboardingScreen({
       })
     );
 
-    animation.start();
+    // Second row animation (same speed, offset start)
+    const animationRow2 = Animated.loop(
+      Animated.timing(translateXRow2, {
+        toValue: -singleWidth - CARD_WIDTH / 2,
+        duration,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    animationRow1.start();
+    animationRow2.start();
 
     return () => {
-      animation.stop();
+      animationRow1.stop();
+      animationRow2.stop();
     };
-  }, [reduceMotion, singleWidth, translateX]);
+  }, [singleWidth, translateXRow1, translateXRow2]);
 
   return (
     <YStack
       flex={1}
-      backgroundColor="$background"
+      backgroundColor="#FAFAF8"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
-      {/* Auto-scrolling Product Carousel with Real Images */}
-      <YStack flex={1} justifyContent="center" paddingVertical="$8">
+      {/* Skip Button - Plain Text */}
+      <YStack
+        paddingHorizontal={HORIZONTAL_PADDING}
+        paddingTop="$sm"
+        paddingBottom="$sm"
+      >
+        <Text
+          fontSize={15}
+          color="#6B6B6B"
+          fontWeight="400"
+          alignSelf="flex-end"
+          onPress={onSkip}
+          cursor="pointer"
+        >
+          Skip
+        </Text>
+      </YStack>
+
+      {/* Scrolling Image Grid - 2 Rows (Vinted style) */}
+      <YStack paddingTop={48} paddingBottom={32} gap={GAP}>
+        {/* First Row - Scrolling */}
         <View height={CARD_HEIGHT} overflow="hidden">
           <Animated.View
-            style={{ flexDirection: "row", transform: [{ translateX }] }}
+            style={{
+              flexDirection: "row",
+              transform: [{ translateX: translateXRow1 }],
+            }}
           >
             {items.map((item, index) => (
               <View
-                key={`${item.id}-${index}`}
+                key={`row1-${item.id}-${index}`}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                borderRadius="$lg"
+                borderRadius={16}
                 overflow="hidden"
-                marginRight={index < items.length - 1 ? GAP : 0}
+                marginRight={GAP}
                 backgroundColor="$gray200"
-                {...({
-                  shadowColor: "#000",
-                  shadowRadius: 16,
-                  shadowOffset: { width: 0, height: 8 },
-                  shadowOpacity: 0.18,
-                  elevation: 12,
-                } as any)}
               >
                 <Image
                   source={item.source}
                   width="100%"
                   height="100%"
-                  resizeMode="cover"
+                  style={{ resizeMode: "contain" } as any}
                   accessible={true}
                   accessibilityLabel={item.label}
                 />
@@ -148,40 +163,65 @@ export function OnboardingScreen({
             ))}
           </Animated.View>
         </View>
-        <Text
-          fontSize="$2"
-          color="$textSecondary"
-          marginTop="$5"
-          textAlign="center"
-          fontWeight="500"
-        >
-          Browse thousands of pre-loved golf items
-        </Text>
+
+        {/* Second Row - Scrolling (offset start) */}
+        <View height={CARD_HEIGHT} overflow="hidden">
+          <Animated.View
+            style={{
+              flexDirection: "row",
+              transform: [{ translateX: translateXRow2 }],
+            }}
+          >
+            {items.map((item, index) => (
+              <View
+                key={`row2-${item.id}-${index}`}
+                width={CARD_WIDTH}
+                height={CARD_HEIGHT}
+                borderRadius={16}
+                overflow="hidden"
+                marginRight={GAP}
+                backgroundColor="$gray200"
+              >
+                <Image
+                  source={item.source}
+                  width="100%"
+                  height="100%"
+                  style={{ resizeMode: "contain" } as any}
+                  accessible={true}
+                  accessibilityLabel={item.label}
+                />
+              </View>
+            ))}
+          </Animated.View>
+        </View>
       </YStack>
+
+      <YStack flex={1} />
+
       {/* Content Section */}
       <YStack
-        gap="$lg"
-        paddingHorizontal="$6"
-        paddingBottom="$4"
+        gap={32}
+        paddingHorizontal={HORIZONTAL_PADDING}
+        paddingBottom={20}
         alignItems="center"
       >
-        {/* Headline */}
-        <YStack gap="$xs" paddingHorizontal="$5">
+        {/* Headline and Subtext */}
+        <YStack gap={8} alignItems="center" paddingHorizontal={16}>
           <Text
-            fontSize="$9"
-            fontWeight="700"
+            fontSize={28}
+            fontWeight="600"
             textAlign="center"
-            color="$text"
-            lineHeight={36}
+            color="#212121"
+            lineHeight={33.6}
             fontFamily={(Platform.OS === "ios" ? "Georgia" : "serif") as any}
           >
             From old clubs to new rounds
           </Text>
           <Text
-            fontSize="$5"
-            fontWeight="500"
+            fontSize={16}
+            fontWeight="400"
             textAlign="center"
-            color="$textSecondary"
+            color="#6B6B6B"
             lineHeight={22}
           >
             Buy, sell, and play smarter
@@ -189,62 +229,55 @@ export function OnboardingScreen({
         </YStack>
 
         {/* CTAs */}
-        <YStack gap="$sm" width="100%" maxWidth={420} paddingHorizontal="$5">
+        <YStack gap={12} width="100%" paddingHorizontal={24}>
           <Button
-            size="$5"
-            height={56}
-            backgroundColor="$primary"
-            borderRadius={16}
+            unstyled
+            height={52}
+            backgroundColor="#357C7B"
+            borderRadius={10}
             pressStyle={{
-              backgroundColor: "$primaryPress",
-              scale: 0.97,
-              opacity: 0.9,
+              backgroundColor: "#2d6867",
+              scale: 0.98,
             }}
             onPress={onSignUp}
             aria-label="Sign up to Butter Golf"
-            style={{
-              shadowColor: "$primary",
-              shadowRadius: 12,
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-            }}
           >
-            <Text color="$textInverse" fontSize="$6" fontWeight="700">
+            <Text color="white" fontSize={17} fontWeight="600">
               Sign up to Butter Golf
             </Text>
           </Button>
 
           <Button
-            size="$5"
-            height={56}
-            backgroundColor="transparent"
-            borderColor="$border"
-            borderWidth={2}
-            borderRadius={16}
+            unstyled
+            height={52}
+            backgroundColor="white"
+            borderColor="#357C7B"
+            borderWidth={1}
+            borderRadius={10}
             pressStyle={{
-              backgroundColor: "$backgroundHover",
-              scale: 0.97,
+              backgroundColor: "#f5f5f5",
+              scale: 0.98,
             }}
             onPress={onSignIn}
             aria-label="I already have an account"
           >
-            <Text color="$text" fontSize="$5" fontWeight="600">
+            <Text color="#357C7B" fontSize={17} fontWeight="600">
               I already have an account
             </Text>
           </Button>
         </YStack>
 
-        {/* Footer */}
-        <Button
-          unstyled
+        {/* Footer Link - Plain Text */}
+        <Text
+          fontSize={13}
+          color="#6B6B6B"
+          textAlign="center"
+          textDecorationLine="underline"
           onPress={onAbout}
-          padding="$3"
-          aria-label="About Butter Golf: Our platform"
+          cursor="pointer"
         >
-          <Text fontSize="$4" color="$textSecondary" textAlign="center">
-            About Butter Golf: Our platform
-          </Text>
-        </Button>
+          About Butter Golf: Our platform
+        </Text>
       </YStack>
     </YStack>
   );

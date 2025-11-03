@@ -79,6 +79,11 @@ const brandColors = {
     white: '#ffffff',
     black: '#000000',
     offWhite: '#fbfbf9',
+
+    // Vinted-inspired teal (for onboarding)
+    vintedTeal: '#357C7B',
+    vintedTealHover: '#2d6867',
+    vintedTealPress: '#255553',
 }
 
 // Create custom tokens with complete design system
