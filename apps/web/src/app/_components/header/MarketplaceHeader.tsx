@@ -176,6 +176,33 @@ export function MarketplaceHeader() {
 
           {/* Action Buttons - Improved touch targets */}
           <XStack gap="$2" $md={{ gap: "$3" }} alignItems="center">
+            {/* Sell Button - Prominent CTA */}
+            <Link href="/sell" style={{ textDecoration: "none" }}>
+              <XStack
+                backgroundColor="$primary"
+                paddingHorizontal="$3"
+                $md={{ paddingHorizontal: "$4" }}
+                paddingVertical="$2"
+                borderRadius="$lg"
+                cursor="pointer"
+                hoverStyle={{
+                  backgroundColor: "$primaryHover",
+                  scale: 1.02,
+                }}
+                pressStyle={{
+                  backgroundColor: "$primaryPress",
+                  scale: 0.98,
+                }}
+                minHeight={40}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Text size="sm" weight="semibold" color="$textInverse">
+                  Sell
+                </Text>
+              </XStack>
+            </Link>
+
             <XStack
               tag="button"
               cursor="pointer"
