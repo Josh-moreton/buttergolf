@@ -80,7 +80,7 @@ export function ImageUpload({
   };
 
   return (
-    <Column gap="$md">
+    <Column gap="$md" width="100%">
       <input
         ref={fileInputRef}
         type="file"
@@ -102,6 +102,7 @@ export function ImageUpload({
         minHeight={currentImages.length === 0 ? 280 : 180}
         cursor="pointer"
         animation="quick"
+        width="100%"
         hoverStyle={{
           borderColor: "$primary",
           backgroundColor: "$primaryLight",
@@ -128,7 +129,7 @@ export function ImageUpload({
             </Text>
           </Column>
         ) : (
-          <Column gap="$md" alignItems="center" maxWidth={400}>
+          <Column gap="$md" alignItems="center" width="100%" maxWidth={500}>
             <YStack
               width={64}
               height={64}
