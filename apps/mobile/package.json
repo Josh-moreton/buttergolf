@@ -12,6 +12,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@buttergolf/assets": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@clerk/clerk-expo": "catalog:",
     "@react-navigation/native": "^7.1.19",
