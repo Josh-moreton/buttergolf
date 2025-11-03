@@ -3,10 +3,8 @@ name: Check Tamagui Config Imports
 on:
   pull_request:
     paths:
-      - '**.ts'
-      - '**.tsx'
-      - '**.js'
-      - '**.jsx'
+      - 'apps/**/*.{ts,tsx,js,jsx}'
+      - 'packages/**/*.{ts,tsx,js,jsx}'
   push:
     branches:
       - main
