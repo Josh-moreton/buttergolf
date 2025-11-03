@@ -153,8 +153,8 @@ export default function SellPage() {
     <Column
       backgroundColor="$background"
       minHeight="100vh"
-      align="center"
-      fullWidth
+      alignItems="center"
+      width="100%"
     >
       <Column
         maxWidth={1100}
@@ -163,9 +163,9 @@ export default function SellPage() {
         alignSelf="center"
         {...{ marginHorizontal: "auto" as any }}
       >
-        <Column gap="$xl" paddingVertical="$10" width="100%" align="stretch">
+        <Column gap="$xl" paddingVertical="$10" width="100%" alignItems="stretch">
           {/* Header */}
-          <Column gap="$sm" align="center">
+          <Column gap="$sm" alignItems="center">
             <Heading level={2}>Sell an item</Heading>
           </Column>
 
@@ -176,10 +176,10 @@ export default function SellPage() {
             backgroundColor="$surface"
             borderRadius="$lg"
             overflow="hidden"
-            fullWidth
+            width="100%"
           >
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <Column gap="$0" fullWidth align="stretch">
+              <Column gap="$0" width="100%" alignItems="stretch">
                 {/* Photo Upload Section - Prominent at top */}
                 <Column
                   gap="$md"
@@ -187,7 +187,7 @@ export default function SellPage() {
                   backgroundColor="$background"
                   borderBottomWidth={1}
                   borderBottomColor="$border"
-                  fullWidth
+                  width="100%"
                 >
                   <ImageUpload
                     onUploadComplete={handleImageUpload}
@@ -200,7 +200,7 @@ export default function SellPage() {
                     backgroundColor="$infoLight"
                     borderRadius="$md"
                   >
-                    <Row gap="$sm" align="start">
+                    <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
                       <Text
                         size="xs"
@@ -215,9 +215,9 @@ export default function SellPage() {
                 </Column>
 
                 {/* Form Fields Section */}
-                <Column gap="$md" padding="$6" fullWidth>
+                <Column gap="$md" padding="$6" width="100%">
                   {/* Title */}
-                  <Column gap="$xs" fullWidth>
+                  <Column gap="$xs" width="100%">
                     <FormLabel required>Title</FormLabel>
                     <Input
                       value={formData.title}
@@ -226,7 +226,7 @@ export default function SellPage() {
                       }
                       placeholder="e.g. White COS Jumper"
                       size="md"
-                      fullWidth
+                      width="100%"
                       required
                     />
                     <HelperText>
@@ -235,7 +235,7 @@ export default function SellPage() {
                   </Column>
 
                   {/* Description */}
-                  <Column gap="$xs" fullWidth>
+                  <Column gap="$xs" width="100%">
                     <FormLabel required>Describe your item</FormLabel>
                     <textarea
                       value={formData.description}
@@ -275,7 +275,7 @@ export default function SellPage() {
                   </Column>
 
                   {/* Category */}
-                  <Column gap="$xs" fullWidth>
+                  <Column gap="$xs" width="100%">
                     <FormLabel required>Category</FormLabel>
                     <select
                       value={formData.categoryId}
@@ -320,7 +320,7 @@ export default function SellPage() {
                         }
                         placeholder="e.g., TaylorMade"
                         size="md"
-                        fullWidth
+                        width="100%"
                       />
                     </Column>
 
@@ -333,13 +333,13 @@ export default function SellPage() {
                         }
                         placeholder="e.g., Stealth 2"
                         size="md"
-                        fullWidth
+                        width="100%"
                       />
                     </Column>
                   </Row>
 
                   {/* Condition */}
-                  <Column gap="$xs" fullWidth>
+                  <Column gap="$xs" width="100%">
                     <FormLabel required>Condition</FormLabel>
                     <select
                       value={formData.condition}
@@ -373,9 +373,9 @@ export default function SellPage() {
                   </Column>
 
                   {/* Price */}
-                  <Column gap="$xs" fullWidth>
+                  <Column gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
-                    <Row gap="$sm" align="center">
+                    <Row gap="$sm" alignItems="center">
                       <Text size="lg" weight="semibold">
                         £
                       </Text>
@@ -386,7 +386,7 @@ export default function SellPage() {
                         }
                         placeholder="0.00"
                         size="md"
-                        fullWidth
+                        width="100%"
                         required
                         inputMode="decimal"
                       />
@@ -416,9 +416,9 @@ export default function SellPage() {
                   backgroundColor="$background"
                   borderTopWidth={1}
                   borderTopColor="$border"
-                  fullWidth
+                  width="100%"
                 >
-                  <Row gap="$sm" justify="between" fullWidth>
+                  <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
                       chromeless
                       size="$5"

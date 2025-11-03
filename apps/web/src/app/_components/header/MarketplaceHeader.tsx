@@ -51,13 +51,13 @@ export function MarketplaceHeader() {
         backgroundColor="$primary"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
-        justify="center"
+        justifyContent="center"
       >
         <Row
           width="100%"
           maxWidth={1280}
-          justify="between"
-          align="center"
+          justifyContent="space-between"
+          alignItems="center"
         >
           <Row display="none" $lg={{ display: "flex" }}>
             <Text color="$textInverse" size="sm" weight="medium">
@@ -65,7 +65,7 @@ export function MarketplaceHeader() {
             </Text>
           </Row>
 
-          <Row gap="$3" align="center">
+          <Row gap="$3" alignItems="center">
             <SignedOut>
               <Row
                 tag="button"
@@ -122,18 +122,18 @@ export function MarketplaceHeader() {
         paddingHorizontal="$3"
         paddingVertical="$3"
         $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
-        justify="center"
+        justifyContent="center"
       >
         <Row
           width="100%"
           maxWidth={1280}
-          justify="between"
-          align="center"
+          justifyContent="space-between"
+          alignItems="center"
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
             <Row
-              align="center"
+              alignItems="center"
               gap="$2"
               paddingVertical="$2"
               // Ensure minimum touch target size
@@ -175,7 +175,7 @@ export function MarketplaceHeader() {
           </Row>
 
           {/* Action Buttons - Improved touch targets */}
-          <Row gap="$2" $md={{ gap: "$3" }} align="center">
+          <Row gap="$2" $md={{ gap: "$3" }} alignItems="center">
             {/* Sell Button - Prominent CTA */}
             <Link href="/sell" style={{ textDecoration: "none" }}>
               <Row
@@ -194,8 +194,8 @@ export function MarketplaceHeader() {
                   scale: 0.98,
                 }}
                 minHeight={40}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <Text size="sm" weight="semibold" color="$textInverse">
                   Sell
@@ -211,8 +211,8 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              align="center"
-              justify="center"
+              alignItems="center"
+              justifyContent="center"
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Search"
             >
@@ -227,8 +227,8 @@ export function MarketplaceHeader() {
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
                 {...{ style: { background: "none", border: "none" } }}
                 onPress={() => {
                   setAuthMode("sign-in");
@@ -245,8 +245,8 @@ export function MarketplaceHeader() {
               <Row
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <UserButton />
               </Row>
@@ -260,8 +260,8 @@ export function MarketplaceHeader() {
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <HeartIcon />
                 {wishlistCount > 0 && (
@@ -273,8 +273,8 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    align="center"
-                    justify="center"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     <Text
                       size="xs"
@@ -297,8 +297,8 @@ export function MarketplaceHeader() {
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                align="center"
-                justify="center"
+                alignItems="center"
+                justifyContent="center"
               >
                 <CartIcon />
                 {cartCount > 0 && (
@@ -310,8 +310,8 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    align="center"
-                    justify="center"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     <Text
                       size="xs"
@@ -336,8 +336,8 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              align="center"
-              justify="center"
+              alignItems="center"
+              justifyContent="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"

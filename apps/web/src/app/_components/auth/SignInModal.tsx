@@ -32,8 +32,8 @@ export function SignInModal({
       {...{ style: { position: "fixed", inset: 0 as any, backdropFilter: "blur(6px)" } }}
       backgroundColor="rgba(0,0,0,0.35)"
       zIndex={100}
-      align="center"
-      justify="center"
+      alignItems="center"
+      justifyContent="center"
       onPress={onClose}
     >
       {/* Content wrapper only to stop propagation - no extra chrome */}

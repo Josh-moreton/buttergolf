@@ -10,7 +10,7 @@ export function HeroSection() {
           $sm={{ flexDirection: "column" }}
           $lg={{ flexDirection: "row" }}
           gap="$xl"
-          align="center"
+          alignItems="center"
         >
           <Column flex={1} gap="$lg">
             <Text fontSize="$10" fontWeight="800" lineHeight={44}>

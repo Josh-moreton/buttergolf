@@ -71,7 +71,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           <Text weight="bold" numberOfLines={2}>
             {item.title}
           </Text>
-          <Row align="center" justify="between">
+          <Row alignItems="center" justifyContent="space-between">
             <Text fontSize="$7" weight="bold" fontWeight="800">
               £{item.price}
             </Text>
@@ -97,7 +97,7 @@ export function RecentlyListedSection() {
         paddingHorizontal="$4"
         gap="$lg"
       >
-        <Row align="center" justify="between">
+        <Row alignItems="center" justifyContent="space-between">
           <Text fontSize="$8" weight="bold">
             Recently listed
           </Text>

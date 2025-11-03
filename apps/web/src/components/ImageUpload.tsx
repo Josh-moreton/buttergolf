@@ -97,8 +97,8 @@ export function ImageUpload({
         borderStyle="dashed"
         borderRadius="$xl"
         padding="$10"
-        align="center"
-        justify="center"
+        alignItems="center"
+        justifyContent="center"
         minHeight={currentImages.length === 0 ? 280 : 180}
         cursor="pointer"
         animation="quick"
@@ -118,7 +118,7 @@ export function ImageUpload({
         }}
       >
         {uploading ? (
-          <Column gap="$md" align="center">
+          <Column gap="$md" alignItems="center">
             <Spinner size="lg" {...{ color: "$primary" as any }} />
             <Text
               size="md"
@@ -129,18 +129,18 @@ export function ImageUpload({
             </Text>
           </Column>
         ) : (
-          <Column gap="$md" align="center" width="100%" maxWidth={500}>
+          <Column gap="$md" alignItems="center" width="100%" maxWidth={500}>
             <Column
               width={64}
               height={64}
               borderRadius="$full"
               backgroundColor="$primaryLight"
-              align="center"
-              justify="center"
+              alignItems="center"
+              justifyContent="center"
             >
               <Text fontSize={32}>+</Text>
             </Column>
-            <Column gap="$xs" align="center">
+            <Column gap="$xs" alignItems="center">
               <Text
                 size="lg"
                 weight="semibold"

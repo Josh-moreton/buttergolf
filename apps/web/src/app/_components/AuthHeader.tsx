@@ -13,13 +13,13 @@ export default function AuthHeader() {
       borderColor="$border"
       backgroundColor="$background"
     >
-      <Row align="center" justify="between">
+      <Row alignItems="center" justifyContent="space-between">
         <Link href="/">
           <Text fontSize="$5" fontWeight="700">
             ButterGolf
           </Text>
         </Link>
-        <Row align="center" gap="$sm">
+        <Row alignItems="center" gap="$sm">
           <Link href="/rounds">
             <Button size="md" tone="outline">
               Rounds

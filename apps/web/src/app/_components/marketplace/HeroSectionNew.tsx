@@ -73,13 +73,13 @@ function CarouselSlide({
       position={isActive ? "relative" : "absolute"}
       width="100%"
       height="100%"
-      align="center"
+      alignItems="center"
       paddingHorizontal="$10"
       paddingVertical="$8"
       gap="$10"
     >
       <Column flex={1} gap="$4" maxWidth={480}>
-        <Row align="start" gap="$3">
+        <Row alignItems="flex-start" gap="$3">
           <Text
             size="xl"
             fontSize={72}
@@ -157,7 +157,7 @@ function CarouselSlide({
         </Link>
       </Column>
 
-      <Column flex={1} align="center" justify="center" padding="$6">
+      <Column flex={1} alignItems="center" justifyContent="center" padding="$6">
         <Image
           source={{ uri: item.image }}
           width={380}
@@ -205,9 +205,9 @@ function FeaturedProductCard({
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <Row height="100%" align="center" gap="$4">
+        <Row height="100%" alignItems="center" gap="$4">
           {/* Left: Text content */}
-          <Column flex={1} justify="between" gap="$3" minWidth={0}>
+          <Column flex={1} justifyContent="space-between" gap="$3" minWidth={0}>
             <Column gap="$2">
               <Text
                 size="lg"
@@ -239,7 +239,7 @@ function FeaturedProductCard({
               >
                 LIMITED TIME OFFER
               </Text>
-              <Row align="baseline" gap="$2">
+              <Row alignItems="baseline" gap="$2">
                 <Text
                   size="xl"
                   fontSize={26}
@@ -265,8 +265,8 @@ function FeaturedProductCard({
 
           {/* Right: Image with fixed dimensions */}
           <Column
-            align="center"
-            justify="center"
+            alignItems="center"
+            justifyContent="center"
             width={140}
             height={140}
             flexShrink={0}

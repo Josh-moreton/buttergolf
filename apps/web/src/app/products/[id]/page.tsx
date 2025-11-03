@@ -79,7 +79,7 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
-        <Column gap="$xl" paddingVertical="$10" align="center">
+        <Column gap="$xl" paddingVertical="$10" alignItems="center">
           <Spinner size="lg" {...{ color: "$primary" as any }} />
           <Text {...{ color: "$textSecondary" as any }}>
             Loading product...
@@ -92,7 +92,7 @@ export default function ProductDetailPage() {
   if (error || !product) {
     return (
       <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
-        <Column gap="$lg" paddingVertical="$10" align="center">
+        <Column gap="$lg" paddingVertical="$10" alignItems="center">
           <Heading level={2}>Product Not Found</Heading>
           <Text {...{ color: "$textSecondary" as any }}>
             {error || "This product does not exist or has been removed."}
@@ -235,12 +235,12 @@ export default function ProductDetailPage() {
               <Button
                 tone="primary"
                 size="lg"
-                fullWidth
+                width="100%"
                 disabled={product.isSold}
               >
                 {product.isSold ? "Sold Out" : "Contact Seller"}
               </Button>
-              <Button tone="outline" size="lg" fullWidth>
+              <Button tone="outline" size="lg" width="100%">
                 Add to Wishlist
               </Button>
             </Column>
