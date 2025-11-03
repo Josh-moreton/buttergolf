@@ -8,6 +8,9 @@ export const images = {
     club4: require('../images/clubs-4.jpg'),
     club5: require('../images/clubs-5.webp'),
     club6: require('../images/clubs-6.jpg'),
+  },
+  hero: {
+    golfCourse: require('../images/steven-shircliff-N21z4eG8aKg-unsplash.jpg'),
   }
 } as const
 
@@ -21,6 +24,9 @@ export const imagePaths = {
     club4: '/_assets/images/clubs-4.jpg',
     club5: '/_assets/images/clubs-5.webp',
     club6: '/_assets/images/clubs-6.jpg',
+  },
+  hero: {
+    golfCourse: '/_assets/images/steven-shircliff-N21z4eG8aKg-unsplash.jpg',
   }
 } as const
 
