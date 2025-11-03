@@ -35,9 +35,9 @@ catalog:
 
   # TypeScript
   "typescript": "5.9.3"
-  "@types/react": "~19.1.10"
-  "@types/react-dom": "~19.1.10"
-  "@types/node": "^24.10.0"
+  "@types/react": "^19.2.0"
+  "@types/react-dom": "^19.2.0"
+  "@types/node": "^20.19.0"
 
   # ESLint
   "eslint": "^9.39.0"
