@@ -157,7 +157,7 @@ export function OnboardingScreen({
         >
           Browse thousands of pre-loved golf items
         </Text>
-      </YStack>{" "}
+      </YStack>
       {/* Content Section */}
       <YStack
         gap="$lg"
