@@ -164,7 +164,7 @@ export default function SellPage() {
         alignSelf="center"
         {...{ marginHorizontal: "auto" as any }}
       >
-        <Column gap="$xl" paddingVertical="$10" width="100%">
+        <Column gap="$xl" paddingVertical="$10" width="100%" align="stretch">
           {/* Header */}
           <Column gap="$sm" align="center">
             <Heading level={1}>Sell an item</Heading>
@@ -180,7 +180,7 @@ export default function SellPage() {
             fullWidth
           >
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <Column gap="$0">
+              <Column gap="$0" fullWidth align="stretch">
                 {/* Photo Upload Section - Prominent at top */}
                 <Column
                   gap="$lg"
@@ -218,7 +218,7 @@ export default function SellPage() {
                 {/* Form Fields Section */}
                 <Column gap="$lg" padding="$8" fullWidth>
                   {/* Title */}
-                  <Column gap="$xs">
+                  <YStack gap="$xs" width="100%">
                     <FormLabel required>Title</FormLabel>
                     <Input
                       value={formData.title}
@@ -233,10 +233,10 @@ export default function SellPage() {
                     <HelperText>
                       Include brand, model, and key details
                     </HelperText>
-                  </Column>
+                  </YStack>
 
                   {/* Description */}
-                  <Column gap="$xs">
+                  <YStack gap="$xs" width="100%">
                     <FormLabel required>Describe your item</FormLabel>
                     <textarea
                       value={formData.description}
@@ -273,10 +273,10 @@ export default function SellPage() {
                       Be honest and detailed. Mention any wear, included
                       accessories, and why you're selling.
                     </HelperText>
-                  </Column>
+                  </YStack>
 
                   {/* Category */}
-                  <Column gap="$xs">
+                  <YStack gap="$xs" width="100%">
                     <FormLabel required>Category</FormLabel>
                     <select
                       value={formData.categoryId}
@@ -308,7 +308,7 @@ export default function SellPage() {
                         </option>
                       ))}
                     </select>
-                  </Column>
+                  </YStack>
 
                   {/* Brand & Model Row */}
                   <Row gap="$md" flexWrap="wrap">
@@ -340,7 +340,7 @@ export default function SellPage() {
                   </Row>
 
                   {/* Condition */}
-                  <Column gap="$xs">
+                  <YStack gap="$xs" width="100%">
                     <FormLabel required>Condition</FormLabel>
                     <select
                       value={formData.condition}
@@ -371,10 +371,10 @@ export default function SellPage() {
                         </option>
                       ))}
                     </select>
-                  </Column>
+                  </YStack>
 
                   {/* Price */}
-                  <Column gap="$xs">
+                  <YStack gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
                     <Row gap="$sm" alignItems="center">
                       <Text size="lg" weight="semibold">
@@ -393,7 +393,7 @@ export default function SellPage() {
                       />
                     </Row>
                     <HelperText>Enter your asking price in GBP</HelperText>
-                  </Column>
+                  </YStack>
 
                   {/* Error Message */}
                   {error && (
@@ -417,8 +417,9 @@ export default function SellPage() {
                   backgroundColor="$background"
                   borderTopWidth={1}
                   borderTopColor="$border"
+                  fullWidth
                 >
-                  <Row gap="$md" justifyContent="space-between">
+                  <Row gap="$md" justifyContent="space-between" fullWidth>
                     <Button
                       chromeless
                       size="$5"
