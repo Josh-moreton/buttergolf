@@ -22,12 +22,12 @@ import { config } from "@buttergolf/ui";
 import { config } from "@buttergolf/config";
 ```
 
-### 2. Deprecation Notice
+### 2. Complete Removal
 
-Added comprehensive deprecation warning to `packages/ui/tamagui.config.ts`:
-- JSDoc comments marking the export as deprecated
-- Console warning in development mode
-- Clear migration instructions
+Removed all config exports from `@buttergolf/ui`:
+- Deleted `packages/ui/tamagui.config.ts` file entirely
+- Removed config re-exports from `packages/ui/src/index.ts`
+- Config must now be imported directly from `@buttergolf/config`
 
 ### 3. Documentation Updates
 

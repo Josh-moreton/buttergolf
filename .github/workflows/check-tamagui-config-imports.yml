@@ -12,16 +12,16 @@ on:
 
 jobs:
   check-imports:
-    name: Verify no deprecated Tamagui config imports
+    name: Verify no config imports from @buttergolf/ui
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check for deprecated config imports from @buttergolf/ui
+      - name: Check for config imports from @buttergolf/ui
         run: |
           set -e
-          echo "Checking for deprecated Tamagui config imports..."
+          echo "Checking for incorrect Tamagui config imports..."
           
           # Define the pattern to search for
           UI_PACKAGE_PATTERN='@buttergolf/ui'
@@ -34,31 +34,29 @@ jobs:
             . || true)
           
           # Check for named config imports from @buttergolf/ui
-          # Exclude the deprecation shim itself (packages/ui/tamagui.config.ts)
           echo "Checking for named config imports..."
           NAMED_IMPORTS=$(grep -r "import.*{.*config.*}.*from ['\"]${UI_PACKAGE_PATTERN}['\"]" \
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
             --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
-            . | grep -v 'packages/ui/tamagui.config.ts' || true)
+            . || true)
           
           # Report findings
           if [ -n "$DEEP_PATH_IMPORTS" ]; then
-            echo "❌ ERROR: Found deprecated deep path imports of Tamagui config:"
+            echo "❌ ERROR: Found incorrect deep path imports of Tamagui config:"
             echo "$DEEP_PATH_IMPORTS"
             echo ""
-            echo "Please update these imports to use @buttergolf/config instead:"
+            echo "Config must be imported from @buttergolf/config:"
             echo '  import { config } from "@buttergolf/config"'
             exit 1
           fi
           
           if [ -n "$NAMED_IMPORTS" ]; then
-            echo "❌ ERROR: Found deprecated named imports of config from @buttergolf/ui:"
+            echo "❌ ERROR: Found incorrect imports of config from @buttergolf/ui:"
             echo "$NAMED_IMPORTS"
             echo ""
-            echo "Please update these imports to use @buttergolf/config instead:"
-            echo '  Before: import { config } from "@buttergolf/ui"'
-            echo '  After:  import { config } from "@buttergolf/config"'
+            echo "Config is not exported from @buttergolf/ui. Use @buttergolf/config instead:"
+            echo '  import { config } from "@buttergolf/config"'
             exit 1
           fi
           
-          echo "✅ No deprecated Tamagui config imports found!"
+          echo "✅ No incorrect Tamagui config imports found!"

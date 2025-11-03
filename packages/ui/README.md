@@ -47,8 +47,9 @@ function App() {
 ```
 
 ```tsx
-// ❌ Deprecated - Do not import config from @buttergolf/ui
-import { config } from '@buttergolf/ui' // This is deprecated!
+// ❌ Wrong - Config is not exported from @buttergolf/ui
+import { config } from '@buttergolf/ui' // Error: config is not exported!
+```
 ```
 
 ### Using Themes
