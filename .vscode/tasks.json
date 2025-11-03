@@ -19,6 +19,18 @@
 			"type": "shell",
 			"command": "pnpm --filter web run build",
 			"group": "build"
+		},
+		{
+			"label": "build-web",
+			"type": "shell",
+			"command": "pnpm --filter web run build",
+			"group": "build"
+		},
+		{
+			"label": "build-web",
+			"type": "shell",
+			"command": "pnpm --filter web run build",
+			"group": "build"
 		}
 	]
 }
