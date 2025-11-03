@@ -163,7 +163,12 @@ export default function SellPage() {
         alignSelf="center"
         {...{ marginHorizontal: "auto" as any }}
       >
-        <Column gap="$xl" paddingVertical="$10" width="100%" alignItems="stretch">
+        <Column
+          gap="$xl"
+          paddingVertical="$10"
+          width="100%"
+          alignItems="stretch"
+        >
           {/* Header */}
           <Column gap="$sm" alignItems="center">
             <Heading level={2}>Sell an item</Heading>
@@ -224,7 +229,7 @@ export default function SellPage() {
                       onChangeText={(value) =>
                         setFormData({ ...formData, title: value })
                       }
-                      placeholder="e.g. White COS Jumper"
+                      placeholder="e.g. Titleist a 2023 Driver"
                       size="md"
                       width="100%"
                       required
@@ -245,7 +250,7 @@ export default function SellPage() {
                           description: e.target.value,
                         })
                       }
-                      placeholder="e.g. only worn a few times, true to size"
+                      placeholder="e.g. only used for one season, minor scratches on the shaft..."
                       required
                       rows={3}
                       style={{
