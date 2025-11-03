@@ -9,10 +9,6 @@
 export * from 'tamagui'
 export * from '@tamagui/toast'
 
-// Export configuration
-export { config } from '@buttergolf/config'
-export type { AppConfig } from '@buttergolf/config'
-
 // Button Components
 export { Button } from './components/Button'
 export type { ButtonProps } from './components/Button'

@@ -28,11 +28,35 @@ This package is part of the ButterGolf monorepo and uses the workspace protocol:
 
 ## 🎨 Theme System
 
+### Tamagui Configuration
+
+**Important**: The Tamagui configuration source of truth lives in `@buttergolf/config`, not `@buttergolf/ui`.
+
+```tsx
+// ✅ Correct - Import config from @buttergolf/config
+import { config } from '@buttergolf/config'
+import { TamaguiProvider } from '@buttergolf/ui'
+
+function App() {
+  return (
+    <TamaguiProvider config={config} defaultTheme="light">
+      {/* Your app */}
+    </TamaguiProvider>
+  )
+}
+```
+
+```tsx
+// ❌ Wrong - Config is not exported from @buttergolf/ui
+import { config } from '@buttergolf/ui' // Error: config is not exported!
+```
+```
+
 ### Using Themes
 
 ```tsx
 import { TamaguiProvider, Theme } from '@buttergolf/ui'
-import { config } from '@buttergolf/ui'
+import { config } from '@buttergolf/config'
 
 function App() {
   return (
