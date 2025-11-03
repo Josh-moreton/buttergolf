@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Text, YStack, XStack, Image, Spinner, Column } from "@buttergolf/ui";
+import { Text, Row, Column, Image, Spinner } from "@buttergolf/ui";
 import { useImageUpload } from "../hooks/useImageUpload";
 
 export interface ImageUploadProps {
@@ -97,8 +97,8 @@ export function ImageUpload({
         borderStyle="dashed"
         borderRadius="$xl"
         padding="$10"
-        alignItems="center"
-        justifyContent="center"
+        align="center"
+        justify="center"
         minHeight={currentImages.length === 0 ? 280 : 180}
         cursor="pointer"
         animation="quick"
@@ -118,7 +118,7 @@ export function ImageUpload({
         }}
       >
         {uploading ? (
-          <Column gap="$md" alignItems="center">
+          <Column gap="$md" align="center">
             <Spinner size="lg" {...{ color: "$primary" as any }} />
             <Text
               size="md"
@@ -129,18 +129,18 @@ export function ImageUpload({
             </Text>
           </Column>
         ) : (
-          <Column gap="$md" alignItems="center" width="100%" maxWidth={500}>
-            <YStack
+          <Column gap="$md" align="center" width="100%" maxWidth={500}>
+            <Column
               width={64}
               height={64}
               borderRadius="$full"
               backgroundColor="$primaryLight"
-              alignItems="center"
-              justifyContent="center"
+              align="center"
+              justify="center"
             >
               <Text fontSize={32}>+</Text>
-            </YStack>
-            <Column gap="$xs" alignItems="center">
+            </Column>
+            <Column gap="$xs" align="center">
               <Text
                 size="lg"
                 weight="semibold"
@@ -180,7 +180,7 @@ export function ImageUpload({
       {/* Image Grid */}
       {currentImages.length > 0 && (
         <Column gap="$sm">
-          <XStack gap="$md" flexWrap="wrap">
+          <Row gap="$md" flexWrap="wrap">
             {currentImages.map((url, index) => (
               <Column
                 key={url}
@@ -203,7 +203,7 @@ export function ImageUpload({
                   objectFit="cover"
                 />
                 {index === 0 && (
-                  <YStack
+                  <Column
                     position="absolute"
                     bottom={0}
                     left={0}
@@ -219,11 +219,11 @@ export function ImageUpload({
                     >
                       Cover photo
                     </Text>
-                  </YStack>
+                  </Column>
                 )}
               </Column>
             ))}
-          </XStack>
+          </Row>
         </Column>
       )}
     </Column>

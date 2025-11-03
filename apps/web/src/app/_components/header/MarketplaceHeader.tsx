@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { XStack, YStack, Text } from "@buttergolf/ui";
+import { Row, Column, Text } from "@buttergolf/ui";
 import { menuData } from "./menuData";
 import { DesktopMenu } from "./DesktopMenu";
 import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon } from "./icons";
@@ -30,7 +30,7 @@ export function MarketplaceHeader() {
   }, []);
 
   return (
-    <YStack
+    <Column
       {...{ style: { position: "fixed" } }}
       top={0}
       left={0}
@@ -45,29 +45,29 @@ export function MarketplaceHeader() {
       })}
     >
       {/* Top Bar - Hidden on mobile for cleaner UX */}
-      <XStack
+      <Row
         display="none"
         $md={{ display: "flex" }}
         backgroundColor="$primary"
         paddingVertical="$2.5"
         paddingHorizontal="$4"
-        justifyContent="center"
+        justify="center"
       >
-        <XStack
+        <Row
           width="100%"
           maxWidth={1280}
-          justifyContent="space-between"
-          alignItems="center"
+          justify="between"
+          align="center"
         >
-          <XStack display="none" $lg={{ display: "flex" }}>
+          <Row display="none" $lg={{ display: "flex" }}>
             <Text color="$textInverse" size="sm" weight="medium">
               Get free delivery on orders over £100
             </Text>
-          </XStack>
+          </Row>
 
-          <XStack gap="$3" alignItems="center">
+          <Row gap="$3" align="center">
             <SignedOut>
-              <XStack
+              <Row
                 tag="button"
                 cursor="pointer"
                 style={{ background: "none", border: "none" }}
@@ -87,8 +87,8 @@ export function MarketplaceHeader() {
                 >
                   Create an account
                 </Text>
-              </XStack>
-              <XStack
+              </Row>
+              <Row
                 tag="button"
                 cursor="pointer"
                 style={{ background: "none", border: "none" }}
@@ -106,34 +106,34 @@ export function MarketplaceHeader() {
                 >
                   Sign In
                 </Text>
-              </XStack>
+              </Row>
             </SignedOut>
             <SignedIn>
               <Text color="$textInverse" size="sm" weight="medium">
                 Welcome back!
               </Text>
             </SignedIn>
-          </XStack>
-        </XStack>
-      </XStack>
+          </Row>
+        </Row>
+      </Row>
 
       {/* Main Header */}
-      <XStack
+      <Row
         paddingHorizontal="$3"
         paddingVertical="$3"
         $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
-        justifyContent="center"
+        justify="center"
       >
-        <XStack
+        <Row
           width="100%"
           maxWidth={1280}
-          justifyContent="space-between"
-          alignItems="center"
+          justify="between"
+          align="center"
         >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <XStack
-              alignItems="center"
+            <Row
+              align="center"
               gap="$2"
               paddingVertical="$2"
               // Ensure minimum touch target size
@@ -148,7 +148,7 @@ export function MarketplaceHeader() {
               >
                 ButterGolf
               </Text>
-              <XStack
+              <Row
                 backgroundColor="$primary"
                 paddingHorizontal="$2"
                 paddingVertical="$0.5"
@@ -165,20 +165,20 @@ export function MarketplaceHeader() {
                 >
                   Beta
                 </Text>
-              </XStack>
-            </XStack>
+              </Row>
+            </Row>
           </Link>
 
           {/* Desktop Menu - Hidden on mobile */}
-          <XStack display="none" $xl={{ display: "flex" }}>
+          <Row display="none" $xl={{ display: "flex" }}>
             <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
-          </XStack>
+          </Row>
 
           {/* Action Buttons - Improved touch targets */}
-          <XStack gap="$2" $md={{ gap: "$3" }} alignItems="center">
+          <Row gap="$2" $md={{ gap: "$3" }} align="center">
             {/* Sell Button - Prominent CTA */}
             <Link href="/sell" style={{ textDecoration: "none" }}>
-              <XStack
+              <Row
                 backgroundColor="$primary"
                 paddingHorizontal="$3"
                 $md={{ paddingHorizontal: "$4" }}
@@ -194,16 +194,16 @@ export function MarketplaceHeader() {
                   scale: 0.98,
                 }}
                 minHeight={40}
-                alignItems="center"
-                justifyContent="center"
+                align="center"
+                justify="center"
               >
                 <Text size="sm" weight="semibold" color="$textInverse">
                   Sell
                 </Text>
-              </XStack>
+              </Row>
             </Link>
 
-            <XStack
+            <Row
               tag="button"
               cursor="pointer"
               hoverStyle={{ opacity: 0.7 }}
@@ -211,24 +211,24 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              alignItems="center"
-              justifyContent="center"
+              align="center"
+              justify="center"
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Search"
             >
               <SearchIcon />
-            </XStack>
+            </Row>
 
             <SignedOut>
-              <XStack
+              <Row
                 tag="button"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                alignItems="center"
-                justifyContent="center"
+                align="center"
+                justify="center"
                 {...{ style: { background: "none", border: "none" } }}
                 onPress={() => {
                   setAuthMode("sign-in");
@@ -238,34 +238,34 @@ export function MarketplaceHeader() {
                 style={{ background: "none", border: "none" }}
               >
                 <UserIcon />
-              </XStack>
+              </Row>
             </SignedOut>
 
             <SignedIn>
-              <XStack
+              <Row
                 minWidth={44}
                 minHeight={44}
-                alignItems="center"
-                justifyContent="center"
+                align="center"
+                justify="center"
               >
                 <UserButton />
-              </XStack>
+              </Row>
             </SignedIn>
 
             <Link href="/wishlist" style={{ textDecoration: "none" }}>
-              <XStack
+              <Row
                 position="relative"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                alignItems="center"
-                justifyContent="center"
+                align="center"
+                justify="center"
               >
                 <HeartIcon />
                 {wishlistCount > 0 && (
-                  <XStack
+                  <Row
                     position="absolute"
                     top={4}
                     right={4}
@@ -273,8 +273,8 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    alignItems="center"
-                    justifyContent="center"
+                    align="center"
+                    justify="center"
                   >
                     <Text
                       size="xs"
@@ -284,25 +284,25 @@ export function MarketplaceHeader() {
                     >
                       {wishlistCount}
                     </Text>
-                  </XStack>
+                  </Row>
                 )}
-              </XStack>
+              </Row>
             </Link>
 
             <Link href="/cart" style={{ textDecoration: "none" }}>
-              <XStack
+              <Row
                 position="relative"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
                 minWidth={44}
                 minHeight={44}
-                alignItems="center"
-                justifyContent="center"
+                align="center"
+                justify="center"
               >
                 <CartIcon />
                 {cartCount > 0 && (
-                  <XStack
+                  <Row
                     position="absolute"
                     top={4}
                     right={4}
@@ -310,8 +310,8 @@ export function MarketplaceHeader() {
                     height={18}
                     backgroundColor="$primary"
                     borderRadius={9}
-                    alignItems="center"
-                    justifyContent="center"
+                    align="center"
+                    justify="center"
                   >
                     <Text
                       size="xs"
@@ -321,13 +321,13 @@ export function MarketplaceHeader() {
                     >
                       {cartCount}
                     </Text>
-                  </XStack>
+                  </Row>
                 )}
-              </XStack>
+              </Row>
             </Link>
 
             {/* Mobile Menu Toggle */}
-            <XStack
+            <Row
               display="flex"
               $xl={{ display: "none" }}
               tag="button"
@@ -336,23 +336,23 @@ export function MarketplaceHeader() {
               padding="$2"
               minWidth={44}
               minHeight={44}
-              alignItems="center"
-              justifyContent="center"
+              align="center"
+              justify="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
               {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"
             >
               <MenuIcon />
-            </XStack>
-          </XStack>
-        </XStack>
-      </XStack>
+            </Row>
+          </Row>
+        </Row>
+      </Row>
       {/* Auth modal */}
       <SignInModal
         open={authOpen}
         onClose={() => setAuthOpen(false)}
         mode={authMode}
       />
-    </YStack>
+    </Column>
   );
 }

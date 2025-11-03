@@ -1,25 +1,25 @@
 "use client";
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { XStack, YStack, Separator, Text, Button } from "@buttergolf/ui";
+import { Row, Column, Separator, Text, Button } from "@buttergolf/ui";
 import Link from "next/link";
 
 export default function AuthHeader() {
   return (
-    <YStack
+    <Column
       width="100%"
       padding="$3"
       borderBottomWidth={1}
       borderColor="$border"
       backgroundColor="$background"
     >
-      <XStack alignItems="center" justifyContent="space-between">
+      <Row align="center" justify="between">
         <Link href="/">
           <Text fontSize="$5" fontWeight="700">
             ButterGolf
           </Text>
         </Link>
-        <XStack alignItems="center" gap="$sm">
+        <Row align="center" gap="$sm">
           <Link href="/rounds">
             <Button size="md" tone="outline">
               Rounds
@@ -33,9 +33,9 @@ export default function AuthHeader() {
           <SignedIn>
             <UserButton />
           </SignedIn>
-        </XStack>
-      </XStack>
+        </Row>
+      </Row>
       <Separator marginTop="$3" />
-    </YStack>
+    </Column>
   );
 }

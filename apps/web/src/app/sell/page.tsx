@@ -11,7 +11,6 @@ import {
   Button,
   Input,
   Card,
-  YStack,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 
@@ -151,13 +150,13 @@ export default function SellPage() {
   };
 
   return (
-    <YStack
+    <Column
       backgroundColor="$background"
       minHeight="100vh"
-      alignItems="center"
-      width="100%"
+      align="center"
+      fullWidth
     >
-      <YStack
+      <Column
         maxWidth={1100}
         paddingHorizontal="$8"
         width="100%"
@@ -201,7 +200,7 @@ export default function SellPage() {
                     backgroundColor="$infoLight"
                     borderRadius="$md"
                   >
-                    <Row gap="$sm" alignItems="flex-start">
+                    <Row gap="$sm" align="start">
                       <Text fontSize={18}>📸</Text>
                       <Text
                         size="xs"
@@ -218,7 +217,7 @@ export default function SellPage() {
                 {/* Form Fields Section */}
                 <Column gap="$md" padding="$6" fullWidth>
                   {/* Title */}
-                  <YStack gap="$xs" width="100%">
+                  <Column gap="$xs" fullWidth>
                     <FormLabel required>Title</FormLabel>
                     <Input
                       value={formData.title}
@@ -233,10 +232,10 @@ export default function SellPage() {
                     <HelperText>
                       Include brand, model, and key details
                     </HelperText>
-                  </YStack>
+                  </Column>
 
                   {/* Description */}
-                  <YStack gap="$xs" width="100%">
+                  <Column gap="$xs" fullWidth>
                     <FormLabel required>Describe your item</FormLabel>
                     <textarea
                       value={formData.description}
@@ -273,10 +272,10 @@ export default function SellPage() {
                       Be honest and detailed. Mention any wear, included
                       accessories, and why you're selling.
                     </HelperText>
-                  </YStack>
+                  </Column>
 
                   {/* Category */}
-                  <YStack gap="$xs" width="100%">
+                  <Column gap="$xs" fullWidth>
                     <FormLabel required>Category</FormLabel>
                     <select
                       value={formData.categoryId}
@@ -308,7 +307,7 @@ export default function SellPage() {
                         </option>
                       ))}
                     </select>
-                  </YStack>
+                  </Column>
 
                   {/* Brand & Model Row */}
                   <Row gap="$md" flexWrap="wrap">
@@ -340,7 +339,7 @@ export default function SellPage() {
                   </Row>
 
                   {/* Condition */}
-                  <YStack gap="$xs" width="100%">
+                  <Column gap="$xs" fullWidth>
                     <FormLabel required>Condition</FormLabel>
                     <select
                       value={formData.condition}
@@ -371,12 +370,12 @@ export default function SellPage() {
                         </option>
                       ))}
                     </select>
-                  </YStack>
+                  </Column>
 
                   {/* Price */}
-                  <YStack gap="$xs" width="100%">
+                  <Column gap="$xs" fullWidth>
                     <FormLabel required>Price</FormLabel>
-                    <Row gap="$sm" alignItems="center">
+                    <Row gap="$sm" align="center">
                       <Text size="lg" weight="semibold">
                         £
                       </Text>
@@ -393,7 +392,7 @@ export default function SellPage() {
                       />
                     </Row>
                     <HelperText>Enter your asking price in GBP</HelperText>
-                  </YStack>
+                  </Column>
 
                   {/* Error Message */}
                   {error && (
@@ -419,7 +418,7 @@ export default function SellPage() {
                   borderTopColor="$border"
                   fullWidth
                 >
-                  <Row gap="$sm" justifyContent="space-between" fullWidth>
+                  <Row gap="$sm" justify="between" fullWidth>
                     <Button
                       chromeless
                       size="$5"
@@ -461,7 +460,7 @@ export default function SellPage() {
             </form>
           </Card>
         </Column>
-      </YStack>
-    </YStack>
+      </Column>
+    </Column>
   );
 }

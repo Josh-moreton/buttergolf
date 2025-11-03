@@ -1,18 +1,18 @@
 "use client";
 
-import { Button, Text, XStack, YStack, Card, Image } from "@buttergolf/ui";
+import { Button, Text, Row, Column, Card, Image } from "@buttergolf/ui";
 
 export function HeroSection() {
   return (
-    <YStack backgroundColor="$background" paddingVertical="$10">
-      <YStack maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4">
-        <XStack
+    <Column backgroundColor="$background" paddingVertical="$10">
+      <Column maxWidth={1200} marginHorizontal="auto" paddingHorizontal="$4">
+        <Row
           $sm={{ flexDirection: "column" }}
           $lg={{ flexDirection: "row" }}
           gap="$xl"
-          alignItems="center"
+          align="center"
         >
-          <YStack flex={1} gap="$lg">
+          <Column flex={1} gap="$lg">
             <Text fontSize="$10" fontWeight="800" lineHeight={44}>
               Buy & sell golf clubs peer‑to‑peer
             </Text>
@@ -20,15 +20,15 @@ export function HeroSection() {
               Find great deals on drivers, irons, putters and more — or list
               your gear in minutes.
             </Text>
-            <XStack gap="$sm" flexWrap="wrap">
+            <Row gap="$sm" flexWrap="wrap">
               <Button size="lg">Browse listings</Button>
               <Button size="lg" tone="outline">
                 Sell your clubs
               </Button>
-            </XStack>
-          </YStack>
+            </Row>
+          </Column>
 
-          <YStack flex={1} gap="$lg">
+          <Column flex={1} gap="$lg">
             <Card backgroundColor="$background" padding={"none" as const}>
               <Image
                 source={{
@@ -40,7 +40,7 @@ export function HeroSection() {
                 borderRadius="$4"
               />
             </Card>
-            <XStack
+            <Row
               gap="$lg"
               $sm={{ flexDirection: "column" }}
               $md={{ flexDirection: "row" }}
@@ -53,10 +53,10 @@ export function HeroSection() {
                 <Text fontWeight="700">Fast listing</Text>
                 <Text>Create a post in 60 seconds</Text>
               </Card>
-            </XStack>
-          </YStack>
-        </XStack>
-      </YStack>
-    </YStack>
+            </Row>
+          </Column>
+        </Row>
+      </Column>
+    </Column>
   );
 }

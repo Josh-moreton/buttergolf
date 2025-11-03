@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, Image, Text, XStack, YStack } from "@buttergolf/ui";
+import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui";
 
 type Listing = {
   id: string;
@@ -67,22 +67,22 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
           height={180}
           objectFit="cover"
         />
-        <YStack padding="$md" gap="$xs">
+        <Column padding="$md" gap="$xs">
           <Text weight="bold" numberOfLines={2}>
             {item.title}
           </Text>
-          <XStack alignItems="center" justifyContent="space-between">
+          <Row align="center" justify="between">
             <Text fontSize="$7" weight="bold" fontWeight="800">
               £{item.price}
             </Text>
             <Text fontSize="$2" opacity={0.7}>
               {item.condition.replace("_", " ")}
             </Text>
-          </XStack>
+          </Row>
           <Button size="md" tone="outline">
             View details
           </Button>
-        </YStack>
+        </Column>
       </Card>
     </Link>
   );
@@ -90,24 +90,24 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
 
 export function RecentlyListedSection() {
   return (
-    <YStack paddingVertical="$6">
-      <YStack
+    <Column paddingVertical="$6">
+      <Column
         maxWidth={1200}
         marginHorizontal="auto"
         paddingHorizontal="$4"
         gap="$lg"
       >
-        <XStack alignItems="center" justifyContent="space-between">
+        <Row align="center" justify="between">
           <Text fontSize="$8" weight="bold">
             Recently listed
           </Text>
           <Button tone="outline" size="md">
             View all
           </Button>
-        </XStack>
-        <XStack gap="$$6" flexWrap="wrap">
+        </Row>
+        <Row gap="$$6" flexWrap="wrap">
           {MOCK_LISTINGS.map((l) => (
-            <YStack
+            <Column
               key={l.id}
               width="100%"
               $sm={{ width: "100%" }}
@@ -115,10 +115,10 @@ export function RecentlyListedSection() {
               $lg={{ width: "23%" }}
             >
               <ListingCard item={l} />
-            </YStack>
+            </Column>
           ))}
-        </XStack>
-      </YStack>
-    </YStack>
+        </Row>
+      </Column>
+    </Column>
   );
 }
