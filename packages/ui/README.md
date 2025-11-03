@@ -7,12 +7,13 @@ A comprehensive design system for ButterGolf, providing consistent, accessible, 
 ## 🚀 Features
 
 - **Cross-Platform**: Works seamlessly on web and mobile
-- **Fully Typed**: Complete TypeScript support with type inference
+- **Fully Typed**: Complete TypeScript support with type inference and helper utilities
 - **Themeable**: Built-in light/dark themes with easy customization
 - **Accessible**: WCAG compliant with proper ARIA attributes
 - **Performant**: Optimized with Tamagui compiler for minimal bundle size
 - **Responsive**: Media query support for responsive layouts
 - **Semantic Tokens**: Consistent design language with semantic color and spacing tokens
+- **Type Safety**: Comprehensive type utilities and best practices documentation
 
 ## 📦 Installation
 
@@ -564,6 +565,43 @@ export const MyComponent = styled(View, {
 
 export type MyComponentProps = GetProps<typeof MyComponent>
 ```
+
+## 🔒 Type Safety
+
+This package includes comprehensive type utilities for working with layout components safely:
+
+```tsx
+import { 
+  LayoutComponent,
+  RowComponent,
+  ColumnComponent,
+  type RowProps,
+  type ColumnProps 
+} from '@buttergolf/ui'
+
+// Generic layout component type
+function Section({ Layout }: { Layout: LayoutComponent }) {
+  return <Layout gap="$md">{children}</Layout>
+}
+
+// Specific component types
+function HorizontalLayout({ Layout }: { Layout: RowComponent }) {
+  return <Layout align="center">{children}</Layout>
+}
+
+// Type guards
+import { isRowProps, isColumnProps } from '@buttergolf/ui'
+
+if (isRowProps(props)) {
+  // TypeScript knows props is RowProps
+}
+```
+
+### Type Safety Resources
+
+- 📖 **[Type Safety Guide](../../docs/TYPE_SAFETY_GUIDE.md)** - Comprehensive guide with best practices and patterns
+- 📖 **[ESLint Rules](../../docs/ESLINT_RULES.md)** - Recommended linting configuration
+- 📖 **[Audit Report](../../docs/LAYOUT_TYPE_SAFETY_AUDIT.md)** - Complete type safety audit findings
 
 ## 📄 License
 

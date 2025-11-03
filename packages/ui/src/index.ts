@@ -44,3 +44,23 @@ export { Image } from './components/Image'
 export type { ImageProps } from './components/Image'
 export { ScrollView } from './components/ScrollView'
 export type { ScrollViewProps } from './components/ScrollView'
+
+// Type Utilities
+export type {
+  LayoutComponent,
+  RowComponent,
+  ColumnComponent,
+  ContainerComponent,
+  LayoutWrapperProps,
+  FlexContainerProps,
+  FlexLayoutProps,
+  Alignment,
+  Justify,
+  GapProps,
+  FullWidthProps,
+  FullHeightProps,
+  ResponsiveLayoutProps,
+  LayoutRef,
+  LayoutComponentWithRef,
+} from './types/layout'
+export { isRowProps, isColumnProps, isContainerProps } from './types/layout'
