@@ -49,8 +49,8 @@ const FormLabel = ({
   children: React.ReactNode;
   required?: boolean;
 }) => (
-  <Row gap="$xs" marginBottom="$sm">
-    <Text size="md" weight="semibold" {...{ color: "$text" as any }}>
+  <Row gap="$xs" marginBottom="$xs">
+    <Text size="sm" weight="medium" {...{ color: "$text" as any }}>
       {children}
     </Text>
     {required && <Text {...{ color: "$error" as any }}>*</Text>}
@@ -59,7 +59,7 @@ const FormLabel = ({
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text size="sm" {...{ color: "$textMuted" as any }} marginTop="$sm">
+  <Text size="xs" {...{ color: "$textMuted" as any }} marginTop="$xs">
     {children}
   </Text>
 );
@@ -158,7 +158,7 @@ export default function SellPage() {
       width="100%"
     >
       <YStack
-        maxWidth={1440}
+        maxWidth={1100}
         paddingHorizontal="$8"
         width="100%"
         alignSelf="center"
@@ -167,7 +167,7 @@ export default function SellPage() {
         <Column gap="$xl" paddingVertical="$10" width="100%" align="stretch">
           {/* Header */}
           <Column gap="$sm" align="center">
-            <Heading level={1}>Sell an item</Heading>
+            <Heading level={2}>Sell an item</Heading>
           </Column>
 
           {/* Main Form Card */}
@@ -175,7 +175,7 @@ export default function SellPage() {
             variant="elevated"
             {...{ padding: "none" as any }}
             backgroundColor="$surface"
-            borderRadius="$xl"
+            borderRadius="$lg"
             overflow="hidden"
             fullWidth
           >
@@ -183,8 +183,8 @@ export default function SellPage() {
               <Column gap="$0" fullWidth align="stretch">
                 {/* Photo Upload Section - Prominent at top */}
                 <Column
-                  gap="$lg"
-                  padding="$8"
+                  gap="$md"
+                  padding="$6"
                   backgroundColor="$background"
                   borderBottomWidth={1}
                   borderBottomColor="$border"
@@ -197,16 +197,16 @@ export default function SellPage() {
                   />
                   <Card
                     variant="filled"
-                    {...{ padding: "$md" as any }}
+                    {...{ padding: "$sm" as any }}
                     backgroundColor="$infoLight"
                     borderRadius="$md"
                   >
                     <Row gap="$sm" alignItems="flex-start">
-                      <Text fontSize={20}>📸</Text>
+                      <Text fontSize={18}>📸</Text>
                       <Text
-                        size="sm"
+                        size="xs"
                         {...{ color: "$text" as any }}
-                        lineHeight={20}
+                        lineHeight={18}
                       >
                         Catch your buyers' eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
@@ -216,7 +216,7 @@ export default function SellPage() {
                 </Column>
 
                 {/* Form Fields Section */}
-                <Column gap="$lg" padding="$8" fullWidth>
+                <Column gap="$md" padding="$6" fullWidth>
                   {/* Title */}
                   <YStack gap="$xs" width="100%">
                     <FormLabel required>Title</FormLabel>
@@ -248,12 +248,12 @@ export default function SellPage() {
                       }
                       placeholder="e.g. only worn a few times, true to size"
                       required
-                      rows={4}
+                      rows={3}
                       style={{
-                        padding: "14px 16px",
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        borderRadius: "12px",
+                        padding: "12px 14px",
+                        fontSize: "15px",
+                        lineHeight: "22px",
+                        borderRadius: "8px",
                         border: "1px solid #d1d5db",
                         backgroundColor: "white",
                         width: "100%",
@@ -285,9 +285,9 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "14px 16px",
-                        fontSize: "16px",
-                        borderRadius: "12px",
+                        padding: "12px 14px",
+                        fontSize: "15px",
+                        borderRadius: "8px",
                         border: "1px solid #d1d5db",
                         backgroundColor: "white",
                         width: "100%",
@@ -349,9 +349,9 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "14px 16px",
-                        fontSize: "16px",
-                        borderRadius: "12px",
+                        padding: "12px 14px",
+                        fontSize: "15px",
+                        borderRadius: "8px",
                         border: "1px solid #d1d5db",
                         backgroundColor: "white",
                         width: "100%",
@@ -412,14 +412,14 @@ export default function SellPage() {
 
                 {/* Action Buttons - Sticky footer style */}
                 <Column
-                  gap="$md"
-                  padding="$6"
+                  gap="$sm"
+                  padding="$5"
                   backgroundColor="$background"
                   borderTopWidth={1}
                   borderTopColor="$border"
                   fullWidth
                 >
-                  <Row gap="$md" justifyContent="space-between" fullWidth>
+                  <Row gap="$sm" justifyContent="space-between" fullWidth>
                     <Button
                       chromeless
                       size="$5"
