@@ -157,7 +157,13 @@ export default function SellPage() {
       alignItems="center"
       width="100%"
     >
-      <YStack width="100%" maxWidth={720} paddingHorizontal="$md">
+      <YStack
+        maxWidth={1440}
+        paddingHorizontal="$8"
+        width="100%"
+        alignSelf="center"
+        {...{ marginHorizontal: "auto" as any }}
+      >
         <Column gap="$xl" paddingVertical="$10" width="100%">
           {/* Header */}
           <Column gap="$sm" align="center">
@@ -171,8 +177,9 @@ export default function SellPage() {
             backgroundColor="$surface"
             borderRadius="$xl"
             overflow="hidden"
+            fullWidth
           >
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <Column gap="$0">
                 {/* Photo Upload Section - Prominent at top */}
                 <Column
@@ -181,6 +188,7 @@ export default function SellPage() {
                   backgroundColor="$background"
                   borderBottomWidth={1}
                   borderBottomColor="$border"
+                  fullWidth
                 >
                   <ImageUpload
                     onUploadComplete={handleImageUpload}
@@ -208,7 +216,7 @@ export default function SellPage() {
                 </Column>
 
                 {/* Form Fields Section */}
-                <Column gap="$lg" padding="$8">
+                <Column gap="$lg" padding="$8" fullWidth>
                   {/* Title */}
                   <Column gap="$xs">
                     <FormLabel required>Title</FormLabel>
