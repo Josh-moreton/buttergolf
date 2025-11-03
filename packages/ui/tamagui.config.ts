@@ -16,10 +16,15 @@
 
 // Emit a development-time warning to help developers migrate (only once per session)
 if (process.env.NODE_ENV === 'development') {
-  // Use a global flag to prevent multiple warnings
-  const globalKey = '__TAMAGUI_CONFIG_DEPRECATION_WARNING_SHOWN__';
+  // Use a Symbol as a global flag to prevent multiple warnings (thread-safe-ish)
+  const globalKey = Symbol.for('buttergolf.tamagui.config.deprecationWarning');
   if (!(globalThis as any)[globalKey]) {
-    (globalThis as any)[globalKey] = true;
+    Object.defineProperty(globalThis, globalKey, {
+      value: true,
+      writable: false,
+      enumerable: false,
+      configurable: false,
+    });
     console.warn(
       '[DEPRECATION WARNING] Importing Tamagui config from "@buttergolf/ui" is deprecated.\n' +
       'Please update your imports to use "@buttergolf/config" instead.\n' +
