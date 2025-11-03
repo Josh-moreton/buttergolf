@@ -82,6 +82,9 @@ module.exports = () => {
       webpackConfig.resolve.alias = {
         ...webpackConfig.resolve.alias,
         "react-native$": "react-native-web",
+        // Enforce a single instance of 'tamagui' at runtime to avoid
+        // "Haven't called createTamagui yet" errors caused by duplicate module instances
+        tamagui: require.resolve("tamagui"),
       };
 
       return webpackConfig;
