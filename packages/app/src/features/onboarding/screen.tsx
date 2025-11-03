@@ -69,8 +69,22 @@ export function OnboardingScreen({
   const translateXRow1 = useRef(new Animated.Value(0)).current;
   const translateXRow2 = useRef(new Animated.Value(-CARD_WIDTH / 2)).current; // Offset second row
 
-  // Duplicate images for seamless loop
-  const items = [...images, ...images];
+  // Duplicate images for seamless loop - different order for each row
+  const itemsRow1 = [...images, ...images];
+  const itemsRow2 = [
+    images[3],
+    images[4],
+    images[5],
+    images[0],
+    images[1],
+    images[2],
+    images[3],
+    images[4],
+    images[5],
+    images[0],
+    images[1],
+    images[2],
+  ];
   const singleWidth = images.length * (CARD_WIDTH + GAP);
 
   useEffect(() => {
@@ -141,7 +155,7 @@ export function OnboardingScreen({
               transform: [{ translateX: translateXRow1 }],
             }}
           >
-            {items.map((item, index) => (
+            {itemsRow1.map((item, index) => (
               <View
                 key={`row1-${item.id}-${index}`}
                 width={CARD_WIDTH}
@@ -153,9 +167,9 @@ export function OnboardingScreen({
               >
                 <Image
                   source={item.source}
-                  width="100%"
-                  height="100%"
-                  style={{ resizeMode: "contain" } as any}
+                  width={CARD_WIDTH}
+                  height={CARD_HEIGHT}
+                  resizeMode="cover"
                   accessible={true}
                   accessibilityLabel={item.label}
                 />
@@ -172,7 +186,7 @@ export function OnboardingScreen({
               transform: [{ translateX: translateXRow2 }],
             }}
           >
-            {items.map((item, index) => (
+            {itemsRow2.map((item, index) => (
               <View
                 key={`row2-${item.id}-${index}`}
                 width={CARD_WIDTH}
@@ -184,9 +198,9 @@ export function OnboardingScreen({
               >
                 <Image
                   source={item.source}
-                  width="100%"
-                  height="100%"
-                  style={{ resizeMode: "contain" } as any}
+                  width={CARD_WIDTH}
+                  height={CARD_HEIGHT}
+                  resizeMode="cover"
                   accessible={true}
                   accessibilityLabel={item.label}
                 />

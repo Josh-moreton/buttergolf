@@ -21,6 +21,7 @@
     "clean-install": "pnpm clean && pnpm install"
   },
   "devDependencies": {
+    "@tamagui/cli": "^1.135.7",
     "check-dependency-version-consistency": "^5.0.1",
     "prettier": "^3.6.2",
     "turbo": "^2.6.0",
