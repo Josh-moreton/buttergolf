@@ -21,7 +21,7 @@ export function DesktopMenu({
   const pathname = usePathname();
 
   return (
-    <Row tag="nav" gap="$xl" align="center">
+    <Row tag="nav" gap="$xl" alignItems="center">
       {menuData.map((menuItem) => {
         const hasSubmenu = Boolean(menuItem.submenu);
         const isActive =
@@ -41,7 +41,7 @@ export function DesktopMenu({
                 <Theme name={isActive ? "active" : null}>
                   <Row
                     tag="button"
-                    align="center"
+                    alignItems="center"
                     gap="$xs"
                     cursor="pointer"
                     paddingVertical={stickyMenu ? "$4" : "$6"}

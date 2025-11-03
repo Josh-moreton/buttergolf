@@ -16,10 +16,10 @@ import {
 
 export default function LayoutHarnessPage() {
   return (
-    <Column fullWidth backgroundColor="$background" minHeight="100vh">
+    <Column width="100%" backgroundColor="$background" minHeight="100vh">
       {/* Page Header */}
       <Container maxWidth="xl" padding="$lg">
-        <Column gap="md" fullWidth>
+        <Column gap="md" width="100%">
           <Heading level={1}>Layout Harness - Tamagui v4</Heading>
           <Text color="$textSecondary">
             Testing all layout components with semantic variants and tokens
@@ -29,11 +29,11 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 1: Row Component */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" width="100%">
             <Heading level={2}>Row Component</Heading>
             
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Gap variants:</Text>
               <Row gap="xs" wrap>
                 <Badge variant="primary"><Text size="xs" color="$textInverse">xs gap</Text></Badge>
@@ -57,38 +57,38 @@ export default function LayoutHarnessPage() {
               </Row>
             </Column>
 
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Alignment variants:</Text>
-              <Row gap="md" align="start" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" alignItems="flex-start" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="start"</Text>
                 <Text size="xl">Large</Text>
                 <Text size="sm">small</Text>
               </Row>
-              <Row gap="md" align="center" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" alignItems="center" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="center"</Text>
                 <Text size="xl">Large</Text>
                 <Text size="sm">small</Text>
               </Row>
-              <Row gap="md" align="end" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" alignItems="flex-end" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="end"</Text>
                 <Text size="xl">Large</Text>
                 <Text size="sm">small</Text>
               </Row>
             </Column>
 
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Justify variants:</Text>
-              <Row gap="md" justify="between" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" justifyContent="space-between" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>justify="between"</Text>
                 <Text>middle</Text>
                 <Text>end</Text>
               </Row>
-              <Row gap="md" justify="around" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" justify="around" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>justify="around"</Text>
                 <Text>middle</Text>
                 <Text>end</Text>
               </Row>
-              <Row gap="md" justify="evenly" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" justify="evenly" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>justify="evenly"</Text>
                 <Text>middle</Text>
                 <Text>end</Text>
@@ -100,11 +100,11 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 2: Column Component */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" width="100%">
             <Heading level={2}>Column Component</Heading>
             
-            <Row gap="lg" wrap fullWidth>
+            <Row gap="lg" wrap width="100%">
               <Column gap="xs" borderWidth={1} borderColor="$border" padding="$md" flex={1}>
                 <Text weight="semibold">gap="xs"</Text>
                 <Badge variant="primary"><Text size="xs" color="$textInverse">Item 1</Text></Badge>
@@ -134,17 +134,17 @@ export default function LayoutHarnessPage() {
               </Column>
             </Row>
 
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Alignment variants:</Text>
-              <Column gap="xs" align="start" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Column gap="xs" alignItems="flex-start" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="start"</Text>
                 <Badge variant="primary"><Text size="xs" color="$textInverse">Badge</Text></Badge>
               </Column>
-              <Column gap="xs" align="center" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Column gap="xs" alignItems="center" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="center"</Text>
                 <Badge variant="secondary"><Text size="xs">Badge</Text></Badge>
               </Column>
-              <Column gap="xs" align="end" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Column gap="xs" alignItems="flex-end" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>align="end"</Text>
                 <Badge variant="success"><Text size="xs">Badge</Text></Badge>
               </Column>
@@ -155,32 +155,32 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 3: Container Component */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" width="100%">
             <Heading level={2}>Container Component</Heading>
             <Text color="$textSecondary">Shows max-width constraints with different sizes</Text>
             
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Container maxWidth="sm" padding="$sm">
-                <Card variant="filled" padding="$sm" fullWidth>
+                <Card variant="filled" padding="$sm" width="100%">
                   <Text>maxWidth="sm" (640px)</Text>
                 </Card>
               </Container>
               
               <Container maxWidth="md" padding="$sm">
-                <Card variant="filled" padding="$sm" fullWidth>
+                <Card variant="filled" padding="$sm" width="100%">
                   <Text>maxWidth="md" (768px)</Text>
                 </Card>
               </Container>
               
               <Container maxWidth="lg" padding="$sm">
-                <Card variant="filled" padding="$sm" fullWidth>
+                <Card variant="filled" padding="$sm" width="100%">
                   <Text>maxWidth="lg" (1024px)</Text>
                 </Card>
               </Container>
               
               <Container maxWidth="xl" padding="$sm">
-                <Card variant="filled" padding="$sm" fullWidth>
+                <Card variant="filled" padding="$sm" width="100%">
                   <Text>maxWidth="xl" (1280px)</Text>
                 </Card>
               </Container>
@@ -191,22 +191,22 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 4: Spacer Component */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" width="100%">
             <Heading level={2}>Spacer Component</Heading>
             
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Flexible spacer (flex=true, default):</Text>
-              <Row gap="md" fullWidth borderWidth={1} borderColor="$border" padding="$sm">
+              <Row gap="md" width="100%" borderWidth={1} borderColor="$border" padding="$sm">
                 <Text>Left</Text>
                 <Spacer />
                 <Text>Right</Text>
               </Row>
             </Column>
 
-            <Column gap="sm" fullWidth>
+            <Column gap="sm" width="100%">
               <Text weight="semibold">Fixed size spacers:</Text>
-              <Row gap="none" fullWidth borderWidth={1} borderColor="$border" padding="$sm" align="center">
+              <Row gap="none" width="100%" borderWidth={1} borderColor="$border" padding="$sm" alignItems="center">
                 <Text>xs</Text>
                 <Spacer size="xs" flex={false} />
                 <Text>|</Text>
@@ -224,18 +224,18 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 5: Card Compound Components */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" fullWidth>
+        <Card variant="elevated" width="100%">
           <Card.Header padding="$md">
             <Heading level={2}>Card Compound Components</Heading>
           </Card.Header>
           
           <Card.Body padding="$md">
-            <Column gap="md" fullWidth>
+            <Column gap="md" width="100%">
               <Text>
                 Testing the compound component pattern with Card.Header, Card.Body, and Card.Footer.
               </Text>
               
-              <Row gap="md" wrap fullWidth>
+              <Row gap="md" wrap width="100%">
                 <Card variant="outlined" padding={0} minWidth={280}>
                   <Card.Header padding="$sm">
                     <Text weight="bold">Outlined Card</Text>
@@ -275,7 +275,7 @@ export default function LayoutHarnessPage() {
             </Column>
           </Card.Body>
           
-          <Card.Footer padding="$md" align="center">
+          <Card.Footer padding="$md" alignItems="center">
             <Text size="sm" color="$textMuted">
               All card variants working correctly with compound components
             </Text>
@@ -285,25 +285,25 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 6: Form Layout Example */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="lg" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="lg" width="100%">
             <Heading level={2}>Form Layout Example</Heading>
             
-            <Column gap="md" fullWidth>
-              <Column gap="xs" fullWidth>
-                <Row gap="xs" align="center">
+            <Column gap="md" width="100%">
+              <Column gap="xs" width="100%">
+                <Row gap="xs" alignItems="center">
                   <Text weight="semibold">Email</Text>
                   <Text color="$error">*</Text>
                 </Row>
                 <Input
                   placeholder="Enter your email"
                   size="md"
-                  fullWidth
+                  width="100%"
                 />
               </Column>
               
-              <Column gap="xs" fullWidth>
-                <Row gap="xs" align="center">
+              <Column gap="xs" width="100%">
+                <Row gap="xs" alignItems="center">
                   <Text weight="semibold">Password</Text>
                   <Text color="$error">*</Text>
                 </Row>
@@ -311,11 +311,11 @@ export default function LayoutHarnessPage() {
                   placeholder="Enter your password"
                   secureTextEntry
                   size="md"
-                  fullWidth
+                  width="100%"
                 />
               </Column>
               
-              <Row gap="md" justify="between" align="center" fullWidth>
+              <Row gap="md" justifyContent="space-between" alignItems="center" width="100%">
                 <Text size="sm" color="$textMuted">
                   All fields are required
                 </Text>
@@ -335,8 +335,8 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 7: Responsive Layout */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" width="100%">
             <Heading level={2}>Responsive Layout (Media Queries)</Heading>
             <Text color="$textSecondary">
               These layouts adapt based on screen size using $gtSm, $gtMd breakpoints
@@ -345,7 +345,7 @@ export default function LayoutHarnessPage() {
             <Row
               gap="md"
               wrap
-              fullWidth
+              width="100%"
             >
               <Card variant="filled" padding="$md" flex={1} minWidth={250}>
                 <Column gap="sm">
@@ -380,15 +380,15 @@ export default function LayoutHarnessPage() {
 
       {/* Test Section 8: Loading State */}
       <Container maxWidth="xl" padding="$lg">
-        <Card variant="elevated" padding="$lg" fullWidth>
-          <Column gap="md" align="center" fullWidth>
+        <Card variant="elevated" padding="$lg" width="100%">
+          <Column gap="md" alignItems="center" width="100%">
             <Heading level={2}>Loading States</Heading>
-            <Row gap="lg" align="center">
-              <Column gap="sm" align="center">
+            <Row gap="lg" alignItems="center">
+              <Column gap="sm" alignItems="center">
                 <Spinner size="small" />
                 <Text size="sm">Small</Text>
               </Column>
-              <Column gap="sm" align="center">
+              <Column gap="sm" alignItems="center">
                 <Spinner size="large" />
                 <Text size="sm">Large</Text>
               </Column>

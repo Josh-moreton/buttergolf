@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Text, YStack, XStack, Image, Spinner, Column } from "@buttergolf/ui";
+import { Text, Row, Column, Image, Spinner } from "@buttergolf/ui";
 import { useImageUpload } from "../hooks/useImageUpload";
 
 export interface ImageUploadProps {
@@ -130,7 +130,7 @@ export function ImageUpload({
           </Column>
         ) : (
           <Column gap="$md" alignItems="center" width="100%" maxWidth={500}>
-            <YStack
+            <Column
               width={64}
               height={64}
               borderRadius="$full"
@@ -139,7 +139,7 @@ export function ImageUpload({
               justifyContent="center"
             >
               <Text fontSize={32}>+</Text>
-            </YStack>
+            </Column>
             <Column gap="$xs" alignItems="center">
               <Text
                 size="lg"
@@ -180,7 +180,7 @@ export function ImageUpload({
       {/* Image Grid */}
       {currentImages.length > 0 && (
         <Column gap="$sm">
-          <XStack gap="$md" flexWrap="wrap">
+          <Row gap="$md" flexWrap="wrap">
             {currentImages.map((url, index) => (
               <Column
                 key={url}
@@ -203,7 +203,7 @@ export function ImageUpload({
                   objectFit="cover"
                 />
                 {index === 0 && (
-                  <YStack
+                  <Column
                     position="absolute"
                     bottom={0}
                     left={0}
@@ -219,11 +219,11 @@ export function ImageUpload({
                     >
                       Cover photo
                     </Text>
-                  </YStack>
+                  </Column>
                 )}
               </Column>
             ))}
-          </XStack>
+          </Row>
         </Column>
       )}
     </Column>
