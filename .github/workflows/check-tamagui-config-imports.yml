@@ -22,23 +22,30 @@ jobs:
 
       - name: Check for deprecated config imports from @buttergolf/ui
         run: |
+          set -e
           echo "Checking for deprecated Tamagui config imports..."
           
+          # Define the pattern to search for
+          UI_PACKAGE_PATTERN='@buttergolf/ui'
+          
           # Check for deep path imports like @buttergolf/ui/tamagui.config
-          DEEP_PATH_IMPORTS=$(grep -r 'from ['"'"'"]@buttergolf/ui/tamagui\.config' \
+          echo "Checking for deep path imports..."
+          DEEP_PATH_IMPORTS=$(grep -r "from ['\"]${UI_PACKAGE_PATTERN}/tamagui\.config" \
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
             --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
             . || true)
           
           # Check for named config imports from @buttergolf/ui
           # Exclude the deprecation shim itself (packages/ui/tamagui.config.ts)
-          NAMED_IMPORTS=$(grep -r 'import.*{.*config.*}.*from ['"'"'"]@buttergolf/ui['"'"'"]' \
+          echo "Checking for named config imports..."
+          NAMED_IMPORTS=$(grep -r "import.*{.*config.*}.*from ['\"]${UI_PACKAGE_PATTERN}['\"]" \
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
             --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist \
             . | grep -v 'packages/ui/tamagui.config.ts' || true)
           
+          # Report findings
           if [ -n "$DEEP_PATH_IMPORTS" ]; then
-            echo "❌ ERROR: Found deprecated deep path imports of Tamagui config from @buttergolf/ui:"
+            echo "❌ ERROR: Found deprecated deep path imports of Tamagui config:"
             echo "$DEEP_PATH_IMPORTS"
             echo ""
             echo "Please update these imports to use @buttergolf/config instead:"
