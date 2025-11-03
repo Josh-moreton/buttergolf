@@ -23,18 +23,6 @@ export function HeroSectionNew() {
         }}
       />
 
-      {/* Green Overlay on Left Side */}
-      <Column
-        position="absolute"
-        top={0}
-        left={0}
-        bottom={0}
-        width="50%"
-        backgroundColor="#13a063"
-        zIndex={1}
-        $lg={{ width: "45%" }}
-      />
-
       {/* Content Container */}
       <Column
         flex={1}
