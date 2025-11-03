@@ -385,7 +385,7 @@ const config: NextConfig = {
 ```tsx
 // apps/web/src/app/layout.tsx
 import { TamaguiProvider } from "tamagui";
-import { config } from "@buttergolf/ui";
+import { config } from "@buttergolf/config";
 
 export default function RootLayout({ children }) {
   return (
@@ -474,7 +474,7 @@ Both platforms require wrapping the app in `TamaguiProvider`:
 
 ```tsx
 import { TamaguiProvider } from "tamagui";
-import { config } from "@buttergolf/ui"; // or your tamagui.config
+import { config } from "@buttergolf/config";
 
 function App() {
   return (

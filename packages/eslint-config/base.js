@@ -27,6 +27,31 @@ export const config = [
     },
   },
   {
+    rules: {
+      // Prevent importing Tamagui config from @buttergolf/ui (deprecated)
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@buttergolf/ui/tamagui.config*"],
+              message:
+                "Import Tamagui config from '@buttergolf/config' instead of '@buttergolf/ui/tamagui.config'. The config source of truth lives in packages/config/src/tamagui.config.ts",
+            },
+          ],
+          paths: [
+            {
+              name: "@buttergolf/ui",
+              importNames: ["config"],
+              message:
+                "Import Tamagui config from '@buttergolf/config' instead of '@buttergolf/ui'. Use: import { config } from '@buttergolf/config'",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     ignores: ["dist/**"],
   },
 ];

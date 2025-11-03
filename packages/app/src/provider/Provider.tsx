@@ -1,5 +1,5 @@
 // Import config BEFORE importing TamaguiProvider to ensure createTamagui runs first
-import { config } from "@buttergolf/ui";
+import { config } from "@buttergolf/config";
 import type { PropsWithChildren } from "react";
 import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";

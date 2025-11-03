@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import { useServerInsertedHTML } from "next/navigation";
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { config } from "@buttergolf/ui";
+import { config } from "@buttergolf/config";
 
 import { Provider } from "./Provider";
 
