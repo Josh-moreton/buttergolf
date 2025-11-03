@@ -76,9 +76,9 @@ function CarouselSlide({
       alignItems="center"
       paddingHorizontal="$10"
       paddingVertical="$8"
-      gap="$8"
+      gap="$10"
     >
-      <YStack flex={1} gap="$4" maxWidth={480} paddingRight="$4">
+      <YStack flex={1} gap="$4" maxWidth={480}>
         <XStack alignItems="flex-start" gap="$3">
           <Text
             size="xl"
@@ -143,11 +143,11 @@ function CarouselSlide({
             borderRadius="$lg"
             marginTop="$3"
             size="lg"
-            hoverStyle={{ 
+            hoverStyle={{
               backgroundColor: "$primaryHover",
               scale: 1.02,
             }}
-            pressStyle={{ 
+            pressStyle={{
               backgroundColor: "$primaryPress",
               scale: 0.98,
             }}
@@ -157,12 +157,12 @@ function CarouselSlide({
         </Link>
       </YStack>
 
-      <YStack flex={1} alignItems="center" justifyContent="center">
+      <YStack flex={1} alignItems="center" justifyContent="center" padding="$6">
         <Image
           source={{ uri: item.image }}
-          width={420}
-          height={420}
-          objectFit="cover"
+          width={380}
+          height={380}
+          objectFit="contain"
           borderRadius="$2xl"
         />
       </YStack>
@@ -205,63 +205,81 @@ function FeaturedProductCard({
         }}
         pressStyle={{ scale: 0.98 }}
       >
-        <YStack height="100%" justifyContent="space-between" gap="$4">
-          {/* Top: Text content */}
-          <YStack gap="$2">
-            <Text size="lg" weight="bold" color="$text" numberOfLines={2} lineHeight={28}>
-              {item.title}
-            </Text>
-            <Text size="sm" fontSize={14} color="$textSecondary" lineHeight={20}>
-              {item.subtitle}
-            </Text>
+        <XStack height="100%" alignItems="center" gap="$4">
+          {/* Left: Text content */}
+          <YStack flex={1} justifyContent="space-between" gap="$3" minWidth={0}>
+            <YStack gap="$2">
+              <Text
+                size="lg"
+                weight="bold"
+                color="$text"
+                numberOfLines={2}
+                lineHeight={28}
+              >
+                {item.title}
+              </Text>
+              <Text
+                size="sm"
+                fontSize={14}
+                color="$textSecondary"
+                lineHeight={20}
+              >
+                {item.subtitle}
+              </Text>
+            </YStack>
+
+            <YStack gap="$2">
+              <Text
+                size="xs"
+                fontSize={11}
+                weight="semibold"
+                textTransform="uppercase"
+                color="$success"
+                letterSpacing={0.5}
+              >
+                LIMITED TIME OFFER
+              </Text>
+              <XStack alignItems="baseline" gap="$2">
+                <Text
+                  size="xl"
+                  fontSize={26}
+                  weight="bold"
+                  fontWeight="800"
+                  color="$primary"
+                >
+                  £{item.price}
+                </Text>
+                {Boolean(item.originalPrice) && (
+                  <Text
+                    size="sm"
+                    weight="medium"
+                    color="$textMuted"
+                    textDecorationLine="line-through"
+                  >
+                    £{item.originalPrice}
+                  </Text>
+                )}
+              </XStack>
+            </YStack>
           </YStack>
 
-          {/* Middle: Image with rounded corners */}
-          <YStack alignItems="center" justifyContent="center" flex={1}>
+          {/* Right: Image with fixed dimensions */}
+          <YStack
+            alignItems="center"
+            justifyContent="center"
+            width={140}
+            height={140}
+            flexShrink={0}
+          >
             <Image
               source={{ uri: item.image }}
               width={140}
               height={140}
-              objectFit="cover"
+              objectFit="contain"
               borderRadius="$xl"
             />
           </YStack>
-
-          {/* Bottom: Price */}
-          <YStack gap="$2">
-            <Text
-              size="xs"
-              fontSize={11}
-              weight="semibold"
-              textTransform="uppercase"
-              color="$success"
-              letterSpacing={0.5}
-            >
-              LIMITED TIME OFFER
-            </Text>
-            <XStack alignItems="baseline" gap="$2">
-              <Text
-                size="xl"
-                fontSize={26}
-                weight="bold"
-                fontWeight="800"
-                color="$primary"
-              >
-                £{item.price}
-              </Text>
-              {Boolean(item.originalPrice) && (
-                <Text
-                  size="sm"
-                  weight="medium"
-                  color="$textMuted"
-                  textDecorationLine="line-through"
-                >
-                  £{item.originalPrice}
-                </Text>
-              )}
-            </XStack>
-          </YStack>
-        </YStack>
+        </XStack>
       </Card>
     </Link>
   );
@@ -336,12 +354,15 @@ export function HeroSectionNew() {
                   width={index === activeSlide ? 32 : 10}
                   height={10}
                   borderRadius="$full"
-                  backgroundColor={index === activeSlide ? "$primary" : "$border"}
+                  backgroundColor={
+                    index === activeSlide ? "$primary" : "$border"
+                  }
                   cursor="pointer"
                   onPress={() => setActiveSlide(index)}
                   animation="quick"
                   hoverStyle={{
-                    backgroundColor: index === activeSlide ? "$primaryHover" : "$borderHover",
+                    backgroundColor:
+                      index === activeSlide ? "$primaryHover" : "$borderHover",
                   }}
                 />
               ))}
