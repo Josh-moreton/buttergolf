@@ -44,104 +44,34 @@ export function MarketplaceHeader() {
         shadowOffset: { width: 0, height: 2 },
       })}
     >
-      {/* Top Bar - Hidden on mobile for cleaner UX */}
-      <Row
-        display="none"
-        $md={{ display: "flex" }}
-        backgroundColor="$primary"
-        paddingVertical="$2.5"
-        paddingHorizontal="$4"
-        justifyContent="center"
-      >
-        <Row
-          width="100%"
-          maxWidth={1280}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Row display="none" $lg={{ display: "flex" }}>
-            <Text color="$textInverse" size="sm" weight="medium">
-              Get free delivery on orders over £100
-            </Text>
-          </Row>
-
-          <Row gap="$3" alignItems="center">
-            <SignedOut>
-              <Row
-                tag="button"
-                cursor="pointer"
-                style={{ background: "none", border: "none" }}
-                onPress={() => {
-                  setAuthMode("sign-up");
-                  setAuthOpen(true);
-                }}
-              >
-                <Text
-                  color="$textInverse"
-                  size="sm"
-                  weight="medium"
-                  paddingRight="$3"
-                  borderRightWidth={1}
-                  borderColor="$border"
-                  hoverStyle={{ color: "$textInverse" }}
-                >
-                  Create an account
-                </Text>
-              </Row>
-              <Row
-                tag="button"
-                cursor="pointer"
-                style={{ background: "none", border: "none" }}
-                onPress={() => {
-                  setAuthMode("sign-in");
-                  setAuthOpen(true);
-                }}
-              >
-                <Text
-                  color="$textInverse"
-                  size="sm"
-                  weight="medium"
-                  paddingLeft="$3"
-                  hoverStyle={{ color: "$textInverse" }}
-                >
-                  Sign In
-                </Text>
-              </Row>
-            </SignedOut>
-            <SignedIn>
-              <Text color="$textInverse" size="sm" weight="medium">
-                Welcome back!
-              </Text>
-            </SignedIn>
-          </Row>
-        </Row>
-      </Row>
-
       {/* Main Header */}
       <Row
-        paddingHorizontal="$3"
+        paddingHorizontal="$4"
         paddingVertical="$3"
-        $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
+        $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
         justifyContent="center"
+        borderBottomWidth={1}
+        borderColor="$border"
       >
         <Row
           width="100%"
-          maxWidth={1280}
+          maxWidth={1440}
           justifyContent="space-between"
           alignItems="center"
+          gap="$4"
+          $md={{ gap: "$6" }}
         >
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none" }}>
+          <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
             <Row
               alignItems="center"
               gap="$2"
               paddingVertical="$2"
-              // Ensure minimum touch target size
               minHeight={44}
             >
               <Text
                 size="lg"
-                $md={{ fontSize: 24 }}
+                $md={{ fontSize: 26 }}
                 weight="bold"
                 fontWeight="800"
                 color="$text"
@@ -169,13 +99,45 @@ export function MarketplaceHeader() {
             </Row>
           </Link>
 
-          {/* Desktop Menu - Hidden on mobile */}
-          <Row display="none" $xl={{ display: "flex" }}>
-            <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
+          {/* Search Bar - Prominent on desktop */}
+          <Row
+            display="none"
+            $md={{ display: "flex" }}
+            flex={1}
+            maxWidth={500}
+            backgroundColor="$surface"
+            borderWidth={1}
+            borderColor="$border"
+            borderRadius="$lg"
+            paddingHorizontal="$3"
+            paddingVertical="$2"
+            alignItems="center"
+            gap="$2"
+            hoverStyle={{
+              borderColor: "$borderHover",
+            }}
+            focusStyle={{
+              borderColor: "$primary",
+              borderWidth: 2,
+            }}
+          >
+            <SearchIcon />
+            <input
+              type="text"
+              placeholder="What are you looking for?"
+              style={{
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: "14px",
+                width: "100%",
+                fontFamily: "inherit",
+              }}
+            />
           </Row>
 
           {/* Action Buttons - Improved touch targets */}
-          <Row gap="$2" $md={{ gap: "$3" }} alignItems="center">
+          <Row gap="$2" $md={{ gap: "$3" }} alignItems="center" flexShrink={0}>
             {/* Sell Button - Prominent CTA */}
             <Link href="/sell" style={{ textDecoration: "none" }}>
               <Row
@@ -202,22 +164,6 @@ export function MarketplaceHeader() {
                 </Text>
               </Row>
             </Link>
-
-            <Row
-              tag="button"
-              cursor="pointer"
-              hoverStyle={{ opacity: 0.7 }}
-              // Minimum 44px touch target
-              padding="$2"
-              minWidth={44}
-              minHeight={44}
-              alignItems="center"
-              justifyContent="center"
-              {...{ style: { background: "none", border: "none" } }}
-              aria-label="Search"
-            >
-              <SearchIcon />
-            </Row>
 
             <SignedOut>
               <Row
@@ -347,6 +293,60 @@ export function MarketplaceHeader() {
           </Row>
         </Row>
       </Row>
+
+      {/* Mobile Search Bar */}
+      <Row
+        display="flex"
+        $md={{ display: "none" }}
+        paddingHorizontal="$4"
+        paddingVertical="$3"
+        backgroundColor="$surface"
+        borderBottomWidth={1}
+        borderColor="$border"
+      >
+        <Row
+          flex={1}
+          backgroundColor="$background"
+          borderWidth={1}
+          borderColor="$border"
+          borderRadius="$lg"
+          paddingHorizontal="$3"
+          paddingVertical="$2"
+          alignItems="center"
+          gap="$2"
+        >
+          <SearchIcon />
+          <input
+            type="text"
+            placeholder="Search golf equipment..."
+            style={{
+              border: "none",
+              outline: "none",
+              background: "transparent",
+              fontSize: "14px",
+              width: "100%",
+              fontFamily: "inherit",
+            }}
+          />
+        </Row>
+      </Row>
+
+      {/* Navigation Bar - Full width categories */}
+      <Row
+        display="none"
+        $lg={{ display: "flex" }}
+        paddingHorizontal="$6"
+        paddingVertical="$3"
+        justifyContent="center"
+        backgroundColor="$surface"
+        borderBottomWidth={1}
+        borderColor="$border"
+      >
+        <Row width="100%" maxWidth={1440} justifyContent="center">
+          <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
+        </Row>
+      </Row>
+
       {/* Auth modal */}
       <SignInModal
         open={authOpen}

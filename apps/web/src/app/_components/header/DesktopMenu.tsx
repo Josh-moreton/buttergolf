@@ -21,7 +21,13 @@ export function DesktopMenu({
   const pathname = usePathname();
 
   return (
-    <Row tag="nav" gap="$xl" alignItems="center">
+    <Row
+      tag="nav"
+      gap="$6"
+      alignItems="center"
+      flexWrap="wrap"
+      justifyContent="center"
+    >
       {menuData.map((menuItem) => {
         const hasSubmenu = Boolean(menuItem.submenu);
         const isActive =
@@ -44,10 +50,13 @@ export function DesktopMenu({
                     alignItems="center"
                     gap="$xs"
                     cursor="pointer"
-                    paddingVertical={stickyMenu ? "$4" : "$6"}
+                    paddingVertical="$2"
+                    paddingHorizontal="$3"
+                    borderRadius="$md"
+                    hoverStyle={{ backgroundColor: "$backgroundHover" }}
                     {...{ style: { background: "none", border: "none" } }}
                   >
-                    <Text size="sm" weight="medium">
+                    <Text size="sm" weight="medium" whiteSpace="nowrap">
                       {menuItem.title}
                     </Text>
                     <Column
@@ -67,10 +76,11 @@ export function DesktopMenu({
                   position="absolute"
                   left={0}
                   top="100%"
+                  marginTop="$2"
                   backgroundColor="$background"
                   borderWidth={1}
                   borderColor="$border"
-                  borderRadius="$4"
+                  borderRadius="$md"
                   padding="$2"
                   minWidth={220}
                   zIndex={50}
@@ -90,8 +100,8 @@ export function DesktopMenu({
                     >
                       <Row
                         paddingHorizontal="$4"
-                        paddingVertical="$2"
-                        borderRadius="$3"
+                        paddingVertical="$2.5"
+                        borderRadius="$md"
                         hoverStyle={{ backgroundColor: "$backgroundHover" }}
                       >
                         <Text
@@ -118,13 +128,16 @@ export function DesktopMenu({
                   href={menuItem.path || "#"}
                   style={{ textDecoration: "none" }}
                 >
-                  <Text
-                    size="sm"
-                    weight="medium"
-                    paddingVertical={stickyMenu ? "$4" : "$6"}
+                  <Row
+                    paddingVertical="$2"
+                    paddingHorizontal="$3"
+                    borderRadius="$md"
+                    hoverStyle={{ backgroundColor: "$backgroundHover" }}
                   >
-                    {menuItem.title}
-                  </Text>
+                    <Text size="sm" weight="medium" whiteSpace="nowrap">
+                      {menuItem.title}
+                    </Text>
+                  </Row>
                 </Link>
               </Theme>
             )}

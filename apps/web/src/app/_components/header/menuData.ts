@@ -6,40 +6,64 @@ export interface MenuItem {
 
 export const menuData: MenuItem[] = [
     {
-        title: "Browse",
+        title: "Shop All",
         path: "/listings",
     },
     {
-        title: "Shop",
+        title: "Drivers",
+        path: "/category/drivers",
+    },
+    {
+        title: "Fairway Woods",
+        path: "/category/fairway-woods",
+    },
+    {
+        title: "Irons",
+        path: "/category/irons",
+    },
+    {
+        title: "Wedges",
+        path: "/category/wedges",
+    },
+    {
+        title: "Putters",
+        path: "/category/putters",
+    },
+    {
+        title: "Hybrids",
+        path: "/category/hybrids",
+    },
+    {
+        title: "Shoes",
+        path: "/category/shoes",
+    },
+    {
+        title: "Accessories",
         submenu: [
-            {
-                title: "Drivers",
-                path: "/category/drivers",
-            },
-            {
-                title: "Irons",
-                path: "/category/irons",
-            },
-            {
-                title: "Putters",
-                path: "/category/putters",
-            },
             {
                 title: "Bags",
                 path: "/category/bags",
             },
             {
-                title: "All Categories",
-                path: "/listings",
+                title: "Gloves",
+                path: "/category/gloves",
+            },
+            {
+                title: "Balls",
+                path: "/category/balls",
+            },
+            {
+                title: "Apparel",
+                path: "/category/apparel",
+            },
+            {
+                title: "Training Aids",
+                path: "/category/training-aids",
+            },
+            {
+                title: "All Accessories",
+                path: "/category/accessories",
             },
         ],
-    },
-    {
-        title: "Sell",
-        path: "/sell",
-    },
-    {
-        title: "About",
-        path: "/about",
     },
 ]
