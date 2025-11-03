@@ -1,33 +1,61 @@
-'use client'
+"use client";
 
-import React, { useEffect, useRef } from 'react'
-import { Platform, Dimensions, AccessibilityInfo, Animated, Easing } from 'react-native'
-import { Text, Button, View } from 'tamagui'
-import { YStack } from '@buttergolf/ui'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import React, { useEffect, useRef } from "react";
+import {
+  Platform,
+  Dimensions,
+  AccessibilityInfo,
+  Animated,
+  Easing,
+} from "react-native";
+import { Text, Button, YStack, Image, View } from "@buttergolf/ui";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const { width: SCREEN_W } = Dimensions.get('window')
+const { width: SCREEN_W } = Dimensions.get("window");
 
-const CARD_WIDTH = Math.round(SCREEN_W * 0.32)
-const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4)
-const GAP = 12
+const CARD_WIDTH = Math.round(SCREEN_W * 0.32);
+const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.4);
+const GAP = 12;
 
-// Premium placeholder cards with golf equipment themed colors
-// Using theme tokens for consistency
+// Golf equipment images for the carousel
 const images = [
-  { id: 'club', color: '$gray700', label: 'Golf Club' },
-  { id: 'ball', color: '$gray100', label: 'Golf Ball' },
-  { id: 'bag', color: '$gray500', label: 'Golf Bag' },
-  { id: 'shoes', color: '$gray300', label: 'Golf Shoes' },
-  { id: 'cart', color: '$accentBlue', label: 'Golf Cart' },
-  { id: 'gloves', color: '$accentPurple', label: 'Golf Gloves' },
-] as const
+  {
+    id: "clubs-1",
+    source: require("../../../../../apps/mobile/assets/clubs-1.jpg"),
+    label: "Golf Clubs Set",
+  },
+  {
+    id: "clubs-2",
+    source: require("../../../../../apps/mobile/assets/clubs-2.webp"),
+    label: "Premium Irons",
+  },
+  {
+    id: "clubs-3",
+    source: require("../../../../../apps/mobile/assets/clubs-3.webp"),
+    label: "Driver Collection",
+  },
+  {
+    id: "clubs-4",
+    source: require("../../../../../apps/mobile/assets/clubs-4.jpg"),
+    label: "Vintage Woods",
+  },
+  {
+    id: "clubs-5",
+    source: require("../../../../../apps/mobile/assets/clubs-5.webp"),
+    label: "Putter Selection",
+  },
+  {
+    id: "clubs-6",
+    source: require("../../../../../apps/mobile/assets/clubs-6.jpg"),
+    label: "Complete Set",
+  },
+] as const;
 
 interface OnboardingScreenProps {
-  onSkip?: () => void
-  onSignUp?: () => void
-  onSignIn?: () => void
-  onAbout?: () => void
+  onSkip?: () => void;
+  onSignUp?: () => void;
+  onSignIn?: () => void;
+  onAbout?: () => void;
 }
 
 export function OnboardingScreen({
@@ -36,32 +64,32 @@ export function OnboardingScreen({
   onSignIn,
   onAbout,
 }: Readonly<OnboardingScreenProps>) {
-  const insets = useSafeAreaInsets()
-  
+  const insets = useSafeAreaInsets();
+
   // Duplicate images array for seamless infinite loop
-  const items = [...images, ...images]
-  const singleWidth = images.length * (CARD_WIDTH + GAP)
-  const translateX = useRef(new Animated.Value(0)).current
-  const [reduceMotion, setReduceMotion] = React.useState(false)
+  const items = [...images, ...images];
+  const singleWidth = images.length * (CARD_WIDTH + GAP);
+  const translateX = useRef(new Animated.Value(0)).current;
+  const [reduceMotion, setReduceMotion] = React.useState(false);
 
   useEffect(() => {
     // Check for reduce motion setting
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== "web") {
       AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-        setReduceMotion(enabled ?? false)
-      })
+        setReduceMotion(enabled ?? false);
+      });
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (reduceMotion) {
-      translateX.stopAnimation()
-      return
+      translateX.stopAnimation();
+      return;
     }
 
-    // Gentle 18-20 second scroll duration
-    const duration = Math.max(18000, Math.floor(singleWidth * 24))
-    
+    // Gentle 18-20 second scroll duration for smooth, relaxed movement
+    const duration = Math.max(18000, Math.floor(singleWidth * 24));
+
     const animation = Animated.loop(
       Animated.timing(translateX, {
         toValue: -singleWidth,
@@ -69,14 +97,14 @@ export function OnboardingScreen({
         easing: Easing.linear,
         useNativeDriver: true,
       })
-    )
-    
-    animation.start()
+    );
+
+    animation.start();
 
     return () => {
-      animation.stop()
-    }
-  }, [reduceMotion, singleWidth, translateX])
+      animation.stop();
+    };
+  }, [reduceMotion, singleWidth, translateX]);
 
   return (
     <YStack
@@ -85,26 +113,38 @@ export function OnboardingScreen({
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
-      {/* Auto-scrolling Product Carousel */}
+      {/* Auto-scrolling Product Carousel with Real Images */}
       <YStack flex={1} justifyContent="center" paddingVertical="$8">
         <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View style={{ flexDirection: 'row', transform: [{ translateX }] }}>
+          <Animated.View
+            style={{ flexDirection: "row", transform: [{ translateX }] }}
+          >
             {items.map((item, index) => (
               <View
                 key={`${item.id}-${index}`}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                borderRadius={18}
-                style={{
-                  backgroundColor: item.color,
-                  marginRight: index < items.length - 1 ? GAP : 0,
-                  shadowColor: '#000',
+                borderRadius="$lg"
+                overflow="hidden"
+                marginRight={index < items.length - 1 ? GAP : 0}
+                backgroundColor="$gray200"
+                {...({
+                  shadowColor: "#000",
                   shadowRadius: 16,
                   shadowOffset: { width: 0, height: 8 },
                   shadowOpacity: 0.18,
                   elevation: 12,
-                }}
-              />
+                } as any)}
+              >
+                <Image
+                  source={item.source}
+                  width="100%"
+                  height="100%"
+                  resizeMode="cover"
+                  accessible={true}
+                  accessibilityLabel={item.label}
+                />
+              </View>
             ))}
           </Animated.View>
         </View>
@@ -117,7 +157,8 @@ export function OnboardingScreen({
         >
           Browse thousands of pre-loved golf items
         </Text>
-      </YStack>      {/* Content Section */}
+      </YStack>{" "}
+      {/* Content Section */}
       <YStack
         gap="$lg"
         paddingHorizontal="$6"
@@ -132,7 +173,7 @@ export function OnboardingScreen({
             textAlign="center"
             color="$text"
             lineHeight={36}
-            fontFamily={(Platform.OS === 'ios' ? 'Georgia' : 'serif') as any}
+            fontFamily={(Platform.OS === "ios" ? "Georgia" : "serif") as any}
           >
             From old clubs to new rounds
           </Text>
@@ -155,14 +196,14 @@ export function OnboardingScreen({
             backgroundColor="$primary"
             borderRadius={16}
             pressStyle={{
-              backgroundColor: '$primaryPress',
+              backgroundColor: "$primaryPress",
               scale: 0.97,
               opacity: 0.9,
             }}
             onPress={onSignUp}
             aria-label="Sign up to Butter Golf"
             style={{
-              shadowColor: '$primary',
+              shadowColor: "$primary",
               shadowRadius: 12,
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.3,
@@ -181,7 +222,7 @@ export function OnboardingScreen({
             borderWidth={2}
             borderRadius={16}
             pressStyle={{
-              backgroundColor: '$backgroundHover',
+              backgroundColor: "$backgroundHover",
               scale: 0.97,
             }}
             onPress={onSignIn}
@@ -206,5 +247,5 @@ export function OnboardingScreen({
         </Button>
       </YStack>
     </YStack>
-  )
+  );
 }
