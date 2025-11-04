@@ -1,11 +1,17 @@
+"use client";
+
 import { Column, Row, Text, Heading, Button, Container } from "@buttergolf/ui";
 import { ProductCard } from "@buttergolf/app";
-import { getRecentProducts } from "@/app/actions/products";
+import type { ProductCardData } from "@buttergolf/app";
 import Link from "next/link";
 
-export async function RecentlyListedSection() {
-  const products = await getRecentProducts(12);
+interface RecentlyListedSectionClientProps {
+  products: ProductCardData[];
+}
 
+export function RecentlyListedSectionClient({
+  products,
+}: RecentlyListedSectionClientProps) {
   if (products.length === 0) {
     return (
       <Column backgroundColor="$background" paddingVertical="$8">
@@ -63,4 +69,3 @@ export async function RecentlyListedSection() {
     </Column>
   );
 }
-

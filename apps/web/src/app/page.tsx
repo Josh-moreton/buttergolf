@@ -1,7 +1,10 @@
-import MarketplaceHomeClient from './_components/MarketplaceHomeClient'
+import MarketplaceHomeClient from "./_components/MarketplaceHomeClient";
+import { getRecentProducts } from "./actions/products";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-export default function Page() {
-  return <MarketplaceHomeClient />
+export default async function Page() {
+  const products = await getRecentProducts(12);
+
+  return <MarketplaceHomeClient products={products} />;
 }
