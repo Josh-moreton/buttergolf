@@ -123,7 +123,7 @@ export function OnboardingScreen({
   return (
     <YStack
       flex={1}
-      backgroundColor="#FAFAF8"
+      backgroundColor="$background"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
@@ -135,11 +135,14 @@ export function OnboardingScreen({
       >
         <Text
           fontSize={15}
-          color="#6B6B6B"
+          color="$textMuted"
           fontWeight="400"
           alignSelf="flex-end"
           onPress={onSkip}
           cursor="pointer"
+          pressStyle={{
+            color: "$textSecondary",
+          }}
         >
           Skip
         </Text>
@@ -225,7 +228,7 @@ export function OnboardingScreen({
             fontSize={28}
             fontWeight="600"
             textAlign="center"
-            color="#212121"
+            color="$text"
             lineHeight={33.6}
             fontFamily={(Platform.OS === "ios" ? "Georgia" : "serif") as any}
           >
@@ -235,7 +238,7 @@ export function OnboardingScreen({
             fontSize={16}
             fontWeight="400"
             textAlign="center"
-            color="#6B6B6B"
+            color="$textSecondary"
             lineHeight={22}
           >
             Buy, sell, and play smarter
@@ -245,50 +248,61 @@ export function OnboardingScreen({
         {/* CTAs */}
         <YStack gap={12} width="100%" paddingHorizontal={24}>
           <Button
-            unstyled
+            size="$5"
+            backgroundColor="$vintedTeal"
+            color="$white"
+            borderRadius="$lg"
+            fontWeight="600"
+            fontSize={17}
             height={52}
-            backgroundColor="#357C7B"
-            borderRadius={10}
+            hoverStyle={{
+              backgroundColor: "$vintedTealHover",
+            }}
             pressStyle={{
-              backgroundColor: "#2d6867",
+              backgroundColor: "$vintedTealPress",
               scale: 0.98,
             }}
             onPress={onSignUp}
             aria-label="Sign up to Butter Golf"
           >
-            <Text color="white" fontSize={17} fontWeight="600">
-              Sign up to Butter Golf
-            </Text>
+            Sign up to Butter Golf
           </Button>
 
           <Button
-            unstyled
-            height={52}
-            backgroundColor="white"
-            borderColor="#357C7B"
+            size="$5"
+            backgroundColor="$white"
+            color="$vintedTeal"
+            borderColor="$vintedTeal"
             borderWidth={1}
-            borderRadius={10}
+            borderRadius="$lg"
+            fontWeight="600"
+            fontSize={17}
+            height={52}
+            hoverStyle={{
+              backgroundColor: "$gray50",
+            }}
             pressStyle={{
-              backgroundColor: "#f5f5f5",
+              backgroundColor: "$gray100",
               scale: 0.98,
             }}
             onPress={onSignIn}
             aria-label="I already have an account"
           >
-            <Text color="#357C7B" fontSize={17} fontWeight="600">
-              I already have an account
-            </Text>
+            I already have an account
           </Button>
         </YStack>
 
         {/* Footer Link - Plain Text */}
         <Text
           fontSize={13}
-          color="#6B6B6B"
+          color="$textMuted"
           textAlign="center"
           textDecorationLine="underline"
           onPress={onAbout}
           cursor="pointer"
+          pressStyle={{
+            color: "$textSecondary",
+          }}
         >
           About Butter Golf: Our platform
         </Text>
