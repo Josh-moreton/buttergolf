@@ -53,6 +53,58 @@ export function AnimatedWelcomeLogo() {
     "M39.552 9.60001C56.3627 9.60001 68.864 13.44 77.056 21.12C85.248 28.7147 89.344 39.6373 89.344 53.888C89.344 63.1893 87.3387 71.3387 83.328 78.336C79.3173 85.248 73.472 90.624 65.792 94.464C58.1973 98.304 49.0667 100.224 38.4 100.224C37.0347 100.224 35.2427 100.181 33.024 100.096C30.8053 100.011 28.5013 99.968 26.112 99.968C23.7227 99.8827 21.5893 99.84 19.712 99.84C15.9573 99.84 12.2453 99.8827 8.576 99.968C4.992 99.968 2.13333 100.053 0 100.224V97.664C2.73067 97.4933 4.77867 97.152 6.144 96.64C7.50933 96.128 8.40533 95.104 8.832 93.568C9.344 92.032 9.6 89.728 9.6 86.656V23.168C9.6 20.0107 9.344 17.7067 8.832 16.256C8.40533 14.72 7.46667 13.696 6.016 13.184C4.65067 12.5867 2.64533 12.2453 0 12.16V9.60001C2.13333 9.68534 4.992 9.81334 8.576 9.984C12.2453 10.0693 15.872 10.0693 19.456 9.984C22.528 9.89867 25.984 9.81334 29.824 9.728C33.7493 9.64267 36.992 9.60001 39.552 9.60001ZM39.424 11.904C35.4987 11.904 32.9387 12.6293 31.744 14.08C30.5493 15.5307 29.952 18.4747 29.952 22.912V86.912C29.952 91.3493 30.5493 94.2933 31.744 95.744C33.024 97.1947 35.6267 97.92 39.552 97.92C46.72 97.92 52.352 96.256 56.448 92.928C60.6293 89.5147 63.616 84.5653 65.408 78.08C67.2 71.5947 68.096 63.7013 68.096 54.4C68.096 44.8427 67.1147 36.9493 65.152 30.72C63.2747 24.4053 60.2453 19.712 56.064 16.64C51.8827 13.4827 46.336 11.904 39.424 11.904Z",
   ];
 
+  // Group paths into lines by inspecting first move-to Y coordinate
+  type PathObj = { d: string; index: number; y: number };
+  const pathObjs: PathObj[] = paths.map((d, index) => {
+    const regex = /^M[^\s]+\s(-?\d+\.?\d*)/;
+    const match = regex.exec(d);
+    const y = match ? Number.parseFloat(match[1]) : 0;
+    return { d, index, y };
+  });
+
+  const top: PathObj[] = [];
+  const middle: PathObj[] = [];
+  const bottom: PathObj[] = [];
+
+  for (const p of pathObjs) {
+    if (p.y >= 340) bottom.push(p);
+    else if (p.y >= 165) middle.push(p);
+    else top.push(p);
+  }
+
+  // Move middle and bottom lines up a bit to reduce inter-line spacing
+  const middleOffset = -28; // px upward
+  const bottomOffset = -56; // px upward
+
+  const renderPath = (p: PathObj) => {
+    const delay = p.index * 0.08;
+    const duration = 1.2;
+    return (
+      <motion.path
+        key={p.index}
+        d={p.d}
+        fill="transparent"
+        stroke={strokeColor}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={
+          isVisible ? { pathLength: 1, opacity: 1, fill: strokeColor } : {}
+        }
+        transition={{
+          pathLength: { duration, delay, ease: "easeInOut" },
+          opacity: { duration: 0.2, delay },
+          fill: {
+            duration: 0.4,
+            delay: delay + duration * 0.6,
+            ease: "easeIn",
+          },
+        }}
+      />
+    );
+  };
+
   return (
     <div
       style={{
@@ -69,52 +121,16 @@ export function AnimatedWelcomeLogo() {
         xmlns="http://www.w3.org/2000/svg"
         style={{ display: "block" }}
       >
-        {paths.map((d, index) => {
-          // Calculate animation delay based on path index
-          const delay = index * 0.08; // 80ms between each letter/path
-          const duration = 1.2; // Animation duration for each path
-
-          return (
-            <motion.path
-              key={index}
-              d={d}
-              fill="transparent"
-              stroke={strokeColor}
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={
-                isVisible
-                  ? {
-                      pathLength: 1,
-                      opacity: 1,
-                      fill: strokeColor,
-                    }
-                  : {}
-              }
-              transition={{
-                pathLength: {
-                  duration: duration,
-                  delay: delay,
-                  ease: "easeInOut",
-                },
-                opacity: {
-                  duration: 0.2,
-                  delay: delay,
-                },
-                fill: {
-                  duration: 0.4,
-                  delay: delay + duration * 0.6, // Fill starts before stroke completes
-                  ease: "easeIn",
-                },
-              }}
-            />
-          );
-        })}
+        {/* Top line */}
+        <g>{top.map(renderPath)}</g>
+        {/* Middle line (shifted up slightly) */}
+        <g transform={`translate(0, ${middleOffset})`}>
+          {middle.map(renderPath)}
+        </g>
+        {/* Bottom line (shifted up more) */}
+        <g transform={`translate(0, ${bottomOffset})`}>
+          {bottom.map(renderPath)}
+        </g>
       </svg>
     </div>
   );

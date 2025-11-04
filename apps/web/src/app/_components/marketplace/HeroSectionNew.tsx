@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button, Text, Row, Column } from "@buttergolf/ui";
+import { Button, Row, Column } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
 import { AnimatedWelcomeLogo } from "./AnimatedWelcomeLogo";
 
@@ -31,47 +31,24 @@ export function HeroSectionNew() {
       {/* Content Container */}
       <Column
         flex={1}
-        justifyContent="center"
+        justifyContent="flex-start"
         paddingHorizontal="$8"
-        paddingVertical="$12"
         $md={{ paddingHorizontal: "$12" }}
-        $lg={{ paddingHorizontal: "$20", paddingLeft: 80 }}
+        $lg={{
+          paddingHorizontal: "$20",
+          paddingLeft: 80,
+        }}
         gap="$6"
         zIndex={2}
         position="relative"
+        style={{ paddingTop: 200 }}
       >
-        <Column gap="$8" maxWidth={600}>
+        <Column gap="$8" maxWidth={600} style={{ marginTop: 60 }}>
           {/* Animated Welcome Logo */}
-          <div style={{ marginBottom: "2rem" }}>
+          <div style={{ marginBottom: "0.5rem" }}>
             <AnimatedWelcomeLogo />
           </div>
-
-          {/* Subheading - Fades in after logo */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: logoAnimationDuration,
-              ease: "easeOut",
-            }}
-          >
-            <Text
-              fontSize={18}
-              $md={{ fontSize: 20 }}
-              $lg={{ fontSize: 22 }}
-              lineHeight={1.6}
-              weight="normal"
-              {...{
-                style: {
-                  color: "rgba(255, 248, 231, 0.95)",
-                  maxWidth: "500px",
-                },
-              }}
-            >
-              Pre-loved golf clubs, straight from the course.
-            </Text>
-          </motion.div>
+          {/* Subheading removed as requested */}
 
           {/* CTA Button - Fades in after subtitle */}
           <motion.div
