@@ -69,7 +69,7 @@ export function LoggedOutHomeScreen({
           if (fetchedProducts.length > 0) {
             console.log(
               "First product image URL:",
-              fetchedProducts[0].imageUrl
+              fetchedProducts[0]?.imageUrl
             );
           }
           setProducts(fetchedProducts);
