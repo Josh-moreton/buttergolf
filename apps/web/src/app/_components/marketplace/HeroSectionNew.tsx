@@ -56,7 +56,7 @@ export function HeroSectionNew() {
               },
             }}
           >
-            that are also pre-loved, sustainable & community-driven.
+            Pre-loved golf clubs, straight from the course.
           </Text>
 
           {/* CTA Button */}
