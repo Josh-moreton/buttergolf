@@ -16,6 +16,7 @@
     "@clerk/nextjs": "catalog:",
     "@tamagui/core": "catalog:",
     "@vercel/blob": "^2.0.0",
+    "framer-motion": "^12.23.24",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

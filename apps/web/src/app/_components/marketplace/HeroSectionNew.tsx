@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button, Text, Row, Column } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
+import { AnimatedWelcomeLogo } from "./AnimatedWelcomeLogo";
 
 export function HeroSectionNew() {
   return (
@@ -36,24 +37,10 @@ export function HeroSectionNew() {
         position="relative"
       >
         <Column gap="$4" maxWidth={600}>
-          {/* Main Heading - Bold Serif Font */}
-          <h1
-            style={{
-              fontSize: "clamp(48px, 7vw, 92px)",
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              margin: 0,
-              color: "#FFF8E7",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Super
-            <br />
-            Delicious
-            <br />
-            Golf Clubs
-          </h1>
+          {/* Animated Welcome Logo */}
+          <div style={{ marginBottom: "1rem" }}>
+            <AnimatedWelcomeLogo />
+          </div>
 
           {/* Subheading */}
           <Text

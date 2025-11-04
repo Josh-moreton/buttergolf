@@ -79,6 +79,7 @@ const brandColors = {
     white: '#ffffff',
     black: '#000000',
     offWhite: '#fbfbf9',
+    cream: '#FFF8E7', // Soft cream/ivory for hero text
 
     // Vinted-inspired teal (for onboarding)
     vintedTeal: '#357C7B',
@@ -132,6 +133,7 @@ const customTokens = createTokens({
         blueLight: brandColors.blue300,
         teal: brandColors.teal500,
         red: brandColors.red600,
+        cream: brandColors.cream,
     },
 
     size: {
@@ -255,6 +257,7 @@ const lightTheme = {
 
     // Utility colors
     white: brandColors.white,
+    cream: brandColors.cream,
 }
 
 // Dark theme with semantic token mappings
@@ -329,6 +332,7 @@ const darkTheme = {
 
     // Utility colors
     white: brandColors.white,
+    cream: brandColors.cream,
 }
 
 // Sub-theme for active states (light mode)
