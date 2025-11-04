@@ -11,7 +11,14 @@ export function HeroSectionNew() {
   // 20 paths * 0.08 delay + 1.2 duration = ~2.8 seconds
   const logoAnimationDuration = 20 * 0.08 + 1.2;
   return (
-    <Row width="100%" minHeight="100vh" position="relative" overflow="hidden">
+    <Row
+      width="100%"
+      height="70vh"
+      minHeight={500}
+      maxHeight={700}
+      position="relative"
+      overflow="hidden"
+    >
       {/* Background Image - Full Width */}
       <img
         src={imagePaths.hero.golfCourse}
@@ -31,7 +38,7 @@ export function HeroSectionNew() {
       {/* Content Container */}
       <Column
         flex={1}
-        justifyContent="flex-start"
+        justifyContent="center"
         paddingHorizontal="$8"
         $md={{ paddingHorizontal: "$12" }}
         $lg={{
@@ -41,9 +48,8 @@ export function HeroSectionNew() {
         gap="$6"
         zIndex={2}
         position="relative"
-        style={{ paddingTop: 200 }}
       >
-        <Column gap="$8" maxWidth={600} style={{ marginTop: 60 }}>
+        <Column gap="$8" maxWidth={600}>
           {/* Animated Welcome Logo */}
           <div style={{ marginBottom: "0.5rem" }}>
             <AnimatedWelcomeLogo />

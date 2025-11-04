@@ -15,7 +15,7 @@ export default function MarketplaceHomeClient({
   products,
 }: MarketplaceHomeClientProps) {
   return (
-    <Column>
+    <Column marginTop={180} $sm={{ marginTop: 200 }} $lg={{ marginTop: 220 }}>
       <HeroSectionNew />
       <RecentlyListedSectionClient products={products} />
       <NewsletterSection />

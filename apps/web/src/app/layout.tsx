@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === "production") {
   require("../../public/tamagui.css");
 }
 import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
+import { TrustBar } from "./_components/marketplace/TrustBar";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body>
         <NextTamaguiProvider>
           <ServiceWorkerRegistration />
+          <TrustBar />
           <MarketplaceHeader />
           <AppPromoBanner />
           {children}
