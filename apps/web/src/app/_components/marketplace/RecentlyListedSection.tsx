@@ -1,7 +1,6 @@
 "use client";
 
-import { Column, Row, Text, Heading, Button, Container } from "@buttergolf/ui";
-import { ProductCard } from "@buttergolf/app";
+import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import Link from "next/link";
 
@@ -9,63 +8,74 @@ interface RecentlyListedSectionClientProps {
   products: ProductCardData[];
 }
 
+function ListingCard({ product }: { product: ProductCardData }) {
+  return (
+    <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+      <Card
+        padding={0}
+        borderRadius="$md"
+        overflow="hidden"
+        cursor="pointer"
+        hoverStyle={{ scale: 1.01 }}
+      >
+        <Image
+          source={{ uri: product.imageUrl }}
+          width="100%"
+          height={180}
+          objectFit="cover"
+        />
+        <Column padding="$md" gap="$xs">
+          <Text weight="bold" numberOfLines={2}>
+            {product.title}
+          </Text>
+          <Row alignItems="center" justifyContent="space-between">
+            <Text fontSize="$7" weight="bold" fontWeight="800">
+              £{product.price.toFixed(2)}
+            </Text>
+            <Text fontSize="$2" opacity={0.7}>
+              {product.condition?.replace("_", " ") || ""}
+            </Text>
+          </Row>
+          <Button size="$4">View details</Button>
+        </Column>
+      </Card>
+    </Link>
+  );
+}
+
 export function RecentlyListedSectionClient({
   products,
 }: RecentlyListedSectionClientProps) {
-  if (products.length === 0) {
-    return (
-      <Column backgroundColor="$background" paddingVertical="$8">
-        <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
-          <Column gap="$lg" alignItems="center">
-            <Heading level={2}>No Products Yet</Heading>
-            <Text {...{ color: "secondary" as any }}>
-              Be the first to list a product on ButterGolf!
-            </Text>
-            <Link href="/sell">
-              <Button size="$5">List an Item</Button>
-            </Link>
-          </Column>
-        </Container>
-      </Column>
-    );
-  }
-
   return (
-    <Column backgroundColor="$background" paddingVertical="$8">
-      <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
-        <Column gap="$lg">
-          <Row alignItems="center" justifyContent="space-between">
-            <Column gap="$xs">
-              <Heading level={2}>Recently Listed</Heading>
-              <Text {...{ color: "secondary" as any }}>
-                Fresh golf gear just added to the marketplace
-              </Text>
-            </Column>
-            <Link href="/products">
-              <Button size="$4">View All</Button>
-            </Link>
-          </Row>
+    <Column paddingVertical="$8" backgroundColor="$background">
+      <Column
+        maxWidth={1280}
+        marginHorizontal="auto"
+        paddingHorizontal="$6"
+        width="100%"
+        gap="$6"
+      >
+        <Row alignItems="center" justifyContent="space-between">
+          <Text fontSize="$9" weight="bold">
+            Recently listed
+          </Text>
+          <Button size="$4">View all</Button>
+        </Row>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "24px",
-              width: "100%",
-            }}
-          >
-            {products.map((product) => (
-              <Link
-                key={product.id}
-                href={`/products/${product.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <ProductCard product={product} />
-              </Link>
-            ))}
-          </div>
-        </Column>
-      </Container>
+        {/* Grid Layout */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "24px",
+            width: "100%",
+          }}
+        >
+          {products.map((product) => (
+            <ListingCard key={product.id} product={product} />
+          ))}
+        </div>
+      </Column>
     </Column>
   );
 }
