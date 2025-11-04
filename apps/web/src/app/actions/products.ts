@@ -40,13 +40,13 @@ export async function getRecentProducts(
       if (imageUrl.startsWith("/")) {
         const baseUrl =
           process.env.NEXT_PUBLIC_BASE_URL ||
-          process.env.VERCEL_URL
+            process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
             : "http://localhost:3000";
-        
+
         // Convert to absolute URL for local testing
         imageUrl = `${baseUrl}${imageUrl}`;
-        
+
         // TODO: In production, replace with actual Vercel Blob upload
         // Example: https://your-bucket.public.blob.vercel-storage.com/product-123.jpg
       }
