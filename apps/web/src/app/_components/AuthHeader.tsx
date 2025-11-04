@@ -21,9 +21,7 @@ export default function AuthHeader() {
         </Link>
         <Row alignItems="center" gap="$sm">
           <Link href="/rounds">
-            <Button size="md" tone="outline">
-              Rounds
-            </Button>
+            <Button size="$4">Rounds</Button>
           </Link>
           <SignedOut>
             <SignInButton>

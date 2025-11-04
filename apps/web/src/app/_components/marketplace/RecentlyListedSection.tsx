@@ -219,9 +219,7 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
               {item.condition.replace("_", " ")}
             </Text>
           </Row>
-          <Button size="md" tone="outline">
-            View details
-          </Button>
+          <Button size="$4">View details</Button>
         </Column>
       </Card>
     </Link>
@@ -242,9 +240,7 @@ export function RecentlyListedSection() {
           <Text fontSize="$9" weight="bold">
             Recently listed
           </Text>
-          <Button tone="outline" size="md">
-            View all
-          </Button>
+          <Button size="$4">View all</Button>
         </Row>
 
         {/* Grid Layout */}

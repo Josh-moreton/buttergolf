@@ -1,21 +1,26 @@
 "use client";
 
 import React from "react";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions } from "react-native";
 import {
   Column,
   Row,
   ScrollView,
-  Input,
   Button,
   Text,
   Card,
   Image,
   View,
-  YStack,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Search, Camera } from "@tamagui/lucide-icons";
+import {
+  Search as SearchIcon,
+  Camera,
+  Home,
+  PlusCircle,
+  Mail,
+  User,
+} from "@tamagui/lucide-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -54,7 +59,7 @@ const MOCK_PRODUCTS = [
     title: "Tommy Hilfiger",
     size: "L",
     condition: "Good",
-    price: 45.0,
+    price: 45,
     likes: 12,
   },
   {
@@ -79,13 +84,15 @@ const MOCK_PRODUCTS = [
 
 const CATEGORIES = [
   "All",
-  "Women",
-  "Men",
-  "Designer",
-  "Kids",
-  "Home",
-  "Electronics",
-  "Golf",
+  "Drivers",
+  "Fairway Woods",
+  "Hybrids",
+  "Irons",
+  "Wedges",
+  "Putters",
+  "Bags",
+  "Balls",
+  "Accessories",
 ];
 
 interface LoggedOutHomeScreenProps {
@@ -124,7 +131,7 @@ export function LoggedOutHomeScreen({
             alignItems="center"
             gap="$2"
           >
-            <Search size={20} color="$textMuted" />
+            <SearchIcon size={20} color="$textMuted" />
             <Text color="$textMuted" fontSize={15}>
               Search for items or members
             </Text>
@@ -175,30 +182,13 @@ export function LoggedOutHomeScreen({
         ))}
       </ScrollView>
 
-      {/* Warning Banner (optional - matches Vinted) */}
-      <Column
-        backgroundColor="$warning"
-        paddingVertical="$3"
-        paddingHorizontal="$4"
-        marginHorizontal="$4"
-        marginBottom="$3"
-        borderRadius="$md"
-      >
-        <Row gap="$2" alignItems="flex-start">
-          <Text fontSize={20}>⚠️</Text>
-          <Text fontSize={13} color="$text" flex={1} lineHeight={18}>
-            Sorry, your earnings might stay in pending balance longer than
-            usual. We're working on it!
-          </Text>
-        </Row>
-      </Column>
-
       {/* Product Grid */}
       <ScrollView
         flex={1}
         contentContainerStyle={{
           paddingHorizontal: horizontalPadding,
-          paddingBottom: insets.bottom + 80,
+          paddingTop: 8,
+          paddingBottom: insets.bottom + 72,
         }}
       >
         <Row flexWrap="wrap" gap={gap}>
@@ -219,7 +209,7 @@ export function LoggedOutHomeScreen({
                   source={{ uri: product.image }}
                   width="100%"
                   height="100%"
-                  resizeMode="cover"
+                  objectFit="cover"
                 />
                 {/* Like Button */}
                 <View
@@ -257,28 +247,6 @@ export function LoggedOutHomeScreen({
         </Row>
       </ScrollView>
 
-      {/* Sticky Footer Banner */}
-      <Column
-        position="absolute"
-        bottom={insets.bottom}
-        left={0}
-        right={0}
-        backgroundColor="$white"
-        borderTopWidth={1}
-        borderTopColor="$border"
-        paddingVertical="$3"
-        paddingHorizontal="$4"
-      >
-        <Row alignItems="center" justifyContent="space-between">
-          <Text fontSize={13} color="$textSecondary" flex={1}>
-            Shipping fees will be added at checkout
-          </Text>
-          <Button size="$2" chromeless padding={0} onPress={() => {}}>
-            <Text fontSize={20}>✕</Text>
-          </Button>
-        </Row>
-      </Column>
-
       {/* Bottom Navigation */}
       <Column
         position="absolute"
@@ -289,8 +257,13 @@ export function LoggedOutHomeScreen({
         borderTopWidth={1}
         borderTopColor="$border"
         paddingBottom={insets.bottom}
+        paddingTop="$3"
       >
-        <Row height={60} alignItems="center" justifyContent="space-around">
+        <Row
+          paddingVertical="$2"
+          alignItems="center"
+          justifyContent="space-around"
+        >
           <Button
             chromeless
             flexDirection="column"
@@ -298,7 +271,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Text fontSize={24}>🏠</Text>
+            <Home size={24} color="$vintedTeal" />
             <Text fontSize={11} color="$vintedTeal" fontWeight="600">
               Home
             </Text>
@@ -311,7 +284,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Text fontSize={24}>🔍</Text>
+            <SearchIcon size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
               Search
             </Text>
@@ -324,7 +297,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Text fontSize={24}>➕</Text>
+            <PlusCircle size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
               Sell
             </Text>
@@ -337,7 +310,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Text fontSize={24}>✉️</Text>
+            <Mail size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
               Inbox
             </Text>
@@ -350,7 +323,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={onSignIn}
           >
-            <Text fontSize={24}>👤</Text>
+            <User size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
               Profile
             </Text>

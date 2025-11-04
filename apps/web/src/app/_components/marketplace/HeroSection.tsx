@@ -21,15 +21,13 @@ export function HeroSection() {
               your gear in minutes.
             </Text>
             <Row gap="$sm" flexWrap="wrap">
-              <Button size="lg">Browse listings</Button>
-              <Button size="lg" tone="outline">
-                Sell your clubs
-              </Button>
+              <Button size="$5">Browse listings</Button>
+              <Button size="$5">Sell your clubs</Button>
             </Row>
           </Column>
 
           <Column flex={1} gap="$lg">
-            <Card backgroundColor="$background" padding={"none" as const}>
+            <Card backgroundColor="$background" padding={0}>
               <Image
                 source={{
                   uri: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1200",

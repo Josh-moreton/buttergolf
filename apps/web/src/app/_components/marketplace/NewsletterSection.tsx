@@ -24,7 +24,7 @@ export function NewsletterSection() {
           $md={{ flexDirection: "row" }}
         >
           <Input flex={1} size="lg" placeholder="you@example.com" />
-          <Button size="lg">Subscribe</Button>
+          <Button size="$5">Subscribe</Button>
         </Row>
       </Column>
     </Column>

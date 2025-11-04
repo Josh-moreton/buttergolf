@@ -3,12 +3,15 @@ import { prisma } from '@buttergolf/db';
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // Next.js 16: params is now a Promise
+        const { id } = await params;
+
         const product = await prisma.product.findUnique({
             where: {
-                id: params.id,
+                id,
             },
             include: {
                 images: {
@@ -37,7 +40,7 @@ export async function GET(
         // Increment view count (fire and forget)
         prisma.product
             .update({
-                where: { id: params.id },
+                where: { id },
                 data: { views: { increment: 1 } },
             })
             .catch((err) => console.error('Failed to increment views:', err));

@@ -97,7 +97,7 @@ export default function ProductDetailPage() {
           <Text {...{ color: "$textSecondary" as any }}>
             {error || "This product does not exist or has been removed."}
           </Text>
-          <Button tone="primary" size="lg" onPress={() => router.push("/")}>
+          <Button size="$5" onPress={() => router.push("/")}>
             Back to Home
           </Button>
         </Column>
@@ -232,15 +232,10 @@ export default function ProductDetailPage() {
             </Card>
 
             <Column gap="$md">
-              <Button
-                tone="primary"
-                size="lg"
-                width="100%"
-                disabled={product.isSold}
-              >
+              <Button size="$5" width="100%" disabled={product.isSold}>
                 {product.isSold ? "Sold Out" : "Contact Seller"}
               </Button>
-              <Button tone="outline" size="lg" width="100%">
+              <Button size="$5" width="100%">
                 Add to Wishlist
               </Button>
             </Column>

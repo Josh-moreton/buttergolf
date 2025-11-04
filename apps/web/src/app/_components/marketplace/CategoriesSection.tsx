@@ -29,7 +29,7 @@ export function CategoriesSection() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Row gap="$sm" paddingVertical="$2">
             {CATEGORIES.map((c) => (
-              <Button key={c.key} size="md" tone="outline">
+              <Button key={c.key} size="$4">
                 {c.label}
               </Button>
             ))}
