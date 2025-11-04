@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { Card, Image, Text, Row, Column } from '@buttergolf/ui'
+import { Card, Image, Text, Row, Column } from "@buttergolf/ui";
 
 export interface ProductCardProps {
-  id: string
-  title: string
-  price: number
-  imageUrl: string
-  condition?: string
-  onPress?: () => void
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  condition?: string;
+  onPress?: () => void;
 }
 
 export function ProductCard({
@@ -26,8 +26,8 @@ export function ProductCard({
       backgroundColor="$surface"
       borderColor="$border"
       hoverStyle={{
-        borderColor: '$borderHover',
-        shadowColor: '$shadowColorHover',
+        borderColor: "$borderHover",
+        shadowColor: "$shadowColorHover",
         shadowRadius: 12,
       }}
       pressStyle={{ scale: 0.98 }}
@@ -49,13 +49,8 @@ export function ProductCard({
         />
       </Card.Header>
       <Card.Footer padding="$md" noBorder>
-        <Column gap="$xs" fullWidth>
-          <Text
-            size="md"
-            weight="semibold"
-            numberOfLines={2}
-            ellipse
-          >
+        <Column gap="$xs" width="100%">
+          <Text size="md" weight="semibold" numberOfLines={2} ellipse>
             {title}
           </Text>
           {condition && (
@@ -63,7 +58,7 @@ export function ProductCard({
               {condition}
             </Text>
           )}
-          <Row justify="between" align="center">
+          <Row justifyContent="space-between" alignItems="center">
             <Text size="lg" weight="bold" color="$primary">
               ${price.toFixed(2)}
             </Text>
@@ -71,5 +66,5 @@ export function ProductCard({
         </Column>
       </Card.Footer>
     </Card>
-  )
+  );
 }

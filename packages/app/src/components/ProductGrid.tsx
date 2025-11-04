@@ -1,30 +1,28 @@
-'use client'
+"use client";
 
-import { Row, Column, Heading } from '@buttergolf/ui'
-import { ProductCard, ProductCardProps } from './ProductCard'
+import { Row, Column, Heading } from "@buttergolf/ui";
+import { ProductCard, ProductCardProps } from "./ProductCard";
 
 interface ProductGridProps {
-  title?: string
-  products: ProductCardProps[]
+  title?: string;
+  products: ProductCardProps[];
 }
 
 export function ProductGrid({ title, products }: ProductGridProps) {
   return (
-    <Column gap="$lg" fullWidth padding="$4" maxWidth={1280} alignSelf="center">
-      {title && (
-        <Heading level={2}>
-          {title}
-        </Heading>
-      )}
-      <Row
-        wrap
-        gap="$lg"
-        justify="start"
-      >
+    <Column
+      gap="$lg"
+      width="100%"
+      padding="$4"
+      maxWidth={1280}
+      alignSelf="center"
+    >
+      {title && <Heading level={2}>{title}</Heading>}
+      <Row flexWrap="wrap" gap="$lg" justifyContent="flex-start">
         {products.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
       </Row>
     </Column>
-  )
+  );
 }
