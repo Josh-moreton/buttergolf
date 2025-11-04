@@ -47,6 +47,146 @@ const MOCK_LISTINGS: Listing[] = [
     condition: "EXCELLENT",
     slug: "ping-hoofer-stand-bag-black",
   },
+  {
+    id: "5",
+    title: "Callaway Rogue ST Driver",
+    price: 299,
+    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1000",
+    condition: "GOOD",
+    slug: "callaway-rogue-st-driver",
+  },
+  {
+    id: "6",
+    title: "Mizuno JPX 921 Irons",
+    price: 549,
+    image:
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
+    condition: "EXCELLENT",
+    slug: "mizuno-jpx-921-irons",
+  },
+  {
+    id: "7",
+    title: "Odyssey White Hot Putter",
+    price: 199,
+    image:
+      "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
+    condition: "LIKE_NEW",
+    slug: "odyssey-white-hot-putter",
+  },
+  {
+    id: "8",
+    title: "TaylorMade Cart Bag",
+    price: 179,
+    image:
+      "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
+    condition: "GOOD",
+    slug: "taylormade-cart-bag",
+  },
+  {
+    id: "9",
+    title: "Cobra King F9 Driver",
+    price: 249,
+    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1000",
+    condition: "EXCELLENT",
+    slug: "cobra-king-f9-driver",
+  },
+  {
+    id: "10",
+    title: "Ping G425 Irons 4-PW",
+    price: 629,
+    image:
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
+    condition: "EXCELLENT",
+    slug: "ping-g425-irons-4-pw",
+  },
+  {
+    id: "11",
+    title: "TaylorMade Spider Putter",
+    price: 229,
+    image:
+      "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
+    condition: "GOOD",
+    slug: "taylormade-spider-putter",
+  },
+  {
+    id: "12",
+    title: "Titleist Players 4 Stand Bag",
+    price: 189,
+    image:
+      "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
+    condition: "LIKE_NEW",
+    slug: "titleist-players-4-stand-bag",
+  },
+  {
+    id: "13",
+    title: "Ping G425 Max Driver",
+    price: 329,
+    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1000",
+    condition: "EXCELLENT",
+    slug: "ping-g425-max-driver",
+  },
+  {
+    id: "14",
+    title: "Titleist AP3 Irons 5-PW",
+    price: 579,
+    image:
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
+    condition: "GOOD",
+    slug: "titleist-ap3-irons-5-pw",
+  },
+  {
+    id: "15",
+    title: "Cleveland RTX ZipCore Wedge",
+    price: 119,
+    image:
+      "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
+    condition: "EXCELLENT",
+    slug: "cleveland-rtx-zipcore-wedge",
+  },
+  {
+    id: "16",
+    title: "Sun Mountain Stand Bag",
+    price: 139,
+    image:
+      "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
+    condition: "GOOD",
+    slug: "sun-mountain-stand-bag",
+  },
+  {
+    id: "17",
+    title: "Callaway Epic Speed Driver",
+    price: 319,
+    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1000",
+    condition: "LIKE_NEW",
+    slug: "callaway-epic-speed-driver",
+  },
+  {
+    id: "18",
+    title: "Srixon ZX5 Irons 5-PW",
+    price: 649,
+    image:
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1000",
+    condition: "EXCELLENT",
+    slug: "srixon-zx5-irons-5-pw",
+  },
+  {
+    id: "19",
+    title: "Ping Sigma 2 Putter",
+    price: 189,
+    image:
+      "https://images.unsplash.com/photo-1599054735690-5c5e2b83b50a?w=1000",
+    condition: "GOOD",
+    slug: "ping-sigma-2-putter",
+  },
+  {
+    id: "20",
+    title: "Callaway Org 14 Cart Bag",
+    price: 199,
+    image:
+      "https://images.unsplash.com/photo-1519947486511-46149fa0a254?w=1000",
+    condition: "EXCELLENT",
+    slug: "callaway-org-14-cart-bag",
+  },
 ];
 
 import Link from "next/link";
@@ -90,34 +230,36 @@ function ListingCard({ item }: Readonly<{ item: Listing }>) {
 
 export function RecentlyListedSection() {
   return (
-    <Column paddingVertical="$6">
+    <Column paddingVertical="$8" backgroundColor="$background">
       <Column
-        maxWidth={1200}
+        maxWidth={1280}
         marginHorizontal="auto"
-        paddingHorizontal="$4"
-        gap="$lg"
+        paddingHorizontal="$6"
+        width="100%"
+        gap="$6"
       >
         <Row alignItems="center" justifyContent="space-between">
-          <Text fontSize="$8" weight="bold">
+          <Text fontSize="$9" weight="bold">
             Recently listed
           </Text>
           <Button tone="outline" size="md">
             View all
           </Button>
         </Row>
-        <Row gap="$$6" flexWrap="wrap">
+
+        {/* Grid Layout */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "24px",
+            width: "100%",
+          }}
+        >
           {MOCK_LISTINGS.map((l) => (
-            <Column
-              key={l.id}
-              width="100%"
-              $sm={{ width: "100%" }}
-              $md={{ width: "48%" }}
-              $lg={{ width: "23%" }}
-            >
-              <ListingCard item={l} />
-            </Column>
+            <ListingCard key={l.id} item={l} />
           ))}
-        </Row>
+        </div>
       </Column>
     </Column>
   );

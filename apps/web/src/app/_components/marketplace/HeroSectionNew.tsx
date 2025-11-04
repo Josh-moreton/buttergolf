@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Button, Text, Row, Column } from "@buttergolf/ui";
+import { motion } from "framer-motion";
+import { Button, Row, Column } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
+import { AnimatedWelcomeLogo } from "./AnimatedWelcomeLogo";
 
 export function HeroSectionNew() {
+  // Calculate when the logo animation completes
+  // 20 paths * 0.08 delay + 1.2 duration = ~2.8 seconds
+  const logoAnimationDuration = 20 * 0.08 + 1.2;
   return (
     <Row width="100%" minHeight="100vh" position="relative" overflow="hidden">
       {/* Background Image - Full Width */}
@@ -26,84 +31,67 @@ export function HeroSectionNew() {
       {/* Content Container */}
       <Column
         flex={1}
-        justifyContent="center"
-        paddingHorizontal="$6"
-        paddingVertical="$12"
-        $md={{ paddingHorizontal: "$10" }}
-        $lg={{ paddingHorizontal: "$16", paddingLeft: "$20" }}
+        justifyContent="flex-start"
+        paddingHorizontal="$8"
+        $md={{ paddingHorizontal: "$12" }}
+        $lg={{
+          paddingHorizontal: "$20",
+          paddingLeft: 80,
+        }}
         gap="$6"
         zIndex={2}
         position="relative"
+        style={{ paddingTop: 200 }}
       >
-        <Column gap="$4" maxWidth={600}>
-          {/* Main Heading - Bold Serif Font */}
-          <h1
-            style={{
-              fontSize: "clamp(48px, 7vw, 92px)",
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              margin: 0,
-              color: "#FFF8E7",
-              letterSpacing: "-0.02em",
+        <Column gap="$8" maxWidth={600} style={{ marginTop: 60 }}>
+          {/* Animated Welcome Logo */}
+          <div style={{ marginBottom: "0.5rem" }}>
+            <AnimatedWelcomeLogo />
+          </div>
+          {/* Subheading removed as requested */}
+
+          {/* CTA Button - Fades in after subtitle */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: logoAnimationDuration + 0.3,
+              ease: "easeOut",
             }}
           >
-            Super
-            <br />
-            Delicious
-            <br />
-            Golf Clubs
-          </h1>
-
-          {/* Subheading */}
-          <Text
-            fontSize={18}
-            $md={{ fontSize: 20 }}
-            $lg={{ fontSize: 22 }}
-            lineHeight={1.6}
-            weight="normal"
-            {...{
-              style: {
-                color: "rgba(255, 248, 231, 0.95)",
-                maxWidth: "500px",
-              },
-            }}
-          >
-            that are also pre-loved, sustainable & community-driven.
-          </Text>
-
-          {/* CTA Button */}
-          <Row marginTop="$4">
-            <Link href="/listings" style={{ textDecoration: "none" }}>
-              <Button
-                backgroundColor="#2C5F4F"
-                color="#FFF8E7"
-                paddingHorizontal="$10"
-                paddingVertical="$5"
-                borderRadius="$md"
-                fontSize={16}
-                fontWeight="700"
-                hoverStyle={{
-                  backgroundColor: "#234A3D",
-                  scale: 1.03,
-                }}
-                pressStyle={{
-                  backgroundColor: "#1A3A2E",
-                  scale: 0.98,
-                }}
-                {...{
-                  style: {
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    textTransform: "uppercase",
-                    letterSpacing: "1.5px",
-                  },
-                }}
-              >
-                Shop Now
-              </Button>
-            </Link>
-          </Row>
+            <Row marginTop="$6">
+              <Link href="/listings" style={{ textDecoration: "none" }}>
+                <Button
+                  backgroundColor="#FFF8E7"
+                  color="#2C5F4F"
+                  paddingHorizontal="$10"
+                  paddingVertical="$5"
+                  borderRadius="$md"
+                  fontSize={16}
+                  fontWeight="700"
+                  hoverStyle={{
+                    backgroundColor: "#FFF0D1",
+                    scale: 1.03,
+                  }}
+                  pressStyle={{
+                    backgroundColor: "#FFE8BB",
+                    scale: 0.98,
+                  }}
+                  {...{
+                    style: {
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      textTransform: "uppercase",
+                      letterSpacing: "1.5px",
+                    },
+                  }}
+                >
+                  Shop Now
+                </Button>
+              </Link>
+            </Row>
+          </motion.div>
         </Column>
       </Column>
     </Row>
