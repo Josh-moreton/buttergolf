@@ -5,7 +5,7 @@
  */
 
 :root {
-  /* Light theme - Golf Marketplace */
+  /* Light theme - Golf Marketplace (FORCED - dark theme not ready yet) */
   --background: #fbfbf9;
   --foreground: #042918;
   --primary: #13a063;
@@ -13,19 +13,6 @@
   --border: #e5e7e4;
   --muted: #084a2b;
   --card: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark theme - Forest Dark */
-    --background: #0a1410;
-    --foreground: #e5f0e0;
-    --primary: #13a063;
-    --primary-foreground: #0a1410;
-    --border: #2d5442;
-    --muted: #4dd99d;
-    --card: #1a3428;
-  }
 }
 
 body {

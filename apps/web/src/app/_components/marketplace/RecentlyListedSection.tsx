@@ -1,22 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import Link from "next/link";
+import { ProductDetailModal } from "./ProductDetailModal";
 
 interface RecentlyListedSectionClientProps {
-  products: ProductCardData[];
+  readonly products: ProductCardData[];
 }
 
-function ListingCard({ product }: { product: ProductCardData }) {
+function ListingCard({ product }: { readonly product: ProductCardData }) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+    <>
       <Card
         padding={0}
         borderRadius="$md"
         overflow="hidden"
         cursor="pointer"
         hoverStyle={{ scale: 1.01 }}
+        onPress={() => setModalOpen(true)}
       >
         <Image
           source={{ uri: product.imageUrl }}
@@ -36,10 +40,18 @@ function ListingCard({ product }: { product: ProductCardData }) {
               {product.condition?.replace("_", " ") || ""}
             </Text>
           </Row>
-          <Button size="$4">View details</Button>
+          <Button size="$4" onPress={() => setModalOpen(true)}>
+            View details
+          </Button>
         </Column>
       </Card>
-    </Link>
+
+      <ProductDetailModal
+        productId={product.id}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+      />
+    </>
   );
 }
 
