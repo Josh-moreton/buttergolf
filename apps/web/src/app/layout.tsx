@@ -4,10 +4,9 @@ import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 
 // Load Tamagui CSS in production (compiled output)
-// Note: This is conditionally loaded but the import is always evaluated
-// The file will only exist in production builds
 if (process.env.NODE_ENV === "production") {
-  import("../../public/tamagui.css");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require("../../public/tamagui.css");
 }
 import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";

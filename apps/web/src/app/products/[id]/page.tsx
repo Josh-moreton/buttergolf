@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
                 height={500}
                 objectFit="cover"
                 borderRadius="$lg"
-                alt={product.name}
+                alt={product.title}
               />
             </Card>
 
@@ -173,7 +173,7 @@ export default function ProductDetailPage() {
                       height={80}
                       objectFit="cover"
                       borderRadius="$md"
-                      alt={`${product.name} - Image ${index + 1}`}
+                      alt={`${product.title} - Image ${index + 1}`}
                     />
                   </Card>
                 ))}
