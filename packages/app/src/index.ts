@@ -6,3 +6,6 @@ export * from './features/rounds'
 export * from './navigation'
 
 export * from './provider'
+
+export * from './types/product'
+export * from './components/ProductCard'

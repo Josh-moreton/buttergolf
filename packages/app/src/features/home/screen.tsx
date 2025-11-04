@@ -5,15 +5,17 @@ import { HeroSection } from '../../components/HeroSection'
 import { CategoriesSection } from '../../components/CategoriesSection'
 import { ProductGrid } from '../../components/ProductGrid'
 import { ProductCardProps } from '../../components/ProductCard'
+import { ProductCardData } from '../../types/product'
 
 // Sample products data - will be replaced with real data later
-const sampleProducts: ProductCardProps[] = [
+const sampleProductsData: ProductCardData[] = [
   {
     id: '1',
     title: 'TaylorMade Stealth Driver',
     price: 299.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
     condition: 'Excellent',
+    category: 'Drivers',
   },
   {
     id: '2',
@@ -21,6 +23,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 799.99,
     imageUrl: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=400&h=400&fit=crop',
     condition: 'Like New',
+    category: 'Irons',
   },
   {
     id: '3',
@@ -28,6 +31,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 39.99,
     imageUrl: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=400&fit=crop',
     condition: 'New',
+    category: 'Balls',
   },
   {
     id: '4',
@@ -35,6 +39,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 249.99,
     imageUrl: 'https://images.unsplash.com/photo-1530028828-25e8270e98f3?w=400&h=400&fit=crop',
     condition: 'Good',
+    category: 'Putters',
   },
   {
     id: '5',
@@ -42,6 +47,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 179.99,
     imageUrl: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=400&fit=crop',
     condition: 'Excellent',
+    category: 'Hybrids',
   },
   {
     id: '6',
@@ -49,6 +55,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 149.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
     condition: 'Good',
+    category: 'Bags',
   },
   {
     id: '7',
@@ -56,6 +63,7 @@ const sampleProducts: ProductCardProps[] = [
     price: 129.99,
     imageUrl: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=400&h=400&fit=crop',
     condition: 'Like New',
+    category: 'Wedges',
   },
   {
     id: '8',
@@ -63,8 +71,11 @@ const sampleProducts: ProductCardProps[] = [
     price: 29.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
     condition: 'Excellent',
+    category: 'Apparel',
   },
 ]
+
+const sampleProducts: ProductCardProps[] = sampleProductsData.map(product => ({ product }))
 
 export function HomeScreen() {
   return (

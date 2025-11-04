@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import {
   Column,
@@ -21,66 +21,9 @@ import {
   Mail,
   User,
 } from "@tamagui/lucide-icons";
+import type { ProductCardData } from "../../types/product";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-
-// Mock data for product grid
-const MOCK_PRODUCTS = [
-  {
-    id: "1",
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400",
-    title: "Jellycat",
-    size: "M",
-    condition: "Very good",
-    price: 70.5,
-    likes: 11,
-  },
-  {
-    id: "2",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400",
-    title: "Brandy Melville",
-    size: "S / 8",
-    condition: "Very good",
-    price: 8.58,
-    likes: 8,
-  },
-  {
-    id: "3",
-    image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=400",
-    title: "TaylorMade Driver",
-    size: "10.5°",
-    condition: "Excellent",
-    price: 299.99,
-    likes: 15,
-  },
-  {
-    id: "4",
-    image: "https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=400",
-    title: "Tommy Hilfiger",
-    size: "L",
-    condition: "Good",
-    price: 45,
-    likes: 12,
-  },
-  {
-    id: "5",
-    image: "https://images.unsplash.com/photo-1530028828-25e8270e98f3?w=400",
-    title: "Scotty Cameron",
-    size: "34 inch",
-    condition: "Like new",
-    price: 249.99,
-    likes: 23,
-  },
-  {
-    id: "6",
-    image: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400",
-    title: "Titleist Pro V1",
-    size: "Dozen",
-    condition: "New",
-    price: 39.99,
-    likes: 9,
-  },
-];
 
 const CATEGORIES = [
   "All",
@@ -96,19 +39,39 @@ const CATEGORIES = [
 ];
 
 interface LoggedOutHomeScreenProps {
+  products?: ProductCardData[];
+  onFetchProducts?: () => Promise<ProductCardData[]>;
+  onProductPress?: (id: string) => void;
   onSignIn?: () => void;
 }
 
 export function LoggedOutHomeScreen({
+  products: initialProducts = [],
+  onFetchProducts,
+  onProductPress,
   onSignIn,
 }: Readonly<LoggedOutHomeScreenProps>) {
   const insets = useSafeAreaInsets();
   const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
+  const [loading, setLoading] = useState(false);
 
   // Calculate card dimensions (2 columns with gap)
   const gap = 8;
   const horizontalPadding = 16;
   const cardWidth = (SCREEN_WIDTH - horizontalPadding * 2 - gap) / 2;
+
+  useEffect(() => {
+    if (onFetchProducts && products.length === 0 && !loading) {
+      setLoading(true);
+      onFetchProducts()
+        .then(setProducts)
+        .catch((error) => {
+          console.error("Failed to fetch products:", error);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [onFetchProducts, products.length, loading]);
 
   return (
     <Column flex={1} backgroundColor="$background">
@@ -131,8 +94,8 @@ export function LoggedOutHomeScreen({
             alignItems="center"
             gap="$2"
           >
-            <SearchIcon size={20} color="$textMuted" />
-            <Text color="$textMuted" fontSize={15}>
+            <SearchIcon size={20} {...{ color: "$textMuted" as any }} />
+            <Text {...{ color: "$textMuted" as any }} fontSize={15}>
               Search for items or members
             </Text>
           </Row>
@@ -142,7 +105,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => console.log("Camera pressed")}
           >
-            <Camera size={24} color="$vintedTeal" />
+            <Camera size={24} {...{ color: "$primary" as any }} />
           </Button>
         </Row>
       </Column>
@@ -165,11 +128,11 @@ export function LoggedOutHomeScreen({
             paddingVertical="$2"
             borderRadius="$full"
             backgroundColor={
-              selectedCategory === category ? "$vintedTeal" : "$white"
+              selectedCategory === category ? "$primary" : "$white"
             }
             borderWidth={1}
             borderColor={
-              selectedCategory === category ? "$vintedTeal" : "$border"
+              selectedCategory === category ? "$primary" : "$border"
             }
             color={selectedCategory === category ? "$white" : "$text"}
             onPress={() => setSelectedCategory(category)}
@@ -190,60 +153,65 @@ export function LoggedOutHomeScreen({
           paddingBottom: insets.bottom + 72,
         }}
       >
-        <Row flexWrap="wrap" gap={gap} width="100%">
-          {MOCK_PRODUCTS.map((product) => (
-            <Card
-              key={product.id}
-              width={cardWidth}
-              padding={0}
-              borderRadius="$md"
-              overflow="hidden"
-              backgroundColor="$white"
-              pressStyle={{ scale: 0.98 }}
-              animation="quick"
-            >
-              {/* Product Image */}
-              <View width="100%" height={cardWidth * 1.3} position="relative">
-                <Image
-                  source={{ uri: product.image }}
-                  width="100%"
-                  height="100%"
-                  objectFit="cover"
-                />
-                {/* Like Button */}
-                <View
-                  position="absolute"
-                  bottom={8}
-                  right={8}
-                  backgroundColor="$white"
-                  borderRadius="$full"
-                  paddingHorizontal={10}
-                  paddingVertical={4}
-                >
-                  <Row alignItems="center" gap={4}>
-                    <Text fontSize={14}>❤️</Text>
-                    <Text fontSize={13} fontWeight="500">
-                      {product.likes}
-                    </Text>
-                  </Row>
+        {loading && products.length === 0 ? (
+          <Column padding="$8" alignItems="center">
+            <Text {...{ color: "$textSecondary" as any }}>
+              Loading products...
+            </Text>
+          </Column>
+        ) : products.length === 0 ? (
+          <Column padding="$8" alignItems="center">
+            <Text {...{ color: "$textSecondary" as any }}>
+              No products available yet
+            </Text>
+          </Column>
+        ) : (
+          <Row flexWrap="wrap" gap={gap} width="100%">
+            {products.map((product) => (
+              <Card
+                key={product.id}
+                width={cardWidth}
+                {...{ padding: "none" as any }}
+                borderRadius="$md"
+                overflow="hidden"
+                backgroundColor="$white"
+                pressStyle={{ scale: 0.98 }}
+                animation="quick"
+                onPress={
+                  onProductPress ? () => onProductPress(product.id) : undefined
+                }
+              >
+                {/* Product Image */}
+                <View width="100%" height={cardWidth * 1.3} position="relative">
+                  <Image
+                    source={{ uri: product.imageUrl }}
+                    width="100%"
+                    height="100%"
+                    objectFit="cover"
+                  />
                 </View>
-              </View>
 
-              {/* Product Info */}
-              <Column padding="$2" gap="$1">
-                <Text fontSize={14} fontWeight="500" numberOfLines={1}>
-                  {product.title}
-                </Text>
-                <Text fontSize={12} color="$textSecondary">
-                  {product.size} · {product.condition}
-                </Text>
-                <Text fontSize={16} fontWeight="600" color="$vintedTeal">
-                  £{product.price.toFixed(2)}
-                </Text>
-              </Column>
-            </Card>
-          ))}
-        </Row>
+                {/* Product Info */}
+                <Column padding="$2" gap="$1">
+                  <Text fontSize={14} fontWeight="500" numberOfLines={1}>
+                    {product.title}
+                  </Text>
+                  <Text fontSize={12} {...{ color: "$textSecondary" as any }}>
+                    {product.category}
+                    {product.condition && ` · ${product.condition.replace("_", " ")}`}
+                  </Text>
+                  <Text
+                    fontSize={16}
+                    fontWeight="600"
+                    {...{ color: "$primary" as any }}
+                  >
+                    £{product.price.toFixed(2)}
+                  </Text>
+                </Column>
+              </Card>
+            ))}
+          </Row>
+        )}
       </ScrollView>
 
       {/* Bottom Navigation */}
@@ -270,8 +238,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Home size={24} color="$vintedTeal" />
-            <Text fontSize={11} color="$vintedTeal" fontWeight="600">
+            <Home size={24} {...{ color: "$primary" as any }} />
+            <Text fontSize={11} {...{ color: "$primary" as any }} fontWeight="600">
               Home
             </Text>
           </Button>
@@ -283,8 +251,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <SearchIcon size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
+            <SearchIcon size={24} {...{ color: "$textSecondary" as any }} />
+            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
               Search
             </Text>
           </Button>
@@ -296,8 +264,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <PlusCircle size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
+            <PlusCircle size={24} {...{ color: "$textSecondary" as any }} />
+            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
               Sell
             </Text>
           </Button>
@@ -309,8 +277,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Mail size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
+            <Mail size={24} {...{ color: "$textSecondary" as any }} />
+            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
               Inbox
             </Text>
           </Button>
@@ -322,8 +290,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={onSignIn}
           >
-            <User size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
+            <User size={24} {...{ color: "$textSecondary" as any }} />
+            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
               Profile
             </Text>
           </Button>
@@ -332,3 +300,4 @@ export function LoggedOutHomeScreen({
     </Column>
   );
 }
+
