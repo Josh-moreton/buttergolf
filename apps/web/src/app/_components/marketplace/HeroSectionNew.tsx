@@ -86,19 +86,19 @@ export function HeroSectionNew() {
             <Row marginTop="$6">
               <Link href="/listings" style={{ textDecoration: "none" }}>
                 <Button
-                  backgroundColor="#2C5F4F"
-                  color="#FFF8E7"
+                  backgroundColor="#FFF8E7"
+                  color="#2C5F4F"
                   paddingHorizontal="$10"
                   paddingVertical="$5"
                   borderRadius="$md"
                   fontSize={16}
                   fontWeight="700"
                   hoverStyle={{
-                    backgroundColor: "#234A3D",
+                    backgroundColor: "#FFF0D1",
                     scale: 1.03,
                   }}
                   pressStyle={{
-                    backgroundColor: "#1A3A2E",
+                    backgroundColor: "#FFE8BB",
                     scale: 0.98,
                   }}
                   {...{
