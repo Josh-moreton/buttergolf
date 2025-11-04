@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, Image as RNImage } from "react-native";
 import {
   Column,
   Row,
@@ -9,7 +9,6 @@ import {
   Button,
   Text,
   Card,
-  Image,
   View,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -65,7 +64,16 @@ export function LoggedOutHomeScreen({
     if (onFetchProducts && products.length === 0 && !loading) {
       setLoading(true);
       onFetchProducts()
-        .then(setProducts)
+        .then((fetchedProducts) => {
+          console.log(`Fetched ${fetchedProducts.length} products`);
+          if (fetchedProducts.length > 0) {
+            console.log(
+              "First product image URL:",
+              fetchedProducts[0].imageUrl
+            );
+          }
+          setProducts(fetchedProducts);
+        })
         .catch((error) => {
           console.error("Failed to fetch products:", error);
         })
@@ -131,9 +139,7 @@ export function LoggedOutHomeScreen({
               selectedCategory === category ? "$primary" : "$white"
             }
             borderWidth={1}
-            borderColor={
-              selectedCategory === category ? "$primary" : "$border"
-            }
+            borderColor={selectedCategory === category ? "$primary" : "$border"}
             color={selectedCategory === category ? "$white" : "$text"}
             onPress={() => setSelectedCategory(category)}
             pressStyle={{
@@ -183,11 +189,13 @@ export function LoggedOutHomeScreen({
               >
                 {/* Product Image */}
                 <View width="100%" height={cardWidth * 1.3} position="relative">
-                  <Image
+                  <RNImage
                     source={{ uri: product.imageUrl }}
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    resizeMode="cover"
                   />
                 </View>
 
@@ -198,7 +206,8 @@ export function LoggedOutHomeScreen({
                   </Text>
                   <Text fontSize={12} {...{ color: "$textSecondary" as any }}>
                     {product.category}
-                    {product.condition && ` · ${product.condition.replace("_", " ")}`}
+                    {product.condition &&
+                      ` · ${product.condition.replace("_", " ")}`}
                   </Text>
                   <Text
                     fontSize={16}
@@ -239,7 +248,11 @@ export function LoggedOutHomeScreen({
             onPress={() => {}}
           >
             <Home size={24} {...{ color: "$primary" as any }} />
-            <Text fontSize={11} {...{ color: "$primary" as any }} fontWeight="600">
+            <Text
+              fontSize={11}
+              {...{ color: "$primary" as any }}
+              fontWeight="600"
+            >
               Home
             </Text>
           </Button>
@@ -300,4 +313,3 @@ export function LoggedOutHomeScreen({
     </Column>
   );
 }
-
