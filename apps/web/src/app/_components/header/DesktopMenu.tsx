@@ -15,7 +15,7 @@ interface DesktopMenuProps {
 
 export function DesktopMenu({
   menuData,
-  stickyMenu,
+  // stickyMenu is intentionally unused - kept for future implementation
 }: Readonly<DesktopMenuProps>) {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const pathname = usePathname();

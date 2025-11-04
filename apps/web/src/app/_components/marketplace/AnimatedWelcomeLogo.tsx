@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "tamagui";
 
 /**
@@ -10,12 +10,8 @@ import { useTheme } from "tamagui";
  */
 export function AnimatedWelcomeLogo() {
   const theme = useTheme();
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Trigger animation on mount
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  // Set to true immediately since we always want to animate on mount
+  const [isVisible] = useState(true);
 
   // Use cream color from theme for hero text
   const strokeColor = theme.cream?.val || "#FFF8E7";

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button, Row, Column } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
@@ -13,19 +14,16 @@ export function HeroSectionNew() {
   return (
     <Row width="100%" minHeight="100vh" position="relative" overflow="hidden">
       {/* Background Image - Full Width */}
-      <img
+      <Image
         src={imagePaths.hero.golfCourse}
         alt="Golf course background"
+        fill
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
           objectFit: "cover",
           objectPosition: "center",
           zIndex: 0,
         }}
+        priority
       />
 
       {/* Content Container */}

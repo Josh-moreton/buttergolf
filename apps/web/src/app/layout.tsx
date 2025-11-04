@@ -4,15 +4,17 @@ import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 
 // Load Tamagui CSS in production (compiled output)
+// Note: This is conditionally loaded but the import is always evaluated
+// The file will only exist in production builds
 if (process.env.NODE_ENV === "production") {
-  require("../../public/tamagui.css");
+  import("../../public/tamagui.css");
 }
 import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 
 // Using system fonts for better performance and reliability
-const fontVariables = "--font-geist-sans --font-geist-mono";
+// const fontVariables = "--font-geist-sans --font-geist-mono"; // Currently unused
 
 export const viewport: Viewport = {
   width: "device-width",

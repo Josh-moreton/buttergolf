@@ -14,6 +14,14 @@ const eslintConfig = [
     ],
   },
   {
+    rules: {
+      // Downgrade to warning for Tamagui token workarounds
+      // This is a temporary fix for the pattern: {...{ color: "$primary" as any }}
+      // which is used to work around Tamagui's strict typing for semantic tokens
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
+  {
     files: ["*.config.js", "*.config.mjs"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",

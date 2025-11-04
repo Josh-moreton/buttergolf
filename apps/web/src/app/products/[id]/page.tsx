@@ -148,6 +148,7 @@ export default function ProductDetailPage() {
                 height={500}
                 objectFit="cover"
                 borderRadius="$lg"
+                alt={product.name}
               />
             </Card>
 
@@ -172,6 +173,7 @@ export default function ProductDetailPage() {
                       height={80}
                       objectFit="cover"
                       borderRadius="$md"
+                      alt={`${product.name} - Image ${index + 1}`}
                     />
                   </Card>
                 ))}
@@ -248,6 +250,7 @@ export default function ProductDetailPage() {
                     width={48}
                     height={48}
                     borderRadius="$full"
+                    alt={product.user.name || "Seller profile"}
                   />
                 )}
                 <Column gap="$xs">

@@ -201,6 +201,7 @@ export function ImageUpload({
                   width={140}
                   height={140}
                   objectFit="cover"
+                  alt={`Uploaded image ${index + 1}`}
                 />
                 {index === 0 && (
                   <Column

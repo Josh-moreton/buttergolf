@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Dimensions, Image as RNImage } from "react-native";
 import {
   Column,
@@ -54,6 +54,7 @@ export function LoggedOutHomeScreen({
   const [selectedCategory, setSelectedCategory] = React.useState("All");
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [loading, setLoading] = useState(false);
+  const hasFetched = useRef(false);
 
   // Calculate card dimensions (2 columns with gap)
   const gap = 8;
@@ -61,7 +62,8 @@ export function LoggedOutHomeScreen({
   const cardWidth = (SCREEN_WIDTH - horizontalPadding * 2 - gap) / 2;
 
   useEffect(() => {
-    if (onFetchProducts && products.length === 0 && !loading) {
+    if (onFetchProducts && products.length === 0 && !hasFetched.current) {
+      hasFetched.current = true;
       setLoading(true);
       onFetchProducts()
         .then((fetchedProducts) => {
@@ -79,7 +81,7 @@ export function LoggedOutHomeScreen({
         })
         .finally(() => setLoading(false));
     }
-  }, [onFetchProducts, products.length, loading]);
+  }, [onFetchProducts, products.length]);
 
   return (
     <Column flex={1} backgroundColor="$background">

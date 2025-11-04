@@ -36,6 +36,7 @@ export function HeroSection() {
                 height={240}
                 objectFit="cover"
                 borderRadius="$4"
+                alt="Golf clubs on display"
               />
             </Card>
             <Row

@@ -19,7 +19,7 @@ export function NextTamaguiProvider({
   const [theme, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
-    // @ts-ignore
+    // @ts-expect-error - StyleSheet.getSheet() is not typed in the current version
     const rnwStyle = StyleSheet.getSheet();
 
     return (
