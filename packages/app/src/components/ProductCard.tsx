@@ -45,7 +45,7 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
             {product.title}
           </Text>
           <Row gap="$sm" alignItems="center" justifyContent="space-between">
-            <Text size="sm" {...{ color: "secondary" as any }}>
+            <Text size="sm" color="$textSecondary">
               {product.category}
             </Text>
             {product.condition && (
