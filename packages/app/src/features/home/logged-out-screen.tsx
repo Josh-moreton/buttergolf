@@ -171,7 +171,7 @@ export function LoggedOutHomeScreen({
               <Card
                 key={product.id}
                 width={cardWidth}
-                {...{ padding: "none" as any }}
+                padding={0}
                 borderRadius="$md"
                 overflow="hidden"
                 backgroundColor="$white"

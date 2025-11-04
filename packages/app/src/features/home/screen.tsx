@@ -14,7 +14,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'TaylorMade Stealth Driver',
     price: 299.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
-    condition: 'Excellent',
+    condition: 'EXCELLENT',
     category: 'Drivers',
   },
   {
@@ -22,7 +22,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Callaway Apex Irons Set',
     price: 799.99,
     imageUrl: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=400&h=400&fit=crop',
-    condition: 'Like New',
+    condition: 'LIKE_NEW',
     category: 'Irons',
   },
   {
@@ -30,7 +30,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Titleist Pro V1 Golf Balls (Dozen)',
     price: 39.99,
     imageUrl: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=400&fit=crop',
-    condition: 'New',
+    condition: 'NEW',
     category: 'Balls',
   },
   {
@@ -38,7 +38,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Scotty Cameron Putter',
     price: 249.99,
     imageUrl: 'https://images.unsplash.com/photo-1530028828-25e8270e98f3?w=400&h=400&fit=crop',
-    condition: 'Good',
+    condition: 'GOOD',
     category: 'Putters',
   },
   {
@@ -46,7 +46,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Ping G425 Hybrid',
     price: 179.99,
     imageUrl: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=400&fit=crop',
-    condition: 'Excellent',
+    condition: 'EXCELLENT',
     category: 'Hybrids',
   },
   {
@@ -54,7 +54,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'TaylorMade Golf Bag',
     price: 149.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
-    condition: 'Good',
+    condition: 'GOOD',
     category: 'Bags',
   },
   {
@@ -62,7 +62,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Cobra Wedge Set',
     price: 129.99,
     imageUrl: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=400&h=400&fit=crop',
-    condition: 'Like New',
+    condition: 'LIKE_NEW',
     category: 'Wedges',
   },
   {
@@ -70,7 +70,7 @@ const sampleProductsData: ProductCardData[] = [
     title: 'Nike Golf Polo Shirt',
     price: 29.99,
     imageUrl: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=400&fit=crop',
-    condition: 'Excellent',
+    condition: 'EXCELLENT',
     category: 'Apparel',
   },
 ]

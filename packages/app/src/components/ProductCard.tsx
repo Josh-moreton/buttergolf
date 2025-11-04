@@ -12,7 +12,7 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
   return (
     <Card
       variant="elevated"
-      {...{ padding: "none" as any }}
+      padding={0}
       animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
@@ -28,7 +28,7 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
       maxWidth={280}
       interactive
     >
-      <Card.Header {...{ padding: "none" as any }} noBorder>
+      <Card.Header padding={0} noBorder>
         <Image
           source={{ uri: product.imageUrl }}
           width="100%"
@@ -39,7 +39,7 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
           backgroundColor="$background"
         />
       </Card.Header>
-      <Card.Body {...{ padding: "md" as any }}>
+      <Card.Body padding="$md">
         <Column gap="$xs" width="100%">
           <Text size="md" weight="semibold" numberOfLines={2}>
             {product.title}
@@ -54,7 +54,7 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
               </Badge>
             )}
           </Row>
-          <Text size="lg" weight="bold" {...{ color: "$primary" as any }}>
+          <Text size="lg" weight="bold" color="$primary">
             £{product.price.toFixed(2)}
           </Text>
         </Column>

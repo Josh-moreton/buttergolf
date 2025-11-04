@@ -15,12 +15,20 @@ export interface ProductCategory {
   slug: string;
 }
 
+export type ProductCondition = 
+  | "NEW"
+  | "LIKE_NEW"
+  | "EXCELLENT"
+  | "GOOD"
+  | "FAIR"
+  | "POOR";
+
 export interface Product {
   id: string;
   title: string;
   description: string | null;
   price: number;
-  condition: string | null;
+  condition: ProductCondition | null;
   images: ProductImage[];
   user: ProductUser;
   category: ProductCategory;
@@ -32,7 +40,7 @@ export interface ProductCardData {
   id: string;
   title: string;
   price: number;
-  condition: string | null;
+  condition: ProductCondition | null;
   imageUrl: string;
   category: string;
 }
