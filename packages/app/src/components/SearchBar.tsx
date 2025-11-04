@@ -1,24 +1,19 @@
-'use client'
+"use client";
 
-import { Input, Row, Button } from '@buttergolf/ui'
-import { Search } from '@tamagui/lucide-icons'
+import { Input, Row, Button } from "@buttergolf/ui";
+import { Search } from "@tamagui/lucide-icons";
 
 export interface SearchBarProps {
-  placeholder?: string
-  onSearch?: (query: string) => void
+  placeholder?: string;
+  onSearch?: (query: string) => void;
 }
 
 export function SearchBar({
-  placeholder = 'Search for golf equipment...',
+  placeholder = "Search for golf equipment...",
   onSearch,
 }: Readonly<SearchBarProps>) {
   return (
-    <Row
-      fullWidth
-      maxWidth={600}
-      gap="$xs"
-      align="center"
-    >
+    <Row width="100%" maxWidth={600} gap="$xs" alignItems="center">
       <Input
         flex={1}
         size="$4"
@@ -30,7 +25,7 @@ export function SearchBar({
         color="$text"
         placeholderTextColor="$textMuted"
         focusStyle={{
-          borderColor: '$borderFocus',
+          borderColor: "$borderFocus",
           borderWidth: 2,
         }}
       />
@@ -40,12 +35,12 @@ export function SearchBar({
         borderRadius="$10"
         backgroundColor="$primary"
         color="$textInverse"
-        hoverStyle={{ backgroundColor: '$primaryHover' }}
-        pressStyle={{ backgroundColor: '$primaryPress' }}
-        onPress={() => onSearch?.('')}
+        hoverStyle={{ backgroundColor: "$primaryHover" }}
+        pressStyle={{ backgroundColor: "$primaryPress" }}
+        onPress={() => onSearch?.("")}
       >
         Search
       </Button>
     </Row>
-  )
+  );
 }
