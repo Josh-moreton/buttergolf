@@ -405,7 +405,7 @@ export default function SellPage() {
                       variant="filled"
                       {...{
                         padding: "$md" as any,
-                        backgroundColor: "$errorLight" as any,
+                        backgroundColor: "$errorLight",
                       }}
                       borderRadius="$md"
                     >

@@ -193,7 +193,7 @@ export function ProductDetailModal({
                             cursor="pointer"
                             onPress={() => setSelectedImageIndex(index)}
                             {...(index === selectedImageIndex && {
-                              borderColor: "$primary" as any,
+                              borderColor: "$primary",
                               borderWidth: 2,
                             })}
                           >
