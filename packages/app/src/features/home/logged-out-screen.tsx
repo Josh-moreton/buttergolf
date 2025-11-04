@@ -184,14 +184,13 @@ export function LoggedOutHomeScreen({
 
       {/* Product Grid */}
       <ScrollView
-        flex={1}
         contentContainerStyle={{
           paddingHorizontal: horizontalPadding,
           paddingTop: 8,
           paddingBottom: insets.bottom + 72,
         }}
       >
-        <Row flexWrap="wrap" gap={gap}>
+        <Row flexWrap="wrap" gap={gap} width="100%">
           {MOCK_PRODUCTS.map((product) => (
             <Card
               key={product.id}
