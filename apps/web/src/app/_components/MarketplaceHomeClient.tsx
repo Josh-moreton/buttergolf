@@ -2,15 +2,22 @@
 
 import { Column } from "@buttergolf/ui";
 import { HeroSectionNew } from "./marketplace/HeroSectionNew";
-import { RecentlyListedSection } from "./marketplace/RecentlyListedSection";
+import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
+import type { ProductCardData } from "@buttergolf/app";
 
-export default function MarketplaceHomeClient() {
+interface MarketplaceHomeClientProps {
+  products: ProductCardData[];
+}
+
+export default function MarketplaceHomeClient({
+  products,
+}: MarketplaceHomeClientProps) {
   return (
     <Column>
       <HeroSectionNew />
-      <RecentlyListedSection />
+      <RecentlyListedSectionClient products={products} />
       <NewsletterSection />
       <FooterSection />
     </Column>

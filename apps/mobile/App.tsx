@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider, HomeScreen, RoundsScreen, routes } from "@buttergolf/app";
+import type { ProductCardData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
 import {
@@ -58,6 +59,42 @@ function SignOutButton() {
 }
 
 const HeaderRightComponent = () => <SignOutButton />;
+
+// Function to fetch products from API
+async function fetchProducts(): Promise<ProductCardData[]> {
+  try {
+    // Get API URL from environment variable
+    // In production, this should be set to your deployed domain (e.g., "https://buttergolf.com")
+    // In development:
+    //   - iOS Simulator: use "http://localhost:3000"
+    //   - Android Emulator: use "http://10.0.2.2:3000"
+    //   - Physical Device: use "http://YOUR_COMPUTER_IP:3000"
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+    if (!apiUrl) {
+      throw new Error(
+        "EXPO_PUBLIC_API_URL environment variable is not set. " +
+          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+      );
+    }
+
+    console.log("Fetching products from:", apiUrl);
+    const response = await fetch(`${apiUrl}/api/products/recent`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    return [];
+  }
+}
 
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
@@ -165,6 +202,11 @@ function OnboardingFlow() {
   if (showLoggedOutHome) {
     return (
       <LoggedOutHomeScreen
+        onFetchProducts={fetchProducts}
+        onProductPress={(id) => {
+          // TODO: Navigate to product detail screen
+          console.log("Navigate to product:", id);
+        }}
         onSignIn={() => {
           if (Platform.OS === "ios") {
             handleOAuth("apple");

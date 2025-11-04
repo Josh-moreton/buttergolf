@@ -1,23 +1,14 @@
 "use client";
 
-import { Card, Image, Text, Row, Column } from "@buttergolf/ui";
+import { Card, Image, Text, Row, Column, Badge } from "@buttergolf/ui";
+import type { ProductCardData } from "../types/product";
 
 export interface ProductCardProps {
-  id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  condition?: string;
+  product: ProductCardData;
   onPress?: () => void;
 }
 
-export function ProductCard({
-  title,
-  price,
-  imageUrl,
-  condition,
-  onPress,
-}: Readonly<ProductCardProps>) {
+export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
   return (
     <Card
       variant="elevated"
@@ -39,32 +30,37 @@ export function ProductCard({
     >
       <Card.Header padding={0} noBorder>
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: product.imageUrl }}
           width="100%"
           height={200}
           objectFit="cover"
-          borderTopLeftRadius="$4"
-          borderTopRightRadius="$4"
+          borderTopLeftRadius="$lg"
+          borderTopRightRadius="$lg"
           backgroundColor="$background"
         />
       </Card.Header>
-      <Card.Footer padding="$md" noBorder>
+      <Card.Body padding="$md">
         <Column gap="$xs" width="100%">
-          <Text size="md" weight="semibold" numberOfLines={2} ellipse>
-            {title}
+          <Text size="md" weight="semibold" numberOfLines={2}>
+            {product.title}
           </Text>
-          {condition && (
-            <Text size="xs" color="$textSecondary">
-              {condition}
+          <Row gap="$sm" alignItems="center" justifyContent="space-between">
+            <Text size="sm" {...{ color: "secondary" as any }}>
+              {product.category}
             </Text>
-          )}
-          <Row justifyContent="space-between" alignItems="center">
-            <Text size="lg" weight="bold" color="$primary">
-              ${price.toFixed(2)}
-            </Text>
+            {product.condition && (
+              <Badge variant="neutral" size="sm">
+                <Text size="xs" weight="medium">
+                  {product.condition.replace("_", " ")}
+                </Text>
+              </Badge>
+            )}
           </Row>
+          <Text size="lg" weight="bold" color="$primary">
+            £{product.price.toFixed(2)}
+          </Text>
         </Column>
-      </Card.Footer>
+      </Card.Body>
     </Card>
   );
 }

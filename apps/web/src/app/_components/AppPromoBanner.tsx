@@ -50,7 +50,7 @@ export function AppPromoBanner() {
     // Check if iOS
     const iOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+     
     setIsIOS(iOS);
 
     // Don't show banner if already dismissed or installed

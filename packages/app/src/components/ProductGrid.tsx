@@ -19,8 +19,8 @@ export function ProductGrid({ title, products }: ProductGridProps) {
     >
       {title && <Heading level={2}>{title}</Heading>}
       <Row flexWrap="wrap" gap="$lg" justifyContent="flex-start">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+        {products.map((productProps) => (
+          <ProductCard key={productProps.product.id} {...productProps} />
         ))}
       </Row>
     </Column>
