@@ -16,7 +16,7 @@ import { Provider } from "./Provider";
 export function NextTamaguiProvider({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const [theme, setTheme] = useRootTheme();
+  const [, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
     // @ts-ignore
@@ -52,13 +52,12 @@ export function NextTamaguiProvider({
     <NextThemeProvider
       skipNextHead
       defaultTheme="light"
+      forcedTheme="light"
       onChangeTheme={(next) => {
         setTheme(next as any);
       }}
     >
-      <Provider disableRootThemeClass defaultTheme={theme || "light"}>
-        {children}
-      </Provider>
+      <Provider defaultTheme="light">{children}</Provider>
     </NextThemeProvider>
   );
 }
