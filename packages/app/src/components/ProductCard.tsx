@@ -50,7 +50,9 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
             </Text>
             {product.condition && (
               <Badge variant="neutral" size="sm">
-                {product.condition.replace("_", " ")}
+                <Text size="xs" weight="medium">
+                  {product.condition.replace("_", " ")}
+                </Text>
               </Badge>
             )}
           </Row>
@@ -62,4 +64,3 @@ export function ProductCard({ product, onPress }: Readonly<ProductCardProps>) {
     </Card>
   );
 }
-
