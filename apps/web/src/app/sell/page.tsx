@@ -49,16 +49,16 @@ const FormLabel = ({
   required?: boolean;
 }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text size="sm" weight="medium" {...{ color: "$text" as any }}>
+    <Text size="sm" weight="medium" color="$text">
       {children}
     </Text>
-    {required && <Text {...{ color: "$error" as any }}>*</Text>}
+    {required && <Text color="$error">*</Text>}
   </Row>
 );
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text size="xs" {...{ color: "$textMuted" as any }} marginTop="$xs">
+  <Text size="xs" color="$textMuted" marginTop="$xs">
     {children}
   </Text>
 );
@@ -161,7 +161,7 @@ export default function SellPage() {
         paddingHorizontal="$8"
         width="100%"
         alignSelf="center"
-        {...{ marginHorizontal: "auto" as any }}
+        marginHorizontal="auto"
       >
         <Column
           gap="$xl"
@@ -177,7 +177,7 @@ export default function SellPage() {
           {/* Main Form Card */}
           <Card
             variant="elevated"
-            {...{ padding: "none" as any }}
+            padding="$0"
             backgroundColor="$surface"
             borderRadius="$lg"
             overflow="hidden"
@@ -201,17 +201,13 @@ export default function SellPage() {
                   />
                   <Card
                     variant="filled"
-                    {...{ padding: "$sm" as any }}
+                    padding="$sm"
                     backgroundColor="$infoLight"
                     borderRadius="$md"
                   >
                     <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
-                      <Text
-                        size="xs"
-                        {...{ color: "$text" as any }}
-                        lineHeight={18}
-                      >
+                      <Text size="xs" color="$text" lineHeight={18}>
                         Catch your buyers' eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
                       </Text>
@@ -403,13 +399,11 @@ export default function SellPage() {
                   {error && (
                     <Card
                       variant="filled"
-                      {...{
-                        padding: "$md" as any,
-                        backgroundColor: "$errorLight",
-                      }}
+                      padding="$md"
+                      backgroundColor="$errorLight"
                       borderRadius="$md"
                     >
-                      <Text {...{ color: "$error" as any }}>{error}</Text>
+                      <Text color="$error">{error}</Text>
                     </Card>
                   )}
                 </Column>
@@ -446,17 +440,9 @@ export default function SellPage() {
                       {loading ? "Uploading..." : "Upload"}
                     </Button>
                   </Row>
-                  <Text
-                    size="xs"
-                    {...{ color: "$textMuted" as any }}
-                    textAlign="center"
-                  >
+                  <Text size="xs" color="$textMuted" textAlign="center">
                     What do you think of our upload process?{" "}
-                    <Text
-                      size="xs"
-                      {...{ color: "$primary" as any }}
-                      cursor="pointer"
-                    >
+                    <Text size="xs" color="$primary" cursor="pointer">
                       Give feedback
                     </Text>
                   </Text>

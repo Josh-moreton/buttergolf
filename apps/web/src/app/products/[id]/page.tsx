@@ -78,12 +78,10 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
+      <Container {...{ maxWidth: "lg" as any }} padding="$md">
         <Column gap="$xl" paddingVertical="$10" alignItems="center">
-          <Spinner size="lg" {...{ color: "$primary" as any }} />
-          <Text {...{ color: "$textSecondary" as any }}>
-            Loading product...
-          </Text>
+          <Spinner size="lg" color="$primary" />
+          <Text color="$textSecondary">Loading product...</Text>
         </Column>
       </Container>
     );
@@ -91,10 +89,10 @@ export default function ProductDetailPage() {
 
   if (error || !product) {
     return (
-      <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
+      <Container {...{ maxWidth: "lg" as any }} padding="$md">
         <Column gap="$lg" paddingVertical="$10" alignItems="center">
           <Heading level={2}>Product Not Found</Heading>
-          <Text {...{ color: "$textSecondary" as any }}>
+          <Text color="$textSecondary">
             {error || "This product does not exist or has been removed."}
           </Text>
           <Button size="$5" onPress={() => router.push("/")}>
@@ -108,32 +106,26 @@ export default function ProductDetailPage() {
   const selectedImage = product.images[selectedImageIndex];
 
   return (
-    <Container {...{ maxWidth: "lg" as any, padding: "md" as any }}>
+    <Container {...{ maxWidth: "lg" as any }} padding="$md">
       <Column gap="$xl" paddingVertical="$10">
         {/* Breadcrumb */}
         <Row gap="$sm" alignItems="center" flexWrap="wrap">
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Text
-              {...{ color: "$textSecondary" as any }}
-              hoverStyle={{ color: "$primary" }}
-            >
+            <Text color="$textSecondary" hoverStyle={{ color: "$primary" }}>
               Home
             </Text>
           </Link>
-          <Text {...{ color: "$textMuted" as any }}>/</Text>
+          <Text color="$textMuted">/</Text>
           <Link
             href={`/category/${product.category.slug}`}
             style={{ textDecoration: "none" }}
           >
-            <Text
-              {...{ color: "$textSecondary" as any }}
-              hoverStyle={{ color: "$primary" }}
-            >
+            <Text color="$textSecondary" hoverStyle={{ color: "$primary" }}>
               {product.category.name}
             </Text>
           </Link>
-          <Text {...{ color: "$textMuted" as any }}>/</Text>
-          <Text {...{ color: "$text" as any }}>{product.title}</Text>
+          <Text color="$textMuted">/</Text>
+          <Text color="$text">{product.title}</Text>
         </Row>
 
         {/* Main Content */}
@@ -141,7 +133,7 @@ export default function ProductDetailPage() {
           {/* Images */}
           <Column gap="$md" flex={1}>
             {/* Main Image */}
-            <Card variant="outlined" {...{ padding: "$0" as any }}>
+            <Card variant="outlined" padding="$0">
               <Image
                 source={{ uri: selectedImage.url }}
                 width="100%"
@@ -158,11 +150,11 @@ export default function ProductDetailPage() {
                   <Card
                     key={img.id}
                     variant="outlined"
-                    {...{ padding: "$0" as any }}
+                    padding="$0"
                     cursor="pointer"
                     onPress={() => setSelectedImageIndex(index)}
                     {...(index === selectedImageIndex && {
-                      borderColor: "$primary" as any,
+                      borderColor: "$primary",
                       borderWidth: 2,
                     })}
                   >
@@ -193,7 +185,7 @@ export default function ProductDetailPage() {
 
               <Heading level={1}>{product.title}</Heading>
 
-              <Heading level={2} {...{ color: "$primary" as any }}>
+              <Heading level={2} color="$primary">
                 £{product.price.toFixed(2)}
               </Heading>
 
@@ -201,7 +193,7 @@ export default function ProductDetailPage() {
                 <Row gap="$md">
                   {product.brand && (
                     <Column gap="$xs">
-                      <Text size="xs" {...{ color: "$textMuted" as any }}>
+                      <Text size="xs" color="$textMuted">
                         Brand
                       </Text>
                       <Text weight="semibold">{product.brand}</Text>
@@ -209,7 +201,7 @@ export default function ProductDetailPage() {
                   )}
                   {product.model && (
                     <Column gap="$xs">
-                      <Text size="xs" {...{ color: "$textMuted" as any }}>
+                      <Text size="xs" color="$textMuted">
                         Model
                       </Text>
                       <Text weight="semibold">{product.model}</Text>
@@ -219,13 +211,10 @@ export default function ProductDetailPage() {
               )}
             </Column>
 
-            <Card variant="filled" {...{ padding: "$lg" as any }}>
+            <Card variant="filled" padding="$lg">
               <Column gap="$md">
                 <Heading level={4}>Description</Heading>
-                <Text
-                  {...{ color: "$textSecondary" as any }}
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
+                <Text color="$textSecondary" style={{ whiteSpace: "pre-wrap" }}>
                   {product.description}
                 </Text>
               </Column>
@@ -240,7 +229,7 @@ export default function ProductDetailPage() {
               </Button>
             </Column>
 
-            <Card variant="outlined" {...{ padding: "$md" as any }}>
+            <Card variant="outlined" padding="$md">
               <Row gap="$md" alignItems="center">
                 {product.user.imageUrl && (
                   <Image
@@ -254,7 +243,7 @@ export default function ProductDetailPage() {
                   <Text weight="semibold">
                     {product.user.name || "Anonymous"}
                   </Text>
-                  <Text size="xs" {...{ color: "$textMuted" as any }}>
+                  <Text size="xs" color="$textMuted">
                     Listed {new Date(product.createdAt).toLocaleDateString()}
                   </Text>
                 </Column>
