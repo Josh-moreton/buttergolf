@@ -70,6 +70,7 @@ export function ProductDetailModal({
   useEffect(() => {
     if (!open || !productId) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
 

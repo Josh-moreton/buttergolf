@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { SignIn, SignUp } from "@clerk/nextjs"
-import { Column } from "@buttergolf/ui"
+import { useEffect } from "react";
+import { SignIn, SignUp } from "@clerk/nextjs";
+import { Column } from "@buttergolf/ui";
 
-type AuthMode = "sign-in" | "sign-up"
+type AuthMode = "sign-in" | "sign-up";
 
 export function SignInModal({
   open,
@@ -12,24 +12,30 @@ export function SignInModal({
   mode = "sign-in",
 }: Readonly<{ open: boolean; onClose: () => void; mode?: AuthMode }>) {
   useEffect(() => {
-    if (!open) return
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    document.addEventListener("keydown", onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.removeEventListener("keydown", onKey)
-      document.body.style.overflow = prev
-    }
-  }, [open, onClose])
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, onClose]);
 
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <Column
-      {...{ style: { position: "fixed", inset: 0 as any, backdropFilter: "blur(6px)" } }}
+      style={
+        {
+          position: "fixed",
+          inset: 0,
+          backdropFilter: "blur(6px)",
+        } as React.CSSProperties
+      }
       backgroundColor="rgba(0,0,0,0.35)"
       zIndex={100}
       alignItems="center"
@@ -45,5 +51,5 @@ export function SignInModal({
         )}
       </Column>
     </Column>
-  )
+  );
 }

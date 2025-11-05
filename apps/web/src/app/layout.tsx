@@ -4,6 +4,7 @@ import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 
 // Load Tamagui CSS in production (compiled output)
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 if (process.env.NODE_ENV === "production") {
   require("../../public/tamagui.css");
 }

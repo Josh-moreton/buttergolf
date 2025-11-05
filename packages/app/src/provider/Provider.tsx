@@ -16,6 +16,7 @@ export function Provider({ defaultTheme, ...rest }: ProviderProps) {
 
   return (
     <TamaguiProvider
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config={config as any}
       defaultTheme={theme}
       {...(rest as TamaguiProviderProps)}
