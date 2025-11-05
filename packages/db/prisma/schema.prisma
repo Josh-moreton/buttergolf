@@ -119,7 +119,7 @@ model Address {
 model Order {
     id                 String       @id @default(cuid())
     // Stripe payment information
-    stripePaymentId    String       @unique
+    stripePaymentId    String?      @unique // Nullable in case of payment processing delays
     stripeCheckoutId   String?
     amountTotal        Float        // Total amount paid (including shipping)
     shippingCost       Float        // Shipping cost charged

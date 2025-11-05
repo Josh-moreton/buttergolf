@@ -88,8 +88,9 @@ export async function POST(req: Request) {
       // For now, we'll need to get addresses from session customer_details
       // In a real app, these would be stored in the Address table
       const customerDetails = fullSession.customer_details
-      // Stripe uses 'shipping' property for checkout sessions (type assertion needed for expanded property)
-      const shippingDetails = (fullSession as any).shipping as { 
+      
+      // Define interface for expanded shipping details
+      interface ExpandedShipping {
         address: {
           line1: string | null
           line2: string | null
@@ -99,7 +100,10 @@ export async function POST(req: Request) {
           country: string | null
         }
         name: string | null
-      } | null
+      }
+      
+      // Stripe uses 'shipping' property for checkout sessions (requires expand parameter)
+      const shippingDetails = (fullSession as any).shipping as ExpandedShipping | null
 
       if (!shippingDetails?.address) {
         console.error('Missing shipping details in session')
@@ -123,16 +127,23 @@ export async function POST(req: Request) {
       })
 
       // Seller/From Address (placeholder - should be from seller's profile)
-      // For now, using a default address. In production, seller should provide this
+      // TODO: CRITICAL - Implement proper seller address collection
+      // This is a placeholder for testing. In production:
+      // 1. Add seller address form to user profile
+      // 2. Store in Address table with userId = sellerId
+      // 3. Fetch here: await prisma.address.findFirst({ where: { userId: sellerId, isDefault: true } })
+      // For now, using a test address that works with EasyPost sandbox
       const fromAddress = await prisma.address.create({
         data: {
           userId: sellerId,
           name: product.user.name || product.user.email,
-          street1: '123 Seller St', // Placeholder - should be from seller profile
+          street1: '388 Townsend St', // EasyPost test address
+          street2: 'Apt 20',
           city: 'San Francisco',
           state: 'CA',
-          zip: '94102',
+          zip: '94107',
           country: 'US',
+          phone: '555-555-5555',
         },
       })
 

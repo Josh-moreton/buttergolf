@@ -68,15 +68,27 @@ function mapToOrderStatus(shipmentStatus: string): string {
 }
 
 // Verify EasyPost webhook signature
+// EasyPost uses HMAC-SHA256, typically without prefixes
 function verifyWebhookSignature(payload: string, signature: string, secret: string): boolean {
-  const hmac = crypto.createHmac('sha256', secret)
-  hmac.update(payload)
-  const computedSignature = hmac.digest('hex')
-  
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(computedSignature)
-  )
+  try {
+    const hmac = crypto.createHmac('sha256', secret)
+    hmac.update(payload)
+    const computedSignature = hmac.digest('hex')
+    
+    // Handle potential format variations
+    // Some webhooks send "sha256=<hash>", others just "<hash>"
+    const signatureToVerify = signature.startsWith('sha256=') 
+      ? signature.substring(7) 
+      : signature
+    
+    return crypto.timingSafeEqual(
+      Buffer.from(signatureToVerify),
+      Buffer.from(computedSignature)
+    )
+  } catch (error) {
+    console.error('Error verifying webhook signature:', error)
+    return false
+  }
 }
 
 export async function POST(req: Request) {
