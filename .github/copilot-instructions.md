@@ -35,6 +35,7 @@ This guide also documents our authentication setup using Clerk for both platform
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
 - **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
+- **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
 
 ## Critical Commands
 
@@ -1195,6 +1196,218 @@ Important: Only publishable keys may be exposed to the client (`NEXT_PUBLIC_*` /
 - When adding new protected routes, follow the `rounds/page.tsx` pattern.
 
 For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
+
+## Payments (Stripe)
+
+We use Stripe for payment processing and marketplace functionality (Stripe Connect). The web app handles all payment operations server-side, while the mobile app uses native Stripe SDK for optimal UX.
+
+### Packages
+
+- **Web**: `stripe` (Node.js SDK), `@stripe/stripe-js` (client-side), `@stripe/react-stripe-js` (React components)
+- **Mobile**: `@stripe/stripe-react-native` (native iOS/Android SDK)
+- **Webhook verification**: Built into `stripe` package
+
+### Architecture
+
+```
+┌─────────────────┐
+│   Mobile App    │ ──→ Native Stripe SDK (@stripe/stripe-react-native)
+│   (React Native)│     └─→ API calls to Next.js backend
+└─────────────────┘
+
+┌─────────────────┐
+│   Web App       │ ──→ Stripe.js (@stripe/stripe-js)
+│   (Next.js)     │     └─→ Server-side Stripe API (stripe)
+└─────────────────┘
+         │
+         ↓
+┌─────────────────┐
+│ Stripe Connect  │ ──→ Marketplace seller onboarding
+│ (Platform)      │     └─→ Automated payouts to sellers
+└─────────────────┘
+```
+
+### Environment Variables
+
+Place values in `apps/web/.env.local` (see `.env.example`):
+
+```bash
+# Stripe Payment Processing
+STRIPE_SECRET_KEY=sk_test_...              # Server-side API key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...  # Client-side key
+STRIPE_WEBHOOK_SECRET=whsec_...            # Webhook signature verification
+```
+
+**Important**: 
+- Use **test keys** (sk_test_/pk_test_) for development
+- Use **live keys** (sk_live_/pk_live_) for production
+- Never expose secret keys to clients (only `NEXT_PUBLIC_*` variables)
+
+### Setup Steps
+
+1. **Create Stripe Account**:
+   - Create a new Account (not Organization) in Stripe Dashboard
+   - Name it "ButterGolf"
+
+2. **Get API Keys**:
+   - Navigate to: Developers → API keys
+   - Ensure **Test mode** is enabled (toggle at top)
+   - Copy both keys to `.env.local`
+
+3. **Enable Stripe Connect**:
+   - Go to: Settings → Connect settings
+   - Choose: **Platform or marketplace**
+   - This enables seller onboarding and automated payouts
+
+4. **Set Up Webhooks**:
+   - Go to: Developers → Webhooks
+   - Add endpoint: `http://localhost:3000/api/stripe/webhook` (dev) or `https://yourdomain.com/api/stripe/webhook` (prod)
+   - Select events:
+     - `checkout.session.completed`
+     - `payment_intent.succeeded`
+     - `payment_intent.payment_failed`
+     - `account.updated` (Connect)
+     - `account.application.authorized` (Connect)
+     - `account.application.deauthorized` (Connect)
+   - Copy webhook signing secret to `STRIPE_WEBHOOK_SECRET`
+
+### Web Implementation Pattern
+
+**Server-side (API Routes)**:
+```typescript
+// apps/web/src/lib/stripe.ts
+import Stripe from 'stripe';
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-11-20.acacia',
+});
+
+// Use this singleton for all server-side Stripe operations
+```
+
+**Client-side (React Components)**:
+```tsx
+// apps/web/src/app/checkout/page.tsx
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+
+export default function CheckoutPage() {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+  );
+}
+```
+
+### Mobile Implementation Pattern
+
+**IMPORTANT**: Always use the native React Native SDK on mobile for optimal UX and Apple Pay/Google Pay support.
+
+```tsx
+// apps/mobile/App.tsx or payment component
+import { StripeProvider } from '@stripe/stripe-react-native';
+
+export default function App() {
+  return (
+    <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}>
+      {/* Your app components */}
+    </StripeProvider>
+  );
+}
+
+// Payment screen
+import { useStripe } from '@stripe/stripe-react-native';
+
+function PaymentScreen() {
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  
+  // Fetch payment intent from your API
+  // Initialize and present native payment sheet
+}
+```
+
+### Stripe Connect (Seller Onboarding)
+
+For marketplace functionality (sellers receiving payouts):
+
+```typescript
+// Create Connect account
+const account = await stripe.accounts.create({
+  type: 'express',
+  country: 'US',
+  email: sellerEmail,
+  capabilities: {
+    card_payments: { requested: true },
+    transfers: { requested: true },
+  },
+});
+
+// Generate onboarding link
+const accountLink = await stripe.accountLinks.create({
+  account: account.id,
+  refresh_url: `${baseUrl}/seller/onboarding/refresh`,
+  return_url: `${baseUrl}/seller/onboarding/complete`,
+  type: 'account_onboarding',
+});
+
+// Redirect seller to accountLink.url for embedded onboarding
+```
+
+### Best Practices
+
+1. **Server-side validation**: Never trust client data - always verify payments server-side
+2. **Webhook handling**: Always verify webhook signatures using `STRIPE_WEBHOOK_SECRET`
+3. **Idempotency**: Use idempotency keys for payment operations to prevent duplicates
+4. **Error handling**: Catch and handle Stripe errors gracefully (card declined, etc.)
+5. **Native SDK on mobile**: Always use `@stripe/stripe-react-native` - don't use web views for payments
+6. **Test mode first**: Complete full payment flow in test mode before going live
+7. **Connect Express accounts**: Use Express for sellers (simplest onboarding, Stripe handles compliance)
+
+### Common Workflows
+
+**Checkout Flow**:
+1. User adds products to cart
+2. Backend creates Stripe Checkout Session (or Payment Intent)
+3. Frontend receives client secret
+4. Mobile: Present native payment sheet / Web: Redirect to Stripe Checkout
+5. User completes payment
+6. Webhook confirms payment → Update order status in DB
+
+**Seller Onboarding**:
+1. User clicks "Become a Seller"
+2. Backend creates Stripe Connect account
+3. Backend generates onboarding link
+4. User completes onboarding (embedded in app or redirect)
+5. Webhook confirms account activated → Enable seller features
+
+**Marketplace Payouts**:
+- Stripe automatically handles payouts to connected accounts
+- Platform fee: Deduct before transfer or use application_fee
+- Schedule: Configure in Connect settings (daily, weekly, monthly)
+
+### Testing
+
+Use Stripe test cards:
+- Success: `4242 4242 4242 4242`
+- Decline: `4000 0000 0000 0002`
+- 3D Secure: `4000 0025 0000 3155`
+
+Full list: https://stripe.com/docs/testing
+
+### Production Checklist
+
+- [ ] Switch to live API keys in production environment
+- [ ] Update webhook endpoint to production URL
+- [ ] Test complete checkout flow with real cards (small amounts)
+- [ ] Verify Connect onboarding works end-to-end
+- [ ] Monitor webhook delivery in Stripe Dashboard
+- [ ] Set up payout schedule for sellers
+- [ ] Review and accept terms for going live
+
+For detailed Stripe documentation: https://stripe.com/docs
 
 ## Documentation References
 
