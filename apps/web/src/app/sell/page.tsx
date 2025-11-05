@@ -208,7 +208,7 @@ export default function SellPage() {
                     <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
                       <Text size="xs" color="$text" lineHeight={18}>
-                        Catch your buyers' eye — use quality photos. Good
+                        Catch your buyers&apos; eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
                       </Text>
                     </Row>
@@ -271,7 +271,7 @@ export default function SellPage() {
                     />
                     <HelperText>
                       Be honest and detailed. Mention any wear, included
-                      accessories, and why you're selling.
+                      accessories, and why you&apos;re selling.
                     </HelperText>
                   </Column>
 

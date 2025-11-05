@@ -140,6 +140,7 @@ export default function ProductDetailPage() {
                 height={500}
                 objectFit="cover"
                 borderRadius="$lg"
+                alt={product.title}
               />
             </Card>
 
@@ -163,7 +164,8 @@ export default function ProductDetailPage() {
                       width={80}
                       height={80}
                       objectFit="cover"
-                      borderRadius="$md"
+                      borderRadius="$sm"
+                      alt={`${product.title} thumbnail ${index + 1}`}
                     />
                   </Card>
                 ))}
@@ -234,9 +236,10 @@ export default function ProductDetailPage() {
                 {product.user.imageUrl && (
                   <Image
                     source={{ uri: product.user.imageUrl }}
-                    width={48}
-                    height={48}
-                    borderRadius="$full"
+                    width={56}
+                    height={56}
+                    borderRadius={28}
+                    alt={product.user.name || "Seller"}
                   />
                 )}
                 <Column gap="$xs">

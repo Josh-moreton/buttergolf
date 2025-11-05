@@ -5,15 +5,13 @@ import { NextTamaguiProvider } from "./NextTamaguiProvider";
 
 // Load Tamagui CSS in production (compiled output)
 if (process.env.NODE_ENV === "production") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require("../../public/tamagui.css");
 }
 import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
 import { TrustBar } from "./_components/marketplace/TrustBar";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
-
-// Using system fonts for better performance and reliability
-const fontVariables = "--font-geist-sans --font-geist-mono";
 
 export const viewport: Viewport = {
   width: "device-width",

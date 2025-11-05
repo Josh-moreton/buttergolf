@@ -19,7 +19,7 @@ export function NextTamaguiProvider({
   const [, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
-    // @ts-ignore
+    // @ts-expect-error - RNW StyleSheet type not available
     const rnwStyle = StyleSheet.getSheet();
 
     return (
@@ -54,6 +54,7 @@ export function NextTamaguiProvider({
       defaultTheme="light"
       forcedTheme="light"
       onChangeTheme={(next) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setTheme(next as any);
       }}
     >

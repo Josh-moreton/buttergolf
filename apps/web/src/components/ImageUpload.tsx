@@ -193,6 +193,7 @@ export function ImageUpload({
                   width={140}
                   height={140}
                   objectFit="cover"
+                  alt="Uploaded product image"
                 />
                 {index === 0 && (
                   <Column
