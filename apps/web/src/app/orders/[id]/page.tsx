@@ -1,0 +1,83 @@
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { prisma } from '@buttergolf/db'
+import { OrderDetail } from './OrderDetail'
+
+export const dynamic = 'force-dynamic'
+
+export default async function OrderDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { userId: clerkId } = await auth()
+
+  if (!clerkId) {
+    redirect('/sign-in')
+  }
+
+  // Get user from database
+  const user = await prisma.user.findUnique({
+    where: { clerkId },
+  })
+
+  if (!user) {
+    redirect('/sign-in')
+  }
+
+  const { id } = await params
+
+  // Fetch order
+  const order = await prisma.order.findUnique({
+    where: { id },
+    include: {
+      product: {
+        include: {
+          images: {
+            orderBy: { sortOrder: 'asc' },
+          },
+          category: true,
+        },
+      },
+      seller: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          imageUrl: true,
+        },
+      },
+      buyer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          imageUrl: true,
+        },
+      },
+      fromAddress: true,
+      toAddress: true,
+    },
+  })
+
+  if (!order) {
+    redirect('/orders')
+  }
+
+  // Check authorization
+  if (order.buyerId !== user.id && order.sellerId !== user.id) {
+    redirect('/orders')
+  }
+
+  // Add role information
+  const orderWithRole = {
+    ...order,
+    userRole: order.buyerId === user.id ? 'buyer' as const : 'seller' as const,
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <OrderDetail order={orderWithRole} />
+    </div>
+  )
+}

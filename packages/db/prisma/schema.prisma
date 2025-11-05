@@ -12,16 +12,23 @@ datasource db {
 
 // Marketplace models for ButterGolf
 model User {
-    id        String    @id @default(cuid())
+    id                       String    @id @default(cuid())
     // Clerk user identifier for federated auth
-    clerkId   String    @unique
-    email     String    @unique
-    name      String?
-    imageUrl  String?
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+    clerkId                  String    @unique
+    email                    String    @unique
+    name                     String?
+    imageUrl                 String?
+    // Stripe Connect seller account
+    stripeConnectId          String?   @unique // Stripe Connect account ID
+    stripeOnboardingComplete Boolean   @default(false) // Whether seller onboarding is complete
+    stripeAccountStatus      String? // Current account status (active, pending, etc.)
+    createdAt                DateTime  @default(now())
+    updatedAt                DateTime  @updatedAt
     // Marketplace relations
-    products  Product[]
+    products                 Product[]
+    ordersSold               Order[]   @relation("SellerOrders")
+    ordersPurchased          Order[]   @relation("BuyerOrders")
+    addresses                Address[]
 
     @@map("users")
 }
@@ -55,8 +62,14 @@ model Product {
     images      ProductImage[]
     isSold      Boolean          @default(false)
     views       Int              @default(0)
+    // Shipping dimensions for EasyPost (in cm and grams)
+    length      Float? // Length in cm
+    width       Float? // Width in cm
+    height      Float? // Height in cm
+    weight      Float? // Weight in grams
     createdAt   DateTime         @default(now())
     updatedAt   DateTime         @updatedAt
+    orders      Order[]
 
     @@index([categoryId])
     @@index([userId])
@@ -83,4 +96,92 @@ enum ProductCondition {
     GOOD
     FAIR
     POOR
+}
+
+model Address {
+    id         String   @id @default(cuid())
+    userId     String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    name       String // Full name for shipping
+    street1    String
+    street2    String?
+    city       String
+    state      String
+    zip        String
+    country    String   @default("US")
+    phone      String?
+    isDefault  Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    ordersFrom Order[]  @relation("FromAddress")
+    ordersTo   Order[]  @relation("ToAddress")
+
+    @@index([userId])
+    @@map("addresses")
+}
+
+model Order {
+    id                 String         @id @default(cuid())
+    // Stripe payment information
+    stripePaymentId    String?        @unique // Nullable in case of payment processing delays
+    stripeCheckoutId   String?
+    amountTotal        Float // Total amount paid (including shipping)
+    shippingCost       Float // Shipping cost charged
+    // Order participants
+    sellerId           String
+    seller             User           @relation("SellerOrders", fields: [sellerId], references: [id])
+    buyerId            String
+    buyer              User           @relation("BuyerOrders", fields: [buyerId], references: [id])
+    productId          String
+    product            Product        @relation(fields: [productId], references: [id])
+    // Shipping addresses
+    fromAddressId      String
+    fromAddress        Address        @relation("FromAddress", fields: [fromAddressId], references: [id])
+    toAddressId        String
+    toAddress          Address        @relation("ToAddress", fields: [toAddressId], references: [id])
+    // EasyPost shipping information
+    easypostShipmentId String? // EasyPost shipment ID
+    labelUrl           String? // URL to download shipping label
+    labelFormat        String? // Label format (PDF, PNG, etc.)
+    trackingCode       String? // Carrier tracking number
+    trackingUrl        String? // URL to track shipment
+    carrier            String? // Shipping carrier (USPS, UPS, FedEx, etc.)
+    service            String? // Service level (First, Priority, Ground, etc.)
+    shipmentStatus     ShipmentStatus @default(PENDING)
+    estimatedDelivery  DateTime? // Estimated delivery date
+    actualDelivery     DateTime? // Actual delivery date
+    // Order lifecycle
+    status             OrderStatus    @default(PAYMENT_CONFIRMED)
+    labelGeneratedAt   DateTime?
+    shippedAt          DateTime?
+    deliveredAt        DateTime?
+    createdAt          DateTime       @default(now())
+    updatedAt          DateTime       @updatedAt
+
+    @@index([sellerId])
+    @@index([buyerId])
+    @@index([productId])
+    @@index([shipmentStatus])
+    @@index([status])
+    @@map("orders")
+}
+
+enum ShipmentStatus {
+    PENDING // Awaiting label generation
+    PRE_TRANSIT // Label created, not yet in transit
+    IN_TRANSIT // Package is on its way
+    OUT_FOR_DELIVERY // Out for delivery
+    DELIVERED // Successfully delivered
+    RETURNED // Package returned to sender
+    FAILED // Delivery failed
+    CANCELLED // Shipment cancelled
+}
+
+enum OrderStatus {
+    PAYMENT_CONFIRMED // Payment successful, awaiting label
+    LABEL_GENERATED // Shipping label created
+    SHIPPED // Package shipped by seller
+    DELIVERED // Package delivered to buyer
+    CANCELLED // Order cancelled
+    REFUNDED // Order refunded
 }
