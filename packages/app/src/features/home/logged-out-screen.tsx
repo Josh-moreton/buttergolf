@@ -62,6 +62,7 @@ export function LoggedOutHomeScreen({
 
   useEffect(() => {
     if (onFetchProducts && products.length === 0 && !loading) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       onFetchProducts()
         .then((fetchedProducts) => {
@@ -102,8 +103,8 @@ export function LoggedOutHomeScreen({
             alignItems="center"
             gap="$2"
           >
-            <SearchIcon size={20} {...{ color: "$textMuted" as any }} />
-            <Text {...{ color: "$textMuted" as any }} fontSize={15}>
+            <SearchIcon size={20} color="$textMuted" />
+            <Text color="$textMuted" fontSize={15}>
               Search for items or members
             </Text>
           </Row>
@@ -113,7 +114,7 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => console.log("Camera pressed")}
           >
-            <Camera size={24} {...{ color: "$primary" as any }} />
+            <Camera size={24} color="$primary" />
           </Button>
         </Row>
       </Column>
@@ -161,15 +162,11 @@ export function LoggedOutHomeScreen({
       >
         {loading && products.length === 0 ? (
           <Column padding="$8" alignItems="center">
-            <Text {...{ color: "$textSecondary" as any }}>
-              Loading products...
-            </Text>
+            <Text color="$textSecondary">Loading products...</Text>
           </Column>
         ) : products.length === 0 ? (
           <Column padding="$8" alignItems="center">
-            <Text {...{ color: "$textSecondary" as any }}>
-              No products available yet
-            </Text>
+            <Text color="$textSecondary">No products available yet</Text>
           </Column>
         ) : (
           <Row flexWrap="wrap" gap={gap} width="100%">
@@ -204,16 +201,12 @@ export function LoggedOutHomeScreen({
                   <Text fontSize={14} fontWeight="500" numberOfLines={1}>
                     {product.title}
                   </Text>
-                  <Text fontSize={12} {...{ color: "$textSecondary" as any }}>
+                  <Text fontSize={12} color="$textSecondary">
                     {product.category}
                     {product.condition &&
                       ` · ${product.condition.replace("_", " ")}`}
                   </Text>
-                  <Text
-                    fontSize={16}
-                    fontWeight="600"
-                    {...{ color: "$primary" as any }}
-                  >
+                  <Text fontSize={16} fontWeight="600" color="$primary">
                     £{product.price.toFixed(2)}
                   </Text>
                 </Column>
@@ -247,12 +240,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Home size={24} {...{ color: "$primary" as any }} />
-            <Text
-              fontSize={11}
-              {...{ color: "$primary" as any }}
-              fontWeight="600"
-            >
+            <Home size={24} color="$primary" />
+            <Text fontSize={11} color="$primary" fontWeight="600">
               Home
             </Text>
           </Button>
@@ -264,8 +253,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <SearchIcon size={24} {...{ color: "$textSecondary" as any }} />
-            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
+            <SearchIcon size={24} color="$textSecondary" />
+            <Text fontSize={11} color="$textSecondary">
               Search
             </Text>
           </Button>
@@ -277,8 +266,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <PlusCircle size={24} {...{ color: "$textSecondary" as any }} />
-            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
+            <PlusCircle size={24} color="$textSecondary" />
+            <Text fontSize={11} color="$textSecondary">
               Sell
             </Text>
           </Button>
@@ -290,8 +279,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={() => {}}
           >
-            <Mail size={24} {...{ color: "$textSecondary" as any }} />
-            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
+            <Mail size={24} color="$textSecondary" />
+            <Text fontSize={11} color="$textSecondary">
               Inbox
             </Text>
           </Button>
@@ -303,8 +292,8 @@ export function LoggedOutHomeScreen({
             padding="$2"
             onPress={onSignIn}
           >
-            <User size={24} {...{ color: "$textSecondary" as any }} />
-            <Text fontSize={11} {...{ color: "$textSecondary" as any }}>
+            <User size={24} color="$textSecondary" />
+            <Text fontSize={11} color="$textSecondary">
               Profile
             </Text>
           </Button>

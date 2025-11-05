@@ -10,13 +10,10 @@ import { ChevronDownIcon } from "./icons";
 
 interface DesktopMenuProps {
   menuData: MenuItem[];
-  stickyMenu: boolean;
+  stickyMenu?: boolean;
 }
 
-export function DesktopMenu({
-  menuData,
-  stickyMenu,
-}: Readonly<DesktopMenuProps>) {
+export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const pathname = usePathname();
 
@@ -92,34 +89,32 @@ export function DesktopMenu({
                   shadowRadius={16}
                   shadowOffset={{ width: 0, height: 4 }}
                 >
-                  {menuItem.submenu?.map((subItem) => (
-                    <Link
-                      key={subItem.title}
-                      href={subItem.path || "#"}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Row
-                        paddingHorizontal="$4"
-                        paddingVertical="$2.5"
-                        borderRadius="$md"
-                        hoverStyle={{ backgroundColor: "$backgroundHover" }}
+                  {menuItem.submenu?.map((subItem) => {
+                    const isSubItemActive =
+                      subItem.path &&
+                      pathname.split("?")[0] === subItem.path.split("?")[0];
+
+                    return (
+                      <Link
+                        key={subItem.title}
+                        href={subItem.path || "#"}
+                        style={{ textDecoration: "none" }}
                       >
-                        <Text
-                          size="sm"
-                          weight="medium"
-                          {...{
-                            color: (subItem.path &&
-                            pathname.split("?")[0] ===
-                              subItem.path.split("?")[0]
-                              ? "primary"
-                              : "default") as any,
-                          }}
-                        >
-                          {subItem.title}
-                        </Text>
-                      </Row>
-                    </Link>
-                  ))}
+                        <Theme name={isSubItemActive ? "active" : null}>
+                          <Row
+                            paddingHorizontal="$4"
+                            paddingVertical="$2.5"
+                            borderRadius="$md"
+                            hoverStyle={{ backgroundColor: "$backgroundHover" }}
+                          >
+                            <Text size="sm" weight="medium">
+                              {subItem.title}
+                            </Text>
+                          </Row>
+                        </Theme>
+                      </Link>
+                    );
+                  })}
                 </Column>
               </>
             ) : (

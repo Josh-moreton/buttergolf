@@ -3,6 +3,17 @@ import { Webhook } from 'svix'
 import { prisma } from '@buttergolf/db'
 import { NextResponse } from 'next/server'
 
+type WebhookEvent = {
+    type: string;
+    data: {
+        id: string;
+        email_addresses?: Array<{ email_address: string }>;
+        first_name?: string;
+        last_name?: string;
+        image_url?: string;
+    };
+}
+
 // Route Handler for Clerk webhooks
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
@@ -24,13 +35,13 @@ export async function POST(req: Request) {
 
     const wh = new Webhook(WEBHOOK_SECRET)
 
-    let evt: any
+    let evt: WebhookEvent
     try {
         evt = wh.verify(body, {
             'svix-id': svix_id,
             'svix-timestamp': svix_timestamp,
             'svix-signature': svix_signature,
-        })
+        }) as WebhookEvent
     } catch (err) {
         console.error('Svix verify failed', err)
         return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })

@@ -20,31 +20,37 @@ const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.2); // 1:1.2 ratio like Vinted
 const images = [
   {
     id: "clubs-1",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-1.jpg"),
     label: "Golf Clubs Set",
   },
   {
     id: "clubs-2",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-2.webp"),
     label: "Premium Irons",
   },
   {
     id: "clubs-3",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-3.webp"),
     label: "Driver Collection",
   },
   {
     id: "clubs-4",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-4.jpg"),
     label: "Vintage Woods",
   },
   {
     id: "clubs-5",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-5.webp"),
     label: "Putter Selection",
   },
   {
     id: "clubs-6",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     source: require("../../../../../apps/mobile/assets/clubs-6.jpg"),
     label: "Complete Set",
   },
@@ -66,7 +72,9 @@ export function OnboardingScreen({
   const insets = useSafeAreaInsets();
 
   // Animation for gentle horizontal scroll
+  // eslint-disable-next-line react-hooks/refs
   const translateXRow1 = useRef(new Animated.Value(0)).current;
+  // eslint-disable-next-line react-hooks/refs
   const translateXRow2 = useRef(new Animated.Value(-CARD_WIDTH / 2)).current; // Offset second row
 
   // Duplicate images for seamless loop - different order for each row
@@ -118,6 +126,7 @@ export function OnboardingScreen({
       animationRow1.stop();
       animationRow2.stop();
     };
+    // eslint-disable-next-line react-hooks/refs
   }, [singleWidth, translateXRow1, translateXRow2]);
 
   return (
@@ -230,6 +239,7 @@ export function OnboardingScreen({
             textAlign="center"
             color="$text"
             lineHeight={33.6}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             fontFamily={(Platform.OS === "ios" ? "Georgia" : "serif") as any}
           >
             From old clubs to new rounds

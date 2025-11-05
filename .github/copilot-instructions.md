@@ -610,7 +610,7 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
   <Button>Right action</Button>
 </Row>
 
-<Container maxWidth="lg" padding="md">
+<Container size="lg" padding="md">
   <Text>Constrained content</Text>
 </Container>
 
@@ -842,7 +842,7 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 ```tsx
 <Container
-  maxWidth="sm | md | lg | xl | 2xl | full" // Max width (default: lg)
+  size="sm | md | lg | xl | 2xl | full" // Max width (default: lg)
   padding="none | xs | sm | md | lg | xl" // Horizontal padding (default: md)
   center={boolean} // Center align content
 >
@@ -1330,7 +1330,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Button size="lg">                // Button component variant
 <Text color="muted">              // Text component variant
 <Card padding="lg">               // Card component variant (custom, not native padding)
-<Container maxWidth="lg">         // Container component variant
+<Container size="lg">             // Container component variant
 
 // ❌ WRONG - Creating variants for native props
 <Row gap="md">                    // ❌ gap exists natively, use gap="$md"
@@ -1582,7 +1582,7 @@ When generating new code:
 ### Responsive Layout
 
 ```tsx
-<Container maxWidth="lg">
+<Container size="lg">
   <Column
     gap="$md"
     $gtMd={{ gap: "$lg" }} // Larger gap on desktop
@@ -1598,6 +1598,145 @@ When generating new code:
   </Column>
 </Container>
 ```
+
+## SEO Foundations (Next.js Web)
+
+### Sitemap & robots.txt
+
+The web app uses `next-sitemap` to automatically generate XML sitemaps and robots.txt files:
+
+- **Configuration**: `apps/web/next-sitemap.config.js`
+- **Generation**: Automatically runs after build via `postbuild` script
+- **Environment**: Set `SITE_URL` environment variable for production URLs
+- **Exclusions**: API routes, auth pages, and error pages are excluded
+
+**When to Update:**
+- Adding new public routes → Ensure they're not in the exclude list
+- Adding admin/draft routes → Add to exclude list
+- Changing route structure → Update transform function priorities
+
+**Validation:**
+- After build, check `apps/web/public/sitemap.xml` exists
+- Verify `apps/web/public/robots.txt` references the sitemap
+- Submit sitemap to Google Search Console in production
+
+### Structured Data (JSON-LD)
+
+Structured data enables rich search results and helps search engines understand content:
+
+- **Helper Component**: `apps/web/src/components/seo/SeoJsonLd.tsx`
+- **Usage**: Import and add to any page component
+
+**Available Schema Types:**
+- **Home/Organization**: `Organization` + `WebSite` (with SearchAction)
+- **Product Pages**: `Product` with offers, brand, availability
+- **Blog/Articles**: `BlogPosting` or `Article` (when implemented)
+
+**Example Usage:**
+```tsx
+import { SeoJsonLd } from '@/components/seo';
+
+export default function MyPage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Product Name",
+    "description": "Product description",
+    // ... more fields
+  };
+
+  return (
+    <>
+      <YourPageContent />
+      <SeoJsonLd data={schema} />
+    </>
+  );
+}
+```
+
+**Best Practices:**
+- Use absolute HTTPS URLs for images and links
+- Populate from source of truth (database, CMS, props)
+- Include all required fields for the schema type
+- Test with [Google Rich Results Test](https://search.google.com/test/rich-results)
+
+### Mobile App Deep Linking
+
+Universal Links (iOS) and App Links (Android) configuration:
+
+**Web Side:**
+- `.well-known/apple-app-site-association` - iOS configuration
+- `.well-known/assetlinks.json` - Android configuration
+- Both files located in `apps/web/public/.well-known/`
+
+**Mobile Side:**
+- iOS: `bundleIdentifier` and `associatedDomains` in `apps/mobile/app.json`
+- Android: `package` and `intentFilters` in `apps/mobile/app.json`
+
+**Setup Requirements:**
+1. Update Team ID in `apple-app-site-association`
+2. Update package names to match your app
+3. Add SHA256 fingerprint to `assetlinks.json` (from Android keystore)
+4. Ensure files are accessible at `https://yourdomain.com/.well-known/*`
+
+**Testing:**
+- iOS: Tap a link in Messages/Mail with app installed
+- Android: Tap a link in browser/app with app installed
+- Verify app opens instead of browser
+
+### CI/CD Integration
+
+**GitHub Actions Workflow**: `.github/workflows/seo-check.yml`
+
+Automatically validates:
+- ✅ Sitemap generation
+- ✅ robots.txt existence and format
+- ✅ JSON-LD component usage
+- ✅ .well-known files for app linking
+
+**Runs on:**
+- Pull requests affecting web app routes or components
+- Manual workflow dispatch
+
+### PR Checklist for SEO Changes
+
+When adding or modifying pages:
+- [ ] Updated `next-sitemap.config.js` if route should be excluded
+- [ ] Added JSON-LD structured data for new page types
+- [ ] Tested structured data with Google Rich Results Test
+- [ ] Verified sitemap includes new routes (or excludes appropriately)
+- [ ] Updated deep linking paths if mobile app should handle route
+
+### Staging vs Production
+
+**Staging:**
+- Use environment variables to control indexing
+- Consider password protection or `ROBOTS_DISALLOW_ALL=true`
+- Test sitemap generation works correctly
+
+**Production:**
+- Set `SITE_URL` to production domain
+- Ensure robots.txt allows indexing
+- Submit sitemap to Google Search Console
+- Monitor Search Console for errors
+
+### Common Issues
+
+**Sitemap not generating:**
+- Check `postbuild` script runs after Next.js build
+- Verify `SITE_URL` environment variable is set
+- Check build logs for next-sitemap errors
+
+**JSON-LD not appearing:**
+- Ensure server-side rendering is enabled (not client-only)
+- Check browser source (not inspector) for script tag
+- Validate JSON syntax with online validator
+
+**Deep links not working:**
+- Verify .well-known files are publicly accessible (200 OK)
+- Check Team ID and package names match exactly
+- Test on physical device (simulators have limitations)
+- Review Android logcat for App Links verification
 
 ## Tamagui Documentation
 

@@ -51,7 +51,7 @@ export const Container = styled(TamaguiYStack, {
   marginHorizontal: "auto",
 
   variants: {
-    maxWidth: {
+    size: {
       sm: { maxWidth: 640 },
       md: { maxWidth: 768 },
       lg: { maxWidth: 1024 },
@@ -62,7 +62,7 @@ export const Container = styled(TamaguiYStack, {
   } as const,
 
   defaultVariants: {
-    maxWidth: "lg",
+    size: "lg",
   },
 });
 

@@ -31,7 +31,7 @@ export function CategoryButton({
       onPress={onPress}
     >
       {active ? (
-        <Text {...{ color: "inverse" as any }} weight="semibold">
+        <Text color="$textInverse" weight="semibold">
           {label}
         </Text>
       ) : (
