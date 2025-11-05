@@ -16,6 +16,7 @@
     "@buttergolf/ui": "workspace:*",
     "@clerk/nextjs": "catalog:",
     "@easypost/api": "^8.2.0",
+    "@stripe/connect-js": "^3.3.31",
     "@stripe/react-stripe-js": "^5.3.0",
     "@stripe/stripe-js": "^8.3.0",
     "@tamagui/core": "catalog:",
