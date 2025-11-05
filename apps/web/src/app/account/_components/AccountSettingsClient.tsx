@@ -9,29 +9,30 @@ import {
   Button,
   Card,
   Badge,
+  Container,
 } from "@buttergolf/ui";
 import { SellerOnboarding } from "../../_components/SellerOnboarding";
 
 interface AccountSettingsClientProps {
-  readonly hasConnectAccount: boolean;
-  readonly onboardingComplete: boolean;
-  readonly accountStatus: string;
+  readonly user: {
+    readonly email: string;
+    readonly name?: string;
+    readonly hasConnectAccount: boolean;
+    readonly onboardingComplete: boolean;
+    readonly accountStatus: string;
+  };
 }
 
 /**
  * Client component for account settings page
  * Handles seller onboarding state and UI interactions
  */
-export function AccountSettingsClient({
-  hasConnectAccount,
-  onboardingComplete,
-  accountStatus,
-}: AccountSettingsClientProps) {
+export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Determine badge variant based on account status
   const getStatusBadge = () => {
-    switch (accountStatus) {
+    switch (user.accountStatus) {
       case "active":
         return (
           <Badge variant="success" {...{ size: "md" as any }}>
@@ -62,7 +63,7 @@ export function AccountSettingsClient({
   };
 
   const renderContent = () => {
-    if (hasConnectAccount && onboardingComplete && accountStatus === "active") {
+    if (user.hasConnectAccount && user.onboardingComplete && user.accountStatus === "active") {
       return (
         <>
           <Text {...{ color: "secondary" as any }}>
@@ -90,9 +91,9 @@ export function AccountSettingsClient({
     }
 
     if (
-      hasConnectAccount &&
-      onboardingComplete &&
-      accountStatus === "restricted"
+      user.hasConnectAccount &&
+      user.onboardingComplete &&
+      user.accountStatus === "restricted"
     ) {
       return (
         <>
@@ -112,7 +113,7 @@ export function AccountSettingsClient({
       );
     }
 
-    if (hasConnectAccount && onboardingComplete) {
+    if (user.hasConnectAccount && user.onboardingComplete) {
       return (
         <>
           <Text {...{ color: "secondary" as any }}>
@@ -131,7 +132,7 @@ export function AccountSettingsClient({
       );
     }
 
-    if (hasConnectAccount) {
+    if (user.hasConnectAccount) {
       return (
         <>
           <Text {...{ color: "secondary" as any }}>
@@ -171,24 +172,55 @@ export function AccountSettingsClient({
 
   if (showOnboarding) {
     return (
-      <Card variant="elevated" {...{ padding: "lg" as any }}>
-        <SellerOnboarding
-          onComplete={handleOnboardingComplete}
-          onExit={() => setShowOnboarding(false)}
-        />
-      </Card>
+      <Container {...{ size: "lg" as any, padding: "md" as any }}>
+        <Card variant="elevated" {...{ padding: "lg" as any }}>
+          <SellerOnboarding
+            onComplete={handleOnboardingComplete}
+            onExit={() => setShowOnboarding(false)}
+          />
+        </Card>
+      </Container>
     );
   }
 
   return (
-    <Card variant="elevated" {...{ padding: "lg" as any }}>
-      <Column gap="$lg">
-        <Row align="center" {...{ justify: "space-between" as any }}>
-          <Heading level={3}>Seller Account</Heading>
-          {getStatusBadge()}
-        </Row>
-        {renderContent()}
+    <Container {...{ size: "lg" as any, padding: "md" as any }}>
+      <Column gap="$xl" fullWidth>
+        <Column gap="$sm">
+          <Heading level={1}>Account Settings</Heading>
+          <Text {...{ color: "secondary" as any }}>
+            Manage your account and seller settings
+          </Text>
+        </Column>
+
+        {/* Account Info Card */}
+        <Card variant="elevated" {...{ padding: "lg" as any }}>
+          <Column gap="$md">
+            <Heading level={3}>Account Information</Heading>
+            <Column gap="$xs">
+              <Text weight="medium">Email</Text>
+              <Text {...{ color: "secondary" as any }}>{user.email}</Text>
+            </Column>
+            {user.name && (
+              <Column gap="$xs">
+                <Text weight="medium">Name</Text>
+                <Text {...{ color: "secondary" as any }}>{user.name}</Text>
+              </Column>
+            )}
+          </Column>
+        </Card>
+
+        {/* Seller Status Card */}
+        <Card variant="elevated" {...{ padding: "lg" as any }}>
+          <Column gap="$lg">
+            <Row align="center" {...{ justify: "space-between" as any }}>
+              <Heading level={3}>Seller Account</Heading>
+              {getStatusBadge()}
+            </Row>
+            {renderContent()}
+          </Column>
+        </Card>
       </Column>
-    </Card>
+    </Container>
   );
 }
