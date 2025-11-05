@@ -59,8 +59,8 @@ jobs:
             echo "❌ sitemap.xml is not valid XML"
             exit 1
           fi
-          if ! grep -q "<urlset" ./apps/web/public/sitemap.xml; then
-            echo "❌ sitemap.xml missing urlset tag"
+          if ! grep -q -E "<urlset|<sitemapindex" ./apps/web/public/sitemap.xml; then
+            echo "❌ sitemap.xml missing urlset or sitemapindex tag"
             exit 1
           fi
           echo "✅ sitemap.xml is valid XML"
