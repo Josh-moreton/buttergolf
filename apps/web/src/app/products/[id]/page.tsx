@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <Container {...{ maxWidth: "lg" as any }} padding="$md">
+      <Container size="lg" padding="$md">
         <Column gap="$xl" paddingVertical="$10" alignItems="center">
           <Spinner size="lg" color="$primary" />
           <Text color="$textSecondary">Loading product...</Text>
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
 
   if (error || !product) {
     return (
-      <Container {...{ maxWidth: "lg" as any }} padding="$md">
+      <Container size="lg" padding="$md">
         <Column gap="$lg" paddingVertical="$10" alignItems="center">
           <Heading level={2}>Product Not Found</Heading>
           <Text color="$textSecondary">
@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
   const selectedImage = product.images[selectedImageIndex];
 
   return (
-    <Container {...{ maxWidth: "lg" as any }} padding="$md">
+    <Container size="lg" padding="$md">
       <Column gap="$xl" paddingVertical="$10">
         {/* Breadcrumb */}
         <Row gap="$sm" alignItems="center" flexWrap="wrap">

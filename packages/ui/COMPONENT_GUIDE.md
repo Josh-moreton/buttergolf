@@ -418,7 +418,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 
 ### Mobile First
 ```tsx
-<Container maxWidth="lg">
+<Container size="lg">
   <YStack
     gap="$4"
     $gtMd={{ gap: "lg" }}  // Larger gap on desktop
