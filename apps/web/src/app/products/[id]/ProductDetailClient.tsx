@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Column,
@@ -13,7 +12,6 @@ import {
   Card,
   Image,
   Badge,
-  Spinner,
 } from "@buttergolf/ui";
 
 interface ProductImage {
@@ -34,7 +32,7 @@ interface User {
   imageUrl: string | null;
 }
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   description: string;
@@ -50,58 +48,12 @@ interface Product {
   user: User;
 }
 
-export default function ProductDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface ProductDetailClientProps {
+  product: Product;
+}
+
+export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
-  useEffect(() => {
-    if (!params.id) return;
-
-    fetch(`/api/products/${params.id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Product not found");
-        return res.json();
-      })
-      .then((data) => {
-        setProduct(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [params.id]);
-
-  if (loading) {
-    return (
-      <Container size="lg" padding="$md">
-        <Column gap="$xl" paddingVertical="$10" alignItems="center">
-          <Spinner size="lg" color="$primary" />
-          <Text color="$textSecondary">Loading product...</Text>
-        </Column>
-      </Container>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <Container size="lg" padding="$md">
-        <Column gap="$lg" paddingVertical="$10" alignItems="center">
-          <Heading level={2}>Product Not Found</Heading>
-          <Text color="$textSecondary">
-            {error || "This product does not exist or has been removed."}
-          </Text>
-          <Button size="$5" onPress={() => router.push("/")}>
-            Back to Home
-          </Button>
-        </Column>
-      </Container>
-    );
-  }
 
   const selectedImage = product.images[selectedImageIndex];
 
