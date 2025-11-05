@@ -119,12 +119,8 @@ export function ImageUpload({
       >
         {uploading ? (
           <Column gap="$md" alignItems="center">
-            <Spinner size="lg" {...{ color: "$primary" as any }} />
-            <Text
-              size="md"
-              {...{ color: "$textSecondary" as any }}
-              textAlign="center"
-            >
+            <Spinner size="lg" color="$primary" />
+            <Text size="md" color="$textSecondary" textAlign="center">
               Uploading... {progress.toString()}%
             </Text>
           </Column>
@@ -145,7 +141,7 @@ export function ImageUpload({
                 size="lg"
                 weight="semibold"
                 textAlign="center"
-                {...{ color: "$text" as any }}
+                color="$text"
               >
                 {currentImages.length === 0
                   ? "Upload photos"
@@ -153,18 +149,14 @@ export function ImageUpload({
               </Text>
               <Text
                 size="sm"
-                {...{ color: "$textSecondary" as any }}
+                color="$textSecondary"
                 textAlign="center"
                 lineHeight={20}
               >
                 or drag and drop
               </Text>
             </Column>
-            <Text
-              size="xs"
-              {...{ color: "$textMuted" as any }}
-              textAlign="center"
-            >
+            <Text size="xs" color="$textMuted" textAlign="center">
               {currentImages.length}/{maxImages} photos • Max 10MB each
             </Text>
           </Column>
@@ -172,7 +164,7 @@ export function ImageUpload({
       </Column>
 
       {error && (
-        <Text size="sm" {...{ color: "$error" as any }} textAlign="center">
+        <Text size="sm" color="$error" textAlign="center">
           {error}
         </Text>
       )}
@@ -213,7 +205,7 @@ export function ImageUpload({
                   >
                     <Text
                       size="xs"
-                      {...{ color: "$textInverse" as any }}
+                      color="$textInverse"
                       textAlign="center"
                       fontWeight="600"
                     >

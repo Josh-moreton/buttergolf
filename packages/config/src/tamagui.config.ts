@@ -92,7 +92,7 @@ const customTokens = createTokens({
     color: {
         ...brandColors,
 
-        // Semantic color mappings
+        // Primary semantic colors
         primary: brandColors.green500,
         primaryLight: brandColors.green100,
         primaryHover: brandColors.green600,
@@ -121,12 +121,50 @@ const customTokens = createTokens({
         infoLight: brandColors.blue100,
         infoDark: brandColors.blue700,
 
+        // Background colors (light theme defaults)
+        background: brandColors.offWhite,
+        backgroundHover: '#f5f5f2',
+        backgroundPress: '#eeeeeb',
+        backgroundFocus: '#e8e8e4',
+        backgroundStrong: brandColors.white,
+        backgroundTransparent: 'rgba(251, 251, 249, 0)',
+
+        // Text colors (light theme defaults)
+        text: brandColors.gray900,
+        textSecondary: brandColors.gray700,
+        textTertiary: brandColors.gray600,
+        textMuted: brandColors.gray500,
+        textInverse: brandColors.white,
+
+        // Surface colors
+        surface: brandColors.white,
+        card: '#F6F7FB',
+        cardHover: '#eff1f5',
+
+        // Border colors
+        border: brandColors.gray300,
+        borderHover: brandColors.gray400,
+        borderFocus: brandColors.green500,
+        borderPress: brandColors.green600,
+
+        // Shadow colors
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowColorHover: 'rgba(0, 0, 0, 0.15)',
+        shadowColorPress: 'rgba(0, 0, 0, 0.2)',
+        shadowColorFocus: 'rgba(19, 160, 99, 0.3)',
+
+        // Generic color states (light theme defaults)
+        color: brandColors.gray900,
+        colorHover: brandColors.gray800,
+        colorPress: brandColors.gray700,
+        colorFocus: brandColors.gray900,
+        colorTransparent: 'rgba(17, 24, 39, 0)',
+
         // Backward compatibility
         bg: brandColors.offWhite,
         bgGray: '#F7F7F7',
         bgCard: '#F6F7FB',
         cardBg: brandColors.white,
-        text: brandColors.gray900,
         textDark: '#1C274C',
         muted: brandColors.gray500,
         blue: brandColors.blue500,
@@ -187,82 +225,82 @@ const customTokens = createTokens({
 
 // Light theme with semantic token mappings
 const lightTheme = {
-    // Background colors
-    background: brandColors.offWhite,
-    backgroundHover: '#f5f5f2',
-    backgroundPress: '#eeeeeb',
-    backgroundFocus: '#e8e8e4',
-    backgroundStrong: brandColors.white,
-    backgroundTransparent: 'rgba(251, 251, 249, 0)',
+    // Background colors - reference tokens
+    background: '$background',
+    backgroundHover: '$backgroundHover',
+    backgroundPress: '$backgroundPress',
+    backgroundFocus: '$backgroundFocus',
+    backgroundStrong: '$backgroundStrong',
+    backgroundTransparent: '$backgroundTransparent',
 
-    // Text colors
-    color: brandColors.gray900,
-    colorHover: brandColors.gray800,
-    colorPress: brandColors.gray700,
-    colorFocus: brandColors.gray900,
-    colorTransparent: 'rgba(17, 24, 39, 0)',
+    // Text colors - reference tokens
+    color: '$color',
+    colorHover: '$colorHover',
+    colorPress: '$colorPress',
+    colorFocus: '$colorFocus',
+    colorTransparent: '$colorTransparent',
 
-    // Semantic colors
-    primary: brandColors.green500,
-    primaryHover: brandColors.green600,
-    primaryPress: brandColors.green700,
-    primaryFocus: brandColors.green500,
-    primaryLight: brandColors.green100,
+    // Semantic colors - reference tokens
+    primary: '$primary',
+    primaryHover: '$primaryHover',
+    primaryPress: '$primaryPress',
+    primaryFocus: '$primaryFocus',
+    primaryLight: '$primaryLight',
 
-    secondary: brandColors.amber400,
-    secondaryHover: brandColors.amber500,
-    secondaryPress: brandColors.amber600,
-    secondaryFocus: brandColors.amber400,
-    secondaryLight: brandColors.amber100,
+    secondary: '$secondary',
+    secondaryHover: '$secondaryHover',
+    secondaryPress: '$secondaryPress',
+    secondaryFocus: '$secondaryFocus',
+    secondaryLight: '$secondaryLight',
 
-    success: brandColors.teal500,
-    successLight: brandColors.teal100,
-    successDark: brandColors.teal700,
+    success: '$success',
+    successLight: '$successLight',
+    successDark: '$successDark',
 
-    error: brandColors.red600,
-    errorLight: brandColors.red100,
-    errorDark: brandColors.red700,
+    error: '$error',
+    errorLight: '$errorLight',
+    errorDark: '$errorDark',
 
-    warning: brandColors.amber400,
-    warningLight: brandColors.amber100,
-    warningDark: brandColors.amber700,
+    warning: '$warning',
+    warningLight: '$warningLight',
+    warningDark: '$warningDark',
 
-    info: brandColors.blue500,
-    infoLight: brandColors.blue100,
-    infoDark: brandColors.blue700,
+    info: '$info',
+    infoLight: '$infoLight',
+    infoDark: '$infoDark',
 
-    // Text semantic colors
-    text: brandColors.gray900,
-    textSecondary: brandColors.gray700,
-    textTertiary: brandColors.gray600,
-    textMuted: brandColors.gray500,
-    textInverse: brandColors.white,
+    // Text semantic colors - reference tokens
+    text: '$text',
+    textSecondary: '$textSecondary',
+    textTertiary: '$textTertiary',
+    textMuted: '$textMuted',
+    textInverse: '$textInverse',
 
-    // Surface colors
-    surface: brandColors.white,
-    card: '#F6F7FB',
-    cardHover: '#eff1f5',
+    // Surface colors - reference tokens
+    surface: '$surface',
+    card: '$card',
+    cardHover: '$cardHover',
 
-    // Border colors
-    border: brandColors.gray300,
-    borderHover: brandColors.gray400,
-    borderFocus: brandColors.green500,
-    borderPress: brandColors.green600,
+    // Border colors - reference tokens
+    border: '$border',
+    borderHover: '$borderHover',
+    borderFocus: '$borderFocus',
+    borderPress: '$borderPress',
 
-    // Shadow colors
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowColorHover: 'rgba(0, 0, 0, 0.15)',
-    shadowColorPress: 'rgba(0, 0, 0, 0.2)',
-    shadowColorFocus: 'rgba(19, 160, 99, 0.3)',
+    // Shadow colors - reference tokens
+    shadowColor: '$shadowColor',
+    shadowColorHover: '$shadowColorHover',
+    shadowColorPress: '$shadowColorPress',
+    shadowColorFocus: '$shadowColorFocus',
 
-    // Utility colors
-    white: brandColors.white,
-    cream: brandColors.cream,
+    // Utility colors - reference tokens
+    white: '$white',
+    cream: '$cream',
 }
 
 // Dark theme with semantic token mappings
 const darkTheme = {
-    // Background colors
+    // Background colors - override tokens for dark mode
     background: brandColors.gray900,
     backgroundHover: brandColors.gray800,
     backgroundPress: brandColors.gray700,
@@ -270,7 +308,7 @@ const darkTheme = {
     backgroundStrong: brandColors.gray800,
     backgroundTransparent: 'rgba(17, 24, 39, 0)',
 
-    // Text colors
+    // Text colors - override for dark mode
     color: brandColors.gray50,
     colorHover: brandColors.gray100,
     colorPress: brandColors.white,
@@ -306,25 +344,25 @@ const darkTheme = {
     infoLight: brandColors.blue900,
     infoDark: brandColors.blue300,
 
-    // Text semantic colors
+    // Text semantic colors - override for dark mode
     text: brandColors.gray50,
     textSecondary: brandColors.gray300,
     textTertiary: brandColors.gray400,
     textMuted: brandColors.gray500,
     textInverse: brandColors.gray900,
 
-    // Surface colors
+    // Surface colors - override for dark mode
     surface: brandColors.gray800,
     card: brandColors.gray800,
     cardHover: brandColors.gray700,
 
-    // Border colors
+    // Border colors - override for dark mode
     border: brandColors.gray700,
     borderHover: brandColors.gray600,
     borderFocus: brandColors.green400,
     borderPress: brandColors.green500,
 
-    // Shadow colors
+    // Shadow colors - override for dark mode
     shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowColorHover: 'rgba(0, 0, 0, 0.4)',
     shadowColorPress: 'rgba(0, 0, 0, 0.5)',

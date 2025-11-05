@@ -610,7 +610,7 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
   <Button>Right action</Button>
 </Row>
 
-<Container maxWidth="lg" padding="md">
+<Container size="lg" padding="md">
   <Text>Constrained content</Text>
 </Container>
 
@@ -842,7 +842,7 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 ```tsx
 <Container
-  maxWidth="sm | md | lg | xl | 2xl | full" // Max width (default: lg)
+  size="sm | md | lg | xl | 2xl | full" // Max width (default: lg)
   padding="none | xs | sm | md | lg | xl" // Horizontal padding (default: md)
   center={boolean} // Center align content
 >
@@ -1330,7 +1330,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Button size="lg">                // Button component variant
 <Text color="muted">              // Text component variant
 <Card padding="lg">               // Card component variant (custom, not native padding)
-<Container maxWidth="lg">         // Container component variant
+<Container size="lg">             // Container component variant
 
 // ❌ WRONG - Creating variants for native props
 <Row gap="md">                    // ❌ gap exists natively, use gap="$md"
@@ -1582,7 +1582,7 @@ When generating new code:
 ### Responsive Layout
 
 ```tsx
-<Container maxWidth="lg">
+<Container size="lg">
   <Column
     gap="$md"
     $gtMd={{ gap: "$lg" }} // Larger gap on desktop
