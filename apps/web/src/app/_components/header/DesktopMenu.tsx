@@ -10,13 +10,10 @@ import { ChevronDownIcon } from "./icons";
 
 interface DesktopMenuProps {
   menuData: MenuItem[];
-  stickyMenu: boolean;
+  stickyMenu?: boolean;
 }
 
-export function DesktopMenu({
-  menuData,
-  stickyMenu,
-}: Readonly<DesktopMenuProps>) {
+export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const pathname = usePathname();
 
@@ -96,7 +93,7 @@ export function DesktopMenu({
                     const isSubItemActive =
                       subItem.path &&
                       pathname.split("?")[0] === subItem.path.split("?")[0];
-                    
+
                     return (
                       <Link
                         key={subItem.title}
@@ -110,10 +107,7 @@ export function DesktopMenu({
                             borderRadius="$md"
                             hoverStyle={{ backgroundColor: "$backgroundHover" }}
                           >
-                            <Text
-                              size="sm"
-                              weight="medium"
-                            >
+                            <Text size="sm" weight="medium">
                               {subItem.title}
                             </Text>
                           </Row>

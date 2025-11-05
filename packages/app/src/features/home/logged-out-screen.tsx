@@ -62,6 +62,7 @@ export function LoggedOutHomeScreen({
 
   useEffect(() => {
     if (onFetchProducts && products.length === 0 && !loading) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       onFetchProducts()
         .then((fetchedProducts) => {
