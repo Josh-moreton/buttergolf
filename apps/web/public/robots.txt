@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Host
+Host: https://buttergolf.com
+
+# Sitemaps
+Sitemap: https://buttergolf.com/sitemap.xml
+Sitemap: https://buttergolf.com/server-sitemap.xml
