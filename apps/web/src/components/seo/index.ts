@@ -1,0 +1,1 @@
+export { SeoJsonLd } from './SeoJsonLd';
