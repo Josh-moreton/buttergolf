@@ -125,8 +125,8 @@ export function ProductDetailModal({
         >
           {loading && (
             <YStack padding="$8" alignItems="center" justifyContent="center">
-              <Spinner size="lg" {...{ color: "$primary" as any }} />
-              <Text {...{ color: "$textSecondary" as any }} marginTop="$4">
+              <Spinner size="lg" color="$primary" />
+              <Text color="$textSecondary" marginTop="$4">
                 Loading product...
               </Text>
             </YStack>
@@ -135,7 +135,7 @@ export function ProductDetailModal({
           {!loading && (error || !product) && (
             <YStack padding="$8" alignItems="center" gap="$4">
               <Heading level={3}>Product Not Found</Heading>
-              <Text {...{ color: "$textSecondary" as any }}>
+              <Text color="$textSecondary">
                 {error || "This product does not exist or has been removed."}
               </Text>
               <Button onPress={() => onOpenChange(false)}>Close</Button>
@@ -162,17 +162,12 @@ export function ProductDetailModal({
               </Dialog.Close>
 
               {/* Scrollable Content */}
-              <YStack
-                {...{ overflow: "auto" as any }}
-                maxHeight="90vh"
-                padding="$6"
-                gap="$6"
-              >
+              <YStack overflow="scroll" maxHeight="90vh" padding="$6" gap="$6">
                 <Row gap="$6" flexWrap="wrap">
                   {/* Left Column - Images */}
                   <Column gap="$4" flex={1} minWidth={300}>
                     {/* Main Image */}
-                    <Card variant="outlined" {...{ padding: "$0" as any }}>
+                    <Card variant="outlined" padding="$0">
                       <Image
                         source={{ uri: selectedImage?.url || "" }}
                         width="100%"
@@ -189,7 +184,7 @@ export function ProductDetailModal({
                           <Card
                             key={img.id}
                             variant="outlined"
-                            {...{ padding: "$0" as any }}
+                            padding="$0"
                             cursor="pointer"
                             onPress={() => setSelectedImageIndex(index)}
                             {...(index === selectedImageIndex && {
@@ -231,7 +226,7 @@ export function ProductDetailModal({
                     </Dialog.Title>
 
                     {/* Price */}
-                    <Heading level={2} {...{ color: "$primary" as any }}>
+                    <Heading level={2} color="$primary">
                       £{product.price.toFixed(2)}
                     </Heading>
 
@@ -240,7 +235,7 @@ export function ProductDetailModal({
                       <Row gap="$6">
                         {product.brand && (
                           <Column gap="$1">
-                            <Text size="xs" {...{ color: "$textMuted" as any }}>
+                            <Text size="xs" color="$textMuted">
                               Brand
                             </Text>
                             <Text weight="semibold">{product.brand}</Text>
@@ -248,7 +243,7 @@ export function ProductDetailModal({
                         )}
                         {product.model && (
                           <Column gap="$1">
-                            <Text size="xs" {...{ color: "$textMuted" as any }}>
+                            <Text size="xs" color="$textMuted">
                               Model
                             </Text>
                             <Text weight="semibold">{product.model}</Text>
@@ -258,12 +253,12 @@ export function ProductDetailModal({
                     )}
 
                     {/* Description */}
-                    <Card variant="filled" {...{ padding: "$4" as any }}>
+                    <Card variant="filled" padding="$4">
                       <Column gap="$3">
                         <Heading level={4}>Description</Heading>
                         <Dialog.Description asChild>
                           <Text
-                            {...{ color: "$textSecondary" as any }}
+                            color="$textSecondary"
                             style={{ whiteSpace: "pre-wrap" }}
                           >
                             {product.description}
@@ -274,7 +269,7 @@ export function ProductDetailModal({
 
                     {/* Quantity Selector (if not sold) */}
                     {!product.isSold && (
-                      <Card variant="outlined" {...{ padding: "$4" as any }}>
+                      <Card variant="outlined" padding="$4">
                         <Row gap="$4" alignItems="center">
                           <Text weight="semibold">Quantity:</Text>
                           <Row gap="$2" alignItems="center">
@@ -330,7 +325,7 @@ export function ProductDetailModal({
                     </Column>
 
                     {/* Seller Info */}
-                    <Card variant="outlined" {...{ padding: "$4" as any }}>
+                    <Card variant="outlined" padding="$4">
                       <Row gap="$3" alignItems="center">
                         {product.user.imageUrl && (
                           <Image
@@ -344,7 +339,7 @@ export function ProductDetailModal({
                           <Text weight="semibold">
                             {product.user.name || "Anonymous"}
                           </Text>
-                          <Text size="xs" {...{ color: "$textMuted" as any }}>
+                          <Text size="xs" color="$textMuted">
                             Listed{" "}
                             {new Date(product.createdAt).toLocaleDateString()}
                           </Text>
