@@ -111,7 +111,7 @@ export async function POST(req: Request) {
 
 /**
  * Handle account.updated events
- * Syncs the Connect account status to our database
+ * Syncs the Connect account status to our database using V2 API
  */
 async function handleAccountUpdated(account: Stripe.Account) {
     try {
@@ -125,27 +125,69 @@ async function handleAccountUpdated(account: Stripe.Account) {
             return;
         }
 
-        // Determine account status
+        // Fetch full account details from V2 API for accurate status
+        const response = await fetch(`https://api.stripe.com/v2/core/accounts/${account.id}?include=configuration.merchant&include=requirements`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+                'Stripe-Version': '2025-04-30.preview',
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to fetch V2 account details: ${response.status}`);
+            // Fallback to V1 data from webhook event
+            return handleV1AccountUpdate(user.id, account);
+        }
+
+        const v2Account = await response.json();
+
+        // Determine account status from V2 API
+        const hasNoDue = v2Account.requirements?.currently_due?.length === 0;
+        const cardPaymentsActive = v2Account.configuration?.merchant?.capabilities?.card_payments?.status === 'active';
+        const transfersActive = v2Account.configuration?.merchant?.capabilities?.transfers?.status === 'active';
+
         let status = 'pending';
-        if (account.details_submitted && account.charges_enabled && account.payouts_enabled) {
+        if (hasNoDue && cardPaymentsActive && transfersActive) {
             status = 'active';
-        } else if (account.details_submitted) {
-            status = 'restricted'; // Submitted but not fully enabled
+        } else if (hasNoDue) {
+            status = 'restricted'; // No requirements due but capabilities not fully active
         }
 
         // Update user record
         await prisma.user.update({
             where: { id: user.id },
             data: {
-                stripeOnboardingComplete: account.details_submitted || false,
+                stripeOnboardingComplete: hasNoDue,
                 stripeAccountStatus: status,
             },
         });
 
-        console.log(`Updated user ${user.id} Connect status: ${status}`);
+        console.log(`Updated user ${user.id} Connect status: ${status} (V2 API)`);
 
     } catch (error) {
         console.error('Error updating user from webhook:', error);
         throw error;
     }
+}
+
+/**
+ * Fallback handler using V1 account data from webhook
+ */
+async function handleV1AccountUpdate(userId: string, account: Stripe.Account) {
+    let status = 'pending';
+    if (account.details_submitted && account.charges_enabled && account.payouts_enabled) {
+        status = 'active';
+    } else if (account.details_submitted) {
+        status = 'restricted';
+    }
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: {
+            stripeOnboardingComplete: account.details_submitted || false,
+            stripeAccountStatus: status,
+        },
+    });
+
+    console.log(`Updated user ${userId} Connect status: ${status} (V1 fallback)`);
 }

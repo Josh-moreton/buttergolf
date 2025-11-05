@@ -13,7 +13,7 @@ import {
 import {
   ConnectAccountOnboarding,
   ConnectComponentsProvider,
-} from "@stripe/react-stripe-js";
+} from "@stripe/react-connect-js";
 import { loadConnectAndInitialize } from "@stripe/connect-js";
 
 interface SellerOnboardingProps {
