@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * Account Settings Page
- * 
+ *
  * Displays user account information and seller onboarding status.
  * Protected route - requires authentication.
  */

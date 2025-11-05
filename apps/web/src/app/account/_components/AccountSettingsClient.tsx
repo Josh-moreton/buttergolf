@@ -70,7 +70,12 @@ export function AccountSettingsClient({
             now list products and manage your sales.
           </Text>
           <Row gap="$md">
-            <Button {...{ size: "md" as any, tone: "outline" as any }} onPress={() => { /* View dashboard */ }}>
+            <Button
+              {...{ size: "md" as any, tone: "outline" as any }}
+              onPress={() => {
+                /* View dashboard */
+              }}
+            >
               View Dashboard
             </Button>
             <Button
@@ -84,7 +89,11 @@ export function AccountSettingsClient({
       );
     }
 
-    if (hasConnectAccount && onboardingComplete && accountStatus === "restricted") {
+    if (
+      hasConnectAccount &&
+      onboardingComplete &&
+      accountStatus === "restricted"
+    ) {
       return (
         <>
           <Text {...{ color: "secondary" as any }}>
