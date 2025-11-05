@@ -1238,9 +1238,10 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...  # Client-side key
 STRIPE_WEBHOOK_SECRET=whsec_...            # Webhook signature verification
 ```
 
-**Important**: 
-- Use **test keys** (sk_test_/pk_test_) for development
-- Use **live keys** (sk_live_/pk_live_) for production
+**Important**:
+
+- Use **test keys** (sk*test*/pk*test*) for development
+- Use **live keys** (sk*live*/pk*live*) for production
 - Never expose secret keys to clients (only `NEXT_PUBLIC_*` variables)
 
 ### Setup Steps
@@ -1274,24 +1275,28 @@ STRIPE_WEBHOOK_SECRET=whsec_...            # Webhook signature verification
 ### Web Implementation Pattern
 
 **Server-side (API Routes)**:
+
 ```typescript
 // apps/web/src/lib/stripe.ts
-import Stripe from 'stripe';
+import Stripe from "stripe";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: "2024-11-20.acacia",
 });
 
 // Use this singleton for all server-side Stripe operations
 ```
 
 **Client-side (React Components)**:
+
 ```tsx
 // apps/web/src/app/checkout/page.tsx
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function CheckoutPage() {
   return (
@@ -1308,22 +1313,24 @@ export default function CheckoutPage() {
 
 ```tsx
 // apps/mobile/App.tsx or payment component
-import { StripeProvider } from '@stripe/stripe-react-native';
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 export default function App() {
   return (
-    <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}>
+    <StripeProvider
+      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+    >
       {/* Your app components */}
     </StripeProvider>
   );
 }
 
 // Payment screen
-import { useStripe } from '@stripe/stripe-react-native';
+import { useStripe } from "@stripe/stripe-react-native";
 
 function PaymentScreen() {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  
+
   // Fetch payment intent from your API
   // Initialize and present native payment sheet
 }
@@ -1336,8 +1343,8 @@ For marketplace functionality (sellers receiving payouts):
 ```typescript
 // Create Connect account
 const account = await stripe.accounts.create({
-  type: 'express',
-  country: 'US',
+  type: "express",
+  country: "US",
   email: sellerEmail,
   capabilities: {
     card_payments: { requested: true },
@@ -1350,7 +1357,7 @@ const accountLink = await stripe.accountLinks.create({
   account: account.id,
   refresh_url: `${baseUrl}/seller/onboarding/refresh`,
   return_url: `${baseUrl}/seller/onboarding/complete`,
-  type: 'account_onboarding',
+  type: "account_onboarding",
 });
 
 // Redirect seller to accountLink.url for embedded onboarding
@@ -1369,6 +1376,7 @@ const accountLink = await stripe.accountLinks.create({
 ### Common Workflows
 
 **Checkout Flow**:
+
 1. User adds products to cart
 2. Backend creates Stripe Checkout Session (or Payment Intent)
 3. Frontend receives client secret
@@ -1377,6 +1385,7 @@ const accountLink = await stripe.accountLinks.create({
 6. Webhook confirms payment → Update order status in DB
 
 **Seller Onboarding**:
+
 1. User clicks "Become a Seller"
 2. Backend creates Stripe Connect account
 3. Backend generates onboarding link
@@ -1384,6 +1393,7 @@ const accountLink = await stripe.accountLinks.create({
 5. Webhook confirms account activated → Enable seller features
 
 **Marketplace Payouts**:
+
 - Stripe automatically handles payouts to connected accounts
 - Platform fee: Deduct before transfer or use application_fee
 - Schedule: Configure in Connect settings (daily, weekly, monthly)
@@ -1391,6 +1401,7 @@ const accountLink = await stripe.accountLinks.create({
 ### Testing
 
 Use Stripe test cards:
+
 - Success: `4242 4242 4242 4242`
 - Decline: `4000 0000 0000 0002`
 - 3D Secure: `4000 0025 0000 3155`
@@ -1824,11 +1835,13 @@ The web app uses `next-sitemap` to automatically generate XML sitemaps and robot
 - **Exclusions**: API routes, auth pages, and error pages are excluded
 
 **When to Update:**
+
 - Adding new public routes → Ensure they're not in the exclude list
 - Adding admin/draft routes → Add to exclude list
 - Changing route structure → Update transform function priorities
 
 **Validation:**
+
 - After build, check `apps/web/public/sitemap.xml` exists
 - Verify `apps/web/public/robots.txt` references the sitemap
 - Submit sitemap to Google Search Console in production
@@ -1841,20 +1854,22 @@ Structured data enables rich search results and helps search engines understand 
 - **Usage**: Import and add to any page component
 
 **Available Schema Types:**
+
 - **Home/Organization**: `Organization` + `WebSite` (with SearchAction)
 - **Product Pages**: `Product` with offers, brand, availability
 - **Blog/Articles**: `BlogPosting` or `Article` (when implemented)
 
 **Example Usage:**
+
 ```tsx
-import { SeoJsonLd } from '@/components/seo';
+import { SeoJsonLd } from "@/components/seo";
 
 export default function MyPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "Product Name",
-    "description": "Product description",
+    name: "Product Name",
+    description: "Product description",
     // ... more fields
   };
 
@@ -1868,6 +1883,7 @@ export default function MyPage() {
 ```
 
 **Best Practices:**
+
 - Use absolute HTTPS URLs for images and links
 - Populate from source of truth (database, CMS, props)
 - Include all required fields for the schema type
@@ -1878,21 +1894,25 @@ export default function MyPage() {
 Universal Links (iOS) and App Links (Android) configuration:
 
 **Web Side:**
+
 - `.well-known/apple-app-site-association` - iOS configuration
 - `.well-known/assetlinks.json` - Android configuration
 - Both files located in `apps/web/public/.well-known/`
 
 **Mobile Side:**
+
 - iOS: `bundleIdentifier` and `associatedDomains` in `apps/mobile/app.json`
 - Android: `package` and `intentFilters` in `apps/mobile/app.json`
 
 **Setup Requirements:**
+
 1. Update Team ID in `apple-app-site-association`
 2. Update package names to match your app
 3. Add SHA256 fingerprint to `assetlinks.json` (from Android keystore)
 4. Ensure files are accessible at `https://yourdomain.com/.well-known/*`
 
 **Testing:**
+
 - iOS: Tap a link in Messages/Mail with app installed
 - Android: Tap a link in browser/app with app installed
 - Verify app opens instead of browser
@@ -1902,18 +1922,21 @@ Universal Links (iOS) and App Links (Android) configuration:
 **GitHub Actions Workflow**: `.github/workflows/seo-check.yml`
 
 Automatically validates:
+
 - ✅ Sitemap generation
 - ✅ robots.txt existence and format
 - ✅ JSON-LD component usage
 - ✅ .well-known files for app linking
 
 **Runs on:**
+
 - Pull requests affecting web app routes or components
 - Manual workflow dispatch
 
 ### PR Checklist for SEO Changes
 
 When adding or modifying pages:
+
 - [ ] Updated `next-sitemap.config.js` if route should be excluded
 - [ ] Added JSON-LD structured data for new page types
 - [ ] Tested structured data with Google Rich Results Test
@@ -1923,11 +1946,13 @@ When adding or modifying pages:
 ### Staging vs Production
 
 **Staging:**
+
 - Use environment variables to control indexing
 - Consider password protection or `ROBOTS_DISALLOW_ALL=true`
 - Test sitemap generation works correctly
 
 **Production:**
+
 - Set `SITE_URL` to production domain
 - Ensure robots.txt allows indexing
 - Submit sitemap to Google Search Console
@@ -1936,16 +1961,19 @@ When adding or modifying pages:
 ### Common Issues
 
 **Sitemap not generating:**
+
 - Check `postbuild` script runs after Next.js build
 - Verify `SITE_URL` environment variable is set
 - Check build logs for next-sitemap errors
 
 **JSON-LD not appearing:**
+
 - Ensure server-side rendering is enabled (not client-only)
 - Check browser source (not inspector) for script tag
 - Validate JSON syntax with online validator
 
 **Deep links not working:**
+
 - Verify .well-known files are publicly accessible (200 OK)
 - Check Team ID and package names match exactly
 - Test on physical device (simulators have limitations)
