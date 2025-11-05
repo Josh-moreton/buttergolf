@@ -27,6 +27,7 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
           width="100%"
           height={180}
           objectFit="cover"
+          alt={product.title}
         />
         <Column padding="$md" gap="$xs">
           <Text weight="bold" numberOfLines={2}>

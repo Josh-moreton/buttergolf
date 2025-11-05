@@ -175,6 +175,7 @@ export function ProductDetailModal({
                         height={400}
                         objectFit="cover"
                         borderRadius="$lg"
+                        alt={product?.title || "Product image"}
                       />
                     </Card>
 
@@ -198,7 +199,8 @@ export function ProductDetailModal({
                               width={60}
                               height={60}
                               objectFit="cover"
-                              borderRadius="$md"
+                              borderRadius="$sm"
+                              alt={`${product?.title} thumbnail ${index + 1}`}
                             />
                           </Card>
                         ))}
@@ -333,7 +335,8 @@ export function ProductDetailModal({
                             source={{ uri: product.user.imageUrl }}
                             width={48}
                             height={48}
-                            borderRadius="$full"
+                            borderRadius={24}
+                            alt={product.user.name || "Seller"}
                           />
                         )}
                         <Column gap="$1">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Text, Row, Column, ScrollView, Card } from "@buttergolf/ui";
+import { Button, Text, Row, Column, ScrollView } from "@buttergolf/ui";
 
 const CATEGORIES = [
   { key: "drivers", label: "Drivers" },
