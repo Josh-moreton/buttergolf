@@ -5,20 +5,35 @@
  */
 
 :root {
-  /* Light theme - Golf Marketplace (FORCED - dark theme not ready yet) */
-  --background: #fbfbf9;
-  --foreground: #042918;
-  --primary: #13a063;
-  --primary-foreground: #fbfbf9;
-  --border: #e5e7e4;
-  --muted: #084a2b;
+  /* Light theme - Pure Butter Brand */
+  --background: #fefad6; /* Cream */
+  --foreground: #1e1e1e; /* Charcoal */
+  --primary: #e25f2f; /* Butter Orange */
+  --primary-foreground: #ffffff;
+  --border: #d1d5db;
+  --muted: #6b7280;
   --card: #ffffff;
+
+  /* Gotham font family */
+  --font-gotham: var(--font-gotham);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-gotham),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;

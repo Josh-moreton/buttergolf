@@ -1,12 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Row, Text } from "@buttergolf/ui";
+import { CloseIcon } from "../header/icons";
 
 export function TrustBar() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
   return (
     <Row
-      backgroundColor="$primaryLight"
+      backgroundColor="$background"
       borderBottomWidth={1}
       borderColor="$border"
       paddingVertical="$sm"
@@ -25,13 +31,14 @@ export function TrustBar() {
         flexWrap="wrap"
         gap="$xs"
       >
-        <Text size="sm" weight="medium">
+        <Text size="sm" weight="medium" color="$text">
           Give 10%, Get 10%.
         </Text>
         <Link href="/refer-a-friend" style={{ textDecoration: "none" }}>
           <Text
             size="sm"
             weight="medium"
+            color="$primary"
             textDecorationLine="underline"
             cursor="pointer"
             hoverStyle={{ opacity: 0.7 }}
@@ -39,6 +46,21 @@ export function TrustBar() {
             Refer a friend.
           </Text>
         </Link>
+      </Row>
+
+      {/* Close button */}
+      <Row
+        position="absolute"
+        right="$md"
+        tag="button"
+        cursor="pointer"
+        padding="$1"
+        hoverStyle={{ opacity: 0.7 }}
+        onPress={() => setIsVisible(false)}
+        {...{ style: { background: "none", border: "none" } }}
+        aria-label="Dismiss"
+      >
+        <CloseIcon />
       </Row>
     </Row>
   );

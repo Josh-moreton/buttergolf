@@ -263,7 +263,7 @@ export default function SellPage() {
                         transition: "border-color 0.2s",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = "#13a063";
+                        e.target.style.borderColor = "#E25F2F"; // Pure Butter orange
                       }}
                       onBlur={(e) => {
                         e.target.style.borderColor = "#d1d5db";
