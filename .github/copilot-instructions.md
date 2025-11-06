@@ -101,21 +101,21 @@ Our design system uses a comprehensive token system with semantic naming for mai
 **Brand Colors (10-shade scales)**:
 
 ```tsx
-// Primary Brand (Green) - Golf course inspired
-$green50 to $green900     // 10 shades from lightest to darkest
-$primary: $green500       // Main brand color (#13a063)
-$primaryLight: $green100  // Light variant for backgrounds
-$primaryHover: $green600  // Hover state
-$primaryPress: $green700  // Press/active state
-$primaryFocus: $green500  // Focus state
+// Primary Brand (Butter Orange) - Pure Butter heritage brand
+$butter50 to $butter900   // 10 shades from lightest to darkest
+$primary: $butter400      // Main brand color (#E25F2F - Butter Orange)
+$primaryLight: $butter100 // Light variant for backgrounds
+$primaryHover: $butter500 // Hover state
+$primaryPress: $butter700 // Press/active state
+$primaryFocus: $butter400 // Focus state
 
-// Secondary Brand (Amber/Gold) - Premium accent
-$amber50 to $amber900     // 10 shades
-$secondary: $amber400     // Main secondary color (#f2b705)
-$secondaryLight: $amber100
-$secondaryHover: $amber500
-$secondaryPress: $amber600
-$secondaryFocus: $amber400
+// Secondary Brand (Navy) - Modern contrast accent
+$navy50 to $navy900       // 10 shades
+$secondary: $navy500      // Main secondary color (#1A2E44 - Navy)
+$secondaryLight: $navy100
+$secondaryHover: $navy600
+$secondaryPress: $navy700
+$secondaryFocus: $navy500
 ```
 
 **Semantic Status Colors**:
@@ -129,9 +129,9 @@ $error: $red600; // Error states
 $errorLight: $red100; // Error backgrounds
 $errorDark: $red700; // Dark error
 
-$warning: $amber400; // Warning states
-$warningLight: $amber100;
-$warningDark: $amber700;
+$warning: $butter500; // Warning states
+$warningLight: $butter100;
+$warningDark: $butter700;
 
 $info: $blue500; // Informational states
 $infoLight: $blue100;
@@ -147,8 +147,8 @@ $gray50 to $gray900       // 10 shades for text, borders, backgrounds
 **Text Colors (Semantic)**:
 
 ```tsx
-$text: $gray900; // Primary text (dark in light theme)
-$textSecondary: $gray700; // Secondary text
+$text: $charcoal; // Primary text (#1E1E1E - warm charcoal in light theme)
+$textSecondary: #4A4A4A; // Secondary text
 $textTertiary: $gray600; // Tertiary text
 $textMuted: $gray500; // Muted/placeholder text
 $textInverse: $white; // Text on dark backgrounds
@@ -157,7 +157,7 @@ $textInverse: $white; // Text on dark backgrounds
 **Background Colors**:
 
 ```tsx
-$background: $offWhite; // Main app background (#fbfbf9)
+$background: $cream; // Main app background (#FEFAD6 - Pure Butter cream)
 $backgroundHover; // Hover state backgrounds
 $backgroundPress; // Press state backgrounds
 $backgroundFocus; // Focus state backgrounds
@@ -171,8 +171,8 @@ $cardHover; // Card hover state
 ```tsx
 $border: $gray300; // Default borders
 $borderHover: $gray400; // Hover state borders
-$borderFocus: $green500; // Focus state borders (uses primary)
-$borderPress: $green600; // Press state borders
+$borderFocus: $butter400; // Focus state borders (uses primary)
+$borderPress: $butter500; // Press state borders
 ```
 
 **Shadow Colors**:
@@ -215,13 +215,13 @@ $iconXl: 32px
 #### Radius Tokens
 
 ```tsx
-$xs: 2px
-$sm: 4px
-$md: 8px
-$lg: 12px
-$xl: 16px
-$2xl: 24px
-$full: 9999px    // Perfect circles
+$xs: 3px      // was 2px - softer, more playful
+$sm: 6px      // was 4px
+$md: 10px     // was 8px
+$lg: 14px     // was 12px
+$xl: 18px     // was 16px
+$2xl: 26px    // was 24px
+$full: 9999px // Perfect circles
 ```
 
 #### Z-Index Tokens
@@ -240,16 +240,16 @@ $tooltip: 1070;
 
 **Light Theme** (default):
 
-- Background: Off-white (#fbfbf9) for reduced eye strain
-- Text: Dark gray (#111827) for readability
-- Primary: Green 500 for brand consistency
+- Background: Cream (#FEFAD6) for warm, vintage feel
+- Text: Warm charcoal (#1E1E1E) for readability
+- Primary: Butter Orange (#E25F2F) for brand consistency
 - All semantic colors optimized for light backgrounds
 
 **Dark Theme**:
 
-- Background: Dark gray (#111827)
+- Background: Navy (#020508) for modern contrast
 - Text: Light gray (#f9fafb)
-- Primary: Green 400 (lighter for dark backgrounds)
+- Primary: Lighter butter (#FFE38A) for dark background contrast
 - All semantic colors adjusted for dark backgrounds with proper contrast
 
 **Sub-Themes for State Changes**:
@@ -553,8 +553,8 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 </View>
 
 // ❌ WRONG - Never use numbered colors or raw hex
-<Button backgroundColor="$green500">Submit</Button>  // Too specific
-<Button backgroundColor="#13a063">Submit</Button>    // No theming
+<Button backgroundColor="$butter500">Submit</Button>  // Too specific
+<Button backgroundColor="#E25F2F">Submit</Button>    // No theming
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
 ```
@@ -751,7 +751,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View padding="md">               // ❌ Missing $ for direct prop
 
 // ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$green500"> // ❌ Too specific, use semantic
+<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
 <Text color="$color">             // ❌ Old token name
 <View borderColor="$borderColor"> // ❌ Old token name
 ```
@@ -1555,7 +1555,7 @@ For detailed Stripe documentation: https://stripe.com/docs
 
 ### Design System & Components
 
-1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$green500`, `$color`, `$borderColor`
+1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$butter500`, `$color`, `$borderColor`
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
 3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
 4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
@@ -1688,7 +1688,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View padding="md">               // ❌ Missing $ for direct prop
 
 // ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$green500"> // ❌ Too specific, use semantic
+<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
 <Text color="$color">             // ❌ Old token name
 <View borderColor="$borderColor"> // ❌ Old token name
 ```
@@ -1710,7 +1710,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 </Row>
 
 // ❌ WRONG Component Usage
-<Button paddingHorizontal="$5" backgroundColor="$green500">Submit</Button>
+<Button paddingHorizontal="$5" backgroundColor="$butter500">Submit</Button>
 <Text fontSize="$3" color="$gray500">Helper text</Text>
 <Row gap="md">Wrong - use gap="$md"</Row>
 <Card elevate size="$4" bordered>

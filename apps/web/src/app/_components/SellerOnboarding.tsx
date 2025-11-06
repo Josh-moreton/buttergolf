@@ -74,13 +74,13 @@ export function SellerOnboarding({
         fetchClientSecret: async () => clientSecret,
         appearance: {
           variables: {
-            colorPrimary: "#13a063", // ButterGolf primary green
-            colorBackground: "#fbfbf9", // ButterGolf background
-            colorText: "#111827", // ButterGolf text
+            colorPrimary: "#E25F2F", // Pure Butter orange
+            colorBackground: "#FEFAD6", // Pure Butter cream
+            colorText: "#1E1E1E", // Charcoal text
             colorDanger: "#dc2626", // Error red
             fontFamily: "system-ui, -apple-system, sans-serif",
             spacingUnit: "4px",
-            borderRadius: "8px",
+            borderRadius: "10px", // Softer radius
           },
         },
       });

@@ -50,7 +50,7 @@ export function AppPromoBanner() {
     // Check if iOS
     const iOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-     
+
     setIsIOS(iOS);
 
     // Don't show banner if already dismissed or installed
@@ -157,7 +157,7 @@ export function AppPromoBanner() {
             width: "48px",
             height: "48px",
             borderRadius: "8px",
-            backgroundColor: "#13a063",
+            backgroundColor: "#E25F2F", // Pure Butter orange
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -184,7 +184,7 @@ export function AppPromoBanner() {
         <button
           onClick={handleInstall}
           style={{
-            backgroundColor: "#13a063",
+            backgroundColor: "#E25F2F", // Pure Butter orange
             color: "white",
             border: "none",
             borderRadius: "8px",
