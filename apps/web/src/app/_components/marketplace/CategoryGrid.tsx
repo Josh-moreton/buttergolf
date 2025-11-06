@@ -50,7 +50,7 @@ export function CategoryGrid() {
       paddingVertical="$8"
       $md={{ paddingVertical: "$12" }}
       $lg={{ paddingVertical: "$16" }}
-      backgroundColor="#FFFFFF"
+      backgroundColor="$surface"
     >
       {/* Section Title */}
       <Column
@@ -63,14 +63,14 @@ export function CategoryGrid() {
         gap="$8"
       >
         <Text
+          weight="bold"
+          color="$primary"
+          align="center"
           {...{
             style: {
               fontFamily: "var(--font-gotham)",
-              fontWeight: 700,
               fontSize: "clamp(32px, 5vw, 48px)",
               lineHeight: 1.2,
-              color: "#E25F2F",
-              textAlign: "center",
               letterSpacing: "2px",
               textTransform: "uppercase",
             },
@@ -101,8 +101,8 @@ export function CategoryGrid() {
                   flexDirection: "column",
                   width: "100%",
                   aspectRatio: "1 / 1",
-                  backgroundColor: "#FFFFFF",
-                  border: "3px solid #E25F2F",
+                  backgroundColor: "var(--surface)",
+                  border: "3px solid var(--primary)",
                   borderRadius: "4px",
                   overflow: "hidden",
                   cursor: "pointer",
@@ -136,19 +136,19 @@ export function CategoryGrid() {
                 {/* Orange Label at Bottom */}
                 <div
                   style={{
-                    backgroundColor: "#E25F2F",
+                    backgroundColor: "var(--primary)",
                     padding: "20px",
                     textAlign: "center",
                   }}
                 >
                   <Text
+                    weight="bold"
+                    color="$textInverse"
                     {...{
                       style: {
                         fontFamily: "var(--font-gotham)",
-                        fontWeight: 700,
                         fontSize: "18px",
                         lineHeight: 1.2,
-                        color: "#FFFFFF",
                         letterSpacing: "1.5px",
                         textTransform: "uppercase",
                       },
@@ -181,7 +181,7 @@ export function CategoryGrid() {
 
           .category-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(226, 95, 47, 0.2);
+            box-shadow: 0 8px 16px color-mix(in display-p3, var(--primary) 20%, transparent);
           }
 
           .category-card:hover img {
