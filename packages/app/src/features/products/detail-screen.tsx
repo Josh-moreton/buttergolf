@@ -60,7 +60,7 @@ export function ProductDetailScreen({
     return (
       <Column
         flex={1}
-        backgroundColor="$background"
+        backgroundColor="$primary"
         alignItems="center"
         justifyContent="center"
       >

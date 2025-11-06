@@ -42,7 +42,7 @@ export function ProductsScreen({
   }, [onFetchProducts]);
 
   return (
-    <ScrollView flex={1} backgroundColor="$background">
+    <ScrollView flex={1} backgroundColor="$primary">
       <Column padding="$4" gap="$lg">
         <Heading level={2}>Browse Products</Heading>
 

@@ -132,7 +132,7 @@ export function OnboardingScreen({
   return (
     <YStack
       flex={1}
-      backgroundColor="$background"
+      backgroundColor="$primary" // Brand butter orange background
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
@@ -259,17 +259,17 @@ export function OnboardingScreen({
         <YStack gap={12} width="100%" paddingHorizontal={24}>
           <Button
             size="$5"
-            backgroundColor="$vintedTeal"
-            color="$white"
+            backgroundColor="$background" // Cream button on orange background
+            color="$primary" // Brand text color for contrast
             borderRadius="$lg"
             fontWeight="600"
             fontSize={17}
             height={52}
             hoverStyle={{
-              backgroundColor: "$vintedTealHover",
+              backgroundColor: "$backgroundHover",
             }}
             pressStyle={{
-              backgroundColor: "$vintedTealPress",
+              backgroundColor: "$backgroundPress",
               scale: 0.98,
             }}
             onPress={onSignUp}
@@ -280,19 +280,19 @@ export function OnboardingScreen({
 
           <Button
             size="$5"
-            backgroundColor="$white"
-            color="$vintedTeal"
-            borderColor="$vintedTeal"
+            backgroundColor="$background"
+            color="$primary"
+            borderColor="$primary"
             borderWidth={1}
             borderRadius="$lg"
             fontWeight="600"
             fontSize={17}
             height={52}
             hoverStyle={{
-              backgroundColor: "$gray50",
+              backgroundColor: "$backgroundHover",
             }}
             pressStyle={{
-              backgroundColor: "$gray100",
+              backgroundColor: "$backgroundPress",
               scale: 0.98,
             }}
             onPress={onSignIn}

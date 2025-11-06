@@ -71,7 +71,8 @@ export function LoggedOutHomeScreen({
   }, [onFetchProducts, products.length, loading]);
 
   return (
-    <Column flex={1} backgroundColor="$background">
+    <Column flex={1} backgroundColor="$primary">
+      {/* Brand background */}
       {/* Search Bar */}
       <Column
         paddingTop={insets.top + 8}
@@ -85,7 +86,7 @@ export function LoggedOutHomeScreen({
           <Row
             flex={1}
             height={40}
-            backgroundColor="$gray100"
+            backgroundColor="$background" // Cream search bar for contrast
             borderRadius="$md"
             paddingHorizontal="$3"
             alignItems="center"
@@ -123,10 +124,12 @@ export function LoggedOutHomeScreen({
           paddingHorizontal="$4"
           paddingVertical="$2"
           borderRadius="$full"
-          backgroundColor={selectedCategory === "All" ? "$primary" : "$white"}
+          backgroundColor={
+            selectedCategory === "All" ? "$background" : "$background"
+          }
           borderWidth={1}
           borderColor={selectedCategory === "All" ? "$primary" : "$border"}
-          color={selectedCategory === "All" ? "$white" : "$text"}
+          color={selectedCategory === "All" ? "$primary" : "$text"}
           onPress={() => setSelectedCategory("All")}
           pressStyle={{
             scale: 0.95,
@@ -141,14 +144,12 @@ export function LoggedOutHomeScreen({
             paddingHorizontal="$4"
             paddingVertical="$2"
             borderRadius="$full"
-            backgroundColor={
-              selectedCategory === category.name ? "$primary" : "$white"
-            }
+            backgroundColor="$background"
             borderWidth={1}
             borderColor={
               selectedCategory === category.name ? "$primary" : "$border"
             }
-            color={selectedCategory === category.name ? "$white" : "$text"}
+            color={selectedCategory === category.name ? "$primary" : "$text"}
             onPress={() => setSelectedCategory(category.name)}
             pressStyle={{
               scale: 0.95,
@@ -184,7 +185,7 @@ export function LoggedOutHomeScreen({
                 padding={0}
                 borderRadius="$md"
                 overflow="hidden"
-                backgroundColor="$white"
+                backgroundColor="$background" // Card surface cream for consistency
                 pressStyle={{ scale: 0.98 }}
                 animation="quick"
                 onPress={
@@ -229,7 +230,7 @@ export function LoggedOutHomeScreen({
         bottom={0}
         left={0}
         right={0}
-        backgroundColor="$white"
+        backgroundColor="$background" // Bottom nav cream on orange background
         borderTopWidth={1}
         borderTopColor="$border"
         paddingBottom={insets.bottom}
