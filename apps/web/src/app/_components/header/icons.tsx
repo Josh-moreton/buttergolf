@@ -11,9 +11,11 @@ export const SearchIcon = () => (
       clipRule="evenodd"
       d="M11.834 4.92566C15.6448 4.92584 18.7334 8.0146 18.7334 11.8241C18.7333 15.6335 15.6447 18.7223 11.834 18.7225C8.0231 18.7225 4.93371 15.6336 4.93359 11.8241C4.93359 8.01448 8.02302 4.92566 11.834 4.92566ZM18.2788 17.21C19.4989 15.752 20.2333 13.8738 20.2334 11.8241C20.2334 7.18583 16.4729 3.42584 11.834 3.42566C7.19493 3.42566 3.43359 7.18572 3.43359 11.8241C3.43371 16.4624 7.19501 20.2225 11.834 20.2225C13.8827 20.2225 15.7601 19.489 17.218 18.2704L20.3018 21.3551L20.3594 21.4068C20.654 21.6468 21.0888 21.6296 21.3633 21.3551C21.6378 21.0804 21.6545 20.6457 21.4141 20.3512L21.3633 20.2945L18.2788 17.21Z"
       fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="0.5"
     />
   </svg>
-)
+);
 
 export const UserIcon = () => (
   <svg
@@ -30,7 +32,7 @@ export const UserIcon = () => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const HeartIcon = () => (
   <svg
@@ -48,7 +50,7 @@ export const HeartIcon = () => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const CartIcon = () => (
   <svg
@@ -66,7 +68,7 @@ export const CartIcon = () => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const MenuIcon = () => (
   <svg
@@ -84,7 +86,7 @@ export const MenuIcon = () => (
     <line x1="3" y1="6" x2="21" y2="6"></line>
     <line x1="3" y1="18" x2="21" y2="18"></line>
   </svg>
-)
+);
 
 export const CloseIcon = () => (
   <svg
@@ -101,7 +103,7 @@ export const CloseIcon = () => (
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
-)
+);
 
 export const ChevronDownIcon = () => (
   <svg
@@ -117,4 +119,4 @@ export const ChevronDownIcon = () => (
   >
     <polyline points="6 9 12 15 18 9"></polyline>
   </svg>
-)
+);
