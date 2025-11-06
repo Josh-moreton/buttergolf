@@ -2,6 +2,7 @@
 
 import { Column } from "@buttergolf/ui";
 import { HeroCarousel } from "./marketplace/HeroCarousel";
+import { CategoryGrid } from "./marketplace/CategoryGrid";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
@@ -17,6 +18,7 @@ export default function MarketplaceHomeClient({
   return (
     <Column marginTop={100} $sm={{ marginTop: 100 }} $lg={{ marginTop: 100 }}>
       <HeroCarousel />
+      <CategoryGrid />
       <RecentlyListedSectionClient products={products} />
       <NewsletterSection />
       <FooterSection />
