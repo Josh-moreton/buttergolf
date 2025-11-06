@@ -264,9 +264,7 @@ export function HeroCarousel() {
               borderRadius: "6px",
               border: "none",
               backgroundColor:
-                selectedIndex === index
-                  ? "#E25F2F"
-                  : "rgba(226, 95, 47, 0.3)",
+                selectedIndex === index ? "#E25F2F" : "rgba(226, 95, 47, 0.3)",
               cursor: "pointer",
               transition: "all 0.3s ease",
               padding: 0,
