@@ -2,20 +2,7 @@
 
 import { Row, ScrollView } from "@buttergolf/ui";
 import { CategoryButton } from "./CategoryButton";
-
-const categories = [
-  "All",
-  "Drivers",
-  "Irons",
-  "Wedges",
-  "Putters",
-  "Woods",
-  "Hybrids",
-  "Bags",
-  "Balls",
-  "Apparel",
-  "Accessories",
-];
+import { CATEGORIES } from "@buttergolf/db";
 
 export function CategoriesSection() {
   return (
@@ -28,11 +15,12 @@ export function CategoriesSection() {
       borderBottomColor="$border"
     >
       <Row gap="$xs">
-        {categories.map((category, index) => (
+        <CategoryButton key="all" label="All" active={true} />
+        {CATEGORIES.map((category) => (
           <CategoryButton
-            key={category}
-            label={category}
-            active={index === 0}
+            key={category.slug}
+            label={category.name}
+            active={false}
           />
         ))}
       </Row>

@@ -1,18 +1,7 @@
 "use client";
 
 import { Button, Text, Row, Column, ScrollView } from "@buttergolf/ui";
-
-const CATEGORIES = [
-  { key: "drivers", label: "Drivers" },
-  { key: "woods", label: "Fairway Woods" },
-  { key: "hybrids", label: "Hybrids" },
-  { key: "irons", label: "Irons" },
-  { key: "wedges", label: "Wedges" },
-  { key: "putters", label: "Putters" },
-  { key: "bags", label: "Bags" },
-  { key: "balls", label: "Balls" },
-  { key: "accessories", label: "Accessories" },
-];
+import { CATEGORIES } from "@buttergolf/db";
 
 export function CategoriesSection() {
   return (
@@ -28,9 +17,9 @@ export function CategoriesSection() {
         </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Row gap="$sm" paddingVertical="$2">
-            {CATEGORIES.map((c) => (
-              <Button key={c.key} size="$4">
-                {c.label}
+            {CATEGORIES.map((category) => (
+              <Button key={category.slug} size="$4">
+                {category.name}
               </Button>
             ))}
           </Row>
