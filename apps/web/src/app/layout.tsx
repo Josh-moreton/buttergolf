@@ -10,7 +10,6 @@ if (process.env.NODE_ENV === "production") {
   require("../../public/tamagui.css");
 }
 import { ButterHeader } from "./_components/header/ButterHeader";
-import { TrustBar } from "./_components/marketplace/TrustBar";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 
@@ -108,7 +107,6 @@ export default function RootLayout({
       <body className={gotham.className}>
         <NextTamaguiProvider>
           <ServiceWorkerRegistration />
-          <TrustBar />
           <ButterHeader />
           <AppPromoBanner />
           {children}

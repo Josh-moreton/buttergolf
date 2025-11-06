@@ -20,7 +20,7 @@ export function ButterHeader() {
   // Sticky menu handler
   useEffect(() => {
     const handleStickyMenu = () => {
-      setStickyMenu(window.scrollY >= 80);
+      setStickyMenu(window.scrollY >= 40);
     };
 
     window.addEventListener("scroll", handleStickyMenu);
@@ -31,14 +31,14 @@ export function ButterHeader() {
     <>
       <Row
         {...{ style: { position: "fixed" } }}
-        top={40} // Below TrustBar (40px)
+        top={0}
         left={0}
         right={0}
         zIndex={50}
         backgroundColor="$primary"
         paddingHorizontal="$4"
-        paddingVertical="$3"
-        $md={{ paddingHorizontal: "$6" }}
+        paddingVertical="$4"
+        $md={{ paddingHorizontal: "$6", paddingVertical: "$5" }}
         {...(stickyMenu && {
           shadowColor: "rgba(0,0,0,0.12)",
           shadowRadius: 6,
@@ -338,7 +338,7 @@ export function ButterHeader() {
       {mobileMenuOpen && (
         <Column
           {...{ style: { position: "fixed" } }}
-          top={120} // Below header
+          top={100} // Below header (increased height)
           left={0}
           right={0}
           bottom={0}
