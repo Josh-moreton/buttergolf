@@ -19,4 +19,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 // Re-export Prisma types
 export * from '@prisma/client'
-export type { PrismaClient }
+export type { PrismaClient } from '@prisma/client'
+
+// Re-export category constants
+export * from './constants/categories'
