@@ -59,7 +59,7 @@ async function main() {
                 categoryId: driversCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-1.jpg', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000lr70gl6vchczu-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -76,7 +76,7 @@ async function main() {
                 categoryId: driversCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-4.jpg', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000vr70ggi0mn91p-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -95,7 +95,7 @@ async function main() {
                 categoryId: ironsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-2.webp', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000hr70gmihwatcq-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -112,7 +112,7 @@ async function main() {
                 categoryId: ironsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-3.webp', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
                     ],
                 },
             },
@@ -129,7 +129,7 @@ async function main() {
                 categoryId: ironsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-6.jpg', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000xr70gyn7w97cz-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -148,7 +148,7 @@ async function main() {
                 categoryId: puttersCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-5.webp', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000fr70goajqwv1c-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -165,7 +165,7 @@ async function main() {
                 categoryId: puttersCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-1.jpg', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
                     ],
                 },
             },
@@ -184,7 +184,7 @@ async function main() {
                 categoryId: wedgesCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-4.jpg', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000wr70gtkvh3pul-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -201,7 +201,7 @@ async function main() {
                 categoryId: wedgesCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-6.jpg', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000jr70gg2kytzhw-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -220,7 +220,7 @@ async function main() {
                 categoryId: bagsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-3.webp', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd0011r70gu83v00ug-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -237,7 +237,7 @@ async function main() {
                 categoryId: bagsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-2.webp', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigx001cr70glxkmwvdh-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -256,7 +256,7 @@ async function main() {
                 categoryId: ballsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-5.webp', sortOrder: 0 },
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigl0016r70gs581g7th-main.jpg', sortOrder: 0 },
                     ],
                 },
             },
@@ -273,7 +273,7 @@ async function main() {
                 categoryId: ballsCategory.id,
                 images: {
                     create: [
-                        { url: '/_assets/images/clubs-1.jpg', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
                     ],
                 },
             },
