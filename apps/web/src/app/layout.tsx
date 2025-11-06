@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 export const dynamic = "force-dynamic";
 import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
+import localFont from "next/font/local";
 
 // Load Tamagui CSS in production (compiled output)
 if (process.env.NODE_ENV === "production") {
@@ -12,6 +13,54 @@ import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
 import { TrustBar } from "./_components/marketplace/TrustBar";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
+
+// Gotham font configuration for Pure Butter brand
+const gotham = localFont({
+  src: [
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Book.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Black.otf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Ultra.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-gotham",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -51,20 +100,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="light">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`light ${gotham.variable}`}
+    >
+      <body className={gotham.className}>
         <NextTamaguiProvider>
           <ServiceWorkerRegistration />
           <TrustBar />

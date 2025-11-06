@@ -1,5 +1,138 @@
 import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui, createTokens } from 'tamagui'
+import { createTamagui, createTokens, createFont } from 'tamagui'
+
+// Gotham font for Pure Butter brand identity
+const gothamFace = {
+    normal: { normal: 'Gotham' },
+    bold: { normal: 'Gotham' },
+    100: { normal: 'Gotham', italic: 'Gotham' },
+    200: { normal: 'Gotham', italic: 'Gotham' },
+    300: { normal: 'Gotham', italic: 'Gotham' },
+    400: { normal: 'Gotham', italic: 'Gotham' },
+    500: { normal: 'Gotham', italic: 'Gotham' },
+    600: { normal: 'Gotham', italic: 'Gotham' },
+    700: { normal: 'Gotham', italic: 'Gotham' },
+    800: { normal: 'Gotham', italic: 'Gotham' },
+    900: { normal: 'Gotham', italic: 'Gotham' },
+}
+
+const headingFont = createFont({
+    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    size: {
+        1: 12,
+        2: 14,
+        3: 16,
+        4: 18,
+        5: 20,
+        6: 24,
+        7: 28,
+        8: 32,
+        9: 40,
+        10: 48,
+        11: 56,
+        12: 64,
+        13: 72,
+        14: 80,
+        15: 96,
+        16: 112,
+    },
+    lineHeight: {
+        1: 16,
+        2: 18,
+        3: 20,
+        4: 22,
+        5: 24,
+        6: 28,
+        7: 32,
+        8: 38,
+        9: 46,
+        10: 54,
+        11: 62,
+        12: 70,
+        13: 78,
+        14: 86,
+        15: 104,
+        16: 120,
+    },
+    weight: {
+        1: '100',
+        2: '200',
+        3: '300',
+        4: '400',
+        5: '500',
+        6: '600',
+        7: '700',
+        8: '800',
+        9: '900',
+    },
+    letterSpacing: {
+        1: 0,
+        2: -0.5,
+        3: -1,
+        4: -1.5,
+        5: -2,
+    },
+    face: gothamFace,
+})
+
+const bodyFont = createFont({
+    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    size: {
+        1: 11,
+        2: 12,
+        3: 13,
+        4: 14,
+        5: 15,
+        6: 16,
+        7: 18,
+        8: 20,
+        9: 22,
+        10: 24,
+        11: 28,
+        12: 32,
+        13: 40,
+        14: 48,
+        15: 56,
+        16: 64,
+    },
+    lineHeight: {
+        1: 15,
+        2: 16,
+        3: 18,
+        4: 20,
+        5: 22,
+        6: 24,
+        7: 26,
+        8: 28,
+        9: 30,
+        10: 32,
+        11: 36,
+        12: 40,
+        13: 48,
+        14: 56,
+        15: 64,
+        16: 72,
+    },
+    weight: {
+        1: '100',
+        2: '200',
+        3: '300',
+        4: '400', // Book weight for body text
+        5: '500',
+        6: '600',
+        7: '700',
+        8: '800',
+        9: '900',
+    },
+    letterSpacing: {
+        1: 0,
+        2: -0.25,
+        3: -0.5,
+        4: -0.75,
+        5: -1,
+    },
+    face: gothamFace,
+})
 
 // Brand Colors - 10-shade scales for all color families
 const brandColors = {
@@ -522,8 +655,11 @@ export const config = createTamagui({
         light_warning,
         dark_warning,
     },
-    // Include fonts from defaultConfig
-    fonts: defaultConfig.fonts,
+    // Gotham fonts for Pure Butter brand
+    fonts: {
+        heading: headingFont,
+        body: bodyFont,
+    },
     settings: {
         ...defaultConfig.settings,
         onlyAllowShorthands: false,

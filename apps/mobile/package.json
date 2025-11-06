@@ -22,6 +22,7 @@
     "expo": "54.0.22",
     "expo-auth-session": "catalog:",
     "expo-secure-store": "catalog:",
+    "expo-splash-screen": "^31.0.10",
     "expo-status-bar": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

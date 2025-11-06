@@ -69,15 +69,14 @@ export function MarketplaceHeader() {
               paddingVertical="$2"
               minHeight={44}
             >
-              <Text
-                size="lg"
-                $md={{ fontSize: 26 }}
-                weight="bold"
-                fontWeight="800"
-                color="$text"
-              >
-                ButterGolf
-              </Text>
+              <img
+                src="/logo-orange.png"
+                alt="ButterGolf"
+                style={{
+                  height: "32px",
+                  width: "auto",
+                }}
+              />
               <Row
                 backgroundColor="$primary"
                 paddingHorizontal="$2"
