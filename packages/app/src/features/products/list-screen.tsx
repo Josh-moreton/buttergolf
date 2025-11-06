@@ -1,45 +1,54 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import { Column, Row, ScrollView, Text, Heading, Spinner } from '@buttergolf/ui'
-import { ProductCard } from '../../components/ProductCard'
-import type { ProductCardData } from '../../types/product'
-import { useLink } from 'solito/navigation'
-import { routes } from '../../navigation'
+import React, { useEffect, useState } from "react";
+import {
+  Column,
+  Row,
+  ScrollView,
+  Text,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
+import { ProductCard } from "../../components/ProductCard";
+import type { ProductCardData } from "../../types/product";
+import { useLink } from "solito/navigation";
+import { routes } from "../../navigation";
 
 interface ProductsScreenProps {
-  onFetchProducts?: () => Promise<ProductCardData[]>
+  onFetchProducts?: () => Promise<ProductCardData[]>;
 }
 
-export function ProductsScreen({ onFetchProducts }: Readonly<ProductsScreenProps>) {
-  const [products, setProducts] = useState<ProductCardData[]>([])
-  const [loading, setLoading] = useState(true)
+export function ProductsScreen({
+  onFetchProducts,
+}: Readonly<ProductsScreenProps>) {
+  const [products, setProducts] = useState<ProductCardData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (onFetchProducts) {
-      setLoading(true)
+      setLoading(true);
       onFetchProducts()
         .then((fetchedProducts) => {
-          console.log(`Fetched ${fetchedProducts.length} products`)
-          setProducts(fetchedProducts)
+          console.log(`Fetched ${fetchedProducts.length} products`);
+          setProducts(fetchedProducts);
         })
         .catch((error) => {
-          console.error('Failed to fetch products:', error)
+          console.error("Failed to fetch products:", error);
         })
-        .finally(() => setLoading(false))
+        .finally(() => setLoading(false));
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [onFetchProducts])
+  }, [onFetchProducts]);
 
   return (
     <ScrollView flex={1} backgroundColor="$background">
       <Column padding="$4" gap="$lg">
         <Heading level={2}>Browse Products</Heading>
-        
+
         {loading ? (
           <Column alignItems="center" paddingVertical="$6">
-            <Spinner size="large" color="$primary" />
+            <Spinner size="lg" color="$primary" />
             <Text color="$textSecondary" marginTop="$3">
               Loading products...
             </Text>
@@ -57,14 +66,14 @@ export function ProductsScreen({ onFetchProducts }: Readonly<ProductsScreenProps
         )}
       </Column>
     </ScrollView>
-  )
+  );
 }
 
 // Helper component to attach Solito link to ProductCard
 function ProductCardWithLink({ product }: { product: ProductCardData }) {
   const linkProps = useLink({
-    href: routes.productDetail.replace('[id]', product.id),
-  })
+    href: routes.productDetail.replace("[id]", product.id),
+  });
 
-  return <ProductCard product={product} onPress={linkProps.onPress} />
+  return <ProductCard product={product} onPress={linkProps.onPress} />;
 }
