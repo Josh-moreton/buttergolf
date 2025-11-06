@@ -10,7 +10,10 @@ export default function ColorTestPage() {
           background: white;
           min-height: 100vh;
           padding: 40px;
-          font-family: system-ui, -apple-system, sans-serif;
+          font-family:
+            system-ui,
+            -apple-system,
+            sans-serif;
         }
         .container {
           max-width: 1200px;
@@ -165,9 +168,7 @@ export default function ColorTestPage() {
           </div>
 
           <div className="logo-container">
-            <div className="logo-label">
-              Reference PNG Logo (sRGB embedded)
-            </div>
+            <div className="logo-label">Reference PNG Logo (sRGB embedded)</div>
             <Image
               src="/logo-orange.png"
               alt="Butter Orange Logo"

@@ -138,16 +138,16 @@ const bodyFont = createFont({
 // Using Display P3 color space to match modern displays
 const brandColors = {
     // Primary Brand (Butter Orange) - Pure Butter heritage brand  
-    butter50: '#FFF9ED',
-    butter100: '#FFF3D6',
-    butter200: '#FFECBD',
-    butter300: '#FFE38A',
+    butter50: 'color(display-p3 1.000 0.976 0.929)',
+    butter100: 'color(display-p3 1.000 0.953 0.839)',
+    butter200: 'color(display-p3 1.000 0.925 0.741)',
+    butter300: 'color(display-p3 1.000 0.890 0.541)',
     butter400: 'color(display-p3 0.886 0.373 0.184)', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
-    butter500: '#D2553A', // Darker/more saturated - for hover states
-    butter600: '#B8442F', // Even darker - for press states
-    butter700: '#9A3824', // Dark - for text on light backgrounds
-    butter800: '#7C2D1D',
-    butter900: '#5E2316',
+    butter500: 'color(display-p3 0.824 0.333 0.227)', // Darker/more saturated - for hover states
+    butter600: 'color(display-p3 0.722 0.267 0.184)', // Even darker - for press states
+    butter700: 'color(display-p3 0.604 0.220 0.141)', // Dark - for text on light backgrounds
+    butter800: 'color(display-p3 0.486 0.176 0.114)',
+    butter900: 'color(display-p3 0.369 0.137 0.086)',
 
     // Secondary Brand (Navy) - Modern contrast accent
     navy50: '#E8EDF3',

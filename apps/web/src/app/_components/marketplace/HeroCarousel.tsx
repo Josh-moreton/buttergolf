@@ -162,7 +162,7 @@ export function HeroCarousel() {
                       fontWeight: 700,
                       fontSize: "clamp(28px, 4vw, 42px)",
                       lineHeight: 1.2,
-                      color: "#E25F2F",
+                      color: "var(--primary)",
                       letterSpacing: "2px",
                       textTransform: "uppercase",
                       margin: 0,
@@ -178,7 +178,7 @@ export function HeroCarousel() {
                       fontWeight: 900,
                       fontSize: "clamp(64px, 12vw, 120px)",
                       lineHeight: 0.9,
-                      color: "#E25F2F",
+                      color: "var(--primary)",
                       letterSpacing: "4px",
                       textTransform: "uppercase",
                       margin: 0,
@@ -194,7 +194,7 @@ export function HeroCarousel() {
                       fontWeight: 700,
                       fontSize: "clamp(16px, 2vw, 22px)",
                       lineHeight: 1.3,
-                      color: "#E25F2F",
+                      color: "var(--primary)",
                       letterSpacing: "1.5px",
                       textTransform: "uppercase",
                       margin: "4px 0 0 0",
@@ -219,7 +219,7 @@ export function HeroCarousel() {
                       <button
                         style={{
                           fontFamily: "var(--font-gotham)",
-                          backgroundColor: "#E25F2F",
+                          backgroundColor: "var(--primary)",
                           color: "#FFFFFF",
                           padding: "16px 48px",
                           borderRadius: "50px",
@@ -232,11 +232,13 @@ export function HeroCarousel() {
                           transition: "all 0.2s ease",
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = "#C94F25";
+                          e.currentTarget.style.backgroundColor =
+                            "var(--primaryHover)";
                           e.currentTarget.style.transform = "scale(1.05)";
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "#E25F2F";
+                          e.currentTarget.style.backgroundColor =
+                            "var(--primary)";
                           e.currentTarget.style.transform = "scale(1)";
                         }}
                       >
@@ -263,8 +265,8 @@ export function HeroCarousel() {
                             border: "none",
                             backgroundColor:
                               selectedIndex === index
-                                ? "#E25F2F"
-                                : "rgba(226, 95, 47, 0.3)",
+                                ? "var(--primary)"
+                                : "color-mix(in display-p3, var(--primary) 30%, transparent)",
                             cursor: "pointer",
                             transition: "all 0.3s ease",
                             padding: 0,
