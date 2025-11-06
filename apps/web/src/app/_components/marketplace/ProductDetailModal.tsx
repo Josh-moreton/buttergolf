@@ -105,7 +105,7 @@ export function ProductDetailModal({
         <Dialog.Content
           bordered
           elevate
-          key="content"
+          key={`product-${productId}`}
           animateOnly={["transform", "opacity"]}
           animation={[
             "quick",
@@ -343,7 +343,11 @@ export function ProductDetailModal({
                           <Text weight="semibold">
                             {product.user.name || "Anonymous"}
                           </Text>
-                          <Text size="xs" color="$textMuted">
+                          <Text
+                            size="xs"
+                            color="$textMuted"
+                            suppressHydrationWarning
+                          >
                             Listed{" "}
                             {new Date(product.createdAt).toLocaleDateString()}
                           </Text>

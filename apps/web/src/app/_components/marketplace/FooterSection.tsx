@@ -1,8 +1,10 @@
 "use client";
 
-import { Text, Row, Column, Heading } from "@buttergolf/ui";
+import { Text, Row, Column, Heading, useMedia } from "@buttergolf/ui";
 
 export function FooterSection() {
+  const media = useMedia();
+
   return (
     <Column
       paddingVertical="$2xl"
@@ -17,8 +19,7 @@ export function FooterSection() {
           gap="$xl"
           justifyContent="flex-start"
           alignItems="flex-start"
-          flexWrap="wrap"
-          $gtMd={{ flexWrap: "nowrap" }}
+          flexWrap={media.md || media.lg || media.xl ? "nowrap" : "wrap"}
         >
           {/* Brand Section */}
           <Column flex={1.2} minWidth={220} maxWidth={280} gap="$md">
