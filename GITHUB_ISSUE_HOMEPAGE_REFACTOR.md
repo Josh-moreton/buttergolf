@@ -40,24 +40,37 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ### 2. Hero Carousel Component
 **Create:** `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
 
-- [ ] Install carousel library: `pnpm add embla-carousel-react --filter web`
-- [ ] Full-width carousel container
-- [ ] Height: 50vh (min: 400px, max: 600px)
-- [ ] 3-5 slides with:
+- [x] Install carousel library: `pnpm add embla-carousel-react --filter web`
+- [x] Full-width carousel container
+- [x] Height: 50vh (min: 400px, max: 600px)
+- [x] 3-5 slides with:
   - Background image
   - Large text overlay (title + subtitle)
   - CTA button ("SEE THE RANGE")
   - Cream background (#FEFAD6)
-- [ ] Autoplay (5s interval)
-- [ ] Dot navigation indicators
-- [ ] Touch/swipe support
-- [ ] Keyboard navigation (arrow keys)
+- [x] Autoplay (5s interval)
+- [x] Dot navigation indicators
+- [x] Touch/swipe support
+- [x] Keyboard navigation (arrow keys)
 
 **Sample Slides:**
 1. "SUMMER GOLF SALE" - Golf clubs image
 2. "JUST LANDED" - New arrivals
 3. "SHOP CALLAWAY" - Featured brands
 4. "JOIN THE CLUB" - Membership benefits
+
+**Status:** ✅ COMPLETE
+- Installed embla-carousel-react library
+- Created HeroCarousel component with 4 slides
+- Implemented autoplay (5 second intervals)
+- Added dot navigation with active state
+- Touch/swipe gestures supported via Embla
+- Keyboard navigation (arrow keys) enabled
+- Responsive typography using clamp()
+- Cream overlay for better text contrast
+- Orange text (#E25F2F) on cream background
+- CTA buttons with hover/press animations
+- Proper accessibility labels
 
 ### 3. Category Grid Component
 **Create:** `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
@@ -88,8 +101,8 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ### 4. Update Page Layout
 **Modify:** `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
 
-- [ ] Remove `marginTop={180}` (new header is shorter)
-- [ ] Replace `<HeroSectionNew />` with `<HeroCarousel />`
+- [x] Remove `marginTop={180}` (new header is shorter)
+- [x] Replace `<HeroSectionNew />` with `<HeroCarousel />`
 - [ ] Add `<CategoryGrid />` after carousel
 - [ ] Keep existing sections:
   - `<RecentlyListedSection />`
@@ -106,6 +119,11 @@ Refactor the web homepage to match the provided mockup design with butter orange
   <FooterSection />         {/* Keep existing */}
 </Column>
 ```
+
+**Status:** ✅ PARTIAL COMPLETE
+- Updated marginTop to 100px (matches new header height)
+- Replaced HeroSectionNew with HeroCarousel
+- CategoryGrid pending (next step)
 
 ### 5. Update Layout Component
 **Modify:** `apps/web/src/app/layout.tsx`
@@ -291,21 +309,21 @@ pnpm add embla-carousel-react --filter web
 
 ## 📁 Files to Create
 
-- [ ] `apps/web/src/app/_components/header/ButterHeader.tsx`
+- [x] `apps/web/src/app/_components/header/ButterHeader.tsx`
 - [ ] `apps/web/src/app/_components/header/MobileMenu.tsx` (optional)
-- [ ] `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
+- [x] `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
 - [ ] `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
 
 ## 📁 Files to Modify
 
-- [ ] `apps/web/src/app/layout.tsx`
-- [ ] `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
+- [x] `apps/web/src/app/layout.tsx`
+- [x] `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
 
 ## 📁 Files to Archive/Remove
 
 - [ ] `apps/web/src/app/_components/marketplace/HeroSectionNew.tsx`
-- [ ] `apps/web/src/app/_components/marketplace/TrustBar.tsx`
-- [ ] `apps/web/src/app/_components/header/MarketplaceHeader.tsx`
+- [x] `apps/web/src/app/_components/marketplace/TrustBar.tsx` (removed from layout)
+- [x] `apps/web/src/app/_components/header/MarketplaceHeader.tsx` (archived)
 
 ---
 

@@ -1,22 +1,22 @@
 "use client";
 
 import { Column } from "@buttergolf/ui";
-import { HeroSectionNew } from "./marketplace/HeroSectionNew";
+import { HeroCarousel } from "./marketplace/HeroCarousel";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
 import type { ProductCardData } from "@buttergolf/app";
 
 interface MarketplaceHomeClientProps {
-  products: ProductCardData[];
+  readonly products: ProductCardData[];
 }
 
 export default function MarketplaceHomeClient({
   products,
-}: MarketplaceHomeClientProps) {
+}: Readonly<MarketplaceHomeClientProps>) {
   return (
-    <Column marginTop={180} $sm={{ marginTop: 200 }} $lg={{ marginTop: 220 }}>
-      <HeroSectionNew />
+    <Column marginTop={100} $sm={{ marginTop: 100 }} $lg={{ marginTop: 100 }}>
+      <HeroCarousel />
       <RecentlyListedSectionClient products={products} />
       <NewsletterSection />
       <FooterSection />
