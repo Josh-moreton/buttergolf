@@ -8,40 +8,40 @@ import { imagePaths } from "@buttergolf/assets";
 
 interface Slide {
   id: string;
-  message: string;
+  title: string;
+  subtitle: string;
   ctaText: string;
   ctaLink: string;
-  image: string;
 }
 
 const slides: Slide[] = [
   {
     id: "summer-sale",
-    message: "SUMMER GOLF SALE",
+    title: "SUMMER GOLF",
+    subtitle: "SALE",
     ctaText: "SEE THE RANGE",
     ctaLink: "/listings?category=clubs",
-    image: imagePaths.clubs.club1,
   },
   {
     id: "just-landed",
-    message: "JUST LANDED",
+    title: "JUST LANDED",
+    subtitle: "NEW ARRIVALS",
     ctaText: "SHOP NEW ARRIVALS",
     ctaLink: "/listings?sort=newest",
-    image: imagePaths.clubs.club2,
   },
   {
     id: "featured-brands",
-    message: "SHOP CALLAWAY",
+    title: "SHOP",
+    subtitle: "CALLAWAY",
     ctaText: "EXPLORE BRANDS",
     ctaLink: "/listings?brand=callaway",
-    image: imagePaths.clubs.club3,
   },
   {
     id: "membership",
-    message: "JOIN THE CLUB",
+    title: "JOIN",
+    subtitle: "THE CLUB",
     ctaText: "LEARN MORE",
     ctaLink: "/about",
-    image: imagePaths.clubs.club4,
   },
 ];
 
@@ -50,7 +50,7 @@ export function HeroCarousel() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const scrollTo = useCallback(
-    (index: number) => emblaApi && emblaApi.scrollTo(index),
+    (index: number) => emblaApi?.scrollTo(index),
     [emblaApi]
   );
 
@@ -92,164 +92,207 @@ export function HeroCarousel() {
   }, [emblaApi]);
 
   return (
-    <Column width="100%" position="relative">
-      {/* Carousel Container */}
-      <div
-        ref={emblaRef}
-        style={{
-          overflow: "hidden",
-          width: "100%",
-        }}
+    <Row
+      width="100%"
+      position="relative"
+      height="50vh"
+      minHeight={400}
+      maxHeight={600}
+      {...{
+        style: {
+          backgroundImage: `url(${imagePaths.hero.background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        },
+      }}
+    >
+      {/* Left Side - Carousel Text (50%) */}
+      <Column
+        width="100%"
+        $md={{ width: "50%" }}
+        position="relative"
+        zIndex={2}
       >
-        <Row
-          {...{
-            style: {
-              display: "flex",
-              touchAction: "pan-y",
-              backfaceVisibility: "hidden",
-            },
+        <div
+          ref={emblaRef}
+          style={{
+            overflow: "hidden",
+            width: "100%",
+            height: "100%",
           }}
         >
-          {slides.map((slide) => (
-            <div
-              key={slide.id}
-              style={{
-                flex: "0 0 100%",
-                minWidth: 0,
-                position: "relative",
-                height: "50vh",
-                minHeight: "400px",
-                maxHeight: "600px",
-              }}
-            >
-              {/* Background Image */}
-              <img
-                src={slide.image}
-                alt={slide.message}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                }}
-              />
-
-              {/* Cream overlay for better text contrast */}
+          <Row
+            {...{
+              style: {
+                display: "flex",
+                touchAction: "pan-y",
+                backfaceVisibility: "hidden",
+                height: "100%",
+              },
+            }}
+          >
+            {slides.map((slide) => (
               <div
+                key={slide.id}
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
+                  flex: "0 0 100%",
+                  minWidth: 0,
                   height: "100%",
-                  backgroundColor: "rgba(254, 250, 214, 0.7)", // Cream with opacity
-                  zIndex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingLeft: "clamp(20px, 5vw, 80px)",
+                  paddingRight: "20px",
                 }}
-              />
-
-              {/* Content Overlay */}
-              <Column
-                position="absolute"
-                top={0}
-                left={0}
-                width="100%"
-                height="100%"
-                justifyContent="center"
-                alignItems="center"
-                paddingHorizontal="$4"
-                $md={{ paddingHorizontal: "$8" }}
-                zIndex={2}
-                gap="$6"
               >
-                {/* Single Message Text */}
-                <Text
-                  {...{
-                    style: {
-                      fontFamily: "var(--font-gotham)",
-                      fontWeight: 900,
-                      fontSize: "clamp(48px, 10vw, 80px)",
-                      lineHeight: 1.2,
-                      color: "#E25F2F",
-                      textAlign: "center",
-                      letterSpacing: "3px",
-                      maxWidth: "800px",
-                    },
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
+                    maxWidth: "600px",
                   }}
                 >
-                  {slide.message}
-                </Text>
-
-                {/* CTA Button */}
-                <Link href={slide.ctaLink} style={{ textDecoration: "none" }}>
-                  <Button
-                    backgroundColor="$primary"
-                    color="$textInverse"
-                    paddingHorizontal="$8"
-                    paddingVertical="$4"
-                    borderRadius="$md"
-                    fontSize={16}
-                    fontWeight="700"
-                    hoverStyle={{
-                      backgroundColor: "$primaryHover",
-                      scale: 1.05,
-                    }}
-                    pressStyle={{
-                      backgroundColor: "$primaryPress",
-                      scale: 0.98,
-                    }}
-                    {...{
-                      style: {
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        textTransform: "uppercase",
-                        letterSpacing: "1.5px",
-                      },
+                  {/* Title - Smaller */}
+                  <h2
+                    style={{
+                      fontFamily: "var(--font-gotham)",
+                      fontWeight: 700,
+                      fontSize: "clamp(32px, 5vw, 48px)",
+                      lineHeight: 1.1,
+                      color: "#E25F2F",
+                      letterSpacing: "2px",
+                      textTransform: "uppercase",
+                      margin: 0,
                     }}
                   >
-                    {slide.ctaText}
-                  </Button>
-                </Link>
-              </Column>
-            </div>
+                    {slide.title}
+                  </h2>
+
+                  {/* Subtitle - Larger */}
+                  <h1
+                    style={{
+                      fontFamily: "var(--font-gotham)",
+                      fontWeight: 900,
+                      fontSize: "clamp(48px, 8vw, 72px)",
+                      lineHeight: 1,
+                      color: "#E25F2F",
+                      letterSpacing: "3px",
+                      textTransform: "uppercase",
+                      margin: 0,
+                    }}
+                  >
+                    {slide.subtitle}
+                  </h1>
+
+                  {/* Tagline */}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-gotham)",
+                      fontWeight: 700,
+                      fontSize: "clamp(18px, 2.5vw, 24px)",
+                      lineHeight: 1.3,
+                      color: "#E25F2F",
+                      letterSpacing: "1.5px",
+                      textTransform: "uppercase",
+                      margin: "8px 0 0 0",
+                    }}
+                  >
+                    DON'T MISS OUT!
+                  </p>
+
+                  {/* CTA Button */}
+                  <Link
+                    href={slide.ctaLink}
+                    style={{ textDecoration: "none", marginTop: "8px" }}
+                  >
+                    <Button
+                      backgroundColor="$primary"
+                      color="$textInverse"
+                      paddingHorizontal="$8"
+                      paddingVertical="$4"
+                      borderRadius="$full"
+                      fontSize={16}
+                      fontWeight="700"
+                      hoverStyle={{
+                        backgroundColor: "$primaryHover",
+                        scale: 1.05,
+                      }}
+                      pressStyle={{
+                        backgroundColor: "$primaryPress",
+                        scale: 0.98,
+                      }}
+                      {...{
+                        style: {
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                          textTransform: "uppercase",
+                          letterSpacing: "1.5px",
+                        },
+                      }}
+                    >
+                      {slide.ctaText}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </Row>
+        </div>
+
+        {/* Dot Navigation */}
+        <Row
+          position="absolute"
+          bottom="$6"
+          {...{ style: { left: "clamp(20px, 5vw, 80px)" } }}
+          gap="$3"
+          zIndex={3}
+        >
+          {slides.map((slide, index) => (
+            <button
+              key={slide.id}
+              onClick={() => scrollTo(index)}
+              style={{
+                width: selectedIndex === index ? "32px" : "12px",
+                height: "12px",
+                borderRadius: "6px",
+                border: "none",
+                backgroundColor:
+                  selectedIndex === index
+                    ? "#E25F2F"
+                    : "rgba(226, 95, 47, 0.3)",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                padding: 0,
+              }}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </Row>
-      </div>
+      </Column>
 
-      {/* Dot Navigation */}
-      <Row
-        position="absolute"
-        bottom="$4"
-        left="50%"
-        {...{
-          style: {
-            transform: "translateX(-50%)",
-          },
-        }}
-        gap="$3"
-        zIndex={3}
+      {/* Right Side - Club Image (50%, Desktop Only) */}
+      <Column
+        display="none"
+        $md={{ display: "flex" }}
+        width="50%"
+        position="relative"
+        alignItems="center"
+        justifyContent="center"
+        paddingRight="$8"
       >
-        {slides.map((slide, index) => (
-          <button
-            key={slide.id}
-            onClick={() => scrollTo(index)}
-            style={{
-              width: selectedIndex === index ? "32px" : "12px",
-              height: "12px",
-              borderRadius: "6px",
-              border: "none",
-              backgroundColor:
-                selectedIndex === index ? "#E25F2F" : "rgba(226, 95, 47, 0.3)",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              padding: 0,
-            }}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </Row>
-    </Column>
+        <img
+          src={imagePaths.hero.club}
+          alt="Golf clubs"
+          style={{
+            maxWidth: "90%",
+            maxHeight: "90%",
+            objectFit: "contain",
+          }}
+        />
+      </Column>
+    </Row>
   );
 }
