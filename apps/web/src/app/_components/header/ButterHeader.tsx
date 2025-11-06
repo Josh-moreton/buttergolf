@@ -60,7 +60,7 @@ export function ButterHeader() {
                 src="/logo-orange.png"
                 alt="ButterGolf"
                 style={{
-                  height: "50px",
+                  height: "72px",
                   width: "auto",
                 }}
               />

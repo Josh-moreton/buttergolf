@@ -143,7 +143,8 @@ export function HeroCarousel() {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "flex-start",
-                  paddingLeft: "clamp(40px, 8vw, 120px)",
+                  // Increased left padding ~50% to shift carousel more central
+                  paddingLeft: "clamp(60px, 12vw, 180px)",
                   paddingRight: "clamp(40px, 8vw, 120px)",
                 }}
               >
