@@ -2,7 +2,7 @@
 
 import { Row, ScrollView } from "@buttergolf/ui";
 import { CategoryButton } from "./CategoryButton";
-import { CATEGORIES } from "@buttergolf/db";
+import { CATEGORIES } from "../constants/categories";
 
 export function CategoriesSection() {
   return (

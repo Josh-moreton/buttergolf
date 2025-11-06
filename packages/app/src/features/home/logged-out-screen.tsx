@@ -21,7 +21,7 @@ import {
   User,
 } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
-import { CATEGORIES } from "@buttergolf/db";
+import { CATEGORIES } from "../../constants/categories";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
