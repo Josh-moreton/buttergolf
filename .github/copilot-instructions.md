@@ -559,18 +559,18 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 <View borderColor="$borderColor">Content</View>      // Old token name
 ```
 
-#### ✅ **ALWAYS Use Component Variants**
+#### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
 ```tsx
 // ✅ CORRECT - Use built-in variants
 <Button size="lg" tone="primary">Submit</Button>
-<Text size="sm" color="muted">Helper text</Text>
+<Text size="sm" weight="semibold">Helper text</Text>
 <Card variant="elevated" padding="lg">Content</Card>
 <Input size="md" error fullWidth />
 
 // ❌ WRONG - Don't manually style with primitives
 <Button paddingHorizontal="$5" height={48}>Submit</Button>
-<Text fontSize="$3" color="$gray500">Helper text</Text>
+<Text fontSize="$3">Helper text</Text>
 ```
 
 #### ✅ **ALWAYS Use Compound Components for Cards**
@@ -599,47 +599,161 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 #### ✅ **ALWAYS Use Layout Components**
 
 ```tsx
-// ✅ CORRECT - Use semantic layout components
-<Column gap="$lg" align="stretch">
+// ✅ CORRECT - Use semantic layout components with native Tamagui props
+<Column gap="$lg">
   <Heading level={2}>Title</Heading>
   <Text>Description</Text>
   <Button>Action</Button>
 </Column>
 
-<Row gap="$md" align="center" justify="between">
+<Row gap="$md" alignItems="center" justifyContent="space-between">
   <Text>Left content</Text>
   <Button>Right action</Button>
 </Row>
 
-<Container size="lg" padding="md">
+<Container size="lg" paddingHorizontal="$md">
   <Text>Constrained content</Text>
 </Container>
 
-// ❌ WRONG - Don't use raw YStack/XStack with manual styling
+// ❌ WRONG - Don't use raw YStack/XStack when semantic components exist
 <YStack gap="$6" alignItems="stretch">
   <Text marginBottom="$4">Title</Text>
   <Text>Content</Text>
 </YStack>
 ```
 
-#### ✅ **Text Color Variants**
+**Note**: Row and Column are thin wrappers over XStack/YStack - they preserve ALL native Tamagui props like `alignItems`, `justifyContent`, `flexWrap`, etc. Use these native props directly.
+
+#### ✅ **Using Colors in Text Components**
 
 ```tsx
-// Available Text color variants (use these instead of token names)
-<Text color="default">Default text</Text>        // $text
-<Text color="secondary">Secondary text</Text>     // $textSecondary
-<Text color="tertiary">Tertiary text</Text>       // $textTertiary
-<Text color="muted">Muted text</Text>             // $textMuted
-<Text color="inverse">Inverse text</Text>         // $textInverse (for dark backgrounds)
-<Text color="primary">Primary colored</Text>      // $primary
-<Text color="success">Success message</Text>      // $success
-<Text color="error">Error message</Text>          // $error
-<Text color="warning">Warning message</Text>      // $warning
+// ✅ CORRECT - Use direct token references
+<Text color="$text">Default text</Text>
+<Text color="$textSecondary">Secondary text</Text>
+<Text color="$textTertiary">Tertiary text</Text>
+<Text color="$textMuted">Muted text</Text>
+<Text color="$textInverse">Inverse text (for dark backgrounds)</Text>
+<Text color="$primary">Primary colored</Text>
+<Text color="$success">Success message</Text>
+<Text color="$error">Error message</Text>
+<Text color="$warning">Warning message</Text>
 
-// ❌ WRONG - Don't use old token names directly
+// ❌ WRONG - Don't use old token names
 <Text color="$color">Text</Text>           // Old token
 <Text color="$color11">Text</Text>         // Numbered color
-<Text color="$textDark">Text</Text>        // Old token
+```
+
+**Important**: The Text component does NOT have color variants. Use direct token references with the `$` prefix for all color styling.
+
+### Understanding Variants vs Direct Token Props
+
+**CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:
+
+#### 1️⃣ **Custom Variants** (For NEW Component APIs Only)
+
+Variants are **named options** defined in `styled()` components. They use **plain strings WITHOUT `$`** that map to tokens internally.
+
+```tsx
+// ✅ CORRECT - Using custom variants (NO $ prefix)
+<Button size="lg">          // "lg" is a variant option
+<Text color="muted">        // "muted" is a variant option (if it existed - it doesn't!)
+<Card padding="lg">         // "lg" is a variant option
+
+// Defined in styled() like this:
+const Button = styled(View, {
+  variants: {
+    size: {
+      lg: { height: '$10', paddingHorizontal: '$4' },
+    }
+  }
+})
+```
+
+**⚠️ IMPORTANT:** Never create variants for props that **already exist on the base component** (like `gap`, `padding`, `margin`, `alignItems`, `justifyContent`). This causes TypeScript intersection type errors!
+
+**When to use:** Component-specific props that have a fixed set of semantic options (button size/tone, card variant, input size).
+
+#### 2️⃣ **Direct Token Props** (For Layout & Styling)
+
+Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component. This is how Tamagui's built-in components work.
+
+```tsx
+// ✅ CORRECT - Using direct token props (WITH $ prefix)
+<Row gap="$xl">                         // Use tokens directly - gap is native to XStack
+<Column gap="$lg">                      // Use tokens directly - gap is native to YStack
+<View padding="$md">                    // Direct token reference
+<YStack gap="$4">                       // Direct token reference
+<Text fontSize="$5" color="$textMuted"> // Direct token references
+<View backgroundColor="$surface">       // Direct token reference
+<View borderRadius="$lg">               // Direct token reference
+```
+
+**When to use:** Layout spacing (gap, padding, margin), geometric properties (width, height, borderRadius), colors, and any prop that exists natively on the base component.
+
+### Real-World Examples
+
+```tsx
+// ✅ CORRECT - Mixed usage based on context
+
+// Layout components use DIRECT TOKENS for native props
+<Row gap="$md" alignItems="center">     // gap="$md" - direct token (native prop)
+  <Column gap="$lg">                     // gap="$lg" - direct token (native prop)
+    <Text color="$textMuted" size="sm">  // color - direct token, size - variant
+      Helper text
+    </Text>
+  </Column>
+</Row>
+
+// Primitives use direct tokens (flexible, ad-hoc)
+<View padding="$4" backgroundColor="$surface" borderRadius="$md">
+  <YStack gap="$3">
+    <Text fontSize="$4" color="$text">Direct token usage</Text>
+  </YStack>
+</View>
+
+// Components use their defined variants
+<Button size="lg" tone="primary">      // size/tone - variants
+  Submit
+</Button>
+
+<Card variant="elevated" padding="lg">  // variant/padding - variants
+  <Card.Body>
+    <Text>Content</Text>
+  </Card.Body>
+</Card>
+```
+
+### Token Usage Cheat Sheet
+
+```tsx
+// ✅ CORRECT - Direct tokens (WITH $ prefix) for layout components
+<Row gap="$xl">                   // Row/Column use DIRECT tokens (gap is native to XStack)
+<Column gap="$lg">                // Don't use variants for native props!
+<YStack gap="$4">                 // Direct prop on primitive
+<View padding="$md">              // Direct prop on primitive
+<Text fontSize="$5" color="$textMuted"> // Direct props (not using variants)
+<View borderRadius="$lg">         // Direct geometric prop
+<View backgroundColor="$surface"> // Direct color token
+
+// ✅ CORRECT - Custom variants (NO $ prefix) for component-specific props
+<Button size="lg">                // Button component variant
+<Text size="md">                  // Text size variant (exists)
+<Card padding="lg">               // Card padding variant (custom, not native padding)
+<Container size="lg">             // Container size variant
+
+// ❌ WRONG - Creating variants for native props
+<Row gap="md">                    // ❌ gap exists natively, use gap="$md"
+<Column gap="lg">                 // ❌ gap exists natively, use gap="$lg"
+
+// ❌ WRONG - Mixing them up
+<Button size="$lg">               // ❌ Don't use $ with variants
+<Text color="muted">              // ❌ Text has NO color variants, use color="$textMuted"
+<View padding="md">               // ❌ Missing $ for direct prop
+
+// ❌ WRONG - Using specific/old tokens
+<View backgroundColor="$green500"> // ❌ Too specific, use semantic
+<Text color="$color">             // ❌ Old token name
+<View borderColor="$borderColor"> // ❌ Old token name
 ```
 
 #### ⚠️ **Type Safety Workarounds**
@@ -744,54 +858,62 @@ export type { MyComponentProps } from "./components/MyComponent";
 ```tsx
 <Text
   size="xs | sm | md | lg | xl" // Font size (default: md)
-  color="default | secondary | tertiary | muted | inverse | primary | error | success | warning"
   weight="normal | medium | semibold | bold" // Font weight
   align="left | center | right" // Text alignment
   truncate={boolean} // Truncate with ellipsis
+  color="$token" // Use direct token references (e.g., "$text", "$textSecondary", "$primary")
 >
   Text content
 </Text>
 ```
+
+**Note**: Text does NOT have color variants. Always use direct token references like `color="$textMuted"` or `color="$primary"`.
 
 #### Heading
 
 ```tsx
 <Heading
   level={1 | 2 | 3 | 4 | 5 | 6} // Heading level (h1-h6)
-  color="default | primary | secondary" // Color variant
   align="left | center | right" // Text alignment
+  color="$token" // Use direct token references (e.g., "$text", "$primary")
 >
   Heading text
 </Heading>
 ```
 
+**Note**: Heading does NOT have color variants. Use direct token references for colors.
+
 #### Row (Horizontal Layout)
 
 ```tsx
 <Row
-  gap="xs | sm | md | lg | xl" // Gap between children
-  align="start | center | end | stretch | baseline" // Align items
-  justify="start | center | end | between | around | evenly" // Justify content
-  wrap={boolean} // Allow wrapping
-  fullWidth={boolean} // Full width
+  gap="$xs | $sm | $md | $lg | $xl" // Gap between children (use tokens)
+  alignItems="flex-start | center | flex-end | stretch | baseline" // Vertical alignment
+  justifyContent="flex-start | center | flex-end | space-between | space-around | space-evenly" // Horizontal alignment
+  flexWrap="wrap | nowrap" // Allow wrapping
+  width="100%" // Full width (or any other value)
 >
   {children}
 </Row>
 ```
 
+**Note**: Row is a thin wrapper over XStack - use native React Native flexbox props, not custom variants.
+
 #### Column (Vertical Layout)
 
 ```tsx
 <Column
-  gap="xs | sm | md | lg | xl" // Gap between children
-  align="start | center | end | stretch" // Align items
-  justify="start | center | end | between | around | evenly" // Justify content
-  fullWidth={boolean} // Full width
-  fullHeight={boolean} // Full height
+  gap="$xs | $sm | $md | $lg | $xl" // Gap between children (use tokens)
+  alignItems="flex-start | center | flex-end | stretch" // Horizontal alignment
+  justifyContent="flex-start | center | flex-end | space-between | space-around | space-evenly" // Vertical alignment
+  width="100%" // Full width
+  height="100%" // Full height
 >
   {children}
 </Column>
 ```
+
+**Note**: Column is a thin wrapper over YStack - use native React Native flexbox props, not custom variants.
 
 #### Card
 

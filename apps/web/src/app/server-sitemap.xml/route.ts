@@ -2,6 +2,10 @@ import { getServerSideSitemap } from 'next-sitemap';
 import { prisma } from '@buttergolf/db';
 import type { ISitemapField } from 'next-sitemap';
 
+// Enable ISR (Incremental Static Regeneration)
+// Revalidate every 6 hours (21600 seconds)
+export const revalidate = 21600;
+
 export async function GET() {
   const siteUrl = process.env.SITE_URL || 'https://buttergolf.com';
 

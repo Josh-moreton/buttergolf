@@ -23,6 +23,11 @@ Server-generated sitemap for dynamic content:
 - **Route**: `/server-sitemap.xml`
 - **Implementation**: `src/app/server-sitemap.xml/route.ts`
 - **Content**: Home, static pages, and all available products
+- **Caching**: ISR (Incremental Static Regeneration) with 6-hour revalidation
+  - Cache duration: 21600 seconds (6 hours)
+  - Automatically regenerates in background after cache expires
+  - Reduces database load while keeping content relatively fresh
+  - Suitable for product catalogs up to 100k+ products
 
 ### robots.txt
 - **Location**: `public/robots.txt`
@@ -90,6 +95,44 @@ Requirements:
 See `apps/mobile/app.json` for mobile app configuration:
 - iOS: `associatedDomains` array
 - Android: `intentFilters` array
+
+### Solito Integration (Cross-Platform Navigation)
+The mobile app uses Solito to connect deep links to React Navigation screens:
+
+**Routes Configuration** (`packages/app/src/navigation/routes.ts`):
+```typescript
+export const routes = {
+  home: '/',
+  rounds: '/rounds',
+  products: '/products',
+  productDetail: '/products/[id]',
+}
+```
+
+**Mobile Linking Configuration** (`apps/mobile/App.tsx`):
+```typescript
+const linking = {
+  prefixes: ['buttergolf://', 'https://buttergolf.com', 'exp://'],
+  config: {
+    screens: {
+      Home: { path: routes.home, exact: true },
+      Rounds: { path: routes.rounds.slice(1), exact: true },
+      Products: { path: routes.products.slice(1), exact: true },
+      ProductDetail: { path: 'products/:id' },
+    },
+  },
+}
+```
+
+**How It Works**:
+1. User taps `https://buttergolf.com/products/123` on iOS/Android
+2. OS opens ButterGolf app (via Universal/App Links)
+3. Solito maps URL to React Navigation screen
+4. App navigates to ProductDetail screen with id=123
+
+**Testing Deep Links**:
+- iOS: `xcrun simctl openurl booted "https://buttergolf.com/products/123"`
+- Android: `adb shell am start -a android.intent.action.VIEW -d "https://buttergolf.com/products/123"`
 
 ## Environment Variables
 

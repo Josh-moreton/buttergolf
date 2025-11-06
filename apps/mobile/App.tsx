@@ -1,7 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider, HomeScreen, RoundsScreen, routes } from "@buttergolf/app";
-import type { ProductCardData } from "@buttergolf/app";
+import {
+  Provider,
+  HomeScreen,
+  RoundsScreen,
+  ProductsScreen,
+  ProductDetailScreen,
+  routes,
+} from "@buttergolf/app";
+import type { ProductCardData, Product } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
 import {
@@ -37,6 +44,13 @@ const linking = {
       Rounds: {
         path: routes.rounds.slice(1), // Remove leading '/' for React Navigation
         exact: true,
+      },
+      Products: {
+        path: routes.products.slice(1), // 'products'
+        exact: true,
+      },
+      ProductDetail: {
+        path: "products/:id", // 'products/:id' for dynamic routing
       },
       // Add more routes here as you create them
       // RoundDetail: routes.roundDetail.replace('[id]', ':id'),
@@ -93,6 +107,37 @@ async function fetchProducts(): Promise<ProductCardData[]> {
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return [];
+  }
+}
+
+// Function to fetch a single product by ID
+async function fetchProduct(id: string): Promise<Product | null> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+    if (!apiUrl) {
+      throw new Error(
+        "EXPO_PUBLIC_API_URL environment variable is not set. " +
+          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+      );
+    }
+
+    console.log("Fetching product:", id, "from:", apiUrl);
+    const response = await fetch(`${apiUrl}/api/products/${id}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to fetch product ${id}: ${response.status}`);
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch product:", error);
+    return null;
   }
 }
 
@@ -167,6 +212,23 @@ export default function App() {
                   component={RoundsScreen}
                   options={{ title: "Your Rounds" }}
                 />
+                <Stack.Screen
+                  name="Products"
+                  options={{ title: "Products" }}
+                >
+                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="ProductDetail"
+                  options={{ title: "Product Details" }}
+                >
+                  {({ route }: any) => (
+                    <ProductDetailScreen
+                      productId={route.params?.id}
+                      onFetchProduct={fetchProduct}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
