@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   require("../../public/tamagui.css");
 }
-import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
+import { ButterHeader } from "./_components/header/ButterHeader";
 import { TrustBar } from "./_components/marketplace/TrustBar";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
@@ -109,7 +109,7 @@ export default function RootLayout({
         <NextTamaguiProvider>
           <ServiceWorkerRegistration />
           <TrustBar />
-          <MarketplaceHeader />
+          <ButterHeader />
           <AppPromoBanner />
           {children}
         </NextTamaguiProvider>

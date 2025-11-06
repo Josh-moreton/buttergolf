@@ -1319,6 +1319,149 @@ Important: Only publishable keys may be exposed to the client (`NEXT_PUBLIC_*` /
 
 For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
+## Web Application Header Structure
+
+### ButterHeader Component
+
+The web application uses a unified butter-themed header with the Pure Butter brand identity.
+
+**Location**: `apps/web/src/app/_components/header/ButterHeader.tsx`
+
+**Key Features**:
+
+- Single header bar with butter orange background (`$primary` - #E25F2F)
+- Fixed positioning at top (below optional TrustBar)
+- Height: ~80px (reduced from previous 180px three-layer header)
+- Sticky with shadow effect on scroll
+- Responsive with mobile-first design
+
+**Layout Structure**:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ [Logo]  HOME  FEATURES  ABOUT  CONTACT    [Search 🔍]  [❤️][🛒][👤] │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Components**:
+
+1. **Logo** (Left):
+   - Uses `logo-white.png` (50px height) on orange background
+   - Links to homepage
+   - Always visible
+
+2. **Center Navigation** (Desktop only, hidden on mobile):
+   - HOME | FEATURES | ABOUT US | CONTACT US
+   - Gotham Medium, 14px
+   - White text with underline on hover
+   - Hidden below `$lg` breakpoint
+
+3. **Search Bar** (Right side):
+   - Desktop: Semi-transparent white pill shape (250px width)
+   - Mobile: Search icon only (expands to full bar in mobile menu)
+   - Background: `rgba(255, 255, 255, 0.2)` with backdrop blur
+   - Hover: Increases opacity to 0.3
+
+4. **Action Icons** (Far right):
+   - User icon (or UserButton when signed in)
+   - Wishlist (heart icon with badge count)
+   - Cart (cart icon with badge count)
+   - Mobile menu toggle (hamburger, hidden on desktop)
+   - All icons: 24px, white color, 44x44px touch targets
+   - Hover opacity: 0.8
+
+5. **Mobile Menu Overlay**:
+   - Full-screen overlay with butter orange background
+   - Large navigation links (XL size, bold)
+   - Search bar at bottom
+   - Closes on link click or close button
+
+### TrustBar Component
+
+**Location**: `apps/web/src/app/_components/marketplace/TrustBar.tsx`
+
+**Features**:
+
+- Cream background (`$background` - #FEFAD6)
+- Fixed at top (40px height)
+- Dismissible with close button (X icon on right)
+- Contains promotional message: "Give 10%, Get 10%. Refer a friend."
+- Uses local state to hide when dismissed
+- Z-index: 100 (above header)
+
+**Layout in Root**:
+
+```tsx
+// apps/web/src/app/layout.tsx
+<body>
+  <NextTamaguiProvider>
+    <ServiceWorkerRegistration />
+    <TrustBar /> {/* Top: 0px, 40px tall */}
+    <ButterHeader /> {/* Top: 40px, 80px tall */}
+    <AppPromoBanner /> {/* Below header */}
+    {children}
+  </NextTamaguiProvider>
+</body>
+```
+
+**Total Header Stack Height**:
+
+- With TrustBar: 40px (trust) + 80px (header) = 120px
+- Without TrustBar (dismissed): 80px (header only)
+
+### Header Best Practices
+
+1. **Color Usage**:
+   - Always use `$primary` for header background (butter orange)
+   - Always use `$textInverse` for text/icons on orange background
+   - Badge counts use `$navy500` background for contrast
+
+2. **Navigation Links**:
+   - Use Next.js `Link` component for client-side navigation
+   - Add `onClick` handlers to close mobile menu when navigating
+   - Use uppercase text for navigation items (brand consistency)
+
+3. **Responsive Behavior**:
+   - Desktop (`$lg`+): Show center nav, inline search, all icons
+   - Tablet (`$md` - `$lg`): Hide center nav, show hamburger menu
+   - Mobile (`< $md`): Search icon only, hamburger menu with full overlay
+
+4. **Sticky Behavior**:
+   - Tracks scroll position with `useState` and `useEffect`
+   - Adds shadow when scrolled (`stickyMenu` state)
+   - Shadow: `rgba(0,0,0,0.12)` with 6px radius
+
+5. **Authentication Integration**:
+   - Uses Clerk's `<SignedIn>` and `<SignedOut>` components
+   - Shows UserButton when authenticated
+   - Shows user icon with sign-in modal when not authenticated
+   - UserButton has white filter applied for visibility on orange background
+
+### Migration Notes
+
+**Old Header** (`MarketplaceHeader.tsx`):
+
+- Three-layer structure (TrustBar + Main Header + Nav Bar)
+- Total height: 180px
+- Green theme (#13a063)
+- Search on left side
+- Complex desktop menu with categories
+
+**New Header** (`ButterHeader.tsx`):
+
+- Single unified layer
+- Total height: 80px (with optional 40px TrustBar)
+- Butter orange theme (#E25F2F)
+- Search on right side
+- Simplified navigation
+- Mobile-first with full-screen overlay
+
+**Breaking Changes**:
+
+- Page layouts expecting 180px margin-top should be updated to 120px (or 80px if TrustBar dismissed)
+- Desktop category menu moved to dedicated CategoryGrid component (see homepage refactor)
+- Logo now requires white version (`logo-white.png`) instead of orange
+
 ## Payments (Stripe)
 
 We use Stripe for payment processing and marketplace functionality (Stripe Connect). The web app handles all payment operations server-side, while the mobile app uses native Stripe SDK for optimal UX.

@@ -12,19 +12,30 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ### 1. Unified Butter Header
 **Create:** `apps/web/src/app/_components/header/ButterHeader.tsx`
 
-- [ ] Single header bar with butter orange background (#E25F2F)
-- [ ] Logo image on left (use `packages/assets/images/logo-orange.png`)
-- [ ] Center navigation: HOME | FEATURES | ABOUT US | CONTACT US
-- [ ] Search bar on right side (not left)
-- [ ] User/wishlist/cart icons on far right
-- [ ] Height: ~80px (reduce from current 180px)
-- [ ] Sticky on scroll with shadow
-- [ ] Mobile: Hamburger menu
+- [x] Single header bar with butter orange background (#E25F2F)
+- [x] Logo image on left (use `packages/assets/images/logo-white.png`)
+- [x] Center navigation: HOME | FEATURES | ABOUT US | CONTACT US
+- [x] Search bar on right side (not left)
+- [x] User/wishlist/cart icons on far right
+- [x] Height: ~80px (reduce from current 180px)
+- [x] Sticky on scroll with shadow
+- [x] Mobile: Hamburger menu with full-screen overlay
+- [x] TrustBar updated: Cream background, dismissible with close button
 
 **Layout:**
 ```
 [Logo]  HOME  FEATURES  ABOUT  CONTACT    [Search 🔍]  [❤️][🛒][👤]
 ```
+
+**Status:** ✅ COMPLETE
+- Created new ButterHeader component with butter orange background
+- Logo uses white version on orange background (50px height)
+- Center navigation with underline hover effect
+- Search bar with semi-transparent white background and blur effect
+- Icons on right with proper touch targets (44x44px)
+- Mobile menu with full-screen overlay
+- TrustBar now uses cream background and is dismissible
+- Replaced old MarketplaceHeader in layout.tsx
 
 ### 2. Hero Carousel Component
 **Create:** `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
@@ -190,12 +201,13 @@ pnpm add embla-carousel-react --filter web
 
 ### Header
 - [x] Single orange header bar (~80px)
-- [x] Logo image visible on left
-- [x] Navigation centered
+- [x] Logo image visible on left (white version)
+- [x] Navigation centered (desktop only)
 - [x] Search on right side
 - [x] Icons on far right
 - [x] Sticky with shadow on scroll
 - [x] Mobile hamburger menu
+- [x] TrustBar cream background and dismissible
 
 ### Carousel
 - [x] 50vh height, full width
