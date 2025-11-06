@@ -136,17 +136,17 @@ const bodyFont = createFont({
 
 // Brand Colors - 10-shade scales for all color families
 const brandColors = {
-    // Primary Brand (Butter Orange) - Pure Butter heritage brand
+    // Primary Brand (Butter Orange) - Pure Butter heritage brand  
     butter50: '#FFF9ED',
     butter100: '#FFF3D6',
     butter200: '#FFECBD',
     butter300: '#FFE38A',
-    butter400: '#E25F2F', // Primary brand color (Butter Orange)
-    butter500: '#F4AD2D',
-    butter600: '#E89B1A',
-    butter700: '#C47A00', // For text on light backgrounds
-    butter800: '#995F00',
-    butter900: '#6B4400',
+    butter400: '#E25F2F', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
+    butter500: '#D2553A', // Darker/more saturated - for hover states
+    butter600: '#B8442F', // Even darker - for press states
+    butter700: '#9A3824', // Dark - for text on light backgrounds
+    butter800: '#7C2D1D',
+    butter900: '#5E2316',
 
     // Secondary Brand (Navy) - Modern contrast accent
     navy50: '#E8EDF3',
@@ -159,30 +159,6 @@ const brandColors = {
     navy700: '#0A1520',
     navy800: '#050B10',
     navy900: '#020508',
-
-    // Legacy green scale (for backward compatibility)
-    green50: '#e6f7f0',
-    green100: '#b3e5d1',
-    green200: '#80d3b2',
-    green300: '#4dc193',
-    green400: '#26b77f',
-    green500: '#13a063',
-    green600: '#0f8c54',
-    green700: '#0b6b3f',
-    green800: '#084f2e',
-    green900: '#053320',
-
-    // Legacy amber scale (for backward compatibility)
-    amber50: '#fef9e6',
-    amber100: '#fceeb3',
-    amber200: '#fae380',
-    amber300: '#f8d84d',
-    amber400: '#f2b705',
-    amber500: '#d99f04',
-    amber600: '#b38403',
-    amber700: '#8c6802',
-    amber800: '#664c02',
-    amber900: '#403001',
 
     // Neutral (Gray)
     gray50: '#f9fafb',

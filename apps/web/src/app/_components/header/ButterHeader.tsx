@@ -39,7 +39,6 @@ export function ButterHeader() {
         paddingHorizontal="$4"
         paddingVertical="$3"
         $md={{ paddingHorizontal: "$6" }}
-        animation="quick"
         {...(stickyMenu && {
           shadowColor: "rgba(0,0,0,0.12)",
           shadowRadius: 6,
