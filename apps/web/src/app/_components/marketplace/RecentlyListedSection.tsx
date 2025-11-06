@@ -47,11 +47,13 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
         </Column>
       </Card>
 
-      <ProductDetailModal
-        productId={product.id}
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-      />
+      {modalOpen && (
+        <ProductDetailModal
+          productId={product.id}
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+        />
+      )}
     </>
   );
 }

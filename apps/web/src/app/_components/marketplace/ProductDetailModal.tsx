@@ -66,6 +66,11 @@ export function ProductDetailModal({
   const [error, setError] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open || !productId) return;
@@ -90,6 +95,11 @@ export function ProductDetailModal({
   }, [productId, open]);
 
   const selectedImage = product?.images[selectedImageIndex];
+
+  // Don't render on server to avoid hydration issues
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Dialog modal open={open} onOpenChange={onOpenChange}>
