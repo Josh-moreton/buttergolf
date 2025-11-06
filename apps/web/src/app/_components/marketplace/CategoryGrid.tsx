@@ -50,7 +50,7 @@ export function CategoryGrid() {
       paddingVertical="$8"
       $md={{ paddingVertical: "$12" }}
       $lg={{ paddingVertical: "$16" }}
-      backgroundColor="$background"
+      backgroundColor="#FFFFFF"
     >
       {/* Section Title */}
       <Column
@@ -97,40 +97,45 @@ export function CategoryGrid() {
             >
               <div
                 style={{
-                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
                   width: "100%",
                   aspectRatio: "1 / 1",
-                  borderRadius: "12px",
+                  backgroundColor: "#FFFFFF",
+                  border: "3px solid #E25F2F",
+                  borderRadius: "4px",
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
                 }}
                 className="category-card"
               >
-                {/* Background Image */}
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    transition: "transform 0.3s ease",
-                  }}
-                />
-
-                {/* Orange Label Overlay at Bottom */}
+                {/* Image Container with Padding */}
                 <div
                   style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
+                    flex: 1,
+                    padding: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      transition: "transform 0.3s ease",
+                    }}
+                  />
+                </div>
+
+                {/* Orange Label at Bottom */}
+                <div
+                  style={{
                     backgroundColor: "#E25F2F",
                     padding: "20px",
                     textAlign: "center",
@@ -175,16 +180,16 @@ export function CategoryGrid() {
           }
 
           .category-card:hover {
-            transform: scale(1.02) !important;
-            box-shadow: 0 8px 24px rgba(226, 95, 47, 0.15) !important;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(226, 95, 47, 0.2);
           }
 
           .category-card:hover img {
-            transform: scale(1.05) !important;
+            transform: scale(1.05);
           }
 
           .category-card:active {
-            transform: scale(0.98) !important;
+            transform: translateY(-2px);
           }
         `,
         }}
