@@ -15,16 +15,23 @@ export async function POST(request: Request) {
             );
         }
 
-        // Get user from database
-        const user = await prisma.user.findUnique({
+        // Get or create user from database
+        // This ensures user exists even if webhook hasn't fired yet
+        let user = await prisma.user.findUnique({
             where: { clerkId },
         });
 
         if (!user) {
-            return NextResponse.json(
-                { error: 'User not found' },
-                { status: 404 }
-            );
+            // Create user if not found (fallback for webhook delays)
+            // In production, the webhook should handle this
+            user = await prisma.user.create({
+                data: {
+                    clerkId,
+                    email: `user-${clerkId}@temp.local`, // Temporary email, will be updated by webhook
+                    name: null,
+                    imageUrl: null,
+                },
+            });
         }
 
         // Parse request body
