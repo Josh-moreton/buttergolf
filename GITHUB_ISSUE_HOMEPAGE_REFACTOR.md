@@ -45,36 +45,38 @@ Refactor the web homepage to match the provided mockup design with butter orange
 **Create:** `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
 
 - [x] Install carousel library: `pnpm add embla-carousel-react --filter web`
-- [x] Full-width carousel container
+- [x] Split layout: 50% text carousel (left), 50% club image (right)
+- [x] Background image applied to entire hero section
 - [x] Height: 50vh (min: 400px, max: 600px)
-- [x] 3-5 slides with:
-  - Background image
-  - Large text overlay (title + subtitle)
-  - CTA button ("SEE THE RANGE")
-  - Cream background (#FEFAD6)
+- [x] Text carousel with 4 slides:
+  - Large dramatic text overlay (title + HUGE subtitle)
+  - **SALE** should be 2-3x bigger than "SUMMER GOLF"
+  - CTA button ("SEE THE RANGE") with solid orange fill
+  - Dot navigation positioned NEXT TO button (not bottom left)
 - [x] Autoplay (5s interval)
-- [x] Dot navigation indicators
 - [x] Touch/swipe support
 - [x] Keyboard navigation (arrow keys)
 
-**Sample Slides:**
-1. "SUMMER GOLF SALE" - Golf clubs image
-2. "JUST LANDED" - New arrivals
-3. "SHOP CALLAWAY" - Featured brands
-4. "JOIN THE CLUB" - Membership benefits
+**Typography Hierarchy (Per Mockup):**
+- Title (e.g., "SUMMER GOLF"): 28-42px, medium weight
+- Subtitle (e.g., "SALE"): 64-120px, EXTRA BOLD - THIS IS THE STAR
+- Tagline: "DON'T MISS OUT!" - 16-22px
+- Button and dots on same horizontal line
 
-**Status:** ✅ COMPLETE
-- Installed embla-carousel-react library
-- Created HeroCarousel component with 4 slides
-- Implemented autoplay (5 second intervals)
-- Added dot navigation with active state
-- Touch/swipe gestures supported via Embla
-- Keyboard navigation (arrow keys) enabled
-- Responsive typography using clamp()
-- Cream overlay for better text contrast
-- Orange text (#E25F2F) on cream background
-- CTA buttons with hover/press animations
-- Proper accessibility labels
+**Status:** ✅ COMPLETE - MATCHES MOCKUP
+- Split layout implemented: carousel left (50%), club image right (50%)
+- Background image (hero-background.avif) applied to entire section
+- Text hierarchy matches mockup:
+  - Title: clamp(28px, 4vw, 42px) - smaller
+  - Subtitle: clamp(64px, 12vw, 120px) - MASSIVE
+  - Tagline: clamp(16px, 2vw, 22px)
+- Native HTML elements (h1, h2, p) for reliable text rendering
+- Button: Solid orange (#E25F2F), pill-shaped, proper padding
+- Dot navigation positioned NEXT to button (horizontal flex layout)
+- Old bottom-left dot navigation removed
+- 4 slides with proper content
+- Autoplay, keyboard nav, touch gestures all working
+- Responsive on mobile (hides club image, full-width carousel)
 
 ### 3. Category Grid Component
 **Create:** `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
@@ -102,21 +104,20 @@ Refactor the web homepage to match the provided mockup design with butter orange
 └─────────┴─────────┴─────────┴─────────┘
 ```
 
-**Status:** ✅ COMPLETE
-- Created CategoryGrid component with 4-column CSS Grid
-- Square aspect ratio (1:1) cards with border radius
-- Orange labels (#E25F2F) at bottom with white text
-- Hover effects: scale(1.02) + enhanced shadow
-- Image zoom on hover (scale 1.05)
-- Active press effect (scale 0.98)
+**Status:** ✅ COMPLETE - MATCHES MOCKUP
+- White cards with 3px solid orange (#E25F2F) borders
+- Images use objectFit: contain (not cover) to show white padding
+- Flexbox column layout: image container (flex:1, 20px padding) + orange label bar
+- Orange labels at bottom with white text, full width
+- Hover effects: translateY(-4px) lift + shadow
 - Responsive breakpoints:
   - Mobile: 1 column
-  - Tablet (768px+): 2 columns
+  - Tablet (768px+): 2 columns  
   - Desktop (1024px+): 4 columns
 - Links to filtered category pages
 - Section title: "SHOP BY CATEGORY" in butter orange
-- Using placeholder images (clubs images) for all categories
-- Ready for final images when available
+- Using placeholder images (clubs) - ready for final images
+- Visual design now matches mockup exactly
 
 ### 4. Update Page Layout
 **Modify:** `apps/web/src/app/_components/MarketplaceHomeClient.tsx`

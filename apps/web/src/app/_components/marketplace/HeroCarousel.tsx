@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { Row, Column, Text, Button } from "@buttergolf/ui";
+import { Row, Column } from "@buttergolf/ui";
 import Link from "next/link";
 import { imagePaths } from "@buttergolf/assets";
 
@@ -143,15 +143,15 @@ export function HeroCarousel() {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "flex-start",
-                  paddingLeft: "clamp(20px, 5vw, 80px)",
-                  paddingRight: "20px",
+                  paddingLeft: "clamp(40px, 8vw, 120px)",
+                  paddingRight: "clamp(40px, 8vw, 120px)",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "16px",
+                    gap: "8px",
                     maxWidth: "600px",
                   }}
                 >
@@ -160,8 +160,8 @@ export function HeroCarousel() {
                     style={{
                       fontFamily: "var(--font-gotham)",
                       fontWeight: 700,
-                      fontSize: "clamp(32px, 5vw, 48px)",
-                      lineHeight: 1.1,
+                      fontSize: "clamp(28px, 4vw, 42px)",
+                      lineHeight: 1.2,
                       color: "#E25F2F",
                       letterSpacing: "2px",
                       textTransform: "uppercase",
@@ -171,15 +171,15 @@ export function HeroCarousel() {
                     {slide.title}
                   </h2>
 
-                  {/* Subtitle - Larger */}
+                  {/* Subtitle - MUCH Larger */}
                   <h1
                     style={{
                       fontFamily: "var(--font-gotham)",
                       fontWeight: 900,
-                      fontSize: "clamp(48px, 8vw, 72px)",
-                      lineHeight: 1,
+                      fontSize: "clamp(64px, 12vw, 120px)",
+                      lineHeight: 0.9,
                       color: "#E25F2F",
-                      letterSpacing: "3px",
+                      letterSpacing: "4px",
                       textTransform: "uppercase",
                       margin: 0,
                     }}
@@ -192,85 +192,93 @@ export function HeroCarousel() {
                     style={{
                       fontFamily: "var(--font-gotham)",
                       fontWeight: 700,
-                      fontSize: "clamp(18px, 2.5vw, 24px)",
+                      fontSize: "clamp(16px, 2vw, 22px)",
                       lineHeight: 1.3,
                       color: "#E25F2F",
                       letterSpacing: "1.5px",
                       textTransform: "uppercase",
-                      margin: "8px 0 0 0",
+                      margin: "4px 0 0 0",
                     }}
                   >
                     DON'T MISS OUT!
                   </p>
 
-                  {/* CTA Button */}
-                  <Link
-                    href={slide.ctaLink}
-                    style={{ textDecoration: "none", marginTop: "8px" }}
+                  {/* CTA Button and Dots Container */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "20px",
+                      marginTop: "16px",
+                    }}
                   >
-                    <Button
-                      backgroundColor="$primary"
-                      color="$textInverse"
-                      paddingHorizontal="$8"
-                      paddingVertical="$4"
-                      borderRadius="$full"
-                      fontSize={16}
-                      fontWeight="700"
-                      hoverStyle={{
-                        backgroundColor: "$primaryHover",
-                        scale: 1.05,
-                      }}
-                      pressStyle={{
-                        backgroundColor: "$primaryPress",
-                        scale: 0.98,
-                      }}
-                      {...{
-                        style: {
+                    <Link
+                      href={slide.ctaLink}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <button
+                        style={{
+                          fontFamily: "var(--font-gotham)",
+                          backgroundColor: "#E25F2F",
+                          color: "#FFFFFF",
+                          padding: "16px 48px",
+                          borderRadius: "50px",
+                          fontSize: "16px",
+                          fontWeight: 700,
+                          border: "none",
                           cursor: "pointer",
-                          transition: "all 0.2s ease",
                           textTransform: "uppercase",
                           letterSpacing: "1.5px",
-                        },
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = "#C94F25";
+                          e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "#E25F2F";
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                      >
+                        {slide.ctaText}
+                      </button>
+                    </Link>
+
+                    {/* Dot Navigation - Next to Button */}
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "12px",
+                        alignItems: "center",
                       }}
                     >
-                      {slide.ctaText}
-                    </Button>
-                  </Link>
+                      {slides.map((s, index) => (
+                        <button
+                          key={s.id}
+                          onClick={() => scrollTo(index)}
+                          style={{
+                            width: selectedIndex === index ? "32px" : "12px",
+                            height: "12px",
+                            borderRadius: "6px",
+                            border: "none",
+                            backgroundColor:
+                              selectedIndex === index
+                                ? "#E25F2F"
+                                : "rgba(226, 95, 47, 0.3)",
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                            padding: 0,
+                          }}
+                          aria-label={`Go to slide ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </Row>
         </div>
-
-        {/* Dot Navigation */}
-        <Row
-          position="absolute"
-          bottom="$6"
-          {...{ style: { left: "clamp(20px, 5vw, 80px)" } }}
-          gap="$3"
-          zIndex={3}
-        >
-          {slides.map((slide, index) => (
-            <button
-              key={slide.id}
-              onClick={() => scrollTo(index)}
-              style={{
-                width: selectedIndex === index ? "32px" : "12px",
-                height: "12px",
-                borderRadius: "6px",
-                border: "none",
-                backgroundColor:
-                  selectedIndex === index
-                    ? "#E25F2F"
-                    : "rgba(226, 95, 47, 0.3)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                padding: 0,
-              }}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </Row>
       </Column>
 
       {/* Right Side - Club Image (50%, Desktop Only) */}
