@@ -1,4 +1,5 @@
 import { PrismaClient, ProductCondition } from '@prisma/client'
+import { CATEGORIES } from '../src/constants/categories'
 
 const prisma = new PrismaClient()
 
@@ -18,75 +19,21 @@ async function main() {
 
     console.log('✅ Created user:', user)
 
-    // Create categories
-    const categories = await Promise.all([
-        prisma.category.upsert({
-            where: { slug: 'drivers' },
-            update: {},
-            create: {
-                name: 'Drivers',
-                slug: 'drivers',
-                description: 'Golf drivers and woods',
-                imageUrl: '/_assets/images/clubs-1.jpg',
-                sortOrder: 1,
-            },
-        }),
-        prisma.category.upsert({
-            where: { slug: 'irons' },
-            update: {},
-            create: {
-                name: 'Irons',
-                slug: 'irons',
-                description: 'Iron sets and individual irons',
-                imageUrl: '/_assets/images/clubs-2.webp',
-                sortOrder: 2,
-            },
-        }),
-        prisma.category.upsert({
-            where: { slug: 'wedges' },
-            update: {},
-            create: {
-                name: 'Wedges',
-                slug: 'wedges',
-                description: 'Pitching, sand, lob, and gap wedges',
-                imageUrl: '/_assets/images/clubs-4.jpg',
-                sortOrder: 3,
-            },
-        }),
-        prisma.category.upsert({
-            where: { slug: 'putters' },
-            update: {},
-            create: {
-                name: 'Putters',
-                slug: 'putters',
-                description: 'Putters of all styles',
-                imageUrl: '/_assets/images/clubs-5.webp',
-                sortOrder: 4,
-            },
-        }),
-        prisma.category.upsert({
-            where: { slug: 'bags' },
-            update: {},
-            create: {
-                name: 'Bags',
-                slug: 'bags',
-                description: 'Golf bags and travel covers',
-                imageUrl: '/_assets/images/clubs-3.webp',
-                sortOrder: 5,
-            },
-        }),
-        prisma.category.upsert({
-            where: { slug: 'balls' },
-            update: {},
-            create: {
-                name: 'Balls',
-                slug: 'balls',
-                description: 'Golf balls',
-                imageUrl: '/_assets/images/clubs-6.jpg',
-                sortOrder: 6,
-            },
-        }),
-    ])
+    // Create categories from centralized constants
+    const categories = await Promise.all(
+        CATEGORIES.map((categoryDef) =>
+            prisma.category.upsert({
+                where: { slug: categoryDef.slug },
+                update: {
+                    name: categoryDef.name,
+                    description: categoryDef.description,
+                    imageUrl: categoryDef.imageUrl,
+                    sortOrder: categoryDef.sortOrder,
+                },
+                create: categoryDef,
+            })
+        )
+    )
 
     console.log(`✅ Created ${categories.length} categories`)
 
@@ -134,7 +81,7 @@ async function main() {
                 },
             },
         }),
-        
+
         // Irons
         prisma.product.create({
             data: {

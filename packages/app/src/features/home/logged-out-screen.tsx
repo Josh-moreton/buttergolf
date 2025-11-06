@@ -21,21 +21,9 @@ import {
   User,
 } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
+import { CATEGORIES } from "@buttergolf/db";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-
-const CATEGORIES = [
-  "All",
-  "Drivers",
-  "Fairway Woods",
-  "Hybrids",
-  "Irons",
-  "Wedges",
-  "Putters",
-  "Bags",
-  "Balls",
-  "Accessories",
-];
 
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
@@ -129,25 +117,44 @@ export function LoggedOutHomeScreen({
           gap: 8,
         }}
       >
+        <Button
+          key="all"
+          size="$3"
+          paddingHorizontal="$4"
+          paddingVertical="$2"
+          borderRadius="$full"
+          backgroundColor={selectedCategory === "All" ? "$primary" : "$white"}
+          borderWidth={1}
+          borderColor={selectedCategory === "All" ? "$primary" : "$border"}
+          color={selectedCategory === "All" ? "$white" : "$text"}
+          onPress={() => setSelectedCategory("All")}
+          pressStyle={{
+            scale: 0.95,
+          }}
+        >
+          All
+        </Button>
         {CATEGORIES.map((category) => (
           <Button
-            key={category}
+            key={category.slug}
             size="$3"
             paddingHorizontal="$4"
             paddingVertical="$2"
             borderRadius="$full"
             backgroundColor={
-              selectedCategory === category ? "$primary" : "$white"
+              selectedCategory === category.name ? "$primary" : "$white"
             }
             borderWidth={1}
-            borderColor={selectedCategory === category ? "$primary" : "$border"}
-            color={selectedCategory === category ? "$white" : "$text"}
-            onPress={() => setSelectedCategory(category)}
+            borderColor={
+              selectedCategory === category.name ? "$primary" : "$border"
+            }
+            color={selectedCategory === category.name ? "$white" : "$text"}
+            onPress={() => setSelectedCategory(category.name)}
             pressStyle={{
               scale: 0.95,
             }}
           >
-            {category}
+            {category.name}
           </Button>
         ))}
       </ScrollView>
