@@ -159,8 +159,9 @@ export function CategoryGrid() {
       </Column>
 
       {/* Global styles for hover effects */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           @media (min-width: 768px) {
             .category-grid {
               grid-template-columns: repeat(2, 1fr) !important;
@@ -185,8 +186,9 @@ export function CategoryGrid() {
           .category-card:active {
             transform: scale(0.98) !important;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </Column>
   );
 }
