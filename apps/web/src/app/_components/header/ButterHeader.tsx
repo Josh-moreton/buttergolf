@@ -79,10 +79,11 @@ export function ButterHeader() {
           >
             <Link href="/" style={{ textDecoration: "none" }}>
               <Text
-                size="sm"
-                weight="medium"
+                size="md"
+                weight="semibold"
                 color="$textInverse"
                 cursor="pointer"
+                letterSpacing={1}
                 hoverStyle={{
                   textDecorationLine: "underline",
                   textDecorationColor: "$textInverse",
@@ -93,10 +94,11 @@ export function ButterHeader() {
             </Link>
             <Link href="/features" style={{ textDecoration: "none" }}>
               <Text
-                size="sm"
-                weight="medium"
+                size="md"
+                weight="semibold"
                 color="$textInverse"
                 cursor="pointer"
+                letterSpacing={1}
                 hoverStyle={{
                   textDecorationLine: "underline",
                   textDecorationColor: "$textInverse",
@@ -107,10 +109,11 @@ export function ButterHeader() {
             </Link>
             <Link href="/about" style={{ textDecoration: "none" }}>
               <Text
-                size="sm"
-                weight="medium"
+                size="md"
+                weight="semibold"
                 color="$textInverse"
                 cursor="pointer"
+                letterSpacing={1}
                 hoverStyle={{
                   textDecorationLine: "underline",
                   textDecorationColor: "$textInverse",
@@ -121,10 +124,11 @@ export function ButterHeader() {
             </Link>
             <Link href="/contact" style={{ textDecoration: "none" }}>
               <Text
-                size="sm"
-                weight="medium"
+                size="md"
+                weight="semibold"
                 color="$textInverse"
                 cursor="pointer"
+                letterSpacing={1}
                 hoverStyle={{
                   textDecorationLine: "underline",
                   textDecorationColor: "$textInverse",
