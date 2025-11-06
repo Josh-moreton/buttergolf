@@ -5,9 +5,21 @@ import { auth } from '@clerk/nextjs/server';
 export const runtime = 'edge';
 
 export async function POST(request: Request): Promise<NextResponse> {
+  // Check if Vercel Blob is configured
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error('BLOB_READ_WRITE_TOKEN is not configured');
+    return NextResponse.json(
+      {
+        error: 'Image upload is not configured. Please add BLOB_READ_WRITE_TOKEN to your environment variables.',
+        details: 'See docs/VERCEL_BLOB_SETUP.md for setup instructions'
+      },
+      { status: 500 }
+    );
+  }
+
   // Authenticate user
   const { userId } = await auth();
-  
+
   if (!userId) {
     return NextResponse.json(
       { error: 'Unauthorized' },
@@ -29,7 +41,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // Validate file type (images only)
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
   const contentType = request.headers.get('content-type');
-  
+
   if (!contentType || !allowedTypes.includes(contentType)) {
     return NextResponse.json(
       { error: 'Invalid file type. Only images are allowed.' },
@@ -51,8 +63,15 @@ export async function POST(request: Request): Promise<NextResponse> {
     });
   } catch (error) {
     console.error('Upload error:', error);
+
+    // Provide more specific error messages
+    const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+
     return NextResponse.json(
-      { error: 'Upload failed' },
+      {
+        error: 'Failed to upload image',
+        details: errorMessage
+      },
       { status: 500 }
     );
   }
