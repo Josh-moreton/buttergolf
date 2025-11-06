@@ -8,8 +8,7 @@ import { imagePaths } from "@buttergolf/assets";
 
 interface Slide {
   id: string;
-  title: string;
-  subtitle: string;
+  message: string;
   ctaText: string;
   ctaLink: string;
   image: string;
@@ -18,32 +17,28 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: "summer-sale",
-    title: "SUMMER",
-    subtitle: "GOLF SALE",
+    message: "SUMMER GOLF SALE",
     ctaText: "SEE THE RANGE",
     ctaLink: "/listings?category=clubs",
     image: imagePaths.clubs.club1,
   },
   {
     id: "just-landed",
-    title: "JUST",
-    subtitle: "LANDED",
+    message: "JUST LANDED",
     ctaText: "SHOP NEW ARRIVALS",
     ctaLink: "/listings?sort=newest",
     image: imagePaths.clubs.club2,
   },
   {
     id: "featured-brands",
-    title: "SHOP",
-    subtitle: "CALLAWAY",
+    message: "SHOP CALLAWAY",
     ctaText: "EXPLORE BRANDS",
     ctaLink: "/listings?brand=callaway",
     image: imagePaths.clubs.club3,
   },
   {
     id: "membership",
-    title: "JOIN THE",
-    subtitle: "CLUB",
+    message: "JOIN THE CLUB",
     ctaText: "LEARN MORE",
     ctaLink: "/about",
     image: imagePaths.clubs.club4,
@@ -130,7 +125,7 @@ export function HeroCarousel() {
               {/* Background Image */}
               <img
                 src={slide.image}
-                alt={`${slide.title} ${slide.subtitle}`}
+                alt={slide.message}
                 style={{
                   position: "absolute",
                   top: 0,
@@ -169,41 +164,23 @@ export function HeroCarousel() {
                 zIndex={2}
                 gap="$6"
               >
-                <Column alignItems="center" gap="$2">
-                  {/* Title */}
-                  <Text
-                    {...{
-                      style: {
-                        fontFamily: "var(--font-gotham)",
-                        fontWeight: 700,
-                        fontSize: "clamp(48px, 8vw, 72px)",
-                        lineHeight: 1,
-                        color: "#E25F2F",
-                        textAlign: "center",
-                        letterSpacing: "2px",
-                      },
-                    }}
-                  >
-                    {slide.title}
-                  </Text>
-
-                  {/* Subtitle */}
-                  <Text
-                    {...{
-                      style: {
-                        fontFamily: "var(--font-gotham)",
-                        fontWeight: 900,
-                        fontSize: "clamp(64px, 12vw, 96px)",
-                        lineHeight: 1,
-                        color: "#E25F2F",
-                        textAlign: "center",
-                        letterSpacing: "3px",
-                      },
-                    }}
-                  >
-                    {slide.subtitle}
-                  </Text>
-                </Column>
+                {/* Single Message Text */}
+                <Text
+                  {...{
+                    style: {
+                      fontFamily: "var(--font-gotham)",
+                      fontWeight: 900,
+                      fontSize: "clamp(48px, 10vw, 80px)",
+                      lineHeight: 1.2,
+                      color: "#E25F2F",
+                      textAlign: "center",
+                      letterSpacing: "3px",
+                      maxWidth: "800px",
+                    },
+                  }}
+                >
+                  {slide.message}
+                </Text>
 
                 {/* CTA Button */}
                 <Link href={slide.ctaLink} style={{ textDecoration: "none" }}>
