@@ -95,8 +95,7 @@ export default function AddressesPage() {
         }
     }, [isSignedIn]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         setError(null);
 
         // Validate required fields
@@ -245,132 +244,130 @@ export default function AddressesPage() {
                     {/* Address Form */}
                     {showForm && (
                         <Card variant="elevated" padding="$lg">
-                            <form onSubmit={handleSubmit}>
-                                <Column gap="$lg">
-                                    <Row justifyContent="space-between" alignItems="center">
-                                        <Heading level={3}>
-                                            {editingAddress ? "Edit Address" : "Add New Address"}
-                                        </Heading>
-                                        <Button
-                                            chromeless
-                                            size="$3"
-                                            onPress={() => {
-                                                setShowForm(false);
-                                                setEditingAddress(null);
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </Row>
+                            <Column gap="$lg">
+                                <Row justifyContent="space-between" alignItems="center">
+                                    <Heading level={3}>
+                                        {editingAddress ? "Edit Address" : "Add New Address"}
+                                    </Heading>
+                                    <Button
+                                        chromeless
+                                        size="$3"
+                                        onPress={() => {
+                                            setShowForm(false);
+                                            setEditingAddress(null);
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Row>
 
-                                    <Column gap="$md">
-                                        {/* Full Name */}
-                                        <Column gap="$xs">
-                                            <FormLabel required>Full Name</FormLabel>
-                                            <Input
-                                                value={formData.name}
-                                                onChangeText={(value) => setFormData({ ...formData, name: value })}
-                                                placeholder="John Doe"
-                                                size="md"
-                                                required
-                                            />
-                                        </Column>
-
-                                        {/* Street Address 1 */}
-                                        <Column gap="$xs">
-                                            <FormLabel required>Street Address</FormLabel>
-                                            <Input
-                                                value={formData.street1}
-                                                onChangeText={(value) => setFormData({ ...formData, street1: value })}
-                                                placeholder="123 Main St"
-                                                size="md"
-                                                required
-                                            />
-                                        </Column>
-
-                                        {/* Street Address 2 */}
-                                        <Column gap="$xs">
-                                            <FormLabel>Street Address 2 (Optional)</FormLabel>
-                                            <Input
-                                                value={formData.street2}
-                                                onChangeText={(value) => setFormData({ ...formData, street2: value })}
-                                                placeholder="Apt, suite, unit, building, floor, etc."
-                                                size="md"
-                                            />
-                                        </Column>
-
-                                        {/* City, State, ZIP Row */}
-                                        <Row gap="$md" flexWrap="wrap">
-                                            <Column gap="$xs" flex={2} minWidth={200}>
-                                                <FormLabel required>City</FormLabel>
-                                                <Input
-                                                    value={formData.city}
-                                                    onChangeText={(value) => setFormData({ ...formData, city: value })}
-                                                    placeholder="San Francisco"
-                                                    size="md"
-                                                    required
-                                                />
-                                            </Column>
-                                            <Column gap="$xs" flex={1} minWidth={120}>
-                                                <FormLabel required>State</FormLabel>
-                                                <Input
-                                                    value={formData.state}
-                                                    onChangeText={(value) => setFormData({ ...formData, state: value })}
-                                                    placeholder="CA"
-                                                    size="md"
-                                                    required
-                                                />
-                                            </Column>
-                                            <Column gap="$xs" flex={1} minWidth={120}>
-                                                <FormLabel required>ZIP Code</FormLabel>
-                                                <Input
-                                                    value={formData.zip}
-                                                    onChangeText={(value) => setFormData({ ...formData, zip: value })}
-                                                    placeholder="94102"
-                                                    size="md"
-                                                    required
-                                                />
-                                            </Column>
-                                        </Row>
-
-                                        {/* Phone */}
-                                        <Column gap="$xs">
-                                            <FormLabel>Phone Number</FormLabel>
-                                            <Input
-                                                value={formData.phone}
-                                                onChangeText={(value) => setFormData({ ...formData, phone: value })}
-                                                placeholder="(555) 123-4567"
-                                                size="md"
-                                                inputMode="tel"
-                                            />
-                                        </Column>
-
-                                        {/* Default Address Checkbox */}
-                                        <Row gap="$sm" alignItems="center">
-                                            <input
-                                                type="checkbox"
-                                                checked={formData.isDefault}
-                                                onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                                                id="isDefault"
-                                            />
-                                            <Text size="sm" color="$text" onPress={() =>
-                                                setFormData({ ...formData, isDefault: !formData.isDefault })
-                                            }>
-                                                Set as default shipping address
-                                            </Text>
-                                        </Row>
+                                <Column gap="$md">
+                                    {/* Full Name */}
+                                    <Column gap="$xs">
+                                        <FormLabel required>Full Name</FormLabel>
+                                        <Input
+                                            value={formData.name}
+                                            onChangeText={(value) => setFormData({ ...formData, name: value })}
+                                            placeholder="John Doe"
+                                            size="md"
+                                            required
+                                        />
                                     </Column>
 
-                                    <Button
-                                        backgroundColor="$primary"
-                                        color="$white"
-                                        size="$5"
-                                        onPress={() => handleSubmit({} as React.FormEvent)}
-                                    >
-                                        {editingAddress ? "Update Address" : "Save Address"}
-                                    </Button>
+                                    {/* Street Address 1 */}
+                                    <Column gap="$xs">
+                                        <FormLabel required>Street Address</FormLabel>
+                                        <Input
+                                            value={formData.street1}
+                                            onChangeText={(value) => setFormData({ ...formData, street1: value })}
+                                            placeholder="123 Main St"
+                                            size="md"
+                                            required
+                                        />
+                                    </Column>
+
+                                    {/* Street Address 2 */}
+                                    <Column gap="$xs">
+                                        <FormLabel>Street Address 2 (Optional)</FormLabel>
+                                        <Input
+                                            value={formData.street2}
+                                            onChangeText={(value) => setFormData({ ...formData, street2: value })}
+                                            placeholder="Apt, suite, unit, building, floor, etc."
+                                            size="md"
+                                        />
+                                    </Column>
+
+                                    {/* City, State, ZIP Row */}
+                                    <Row gap="$md" flexWrap="wrap">
+                                        <Column gap="$xs" flex={2} minWidth={200}>
+                                            <FormLabel required>City</FormLabel>
+                                            <Input
+                                                value={formData.city}
+                                                onChangeText={(value) => setFormData({ ...formData, city: value })}
+                                                placeholder="San Francisco"
+                                                size="md"
+                                                required
+                                            />
+                                        </Column>
+                                        <Column gap="$xs" flex={1} minWidth={120}>
+                                            <FormLabel required>State</FormLabel>
+                                            <Input
+                                                value={formData.state}
+                                                onChangeText={(value) => setFormData({ ...formData, state: value })}
+                                                placeholder="CA"
+                                                size="md"
+                                                required
+                                            />
+                                        </Column>
+                                        <Column gap="$xs" flex={1} minWidth={120}>
+                                            <FormLabel required>ZIP Code</FormLabel>
+                                            <Input
+                                                value={formData.zip}
+                                                onChangeText={(value) => setFormData({ ...formData, zip: value })}
+                                                placeholder="94102"
+                                                size="md"
+                                                required
+                                            />
+                                        </Column>
+                                    </Row>
+
+                                    {/* Phone */}
+                                    <Column gap="$xs">
+                                        <FormLabel>Phone Number</FormLabel>
+                                        <Input
+                                            value={formData.phone}
+                                            onChangeText={(value) => setFormData({ ...formData, phone: value })}
+                                            placeholder="(555) 123-4567"
+                                            size="md"
+                                            inputMode="tel"
+                                        />
+                                    </Column>
+
+                                    {/* Default Address Checkbox */}
+                                    <Row gap="$sm" alignItems="center">
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.isDefault}
+                                            onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+                                            id="isDefault"
+                                        />
+                                        <Text size="sm" color="$text" onPress={() =>
+                                            setFormData({ ...formData, isDefault: !formData.isDefault })
+                                        }>
+                                            Set as default shipping address
+                                        </Text>
+                                    </Row>
                                 </Column>
-                            </form>
+
+                                <Button
+                                    backgroundColor="$primary"
+                                    color="$white"
+                                    size="$5"
+                                    onPress={handleSubmit}
+                                >
+                                    {editingAddress ? "Update Address" : "Save Address"}
+                                </Button>
+                            </Column>
                         </Card>
                     )}
 

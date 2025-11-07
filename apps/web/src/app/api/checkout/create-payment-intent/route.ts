@@ -90,26 +90,17 @@ export async function POST(request: Request) {
     let selectedRate = null;
 
     if (selectedRateId) {
-      // If a specific rate was selected, calculate shipping using our API
+      // If a specific rate was selected, recalculate using the service directly
       try {
-        const shippingResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/shipping/calculate`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              productId,
-              toAddress: shippingAddress,
-            }),
-          }
-        );
+        const { calculateShippingRates } = await import("@/lib/shipping");
+        const shippingData = await calculateShippingRates({
+          productId,
+          toAddress: shippingAddress,
+        });
 
-        if (shippingResponse.ok) {
-          const shippingData = await shippingResponse.json();
-          selectedRate = shippingData.rates?.find((rate: any) => rate.id === selectedRateId);
-          if (selectedRate) {
-            shippingAmount = parseInt(selectedRate.rate);
-          }
+        selectedRate = shippingData.rates?.find((rate: any) => rate.id === selectedRateId);
+        if (selectedRate) {
+          shippingAmount = parseInt(selectedRate.rate);
         }
       } catch (error) {
         console.warn('Failed to calculate shipping, using fallback:', error);

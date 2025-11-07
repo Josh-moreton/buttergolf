@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, CartIcon, MenuIcon, HeartIcon, PackageIcon, SettingsIcon } from "./icons";
+import { SearchIcon, UserIcon, MenuIcon, HeartIcon, PackageIcon, SettingsIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 import { SearchDropdown } from "./SearchDropdown";
 import { useDebounce } from "../../hooks/useDebounce";

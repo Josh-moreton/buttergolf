@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Column, Row, Heading, Text, Button, Card } from "@buttergolf/ui";
+import { Column, Row, Heading, Text, Card } from "@buttergolf/ui";
 
 export default function SettingsPage() {
     const router = useRouter();

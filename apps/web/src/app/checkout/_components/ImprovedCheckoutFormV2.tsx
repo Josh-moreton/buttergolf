@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button, Card, Column, Row, Text, Heading, Image, Input, Spinner } from "@buttergolf/ui";
@@ -72,9 +71,7 @@ function PaymentForm({
         return product.price + shippingCost;
     };
 
-    const handlePaymentSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-
+    const handlePaymentSubmit = async () => {
         if (!stripe || !elements) {
             return;
         }
@@ -128,7 +125,7 @@ function PaymentForm({
                     color="$textInverse"
                     width="100%"
                     disabled={!stripe || isProcessing}
-                    onPress={() => handlePaymentSubmit({} as FormEvent)}
+                    onPress={handlePaymentSubmit}
                 >
                     {isProcessing ? "Processing..." : `Pay $${calculateTotal().toFixed(2)}`}
                 </Button>
@@ -164,9 +161,7 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
     const [loadingRates, setLoadingRates] = useState(false);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-    const handleAddressSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-
+    const handleAddressSubmit = async () => {
         // Validate required fields
         if (!shippingAddress.name || !shippingAddress.street1 ||
             !shippingAddress.city || !shippingAddress.state || !shippingAddress.zip) {
@@ -305,8 +300,7 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
                         <Column gap="$lg">
                             <Heading level={4}>Shipping Address</Heading>
 
-                            <Column gap="$md">
-                                {/* Full Name */}
+                            <Column gap="$md">\n                                {/* Full Name */}
                                 <Column gap="$xs">
                                     <FormLabel required>Full Name</FormLabel>
                                     <Input
@@ -393,7 +387,7 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
                                 color="$textInverse"
                                 width="100%"
                                 disabled={loadingRates}
-                                onPress={() => handleAddressSubmit({} as FormEvent)}
+                                onPress={handleAddressSubmit}
                             >
                                 {loadingRates ? "Calculating shipping..." : "Continue to Shipping"}
                             </Button>
