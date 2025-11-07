@@ -22,14 +22,12 @@ export function FooterSection() {
           flexWrap={media.md || media.lg || media.xl ? "nowrap" : "wrap"}
         >
           {/* Brand Section */}
-          <Column flex={1.2} minWidth={220} maxWidth={280} gap="$md">
-            <Heading level={4} {...{ color: "$primary" }}>
-              ButterGolf
-            </Heading>
-            <Text {...{ color: "$textSecondary" }} size="sm">
-              The premier peer-to-peer marketplace for golf equipment. Buy,
-              sell, and trade quality golf gear with confidence.
-            </Text>
+          <Column flex={1.2} minWidth={220} maxWidth={280}>
+            <img
+              src="/logo-white.png"
+              alt="ButterGolf"
+              style={{ height: "80px", width: "auto", maxWidth: "100%", objectFit: "contain" }}
+            />
           </Column>
 
           {/* Marketplace Section */}
