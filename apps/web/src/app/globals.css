@@ -6,13 +6,13 @@
 
 :root {
   /* Light theme - Pure Butter Brand */
-  --background: #fefad6; /* Cream */
+  --background: #ffffff; /* White */
   --foreground: #1e1e1e; /* Charcoal */
   --primary: #e25f2f; /* Butter Orange */
   --primary-foreground: #ffffff;
   --border: #d1d5db;
   --muted: #6b7280;
-  --card: #ffffff;
+  --card: #fefad6; /* Cream for cards */
 
   /* Gotham font family */
   --font-gotham: var(--font-gotham);

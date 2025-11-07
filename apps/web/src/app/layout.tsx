@@ -109,7 +109,10 @@ export default function RootLayout({
           <ServiceWorkerRegistration />
           <ButterHeader />
           <AppPromoBanner />
-          {children}
+          {/* Main content wrapper with padding for fixed header */}
+          <main style={{ paddingTop: "140px" }}>
+            {children}
+          </main>
         </NextTamaguiProvider>
       </body>
     </html>

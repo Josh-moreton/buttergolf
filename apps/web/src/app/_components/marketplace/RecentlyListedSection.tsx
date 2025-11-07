@@ -1,6 +1,5 @@
-"use client";
-
 import { useState } from "react";
+import Link from "next/link";
 import { Button, Card, Image, Text, Row, Column } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import { ProductDetailModal } from "./ProductDetailModal";
@@ -74,7 +73,9 @@ export function RecentlyListedSectionClient({
           <Text fontSize="$9" weight="bold">
             Recently listed
           </Text>
-          <Button size="$4">View all</Button>
+          <Link href="/listings" passHref>
+            <Button size="$4">View all</Button>
+          </Link>
         </Row>
 
         {/* Grid Layout */}
