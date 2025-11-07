@@ -151,8 +151,8 @@ importers:
         specifier: ^7.6.2
         version: 7.6.2(@react-navigation/native@7.1.19(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@stripe/stripe-react-native':
-        specifier: ^0.55.1
-        version: 0.55.1(expo@54.0.22(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: 0.50.3
+        version: 0.50.3(expo@54.0.22(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       burnt:
         specifier: ^0.13.0
         version: 0.13.0(expo@54.0.22(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -323,6 +323,9 @@ importers:
       '@buttergolf/config':
         specifier: workspace:*
         version: link:../config
+      '@buttergolf/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@buttergolf/db':
         specifier: workspace:*
         version: link:../db
@@ -397,8 +400,20 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/constants:
+    devDependencies:
+      '@buttergolf/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   packages/db:
     dependencies:
+      '@buttergolf/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@prisma/client':
         specifier: ^6.0.1
         version: 6.18.0(prisma@6.18.0(typescript@5.9.3))(typescript@5.9.3)
@@ -2241,8 +2256,8 @@ packages:
     resolution: {integrity: sha512-hmC3u0anySPI+As+wFGrKG38pXnXAUqyiitnYeYknEOslcDM96AkBdMNxKYOopecuP/v1HMbclUEq8/DKKn+6w==}
     engines: {node: '>=12.16'}
 
-  '@stripe/stripe-react-native@0.55.1':
-    resolution: {integrity: sha512-8p4Km+Y/+TM5F9w+EhzLj9CTPftrvI6AGb+20Weg6+/fK8qV0T6PWCeThRO5+CeUvAuMiqeNhySeQJB31+dRrg==}
+  '@stripe/stripe-react-native@0.50.3':
+    resolution: {integrity: sha512-nzOjqZXQKdM7y33Em2JZxCTAgf/q/J51IJQ50XtwIL0QT6Jt5WSmfKm9rGmBhoXxxG4DcXu/qxJeAHlhcPDGQg==}
     peerDependencies:
       expo: '>=46.0.9'
       react: 19.1.0
@@ -9574,7 +9589,7 @@ snapshots:
 
   '@stripe/stripe-js@8.3.0': {}
 
-  '@stripe/stripe-react-native@0.55.1(expo@54.0.22(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@stripe/stripe-react-native@0.50.3(expo@54.0.22(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)

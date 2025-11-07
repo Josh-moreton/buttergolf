@@ -17,6 +17,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@buttergolf/constants": "workspace:*",
     "@prisma/client": "^6.0.1"
   },
   "devDependencies": {

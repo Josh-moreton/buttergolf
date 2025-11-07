@@ -30,6 +30,7 @@ import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 // Platform imported above with RN components
 
 // Keep splash screen visible while fonts load
@@ -161,15 +162,18 @@ export default function App() {
     "Gotham-Ultra": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Ultra.otf"),
   });
 
-  // Hide splash screen when fonts are loaded
-  if (fontsLoaded) {
-    SplashScreen.hideAsync();
-  }
+  useEffect(() => {
+    async function hideSplash() {
+      if (fontsLoaded) {
+        // small timeout ensures logo renders at least one frame
+        await new Promise((r) => setTimeout(r, 50));
+        await SplashScreen.hideAsync();
+      }
+    }
+    hideSplash();
+  }, [fontsLoaded]);
 
-  // Show nothing until fonts are loaded
-  if (!fontsLoaded) {
-    return null;
-  }
+  if (!fontsLoaded) return null;
 
   const tokenCache = {
     async getToken(key: string) {

@@ -6,7 +6,7 @@ import { SearchBar } from "./SearchBar";
 export function HeroSection() {
   return (
     <Column
-      backgroundColor="$surface"
+      backgroundColor="$primary"
       paddingVertical="$8"
       paddingHorizontal="$4"
       alignItems="center"
@@ -34,7 +34,7 @@ export function HeroSection() {
       <Row gap="$sm" flexWrap="wrap" justifyContent="center">
         <Button
           size="$4"
-          backgroundColor="$primary"
+          backgroundColor="$background"
           color="$textInverse"
           borderRadius="$10"
           hoverStyle={{ backgroundColor: "$primaryHover" }}
@@ -44,7 +44,7 @@ export function HeroSection() {
         </Button>
         <Button
           size="$4"
-          backgroundColor="$secondary"
+          backgroundColor="$background"
           color="$text"
           borderRadius="$10"
           hoverStyle={{ backgroundColor: "$secondaryHover" }}
