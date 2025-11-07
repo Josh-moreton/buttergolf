@@ -62,7 +62,7 @@ export function RecentlyListedSectionClient({
   products,
 }: RecentlyListedSectionClientProps) {
   return (
-    <Column paddingVertical="$8" backgroundColor="$background">
+    <Column paddingVertical="$8" backgroundColor="$surface">
       <Column
         maxWidth={1280}
         marginHorizontal="auto"
