@@ -103,7 +103,7 @@ export function Slider({
   };
 
   const updateValue = (thumbIndex: number, newValue: number) => {
-    let newValues = [...value];
+    const newValues = [...value];
 
     if (thumbIndex === 0) {
       newValues[0] = Math.min(newValue, newValues[1] ?? max);

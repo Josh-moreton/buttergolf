@@ -1,31 +1,5 @@
 "use client";
 
-import { styled } from "tamagui";
-
-const StyledSelect = styled("select", {
-  name: "StyledSelect",
-  height: 40,
-  paddingHorizontal: "$sm",
-  paddingVertical: "$xs",
-  borderRadius: "$sm",
-  borderWidth: 1,
-  borderColor: "$border",
-  backgroundColor: "$surface",
-  color: "$text",
-  fontSize: "$3",
-  cursor: "pointer",
-  outline: "none",
-
-  hoverStyle: {
-    borderColor: "$borderHover",
-  },
-
-  focusStyle: {
-    borderColor: "$borderFocus",
-    borderWidth: 2,
-  },
-});
-
 interface SortDropdownProps {
   value: string;
   onChange: (value: string) => void;
@@ -33,14 +7,33 @@ interface SortDropdownProps {
 
 export function SortDropdown({ value, onChange }: SortDropdownProps) {
   return (
-    <StyledSelect
+    <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      style={{
+        minWidth: 200,
+        height: 40,
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 10,
+        border: "1px solid #D1D5DB",
+        backgroundColor: "#FFFFFF",
+        color: "#1E1E1E",
+        fontSize: 14,
+        fontFamily: "system-ui, sans-serif",
+        cursor: "pointer",
+        outline: "none",
+        appearance: "none",
+        WebkitAppearance: "none",
+        MozAppearance: "none",
+      }}
     >
       <option value="newest">Newest First</option>
       <option value="price-asc">Price: Low to High</option>
       <option value="price-desc">Price: High to Low</option>
       <option value="popular">Most Popular</option>
-    </StyledSelect>
+    </select>
   );
 }

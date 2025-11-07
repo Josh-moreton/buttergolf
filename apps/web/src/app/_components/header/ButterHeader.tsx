@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, CartIcon, MenuIcon, HeartIcon, PackageIcon } from "./icons";
+import { SearchIcon, UserIcon, MenuIcon, HeartIcon, PackageIcon, SettingsIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 import { SearchDropdown } from "./SearchDropdown";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -292,6 +292,21 @@ export function ButterHeader() {
             </SignedOut>
 
             <SignedIn>
+              <Link href="/settings" style={{ textDecoration: "none" }}>
+                <Row
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                  padding="$2"
+                  minWidth={44}
+                  minHeight={44}
+                  alignItems="center"
+                  justifyContent="center"
+                  color="$textInverse"
+                >
+                  <SettingsIcon />
+                </Row>
+              </Link>
+
               <Row
                 minWidth={44}
                 minHeight={44}
@@ -299,7 +314,14 @@ export function ButterHeader() {
                 justifyContent="center"
               >
                 <div style={{ filter: "brightness(0) invert(1)" }}>
-                  <UserButton />
+                  <UserButton
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-10 h-10"
+                      }
+                    }}
+                  />
                 </div>
               </Row>
             </SignedIn>
