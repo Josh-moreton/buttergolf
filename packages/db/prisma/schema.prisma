@@ -130,6 +130,12 @@ model Order {
     stripeCheckoutId   String?
     amountTotal        Float // Total amount paid (including shipping)
     shippingCost       Float // Shipping cost charged
+    // Stripe Connect payout tracking
+    stripePlatformFee  Float? // Platform fee amount (10%)
+    stripeSellerPayout Float? // Amount paid out to seller
+    stripeTransferId   String? // Stripe Transfer ID for seller payout
+    stripePayoutStatus String? // Payout status (pending, paid, failed)
+    stripePayoutDate   DateTime? // Date payout was sent to seller
     // Order participants
     sellerId           String
     seller             User           @relation("SellerOrders", fields: [sellerId], references: [id])

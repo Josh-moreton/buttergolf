@@ -1,17 +1,19 @@
 "use client";
 
-import { styled, GetProps } from "tamagui";
+import { styled, GetProps, Stack } from "tamagui";
 import { useState, useRef, useEffect } from "react";
 
-const SliderContainer = styled("div", {
+const SliderContainer = styled(Stack, {
   name: "SliderContainer",
+  tag: "div" as any,
   width: "100%",
   paddingVertical: "$3",
   position: "relative",
 });
 
-const SliderTrack = styled("div", {
+const SliderTrack = styled(Stack, {
   name: "SliderTrack",
+  tag: "div" as any,
   height: 4,
   backgroundColor: "$border",
   borderRadius: "$full",
@@ -19,16 +21,18 @@ const SliderTrack = styled("div", {
   cursor: "pointer",
 });
 
-const SliderRange = styled("div", {
+const SliderRange = styled(Stack, {
   name: "SliderRange",
+  tag: "div" as any,
   position: "absolute",
   height: "100%",
   backgroundColor: "$primary",
   borderRadius: "$full",
 });
 
-const SliderThumb = styled("div", {
+const SliderThumb = styled(Stack, {
   name: "SliderThumb",
+  tag: "div" as any,
   width: 20,
   height: 20,
   borderRadius: "$full",
@@ -102,9 +106,9 @@ export function Slider({
     let newValues = [...value];
 
     if (thumbIndex === 0) {
-      newValues[0] = Math.min(newValue, newValues[1]);
+      newValues[0] = Math.min(newValue, newValues[1] ?? max);
     } else {
-      newValues[1] = Math.max(newValue, newValues[0]);
+      newValues[1] = Math.max(newValue, newValues[0] ?? min);
     }
 
     if (!isControlled) {
@@ -145,19 +149,19 @@ export function Slider({
     if (disabled || activeThumb !== null) return;
 
     const newValue = getValueFromPosition(e.clientX);
-    const distToMin = Math.abs(newValue - minValue);
-    const distToMax = Math.abs(newValue - maxValue);
+    const distToMin = Math.abs(newValue - (minValue ?? min));
+    const distToMax = Math.abs(newValue - (maxValue ?? max));
 
     const thumbIndex = distToMin < distToMax ? 0 : 1;
     updateValue(thumbIndex, newValue);
   };
 
-  const minPercentage = getPercentage(minValue);
-  const maxPercentage = getPercentage(maxValue);
+  const minPercentage = getPercentage(minValue ?? min);
+  const maxPercentage = getPercentage(maxValue ?? max);
 
   return (
     <SliderContainer>
-      <SliderTrack ref={trackRef} onClick={handleTrackClick}>
+      <SliderTrack ref={trackRef} onPress={handleTrackClick}>
         <SliderRange
           style={{
             left: `${minPercentage}%`,

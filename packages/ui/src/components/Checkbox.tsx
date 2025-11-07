@@ -1,11 +1,12 @@
 "use client";
 
-import { styled, GetProps } from "tamagui";
+import { styled, GetProps, Stack } from "tamagui";
 import { useState } from "react";
 
 // Base checkbox input (hidden)
-const HiddenCheckbox = styled("input", {
+const HiddenCheckbox = styled(Stack, {
   name: "HiddenCheckbox",
+  tag: "input" as any,
   position: "absolute",
   opacity: 0,
   width: 0,
@@ -13,8 +14,9 @@ const HiddenCheckbox = styled("input", {
 });
 
 // Visible checkbox box
-const CheckboxBox = styled("div", {
+const CheckboxBox = styled(Stack, {
   name: "CheckboxBox",
+  tag: "div" as any,
   width: 20,
   height: 20,
   borderWidth: 2,
@@ -73,15 +75,11 @@ const CheckboxBox = styled("div", {
 });
 
 // Checkmark icon
-const Checkmark = styled("svg", {
+const Checkmark = styled(Stack, {
   name: "Checkmark",
+  tag: "svg" as any,
   width: 12,
   height: 12,
-  fill: "none",
-  stroke: "$textInverse",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
 
   variants: {
     size: {
@@ -144,30 +142,42 @@ export function Checkbox({
       checked={checked}
       disabled={disabled}
       size={size}
-      onClick={handleChange}
+      onPress={handleChange}
       role="checkbox"
       aria-checked={checked}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(e: any) => {
-        if (e.key === " " || e.key === "Enter") {
-          e.preventDefault();
-          handleChange();
+      {...({
+        onKeyDown: (e: any) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            handleChange();
+          }
         }
-      }}
+      } as any)}
     >
       <HiddenCheckbox
-        type="checkbox"
+        {...({ type: "checkbox" } as any)}
         checked={checked}
         disabled={disabled}
-        onChange={() => {}}
+        onChange={() => { }}
         id={id}
         name={name}
         value={value}
         tabIndex={-1}
       />
       {checked && (
-        <Checkmark size={size} viewBox="0 0 12 12">
+        <Checkmark
+          size={size}
+          {...({
+            viewBox: "0 0 12 12",
+            fill: "none",
+            stroke: "white",
+            strokeWidth: 2,
+            strokeLinecap: "round",
+            strokeLinejoin: "round"
+          } as any)}
+        >
           <polyline points="2,6 5,9 10,3" />
         </Checkmark>
       )}

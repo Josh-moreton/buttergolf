@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Column,
   Row,
@@ -54,8 +55,17 @@ interface ProductDetailClientProps {
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [purchasing, setPurchasing] = useState(false);
+  const router = useRouter();
 
   const selectedImage = product.images[selectedImageIndex];
+
+  const handleBuyNow = () => {
+    if (product.isSold) return;
+    
+    // Navigate to embedded checkout page
+    router.push(`/checkout?productId=${product.id}`);
+  };
 
   return (
     <Container size="lg" padding="$md">
@@ -173,8 +183,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </Card>
 
             <Column gap="$md">
-              <Button size="$5" width="100%" disabled={product.isSold}>
-                {product.isSold ? "Sold Out" : "Contact Seller"}
+              <Button
+                size="$5"
+                width="100%"
+                disabled={product.isSold || purchasing}
+                backgroundColor="$primary"
+                color="$textInverse"
+                onPress={handleBuyNow}
+                opacity={purchasing ? 0.6 : 1}
+              >
+                {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy Now"}
               </Button>
               <Button size="$5" width="100%">
                 Add to Wishlist

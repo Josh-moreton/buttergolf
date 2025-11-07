@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   Column,
@@ -67,6 +68,8 @@ export function ProductDetailModal({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [mounted, setMounted] = useState(false);
+  const [purchasing, setPurchasing] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -95,6 +98,14 @@ export function ProductDetailModal({
   }, [productId, open]);
 
   const selectedImage = product?.images[selectedImageIndex];
+
+  const handleBuyNow = async () => {
+    if (!product || product.isSold) return;
+
+    // Navigate to embedded checkout page
+    onOpenChange(false); // Close modal
+    router.push(`/checkout?productId=${product.id}`);
+  };
 
   // Don't render on server to avoid hydration issues
   if (!mounted) {
@@ -321,11 +332,13 @@ export function ProductDetailModal({
                       <Button
                         size="$5"
                         width="100%"
-                        disabled={product.isSold}
+                        disabled={product.isSold || purchasing}
                         backgroundColor="$primary"
                         color="$textInverse"
+                        onPress={handleBuyNow}
+                        opacity={purchasing ? 0.6 : 1}
                       >
-                        {product.isSold ? "Sold Out" : "Add to Cart"}
+                        {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy Now"}
                       </Button>
                       <Row gap="$3">
                         <Button size="$4" flex={1}>

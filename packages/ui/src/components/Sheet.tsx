@@ -1,11 +1,12 @@
 "use client";
 
-import { styled, GetProps } from "tamagui";
+import { styled, GetProps, Stack } from "tamagui";
 import { useEffect, useState } from "react";
 
-const SheetOverlay = styled("div", {
+const SheetOverlay = styled(Stack, {
   name: "SheetOverlay",
-  position: "fixed",
+  tag: "div" as any,
+  position: "fixed" as any,
   top: 0,
   left: 0,
   right: 0,
@@ -24,9 +25,10 @@ const SheetOverlay = styled("div", {
   } as const,
 });
 
-const SheetContent = styled("div", {
+const SheetContent = styled(Stack, {
   name: "SheetContent",
-  position: "fixed",
+  tag: "div" as any,
+  position: "fixed" as any,
   bottom: 0,
   left: 0,
   right: 0,
@@ -50,8 +52,9 @@ const SheetContent = styled("div", {
   } as const,
 });
 
-const SheetHandle = styled("div", {
+const SheetHandle = styled(Stack, {
   name: "SheetHandle",
+  tag: "div" as any,
   width: 40,
   height: 4,
   backgroundColor: "$border",
@@ -61,8 +64,9 @@ const SheetHandle = styled("div", {
   flexShrink: 0,
 });
 
-const SheetHeader = styled("div", {
+const SheetHeader = styled(Stack, {
   name: "SheetHeader",
+  tag: "div" as any,
   paddingHorizontal: "$4",
   paddingVertical: "$3",
   borderBottomWidth: 1,
@@ -70,16 +74,18 @@ const SheetHeader = styled("div", {
   flexShrink: 0,
 });
 
-const SheetBody = styled("div", {
+const SheetBody = styled(Stack, {
   name: "SheetBody",
+  tag: "div" as any,
   flex: 1,
-  overflowY: "auto",
+  overflow: "auto" as any,
   paddingHorizontal: "$4",
   paddingVertical: "$4",
 });
 
-const SheetFooter = styled("div", {
+const SheetFooter = styled(Stack, {
   name: "SheetFooter",
+  tag: "div" as any,
   paddingHorizontal: "$4",
   paddingVertical: "$4",
   borderTopWidth: 1,
@@ -121,7 +127,7 @@ export function Sheet({ open = false, onOpenChange, children }: SheetProps) {
 
   return (
     <>
-      <SheetOverlay open={isOpen} onClick={handleClose} />
+      <SheetOverlay open={isOpen} onPress={handleClose} />
       <SheetContent open={isOpen}>{children}</SheetContent>
     </>
   );
