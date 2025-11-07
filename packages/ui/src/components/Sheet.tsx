@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const SheetOverlay = styled(Stack, {
   name: "SheetOverlay",
   tag: "div" as any,
-  position: "fixed",
+  position: "fixed" as any,
   top: 0,
   left: 0,
   right: 0,
@@ -28,7 +28,7 @@ const SheetOverlay = styled(Stack, {
 const SheetContent = styled(Stack, {
   name: "SheetContent",
   tag: "div" as any,
-  position: "fixed",
+  position: "fixed" as any,
   bottom: 0,
   left: 0,
   right: 0,
@@ -78,7 +78,7 @@ const SheetBody = styled(Stack, {
   name: "SheetBody",
   tag: "div" as any,
   flex: 1,
-  overflowY: "auto",
+  overflow: "auto" as any,
   paddingHorizontal: "$4",
   paddingVertical: "$4",
 });
@@ -127,7 +127,7 @@ export function Sheet({ open = false, onOpenChange, children }: SheetProps) {
 
   return (
     <>
-      <SheetOverlay open={isOpen} onClick={handleClose} />
+      <SheetOverlay open={isOpen} onPress={handleClose} />
       <SheetContent open={isOpen}>{children}</SheetContent>
     </>
   );

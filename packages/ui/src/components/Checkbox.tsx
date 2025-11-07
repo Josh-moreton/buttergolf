@@ -80,11 +80,6 @@ const Checkmark = styled(Stack, {
   tag: "svg" as any,
   width: 12,
   height: 12,
-  fill: "none",
-  stroke: "$textInverse",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
 
   variants: {
     size: {
@@ -147,30 +142,32 @@ export function Checkbox({
       checked={checked}
       disabled={disabled}
       size={size}
-      onClick={handleChange}
+      onPress={handleChange}
       role="checkbox"
       aria-checked={checked}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(e: any) => {
-        if (e.key === " " || e.key === "Enter") {
-          e.preventDefault();
-          handleChange();
+      {...({
+        onKeyDown: (e: any) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            handleChange();
+          }
         }
-      }}
+      } as any)}
     >
       <HiddenCheckbox
-        type="checkbox"
+        {...({ type: "checkbox" } as any)}
         checked={checked}
         disabled={disabled}
-        onChange={() => {}}
+        onChange={() => { }}
         id={id}
         name={name}
         value={value}
         tabIndex={-1}
       />
       {checked && (
-        <Checkmark size={size} viewBox="0 0 12 12">
+        <Checkmark size={size} {...({ viewBox: "0 0 12 12" } as any)}>
           <polyline points="2,6 5,9 10,3" />
         </Checkmark>
       )}

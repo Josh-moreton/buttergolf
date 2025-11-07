@@ -161,7 +161,7 @@ export function Slider({
 
   return (
     <SliderContainer>
-      <SliderTrack ref={trackRef} onClick={handleTrackClick}>
+      <SliderTrack ref={trackRef} onPress={handleTrackClick}>
         <SliderRange
           style={{
             left: `${minPercentage}%`,
