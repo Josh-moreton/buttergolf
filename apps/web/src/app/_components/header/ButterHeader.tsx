@@ -1,20 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
 import { SearchIcon, UserIcon, CartIcon, MenuIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
+import { SearchDropdown } from "./SearchDropdown";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 export function ButterHeader() {
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const debouncedQuery = useDebounce(searchQuery, 300);
 
   // Cart count (placeholder - will wire to state later)
   const cartCount = 0;
+
+  // Close search dropdown on click outside
+  useClickOutside(searchRef, () => {
+    if (searchOpen) {
+      setSearchOpen(false);
+    }
+  });
+
+  // Close search on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && searchOpen) {
+        setSearchOpen(false);
+        setSearchQuery("");
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [searchOpen]);
 
   // Sticky menu handler
   useEffect(() => {
@@ -148,42 +175,82 @@ export function ButterHeader() {
             justifyContent="flex-end"
           >
             {/* Search Bar - Desktop */}
-            <Row
+            <Column
               display="none"
               $md={{ display: "flex" }}
-              backgroundColor="transparent"
-              borderWidth={3}
-              borderColor="$textInverse"
-              borderRadius="$full"
-              paddingHorizontal="$4"
-              paddingVertical="$2"
-              alignItems="center"
-              gap="$2"
-              width={250}
-              hoverStyle={{
-                borderColor: "rgba(255, 255, 255, 0.8)",
-              }}
-              focusStyle={{
-                borderColor: "$textInverse",
-              }}
+              {...{ style: { position: "relative" } }}
+              ref={searchRef}
             >
-              <Row color="$textInverse">
-                <SearchIcon />
-              </Row>
-              <input
-                type="text"
-                placeholder=""
-                style={{
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "14px",
-                  width: "100%",
-                  fontFamily: "inherit",
-                  color: "#fff",
+              <Row
+                backgroundColor="transparent"
+                borderWidth={3}
+                borderColor="$textInverse"
+                borderRadius="$full"
+                paddingHorizontal="$4"
+                paddingVertical="$2"
+                alignItems="center"
+                gap="$2"
+                width={250}
+                hoverStyle={{
+                  borderColor: "rgba(255, 255, 255, 0.8)",
                 }}
-              />
-            </Row>
+                focusStyle={{
+                  borderColor: "$textInverse",
+                }}
+              >
+                <Row color="$textInverse">
+                  <SearchIcon />
+                </Row>
+                <input
+                  type="text"
+                  placeholder=""
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setSearchOpen(true);
+                  }}
+                  onFocus={() => setSearchOpen(true)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "14px",
+                    width: "100%",
+                    fontFamily: "inherit",
+                    color: "#fff",
+                  }}
+                />
+              </Row>
+
+              {/* Search Dropdown */}
+              {searchOpen && (
+                <Column
+                  {...{ style: { position: "absolute" } }}
+                  top="100%"
+                  left={0}
+                  marginTop="$2"
+                  backgroundColor="$background"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$lg"
+                  minWidth={400}
+                  maxHeight={500}
+                  zIndex={60}
+                  shadowColor="rgba(0,0,0,0.15)"
+                  shadowRadius={16}
+                  shadowOffset={{ width: 0, height: 4 }}
+                  overflow="hidden"
+                >
+                  <SearchDropdown
+                    query={debouncedQuery}
+                    onSelect={() => {
+                      setSearchOpen(false);
+                      setSearchQuery("");
+                    }}
+                  />
+                </Column>
+              )}
+            </Column>
 
             {/* Search Icon - Mobile */}
             <Row
@@ -369,6 +436,8 @@ export function ButterHeader() {
               <input
                 type="text"
                 placeholder="Search golf equipment..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
                   border: "none",
                   outline: "none",
@@ -380,6 +449,26 @@ export function ButterHeader() {
                 }}
               />
             </Row>
+
+            {/* Mobile Search Results */}
+            {searchQuery.trim().length >= 2 && (
+              <Column
+                backgroundColor="$background"
+                borderRadius="$lg"
+                overflow="hidden"
+                maxHeight={400}
+                borderWidth={1}
+                borderColor="rgba(255, 255, 255, 0.3)"
+              >
+                <SearchDropdown
+                  query={debouncedQuery}
+                  onSelect={() => {
+                    setSearchQuery("");
+                    setMobileMenuOpen(false);
+                  }}
+                />
+              </Column>
+            )}
           </Column>
         </Column>
       )}
