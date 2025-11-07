@@ -3,14 +3,15 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 
 type Params = {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 };
 
 // PUT /api/addresses/[id]/default - Set address as default
-export async function PUT(request: NextRequest, { params }: Params) {
+export async function PUT(request: NextRequest, context: Params) {
     try {
+        const params = await context.params;
         const { userId: clerkUserId } = await auth();
         if (!clerkUserId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
