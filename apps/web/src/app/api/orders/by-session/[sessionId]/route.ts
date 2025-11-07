@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getOrCreateUser } from "@/lib/auth-helpers";
 
 export async function GET(
   req: Request,
@@ -15,14 +16,8 @@ export async function GET(
 
     const { sessionId } = await params;
 
-    // Get buyer from database
-    const buyer = await prisma.user.findUnique({
-      where: { clerkId: userId },
-    });
-
-    if (!buyer) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
+    // Get or create buyer (webhook primary, API fallback)
+    const buyer = await getOrCreateUser(userId);
 
     // Find order by checkout session ID
     const order = await prisma.order.findFirst({
