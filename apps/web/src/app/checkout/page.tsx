@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Column, Container, Spinner, Text } from "@buttergolf/ui";
-import { CheckoutForm } from "./_components/CheckoutForm";
+import { CheckoutForm } from "./_components/ImprovedCheckoutFormV2";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -16,7 +16,6 @@ function CheckoutPageContent() {
   const router = useRouter();
   const productId = searchParams.get("productId");
 
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [product, setProduct] = useState<{
@@ -33,28 +32,26 @@ function CheckoutPageContent() {
       return;
     }
 
-    // Create PaymentIntent on mount
-    fetch("/api/checkout/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId }),
-    })
+    // Just fetch product information, don't create payment intent yet
+    fetch(`/api/products/${productId}`)
       .then((res) => {
         if (!res.ok) {
-          return res.json().then((data) => {
-            throw new Error(data.error || "Failed to initialize checkout");
-          });
+          throw new Error("Product not found");
         }
         return res.json();
       })
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-        setProduct(data.product);
+      .then((productData) => {
+        setProduct({
+          id: productData.id,
+          title: productData.title,
+          price: productData.price,
+          imageUrl: productData.images?.[0]?.url || null,
+        });
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error creating payment intent:", err);
-        setError(err.message);
+        console.error("Error fetching product:", err);
+        setError("Product not found");
         setLoading(false);
       });
   }, [productId]);
@@ -70,7 +67,7 @@ function CheckoutPageContent() {
     );
   }
 
-  if (error || !clientSecret || !product) {
+  if (error || !product) {
     return (
       <Container size="lg" paddingVertical="$2xl">
         <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
@@ -87,25 +84,8 @@ function CheckoutPageContent() {
 
   return (
     <Container size="md" paddingVertical="$2xl">
-      <Elements
-        stripe={stripePromise}
-        options={{
-          clientSecret,
-          appearance: {
-            theme: "flat",
-            variables: {
-              colorPrimary: "#E25F2F", // Butter Orange
-              colorBackground: "#FEFAD6", // Cream
-              colorText: "#1E1E1E", // Charcoal
-              colorDanger: "#DC2626", // Error red
-              borderRadius: "10px",
-              fontFamily: "system-ui, sans-serif",
-            },
-          },
-        }}
-      >
-        <CheckoutForm product={product} />
-      </Elements>
+      {/* We don't need Elements wrapper initially since we create payment intent later */}
+      <CheckoutForm product={product} />
     </Container>
   );
 }

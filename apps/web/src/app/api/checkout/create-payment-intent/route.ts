@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const user = await getOrCreateUser(userId);
 
     const body = await request.json();
-    const { productId } = body;
+    const { productId, shippingAddress, selectedRateId } = body;
 
     if (!productId) {
       return NextResponse.json(
@@ -25,11 +25,25 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!shippingAddress) {
+      return NextResponse.json(
+        { error: "Shipping address is required" },
+        { status: 400 }
+      );
+    }
+
     // Fetch product with seller information
     const product = await prisma.product.findUnique({
       where: { id: productId },
       include: {
-        user: true, // Include seller information
+        user: {
+          include: {
+            addresses: {
+              where: { isDefault: true },
+              take: 1,
+            },
+          },
+        },
         images: {
           orderBy: { sortOrder: "asc" },
           take: 1,
@@ -63,9 +77,47 @@ export async function POST(request: Request) {
       );
     }
 
+    // Verify seller has a shipping address
+    if (!product.user.addresses.length) {
+      return NextResponse.json(
+        { error: "Seller has no shipping address configured" },
+        { status: 400 }
+      );
+    }
+
+    // Calculate shipping rates if not provided
+    let shippingAmount = 999; // Fallback to $9.99
+    let selectedRate = null;
+
+    if (selectedRateId) {
+      // If a specific rate was selected, calculate shipping using our API
+      try {
+        const shippingResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/shipping/calculate`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              productId,
+              toAddress: shippingAddress,
+            }),
+          }
+        );
+
+        if (shippingResponse.ok) {
+          const shippingData = await shippingResponse.json();
+          selectedRate = shippingData.rates?.find((rate: any) => rate.id === selectedRateId);
+          if (selectedRate) {
+            shippingAmount = parseInt(selectedRate.rate);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to calculate shipping, using fallback:', error);
+      }
+    }
+
     // Calculate amounts
     const productAmount = Math.round(product.price * 100); // Convert to cents
-    const shippingAmount = 999; // $9.99 fixed shipping in cents
     const totalAmount = productAmount + shippingAmount;
 
     // Calculate platform fee (10%)
@@ -93,6 +145,10 @@ export async function POST(request: Request) {
         productAmount: productAmount.toString(),
         shippingAmount: shippingAmount.toString(),
         platformFee: platformFeeAmount.toString(),
+        // Store shipping address for order creation
+        shippingAddressJSON: JSON.stringify(shippingAddress),
+        selectedRateId: selectedRateId || '',
+        selectedRateJSON: selectedRate ? JSON.stringify(selectedRate) : '',
       },
     });
 
@@ -100,6 +156,7 @@ export async function POST(request: Request) {
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
       amount: totalAmount,
+      shippingAmount,
       product: {
         id: product.id,
         title: product.title,

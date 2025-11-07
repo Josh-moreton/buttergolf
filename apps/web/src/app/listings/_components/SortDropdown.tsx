@@ -1,30 +1,6 @@
 "use client";
 
-import { styled } from "tamagui";
-
-const StyledSelect = styled("select", {
-  name: "StyledSelect",
-  height: 40,
-  paddingHorizontal: "$sm",
-  paddingVertical: "$xs",
-  borderRadius: "$sm",
-  borderWidth: 1,
-  borderColor: "$border",
-  backgroundColor: "$surface",
-  color: "$text",
-  fontSize: "$3",
-  cursor: "pointer",
-  outline: "none",
-
-  hoverStyle: {
-    borderColor: "$borderHover",
-  },
-
-  focusStyle: {
-    borderColor: "$borderFocus",
-    borderWidth: 2,
-  },
-});
+import { Select } from "@buttergolf/ui";
 
 interface SortDropdownProps {
   value: string;
@@ -33,14 +9,31 @@ interface SortDropdownProps {
 
 export function SortDropdown({ value, onChange }: SortDropdownProps) {
   return (
-    <StyledSelect
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    >
-      <option value="newest">Newest First</option>
-      <option value="price-asc">Price: Low to High</option>
-      <option value="price-desc">Price: High to Low</option>
-      <option value="popular">Most Popular</option>
-    </StyledSelect>
+    <div style={{ minWidth: 200 }}>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{
+          height: 40,
+          paddingLeft: 12,
+          paddingRight: 12,
+          paddingTop: 8,
+          paddingBottom: 8,
+          borderRadius: 6,
+          border: "1px solid #E5E7EB",
+          backgroundColor: "#FFFFFF",
+          color: "#1F2937",
+          fontSize: 14,
+          cursor: "pointer",
+          outline: "none",
+          width: "100%",
+        }}
+      >
+        <option value="newest">Newest First</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="popular">Most Popular</option>
+      </select>
+    </div>
   );
 }

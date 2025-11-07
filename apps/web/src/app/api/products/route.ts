@@ -45,6 +45,11 @@ export async function POST(request: Request) {
             model,
             categoryId,
             images,
+            // Shipping dimensions
+            length,
+            width,
+            height,
+            weight,
         } = body;
 
         // Validate required fields
@@ -81,6 +86,11 @@ export async function POST(request: Request) {
                 model: model || null,
                 userId: user.id,
                 categoryId,
+                // Shipping dimensions
+                length: length ? Number(length) : null,
+                width: width ? Number(width) : null,
+                height: height ? Number(height) : null,
+                weight: weight ? Number(weight) : null,
                 images: {
                     create: images.map((url: string, index: number) => ({
                         url,
