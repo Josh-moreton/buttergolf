@@ -28,6 +28,14 @@ export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from 
 // Form Components
 export { Input } from './components/Input'
 export type { InputProps } from './components/Input'
+export { Checkbox } from './components/Checkbox'
+export type { CheckboxProps } from './components/Checkbox'
+export { Slider } from './components/Slider'
+export type { SliderProps } from './components/Slider'
+
+// Overlay Components
+export { Sheet } from './components/Sheet'
+export type { SheetProps } from './components/Sheet'
 
 // Feedback Components
 export { Badge } from './components/Badge'
