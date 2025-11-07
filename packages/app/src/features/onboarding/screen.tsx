@@ -181,7 +181,7 @@ export function OnboardingScreen({
                   source={item.source}
                   width={CARD_WIDTH}
                   height={CARD_HEIGHT}
-                  resizeMode="cover"
+                  style={{ objectFit: "cover" }}
                   accessible={true}
                   accessibilityLabel={item.label}
                 />
@@ -212,7 +212,7 @@ export function OnboardingScreen({
                   source={item.source}
                   width={CARD_WIDTH}
                   height={CARD_HEIGHT}
-                  resizeMode="cover"
+                  style={{ objectFit: "cover" }}
                   accessible={true}
                   accessibilityLabel={item.label}
                 />

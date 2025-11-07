@@ -323,6 +323,9 @@ importers:
       '@buttergolf/config':
         specifier: workspace:*
         version: link:../config
+      '@buttergolf/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@buttergolf/db':
         specifier: workspace:*
         version: link:../db
@@ -397,8 +400,20 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/constants:
+    devDependencies:
+      '@buttergolf/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   packages/db:
     dependencies:
+      '@buttergolf/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@prisma/client':
         specifier: ^6.0.1
         version: 6.18.0(prisma@6.18.0(typescript@5.9.3))(typescript@5.9.3)

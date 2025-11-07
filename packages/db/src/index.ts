@@ -48,4 +48,4 @@ const prisma: PrismaClient = (() => {
 })()
 
 export { prisma }
-export * from './constants/categories'
+export * from '@buttergolf/constants'

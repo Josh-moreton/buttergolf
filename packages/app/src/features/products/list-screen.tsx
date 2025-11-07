@@ -46,18 +46,22 @@ export function ProductsScreen({
       <Column padding="$4" gap="$lg">
         <Heading level={2}>Browse Products</Heading>
 
-        {loading ? (
+        {loading && (
           <Column alignItems="center" paddingVertical="$6">
             <Spinner size="lg" color="$primary" />
             <Text color="$textSecondary" marginTop="$3">
               Loading products...
             </Text>
           </Column>
-        ) : products.length === 0 ? (
+        )}
+
+        {!loading && products.length === 0 && (
           <Column alignItems="center" paddingVertical="$6">
             <Text color="$textSecondary">No products available</Text>
           </Column>
-        ) : (
+        )}
+
+        {!loading && products.length > 0 && (
           <Row flexWrap="wrap" gap="$md">
             {products.map((product) => (
               <ProductCardWithLink key={product.id} product={product} />
@@ -70,7 +74,9 @@ export function ProductsScreen({
 }
 
 // Helper component to attach Solito link to ProductCard
-function ProductCardWithLink({ product }: { product: ProductCardData }) {
+function ProductCardWithLink({
+  product,
+}: Readonly<{ product: ProductCardData }>) {
   const linkProps = useLink({
     href: routes.productDetail.replace("[id]", product.id),
   });

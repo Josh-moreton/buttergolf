@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@buttergolf/config": "workspace:*",
+    "@buttergolf/constants": "workspace:*",
     "@buttergolf/db": "workspace:*",
     "@buttergolf/ui": "workspace:*",
     "@tamagui/font-inter": "catalog:",

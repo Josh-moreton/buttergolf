@@ -178,9 +178,9 @@ export function ProductDetailScreen({
                 More Images
               </Text>
               <Row gap="$2" flexWrap="wrap">
-                {product.images.slice(1).map((image, index) => (
+                {product.images.slice(1).map((image) => (
                   <Image
-                    key={index}
+                    key={image.url}
                     source={{ uri: image.url }}
                     width={100}
                     height={100}

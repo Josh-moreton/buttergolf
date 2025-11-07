@@ -21,7 +21,7 @@ import {
   User,
 } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
-import { CATEGORIES } from "../../constants/categories";
+import { CATEGORIES } from "@buttergolf/constants";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -124,9 +124,7 @@ export function LoggedOutHomeScreen({
           paddingHorizontal="$4"
           paddingVertical="$2"
           borderRadius="$full"
-          backgroundColor={
-            selectedCategory === "All" ? "$background" : "$background"
-          }
+          backgroundColor="$background"
           borderWidth={1}
           borderColor={selectedCategory === "All" ? "$primary" : "$border"}
           color={selectedCategory === "All" ? "$primary" : "$text"}
@@ -168,15 +166,19 @@ export function LoggedOutHomeScreen({
           paddingBottom: insets.bottom + 72,
         }}
       >
-        {loading && products.length === 0 ? (
+        {loading && products.length === 0 && (
           <Column padding="$8" alignItems="center">
             <Text color="$textSecondary">Loading products...</Text>
           </Column>
-        ) : products.length === 0 ? (
+        )}
+
+        {!loading && products.length === 0 && (
           <Column padding="$8" alignItems="center">
             <Text color="$textSecondary">No products available yet</Text>
           </Column>
-        ) : (
+        )}
+
+        {products.length > 0 && (
           <Row flexWrap="wrap" gap={gap} width="100%">
             {products.map((product) => (
               <Card
