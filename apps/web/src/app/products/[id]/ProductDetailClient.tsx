@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Column,
   Row,
@@ -55,38 +56,15 @@ interface ProductDetailClientProps {
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [purchasing, setPurchasing] = useState(false);
+  const router = useRouter();
 
   const selectedImage = product.images[selectedImageIndex];
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = () => {
     if (product.isSold) return;
-
-    setPurchasing(true);
-    try {
-      const response = await fetch("/api/checkout/create-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: product.id,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create checkout session");
-      }
-
-      const { url } = await response.json();
-      
-      // Redirect to Stripe Checkout
-      window.location.href = url;
-    } catch (err) {
-      console.error("Purchase failed:", err);
-      alert(err instanceof Error ? err.message : "Failed to start checkout. Please try again.");
-      setPurchasing(false);
-    }
+    
+    // Navigate to embedded checkout page
+    router.push(`/checkout?productId=${product.id}`);
   };
 
   return (

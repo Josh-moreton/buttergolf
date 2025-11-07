@@ -39,27 +39,43 @@ export async function POST(req: Request) {
 
     console.log('Stripe webhook event received:', event.type)
 
-    // Handle payment_intent.succeeded event
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session
+    // Handle payment_intent.succeeded event (for embedded checkout)
+    if (event.type === 'payment_intent.succeeded') {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent
 
-      console.log('Checkout session completed:', {
-        id: session.id,
-        paymentIntentId: session.payment_intent,
-        metadata: session.metadata,
-      })
-
-      // Retrieve full session with shipping details
-      const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ['shipping_details', 'customer_details'],
+      console.log('Payment intent succeeded:', {
+        id: paymentIntent.id,
+        amount: paymentIntent.amount,
+        metadata: paymentIntent.metadata,
       })
 
       // Extract metadata
-      const { productId, sellerId, buyerId } = session.metadata || {}
+      const { 
+        productId, 
+        sellerId, 
+        buyerId, 
+        productAmount,
+        shippingAmount,
+        platformFee,
+      } = paymentIntent.metadata || {}
       
       if (!productId || !sellerId || !buyerId) {
-        console.error('Missing required metadata in checkout session:', session.metadata)
+        console.error('Missing required metadata in payment intent:', paymentIntent.metadata)
         return NextResponse.json({ error: 'Missing metadata' }, { status: 400 })
+      }
+
+      // Check if order already exists (idempotency check)
+      const existingOrder = await prisma.order.findUnique({
+        where: { stripePaymentId: paymentIntent.id },
+      })
+
+      if (existingOrder) {
+        console.log('Order already exists for payment intent:', paymentIntent.id)
+        return NextResponse.json({ 
+          received: true, 
+          orderId: existingOrder.id,
+          message: 'Order already processed',
+        })
       }
 
       // Get product details including shipping dimensions
@@ -75,7 +91,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Product not found' }, { status: 404 })
       }
 
-      // Get buyer and seller information
+      // Get buyer information
       const buyer = await prisma.user.findUnique({
         where: { id: buyerId },
       })
@@ -85,28 +101,11 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Buyer not found' }, { status: 404 })
       }
 
-      // For now, we'll need to get addresses from session customer_details
-      // In a real app, these would be stored in the Address table
-      const customerDetails = fullSession.customer_details
-      
-      // Define interface for expanded shipping details
-      interface ExpandedShipping {
-        address: {
-          line1: string | null
-          line2: string | null
-          city: string | null
-          state: string | null
-          postal_code: string | null
-          country: string | null
-        }
-        name: string | null
-      }
-      
-      // Stripe uses 'shipping' property for checkout sessions (requires expand parameter)
-      const shippingDetails = (fullSession as any).shipping as ExpandedShipping | null
+      // Get shipping details from the PaymentIntent
+      const shipping = paymentIntent.shipping
 
-      if (!shippingDetails?.address) {
-        console.error('Missing shipping details in session')
+      if (!shipping?.address) {
+        console.error('Missing shipping details in payment intent')
         return NextResponse.json({ error: 'Missing shipping details' }, { status: 400 })
       }
 
@@ -115,14 +114,14 @@ export async function POST(req: Request) {
       const toAddress = await prisma.address.create({
         data: {
           userId: buyerId,
-          name: shippingDetails.name || buyer.name || buyer.email,
-          street1: shippingDetails.address.line1 || '',
-          street2: shippingDetails.address.line2,
-          city: shippingDetails.address.city || '',
-          state: shippingDetails.address.state || '',
-          zip: shippingDetails.address.postal_code || '',
-          country: shippingDetails.address.country || 'US',
-          phone: customerDetails?.phone || undefined,
+          name: shipping.name || buyer.name || buyer.email,
+          street1: shipping.address.line1 || '',
+          street2: shipping.address.line2,
+          city: shipping.address.city || '',
+          state: shipping.address.state || '',
+          zip: shipping.address.postal_code || '',
+          country: shipping.address.country || 'US',
+          phone: shipping.phone || undefined,
         },
       })
 
@@ -147,9 +146,11 @@ export async function POST(req: Request) {
         },
       })
 
-      // Calculate costs
-      const amountTotal = (session.amount_total || 0) / 100 // Convert from cents
-      const shippingCost = (session.shipping_cost?.amount_total || 0) / 100
+      // Calculate costs from metadata
+      const amountTotal = paymentIntent.amount / 100 // Convert from cents
+      const shippingCost = parseFloat(shippingAmount) / 100
+      const platformFeeAmount = parseFloat(platformFee) / 100
+      const sellerPayout = amountTotal - platformFeeAmount
 
       try {
         // Create shipping label via EasyPost
@@ -185,13 +186,15 @@ export async function POST(req: Request) {
           parcelDimensions
         )
 
-        // Create order with shipping label information
+        // Create order with shipping label and payout tracking
         const order = await prisma.order.create({
           data: {
-            stripePaymentId: session.payment_intent as string,
-            stripeCheckoutId: session.id,
+            stripePaymentId: paymentIntent.id,
             amountTotal,
             shippingCost,
+            stripePlatformFee: platformFeeAmount,
+            stripeSellerPayout: sellerPayout,
+            stripePayoutStatus: 'pending', // Stripe will handle the transfer automatically
             sellerId,
             buyerId,
             productId,
@@ -233,10 +236,12 @@ export async function POST(req: Request) {
         // Create order without label (label generation failed)
         const order = await prisma.order.create({
           data: {
-            stripePaymentId: session.payment_intent as string,
-            stripeCheckoutId: session.id,
+            stripePaymentId: paymentIntent.id,
             amountTotal,
             shippingCost,
+            stripePlatformFee: platformFeeAmount,
+            stripeSellerPayout: sellerPayout,
+            stripePayoutStatus: 'pending',
             sellerId,
             buyerId,
             productId,

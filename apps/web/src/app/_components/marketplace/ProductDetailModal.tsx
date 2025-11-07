@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   Column,
@@ -68,6 +69,7 @@ export function ProductDetailModal({
   const [quantity, setQuantity] = useState(1);
   const [mounted, setMounted] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -100,32 +102,9 @@ export function ProductDetailModal({
   const handleBuyNow = async () => {
     if (!product || product.isSold) return;
 
-    setPurchasing(true);
-    try {
-      const response = await fetch("/api/checkout/create-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: product.id,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create checkout session");
-      }
-
-      const { url } = await response.json();
-      
-      // Redirect to Stripe Checkout
-      window.location.href = url;
-    } catch (err) {
-      console.error("Purchase failed:", err);
-      alert(err instanceof Error ? err.message : "Failed to start checkout. Please try again.");
-      setPurchasing(false);
-    }
+    // Navigate to embedded checkout page
+    onOpenChange(false); // Close modal
+    router.push(`/checkout?productId=${product.id}`);
   };
 
   // Don't render on server to avoid hydration issues

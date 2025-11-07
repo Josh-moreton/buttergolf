@@ -17,15 +17,15 @@ interface OrderDetails {
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const sessionId = searchParams.get("session_id");
+  const paymentIntentId = searchParams.get("payment_intent");
   
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!sessionId) {
-      setError("No session ID provided");
+    if (!paymentIntentId) {
+      setError("No payment intent ID provided");
       setLoading(false);
       return;
     }
@@ -33,7 +33,7 @@ export default function CheckoutSuccessPage() {
     // Fetch order details
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/api/orders/by-session/${sessionId}`);
+        const response = await fetch(`/api/orders/by-payment-intent/${paymentIntentId}`);
         
         if (!response.ok) {
           throw new Error("Failed to fetch order details");
@@ -50,7 +50,7 @@ export default function CheckoutSuccessPage() {
     };
 
     fetchOrder();
-  }, [sessionId]);
+  }, [paymentIntentId]);
 
   if (loading) {
     return (
