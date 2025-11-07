@@ -167,7 +167,17 @@ export function Checkbox({
         tabIndex={-1}
       />
       {checked && (
-        <Checkmark size={size} {...({ viewBox: "0 0 12 12" } as any)}>
+        <Checkmark
+          size={size}
+          {...({
+            viewBox: "0 0 12 12",
+            fill: "none",
+            stroke: "white",
+            strokeWidth: 2,
+            strokeLinecap: "round",
+            strokeLinejoin: "round"
+          } as any)}
+        >
           <polyline points="2,6 5,9 10,3" />
         </Checkmark>
       )}
