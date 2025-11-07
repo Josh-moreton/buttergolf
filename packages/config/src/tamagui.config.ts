@@ -257,13 +257,13 @@ const customTokens = createTokens({
         infoLight: brandColors.blue100,
         infoDark: brandColors.blue700,
 
-        // Background colors (light theme defaults - Pure Butter cream)
-        background: brandColors.cream,
-        backgroundHover: '#F8F3CB',
-        backgroundPress: '#F3EEBF',
-        backgroundFocus: '#EEE9B3',
-        backgroundStrong: brandColors.white,
-        backgroundTransparent: 'color(display-p3 0.996 0.980 0.839 / 0)',
+        // Background colors (light theme defaults - white base with cream accents)
+        background: brandColors.white,
+        backgroundHover: '#F5F5F5',
+        backgroundPress: '#EBEBEB',
+        backgroundFocus: '#E0E0E0',
+        backgroundStrong: brandColors.cream,
+        backgroundTransparent: 'rgba(255, 255, 255, 0)',
 
         // Text colors (light theme defaults - warm charcoal)
         text: brandColors.charcoal,
@@ -272,10 +272,10 @@ const customTokens = createTokens({
         textMuted: brandColors.gray500,
         textInverse: brandColors.white,
 
-        // Surface colors
-        surface: brandColors.white,
-        card: '#F6F7FB',
-        cardHover: '#eff1f5',
+        // Surface colors (cream background, white cards)
+        surface: brandColors.cream,
+        card: brandColors.white,
+        cardHover: '#F5F5F5',
 
         // Border colors (Pure Butter theme)
         border: brandColors.gray300,
