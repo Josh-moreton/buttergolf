@@ -54,8 +54,40 @@ interface ProductDetailClientProps {
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [purchasing, setPurchasing] = useState(false);
 
   const selectedImage = product.images[selectedImageIndex];
+
+  const handleBuyNow = async () => {
+    if (product.isSold) return;
+
+    setPurchasing(true);
+    try {
+      const response = await fetch("/api/checkout/create-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: product.id,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create checkout session");
+      }
+
+      const { url } = await response.json();
+      
+      // Redirect to Stripe Checkout
+      window.location.href = url;
+    } catch (err) {
+      console.error("Purchase failed:", err);
+      alert(err instanceof Error ? err.message : "Failed to start checkout. Please try again.");
+      setPurchasing(false);
+    }
+  };
 
   return (
     <Container size="lg" padding="$md">
@@ -173,8 +205,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </Card>
 
             <Column gap="$md">
-              <Button size="$5" width="100%" disabled={product.isSold}>
-                {product.isSold ? "Sold Out" : "Contact Seller"}
+              <Button
+                size="$5"
+                width="100%"
+                disabled={product.isSold || purchasing}
+                backgroundColor="$primary"
+                color="$textInverse"
+                onPress={handleBuyNow}
+                opacity={purchasing ? 0.6 : 1}
+              >
+                {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy Now"}
               </Button>
               <Button size="$5" width="100%">
                 Add to Wishlist

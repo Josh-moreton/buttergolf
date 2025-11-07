@@ -70,6 +70,24 @@ export const CartIcon = () => (
   </svg>
 );
 
+export const PackageIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25"
+    height="25"
+    viewBox="0 0 25 25"
+    fill="none"
+  >
+    <path
+      d="M12.5 8.5L17.5 11.5M12.5 8.5L7.5 11.5M12.5 8.5V13.5M17.5 11.5V16.5L12.5 19.5M17.5 11.5L12.5 13.5M7.5 11.5L12.5 13.5M7.5 11.5V16.5L12.5 19.5M12.5 19.5V13.5M20.5 7.5L12.5 3.5L4.5 7.5L12.5 11.5L20.5 7.5Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const MenuIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

@@ -6,7 +6,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
 import { menuData } from "./menuData";
 import { DesktopMenu } from "./DesktopMenu";
-import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon } from "./icons";
+import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon, PackageIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 
 export function MarketplaceHeader() {
@@ -15,9 +15,8 @@ export function MarketplaceHeader() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
 
-  // Wishlist and cart counts (placeholder - will wire to state later)
+  // Wishlist count (placeholder - will wire to state later)
   const wishlistCount = 0;
-  const cartCount = 0;
 
   // Sticky menu handler
   useEffect(() => {
@@ -234,9 +233,8 @@ export function MarketplaceHeader() {
               </Row>
             </Link>
 
-            <Link href="/cart" style={{ textDecoration: "none" }}>
+            <Link href="/orders" style={{ textDecoration: "none" }}>
               <Row
-                position="relative"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.7 }}
                 padding="$2"
@@ -245,29 +243,7 @@ export function MarketplaceHeader() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <CartIcon />
-                {cartCount > 0 && (
-                  <Row
-                    position="absolute"
-                    top={4}
-                    right={4}
-                    width={18}
-                    height={18}
-                    backgroundColor="$primary"
-                    borderRadius={9}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Text
-                      size="xs"
-                      fontSize={10}
-                      weight="normal"
-                      color="$textInverse"
-                    >
-                      {cartCount}
-                    </Text>
-                  </Row>
-                )}
+                <PackageIcon />
               </Row>
             </Link>
 

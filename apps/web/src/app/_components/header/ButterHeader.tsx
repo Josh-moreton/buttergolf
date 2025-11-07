@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, CartIcon, MenuIcon } from "./icons";
+import { SearchIcon, UserIcon, CartIcon, MenuIcon, HeartIcon, PackageIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 import { SearchDropdown } from "./SearchDropdown";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -20,8 +20,8 @@ export function ButterHeader() {
   const searchRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(searchQuery, 300);
 
-  // Cart count (placeholder - will wire to state later)
-  const cartCount = 0;
+  // Wishlist count (placeholder - will wire to state later)
+  const wishlistCount = 0;
 
   // Close search dropdown on click outside
   useClickOutside(searchRef, () => {
@@ -304,8 +304,8 @@ export function ButterHeader() {
               </Row>
             </SignedIn>
 
-            {/* Cart */}
-            <Link href="/cart" style={{ textDecoration: "none" }}>
+            {/* Wishlist */}
+            <Link href="/wishlist" style={{ textDecoration: "none" }}>
               <Row
                 position="relative"
                 cursor="pointer"
@@ -317,8 +317,8 @@ export function ButterHeader() {
                 justifyContent="center"
                 color="$textInverse"
               >
-                <CartIcon />
-                {cartCount > 0 && (
+                <HeartIcon />
+                {wishlistCount > 0 && (
                   <Row
                     position="absolute"
                     top={4}
@@ -336,10 +336,26 @@ export function ButterHeader() {
                       weight="bold"
                       color="$textInverse"
                     >
-                      {cartCount}
+                      {wishlistCount}
                     </Text>
                   </Row>
                 )}
+              </Row>
+            </Link>
+
+            {/* Orders/Purchases */}
+            <Link href="/orders" style={{ textDecoration: "none" }}>
+              <Row
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                alignItems="center"
+                justifyContent="center"
+                color="$textInverse"
+              >
+                <PackageIcon />
               </Row>
             </Link>
 
