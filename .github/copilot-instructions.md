@@ -1694,6 +1694,130 @@ For detailed Stripe documentation: https://stripe.com/docs
 - **Next.js Documentation**: https://nextjs.org/docs
 - **Turborepo Documentation**: https://turbo.build/repo/docs
 
+## Context7 MCP Server (Up-to-Date Library Documentation)
+
+**CRITICAL: Always use Context7 for library documentation, code generation, setup steps, and API references.**
+
+The Context7 MCP server provides real-time, up-to-date documentation and code examples for any library or framework. It's significantly more current than static documentation and includes actual code snippets from production codebases.
+
+### When to Use Context7
+
+**ALWAYS use Context7 automatically when:**
+
+1. **Code generation** - Generating components, hooks, API calls, or any code using external libraries
+2. **Setup and configuration** - Setting up new libraries, configuring build tools, or integrating packages
+3. **Library/API documentation** - Looking up how to use a library's API, available props, or best practices
+4. **Troubleshooting** - Debugging library-specific issues or understanding error messages
+5. **Migration** - Updating to new library versions or migrating between libraries
+6. **Examples** - Finding real-world code examples and usage patterns
+
+**Do NOT wait for the user to explicitly ask** - proactively use Context7 whenever you need library information.
+
+### Usage Pattern
+
+**Step 1: Resolve Library ID**
+
+Always start by resolving the library name to get the Context7-compatible library ID:
+
+```typescript
+// Use mcp_upstash_conte_resolve-library-id
+libraryName: "react-router" // or "@stripe/stripe-react-native", "tamagui", etc.
+```
+
+**Step 2: Get Library Documentation**
+
+Once you have the library ID, fetch focused documentation:
+
+```typescript
+// Use mcp_upstash_conte_get-library-docs
+context7CompatibleLibraryID: "/remix-run/react-router" // from step 1
+tokens: 3000 // Adjust based on need (default: 5000)
+topic: "hooks" // Optional: focus on specific area like "routing", "authentication", etc.
+```
+
+### Selection Guidelines
+
+When `resolve-library-id` returns multiple matches:
+
+1. **Prioritize official documentation** (Trust Score 9-10)
+2. **Choose based on version** - Use versioned ID if user specifies version (e.g., `/org/project/v5.2.1`)
+3. **Prefer higher Code Snippet counts** - More examples = better documentation
+4. **Match description to intent** - Read descriptions to find the most relevant match
+
+### Real-World Examples
+
+#### Example 1: Implementing Stripe Payment
+
+```typescript
+// ✅ CORRECT - Use Context7 automatically
+// Step 1: Resolve Stripe library
+await mcp_upstash_conte_resolve-library-id({ libraryName: "@stripe/stripe-react-native" })
+// Step 2: Get payment integration docs
+await mcp_upstash_conte_get-library-docs({
+  context7CompatibleLibraryID: "/stripe/stripe-react-native",
+  tokens: 3000,
+  topic: "payment sheet"
+})
+// Step 3: Generate code using the examples from Context7
+
+// ❌ WRONG - Don't rely on static knowledge or outdated documentation
+// Generating code without checking current API patterns
+```
+
+#### Example 2: Adding Navigation
+
+```typescript
+// ✅ CORRECT - Check latest React Router patterns
+await mcp_upstash_conte_resolve-library-id({ libraryName: "react-router" })
+await mcp_upstash_conte_get-library-docs({
+  context7CompatibleLibraryID: "/remix-run/react-router",
+  tokens: 2000,
+  topic: "navigation hooks"
+})
+
+// ❌ WRONG - Using potentially outdated patterns from training data
+```
+
+#### Example 3: Tamagui Component Setup
+
+```typescript
+// ✅ CORRECT - Get current Tamagui best practices
+await mcp_upstash_conte_resolve-library-id({ libraryName: "tamagui" })
+await mcp_upstash_conte_get-library-docs({
+  context7CompatibleLibraryID: "/tamagui/tamagui",
+  tokens: 2000,
+  topic: "styled components"
+})
+```
+
+### Integration with Existing Workflow
+
+**Before writing code that uses external libraries:**
+
+1. Use Context7 to get current documentation
+2. Review code examples and API patterns
+3. Generate code following the examples
+4. Reference Context7 output in code comments if helpful
+
+**When user asks about libraries:**
+
+- Don't just answer from static knowledge
+- Fetch Context7 docs first
+- Provide answer based on current documentation
+- Include relevant code examples from Context7
+
+### Benefits
+
+- **Up-to-date**: Docs reflect latest library versions and best practices
+- **Real examples**: Code snippets from production codebases, not just docs
+- **Comprehensive**: Covers edge cases and common pitfalls
+- **Accurate**: Based on actual library implementations, not LLM training data
+- **Efficient**: Targeted documentation (use `topic` parameter) reduces token usage
+
+### Remember
+
+**Context7 is not optional** - it's a critical tool for ensuring code quality and accuracy. Always use it proactively when working with external libraries, frameworks, or APIs. Don't wait to be asked - make it part of your standard workflow.
+
 ## Best Practices
 
 ### Design System & Components
@@ -1934,6 +2058,7 @@ When creating a new component, add variants for:
 
 When generating new code:
 
+- **USE CONTEXT7 FIRST** - Before generating code with external libraries, use Context7 MCP to get current documentation
 - Default to Tamagui components over React Native primitives
 - Use `styled()` for component definitions
 - Include `name` property for compiler optimization
