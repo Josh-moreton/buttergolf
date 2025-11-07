@@ -1,11 +1,12 @@
 "use client";
 
-import { styled, GetProps } from "tamagui";
+import { styled, GetProps, Stack } from "tamagui";
 import { useState } from "react";
 
 // Base checkbox input (hidden)
-const HiddenCheckbox = styled("input", {
+const HiddenCheckbox = styled(Stack, {
   name: "HiddenCheckbox",
+  tag: "input" as any,
   position: "absolute",
   opacity: 0,
   width: 0,
@@ -13,8 +14,9 @@ const HiddenCheckbox = styled("input", {
 });
 
 // Visible checkbox box
-const CheckboxBox = styled("div", {
+const CheckboxBox = styled(Stack, {
   name: "CheckboxBox",
+  tag: "div" as any,
   width: 20,
   height: 20,
   borderWidth: 2,
@@ -73,8 +75,9 @@ const CheckboxBox = styled("div", {
 });
 
 // Checkmark icon
-const Checkmark = styled("svg", {
+const Checkmark = styled(Stack, {
   name: "Checkmark",
+  tag: "svg" as any,
   width: 12,
   height: 12,
   fill: "none",

@@ -4,7 +4,7 @@ import { prisma } from "@buttergolf/db";
 
 export async function GET(
   request: Request,
-  { params }: { params: { paymentIntentId: string } }
+  { params }: { params: Promise<{ paymentIntentId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -12,7 +12,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { paymentIntentId } = params;
+    const { paymentIntentId } = await params;
 
     // Find order by payment intent ID
     const order = await prisma.order.findFirst({
