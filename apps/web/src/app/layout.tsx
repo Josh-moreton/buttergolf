@@ -72,7 +72,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "ButterGolf",
   description: "P2P Marketplace for Golf Equipment",
-  manifest: "/manifest.json",
+  manifest: "/site.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
