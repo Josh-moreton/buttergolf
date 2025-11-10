@@ -3,21 +3,21 @@ import { createTamagui, createTokens, createFont } from 'tamagui'
 
 // Gotham font for Pure Butter brand identity
 const gothamFace = {
-    normal: { normal: 'Gotham' },
-    bold: { normal: 'Gotham' },
-    100: { normal: 'Gotham', italic: 'Gotham' },
-    200: { normal: 'Gotham', italic: 'Gotham' },
-    300: { normal: 'Gotham', italic: 'Gotham' },
-    400: { normal: 'Gotham', italic: 'Gotham' },
-    500: { normal: 'Gotham', italic: 'Gotham' },
-    600: { normal: 'Gotham', italic: 'Gotham' },
-    700: { normal: 'Gotham', italic: 'Gotham' },
-    800: { normal: 'Gotham', italic: 'Gotham' },
-    900: { normal: 'Gotham', italic: 'Gotham' },
+    normal: { normal: 'Gotham-Book, Gotham', italic: 'Gotham-Book, Gotham' },
+    bold: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
+    100: { normal: 'Gotham-Thin, Gotham', italic: 'Gotham-Thin, Gotham' },
+    200: { normal: 'Gotham-XLight, Gotham', italic: 'Gotham-XLight, Gotham' },
+    300: { normal: 'Gotham-Light, Gotham', italic: 'Gotham-Light, Gotham' },
+    400: { normal: 'Gotham-Book, Gotham', italic: 'Gotham-Book, Gotham' },
+    500: { normal: 'Gotham-Medium, Gotham', italic: 'Gotham-Medium, Gotham' },
+    600: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
+    700: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
+    800: { normal: 'Gotham-Black, Gotham', italic: 'Gotham-Black, Gotham' },
+    900: { normal: 'Gotham-Ultra, Gotham', italic: 'Gotham-Ultra, Gotham' },
 }
 
 const headingFont = createFont({
-    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 12,
         2: 14,
@@ -76,7 +76,7 @@ const headingFont = createFont({
 })
 
 const bodyFont = createFont({
-    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 11,
         2: 12,
@@ -289,6 +289,14 @@ const customTokens = createTokens({
         shadowColorPress: 'rgba(0, 0, 0, 0.16)',
         shadowColorFocus: 'rgba(226, 95, 47, 0.25)', // butter tint
 
+        // Inverse overlays for elements sitting on the brand header background
+        inverseSurface: 'rgba(255, 255, 255, 0.2)',
+        inverseSurfaceHover: 'rgba(255, 255, 255, 0.3)',
+        inverseSurfacePress: 'rgba(255, 255, 255, 0.38)',
+        inverseBorder: 'rgba(255, 255, 255, 0.4)',
+        inverseBorderHover: 'rgba(255, 255, 255, 0.56)',
+        inverseBorderPress: 'rgba(255, 255, 255, 0.72)',
+
         // Generic color states (light theme defaults)
         color: brandColors.charcoal,
         colorHover: brandColors.gray800,
@@ -430,6 +438,13 @@ const lightTheme = {
     shadowColorPress: '$shadowColorPress',
     shadowColorFocus: '$shadowColorFocus',
 
+    inverseSurface: '$inverseSurface',
+    inverseSurfaceHover: '$inverseSurfaceHover',
+    inverseSurfacePress: '$inverseSurfacePress',
+    inverseBorder: '$inverseBorder',
+    inverseBorderHover: '$inverseBorderHover',
+    inverseBorderPress: '$inverseBorderPress',
+
     // Utility colors - reference tokens
     white: '$white',
     cream: '$cream',
@@ -504,6 +519,13 @@ const darkTheme = {
     shadowColorHover: 'rgba(0, 0, 0, 0.4)',
     shadowColorPress: 'rgba(0, 0, 0, 0.5)',
     shadowColorFocus: 'rgba(226, 95, 47, 0.3)', // butter tint
+
+    inverseSurface: 'rgba(255, 255, 255, 0.14)',
+    inverseSurfaceHover: 'rgba(255, 255, 255, 0.22)',
+    inverseSurfacePress: 'rgba(255, 255, 255, 0.32)',
+    inverseBorder: 'rgba(255, 255, 255, 0.3)',
+    inverseBorderHover: 'rgba(255, 255, 255, 0.45)',
+    inverseBorderPress: 'rgba(255, 255, 255, 0.6)',
 
     // Utility colors
     white: brandColors.white,

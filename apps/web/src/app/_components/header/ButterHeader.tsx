@@ -63,7 +63,7 @@ export function ButterHeader() {
         paddingVertical="$4"
         $md={{ paddingHorizontal: "$6", paddingVertical: "$5" }}
         {...(stickyMenu && {
-          shadowColor: "rgba(0,0,0,0.12)",
+          shadowColor: "$shadowColorHover",
           shadowRadius: 6,
           shadowOffset: { width: 0, height: 3 },
         })}
@@ -189,7 +189,7 @@ export function ButterHeader() {
                 gap="$2"
                 width={250}
                 hoverStyle={{
-                  borderColor: "rgba(255, 255, 255, 0.8)",
+                  borderColor: "$inverseBorderHover",
                 }}
                 focusStyle={{
                   borderColor: "$textInverse",
@@ -214,7 +214,7 @@ export function ButterHeader() {
                     fontSize: "14px",
                     width: "100%",
                     fontFamily: "inherit",
-                    color: "#fff",
+                    color: "inherit",
                   }}
                 />
               </Row>
@@ -233,7 +233,7 @@ export function ButterHeader() {
                   minWidth={400}
                   maxHeight={500}
                   zIndex={60}
-                  shadowColor="rgba(0,0,0,0.15)"
+                  shadowColor="$shadowColorHover"
                   shadowRadius={16}
                   shadowOffset={{ width: 0, height: 4 }}
                   overflow="hidden"
@@ -386,7 +386,7 @@ export function ButterHeader() {
               SEARCH
             </Text>
             <Row
-              backgroundColor="rgba(255, 255, 255, 0.2)"
+              backgroundColor="$inverseSurface"
               borderRadius="$lg"
               paddingHorizontal="$3"
               paddingVertical="$3"
@@ -408,7 +408,7 @@ export function ButterHeader() {
                   fontSize: "16px",
                   width: "100%",
                   fontFamily: "inherit",
-                  color: "#fff",
+                  color: "inherit",
                 }}
               />
             </Row>
@@ -421,7 +421,7 @@ export function ButterHeader() {
                 overflow="hidden"
                 maxHeight={400}
                 borderWidth={1}
-                borderColor="rgba(255, 255, 255, 0.3)"
+                borderColor="$inverseBorder"
               >
                 <SearchDropdown
                   query={debouncedQuery}
