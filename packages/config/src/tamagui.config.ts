@@ -137,17 +137,17 @@ const bodyFont = createFont({
 // Brand Colors - 10-shade scales for all color families
 // Using Display P3 color space to match modern displays
 const brandColors = {
-    // Primary Brand (Butter Orange) - Pure Butter heritage brand  
-    butter50: 'color(display-p3 1.000 0.976 0.929)',
-    butter100: 'color(display-p3 1.000 0.953 0.839)',
-    butter200: 'color(display-p3 1.000 0.925 0.741)',
-    butter300: 'color(display-p3 1.000 0.890 0.541)',
-    butter400: 'color(display-p3 0.886 0.373 0.184)', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
-    butter500: 'color(display-p3 0.824 0.333 0.227)', // Darker/more saturated - for hover states
-    butter600: 'color(display-p3 0.722 0.267 0.184)', // Even darker - for press states
-    butter700: 'color(display-p3 0.604 0.220 0.141)', // Dark - for text on light backgrounds
-    butter800: 'color(display-p3 0.486 0.176 0.114)',
-    butter900: 'color(display-p3 0.369 0.137 0.086)',
+    // Primary Brand (Butter Orange) - Pure Butter heritage brand
+    butter50: '#FFF9ED',
+    butter100: '#FFF3D6',
+    butter200: '#FFECBD',
+    butter300: '#FFE38A',
+    butter400: '#E25F2F', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
+    butter500: '#D2553A', // Darker/more saturated - for hover states
+    butter600: '#B8442F', // Even darker - for press states
+    butter700: '#9A3824', // Dark - for text on light backgrounds
+    butter800: '#7C2D1D',
+    butter900: '#5E2316',
 
     // Secondary Brand (Navy) - Modern contrast accent
     navy50: '#E8EDF3',
@@ -284,17 +284,17 @@ const customTokens = createTokens({
         borderPress: brandColors.butter500,
 
         // Shadow colors (softer, vintage feel)
-        shadowColor: 'color(display-p3 0 0 0 / 0.08)',
-        shadowColorHover: 'color(display-p3 0 0 0 / 0.12)',
-        shadowColorPress: 'color(display-p3 0 0 0 / 0.16)',
-        shadowColorFocus: 'color(display-p3 0.886 0.373 0.184 / 0.25)', // butter tint
+        shadowColor: 'rgba(0, 0, 0, 0.08)',
+        shadowColorHover: 'rgba(0, 0, 0, 0.12)',
+        shadowColorPress: 'rgba(0, 0, 0, 0.16)',
+        shadowColorFocus: 'rgba(226, 95, 47, 0.25)', // butter tint
 
         // Generic color states (light theme defaults)
         color: brandColors.charcoal,
         colorHover: brandColors.gray800,
         colorPress: brandColors.gray700,
         colorFocus: brandColors.charcoal,
-        colorTransparent: 'color(display-p3 0.118 0.118 0.118 / 0)',
+        colorTransparent: 'rgba(30, 30, 30, 0)',
 
         // Backward compatibility
         bg: brandColors.cream,
@@ -443,14 +443,14 @@ const darkTheme = {
     backgroundPress: brandColors.navy700,
     backgroundFocus: brandColors.navy800,
     backgroundStrong: brandColors.navy800,
-    backgroundTransparent: 'color(display-p3 0.008 0.020 0.031 / 0)',
+    backgroundTransparent: 'rgba(2, 5, 8, 0)',
 
     // Text colors - override for dark mode
     color: brandColors.gray50,
     colorHover: brandColors.gray100,
     colorPress: brandColors.white,
     colorFocus: brandColors.gray50,
-    colorTransparent: 'color(display-p3 0.976 0.980 0.984 / 0)',
+    colorTransparent: 'rgba(249, 250, 251, 0)',
 
     // Semantic colors (adjusted for dark mode - lighter butter for contrast)
     primary: brandColors.butter300,
@@ -500,10 +500,10 @@ const darkTheme = {
     borderPress: brandColors.butter400,
 
     // Shadow colors - override for dark mode
-    shadowColor: 'color(display-p3 0 0 0 / 0.3)',
-    shadowColorHover: 'color(display-p3 0 0 0 / 0.4)',
-    shadowColorPress: 'color(display-p3 0 0 0 / 0.5)',
-    shadowColorFocus: 'color(display-p3 0.886 0.373 0.184 / 0.3)', // butter tint
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    shadowColorHover: 'rgba(0, 0, 0, 0.4)',
+    shadowColorPress: 'rgba(0, 0, 0, 0.5)',
+    shadowColorFocus: 'rgba(226, 95, 47, 0.3)', // butter tint
 
     // Utility colors
     white: brandColors.white,
