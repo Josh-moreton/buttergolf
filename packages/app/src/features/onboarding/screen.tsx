@@ -255,51 +255,51 @@ export function OnboardingScreen({
           </Text>
         </YStack>
 
-        {/* CTAs */}
+        {/* CTAs - Testing basic Tamagui primitives */}
         <YStack gap={12} width="100%" paddingHorizontal={24}>
-          <Button
-            size="$5"
-            backgroundColor="$background" // Cream button on orange background
-            color="$primary" // Brand text color for contrast
-            borderRadius="$lg"
-            fontWeight="600"
-            fontSize={17}
-            height={52}
-            hoverStyle={{
-              backgroundColor: "$backgroundHover",
-            }}
-            pressStyle={{
-              backgroundColor: "$backgroundPress",
-              scale: 0.98,
-            }}
+          {/* Test Button 1 - Using YStack as button base */}
+          <YStack
             onPress={onSignUp}
-            aria-label="Sign up to Butter Golf"
-          >
-            Sign up to Butter Golf
-          </Button>
-
-          <Button
-            size="$5"
-            backgroundColor="$background"
-            color="$primary"
-            borderColor="$primary"
-            borderWidth={1}
-            borderRadius="$lg"
-            fontWeight="600"
-            fontSize={17}
+            backgroundColor="#E25F2F"
             height={52}
-            hoverStyle={{
-              backgroundColor: "$backgroundHover",
-            }}
+            borderRadius={14}
+            alignItems="center"
+            justifyContent="center"
             pressStyle={{
-              backgroundColor: "$backgroundPress",
-              scale: 0.98,
+              opacity: 0.8,
             }}
-            onPress={onSignIn}
-            aria-label="I already have an account"
           >
-            I already have an account
-          </Button>
+            <Text
+              fontSize={17}
+              fontWeight="600"
+              color="#FFFFFF"
+            >
+              TEST SIGN UP BUTTON
+            </Text>
+          </YStack>
+
+          {/* Test Button 2 - Using YStack with border */}
+          <YStack
+            onPress={onSignIn}
+            backgroundColor="#FFFFFF"
+            borderColor="#E25F2F"
+            borderWidth={2}
+            height={52}
+            borderRadius={14}
+            alignItems="center"
+            justifyContent="center"
+            pressStyle={{
+              opacity: 0.8,
+            }}
+          >
+            <Text
+              fontSize={17}
+              fontWeight="600"
+              color="#E25F2F"
+            >
+              TEST SIGN IN BUTTON
+            </Text>
+          </YStack>
         </YStack>
 
         {/* Footer Link - Plain Text */}
