@@ -13,8 +13,8 @@ export function RoundsScreen() {
       <Text size="md">
         Round tracking coming soon! This will connect to your Prisma database.
       </Text>
-      <Button {...homeLink} size="$3">
-        Back to Home
+      <Button {...homeLink} variant="solid" size="md">
+        <Text color="#FFFFFF" fontWeight="600">Back to Home</Text>
       </Button>
     </YStack>
   )

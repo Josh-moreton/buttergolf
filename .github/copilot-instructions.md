@@ -843,15 +843,17 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 ```tsx
 <Button
+  variant="solid | outline | ghost" // Style variant (default: solid)
   size="sm | md | lg" // Size variant (default: md)
-  tone="primary | secondary | outline | ghost | success | error" // Style variant
   fullWidth={boolean} // Full width button
   disabled={boolean} // Disabled state
-  loading={boolean} // Loading state
+  onPress={() => {}} // Press handler
 >
-  Button Text
+  <Text color="#FFFFFF">Button Text</Text>
 </Button>
 ```
+
+**Important**: The Button component is a custom wrapper around YStack (not the Tamagui Button) for React Native compatibility. Always wrap button text in a `<Text>` component.
 
 #### Text
 

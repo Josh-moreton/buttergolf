@@ -81,8 +81,8 @@ export function FilterSidebar({
         />
       </FilterSection>
 
-      <Button chromeless size="$4" onPress={onClearAll}>
-        Clear All
+      <Button variant="ghost" size="md" onPress={onClearAll}>
+        <Text>Clear All</Text>
       </Button>
     </Column>
   );

@@ -308,8 +308,8 @@ export function ListingsClient({
                 </span>
               </Badge>
             ))}
-            <Button size="$3" chromeless onPress={handleClearAll}>
-              Clear all
+            <Button variant="ghost" size="sm" onPress={handleClearAll}>
+              <Text>Clear All</Text>
             </Button>
           </Row>
         )}

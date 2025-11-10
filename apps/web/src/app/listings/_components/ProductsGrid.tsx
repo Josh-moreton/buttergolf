@@ -44,8 +44,8 @@ function ProductCard({ product }: { product: ProductCardData }) {
               {product.condition?.replace("_", " ") || ""}
             </Text>
           </Row>
-          <Button size="$4" onPress={() => setModalOpen(true)}>
-            View details
+          <Button variant="solid" size="md" onPress={() => setModalOpen(true)}>
+            <Text color="#FFFFFF">View details</Text>
           </Button>
         </Column>
       </Card>

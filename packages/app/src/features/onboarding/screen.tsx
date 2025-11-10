@@ -255,51 +255,31 @@ export function OnboardingScreen({
           </Text>
         </YStack>
 
-        {/* CTAs - Testing basic Tamagui primitives */}
+        {/* CTAs */}
         <YStack gap={12} width="100%" paddingHorizontal={24}>
-          {/* Test Button 1 - Using YStack as button base */}
-          <YStack
+          {/* Primary CTA - Sign Up */}
+          <Button
             onPress={onSignUp}
-            backgroundColor="#E25F2F"
-            height={52}
-            borderRadius={14}
-            alignItems="center"
-            justifyContent="center"
-            pressStyle={{
-              opacity: 0.8,
-            }}
+            variant="solid"
+            size="lg"
+            fullWidth
           >
-            <Text
-              fontSize={17}
-              fontWeight="600"
-              color="#FFFFFF"
-            >
-              TEST SIGN UP BUTTON
+            <Text fontSize={17} fontWeight="600" color="#FFFFFF">
+              Sign up to Butter Golf
             </Text>
-          </YStack>
+          </Button>
 
-          {/* Test Button 2 - Using YStack with border */}
-          <YStack
+          {/* Secondary CTA - Sign In */}
+          <Button
             onPress={onSignIn}
-            backgroundColor="#FFFFFF"
-            borderColor="#E25F2F"
-            borderWidth={2}
-            height={52}
-            borderRadius={14}
-            alignItems="center"
-            justifyContent="center"
-            pressStyle={{
-              opacity: 0.8,
-            }}
+            variant="outline"
+            size="lg"
+            fullWidth
           >
-            <Text
-              fontSize={17}
-              fontWeight="600"
-              color="#E25F2F"
-            >
-              TEST SIGN IN BUTTON
+            <Text fontSize={17} fontWeight="600" color="#E25F2F">
+              I already have an account
             </Text>
-          </YStack>
+          </Button>
         </YStack>
 
         {/* Footer Link - Plain Text */}
