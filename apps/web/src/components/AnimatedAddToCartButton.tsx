@@ -1,0 +1,154 @@
+"use client";
+
+import { useRef, useEffect, useState } from "react";
+import { gsap } from "gsap";
+import styles from "./AnimatedAddToCartButton.module.css";
+
+interface AnimatedAddToCartButtonProps {
+    onAddToCart: () => Promise<void>;
+    disabled?: boolean;
+}
+
+const COLORS = [
+    "oklch(62.32% 0.20671135203311433 255.1916692835456)",
+    "oklch(73.87% 0.1070786497070297 201.59493356613996)",
+    "oklch(84.85% 0.17406745322149955 86.29886848579457)",
+    "oklch(66.83% 0.20633437948063887 20.156816263959513)",
+    "oklch(74.67% 0.09006824938632453 344.36705431384325)",
+];
+
+export function AnimatedAddToCartButton({
+    onAddToCart,
+    disabled = false,
+}: AnimatedAddToCartButtonProps) {
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const [isAdding, setIsAdding] = useState(false);
+
+    const handleClick = async () => {
+        if (!buttonRef.current || isAdding || disabled) return;
+
+        const button = buttonRef.current;
+
+        // Set random delays and colors for burst animation
+        gsap.set(".burst g", {
+            "--d": () => gsap.utils.random(0, 0.4, 0.01),
+        });
+        gsap.set(".burst g", {
+            "--color": () => COLORS[gsap.utils.random(0, COLORS.length - 1, 1)],
+        });
+
+        // Start loading state
+        setIsAdding(true);
+        button.disabled = true;
+
+        try {
+            // Call the add to cart function
+            await onAddToCart();
+
+            // Wait for all animations to complete
+            await Promise.all(
+                button.getAnimations({ subtree: true }).map((a) => a.finished)
+            );
+
+            // Reset after brief delay
+            setTimeout(() => {
+                setIsAdding(false);
+                button.disabled = false;
+            }, 500);
+        } catch (error) {
+            // On error, reset immediately
+            console.error("Failed to add to cart:", error);
+            setIsAdding(false);
+            button.disabled = false;
+        }
+    };
+
+    return (
+        <button
+            ref={buttonRef}
+            onClick={handleClick}
+            aria-label="Add to cart"
+            className={styles.addToCart}
+            data-adding={isAdding}
+            disabled={disabled}
+        >
+            <span className={`${styles.flex} ${styles.addToCartText}`}>
+                <span className={`${styles.svgWrapper} ${styles.addToCartIcon}`}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                    >
+                        <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="var(--icon-stroke-width)"
+                            d="M16.608 9.421V6.906H3.392v8.016c0 .567.224 1.112.624 1.513.4.402.941.627 1.506.627H8.63M8.818 3h2.333c.618 0 1.212.247 1.649.686a2.35 2.35 0 0 1 .683 1.658v1.562H6.486V5.344c0-.622.246-1.218.683-1.658A2.33 2.33 0 0 1 8.82 3"
+                        />
+                        <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeWidth="var(--icon-stroke-width)"
+                            d="M14.608 12.563v5m2.5-2.5h-5"
+                        />
+                    </svg>
+                </span>
+                <span className={styles.addToCartTextContent}>Add to cart</span>
+            </span>
+            <span className={`${styles.flex} ${styles.added}`}>
+                <span className={`${styles.svgWrapper} ${styles.addToCartIconAdded}`}>
+                    <svg
+                        className={styles.checkmarkBurst}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g className={styles.check}>
+                            <path
+                                className={styles.ring}
+                                d="M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                            <path
+                                className={styles.tick}
+                                d="M9 12.75L11.25 15L15 9.75"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </g>
+                        <g className={`${styles.burst} burst`}>
+                            {[...Array(8)].map((_, i) => (
+                                <g key={i} style={{ "--index": i } as React.CSSProperties}>
+                                    <path
+                                        className={styles.wiggle}
+                                        pathLength={1}
+                                        d="M12 8.5 Q13 9.5 12 10.5 Q11 11.5 12 12.5 Q13 13.5 12 15.5"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        fill="none"
+                                    />
+                                    <line
+                                        className={styles.line}
+                                        strokeLinecap="round"
+                                        pathLength={1}
+                                        x1="12"
+                                        y1="8.5"
+                                        x2="12"
+                                        y2="15.5"
+                                        stroke="currentColor"
+                                    />
+                                </g>
+                            ))}
+                        </g>
+                    </svg>
+                </span>
+            </span>
+        </button>
+    );
+}

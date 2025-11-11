@@ -3,12 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, MenuIcon } from "./icons";
+import { Row, Column, Text, Badge } from "@buttergolf/ui";
+import { SearchIcon, UserIcon, MenuIcon, CartIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 import { SearchDropdown } from "./SearchDropdown";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useCart } from "../../../context/CartContext";
 
 export function ButterHeader() {
   const [stickyMenu, setStickyMenu] = useState(false);
@@ -19,6 +20,7 @@ export function ButterHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(searchQuery, 300);
+  const { totalItems } = useCart();
 
   // Close search dropdown on click outside
   useClickOutside(searchRef, () => {
@@ -264,6 +266,46 @@ export function ButterHeader() {
             >
               <SearchIcon />
             </Row>
+
+            {/* Cart Icon with Badge */}
+            <Link href="/cart" style={{ textDecoration: "none" }}>
+              <Row
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                alignItems="center"
+                justifyContent="center"
+                color="$textInverse"
+                {...{ style: { position: "relative" } }}
+              >
+                <CartIcon />
+                {totalItems > 0 && (
+                  <Row
+                    {...{ style: { position: "absolute" } }}
+                    top={0}
+                    right={0}
+                    backgroundColor="$error"
+                    borderRadius="$full"
+                    minWidth={20}
+                    minHeight={20}
+                    paddingHorizontal="$1"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text
+                      size="xs"
+                      weight="bold"
+                      color="$textInverse"
+                      fontSize={10}
+                    >
+                      {totalItems > 99 ? "99+" : totalItems}
+                    </Text>
+                  </Row>
+                )}
+              </Row>
+            </Link>
 
             {/* User Icon/Button */}
             <SignedOut>
