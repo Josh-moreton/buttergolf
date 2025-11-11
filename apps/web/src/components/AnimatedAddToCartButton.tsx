@@ -9,12 +9,13 @@ interface AnimatedAddToCartButtonProps {
     disabled?: boolean;
 }
 
+// Butter brand colors for burst animation
 const COLORS = [
-    "oklch(62.32% 0.20671135203311433 255.1916692835456)",
-    "oklch(73.87% 0.1070786497070297 201.59493356613996)",
-    "oklch(84.85% 0.17406745322149955 86.29886848579457)",
-    "oklch(66.83% 0.20633437948063887 20.156816263959513)",
-    "oklch(74.67% 0.09006824938632453 344.36705431384325)",
+    "#E25F2F", // Primary Butter Orange
+    "#FF8D5C", // Light Butter Orange (butter300)
+    "#FFE38A", // Butter Yellow (butter100)
+    "#FEFAD6", // Butter Cream (background)
+    "#1A2E44", // Navy secondary
 ];
 
 export function AnimatedAddToCartButton({
