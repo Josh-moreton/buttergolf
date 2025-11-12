@@ -189,21 +189,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 onPress={() => setLightboxOpen(true)}
                 position="relative"
               >
-                <Image
-                  source={{ uri: selectedImage.url }}
-                  width="100%"
-                  height={0}
-                  paddingBottom="100%" // 1:1 aspect ratio
-                  objectFit="cover"
-                  alt={product.title}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                />
+                <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
+                  <Image
+                    source={{ uri: selectedImage.url }}
+                    width="100%"
+                    height="100%"
+                    objectFit="cover"
+                    alt={product.title}
+                    position="absolute"
+                    top={0}
+                    left={0}
+                  />
+                </div>
 
                 {/* Image Counter */}
                 {product.images.length > 1 && (
@@ -264,18 +261,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       borderRadius="$lg"
                       position="relative"
                     >
-                      <Image
-                        source={{ uri: img.url }}
-                        width="100%"
-                        height="100%"
-                        objectFit="cover"
-                        alt={`${product.title} - Image ${index + 1}`}
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                        }}
-                      />
+                      <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
+                        <Image
+                          source={{ uri: img.url }}
+                          width="100%"
+                          height="100%"
+                          objectFit="cover"
+                          alt={`${product.title} - Image ${index + 1}`}
+                          position="absolute"
+                          top={0}
+                          left={0}
+                        />
+                      </div>
                     </Card>
                   ))}
                 </Row>
