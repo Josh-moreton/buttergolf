@@ -1,8 +1,6 @@
-import { useState } from "react";
 import Link from "next/link";
 import { Button, Card, Image, Text, Row, Column, Badge } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import { ProductDetailModal } from "./ProductDetailModal";
 import { AnimatedAddToCartButton } from "../../../components/AnimatedAddToCartButton";
 import { useCart } from "../../../context/CartContext";
 
@@ -11,7 +9,6 @@ interface RecentlyListedSectionClientProps {
 }
 
 function ListingCard({ product }: { readonly product: ProductCardData }) {
-  const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
 
   const handleAddToCart = async () => {
@@ -24,88 +21,56 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
   };
 
   return (
-    <>
-      <Card
-        variant="elevated"
-        padding={0}
-        animation="bouncy"
-        backgroundColor="$surface"
-        borderColor="$border"
-        hoverStyle={{
-          borderColor: "$borderHover",
-          shadowColor: "$shadowColorHover",
-          shadowRadius: 12,
-        }}
-        width="100%"
-      >
-        <div
-          onClick={() => setModalOpen(true)}
-          style={{ cursor: "pointer" }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              setModalOpen(true);
-            }
-          }}
-        >
-          <Image
-            source={{ uri: product.imageUrl }}
-            width="100%"
-            height={200}
-            objectFit="cover"
-            borderTopLeftRadius="$lg"
-            borderTopRightRadius="$lg"
-            alt={product.title}
-          />
-        </div>
-        <Column padding="$md" gap="$md">
-          <div
-            onClick={() => setModalOpen(true)}
-            style={{ cursor: "pointer" }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setModalOpen(true);
-              }
-            }}
-          >
-            <Column gap="$xs">
-              <Text size="md" weight="semibold" numberOfLines={2}>
-                {product.title}
-              </Text>
-              <Row gap="$sm" alignItems="center" justifyContent="space-between">
-                <Text size="sm" color="$textSecondary">
-                  {product.category}
-                </Text>
-                {product.condition && (
-                  <Badge variant="neutral" size="sm">
-                    <Text size="xs" weight="medium">
-                      {product.condition.replace("_", " ")}
-                    </Text>
-                  </Badge>
-                )}
-              </Row>
-              <Text size="lg" weight="bold" color="$primary">
-                £{product.price.toFixed(2)}
-              </Text>
-            </Column>
-          </div>
-          <AnimatedAddToCartButton onAddToCart={handleAddToCart} />
-        </Column>
-      </Card>
-
-      {modalOpen && (
-        <ProductDetailModal
-          productId={product.id}
-          open={modalOpen}
-          onOpenChange={setModalOpen}
+    <Card
+      variant="elevated"
+      padding={0}
+      animation="bouncy"
+      backgroundColor="$surface"
+      borderColor="$border"
+      hoverStyle={{
+        borderColor: "$borderHover",
+        shadowColor: "$shadowColorHover",
+        shadowRadius: 12,
+      }}
+      width="100%"
+    >
+      <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+        <Image
+          source={{ uri: product.imageUrl }}
+          width="100%"
+          height={200}
+          objectFit="cover"
+          borderTopLeftRadius="$lg"
+          borderTopRightRadius="$lg"
+          alt={product.title}
         />
-      )}
-    </>
+      </Link>
+      <Column padding="$md" gap="$md">
+        <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+          <Column gap="$xs">
+            <Text size="md" weight="semibold" numberOfLines={2}>
+              {product.title}
+            </Text>
+            <Row gap="$sm" alignItems="center" justifyContent="space-between">
+              <Text size="sm" color="$textSecondary">
+                {product.category}
+              </Text>
+              {product.condition && (
+                <Badge variant="neutral" size="sm">
+                  <Text size="xs" weight="medium">
+                    {product.condition.replace("_", " ")}
+                  </Text>
+                </Badge>
+              )}
+            </Row>
+            <Text size="lg" weight="bold" color="$primary">
+              £{product.price.toFixed(2)}
+            </Text>
+          </Column>
+        </Link>
+        <AnimatedAddToCartButton onAddToCart={handleAddToCart} />
+      </Column>
+    </Card>
   );
 }
 

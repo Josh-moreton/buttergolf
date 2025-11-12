@@ -102,7 +102,6 @@ const HeadingBase = styled(TamaguiText, {
   color: "$text",
   fontFamily: "$heading",
   fontWeight: "700",
-  lineHeight: "$1",
 });
 
 export const Heading = styled(HeadingBase, {
@@ -111,32 +110,32 @@ export const Heading = styled(HeadingBase, {
       1: {
         tag: "h1",
         fontSize: "$10",
-        lineHeight: "$1",
+        lineHeight: "$10",
       },
       2: {
         tag: "h2",
         fontSize: "$9",
-        lineHeight: "$2",
+        lineHeight: "$9",
       },
       3: {
         tag: "h3",
         fontSize: "$8",
-        lineHeight: "$3",
+        lineHeight: "$8",
       },
       4: {
         tag: "h4",
         fontSize: "$7",
-        lineHeight: "$4",
+        lineHeight: "$7",
       },
       5: {
         tag: "h5",
         fontSize: "$6",
-        lineHeight: "$5",
+        lineHeight: "$6",
       },
       6: {
         tag: "h6",
         fontSize: "$5",
-        lineHeight: "$6",
+        lineHeight: "$5",
       },
     },
 
