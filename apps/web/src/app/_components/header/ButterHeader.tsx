@@ -3,12 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, MenuIcon } from "./icons";
+import { Row, Column, Text, Badge } from "@buttergolf/ui";
+import { SearchIcon, UserIcon, MenuIcon, CartIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 import { SearchDropdown } from "./SearchDropdown";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useCart } from "../../../context/CartContext";
 
 export function ButterHeader() {
   const [stickyMenu, setStickyMenu] = useState(false);
@@ -19,6 +20,7 @@ export function ButterHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(searchQuery, 300);
+  const { totalItems } = useCart();
 
   // Close search dropdown on click outside
   useClickOutside(searchRef, () => {
@@ -63,7 +65,7 @@ export function ButterHeader() {
         paddingVertical="$4"
         $md={{ paddingHorizontal: "$6", paddingVertical: "$5" }}
         {...(stickyMenu && {
-          shadowColor: "rgba(0,0,0,0.12)",
+          shadowColor: "$shadowColorHover",
           shadowRadius: 6,
           shadowOffset: { width: 0, height: 3 },
         })}
@@ -189,7 +191,7 @@ export function ButterHeader() {
                 gap="$2"
                 width={250}
                 hoverStyle={{
-                  borderColor: "rgba(255, 255, 255, 0.8)",
+                  borderColor: "$inverseBorderHover",
                 }}
                 focusStyle={{
                   borderColor: "$textInverse",
@@ -214,7 +216,7 @@ export function ButterHeader() {
                     fontSize: "14px",
                     width: "100%",
                     fontFamily: "inherit",
-                    color: "#fff",
+                    color: "inherit",
                   }}
                 />
               </Row>
@@ -233,7 +235,7 @@ export function ButterHeader() {
                   minWidth={400}
                   maxHeight={500}
                   zIndex={60}
-                  shadowColor="rgba(0,0,0,0.15)"
+                  shadowColor="$shadowColorHover"
                   shadowRadius={16}
                   shadowOffset={{ width: 0, height: 4 }}
                   overflow="hidden"
@@ -264,6 +266,46 @@ export function ButterHeader() {
             >
               <SearchIcon />
             </Row>
+
+            {/* Cart Icon with Badge */}
+            <Link href="/cart" style={{ textDecoration: "none" }}>
+              <Row
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                padding="$2"
+                minWidth={44}
+                minHeight={44}
+                alignItems="center"
+                justifyContent="center"
+                color="$textInverse"
+                {...{ style: { position: "relative" } }}
+              >
+                <CartIcon />
+                {totalItems > 0 && (
+                  <Row
+                    {...{ style: { position: "absolute" } }}
+                    top={0}
+                    right={0}
+                    backgroundColor="$error"
+                    borderRadius="$full"
+                    minWidth={20}
+                    minHeight={20}
+                    paddingHorizontal="$1"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Text
+                      size="xs"
+                      weight="bold"
+                      color="$textInverse"
+                      fontSize={10}
+                    >
+                      {totalItems > 99 ? "99+" : totalItems}
+                    </Text>
+                  </Row>
+                )}
+              </Row>
+            </Link>
 
             {/* User Icon/Button */}
             <SignedOut>
@@ -386,7 +428,7 @@ export function ButterHeader() {
               SEARCH
             </Text>
             <Row
-              backgroundColor="rgba(255, 255, 255, 0.2)"
+              backgroundColor="$inverseSurface"
               borderRadius="$lg"
               paddingHorizontal="$3"
               paddingVertical="$3"
@@ -408,7 +450,7 @@ export function ButterHeader() {
                   fontSize: "16px",
                   width: "100%",
                   fontFamily: "inherit",
-                  color: "#fff",
+                  color: "inherit",
                 }}
               />
             </Row>
@@ -421,7 +463,7 @@ export function ButterHeader() {
                 overflow="hidden"
                 maxHeight={400}
                 borderWidth={1}
-                borderColor="rgba(255, 255, 255, 0.3)"
+                borderColor="$inverseBorder"
               >
                 <SearchDropdown
                   query={debouncedQuery}

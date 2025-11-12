@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === "production") {
 import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
+import { CartProvider } from "../context/CartContext";
 
 // Gotham font configuration for Pure Butter brand
 const gotham = localFont({
@@ -106,13 +107,15 @@ export default function RootLayout({
     >
       <body className={gotham.className}>
         <NextTamaguiProvider>
-          <ServiceWorkerRegistration />
-          <ButterHeader />
-          <AppPromoBanner />
-          {/* Main content wrapper with padding for fixed header */}
-          <main style={{ paddingTop: "104px" }}>
-            {children}
-          </main>
+          <CartProvider>
+            <ServiceWorkerRegistration />
+            <ButterHeader />
+            <AppPromoBanner />
+            {/* Main content wrapper with padding for fixed header */}
+            <main style={{ paddingTop: "104px" }}>
+              {children}
+            </main>
+          </CartProvider>
         </NextTamaguiProvider>
       </body>
     </html>
