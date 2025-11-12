@@ -173,11 +173,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <Row
             gap="$2xl"
             flexDirection="column"
-            $lg={{ flexDirection: "row" }}
-            alignItems="flex-start"
+            $lg={{ flexDirection: "row", alignItems: "flex-start" }}
+            alignItems="stretch"
           >
             {/* Left Column - Image Gallery */}
-            <Column gap="$lg" flex={1.2} width="100%" $lg={{ width: "auto" }}>
+            <Column
+              gap="$lg"
+              flex={1}
+              minWidth={0}
+              $lg={{
+                flexBasis: "60%",
+                maxWidth: "calc(100% - 420px - 48px)"
+              }}
+            >
               {/* Main Image */}
               <Card
                 variant="outlined"
@@ -383,12 +391,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Right Column - Sticky Product Info */}
             <Column
               gap="$lg"
-              flex={1}
+              flex={0}
               width="100%"
               $lg={{
                 width: 420,
+                flexShrink: 0,
               }}
-              className="product-sidebar"
             >
               {/* Status and Title Card */}
               <Card
