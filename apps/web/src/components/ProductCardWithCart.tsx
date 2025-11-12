@@ -26,7 +26,7 @@ export function ProductCardWithCart({
     };
 
     const handleCardClick = () => {
-        router.push(`/listings/${product.id}`);
+        router.push(`/products/${product.id}`);
     };
 
     return (

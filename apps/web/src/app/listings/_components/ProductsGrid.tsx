@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Column, Card, Image, Text, Row, Button, Spinner } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import { ProductDetailModal } from "../../_components/marketplace/ProductDetailModal";
 
 interface ProductsGridProps {
   products: ProductCardData[];
@@ -13,51 +13,45 @@ interface ProductsGridProps {
 }
 
 function ProductCard({ product }: { product: ProductCardData }) {
-  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/products/${product.id}`);
+  };
 
   return (
-    <>
-      <Card
-        padding={0}
-        borderRadius="$md"
-        overflow="hidden"
-        cursor="pointer"
-        hoverStyle={{ scale: 1.01 }}
-        onPress={() => setModalOpen(true)}
-      >
-        <Image
-          source={{ uri: product.imageUrl }}
-          width="100%"
-          height={180}
-          objectFit="cover"
-          alt={product.title}
-        />
-        <Column padding="$md" gap="$xs">
-          <Text weight="bold" numberOfLines={2}>
-            {product.title}
+    <Card
+      padding={0}
+      borderRadius="$md"
+      overflow="hidden"
+      cursor="pointer"
+      hoverStyle={{ scale: 1.01 }}
+      onPress={handleClick}
+    >
+      <Image
+        source={{ uri: product.imageUrl }}
+        width="100%"
+        height={180}
+        objectFit="cover"
+        alt={product.title}
+      />
+      <Column padding="$md" gap="$xs">
+        <Text weight="bold" numberOfLines={2}>
+          {product.title}
+        </Text>
+        <Row alignItems="center" justifyContent="space-between">
+          <Text fontSize="$7" weight="bold" fontWeight="800">
+            £{product.price.toFixed(2)}
           </Text>
-          <Row alignItems="center" justifyContent="space-between">
-            <Text fontSize="$7" weight="bold" fontWeight="800">
-              £{product.price.toFixed(2)}
-            </Text>
-            <Text fontSize="$2" opacity={0.7}>
-              {product.condition?.replace("_", " ") || ""}
-            </Text>
-          </Row>
-          <Button size="$4" onPress={() => setModalOpen(true)}>
-            View details
-          </Button>
-        </Column>
-      </Card>
-
-      {modalOpen && (
-        <ProductDetailModal
-          productId={product.id}
-          open={modalOpen}
-          onOpenChange={setModalOpen}
-        />
-      )}
-    </>
+          <Text fontSize="$2" opacity={0.7}>
+            {product.condition?.replace("_", " ") || ""}
+          </Text>
+        </Row>
+        <Button size="$4" onPress={handleClick}>
+          View details
+        </Button>
+      </Column>
+    </Card>
   );
 }
 

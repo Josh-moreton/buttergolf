@@ -2045,6 +2045,7 @@ When creating a new component, add variants for:
 20. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
 21. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
 22. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+23. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
 
 ## Known Issues & Gotchas
 
