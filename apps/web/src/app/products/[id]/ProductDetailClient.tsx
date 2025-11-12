@@ -462,16 +462,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {/* CTA Buttons */}
               <Column gap="$md">
                 <Button
-                  size="$5"
+                  size="lg"
+                  tone="primary"
                   width="100%"
                   disabled={product.isSold || purchasing}
-                  backgroundColor="$primary"
-                  color="$textInverse"
                   onPress={handleBuyNow}
                   opacity={purchasing ? 0.6 : 1}
-                  fontSize="$6"
                   height={56}
-                  borderRadius="$lg"
                   hoverStyle={{
                     backgroundColor: "$primaryHover",
                     transform: "scale(1.02)",
@@ -484,14 +481,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy Now"}
                 </Button>
                 <Button
-                  size="$5"
+                  size="lg"
+                  tone="outline"
                   width="100%"
-                  backgroundColor="$surface"
+                  height={56}
                   borderColor="$primary"
                   borderWidth={2}
                   color="$primary"
-                  height={56}
-                  borderRadius="$lg"
                   hoverStyle={{
                     backgroundColor: "$primaryLight",
                   }}

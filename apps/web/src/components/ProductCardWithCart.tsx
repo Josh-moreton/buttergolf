@@ -1,10 +1,9 @@
 "use client";
 
-import { Card, Image, Text, Row, Column, Badge } from "@buttergolf/ui";
+import { Card, Image, Text, Row, Column, Badge, Button } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import { AnimatedAddToCartButton } from "../components/AnimatedAddToCartButton";
-import { useCart } from "../context/CartContext";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export interface ProductCardWithCartProps {
     product: ProductCardData;
@@ -13,16 +12,12 @@ export interface ProductCardWithCartProps {
 export function ProductCardWithCart({
     product,
 }: Readonly<ProductCardWithCartProps>) {
-    const { addItem } = useCart();
     const router = useRouter();
+    const [purchasing, setPurchasing] = useState(false);
 
-    const handleAddToCart = async () => {
-        await addItem({
-            productId: product.id,
-            title: product.title,
-            price: product.price,
-            imageUrl: product.imageUrl,
-        });
+    const handleBuyNow = () => {
+        setPurchasing(true);
+        router.push(`/checkout?productId=${product.id}`);
     };
 
     const handleCardClick = () => {
@@ -103,7 +98,26 @@ export function ProductCardWithCart({
                             </Text>
                         </Column>
                     </div>
-                    <AnimatedAddToCartButton onAddToCart={handleAddToCart} />
+                    <Button
+                        size="md"
+                        width="100%"
+                        backgroundColor="$primary"
+                        color="$textInverse"
+                        onPress={handleBuyNow}
+                        disabled={purchasing}
+                        opacity={purchasing ? 0.6 : 1}
+                        borderRadius="$lg"
+                        hoverStyle={{
+                            backgroundColor: "$primaryHover",
+                            transform: "scale(1.02)",
+                        }}
+                        pressStyle={{
+                            backgroundColor: "$primaryPress",
+                            transform: "scale(0.98)",
+                        }}
+                    >
+                        {purchasing ? "Processing..." : "Buy Now"}
+                    </Button>
                 </Column>
             </Card.Body>
         </Card>
