@@ -27,27 +27,52 @@ function ProductCard({ product }: { product: ProductCardData }) {
       cursor="pointer"
       hoverStyle={{ scale: 1.01 }}
       onPress={handleClick}
+      minHeight={380}
+      display="flex"
+      flexDirection="column"
     >
-      <Image
-        source={{ uri: product.imageUrl }}
-        width="100%"
-        height={180}
-        objectFit="cover"
-        alt={product.title}
-      />
-      <Column padding="$md" gap="$xs">
-        <Text weight="bold" numberOfLines={2}>
-          {product.title}
-        </Text>
-        <Row alignItems="center" justifyContent="space-between">
-          <Text fontSize="$7" weight="bold" fontWeight="800">
-            £{product.price.toFixed(2)}
+      <div style={{ position: "relative" }}>
+        {/* 1:1 Aspect Ratio Container */}
+        <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
+          <Image
+            source={{ uri: product.imageUrl }}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+            alt={product.title}
+            position="absolute"
+            top={0}
+            left={0}
+          />
+        </div>
+
+        {/* NEW Badge Overlay */}
+        {product.condition === "NEW" && (
+          <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10 }}>
+            <Text size="xs" weight="bold" backgroundColor="$success" color="$textInverse" paddingHorizontal="$2" paddingVertical="$1" borderRadius="$sm">
+              NEW
+            </Text>
+          </div>
+        )}
+      </div>
+
+      <Column padding="$md" gap="$xs" flex={1} justifyContent="space-between">
+        <Column gap="$xs">
+          <Text weight="bold" numberOfLines={2} minHeight={42}>
+            {product.title}
           </Text>
-          <Text fontSize="$2" opacity={0.7}>
-            {product.condition?.replace("_", " ") || ""}
-          </Text>
-        </Row>
-        <Button size="$4" onPress={handleClick}>
+          <Row alignItems="center" justifyContent="space-between" minHeight={24}>
+            <Text size="lg" weight="bold" color="$primary">
+              £{product.price.toFixed(2)}
+            </Text>
+            {product.condition && product.condition !== "NEW" && (
+              <Text size="xs" color="$textSecondary">
+                {product.condition?.replace("_", " ") || ""}
+              </Text>
+            )}
+          </Row>
+        </Column>
+        <Button size="sm" tone="outline" fullWidth onPress={handleClick}>
           View details
         </Button>
       </Column>
@@ -145,6 +170,7 @@ export function ProductsGrid({
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gridAutoRows: "1fr",
           gap: "24px",
           width: "100%",
         }}

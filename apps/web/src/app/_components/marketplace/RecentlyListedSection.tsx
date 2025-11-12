@@ -33,29 +33,52 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
         shadowRadius: 12,
       }}
       width="100%"
+      minHeight={440}
+      display="flex"
+      flexDirection="column"
     >
-      <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
-        <Image
-          source={{ uri: product.imageUrl }}
-          width="100%"
-          height={200}
-          objectFit="cover"
-          borderTopLeftRadius="$lg"
-          borderTopRightRadius="$lg"
-          alt={product.title}
-        />
-      </Link>
-      <Column padding="$md" gap="$md">
+      <div style={{ position: "relative" }}>
+        <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+          {/* 1:1 Aspect Ratio Container */}
+          <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
+            <Image
+              source={{ uri: product.imageUrl }}
+              width="100%"
+              height="100%"
+              objectFit="cover"
+              borderTopLeftRadius="$lg"
+              borderTopRightRadius="$lg"
+              alt={product.title}
+              position="absolute"
+              top={0}
+              left={0}
+            />
+          </div>
+        </Link>
+
+        {/* NEW Badge Overlay */}
+        {product.condition === "NEW" && (
+          <Badge
+            variant="success"
+            size="sm"
+            {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
+          >
+            NEW
+          </Badge>
+        )}
+      </div>
+
+      <Column padding="$md" gap="$md" flex={1} justifyContent="space-between">
         <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
           <Column gap="$xs">
-            <Text size="md" weight="semibold" numberOfLines={2}>
+            <Text size="md" weight="semibold" numberOfLines={2} minHeight={42}>
               {product.title}
             </Text>
-            <Row gap="$sm" alignItems="center" justifyContent="space-between">
-              <Text size="sm" color="$textSecondary">
+            <Row gap="$sm" alignItems="center" justifyContent="space-between" minHeight={24}>
+              <Text size="sm" color="$textSecondary" numberOfLines={1}>
                 {product.category}
               </Text>
-              {product.condition && (
+              {product.condition && product.condition !== "NEW" && (
                 <Badge variant="neutral" size="sm">
                   <Text size="xs" weight="medium">
                     {product.condition.replace("_", " ")}
@@ -63,7 +86,7 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
                 </Badge>
               )}
             </Row>
-            <Text size="lg" weight="bold" color="$primary">
+            <Text size="lg" weight="bold" color="$primary" minHeight={28}>
               £{product.price.toFixed(2)}
             </Text>
           </Column>
@@ -91,7 +114,7 @@ export function RecentlyListedSectionClient({
             Recently listed
           </Text>
           <Link href="/listings" passHref>
-            <Button size="$4">View all</Button>
+            <Button size="md" tone="outline">View all</Button>
           </Link>
         </Row>
 
@@ -100,6 +123,7 @@ export function RecentlyListedSectionClient({
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gridAutoRows: "1fr",
             gap: "24px",
             width: "100%",
           }}

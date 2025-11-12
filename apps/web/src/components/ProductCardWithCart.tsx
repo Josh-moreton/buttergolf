@@ -38,8 +38,11 @@ export function ProductCardWithCart({
             }}
             width="100%"
             maxWidth={280}
+            minHeight={440}
+            display="flex"
+            flexDirection="column"
         >
-            <Card.Header padding={0} noBorder>
+            <Card.Header padding={0} noBorder {...{ style: { position: "relative" } }}>
                 <div
                     onClick={handleCardClick}
                     style={{ cursor: "pointer" }}
@@ -52,19 +55,36 @@ export function ProductCardWithCart({
                         }
                     }}
                 >
-                    <Image
-                        source={{ uri: product.imageUrl }}
-                        width="100%"
-                        height={200}
-                        objectFit="cover"
-                        borderTopLeftRadius="$lg"
-                        borderTopRightRadius="$lg"
-                        backgroundColor="$background"
-                    />
+                    {/* 1:1 Aspect Ratio Container */}
+                    <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
+                        <Image
+                            source={{ uri: product.imageUrl }}
+                            width="100%"
+                            height="100%"
+                            objectFit="cover"
+                            borderTopLeftRadius="$lg"
+                            borderTopRightRadius="$lg"
+                            backgroundColor="$background"
+                            position="absolute"
+                            top={0}
+                            left={0}
+                        />
+                    </div>
                 </div>
+
+                {/* NEW Badge Overlay */}
+                {product.condition === "NEW" && (
+                    <Badge
+                        variant="success"
+                        size="sm"
+                        {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
+                    >
+                        NEW
+                    </Badge>
+                )}
             </Card.Header>
-            <Card.Body padding="$md">
-                <Column gap="$md" width="100%">
+            <Card.Body padding="$md" flex={1} display="flex">
+                <Column gap="$md" width="100%" height="100%" justifyContent="space-between">
                     <div
                         onClick={handleCardClick}
                         style={{ cursor: "pointer" }}
@@ -78,14 +98,14 @@ export function ProductCardWithCart({
                         }}
                     >
                         <Column gap="$xs" width="100%">
-                            <Text size="md" weight="semibold" numberOfLines={2}>
+                            <Text size="md" weight="semibold" numberOfLines={2} minHeight={42}>
                                 {product.title}
                             </Text>
-                            <Row gap="$sm" alignItems="center" justifyContent="space-between">
-                                <Text size="sm" color="$textSecondary">
+                            <Row gap="$sm" alignItems="center" justifyContent="space-between" minHeight={24}>
+                                <Text size="sm" color="$textSecondary" numberOfLines={1}>
                                     {product.category}
                                 </Text>
-                                {product.condition && (
+                                {product.condition && product.condition !== "NEW" && (
                                     <Badge variant="neutral" size="sm">
                                         <Text size="xs" weight="medium">
                                             {product.condition.replace("_", " ")}
@@ -93,28 +113,18 @@ export function ProductCardWithCart({
                                     </Badge>
                                 )}
                             </Row>
-                            <Text size="lg" weight="bold" color="$primary">
+                            <Text size="lg" weight="bold" color="$primary" minHeight={28}>
                                 £{product.price.toFixed(2)}
                             </Text>
                         </Column>
                     </div>
                     <Button
                         size="md"
-                        width="100%"
-                        backgroundColor="$primary"
-                        color="$textInverse"
+                        tone="primary"
+                        fullWidth
                         onPress={handleBuyNow}
                         disabled={purchasing}
                         opacity={purchasing ? 0.6 : 1}
-                        borderRadius="$lg"
-                        hoverStyle={{
-                            backgroundColor: "$primaryHover",
-                            transform: "scale(1.02)",
-                        }}
-                        pressStyle={{
-                            backgroundColor: "$primaryPress",
-                            transform: "scale(0.98)",
-                        }}
                     >
                         {purchasing ? "Processing..." : "Buy Now"}
                     </Button>
