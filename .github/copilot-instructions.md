@@ -98,56 +98,80 @@ Our design system uses a comprehensive token system with semantic naming for mai
 
 #### Color Tokens
 
-**Brand Colors (10-shade scales)**:
+**Brand Colors (Figma Specification)**:
 
 ```tsx
-// Primary Brand (Butter Orange) - Pure Butter heritage brand
-$butter50 to $butter900   // 10 shades from lightest to darkest
-$primary: $butter400      // Main brand color (#E25F2F - Butter Orange)
-$primaryLight: $butter100 // Light variant for backgrounds
-$primaryHover: $butter500 // Hover state
-$primaryPress: $butter700 // Press/active state
-$primaryFocus: $butter400 // Focus state
+// Primary - Spiced Clementine (vibrant orange)
+$spicedClementine: #F45314
+$primary: $spicedClementine      // Main brand color
+$primaryHover: $spicedClementineHover // Hover state
+$primaryPress: $spicedClementinePress // Press/active state
+$primaryFocus: $spicedClementine      // Focus state
 
-// Secondary Brand (Navy) - Modern contrast accent
-$navy50 to $navy900       // 10 shades
-$secondary: $navy500      // Main secondary color (#1A2E44 - Navy)
-$secondaryLight: $navy100
-$secondaryHover: $navy600
-$secondaryPress: $navy700
-$secondaryFocus: $navy500
+// Primary Light - Vanilla Cream (light background)
+$vanillaCream: #FFFAD2
+$primaryLight: $vanillaCream     // Light variant for backgrounds
+
+// Secondary - Burnt Olive (dark accent)
+$burntOlive: #3E3B2C
+$secondary: $burntOlive          // Main secondary color
+$secondaryLight: $lemonHaze      // Light secondary (Lemon Haze)
+$secondaryHover: $burntOliveHover
+$secondaryPress: $burntOlivePress
+$secondaryFocus: $burntOlive
+
+// Tertiary - Lemon Haze (subtle accent)
+$lemonHaze: #EDECC3
+
+// Neutral Colors
+$cloudMist: #EDEDED    // Light borders/dividers
+$slateSmoke: #545454   // Secondary text
+$ironstone: #323232    // Primary text
+$pureWhite: #FFFFFF    // Base white
 ```
 
 **Semantic Status Colors**:
 
 ```tsx
-$success: $teal500; // Positive actions/states
-$successLight: $teal100; // Light background
-$successDark: $teal700; // Dark variant
+$success: $successBase;      // Teal (#02aaa4) - Positive actions/states
+$successLight: $successLight; // Light background
+$successDark: $successDark;   // Dark variant
 
-$error: $red600; // Error states
-$errorLight: $red100; // Error backgrounds
-$errorDark: $red700; // Dark error
+$error: $errorBase;      // Red (#dc2626) - Error states
+$errorLight: $errorLight; // Error backgrounds
+$errorDark: $errorDark;   // Dark error
 
-$warning: $butter500; // Warning states
-$warningLight: $butter100;
-$warningDark: $butter700;
+$warning: $warningBase;      // Spiced Clementine - Warning states
+$warningLight: $warningLight;
+$warningDark: $warningDark;
 
-$info: $blue500; // Informational states
-$infoLight: $blue100;
-$infoDark: $blue700;
+$info: $infoBase;      // Blue (#3c50e0) - Informational states
+$infoLight: $infoLight;
+$infoDark: $infoDark;
 ```
 
-**Neutral Colors (Gray scale)**:
+**Opacity Overlays**:
 
 ```tsx
-$gray50 to $gray900       // 10 shades for text, borders, backgrounds
+// Light overlays (for dark backgrounds like Burnt Olive)
+$overlayLight10: rgba(255, 255, 255, 0.1)
+$overlayLight20: rgba(255, 255, 255, 0.2)
+$overlayLight30: rgba(255, 255, 255, 0.3)
+$overlayLight40: rgba(255, 255, 255, 0.4)
+$overlayLight60: rgba(255, 255, 255, 0.6)
+
+// Dark overlays (for light backgrounds like Vanilla Cream)
+$overlayDark5: rgba(0, 0, 0, 0.05)
+$overlayDark10: rgba(0, 0, 0, 0.1)
+$overlayDark20: rgba(0, 0, 0, 0.2)
+$overlayDark30: rgba(0, 0, 0, 0.3)
+$overlayDark50: rgba(0, 0, 0, 0.5)
 ```
 
 **Text Colors (Semantic)**:
 
 ```tsx
-$text: $charcoal; // Primary text (#1E1E1E - warm charcoal in light theme)
+$text: $ironstone; // Primary text (#323232 - Ironstone)
 $textSecondary: #4A4A4A; // Secondary text
 $textTertiary: $gray600; // Tertiary text
 $textMuted: $gray500; // Muted/placeholder text
@@ -157,22 +181,22 @@ $textInverse: $white; // Text on dark backgrounds
 **Background Colors**:
 
 ```tsx
-$background: $cream; // Main app background (#FEFAD6 - Pure Butter cream)
+$background: $vanillaCream; // Main app background (#FFFAD2 - Vanilla Cream)
 $backgroundHover; // Hover state backgrounds
 $backgroundPress; // Press state backgrounds
 $backgroundFocus; // Focus state backgrounds
-$surface: $white; // Surface/card backgrounds
-$card: "#F6F7FB"; // Card-specific background
+$surface: $pureWhite; // Surface/card backgrounds
+$card: $pureWhite; // Card-specific background
 $cardHover; // Card hover state
 ```
 
 **Border Colors**:
 
 ```tsx
-$border: $gray300; // Default borders
-$borderHover: $gray400; // Hover state borders
-$borderFocus: $butter400; // Focus state borders (uses primary)
-$borderPress: $butter500; // Press state borders
+$border: $cloudMist; // Default borders (#EDEDED)
+$borderHover: $cloudMistHover; // Hover state borders
+$borderFocus: $spicedClementine; // Focus state borders (uses primary)
+$borderPress: $spicedClementinePress; // Press state borders
 ```
 
 **Shadow Colors**:
@@ -236,112 +260,22 @@ $popover: 1060;
 $tooltip: 1070;
 ```
 
-### Color Space Management (Display P3)
-
-**CRITICAL**: All colors in the Tamagui config use **Display P3 color space** to ensure consistent rendering across devices, especially on modern macOS and iOS displays with wide-gamut support.
-
-#### Helper Functions
-
-The config includes color space conversion functions:
-
-```typescript
-/**
- * Convert hex color to Display P3 color space CSS format.
- * This ensures colors render consistently across all devices,
- * matching the designer's intent on wide-gamut displays.
- */
-function hexToP3(hex: string): string {
-    const cleanHex = hex.replace('#', '')
-    const r = parseInt(cleanHex.substring(0, 2), 16)
-    const g = parseInt(cleanHex.substring(2, 4), 16)
-    const b = parseInt(cleanHex.substring(4, 6), 16)
-
-    const rNorm = (r / 255).toFixed(3)
-    const gNorm = (g / 255).toFixed(3)
-    const bNorm = (b / 255).toFixed(3)
-
-    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm})`
-}
-
-/**
- * Convert rgba color to Display P3 color space CSS format with alpha.
- */
-function rgbaToP3(r: number, g: number, b: number, a: number): string {
-    const rNorm = (r / 255).toFixed(3)
-    const gNorm = (g / 255).toFixed(3)
-    const bNorm = (b / 255).toFixed(3)
-
-    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm} / ${a})`
-}
-```
-
-#### Usage Pattern
-
-**ALWAYS use these helper functions when defining colors**:
-
-```typescript
-// ✅ CORRECT - Use hexToP3() for solid colors
-const brandColors = {
-    butter400: hexToP3('#E25F2F'),  // Outputs: color(display-p3 0.886 0.373 0.184)
-    navy500: hexToP3('#1A2E44'),
-    white: hexToP3('#ffffff'),
-}
-
-// ✅ CORRECT - Use rgbaToP3() for colors with transparency
-const tokens = {
-    shadowColor: rgbaToP3(0, 0, 0, 0.08),  // Outputs: color(display-p3 0.000 0.000 0.000 / 0.08)
-    backgroundTransparent: rgbaToP3(255, 255, 255, 0),
-}
-
-// ❌ WRONG - Never use raw hex or rgba values
-const brandColors = {
-    butter400: '#E25F2F',  // Will cause color mismatch on P3 displays!
-    shadowColor: 'rgba(0, 0, 0, 0.08)',  // Will render inconsistently!
-}
-```
-
-#### Why Display P3?
-
-1. **Consistency**: Ensures butter orange (#E25F2F) renders identically across all devices
-2. **Designer Intent**: Preserves exact colors from Figma designs on wide-gamut displays
-3. **Asset Matching**: CSS colors match PNG/SVG assets perfectly
-4. **Future-Proof**: Standard for modern displays (all recent Apple devices, many high-end monitors)
-
-**Note**: Without explicit color space declaration, browsers may interpret colors differently:
-- macOS/iOS Safari: Interprets plain hex as Display P3 (more vibrant)
-- Older displays: Interprets as sRGB (duller)
-- Result: **Visible color mismatches** between devices and assets
-
-#### When Adding New Colors
-
-1. Define the hex value as a comment for reference
-2. Always wrap in `hexToP3()` or `rgbaToP3()`
-3. Test on both P3-capable and sRGB displays if possible
-
-```typescript
-// New color example
-const brandColors = {
-    // #FF6B35 - Bright coral for special promotions
-    coral: hexToP3('#FF6B35'),
-    coralHover: hexToP3('#FF5722'),
-    coralTransparent: rgbaToP3(255, 107, 53, 0.2),
-}
-```
-
 ### Theme System
 
 **Light Theme** (default):
 
-- Background: Cream (#FEFAD6) for warm, vintage feel
-- Text: Warm charcoal (#1E1E1E) for readability
-- Primary: Butter Orange (#E25F2F) for brand consistency
+- Background: Vanilla Cream (#FFFAD2) - soft, warm light background
+- Text: Ironstone (#323232) - dark, readable primary text
+- Primary: Spiced Clementine (#F45314) - vibrant orange for brand consistency
+- Secondary: Burnt Olive (#3E3B2C) - dark accent
 - All semantic colors optimized for light backgrounds
 
 **Dark Theme**:
 
-- Background: Navy (#020508) for modern contrast
-- Text: Light gray (#f9fafb)
-- Primary: Lighter butter (#FFE38A) for dark background contrast
+- Background: Burnt Olive (#3E3B2C) - warm, earthy dark background
+- Text: Pure White (#FFFFFF) - high contrast for readability
+- Primary: Spiced Clementine (#F45314) - maintains vibrant brand presence
+- Secondary: Lemon Haze (#EDECC3) - light accent on dark
 - All semantic colors adjusted for dark backgrounds with proper contrast
 
 **Sub-Themes for State Changes**:
@@ -645,8 +579,8 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 </View>
 
 // ❌ WRONG - Never use numbered colors or raw hex
-<Button backgroundColor="$butter500">Submit</Button>  // Too specific
-<Button backgroundColor="#E25F2F">Submit</Button>    // No theming
+<Button backgroundColor="$spicedClementine">Submit</Button>  // Too specific, use $primary
+<Button backgroundColor="#F45314">Submit</Button>    // No theming
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
 ```
@@ -843,7 +777,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View padding="md">               // ❌ Missing $ for direct prop
 
 // ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
+<View backgroundColor="$spicedClementine"> // ❌ Too specific, use semantic
 <Text color="$color">             // ❌ Old token name
 <View borderColor="$borderColor"> // ❌ Old token name
 ```
@@ -1415,13 +1349,13 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
 ### ButterHeader Component
 
-The web application uses a unified butter-themed header with the Pure Butter brand identity.
+The web application uses a unified header with the ButterGolf brand identity.
 
 **Location**: `apps/web/src/app/_components/header/ButterHeader.tsx`
 
 **Key Features**:
 
-- Single header bar with butter orange background (`$primary` - #E25F2F)
+- Single header bar with Spiced Clementine background (`$primary` - #F45314)
 - Fixed positioning at top (below optional TrustBar)
 - Height: ~80px (reduced from previous 180px three-layer header)
 - Sticky with shadow effect on scroll
@@ -1463,7 +1397,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
    - Hover opacity: 0.8
 
 5. **Mobile Menu Overlay**:
-   - Full-screen overlay with butter orange background
+   - Full-screen overlay with Spiced Clementine background
    - Large navigation links (XL size, bold)
    - Search bar at bottom
    - Closes on link click or close button
@@ -1504,9 +1438,9 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 ### Header Best Practices
 
 1. **Color Usage**:
-   - Always use `$primary` for header background (butter orange)
+   - Always use `$primary` for header background (Spiced Clementine)
    - Always use `$textInverse` for text/icons on orange background
-   - Badge counts use `$navy500` background for contrast
+   - Badge counts use `$secondary` (Burnt Olive) for contrast
 
 2. **Navigation Links**:
    - Use Next.js `Link` component for client-side navigation
@@ -1543,7 +1477,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 
 - Single unified layer
 - Total height: 80px (with optional 40px TrustBar)
-- Butter orange theme (#E25F2F)
+- Spiced Clementine theme (#F45314)
 - Search on right side
 - Simplified navigation
 - Mobile-first with full-screen overlay
@@ -1914,7 +1848,7 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Design System & Components
 
-1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$butter500`, `$color`, `$borderColor`
+1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$spicedClementine`, `$color`, `$borderColor`
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
 3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
 4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
@@ -2069,7 +2003,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 </Row>
 
 // ❌ WRONG Component Usage
-<Button paddingHorizontal="$5" backgroundColor="$butter500">Submit</Button>
+<Button paddingHorizontal="$5" backgroundColor="$spicedClementine">Submit</Button>
 <Text fontSize="$3" color="$gray500">Helper text</Text>
 <Row gap="md">Wrong - use gap="$md"</Row>
 <Card elevate size="$4" bordered>
