@@ -1,6 +1,6 @@
 "use client";
 
-import { Row, Column, Heading, Text, Button, Image } from "@buttergolf/ui";
+import { Column, Row, Text, Button } from "@buttergolf/ui";
 import Link from "next/link";
 import { imagePaths } from "@buttergolf/assets";
 
