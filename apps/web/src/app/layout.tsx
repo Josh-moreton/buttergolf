@@ -73,8 +73,8 @@ export default function RootLayout({
             <ServiceWorkerRegistration />
             <ButterHeader />
             <AppPromoBanner />
-            {/* Main content wrapper with padding for fixed header */}
-            <main style={{ paddingTop: "72px" }}>
+            {/* Main content wrapper with padding for fixed header + category nav */}
+            <main style={{ paddingTop: "110px" }}>
               {children}
             </main>
           </CartProvider>
