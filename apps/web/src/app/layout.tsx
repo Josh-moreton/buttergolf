@@ -74,7 +74,7 @@ export default function RootLayout({
             <ButterHeader />
             <AppPromoBanner />
             {/* Main content wrapper with padding for fixed header */}
-            <main style={{ paddingTop: "104px" }}>
+            <main style={{ paddingTop: "72px" }}>
               {children}
             </main>
           </CartProvider>
