@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { CATEGORIES } from "@buttergolf/db";
 import { gsap } from "gsap";
 import Link from "next/link";
+import { Column, Row, Text } from "@buttergolf/ui";
 
 export function CategoriesSection() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -21,11 +22,13 @@ export function CategoriesSection() {
     const gap = 24;
     const totalWidth = (cardWidth + gap) * CATEGORIES.length;
 
-    // Clone cards for seamless loop
-    cards.forEach((card) => {
-      const clone = card.cloneNode(true) as HTMLElement;
-      track.appendChild(clone);
-    });
+    // Clone cards for seamless loop - only if not already cloned
+    if (cards.length === CATEGORIES.length) {
+      cards.forEach((card) => {
+        const clone = card.cloneNode(true) as HTMLElement;
+        track.appendChild(clone);
+      });
+    }
 
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia(
@@ -60,37 +63,26 @@ export function CategoriesSection() {
   }, []);
 
   return (
-    <section
-      style={{
-        backgroundColor: "transparent",
-        padding: "80px 0",
-        overflow: "hidden",
-        width: "100%",
-      }}
+    <Column
+      width="100%"
+      paddingVertical="$2xl"
+      backgroundColor="$surface"
+      {...{ style: { overflow: "hidden" } }}
     >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-          marginBottom: "48px",
-        }}
+      <Column
+        maxWidth={1200}
+        marginHorizontal="auto"
+        paddingHorizontal="$md"
+        marginBottom="$2xl"
       >
         {/* Headings */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-            textAlign: "center",
-          }}
-        >
+        <Column gap="$sm" alignItems="center">
           <h2
             style={{
               fontFamily: "var(--font-urbanist)",
               fontSize: "clamp(24px, 5vw, 32px)",
               fontWeight: 600,
+              lineHeight: 1.2,
               color: "#323232",
               margin: 0,
             }}
@@ -102,14 +94,15 @@ export function CategoriesSection() {
               fontFamily: "var(--font-urbanist)",
               fontSize: "clamp(16px, 3vw, 18px)",
               fontWeight: 400,
+              lineHeight: 1.5,
               color: "#545454",
               margin: 0,
             }}
           >
             Find exactly what you need - faster.
           </p>
-        </div>
-      </div>
+        </Column>
+      </Column>
 
       {/* Carousel Container - Full Width */}
       <div
@@ -194,7 +187,8 @@ export function CategoriesSection() {
                   fontFamily: "var(--font-urbanist)",
                   fontSize: "24px",
                   fontWeight: 600,
-                  color: "#FFFFFF",
+                  lineHeight: 1,
+                  color: "#FFFAD2",
                   textShadow: "0 2px 4px rgba(0,0,0,0.3)",
                   zIndex: 1,
                 }}
@@ -247,6 +241,6 @@ export function CategoriesSection() {
           }
         }
       `}</style>
-    </section >
+    </Column>
   );
 }

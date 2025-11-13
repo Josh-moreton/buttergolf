@@ -2076,7 +2076,7 @@ When creating a new component, add variants for:
 21. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
 22. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
 23. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
-24. **NEVER override lineHeight on Tamagui Text/Heading base styles** - Each size variant should define its own lineHeight. Setting a base lineHeight causes text overlap. Let size variants control lineHeight (e.g., `fontSize: "$10", lineHeight: "$10"`)
+24. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
 
 ## Known Issues & Gotchas
 
