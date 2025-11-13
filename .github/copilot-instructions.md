@@ -236,6 +236,98 @@ $popover: 1060;
 $tooltip: 1070;
 ```
 
+### Color Space Management (Display P3)
+
+**CRITICAL**: All colors in the Tamagui config use **Display P3 color space** to ensure consistent rendering across devices, especially on modern macOS and iOS displays with wide-gamut support.
+
+#### Helper Functions
+
+The config includes color space conversion functions:
+
+```typescript
+/**
+ * Convert hex color to Display P3 color space CSS format.
+ * This ensures colors render consistently across all devices,
+ * matching the designer's intent on wide-gamut displays.
+ */
+function hexToP3(hex: string): string {
+    const cleanHex = hex.replace('#', '')
+    const r = parseInt(cleanHex.substring(0, 2), 16)
+    const g = parseInt(cleanHex.substring(2, 4), 16)
+    const b = parseInt(cleanHex.substring(4, 6), 16)
+
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm})`
+}
+
+/**
+ * Convert rgba color to Display P3 color space CSS format with alpha.
+ */
+function rgbaToP3(r: number, g: number, b: number, a: number): string {
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm} / ${a})`
+}
+```
+
+#### Usage Pattern
+
+**ALWAYS use these helper functions when defining colors**:
+
+```typescript
+// ✅ CORRECT - Use hexToP3() for solid colors
+const brandColors = {
+    butter400: hexToP3('#E25F2F'),  // Outputs: color(display-p3 0.886 0.373 0.184)
+    navy500: hexToP3('#1A2E44'),
+    white: hexToP3('#ffffff'),
+}
+
+// ✅ CORRECT - Use rgbaToP3() for colors with transparency
+const tokens = {
+    shadowColor: rgbaToP3(0, 0, 0, 0.08),  // Outputs: color(display-p3 0.000 0.000 0.000 / 0.08)
+    backgroundTransparent: rgbaToP3(255, 255, 255, 0),
+}
+
+// ❌ WRONG - Never use raw hex or rgba values
+const brandColors = {
+    butter400: '#E25F2F',  // Will cause color mismatch on P3 displays!
+    shadowColor: 'rgba(0, 0, 0, 0.08)',  // Will render inconsistently!
+}
+```
+
+#### Why Display P3?
+
+1. **Consistency**: Ensures butter orange (#E25F2F) renders identically across all devices
+2. **Designer Intent**: Preserves exact colors from Figma designs on wide-gamut displays
+3. **Asset Matching**: CSS colors match PNG/SVG assets perfectly
+4. **Future-Proof**: Standard for modern displays (all recent Apple devices, many high-end monitors)
+
+**Note**: Without explicit color space declaration, browsers may interpret colors differently:
+- macOS/iOS Safari: Interprets plain hex as Display P3 (more vibrant)
+- Older displays: Interprets as sRGB (duller)
+- Result: **Visible color mismatches** between devices and assets
+
+#### When Adding New Colors
+
+1. Define the hex value as a comment for reference
+2. Always wrap in `hexToP3()` or `rgbaToP3()`
+3. Test on both P3-capable and sRGB displays if possible
+
+```typescript
+// New color example
+const brandColors = {
+    // #FF6B35 - Bright coral for special promotions
+    coral: hexToP3('#FF6B35'),
+    coralHover: hexToP3('#FF5722'),
+    coralTransparent: rgbaToP3(255, 107, 53, 0.2),
+}
+```
+
 ### Theme System
 
 **Light Theme** (default):
