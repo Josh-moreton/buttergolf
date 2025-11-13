@@ -564,23 +564,27 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
-#### ✅ **ALWAYS Use Semantic Tokens**
+#### ✅ **Use Brand Color Tokens or Semantic Tokens**
 
 ```tsx
-// ✅ CORRECT - Use semantic tokens
+// ✅ CORRECT - Use specific brand color tokens or semantic tokens
 <Button backgroundColor="$primary" color="$textInverse">
   Submit
 </Button>
 
-<Text color="$textMuted">Helper text</Text>
+<Button backgroundColor="$spicedClementine" color="$textInverse">
+  Brand Button
+</Button>
 
-<View borderColor="$border" backgroundColor="$surface">
+<Text color="$textMuted">Helper text</Text>
+<Text color="$ironstone">Dark text</Text>
+
+<View borderColor="$border" backgroundColor="$vanillaCream">
   Content
 </View>
 
-// ❌ WRONG - Never use numbered colors or raw hex
-<Button backgroundColor="$spicedClementine">Submit</Button>  // Too specific, use $primary
-<Button backgroundColor="#F45314">Submit</Button>    // No theming
+// ❌ WRONG - Never use numbered colors or raw hex values
+<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $spicedClementine or $primary
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
 ```
@@ -1848,7 +1852,7 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Design System & Components
 
-1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$spicedClementine`, `$color`, `$borderColor`
+1. **ALWAYS use design tokens** - Use brand color tokens like `$spicedClementine`, `$vanillaCream`, `$ironstone`, `$cloudMist` OR semantic tokens like `$primary`, `$text`, `$border`. Never use raw hex values.
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
 3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
 4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`

@@ -1,44 +1,46 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text, Badge } from "@buttergolf/ui";
-import { SearchIcon, UserIcon, MenuIcon } from "./icons";
-import { SignInModal } from "../auth/SignInModal";
-import { SearchDropdown } from "./SearchDropdown";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useClickOutside } from "../../hooks/useClickOutside";
+import { Row, Column, Text, AuthButton } from "@buttergolf/ui";
+import { MenuIcon } from "./icons";
+import { SignIn, SignUp } from "@clerk/nextjs";
+import { AuthModal } from "../auth/AuthModal";
+
+// Category navigation items
+const NAV_CATEGORIES = [
+  { name: "Shop all", href: "/listings" },
+  { name: "Drivers", href: "/listings?category=drivers" },
+  { name: "Fairway Woods", href: "/listings?category=fairway-woods" },
+  { name: "Irons", href: "/listings?category=irons" },
+  { name: "Wedges", href: "/listings?category=wedges" },
+  { name: "Putters", href: "/listings?category=putters" },
+  { name: "Hybrids", href: "/listings?category=hybrids" },
+  { name: "Shoes", href: "/listings?category=shoes" },
+  { name: "Accessories", href: "/listings?category=accessories" },
+] as const;
 
 export function ButterHeader() {
+  const pathname = usePathname();
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const debouncedQuery = useDebounce(searchQuery, 300);
+  const [mounted, setMounted] = useState(false);
 
-  // Close search dropdown on click outside
-  useClickOutside(searchRef, () => {
-    if (searchOpen) {
-      setSearchOpen(false);
-    }
-  });
-
-  // Close search on Escape key
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && searchOpen) {
-        setSearchOpen(false);
-        setSearchQuery("");
-      }
-    };
+    setMounted(true);
+  }, []);
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [searchOpen]);
+  // Helper to check if a path is active
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname?.startsWith(path);
+  };
 
   // Sticky menu handler
   useEffect(() => {
@@ -52,260 +54,149 @@ export function ButterHeader() {
 
   return (
     <>
-      <Row
-        {...{ style: { position: "fixed" } }}
+      {/* Combined Header - Main + Category Nav */}
+      <Column
+        {...{ style: { position: "sticky" } as React.CSSProperties }}
         top={0}
-        left={0}
-        right={0}
         zIndex={50}
-        backgroundColor="$primary"
-        paddingHorizontal="$4"
-        paddingVertical="$4"
-        $md={{ paddingHorizontal: "$6", paddingVertical: "$5" }}
+        backgroundColor="$surface"
         {...(stickyMenu && {
-          shadowColor: "$shadowColorHover",
-          shadowRadius: 6,
-          shadowOffset: { width: 0, height: 3 },
+          shadowColor: "$shadowColor",
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
         })}
         suppressHydrationWarning
       >
+        {/* Main Header Row */}
         <Row
-          width="100%"
-          maxWidth={1440}
-          marginHorizontal="auto"
-          justifyContent="space-between"
-          alignItems="center"
-          gap="$4"
-          $md={{ gap: "$6" }}
+          backgroundColor="$surface"
+          borderBottomWidth={1}
+          borderBottomColor="$border"
+          paddingHorizontal="$4"
+          paddingVertical="$3"
+          $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
         >
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
-            <Row alignItems="center" gap="$2" paddingVertical="$2">
-              <img
-                src="/logo-orange.png"
-                alt="ButterGolf"
-                style={{
-                  height: "72px",
-                  width: "auto",
-                }}
-              />
-            </Row>
-          </Link>
-
-          {/* Center Navigation - Desktop Only */}
           <Row
-            display="none"
-            $lg={{ display: "flex" }}
-            gap="$6"
-            $xl={{ gap: "$8" }}
+            width="100%"
+            maxWidth={1440}
+            marginHorizontal="auto"
+            justifyContent="space-between"
             alignItems="center"
-            justifyContent="center"
-            flex={1}
+            gap="$4"
+            $md={{ gap: "$6" }}
           >
-            <Link href="/" style={{ textDecoration: "none" }}>
-              <Text
-                size="md"
-                weight="semibold"
-                color="$textInverse"
-                cursor="pointer"
-                letterSpacing={1}
-                hoverStyle={{
-                  textDecorationLine: "underline",
-                  textDecorationColor: "$textInverse",
-                }}
-              >
-                HOME
-              </Text>
-            </Link>
-            <Link href="/features" style={{ textDecoration: "none" }}>
-              <Text
-                size="md"
-                weight="semibold"
-                color="$textInverse"
-                cursor="pointer"
-                letterSpacing={1}
-                hoverStyle={{
-                  textDecorationLine: "underline",
-                  textDecorationColor: "$textInverse",
-                }}
-              >
-                FEATURES
-              </Text>
-            </Link>
-            <Link href="/about" style={{ textDecoration: "none" }}>
-              <Text
-                size="md"
-                weight="semibold"
-                color="$textInverse"
-                cursor="pointer"
-                letterSpacing={1}
-                hoverStyle={{
-                  textDecorationLine: "underline",
-                  textDecorationColor: "$textInverse",
-                }}
-              >
-                ABOUT US
-              </Text>
-            </Link>
-            <Link href="/contact" style={{ textDecoration: "none" }}>
-              <Text
-                size="md"
-                weight="semibold"
-                color="$textInverse"
-                cursor="pointer"
-                letterSpacing={1}
-                hoverStyle={{
-                  textDecorationLine: "underline",
-                  textDecorationColor: "$textInverse",
-                }}
-              >
-                CONTACT US
-              </Text>
-            </Link>
-          </Row>
-
-          {/* Right Side: Search + Actions */}
-          <Row
-            gap="$2"
-            $md={{ gap: "$3" }}
-            alignItems="center"
-            flexShrink={0}
-            justifyContent="flex-end"
-          >
-            {/* Search Bar - Desktop */}
-            <Column
-              display="none"
-              $md={{ display: "flex" }}
-              {...{ style: { position: "relative" } }}
-              ref={searchRef}
-            >
-              <Row
-                backgroundColor="transparent"
-                borderWidth={3}
-                borderColor="$textInverse"
-                borderRadius="$full"
-                paddingHorizontal="$4"
-                paddingVertical="$2"
-                alignItems="center"
-                gap="$2"
-                width={250}
-                hoverStyle={{
-                  borderColor: "$inverseBorderHover",
-                }}
-                focusStyle={{
-                  borderColor: "$textInverse",
-                }}
-              >
-                <Row color="$textInverse">
-                  <SearchIcon />
-                </Row>
-                <input
-                  type="text"
-                  placeholder=""
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setSearchOpen(true);
-                  }}
-                  onFocus={() => setSearchOpen(true)}
+            {/* Logo */}
+            <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <Row alignItems="center" gap="$2" paddingVertical="$1">
+                <img
+                  src="/logo-orange-on-white.svg"
+                  alt="ButterGolf"
                   style={{
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                    fontSize: "14px",
-                    width: "100%",
-                    fontFamily: "inherit",
-                    color: "inherit",
+                    height: "48px",
+                    width: "auto",
                   }}
                 />
               </Row>
+            </Link>
 
-              {/* Search Dropdown */}
-              {searchOpen && (
-                <Column
-                  {...{ style: { position: "absolute" } }}
-                  top="100%"
-                  left={0}
-                  marginTop="$2"
-                  backgroundColor="$background"
-                  borderWidth={1}
-                  borderColor="$border"
-                  borderRadius="$lg"
-                  minWidth={400}
-                  maxHeight={500}
-                  zIndex={60}
-                  shadowColor="$shadowColorHover"
-                  shadowRadius={16}
-                  shadowOffset={{ width: 0, height: 4 }}
-                  overflow="hidden"
-                >
-                  <SearchDropdown
-                    query={debouncedQuery}
-                    onSelect={() => {
-                      setSearchOpen(false);
-                      setSearchQuery("");
-                    }}
-                  />
-                </Column>
-              )}
-            </Column>
+            {/* Spacer to push navigation to the right */}
+            <Row flex={1} display="none" $lg={{ display: "flex" }} />
 
-            {/* Search Icon - Mobile */}
+            {/* Navigation - Desktop Only (Right-aligned) */}
             <Row
-              display="flex"
-              $md={{ display: "none" }}
-              cursor="pointer"
-              hoverStyle={{ opacity: 0.8 }}
-              padding="$2"
-              minWidth={44}
-              minHeight={44}
+              display="none"
+              $lg={{ display: "flex" }}
+              gap="$8"
               alignItems="center"
-              justifyContent="center"
-              color="$textInverse"
             >
-              <SearchIcon />
+              <Link href="/" style={{ textDecoration: "none" }}>
+                <Text
+                  size="lg"
+                  weight={isActive("/") ? "semibold" : "medium"}
+                  color={isActive("/") ? "$primary" : "$text"}
+                  cursor="pointer"
+                  hoverStyle={{
+                    color: "$primary",
+                  }}
+                >
+                  Home
+                </Text>
+              </Link>
+              <Link href="/listings" style={{ textDecoration: "none" }}>
+                <Text
+                  size="lg"
+                  weight={isActive("/listings") ? "semibold" : "medium"}
+                  color={isActive("/listings") ? "$primary" : "$text"}
+                  cursor="pointer"
+                  hoverStyle={{
+                    color: "$primary",
+                  }}
+                >
+                  Buying
+                </Text>
+              </Link>
+              <Link href="/sell" style={{ textDecoration: "none" }}>
+                <Text
+                  size="lg"
+                  weight={isActive("/sell") ? "semibold" : "medium"}
+                  color={isActive("/sell") ? "$primary" : "$text"}
+                  cursor="pointer"
+                  hoverStyle={{
+                    color: "$primary",
+                  }}
+                >
+                  Selling
+                </Text>
+              </Link>
             </Row>
 
-            {/* User Icon/Button */}
-            <SignedOut>
-              <Row
-                tag="button"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-                padding="$2"
-                minWidth={44}
-                minHeight={44}
-                alignItems="center"
-                justifyContent="center"
-                {...{ style: { background: "none", border: "none" } }}
-                onPress={() => {
-                  setAuthMode("sign-in");
-                  setAuthOpen(true);
-                }}
-                aria-label="Sign in"
-                color="$textInverse"
-              >
-                <UserIcon />
-              </Row>
-            </SignedOut>
+            {/* Right Side: Auth Buttons - Desktop Only */}
+            <Row
+              display="none"
+              $lg={{ display: "flex" }}
+              gap="$3"
+              alignItems="center"
+              flexShrink={0}
+            >
+              {mounted && (
+                <>
+                  <SignedOut>
+                    <AuthButton
+                      variant="login"
+                      size="md"
+                      onPress={() => {
+                        setAuthMode("sign-in");
+                        setAuthOpen(true);
+                      }}
+                    >
+                      Log-in
+                    </AuthButton>
+                    <AuthButton
+                      variant="signup"
+                      size="md"
+                      onPress={() => {
+                        setAuthMode("sign-up");
+                        setAuthOpen(true);
+                      }}
+                    >
+                      Sign-up
+                    </AuthButton>
+                  </SignedOut>
 
-            <SignedIn>
-              <Row
-                minWidth={44}
-                minHeight={44}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10"
-                    }
-                  }}
-                />
-              </Row>
-            </SignedIn>
+                  <SignedIn>
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10",
+                        },
+                      }}
+                    />
+                  </SignedIn>
+                </>
+              )}
+            </Row>
 
             {/* Mobile Menu Toggle */}
             <Row
@@ -320,129 +211,174 @@ export function ButterHeader() {
               alignItems="center"
               justifyContent="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
-              {...{ style: { background: "none", border: "none" } }}
+              backgroundColor="transparent"
+              borderWidth={0}
               aria-label="Menu"
-              color="$textInverse"
+              color="$text"
             >
               <MenuIcon />
             </Row>
           </Row>
         </Row>
-      </Row>
+
+        {/* Category Navigation Sub-header */}
+        <Row
+          backgroundColor="$cloudMist"
+          borderBottomWidth={1}
+          borderBottomColor="$border"
+          paddingHorizontal="$4"
+          paddingVertical="$2"
+          $md={{ paddingHorizontal: "$6", paddingVertical: "$3" }}
+          justifyContent="center"
+        >
+
+          <Row
+            maxWidth={1440}
+            width="100%"
+            justifyContent="center"
+            gap="$5"
+            $md={{ gap: "$7" }}
+            flexWrap="wrap"
+          >
+            {NAV_CATEGORIES.map((category) => (
+              <Link
+                key={category.href}
+                href={category.href}
+                style={{ textDecoration: "none" }}
+              >
+                <Text
+                  size="sm"
+                  weight="normal"
+                  color="$text"
+                  cursor="pointer"
+                  hoverStyle={{
+                    fontWeight: "600",
+                  }}
+                  whiteSpace="nowrap"
+                >
+                  {category.name}
+                </Text>
+              </Link>
+            ))}
+          </Row>
+        </Row>
+      </Column>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <Column
-          {...{ style: { position: "fixed" } }}
-          top={100} // Below header (increased height)
+          {...{ style: { position: "fixed" } as React.CSSProperties }}
+          top={110}
           left={0}
           right={0}
           bottom={0}
-          backgroundColor="$primary"
+          backgroundColor="$surface"
           zIndex={45}
           paddingHorizontal="$6"
           paddingVertical="$8"
           gap="$6"
+          shadowColor="$shadowColor"
+          shadowRadius={8}
+          shadowOffset={{ width: 0, height: 2 }}
+          shadowOpacity={0.15}
         >
           <Link
             href="/"
             style={{ textDecoration: "none" }}
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Text size="xl" weight="bold" color="$textInverse">
-              HOME
-            </Text>
-          </Link>
-          <Link
-            href="/features"
-            style={{ textDecoration: "none" }}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Text size="xl" weight="bold" color="$textInverse">
-              FEATURES
-            </Text>
-          </Link>
-          <Link
-            href="/about"
-            style={{ textDecoration: "none" }}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Text size="xl" weight="bold" color="$textInverse">
-              ABOUT US
-            </Text>
-          </Link>
-          <Link
-            href="/contact"
-            style={{ textDecoration: "none" }}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Text size="xl" weight="bold" color="$textInverse">
-              CONTACT US
-            </Text>
-          </Link>
-
-          {/* Mobile Search */}
-          <Column gap="$3" marginTop="$4">
-            <Text size="sm" weight="medium" color="$textInverse" opacity={0.8}>
-              SEARCH
-            </Text>
-            <Row
-              backgroundColor="$inverseSurface"
-              borderRadius="$lg"
-              paddingHorizontal="$3"
-              paddingVertical="$3"
-              alignItems="center"
-              gap="$2"
+            <Text
+              size="xl"
+              weight={isActive("/") ? "bold" : "semibold"}
+              color={isActive("/") ? "$primary" : "$text"}
             >
-              <Row color="$textInverse">
-                <SearchIcon />
-              </Row>
-              <input
-                type="text"
-                placeholder="Search golf equipment..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "16px",
-                  width: "100%",
-                  fontFamily: "inherit",
-                  color: "inherit",
-                }}
-              />
-            </Row>
+              Home
+            </Text>
+          </Link>
+          <Link
+            href="/listings"
+            style={{ textDecoration: "none" }}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Text
+              size="xl"
+              weight={isActive("/listings") ? "bold" : "semibold"}
+              color={isActive("/listings") ? "$primary" : "$text"}
+            >
+              Buying
+            </Text>
+          </Link>
+          <Link
+            href="/sell"
+            style={{ textDecoration: "none" }}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Text
+              size="xl"
+              weight={isActive("/sell") ? "bold" : "semibold"}
+              color={isActive("/sell") ? "$primary" : "$text"}
+            >
+              Selling
+            </Text>
+          </Link>
 
-            {/* Mobile Search Results */}
-            {searchQuery.trim().length >= 2 && (
-              <Column
-                backgroundColor="$background"
-                borderRadius="$lg"
-                overflow="hidden"
-                maxHeight={400}
-                borderWidth={1}
-                borderColor="$inverseBorder"
-              >
-                <SearchDropdown
-                  query={debouncedQuery}
-                  onSelect={() => {
-                    setSearchQuery("");
-                    setMobileMenuOpen(false);
-                  }}
-                />
-              </Column>
+          {/* Mobile Auth Buttons */}
+          <Column gap="$3" marginTop="$6">
+            {mounted && (
+              <>
+                <SignedOut>
+                  <AuthButton
+                    variant="login"
+                    size="lg"
+                    fullWidth
+                    onPress={() => {
+                      setAuthMode("sign-in");
+                      setAuthOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Log-in
+                  </AuthButton>
+                  <AuthButton
+                    variant="signup"
+                    size="lg"
+                    fullWidth
+                    onPress={() => {
+                      setAuthMode("sign-up");
+                      setAuthOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign-up
+                  </AuthButton>
+                </SignedOut>
+
+                <SignedIn>
+                  <Row justifyContent="center" paddingVertical="$4">
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-12 h-12",
+                        },
+                      }}
+                    />
+                  </Row>
+                </SignedIn>
+              </>
             )}
           </Column>
         </Column>
       )}
 
-      {/* Auth modal */}
-      <SignInModal
-        open={authOpen}
-        onClose={() => setAuthOpen(false)}
-        mode={authMode}
-      />
+      {/* Auth Modal */}
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
+        {authMode === "sign-up" ? (
+          <SignUp routing="hash" signInUrl="/sign-in" />
+        ) : (
+          <SignIn routing="hash" signUpUrl="/sign-up" />
+        )}
+      </AuthModal>
     </>
   );
 }
