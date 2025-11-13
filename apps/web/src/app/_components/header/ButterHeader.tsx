@@ -55,10 +55,8 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        {...{ style: { position: "fixed" } }}
+        {...{ style: { position: "sticky" } }}
         top={0}
-        left={0}
-        right={0}
         zIndex={50}
         backgroundColor="$surface"
         {...(stickyMenu && {
