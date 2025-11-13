@@ -6,23 +6,27 @@
 
 :root {
   /* Light theme - Pure Butter Brand */
-  --background: #ffffff; /* White */
-  --foreground: #1e1e1e; /* Charcoal */
-  --primary: #e25f2f; /* Butter Orange */
+  --background: #ffffff;
+  /* White */
+  --foreground: #1e1e1e;
+  /* Charcoal */
+  --primary: #e25f2f;
+  /* Butter Orange */
   --primary-foreground: #ffffff;
   --border: #d1d5db;
   --muted: #6b7280;
-  --card: #fefad6; /* Cream for cards */
+  --card: #fefad6;
+  /* Cream for cards */
 
-  /* Gotham font family */
-  --font-gotham: var(--font-gotham);
+  /* Urbanist font family */
+  --font-urbanist: var(--font-urbanist);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family:
-    var(--font-gotham),
+    var(--font-urbanist),
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",

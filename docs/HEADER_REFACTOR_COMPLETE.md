@@ -1,7 +1,7 @@
 # Header Refactor - Complete ✅
 
-**Date**: November 6, 2025  
-**Status**: Phase 1 Complete  
+**Date**: November 6, 2025
+**Status**: Phase 1 Complete
 **Branch**: `feat/butter-theme`
 
 ---
@@ -133,7 +133,7 @@ export function ButterHeader() {
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  
+
   // Scroll handler for sticky effect
   useEffect(() => {
     const handleStickyMenu = () => {
@@ -141,15 +141,15 @@ export function ButterHeader() {
     };
     // ...
   }, []);
-  
+
   return (
     <>
       {/* Main Header Bar */}
       <Row fixed top={40} /* ... */></Row>
-      
+
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && <Column /* ... */></Column>}
-      
+
       {/* Auth Modal */}
       <SignInModal /* ... */ />
     </>
@@ -164,7 +164,7 @@ export function ButterHeader() {
   - TrustBar: 100
   - ButterHeader: 50
   - Mobile menu overlay: 45
-- **Top Offset**: 
+- **Top Offset**:
   - TrustBar: `top: 0`
   - ButterHeader: `top: 40px` (below TrustBar)
 
@@ -316,8 +316,8 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 - ✅ White - Text and icons on orange
 
 **Typography**:
-- ✅ Gotham Medium - Navigation links (500 weight)
-- ✅ Gotham Bold - Mobile menu links (700 weight)
+- ✅ Urbanist Medium - Navigation links (500 weight)
+- ✅ Urbanist Bold - Mobile menu links (700 weight)
 - ✅ Font size: 14px (desktop nav), 40px (mobile nav headings)
 
 **Spacing**:
@@ -383,7 +383,7 @@ If issues are discovered:
    // In apps/web/src/app/layout.tsx
    - import { ButterHeader } from "./_components/header/ButterHeader";
    + import { MarketplaceHeader } from "./_components/header/MarketplaceHeader";
-   
+
    - <ButterHeader />
    + <MarketplaceHeader />
    ```
@@ -422,7 +422,7 @@ Old `MarketplaceHeader.tsx` is preserved for reference if needed.
 
 ---
 
-**Next Command**: 
+**Next Command**:
 ```bash
 # Start dev server to visually test new header
 pnpm dev:web
