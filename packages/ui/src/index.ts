@@ -38,8 +38,6 @@ export type { SliderProps } from './components/Slider'
 // Overlay Components
 export { Sheet } from './components/Sheet'
 export type { SheetProps } from './components/Sheet'
-export { AuthModal } from './components/AuthModal'
-export type { AuthModalProps } from './components/AuthModal'
 
 // Feedback Components
 export { Badge } from './components/Badge'

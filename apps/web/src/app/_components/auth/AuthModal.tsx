@@ -1,9 +1,12 @@
 /**
- * AuthModal Component
+ * AuthModal Component (Web Only)
  *
  * Reusable modal wrapper for Clerk authentication forms.
  * Provides consistent styling with backdrop blur, rounded corners, and drop shadow.
  * Closes on backdrop click or Escape key.
+ *
+ * NOTE: This component uses web-only DOM APIs (document.body, document.addEventListener)
+ * and is therefore placed in the web app rather than the cross-platform UI package.
  *
  * @example
  * ```tsx
@@ -16,7 +19,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { Column } from "./Layout";
+import { Column } from "@buttergolf/ui";
 
 export interface AuthModalProps {
     /** Whether the modal is open */
@@ -50,13 +53,13 @@ export function AuthModal({ open, onClose, children }: AuthModalProps) {
 
     return (
         <Column
-            style={
-                {
+            {...{
+                style: {
                     position: "fixed",
                     inset: 0,
                     backdropFilter: "blur(6px)",
-                } as React.CSSProperties
-            }
+                } as React.CSSProperties,
+            }}
             backgroundColor="rgba(0,0,0,0.35)"
             zIndex={100}
             alignItems="center"

@@ -74,7 +74,7 @@ export default function RootLayout({
             <ButterHeader />
             <AppPromoBanner />
             {/* Main content wrapper */}
-            <main style={{ backgroundColor: "#FFFFFF" }}>
+            <main className="bg-white">
               {children}
             </main>
           </CartProvider>

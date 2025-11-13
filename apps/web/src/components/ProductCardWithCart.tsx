@@ -79,7 +79,7 @@ export function ProductCardWithCart({
                         size="sm"
                         {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
                     >
-                        NEW
+                        <Text>NEW</Text>
                     </Badge>
                 )}
             </Card.Header>

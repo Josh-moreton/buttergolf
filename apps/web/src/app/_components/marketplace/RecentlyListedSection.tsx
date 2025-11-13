@@ -63,7 +63,7 @@ function ListingCard({ product }: { readonly product: ProductCardData }) {
             size="sm"
             {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
           >
-            NEW
+            <Text>NEW</Text>
           </Badge>
         )}
       </div>

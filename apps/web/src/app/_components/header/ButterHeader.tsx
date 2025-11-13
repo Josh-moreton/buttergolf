@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text, AuthButton, AuthModal } from "@buttergolf/ui";
+import { Row, Column, Text, AuthButton } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { SignIn, SignUp } from "@clerk/nextjs";
+import { AuthModal } from "../auth/AuthModal";
 
 // Category navigation items
 const NAV_CATEGORIES = [
@@ -55,7 +56,7 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        {...{ style: { position: "sticky" } }}
+        {...{ style: { position: "sticky" } as React.CSSProperties }}
         top={0}
         zIndex={50}
         backgroundColor="$surface"
@@ -122,11 +123,11 @@ export function ButterHeader() {
                   Home
                 </Text>
               </Link>
-              <Link href="/buying" style={{ textDecoration: "none" }}>
+              <Link href="/listings" style={{ textDecoration: "none" }}>
                 <Text
                   size="lg"
-                  weight={isActive("/buying") ? "semibold" : "medium"}
-                  color={isActive("/buying") ? "$primary" : "$text"}
+                  weight={isActive("/listings") ? "semibold" : "medium"}
+                  color={isActive("/listings") ? "$primary" : "$text"}
                   cursor="pointer"
                   hoverStyle={{
                     color: "$primary",
@@ -210,7 +211,8 @@ export function ButterHeader() {
               alignItems="center"
               justifyContent="center"
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
-              {...{ style: { background: "none", border: "none" } }}
+              backgroundColor="transparent"
+              borderWidth={0}
               aria-label="Menu"
               color="$text"
             >
@@ -265,7 +267,7 @@ export function ButterHeader() {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <Column
-          {...{ style: { position: "fixed" } }}
+          {...{ style: { position: "fixed" } as React.CSSProperties }}
           top={110}
           left={0}
           right={0}
@@ -294,14 +296,14 @@ export function ButterHeader() {
             </Text>
           </Link>
           <Link
-            href="/buying"
+            href="/listings"
             style={{ textDecoration: "none" }}
             onClick={() => setMobileMenuOpen(false)}
           >
             <Text
               size="xl"
-              weight={isActive("/buying") ? "bold" : "semibold"}
-              color={isActive("/buying") ? "$primary" : "$text"}
+              weight={isActive("/listings") ? "bold" : "semibold"}
+              color={isActive("/listings") ? "$primary" : "$text"}
             >
               Buying
             </Text>

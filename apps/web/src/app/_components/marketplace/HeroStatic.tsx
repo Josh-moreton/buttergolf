@@ -1,12 +1,12 @@
 "use client";
 
-import { Row, Column } from "@buttergolf/ui";
+import { Row, Column, Heading, Text, Button, Image } from "@buttergolf/ui";
 import Link from "next/link";
 import { imagePaths } from "@buttergolf/assets";
 
 /**
  * Static hero section matching Figma mockup
- * Based on working HeroCarousel pattern
+ * Refactored to use Tamagui components and design tokens
  */
 export function HeroStatic() {
     return (
@@ -14,11 +14,10 @@ export function HeroStatic() {
             width="100%"
             paddingHorizontal="$md"
             paddingTop="$md"
-            backgroundColor="$pureWhite"
+            backgroundColor="$surface"
         >
             <Row
                 width="100%"
-                position="relative"
                 height="50vh"
                 minHeight={500}
                 maxHeight={700}
@@ -30,31 +29,20 @@ export function HeroStatic() {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
-                    },
+                    } as React.CSSProperties,
                 }}
             >
                 {/* Left Side - Text Content (50%) */}
                 <Column
                     width="100%"
                     $md={{ width: "50%" }}
-                    position="relative"
                     zIndex={2}
                     justifyContent="center"
-                    {...{
-                        style: {
-                            paddingLeft: "clamp(40px, 8vw, 120px)",
-                            paddingRight: "clamp(20px, 4vw, 60px)",
-                        },
-                    }}
+                    paddingLeft="$8"
+                    paddingRight="$4"
+                    $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
                 >
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "24px",
-                            maxWidth: "600px",
-                        }}
-                    >
+                    <Column gap="$6" maxWidth={600}>
                         {/* Heading */}
                         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                             <h1
@@ -98,66 +86,38 @@ export function HeroStatic() {
                         </p>
 
                         {/* CTA Buttons */}
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "16px",
-                                flexWrap: "wrap",
-                                marginTop: "8px",
-                            }}
-                        >
+                        <Row gap="$md" flexWrap="wrap" marginTop="$2">
                             <Link href="/sell" style={{ textDecoration: "none" }}>
-                                <button
-                                    style={{
-                                        fontFamily: "var(--font-urbanist)",
-                                        fontWeight: 600,
-                                        fontSize: "16px",
-                                        padding: "16px 48px",
-                                        borderRadius: "9999px",
-                                        border: "none",
-                                        backgroundColor: "#F45314",
-                                        color: "#FFFFFF",
-                                        cursor: "pointer",
-                                        transition: "all 0.2s",
-                                        minWidth: "160px",
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = "#E04810";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = "#F45314";
-                                    }}
+                                <Button
+                                    size="lg"
+                                    tone="primary"
+                                    paddingHorizontal="$8"
+                                    minWidth={160}
+                                    borderRadius="$full"
                                 >
                                     Sell now
-                                </button>
+                                </Button>
                             </Link>
                             <Link href="/listings" style={{ textDecoration: "none" }}>
-                                <button
-                                    style={{
-                                        fontFamily: "var(--font-urbanist)",
-                                        fontWeight: 600,
-                                        fontSize: "16px",
-                                        padding: "16px 48px",
-                                        borderRadius: "9999px",
-                                        border: "none",
-                                        backgroundColor: "#3E3B2C",
-                                        color: "#FFFFFF",
-                                        cursor: "pointer",
-                                        transition: "all 0.2s",
-                                        minWidth: "160px",
+                                <Button
+                                    size="lg"
+                                    backgroundColor="$secondary"
+                                    color="$textInverse"
+                                    paddingHorizontal="$8"
+                                    minWidth={160}
+                                    borderRadius="$full"
+                                    hoverStyle={{
+                                        backgroundColor: "$secondaryHover",
                                     }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = "#2E2B1C";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = "#3E3B2C";
+                                    pressStyle={{
+                                        backgroundColor: "$secondaryPress",
                                     }}
                                 >
                                     Shop now
-                                </button>
+                                </Button>
                             </Link>
-                        </div>
-                    </div>
+                        </Row>
+                    </Column>
                 </Column>
 
                 {/* Right Side - Club Image (50%) */}
@@ -165,18 +125,13 @@ export function HeroStatic() {
                     display="none"
                     $md={{ display: "flex" }}
                     width="50%"
-                    position="relative"
                     alignItems="center"
                     justifyContent="center"
                     zIndex={1}
-                    {...{
-                        style: {
-                            paddingLeft: "clamp(20px, 4vw, 60px)",
-                            paddingRight: "clamp(40px, 8vw, 120px)",
-                            paddingTop: "clamp(40px, 8vw, 120px)",
-                            paddingBottom: 0,
-                        },
-                    }}
+                    paddingLeft="$4"
+                    paddingRight="$8"
+                    paddingTop="$8"
+                    $lg={{ paddingLeft: "$8", paddingRight: "$12", paddingTop: "$12" }}
                 >
                     <img
                         src={imagePaths.hero.club}
