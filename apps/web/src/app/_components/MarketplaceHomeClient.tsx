@@ -1,7 +1,7 @@
 "use client";
 
 import { Column } from "@buttergolf/ui";
-import { HeroCarousel } from "./marketplace/HeroCarousel";
+import { HeroStatic } from "./marketplace/HeroStatic";
 import { CategoryGrid } from "./marketplace/CategoryGrid";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
@@ -17,7 +17,7 @@ export default function MarketplaceHomeClient({
 }: Readonly<MarketplaceHomeClientProps>) {
   return (
     <Column>
-      <HeroCarousel />
+      <HeroStatic />
       <CategoryGrid />
       <RecentlyListedSectionClient products={products} />
       <NewsletterSection />

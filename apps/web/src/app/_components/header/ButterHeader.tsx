@@ -27,6 +27,11 @@ export function ButterHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -155,39 +160,43 @@ export function ButterHeader() {
               alignItems="center"
               flexShrink={0}
             >
-              <SignedOut>
-                <AuthButton
-                  variant="login"
-                  size="md"
-                  onPress={() => {
-                    setAuthMode("sign-in");
-                    setAuthOpen(true);
-                  }}
-                >
-                  Log-in
-                </AuthButton>
-                <AuthButton
-                  variant="signup"
-                  size="md"
-                  onPress={() => {
-                    setAuthMode("sign-up");
-                    setAuthOpen(true);
-                  }}
-                >
-                  Sign-up
-                </AuthButton>
-              </SignedOut>
+              {mounted && (
+                <>
+                  <SignedOut>
+                    <AuthButton
+                      variant="login"
+                      size="md"
+                      onPress={() => {
+                        setAuthMode("sign-in");
+                        setAuthOpen(true);
+                      }}
+                    >
+                      Log-in
+                    </AuthButton>
+                    <AuthButton
+                      variant="signup"
+                      size="md"
+                      onPress={() => {
+                        setAuthMode("sign-up");
+                        setAuthOpen(true);
+                      }}
+                    >
+                      Sign-up
+                    </AuthButton>
+                  </SignedOut>
 
-              <SignedIn>
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10",
-                    },
-                  }}
-                />
-              </SignedIn>
+                  <SignedIn>
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10",
+                        },
+                      }}
+                    />
+                  </SignedIn>
+                </>
+              )}
             </Row>
 
             {/* Mobile Menu Toggle */}
@@ -315,45 +324,49 @@ export function ButterHeader() {
 
           {/* Mobile Auth Buttons */}
           <Column gap="$3" marginTop="$6">
-            <SignedOut>
-              <AuthButton
-                variant="login"
-                size="lg"
-                fullWidth
-                onPress={() => {
-                  setAuthMode("sign-in");
-                  setAuthOpen(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Log-in
-              </AuthButton>
-              <AuthButton
-                variant="signup"
-                size="lg"
-                fullWidth
-                onPress={() => {
-                  setAuthMode("sign-up");
-                  setAuthOpen(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Sign-up
-              </AuthButton>
-            </SignedOut>
+            {mounted && (
+              <>
+                <SignedOut>
+                  <AuthButton
+                    variant="login"
+                    size="lg"
+                    fullWidth
+                    onPress={() => {
+                      setAuthMode("sign-in");
+                      setAuthOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Log-in
+                  </AuthButton>
+                  <AuthButton
+                    variant="signup"
+                    size="lg"
+                    fullWidth
+                    onPress={() => {
+                      setAuthMode("sign-up");
+                      setAuthOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign-up
+                  </AuthButton>
+                </SignedOut>
 
-            <SignedIn>
-              <Row justifyContent="center" paddingVertical="$4">
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-12 h-12",
-                    },
-                  }}
-                />
-              </Row>
-            </SignedIn>
+                <SignedIn>
+                  <Row justifyContent="center" paddingVertical="$4">
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-12 h-12",
+                        },
+                      }}
+                    />
+                  </Row>
+                </SignedIn>
+              </>
+            )}
           </Column>
         </Column>
       )}
