@@ -68,7 +68,7 @@ export function CategoryGrid() {
           align="center"
           {...{
             style: {
-              fontFamily: "var(--font-gotham)",
+              fontFamily: "var(--font-urbanist)",
               fontSize: "clamp(32px, 5vw, 48px)",
               lineHeight: 1.2,
               letterSpacing: "2px",
@@ -146,7 +146,7 @@ export function CategoryGrid() {
                     color="$textInverse"
                     {...{
                       style: {
-                        fontFamily: "var(--font-gotham)",
+                        fontFamily: "var(--font-urbanist)",
                         fontSize: "18px",
                         lineHeight: 1.2,
                         letterSpacing: "1.5px",

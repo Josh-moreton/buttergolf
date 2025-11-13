@@ -1,7 +1,7 @@
 # 🧈 Implement "Pure Butter" Brand Identity
 
 ## Overview
-Migrate ButterGolf from the current golf-course green theme to the "Pure Butter" brand identity (Concept 2) - a tongue-in-cheek, heritage butter aesthetic with warm butter orange, cream, and navy colors, plus Gotham typography.
+Migrate ButterGolf from the current golf-course green theme to the "Pure Butter" brand identity (Concept 2) - a tongue-in-cheek, heritage butter aesthetic with warm butter orange, cream, and navy colors, plus Urbanist typography.
 
 **Reference:** Brand identity presentation, Concept 2 "Pure Butter" (pages 15-24)
 
@@ -38,7 +38,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   butter700: '#C47A00',  // For text on light bg
   butter800: '#995F00',
   butter900: '#6B4400',
-  
+
   // Secondary: Navy (replaces amber)
   navy50: '#E8EDF3',
   navy100: '#C7D3E0',
@@ -50,15 +50,15 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   navy700: '#0A1520',
   navy800: '#050B10',
   navy900: '#020508',
-  
+
   // Backgrounds: Cream
   background: '#FEFAD6',  // Cream (was #fbfbf9)
   surface: '#FFFFFF',     // White
-  
+
   // Text: Charcoal
   text: '#1E1E1E',        // Warmer charcoal
   textSecondary: '#4A4A4A',
-  
+
   // Accent: Butter Yellow
   accent: '#FFE38A',
   ```
@@ -92,7 +92,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
     '2xl': 26,  // was 24
     full: 9999,
   }
-  
+
   // Shadows: Softer, vintage feel
   shadowColor: 'rgba(0, 0, 0, 0.08)',       // was 0.1
   shadowColorHover: 'rgba(0, 0, 0, 0.12)',  // was 0.15
@@ -251,6 +251,6 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 
 ---
 
-**Priority:** Medium-High (branding)  
-**Type:** Feature  
+**Priority:** Medium-High (branding)
+**Type:** Feature
 **Labels:** design-system, branding, theme, cross-platform

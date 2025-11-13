@@ -94,7 +94,7 @@ async function fetchProducts(): Promise<ProductCardData[]> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
       );
     }
 
@@ -124,7 +124,7 @@ async function fetchProduct(id: string): Promise<Product | null> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
       );
     }
 
@@ -150,17 +150,9 @@ async function fetchProduct(id: string): Promise<Product | null> {
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
-  // Load Gotham fonts for Pure Butter brand
-  const [fontsLoaded] = useFonts({
-    "Gotham-Thin": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf"),
-    "Gotham-XLight": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf"),
-    "Gotham-Light": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Light.otf"),
-    "Gotham-Book": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Book.otf"),
-    "Gotham-Medium": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Medium.otf"),
-    "Gotham-Bold": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Bold.otf"),
-    "Gotham-Black": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Black.otf"),
-    "Gotham-Ultra": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Ultra.otf"),
-  });
+  // Urbanist font is loaded via Google Fonts through Tamagui config
+  // No need to manually load fonts in mobile - Tamagui handles it
+  const [fontsLoaded] = useFonts({});
 
   useEffect(() => {
     async function hideSplash() {
@@ -206,7 +198,7 @@ export default function App() {
           Minimal RN screen
         </RNText>
         <RNPressable
-          onPress={() => {}}
+          onPress={() => { }}
           style={{
             paddingHorizontal: 16,
             paddingVertical: 10,

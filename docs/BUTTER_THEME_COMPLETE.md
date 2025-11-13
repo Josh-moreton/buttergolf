@@ -9,7 +9,7 @@ Successfully migrated ButterGolf from golf-course green theme to "Pure Butter" b
 **File**: `packages/config/src/tamagui.config.ts`
 
 - **Primary**: Butter Orange (#E25F2F) - was green #13a063
-- **Secondary**: Navy (#1A2E44) - was amber #f2b705  
+- **Secondary**: Navy (#1A2E44) - was amber #f2b705
 - **Background**: Cream (#FEFAD6) - was off-white #fbfbf9
 - **Text**: Charcoal (#1E1E1E) - was gray #111827
 - **10-shade scales**: `$butter50-900`, `$navy50-900`
@@ -30,19 +30,19 @@ Successfully migrated ButterGolf from golf-course green theme to "Pure Butter" b
 - All example code updated from green to butter
 
 ## Testing Results
-✅ TypeScript: `pnpm check-types` passes  
-✅ No breaking changes - all semantic tokens preserved  
-✅ Component compatibility maintained  
+✅ TypeScript: `pnpm check-types` passes
+✅ No breaking changes - all semantic tokens preserved
+✅ Component compatibility maintained
 ✅ Cross-platform (web + mobile)
 
-## Deferred Items
+## Completed Items
 
-### 🔲 Typography (Gotham Fonts)
-**Reason**: Requires commercial license decision  
-**Action**: Acquire Gotham or use Montserrat (Google Fonts)
+### ✅ Typography (Urbanist Fonts)
+**Status**: Complete
+**Action**: Using Urbanist from Google Fonts (variable font, weights 100-900)
 
-### 🔲 Brand Assets (Logos)  
-**Reason**: Requires PDF extraction  
+### 🔲 Brand Assets (Logos)
+**Reason**: Requires PDF extraction
 **Action**: Create butter-themed logos for:
 - `packages/assets/logo/`
 - App icons (mobile + web)
@@ -57,16 +57,16 @@ Successfully migrated ButterGolf from golf-course green theme to "Pure Butter" b
 | `$text` | #1E1E1E | #f9fafb | Body text |
 
 ## Acceptance Criteria
-✅ Primary color: Green → Butter Orange  
-✅ Secondary: Amber → Navy  
-✅ Background: Off-white → Cream  
-✅ Border radius: Softer (10-14px)  
-✅ Shadows: Softer (0.08 opacity)  
-✅ TypeScript builds  
-✅ Documentation updated  
-✅ Backward compatible  
+✅ Primary color: Green → Butter Orange
+✅ Secondary: Amber → Navy
+✅ Background: Off-white → Cream
+✅ Border radius: Softer (10-14px)
+✅ Shadows: Softer (0.08 opacity)
+✅ TypeScript builds
+✅ Documentation updated
+✅ Backward compatible
 
-**Status**: Production-ready ✅  
-**Effort**: 3 hours  
-**Files Changed**: 6  
+**Status**: Production-ready ✅
+**Effort**: 3 hours
+**Files Changed**: 6
 **Breaking Changes**: 0

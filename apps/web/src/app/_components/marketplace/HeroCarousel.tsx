@@ -159,7 +159,7 @@ export function HeroCarousel() {
                   {/* Title - Smaller */}
                   <h2
                     style={{
-                      fontFamily: "var(--font-gotham)",
+                      fontFamily: "var(--font-urbanist)",
                       fontWeight: 700,
                       fontSize: "clamp(28px, 4vw, 42px)",
                       lineHeight: 1.2,
@@ -175,7 +175,7 @@ export function HeroCarousel() {
                   {/* Subtitle - MUCH Larger */}
                   <h1
                     style={{
-                      fontFamily: "var(--font-gotham)",
+                      fontFamily: "var(--font-urbanist)",
                       fontWeight: 900,
                       fontSize: "clamp(64px, 12vw, 120px)",
                       lineHeight: 0.9,
@@ -191,7 +191,7 @@ export function HeroCarousel() {
                   {/* Tagline */}
                   <p
                     style={{
-                      fontFamily: "var(--font-gotham)",
+                      fontFamily: "var(--font-urbanist)",
                       fontWeight: 700,
                       fontSize: "clamp(16px, 2vw, 22px)",
                       lineHeight: 1.3,
@@ -219,7 +219,7 @@ export function HeroCarousel() {
                     >
                       <button
                         style={{
-                          fontFamily: "var(--font-gotham)",
+                          fontFamily: "var(--font-urbanist)",
                           backgroundColor: "var(--primary)",
                           color: "#FFFFFF",
                           padding: "16px 48px",

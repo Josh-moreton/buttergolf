@@ -1,23 +1,52 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
 
-// Gotham font for Pure Butter brand identity
-const gothamFace = {
-    normal: { normal: 'Gotham-Book, Gotham', italic: 'Gotham-Book, Gotham' },
-    bold: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
-    100: { normal: 'Gotham-Thin, Gotham', italic: 'Gotham-Thin, Gotham' },
-    200: { normal: 'Gotham-XLight, Gotham', italic: 'Gotham-XLight, Gotham' },
-    300: { normal: 'Gotham-Light, Gotham', italic: 'Gotham-Light, Gotham' },
-    400: { normal: 'Gotham-Book, Gotham', italic: 'Gotham-Book, Gotham' },
-    500: { normal: 'Gotham-Medium, Gotham', italic: 'Gotham-Medium, Gotham' },
-    600: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
-    700: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
-    800: { normal: 'Gotham-Black, Gotham', italic: 'Gotham-Black, Gotham' },
-    900: { normal: 'Gotham-Ultra, Gotham', italic: 'Gotham-Ultra, Gotham' },
+/**
+ * Convert hex color to Display P3 color space CSS format.
+ * This ensures colors render consistently across all devices,
+ * matching the designer's intent on wide-gamut displays.
+ */
+function hexToP3(hex: string): string {
+    const cleanHex = hex.replace('#', '')
+    const r = parseInt(cleanHex.substring(0, 2), 16)
+    const g = parseInt(cleanHex.substring(2, 4), 16)
+    const b = parseInt(cleanHex.substring(4, 6), 16)
+
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm})`
+}
+
+/**
+ * Convert rgba color to Display P3 color space CSS format with alpha.
+ */
+function rgbaToP3(r: number, g: number, b: number, a: number): string {
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm} / ${a})`
+}
+
+// Urbanist font for Pure Butter brand identity
+const urbanistFace = {
+    normal: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    bold: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    100: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    200: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    300: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    400: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    500: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    600: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    700: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    800: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    900: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
 }
 
 const headingFont = createFont({
-    family: 'Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 12,
         2: 14,
@@ -72,11 +101,11 @@ const headingFont = createFont({
         4: -1.5,
         5: -2,
     },
-    face: gothamFace,
+    face: urbanistFace,
 })
 
 const bodyFont = createFont({
-    family: 'Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 11,
         2: 12,
@@ -131,96 +160,96 @@ const bodyFont = createFont({
         4: -0.75,
         5: -1,
     },
-    face: gothamFace,
+    face: urbanistFace,
 })
 
 // Brand Colors - 10-shade scales for all color families
-// Using Display P3 color space to match modern displays
+// Using Display P3 color space to match modern displays and designer's intent
 const brandColors = {
     // Primary Brand (Butter Orange) - Pure Butter heritage brand
-    butter50: '#FFF9ED',
-    butter100: '#FFF3D6',
-    butter200: '#FFECBD',
-    butter300: '#FFE38A',
-    butter400: '#E25F2F', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
-    butter500: '#D2553A', // Darker/more saturated - for hover states
-    butter600: '#B8442F', // Even darker - for press states
-    butter700: '#9A3824', // Dark - for text on light backgrounds
-    butter800: '#7C2D1D',
-    butter900: '#5E2316',
+    butter50: hexToP3('#FFF9ED'),
+    butter100: hexToP3('#FFF3D6'),
+    butter200: hexToP3('#FFECBD'),
+    butter300: hexToP3('#FFE38A'),
+    butter400: hexToP3('#E25F2F'), // Primary brand color (Butter Orange) - RGB(226, 95, 47)
+    butter500: hexToP3('#D2553A'), // Darker/more saturated - for hover states
+    butter600: hexToP3('#B8442F'), // Even darker - for press states
+    butter700: hexToP3('#9A3824'), // Dark - for text on light backgrounds
+    butter800: hexToP3('#7C2D1D'),
+    butter900: hexToP3('#5E2316'),
 
     // Secondary Brand (Navy) - Modern contrast accent
-    navy50: '#E8EDF3',
-    navy100: '#C7D3E0',
-    navy200: '#95AABF',
-    navy300: '#6482A0',
-    navy400: '#3B5673',
-    navy500: '#1A2E44', // Secondary brand color (Navy)
-    navy600: '#0F1F30',
-    navy700: '#0A1520',
-    navy800: '#050B10',
-    navy900: '#020508',
+    navy50: hexToP3('#E8EDF3'),
+    navy100: hexToP3('#C7D3E0'),
+    navy200: hexToP3('#95AABF'),
+    navy300: hexToP3('#6482A0'),
+    navy400: hexToP3('#3B5673'),
+    navy500: hexToP3('#1A2E44'), // Secondary brand color (Navy)
+    navy600: hexToP3('#0F1F30'),
+    navy700: hexToP3('#0A1520'),
+    navy800: hexToP3('#050B10'),
+    navy900: hexToP3('#020508'),
 
     // Neutral (Gray)
-    gray50: '#f9fafb',
-    gray100: '#f3f4f6',
-    gray200: '#e5e7eb',
-    gray300: '#d1d5db',
-    gray400: '#9ca3af',
-    gray500: '#6b7280',
-    gray600: '#4b5563',
-    gray700: '#374151',
-    gray800: '#1f2937',
-    gray900: '#111827',
+    gray50: hexToP3('#f9fafb'),
+    gray100: hexToP3('#f3f4f6'),
+    gray200: hexToP3('#e5e7eb'),
+    gray300: hexToP3('#d1d5db'),
+    gray400: hexToP3('#9ca3af'),
+    gray500: hexToP3('#6b7280'),
+    gray600: hexToP3('#4b5563'),
+    gray700: hexToP3('#374151'),
+    gray800: hexToP3('#1f2937'),
+    gray900: hexToP3('#111827'),
 
     // Info (Blue)
-    blue50: '#eff6ff',
-    blue100: '#dbeafe',
-    blue200: '#bfdbfe',
-    blue300: '#93c5fd',
-    blue400: '#60a5fa',
-    blue500: '#3c50e0',
-    blue600: '#2563eb',
-    blue700: '#1d4ed8',
-    blue800: '#1e40af',
-    blue900: '#1e3a8a',
+    blue50: hexToP3('#eff6ff'),
+    blue100: hexToP3('#dbeafe'),
+    blue200: hexToP3('#bfdbfe'),
+    blue300: hexToP3('#93c5fd'),
+    blue400: hexToP3('#60a5fa'),
+    blue500: hexToP3('#3c50e0'),
+    blue600: hexToP3('#2563eb'),
+    blue700: hexToP3('#1d4ed8'),
+    blue800: hexToP3('#1e40af'),
+    blue900: hexToP3('#1e3a8a'),
 
     // Success (Teal)
-    teal50: '#e6fffc',
-    teal100: '#b3fff5',
-    teal200: '#80ffee',
-    teal300: '#4dffe7',
-    teal400: '#1affe0',
-    teal500: '#02aaa4',
-    teal600: '#029490',
-    teal700: '#017d7a',
-    teal800: '#016765',
-    teal900: '#015150',
+    teal50: hexToP3('#e6fffc'),
+    teal100: hexToP3('#b3fff5'),
+    teal200: hexToP3('#80ffee'),
+    teal300: hexToP3('#4dffe7'),
+    teal400: hexToP3('#1affe0'),
+    teal500: hexToP3('#02aaa4'),
+    teal600: hexToP3('#029490'),
+    teal700: hexToP3('#017d7a'),
+    teal800: hexToP3('#016765'),
+    teal900: hexToP3('#015150'),
 
     // Error (Red)
-    red50: '#fef2f2',
-    red100: '#fee2e2',
-    red200: '#fecaca',
-    red300: '#fca5a5',
-    red400: '#f87171',
-    red500: '#ef4444',
-    red600: '#dc2626',
-    red700: '#b91c1c',
-    red800: '#991b1b',
-    red900: '#7f1d1d',
+    red50: hexToP3('#fef2f2'),
+    red100: hexToP3('#fee2e2'),
+    red200: hexToP3('#fecaca'),
+    red300: hexToP3('#fca5a5'),
+    red400: hexToP3('#f87171'),
+    red500: hexToP3('#ef4444'),
+    red600: hexToP3('#dc2626'),
+    red700: hexToP3('#b91c1c'),
+    red800: hexToP3('#991b1b'),
+    red900: hexToP3('#7f1d1d'),
 
     // Utility colors
-    white: '#ffffff',
-    black: '#000000',
-    offWhite: '#fbfbf9', // Legacy
-    cream: '#FEFAD6', // Pure Butter cream background
-    creamDark: '#FFF8E7', // Slightly darker cream for accents
-    charcoal: '#1E1E1E', // Warm charcoal for text
+    white: hexToP3('#ffffff'),
+    black: hexToP3('#000000'),
+    offWhite: hexToP3('#fbfbf9'), // Legacy
+    cream: hexToP3('#FEFAD6'), // Pure Butter cream background
+    creamDark: hexToP3('#FFF8E7'), // Slightly darker cream for accents
+    charcoal: hexToP3('#1E1E1E'), // Warm charcoal for text
 
     // Vinted-inspired teal (for onboarding)
-    vintedTeal: '#357C7B',
-    vintedTealHover: '#2d6867',
-    vintedTealPress: '#255553',
+    vintedTeal: hexToP3('#357C7B'),
+    vintedTealHover: hexToP3('#2d6867'),
+    vintedTealPress: hexToP3('#255553'),
 }
 
 // Create custom tokens with complete design system
@@ -259,15 +288,15 @@ const customTokens = createTokens({
 
         // Background colors (light theme defaults - white base with cream accents)
         background: brandColors.white,
-        backgroundHover: '#F5F5F5',
-        backgroundPress: '#EBEBEB',
-        backgroundFocus: '#E0E0E0',
+        backgroundHover: hexToP3('#F5F5F5'),
+        backgroundPress: hexToP3('#EBEBEB'),
+        backgroundFocus: hexToP3('#E0E0E0'),
         backgroundStrong: brandColors.cream,
-        backgroundTransparent: 'rgba(255, 255, 255, 0)',
+        backgroundTransparent: rgbaToP3(255, 255, 255, 0),
 
         // Text colors (light theme defaults - warm charcoal)
         text: brandColors.charcoal,
-        textSecondary: '#4A4A4A',
+        textSecondary: hexToP3('#4A4A4A'),
         textTertiary: brandColors.gray600,
         textMuted: brandColors.gray500,
         textInverse: brandColors.white,
@@ -275,7 +304,7 @@ const customTokens = createTokens({
         // Surface colors (cream background, white cards)
         surface: brandColors.cream,
         card: brandColors.white,
-        cardHover: '#F5F5F5',
+        cardHover: hexToP3('#F5F5F5'),
 
         // Border colors (Pure Butter theme)
         border: brandColors.gray300,
@@ -284,30 +313,30 @@ const customTokens = createTokens({
         borderPress: brandColors.butter500,
 
         // Shadow colors (softer, vintage feel)
-        shadowColor: 'rgba(0, 0, 0, 0.08)',
-        shadowColorHover: 'rgba(0, 0, 0, 0.12)',
-        shadowColorPress: 'rgba(0, 0, 0, 0.16)',
-        shadowColorFocus: 'rgba(226, 95, 47, 0.25)', // butter tint
+        shadowColor: rgbaToP3(0, 0, 0, 0.08),
+        shadowColorHover: rgbaToP3(0, 0, 0, 0.12),
+        shadowColorPress: rgbaToP3(0, 0, 0, 0.16),
+        shadowColorFocus: rgbaToP3(226, 95, 47, 0.25), // butter tint
 
         // Inverse overlays for elements sitting on the brand header background
-        inverseSurface: 'rgba(255, 255, 255, 0.2)',
-        inverseSurfaceHover: 'rgba(255, 255, 255, 0.3)',
-        inverseSurfacePress: 'rgba(255, 255, 255, 0.38)',
-        inverseBorder: 'rgba(255, 255, 255, 0.4)',
-        inverseBorderHover: 'rgba(255, 255, 255, 0.56)',
-        inverseBorderPress: 'rgba(255, 255, 255, 0.72)',
+        inverseSurface: rgbaToP3(255, 255, 255, 0.2),
+        inverseSurfaceHover: rgbaToP3(255, 255, 255, 0.3),
+        inverseSurfacePress: rgbaToP3(255, 255, 255, 0.38),
+        inverseBorder: rgbaToP3(255, 255, 255, 0.4),
+        inverseBorderHover: rgbaToP3(255, 255, 255, 0.56),
+        inverseBorderPress: rgbaToP3(255, 255, 255, 0.72),
 
         // Generic color states (light theme defaults)
         color: brandColors.charcoal,
         colorHover: brandColors.gray800,
         colorPress: brandColors.gray700,
         colorFocus: brandColors.charcoal,
-        colorTransparent: 'rgba(30, 30, 30, 0)',
+        colorTransparent: rgbaToP3(30, 30, 30, 0),
 
         // Backward compatibility
         bg: brandColors.cream,
-        bgGray: '#F7F7F7',
-        bgCard: '#F6F7FB',
+        bgGray: hexToP3('#F7F7F7'),
+        bgCard: hexToP3('#F6F7FB'),
         cardBg: brandColors.white,
         textDark: brandColors.navy500,
         muted: brandColors.gray500,
@@ -458,14 +487,14 @@ const darkTheme = {
     backgroundPress: brandColors.navy700,
     backgroundFocus: brandColors.navy800,
     backgroundStrong: brandColors.navy800,
-    backgroundTransparent: 'rgba(2, 5, 8, 0)',
+    backgroundTransparent: rgbaToP3(2, 5, 8, 0),
 
     // Text colors - override for dark mode
     color: brandColors.gray50,
     colorHover: brandColors.gray100,
     colorPress: brandColors.white,
     colorFocus: brandColors.gray50,
-    colorTransparent: 'rgba(249, 250, 251, 0)',
+    colorTransparent: rgbaToP3(249, 250, 251, 0),
 
     // Semantic colors (adjusted for dark mode - lighter butter for contrast)
     primary: brandColors.butter300,
@@ -515,17 +544,17 @@ const darkTheme = {
     borderPress: brandColors.butter400,
 
     // Shadow colors - override for dark mode
-    shadowColor: 'rgba(0, 0, 0, 0.3)',
-    shadowColorHover: 'rgba(0, 0, 0, 0.4)',
-    shadowColorPress: 'rgba(0, 0, 0, 0.5)',
-    shadowColorFocus: 'rgba(226, 95, 47, 0.3)', // butter tint
+    shadowColor: rgbaToP3(0, 0, 0, 0.3),
+    shadowColorHover: rgbaToP3(0, 0, 0, 0.4),
+    shadowColorPress: rgbaToP3(0, 0, 0, 0.5),
+    shadowColorFocus: rgbaToP3(226, 95, 47, 0.3), // butter tint
 
-    inverseSurface: 'rgba(255, 255, 255, 0.14)',
-    inverseSurfaceHover: 'rgba(255, 255, 255, 0.22)',
-    inverseSurfacePress: 'rgba(255, 255, 255, 0.32)',
-    inverseBorder: 'rgba(255, 255, 255, 0.3)',
-    inverseBorderHover: 'rgba(255, 255, 255, 0.45)',
-    inverseBorderPress: 'rgba(255, 255, 255, 0.6)',
+    inverseSurface: rgbaToP3(255, 255, 255, 0.14),
+    inverseSurfaceHover: rgbaToP3(255, 255, 255, 0.22),
+    inverseSurfacePress: rgbaToP3(255, 255, 255, 0.32),
+    inverseBorder: rgbaToP3(255, 255, 255, 0.3),
+    inverseBorderHover: rgbaToP3(255, 255, 255, 0.45),
+    inverseBorderPress: rgbaToP3(255, 255, 255, 0.6),
 
     // Utility colors
     white: brandColors.white,
@@ -654,7 +683,7 @@ export const config = createTamagui({
         light_warning,
         dark_warning,
     },
-    // Gotham fonts for Pure Butter brand
+    // Urbanist fonts for Pure Butter brand
     fonts: {
         heading: headingFont,
         body: bodyFont,

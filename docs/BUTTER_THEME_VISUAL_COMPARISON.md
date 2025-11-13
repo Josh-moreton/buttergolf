@@ -207,7 +207,7 @@
 | Tone | Serious sport | Playful/tongue-in-cheek |
 | Association | Golf course | Butter brand |
 | Contrast | Green/white | Orange/cream |
-| Typography goal | Clean sans | Gotham (compressed) |
+| Typography goal | Clean sans | Urbanist (geometric) |
 
 ## Accessibility
 

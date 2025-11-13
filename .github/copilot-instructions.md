@@ -1352,7 +1352,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 
 2. **Center Navigation** (Desktop only, hidden on mobile):
    - HOME | FEATURES | ABOUT US | CONTACT US
-   - Gotham Medium, 14px
+   - Urbanist Medium (500 weight), 14px
    - White text with underline on hover
    - Hidden below `$lg` breakpoint
 
