@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Column } from "@buttergolf/ui";
 import { HeroStatic } from "./marketplace/HeroStatic";
 import { BuySellToggle } from "./marketplace/BuySellToggle";
-import { CategoryGrid } from "./marketplace/CategoryGrid";
+import { CategoriesSection } from "./marketplace/CategoriesSection";
 import { SellingPlaceholder } from "./marketplace/SellingPlaceholder";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
@@ -28,7 +28,7 @@ export default function MarketplaceHomeClient({
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
-          <CategoryGrid />
+          <CategoriesSection />
           <RecentlyListedSectionClient products={products} />
         </>
       ) : (
