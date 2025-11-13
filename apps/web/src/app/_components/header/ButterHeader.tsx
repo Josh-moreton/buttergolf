@@ -2,16 +2,26 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text, AuthButton, AuthModal } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { SignIn, SignUp } from "@clerk/nextjs";
 
 export function ButterHeader() {
+  const pathname = usePathname();
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
+
+  // Helper to check if a path is active
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname?.startsWith(path);
+  };
 
   // Sticky menu handler
   useEffect(() => {
@@ -68,20 +78,21 @@ export function ButterHeader() {
             </Row>
           </Link>
 
-          {/* Center Navigation - Desktop Only */}
+          {/* Spacer to push navigation to the right */}
+          <Row flex={1} display="none" $lg={{ display: "flex" }} />
+
+          {/* Navigation - Desktop Only (Right-aligned) */}
           <Row
             display="none"
             $lg={{ display: "flex" }}
             gap="$8"
             alignItems="center"
-            justifyContent="center"
-            flex={1}
           >
             <Link href="/" style={{ textDecoration: "none" }}>
               <Text
-                size="md"
-                weight="medium"
-                color="$text"
+                size="lg"
+                weight={isActive("/") ? "semibold" : "medium"}
+                color={isActive("/") ? "$primary" : "$text"}
                 cursor="pointer"
                 hoverStyle={{
                   color: "$primary",
@@ -92,9 +103,9 @@ export function ButterHeader() {
             </Link>
             <Link href="/buying" style={{ textDecoration: "none" }}>
               <Text
-                size="md"
-                weight="medium"
-                color="$text"
+                size="lg"
+                weight={isActive("/buying") ? "semibold" : "medium"}
+                color={isActive("/buying") ? "$primary" : "$text"}
                 cursor="pointer"
                 hoverStyle={{
                   color: "$primary",
@@ -105,9 +116,9 @@ export function ButterHeader() {
             </Link>
             <Link href="/sell" style={{ textDecoration: "none" }}>
               <Text
-                size="md"
-                weight="medium"
-                color="$text"
+                size="lg"
+                weight={isActive("/sell") ? "semibold" : "medium"}
+                color={isActive("/sell") ? "$primary" : "$text"}
                 cursor="pointer"
                 hoverStyle={{
                   color: "$primary",
@@ -206,7 +217,11 @@ export function ButterHeader() {
             style={{ textDecoration: "none" }}
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Text size="xl" weight="semibold" color="$text">
+            <Text
+              size="xl"
+              weight={isActive("/") ? "bold" : "semibold"}
+              color={isActive("/") ? "$primary" : "$text"}
+            >
               Home
             </Text>
           </Link>
@@ -215,7 +230,11 @@ export function ButterHeader() {
             style={{ textDecoration: "none" }}
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Text size="xl" weight="semibold" color="$text">
+            <Text
+              size="xl"
+              weight={isActive("/buying") ? "bold" : "semibold"}
+              color={isActive("/buying") ? "$primary" : "$text"}
+            >
               Buying
             </Text>
           </Link>
@@ -224,7 +243,11 @@ export function ButterHeader() {
             style={{ textDecoration: "none" }}
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Text size="xl" weight="semibold" color="$text">
+            <Text
+              size="xl"
+              weight={isActive("/sell") ? "bold" : "semibold"}
+              color={isActive("/sell") ? "$primary" : "$text"}
+            >
               Selling
             </Text>
           </Link>
