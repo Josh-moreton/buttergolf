@@ -40,7 +40,6 @@ export function ProductCard({
       cursor="pointer"
       onPress={onPress}
       width="100%"
-      maxWidth={280}
       interactive
       overflow="hidden"
     >
