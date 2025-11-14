@@ -9,6 +9,8 @@ import { MobileFilterSheet } from "./_components/MobileFilterSheet";
 import { SortDropdown } from "./_components/SortDropdown";
 import { ProductsGrid } from "./_components/ProductsGrid";
 import { PageHero } from "../_components/marketplace/PageHero";
+import { TrustSection } from "../_components/marketplace/TrustSection";
+import { NewsletterSection } from "../_components/marketplace/NewsletterSection";
 import { FooterSection } from "../_components/marketplace/FooterSection";
 
 interface ListingsClientProps {
@@ -19,7 +21,6 @@ interface ListingsClientProps {
     priceRange: { min: number; max: number };
   };
   initialPage: number;
-  initialHasMore: boolean;
 }
 
 const STORAGE_KEY = "buttergolf-listings-filters";
@@ -29,7 +30,6 @@ export function ListingsClient({
   initialTotal,
   initialFilters,
   initialPage,
-  initialHasMore,
 }: ListingsClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,10 +68,9 @@ export function ListingsClient({
 
   const [filters, setFilters] = useState<FilterState>(getInitialFilters());
   const [sort, setSort] = useState(searchParams.get("sort") || "newest");
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [page, setPage] = useState(initialPage);
   const [total, setTotal] = useState(initialTotal);
-  const [hasMore, setHasMore] = useState(initialHasMore);
   const [isLoading, setIsLoading] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
@@ -105,9 +104,12 @@ export function ListingsClient({
     [initialFilters.priceRange]
   );
 
+  // Calculate total pages
+  const totalPages = Math.max(1, Math.ceil(total / 24));
+
   // Fetch products with debouncing
   const fetchProducts = useCallback(
-    async (newPage: number = 1, append: boolean = false) => {
+    async (newPage: number = 1) => {
       setIsLoading(true);
 
       try {
@@ -124,19 +126,16 @@ export function ListingsClient({
         const response = await fetch(`/api/listings?${params.toString()}`);
         const data = await response.json();
 
-        if (append) {
-          setProducts((prev) => [...prev, ...data.products]);
-        } else {
-          setProducts(data.products);
-        }
-
+        setProducts(data.products);
         setTotal(data.total);
-        setHasMore(data.hasMore);
         setPage(newPage);
         setAvailableFilters(data.filters);
 
         // Update URL
         router.push(buildURL(filters, sort, newPage), { scroll: false });
+
+        // Scroll to top of page smoothly
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
@@ -149,11 +148,20 @@ export function ListingsClient({
   // Debounced fetch on filter change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchProducts(1, false);
+      fetchProducts(1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort]);
+
+  // Redirect to last valid page if current page exceeds total pages
+  useEffect(() => {
+    if (!isLoading && totalPages > 0 && page > totalPages) {
+      fetchProducts(totalPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, totalPages, isLoading]);
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
@@ -175,10 +183,10 @@ export function ListingsClient({
     }
   };
 
-  // Load more for infinite scroll
-  const handleLoadMore = () => {
-    if (!isLoading && hasMore) {
-      fetchProducts(page + 1, true);
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages && !isLoading) {
+      fetchProducts(newPage);
     }
   };
 
@@ -336,9 +344,10 @@ export function ListingsClient({
             <Column flex={1}>
               <ProductsGrid
                 products={products}
-                hasMore={hasMore}
                 isLoading={isLoading}
-                onLoadMore={handleLoadMore}
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
               />
             </Column>
           </Row>
@@ -353,9 +362,13 @@ export function ListingsClient({
           priceRange={availableFilters.priceRange}
           onChange={handleFilterChange}
           onClearAll={handleClearAll}
-          onApply={() => fetchProducts(1, false)}
+          onApply={() => fetchProducts(1)}
         />
       </Column>
+
+      {/* Trust & Newsletter Sections */}
+      <TrustSection />
+      <NewsletterSection />
 
       {/* Footer */}
       <FooterSection />

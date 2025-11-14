@@ -178,7 +178,6 @@ export default async function ListingsPage({ searchParams }: Props) {
         initialTotal={data.total}
         initialFilters={data.filters}
         initialPage={data.page}
-        initialHasMore={data.hasMore}
       />
     </Suspense>
   );
