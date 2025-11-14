@@ -87,24 +87,26 @@ function CheckoutPageContent() {
       <Container size="xl" paddingVertical="$2xl">
         <Row
           gap="$xl"
+          width="100%"
           flexDirection="column"
           $gtSm={{ flexDirection: "row", alignItems: "flex-start" }}
           alignItems="stretch"
         >
           {/* Left Column - Checkout Form (66%) */}
           <Column
-            flex={1}
+            flexBasis={0}
+            flexGrow={2}
+            flexShrink={1}
             minWidth={0}
-            $gtSm={{
-              flex: 2,
-            }}
           >
             <CheckoutFormSimple product={product} />
           </Column>
 
           {/* Right Column - Order Summary (33%) */}
           <Column
-            flex={1}
+            flexBasis={0}
+            flexGrow={1}
+            flexShrink={1}
             minWidth={0}
           >
             <OrderSummaryCard product={product} />

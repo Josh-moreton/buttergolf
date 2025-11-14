@@ -17,11 +17,12 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
     const total = subtotal + shippingCost;
 
     return (
-        <div style={{ position: "sticky", top: 120 }}>
+        <div style={{ position: "sticky", top: 120, width: "100%" }}>
             <Card
                 backgroundColor="$cloudMist"
                 borderRadius="$xl"
                 padding="$xl"
+                width="100%"
             >
                 <Column gap="$lg">
                     {/* Product Image */}
