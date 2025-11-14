@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import type { ProductCardData } from "@buttergolf/app";
 import { ProductCard } from "@buttergolf/app";
+import { Button } from "@buttergolf/ui";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -269,28 +270,15 @@ export function RecentlyListedSectionClient({
           }}
         >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
-            <button
-              style={{
-                fontFamily: "var(--font-urbanist)",
-                fontSize: "16px",
-                fontWeight: 600,
-                color: "#FFFFFF",
-                backgroundColor: "#F45314",
-                border: "none",
-                borderRadius: "8px",
-                padding: "12px 32px",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#E04810";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#F45314";
-              }}
+            <Button
+              size="lg"
+              tone="primary"
+              borderRadius="$full"
+              paddingHorizontal="$6"
+              color="$vanillaCream"
             >
               View all listings
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

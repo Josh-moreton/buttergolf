@@ -564,6 +564,51 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
+#### ✅ **ALWAYS Use Tamagui Button Component (Never Manual HTML Buttons)**
+
+```tsx
+// ✅ CORRECT - Use Tamagui Button from @buttergolf/ui
+import { Button } from "@buttergolf/ui";
+
+<Button size="lg" tone="primary" borderRadius="$full" paddingHorizontal="$6" color="$vanillaCream">
+  View all listings
+</Button>
+
+<Button size="md" tone="secondary" fullWidth>
+  Secondary Action
+</Button>
+
+// ❌ WRONG - Never create manual HTML buttons with inline styles
+<button
+  style={{
+    fontFamily: "var(--font-urbanist)",
+    fontSize: "16px",
+    fontWeight: 600,
+    color: "#FFFAD2",
+    backgroundColor: "#F45314",
+    border: "none",
+    borderRadius: "32px",
+    padding: "14px 40px",
+    cursor: "pointer",
+  }}
+>
+  View all listings
+</button>
+
+// ❌ WRONG - Don't use native button element even with Tamagui props
+<button backgroundColor="$primary" color="$textInverse">
+  Submit
+</button>
+```
+
+**Why Tamagui Button?**
+- Ensures cross-platform consistency (works on web and mobile)
+- Proper theming with light/dark mode support
+- Built-in hover/press/focus states
+- Accessible by default
+- Compiler-optimized for performance
+- Maintains design system consistency
+
 #### ✅ **Use Brand Color Tokens or Semantic Tokens**
 
 ```tsx
@@ -2062,21 +2107,22 @@ When creating a new component, add variants for:
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-10. **Keep React versions aligned** across web and mobile (currently 19.2.0)
-11. **Use workspace protocol** for internal dependencies: `"workspace:*"`
-12. **Export types** alongside components for better DX
-13. **Test on both platforms** before considering features complete
-14. **Leverage media queries** for responsive design instead of platform checks
-15. **Keep Metro and Babel configs** in sync with Tamagui requirements
-16. **Run type checking** regularly during development
-17. **Use `name` prop** on styled components for better compiler optimization
-18. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
-19. **Run `pnpm db:generate`** after any schema changes
-20. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
-21. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
-22. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
-23. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
-24. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
+10. **CRITICAL: Always use Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use variants (`size`, `tone`) with token props (`borderRadius`, `paddingHorizontal`, `color`). This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
+11. **Keep React versions aligned** across web and mobile (currently 19.2.0)
+12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
+13. **Export types** alongside components for better DX
+14. **Test on both platforms** before considering features complete
+15. **Leverage media queries** for responsive design instead of platform checks
+16. **Keep Metro and Babel configs** in sync with Tamagui requirements
+17. **Run type checking** regularly during development
+18. **Use `name` prop** on styled components for better compiler optimization
+19. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+20. **Run `pnpm db:generate`** after any schema changes
+21. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+22. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
+23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+24. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
+25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
 
 ## Known Issues & Gotchas
 
