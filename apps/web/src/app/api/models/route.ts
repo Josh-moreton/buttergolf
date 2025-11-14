@@ -3,7 +3,7 @@ import { prisma } from '@buttergolf/db'
 
 /**
  * GET /api/models?brandId=xxx&query=apex&kind=DRIVER
- * 
+ *
  * Returns model suggestions for a specific brand
  * Suggests existing models (sorted by usage count) that match the query
  * Used for autocomplete when user types a model name

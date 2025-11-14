@@ -3,7 +3,7 @@ import { prisma } from '@buttergolf/db'
 
 /**
  * GET /api/brands?query=cal
- * 
+ *
  * Fuzzy search for golf brands with autocomplete support
  * Returns brands sorted by relevance and popularity (sortOrder)
  */
@@ -50,15 +50,15 @@ export async function GET(request: Request) {
         const sortedBrands = brands.sort((a, b) => {
             const aLower = a.name.toLowerCase()
             const bLower = b.name.toLowerCase()
-            
+
             // Exact match first
             if (aLower === query) return -1
             if (bLower === query) return 1
-            
+
             // Starts with query second
             if (aLower.startsWith(query) && !bLower.startsWith(query)) return -1
             if (bLower.startsWith(query) && !aLower.startsWith(query)) return 1
-            
+
             // Otherwise maintain sortOrder
             return 0
         })
