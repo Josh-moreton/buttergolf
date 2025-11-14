@@ -1,5 +1,5 @@
-const { withTamagui } = require("@tamagui/next-plugin");
-const { join } = require("node:path");
+const {withTamagui} = require("@tamagui/next-plugin");
+const {join} = require("node:path");
 
 const boolVals = {
   true: true,
@@ -20,6 +20,10 @@ const plugins = [
       process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
     logTimings: true,
     disableExtraction,
+    // Disable debug attributes to prevent hydration warnings
+    // These are only useful for deep debugging of Tamagui compiler output
+    useReactNativeWebLite: false,
+    disableDebugAttr: true,
     shouldExtract: (path) => {
       if (path.includes(join("packages", "app"))) {
         return true;
@@ -50,7 +54,7 @@ module.exports = () => {
         {
           source: "/:path*",
           headers: [
-            { key: "Cache-Control", value: "no-store, must-revalidate" },
+            {key: "Cache-Control", value: "no-store, must-revalidate"},
           ],
         },
       ],
