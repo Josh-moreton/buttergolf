@@ -48,7 +48,7 @@ export function HeroStatic() {
                             <h1
                                 style={{
                                     fontFamily: "var(--font-urbanist)",
-                                    fontWeight: 900,
+                                    fontWeight: 700,
                                     fontSize: "clamp(48px, 8vw, 80px)",
                                     lineHeight: 1.1,
                                     color: "#323232",
@@ -60,7 +60,7 @@ export function HeroStatic() {
                             <h1
                                 style={{
                                     fontFamily: "var(--font-urbanist)",
-                                    fontWeight: 900,
+                                    fontWeight: 700,
                                     fontSize: "clamp(48px, 8vw, 80px)",
                                     lineHeight: 1.1,
                                     color: "#323232",
@@ -94,6 +94,8 @@ export function HeroStatic() {
                                     paddingHorizontal="$8"
                                     minWidth={160}
                                     borderRadius="$full"
+                                    color="$vanillaCream"
+                                    fontWeight="700"
                                 >
                                     Sell now
                                 </Button>
@@ -102,10 +104,11 @@ export function HeroStatic() {
                                 <Button
                                     size="lg"
                                     backgroundColor="$secondary"
-                                    color="$textInverse"
+                                    color="$vanillaCream"
                                     paddingHorizontal="$8"
                                     minWidth={160}
                                     borderRadius="$full"
+                                    fontWeight="700"
                                     hoverStyle={{
                                         backgroundColor: "$secondaryHover",
                                     }}

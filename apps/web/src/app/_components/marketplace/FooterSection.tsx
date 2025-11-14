@@ -61,12 +61,13 @@ export function FooterSection() {
           />
 
           {/* Right Side - Navigation Links (Two Columns) */}
-          <Row gap="$2xl" alignItems="flex-start" zIndex={1}>
+          <Row gap="$3xl" alignItems="flex-start" zIndex={1}>
             {/* Column 1 */}
-            <Column gap="$md" alignItems="flex-start">
+            <Column gap="$xs" alignItems="flex-start">
               <Text
                 color="$vanillaCream"
                 size="md"
+                fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -75,6 +76,7 @@ export function FooterSection() {
               <Text
                 color="$vanillaCream"
                 size="md"
+                fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -83,6 +85,7 @@ export function FooterSection() {
               <Text
                 color="$vanillaCream"
                 size="md"
+                fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -91,7 +94,7 @@ export function FooterSection() {
             </Column>
 
             {/* Column 2 */}
-            <Column gap="$md" alignItems="flex-start">
+            <Column gap="$xs" alignItems="flex-start">
               <Text
                 color="$vanillaCream"
                 size="md"
