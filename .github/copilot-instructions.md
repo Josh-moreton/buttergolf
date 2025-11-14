@@ -1310,6 +1310,32 @@ const round = await prisma.round.create({
 
 **Exception:** Only use `db:push` for rapid prototyping when you don't care about losing data.
 
+**When Database Drift Occurs:**
+
+If you encounter "Database schema is not in sync with migration history" errors:
+
+1. **Understand the drift** (read-only, safe):
+   ```bash
+   cd packages/db
+   pnpm prisma migrate diff --script
+   ```
+   **NOTE:** This shows what SQL would revert your schema TO match the database. The DROP statements are confusing - they show columns/tables that exist in your schema but NOT in the database. This is a READ-ONLY preview, nothing is executed.
+
+2. **Safe resolution without data loss**:
+   ```bash
+   cd packages/db
+   pnpm prisma db push
+   ```
+   This syncs your schema to the database without creating migration files. Use this ONLY to resolve drift while preserving data. After this, return to the correct workflow above.
+
+3. **Prevention**: Never mix `migrate dev` and `db push`. Pick one approach and stick with it throughout the project.
+
+**Understanding Prisma Commands:**
+- `prisma migrate dev` - Creates migration files, version-controlled, production-safe
+- `prisma db push` - Direct schema sync, no migration files, development-only
+- `prisma migrate diff --script` - READ-ONLY preview, shows SQL to revert schema changes (confusing output, nothing is executed)
+- `prisma migrate reset` - ⚠️ DESTRUCTIVE - Drops database, reapplies all migrations, reseeds data
+
 ### Database Setup Options
 
 **Local PostgreSQL with Docker**:
