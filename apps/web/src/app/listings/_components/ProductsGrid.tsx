@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Column, Card, Image, Text, Row, Button, Spinner } from "@buttergolf/ui";
+import { Column, Text, Spinner } from "@buttergolf/ui";
+import { ProductCard } from "@buttergolf/app";
 import type { ProductCardData } from "@buttergolf/app";
+import Link from "next/link";
 
 interface ProductsGridProps {
   products: ProductCardData[];
@@ -12,107 +14,26 @@ interface ProductsGridProps {
   onLoadMore: () => void;
 }
 
-function ProductCard({ product }: { product: ProductCardData }) {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/products/${product.id}`);
-  };
-
-  return (
-    <Card
-      padding={0}
-      borderRadius="$md"
-      overflow="hidden"
-      cursor="pointer"
-      hoverStyle={{ scale: 1.01 }}
-      onPress={handleClick}
-      minHeight={380}
-      display="flex"
-      flexDirection="column"
-    >
-      <div style={{ position: "relative" }}>
-        {/* 1:1 Aspect Ratio Container */}
-        <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
-          <Image
-            source={{ uri: product.imageUrl }}
-            width="100%"
-            height="100%"
-            objectFit="cover"
-            alt={product.title}
-            position="absolute"
-            top={0}
-            left={0}
-          />
-        </div>
-
-        {/* NEW Badge Overlay */}
-        {product.condition === "NEW" && (
-          <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10 }}>
-            <Text size="xs" weight="bold" backgroundColor="$success" color="$textInverse" paddingHorizontal="$2" paddingVertical="$1" borderRadius="$sm">
-              NEW
-            </Text>
-          </div>
-        )}
-      </div>
-
-      <Column padding="$md" gap="$xs" flex={1} justifyContent="space-between">
-        <Column gap="$xs">
-          <Text weight="bold" numberOfLines={2} minHeight={42}>
-            {product.title}
-          </Text>
-          <Row alignItems="center" justifyContent="space-between" minHeight={24}>
-            <Text size="lg" weight="bold" color="$primary">
-              £{product.price.toFixed(2)}
-            </Text>
-            {product.condition && product.condition !== "NEW" && (
-              <Text size="xs" color="$textSecondary">
-                {product.condition?.replace("_", " ") || ""}
-              </Text>
-            )}
-          </Row>
-        </Column>
-        <Button size="sm" tone="outline" fullWidth onPress={handleClick}>
-          View details
-        </Button>
-      </Column>
-    </Card>
-  );
-}
-
 function LoadingSkeleton() {
   return (
-    <Card padding={0} borderRadius="$md" overflow="hidden">
+    <div
+      style={{
+        width: "100%",
+        paddingBottom: "111.11%", // 9:10 aspect ratio
+        backgroundColor: "#f0f0f0",
+        borderRadius: "16px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: 180,
-          backgroundColor: "#f0f0f0",
+          position: "absolute",
+          inset: 0,
           animation: "pulse 1.5s ease-in-out infinite",
         }}
       />
-      <Column padding="$md" gap="$xs">
-        <div
-          style={{
-            height: 20,
-            backgroundColor: "#f0f0f0",
-            borderRadius: 4,
-            width: "80%",
-            animation: "pulse 1.5s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            height: 16,
-            backgroundColor: "#f0f0f0",
-            borderRadius: 4,
-            width: "40%",
-            animation: "pulse 1.5s ease-in-out infinite",
-            marginTop: 8,
-          }}
-        />
-      </Column>
-    </Card>
+    </div>
   );
 }
 
@@ -170,13 +91,21 @@ export function ProductsGrid({
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gridAutoRows: "1fr",
           gap: "24px",
           width: "100%",
         }}
       >
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <Link
+            key={product.id}
+            href={`/products/${product.id}`}
+            style={{ textDecoration: "none", display: "block" }}
+          >
+            <ProductCard
+              product={product}
+              onFavorite={(productId) => console.log("Favorited:", productId)}
+            />
+          </Link>
         ))}
 
         {/* Loading skeletons */}
