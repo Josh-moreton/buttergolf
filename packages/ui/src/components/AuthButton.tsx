@@ -44,21 +44,21 @@ export const AuthButton = styled(Button, {
                 },
             },
             signup: {
-                backgroundColor: "$secondary", // Burnt Olive - dark accent
-                color: "$textInverse",
+                backgroundColor: "$cloudMist", // Cloud Mist - light background
+                color: "$ironstone",
                 borderWidth: 0,
                 hoverStyle: {
-                    backgroundColor: "$secondaryHover",
-                    opacity: 0.95,
-                },
-                pressStyle: {
-                    backgroundColor: "$secondaryPress",
+                    backgroundColor: "$cloudMist",
                     opacity: 0.85,
                 },
+                pressStyle: {
+                    backgroundColor: "$cloudMist",
+                    opacity: 0.75,
+                },
                 focusStyle: {
-                    backgroundColor: "$secondaryFocus",
+                    backgroundColor: "$cloudMist",
                     borderWidth: 2,
-                    borderColor: "$secondaryFocus",
+                    borderColor: "$border",
                 },
             },
         },
