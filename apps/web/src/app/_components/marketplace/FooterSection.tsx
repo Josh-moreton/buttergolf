@@ -1,231 +1,164 @@
 "use client";
 
-import { Text, Row, Column, Heading, useMedia } from "@buttergolf/ui";
+import { Text, Row, Column } from "@buttergolf/ui";
 
 export function FooterSection() {
-  const media = useMedia();
-
   return (
-    <Column
-      paddingVertical="$2xl"
-      paddingHorizontal="$md"
-      borderTopWidth={1}
-      borderColor="$border"
-      backgroundColor="$surface"
+    <div
+      style={{
+        position: "relative",
+        backgroundColor: "#F45314",
+        paddingTop: "64px",
+        paddingBottom: "48px",
+        overflow: "hidden",
+      }}
     >
-      <Column maxWidth={1200} marginHorizontal="auto" width="100%" gap="$2xl">
-        {/* Main Footer Content */}
+      {/* Background B.svg pattern */}
+      <img
+        src="/_assets/logo/b.svg"
+        alt=""
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          height: "100%",
+          width: "auto",
+          maxWidth: "50%",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Content Container */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: "1280px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: "48px",
+          paddingRight: "48px",
+        }}
+      >
+        {/* Top Section: Logo + Navigation Links */}
         <Row
-          gap="$xl"
-          justifyContent="flex-start"
+          justifyContent="space-between"
           alignItems="flex-start"
-          flexWrap={media.md || media.lg || media.xl ? "nowrap" : "wrap"}
+          marginBottom="$2xl"
+          flexWrap="wrap"
+          gap="$xl"
         >
-          {/* Brand Section */}
-          <Column flex={1.2} minWidth={220} maxWidth={280}>
-            <img
-              src="/logo-white.png"
-              alt="ButterGolf"
-              style={{ height: "80px", width: "auto", maxWidth: "100%", objectFit: "contain" }}
-            />
-          </Column>
+          {/* Logo */}
+          <img
+            src="/_assets/logo/logo-cream-on-white.svg"
+            alt="ButterGolf"
+            style={{
+              height: "auto",
+              width: "100%",
+              maxWidth: "200px",
+            }}
+          />
 
-          {/* Marketplace Section */}
-          <Column flex={1} minWidth={160} gap="$md">
-            <Text weight="semibold" size="md">
-              Marketplace
-            </Text>
-            <Column gap="$sm">
+          {/* Right Side - Navigation Links (Two Columns) */}
+          <Row gap="$2xl" alignItems="flex-start" zIndex={1}>
+            {/* Column 1 */}
+            <Column gap="$md" alignItems="flex-start">
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
-                Browse Equipment
+                Home
               </Text>
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
-                Sell Your Gear
+                Buying
               </Text>
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
-                How It Works
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Pricing Guide
+                Selling
               </Text>
             </Column>
-          </Column>
 
-          {/* Support Section */}
-          <Column flex={1} minWidth={160} gap="$md">
-            <Text weight="semibold" size="md">
-              Support
-            </Text>
-            <Column gap="$sm">
+            {/* Column 2 */}
+            <Column gap="$md" alignItems="flex-start">
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
-                Help Center
+                Blog
               </Text>
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Buyer Protection
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Safety Guidelines
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Contact Us
-              </Text>
-            </Column>
-          </Column>
-
-          {/* Company Section */}
-          <Column flex={1} minWidth={160} gap="$md">
-            <Text weight="semibold" size="md">
-              Company
-            </Text>
-            <Column gap="$sm">
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                About Us
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Careers
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Press & Media
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Partnerships
-              </Text>
-            </Column>
-          </Column>
-
-          {/* Legal Section */}
-          <Column flex={1} minWidth={160} gap="$md">
-            <Text weight="semibold" size="md">
-              Legal
-            </Text>
-            <Column gap="$sm">
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
                 Terms of Service
               </Text>
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
                 Privacy Policy
               </Text>
               <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
+                color="$vanillaCream"
+                size="md"
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
               >
-                Cookie Policy
-              </Text>
-              <Text
-                {...{ color: "$textSecondary" }}
-                size="sm"
-                hoverStyle={{ color: "$primary", cursor: "pointer" }}
-              >
-                Dispute Resolution
+                Help Centre
               </Text>
             </Column>
-          </Column>
+          </Row>
         </Row>
 
-        {/* Divider */}
-        <Column height={1} backgroundColor="$border" />
-
-        {/* Bottom Bar */}
+        {/* Bottom Section: Copyright + TrustPilot */}
         <Row
           justifyContent="space-between"
           alignItems="center"
-          gap="$md"
           flexWrap="wrap"
+          gap="$md"
         >
-          <Text {...{ color: "$textTertiary" }} size="sm">
-            © {new Date().getFullYear().toString()} ButterGolf. All rights
-            reserved.
+          {/* Copyright */}
+          {/* Copyright */}
+          <Text color="$vanillaCream" size="sm" zIndex={1}>
+            © 2025 Butter Golf. All rights reserved.
           </Text>
 
-          <Row gap="$lg">
-            <Text
-              {...{ color: "$textTertiary" }}
-              size="sm"
-              hoverStyle={{ color: "$primary", cursor: "pointer" }}
-            >
-              Twitter
-            </Text>
-            <Text
-              {...{ color: "$textTertiary" }}
-              size="sm"
-              hoverStyle={{ color: "$primary", cursor: "pointer" }}
-            >
-              Instagram
-            </Text>
-            <Text
-              {...{ color: "$textTertiary" }}
-              size="sm"
-              hoverStyle={{ color: "$primary", cursor: "pointer" }}
-            >
-              Facebook
-            </Text>
-            <Text
-              {...{ color: "$textTertiary" }}
-              size="sm"
-              hoverStyle={{ color: "$primary", cursor: "pointer" }}
-            >
-              LinkedIn
-            </Text>
-          </Row>
+          {/* TrustPilot Placeholder */}
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "8px",
+              padding: "12px 24px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span style={{ fontSize: "14px", fontWeight: 600, color: "#00B67A" }}>
+              ★ Trustpilot
+            </span>
+            <span style={{ fontSize: "12px", color: "#666" }}>TrustScore 4</span>
+          </div>
         </Row>
-      </Column>
-    </Column>
+      </div>
+    </div>
   );
 }
