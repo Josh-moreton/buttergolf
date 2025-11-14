@@ -235,10 +235,10 @@ export function ButterHeader() {
           <Row
             maxWidth={1440}
             width="100%"
-            justifyContent="center"
-            gap="$5"
-            $md={{ gap: "$7" }}
-            flexWrap="wrap"
+            justifyContent="space-between"
+            paddingHorizontal="$8"
+            flexWrap="nowrap"
+            overflow="auto"
           >
             {NAV_CATEGORIES.map((category) => (
               <Link
