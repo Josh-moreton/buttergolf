@@ -119,7 +119,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   return (
     <>
-      <Container size="lg" padding="$md" backgroundColor="$pureWhite">
+      <Container size="xl" padding="$md" backgroundColor="$pureWhite">
         <Column gap="$lg" paddingVertical="$lg">
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
