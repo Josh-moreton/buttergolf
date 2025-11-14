@@ -30,28 +30,36 @@ export function ProductCard({
       animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
-      hoverStyle={{
-        scale: 1.02,
-        borderColor: "$borderHover",
-        shadowColor: "$shadowColorHover",
-        shadowRadius: 16,
-      }}
-      pressStyle={{ scale: 0.98 }}
       cursor="pointer"
       onPress={onPress}
       width="100%"
       interactive
       overflow="hidden"
     >
-      {/* Container with portrait aspect ratio (1:1.4 - taller than wide) */}
+      {/* Inner wrapper that handles hover transform */}
       <div
         style={{
           position: "relative",
           width: "100%",
-          paddingBottom: "140%",
-          overflow: "hidden",
+          height: "100%",
+          transition: "transform 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.02)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
         }}
       >
+        {/* Container with portrait aspect ratio (1:1.4 - taller than wide) */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            paddingBottom: "140%",
+            overflow: "hidden",
+          }}
+        >
         {/* Background Image - Full Card */}
         <img
           src={product.imageUrl}
@@ -183,6 +191,7 @@ export function ProductCard({
             </p>
           )}
         </div>
+      </div>
       </div>
     </Card>
   );

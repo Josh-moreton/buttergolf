@@ -134,66 +134,66 @@ export function CategoriesSection() {
                 width: "296px",
                 height: "200px",
                 borderRadius: "14px",
-                overflow: "hidden",
+                overflow: "hidden", // keep clipping + rounded corners
                 flexShrink: 0,
                 textDecoration: "none",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow =
-                  "0 12px 24px rgba(0, 0, 0, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 8px rgba(0, 0, 0, 0.1)";
               }}
             >
-              {/* Background Image */}
-              <img
-                src={category.imageUrl}
-                alt={category.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-              />
-
-              {/* Gradient Overlay */}
               <div
                 style={{
                   position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: "100%",
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)",
+                  inset: 0,
+                  borderRadius: "14px",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                 }}
-              />
-
-              {/* Category Name */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "16px",
-                  left: "16px",
-                  fontFamily: "var(--font-urbanist)",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  lineHeight: 1,
-                  color: "#FFFAD2",
-                  textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                  zIndex: 1,
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow =
+                    "0 12px 24px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 8px rgba(0, 0, 0, 0.1)";
                 }}
               >
-                {category.name}
+                <img
+                  src={category.imageUrl}
+                  alt={category.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "14px",
+                  }}
+                />
+
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)",
+                    borderRadius: "14px",
+                  }}
+                />
+
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "16px",
+                    left: "16px",
+                    fontFamily: "var(--font-urbanist)",
+                    fontSize: "24px",
+                    fontWeight: 600,
+                    lineHeight: 1,
+                    color: "#FFFAD2",
+                    textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  {category.name}
+                </div>
               </div>
             </Link>
           ))}

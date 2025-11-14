@@ -140,7 +140,8 @@ export function RecentlyListedSectionClient({
           <div
             ref={emblaRef}
             style={{
-              overflow: "hidden",
+              overflowX: "hidden",   // keep horizontal overflow hidden
+              overflowY: "visible",  // allow cards to grow vertically
               width: "100%",
             }}
           >
