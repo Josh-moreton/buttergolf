@@ -248,7 +248,7 @@ export function RecentlyListedSectionClient({
                   height: "10px",
                   borderRadius: isActive ? "5px" : "50%",
                   border: "none",
-                  backgroundColor: isActive ? "#F45314" : "#EDEDED",
+                  backgroundColor: isActive ? "#F45314" : "rgba(244, 83, 20, 0.5)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   padding: 0,
