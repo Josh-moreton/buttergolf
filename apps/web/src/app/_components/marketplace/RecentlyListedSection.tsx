@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import type { ProductCardData } from "@buttergolf/app";
-import { ProductCard } from "@buttergolf/app";
 import { Button } from "@buttergolf/ui";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { ProductCarousel } from "../shared/ProductCarousel";
 
 interface RecentlyListedSectionClientProps {
   readonly products: ProductCardData[];
@@ -15,68 +12,6 @@ interface RecentlyListedSectionClientProps {
 export function RecentlyListedSectionClient({
   products,
 }: RecentlyListedSectionClientProps) {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  // Embla state
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      align: "start",
-      loop: true,
-      dragFree: false,
-    },
-    [Autoplay({ delay: 5000, stopOnInteraction: false })]
-  );
-
-  const scrollPrev = useCallback(() => {
-    if (!emblaApi) return;
-    emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (!emblaApi) return;
-    emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      if (!emblaApi) return;
-      emblaApi.scrollTo(index);
-    },
-    [emblaApi]
-  );
-
-  // Calculate cards per view based on screen width
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setIsDesktop(width >= 1024);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    };
-
-    setScrollSnaps(emblaApi.scrollSnapList());
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-
-    return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
-    };
-  }, [emblaApi]);
 
   return (
     <div style={{ paddingTop: "64px", paddingBottom: "64px", backgroundColor: "#EDEDED", width: "100%" }}>
@@ -131,132 +66,44 @@ export function RecentlyListedSectionClient({
           </p>
         </div>
 
-        {/* Carousel (Embla) */}
-        <div
-          style={{
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          <div
-            ref={emblaRef}
+        {/* Carousel */}
+        <ProductCarousel products={products} autoplay={true} autoplayDelay={5000} />
+
+        <div style={{ display: "none" }}>
+          <button
+            type="button"
+            onClick={() => { }}
             style={{
-              overflowX: "hidden",   // keep horizontal overflow hidden
-              overflowY: "visible",  // allow cards to grow vertically
-              width: "100%",
+              pointerEvents: "auto",
+              border: "none",
+              background: "rgba(0,0,0,0.4)",
+              color: "#FFFFFF",
+              borderRadius: "9999px",
+              width: "32px",
+              height: "32px",
+              cursor: "pointer",
             }}
+            aria-label="Previous"
           >
-            <div
-              style={{
-                display: "flex",
-                gap: "32px",
-              }}
-            >
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  style={{
-                    flex: "0 0 auto",
-                    width: "70vw",
-                    maxWidth: "280px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Link
-                    href={`/products/${product.id}`}
-                    style={{ textDecoration: "none", display: "block" }}
-                  >
-                    <ProductCard
-                      product={product}
-                      onFavorite={(productId) => console.log("Favorited:", productId)}
-                    />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Optional prev/next controls (hidden visually for now) */}
-          <div
+            
+          </button>
+          <button
+            type="button"
+            onClick={() => { }}
             style={{
-              display: "none",
-              justifyContent: "space-between",
-              position: "absolute",
-              inset: 0,
-              alignItems: "center",
-              pointerEvents: "none",
+              pointerEvents: "auto",
+              border: "none",
+              background: "rgba(0,0,0,0.4)",
+              color: "#FFFFFF",
+              borderRadius: "9999px",
+              width: "32px",
+              height: "32px",
+              cursor: "pointer",
             }}
+            aria-label="Next"
           >
-            <button
-              type="button"
-              onClick={scrollPrev}
-              style={{
-                pointerEvents: "auto",
-                border: "none",
-                background: "rgba(0,0,0,0.4)",
-                color: "#FFFFFF",
-                borderRadius: "9999px",
-                width: "32px",
-                height: "32px",
-                cursor: "pointer",
-              }}
-              aria-label="Previous"
-            >
-              
-            </button>
-            <button
-              type="button"
-              onClick={scrollNext}
-              style={{
-                pointerEvents: "auto",
-                border: "none",
-                background: "rgba(0,0,0,0.4)",
-                color: "#FFFFFF",
-                borderRadius: "9999px",
-                width: "32px",
-                height: "32px",
-                cursor: "pointer",
-              }}
-              aria-label="Next"
-            >
-              
-            </button>
-          </div>
-        </div>
 
-        {/* Pagination Dots - Desktop Only (Embla-driven) */}
-        <div
-          style={{
-            display: isDesktop ? "flex" : "none",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            paddingTop: "16px",
-            paddingBottom: "16px",
-          }}
-        >
-          {scrollSnaps.map((_, index) => {
-            const isActive = index === selectedIndex;
-
-            return (
-              <button
-                key={index}
-                type="button"
-                onClick={() => scrollTo(index)}
-                style={{
-                  width: isActive ? "48px" : "10px",
-                  height: "10px",
-                  borderRadius: isActive ? "5px" : "50%",
-                  border: "none",
-                  backgroundColor: isActive ? "#F45314" : "rgba(244, 83, 20, 0.5)",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  padding: 0,
-                }}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            );
-          })}
+          </button>
         </div>
 
         {/* View All Button - Centered Below Carousel */}

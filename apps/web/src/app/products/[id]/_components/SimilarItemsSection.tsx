@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Column, Heading, Text } from "@buttergolf/ui";
-import { ProductCard } from "@buttergolf/app";
 import type { ProductCardData } from "@buttergolf/app";
+import { ProductCarousel } from "../../../_components/shared/ProductCarousel";
 
 interface SimilarItemsSectionProps {
     products: ProductCardData[];
@@ -38,45 +37,9 @@ export function SimilarItemsSection({ products, category }: SimilarItemsSectionP
                     </Text>
                 </Column>
 
-                {/* Products Grid - Responsive */}
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(1, 1fr)",
-                        gap: "24px",
-                        width: "100%",
-                    }}
-                    className="similar-items-grid"
-                >
-                    {products.map((product) => (
-                        <Link
-                            key={product.id}
-                            href={`/products/${product.id}`}
-                            style={{ textDecoration: "none", display: "block" }}
-                        >
-                            <ProductCard
-                                product={product}
-                                onFavorite={(productId) =>
-                                    console.log("Favorited:", productId)
-                                }
-                            />
-                        </Link>
-                    ))}
-                </div>
+                {/* Products Carousel */}
+                <ProductCarousel products={products} autoplay={true} autoplayDelay={5000} />
             </Column>
-
-            <style jsx>{`
-        @media (min-width: 640px) {
-          .similar-items-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .similar-items-grid {
-            grid-template-columns: repeat(4, 1fr) !important;
-          }
-        }
-      `}</style>
         </Column>
     );
 }
