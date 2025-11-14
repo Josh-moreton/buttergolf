@@ -166,19 +166,26 @@ export function ProductCard({
                 fontWeight: 600,
                 lineHeight: 1,
                 color: "#FFFFFF",
-                margin: "0 0 4px 0",
+                margin: "0 0 6px 0",
                 textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
               £{product.price.toFixed(2)}
             </p>
 
-            {/* Seller Name (if available) */}
-            {(product as ProductCardData & { sellerName?: string }).sellerName && (
+            {/* Seller Info with Rating */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                flexWrap: "wrap",
+              }}
+            >
               <p
                 style={{
                   fontFamily: "var(--font-urbanist)",
-                  fontSize: "14px",
+                  fontSize: "13px",
                   fontWeight: 400,
                   lineHeight: 1,
                   color: "#FFFFFF",
@@ -187,9 +194,46 @@ export function ProductCard({
                   textShadow: "0 2px 8px rgba(0,0,0,0.5)",
                 }}
               >
-                by {(product as ProductCardData & { sellerName?: string }).sellerName}
+                by {product.seller.name}
               </p>
-            )}
+              {product.seller.ratingCount > 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "3px",
+                  }}
+                >
+                  <span style={{ color: "#FFFFFF", fontSize: "12px" }}>★</span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-urbanist)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                      textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    {product.seller.averageRating?.toFixed(1)} ({product.seller.ratingCount})
+                  </span>
+                </div>
+              ) : (
+                <span
+                  style={{
+                    fontFamily: "var(--font-urbanist)",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    color: "#FFFFFF",
+                    backgroundColor: "rgba(244, 83, 20, 0.9)",
+                    padding: "2px 6px",
+                    borderRadius: "4px",
+                    textShadow: "none",
+                  }}
+                >
+                  NEW SELLER
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

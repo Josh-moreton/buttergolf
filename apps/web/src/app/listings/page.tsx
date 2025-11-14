@@ -34,8 +34,8 @@ async function getListings(searchParams: SearchParams) {
   const conditions = Array.isArray(searchParams.condition)
     ? searchParams.condition
     : searchParams.condition
-    ? [searchParams.condition]
-    : [];
+      ? [searchParams.condition]
+      : [];
   if (conditions.length > 0) {
     where.condition = { in: conditions };
   }
@@ -52,8 +52,8 @@ async function getListings(searchParams: SearchParams) {
   const brands = Array.isArray(searchParams.brand)
     ? searchParams.brand
     : searchParams.brand
-    ? [searchParams.brand]
-    : [];
+      ? [searchParams.brand]
+      : [];
   if (brands.length > 0) {
     where.brand = { in: brands };
   }
@@ -94,6 +94,14 @@ async function getListings(searchParams: SearchParams) {
             slug: true,
           },
         },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            averageRating: true,
+            ratingCount: true,
+          },
+        },
       },
       orderBy,
       skip,
@@ -114,14 +122,22 @@ async function getListings(searchParams: SearchParams) {
   ]);
 
   // Map to ProductCardData format
-  const productCards: ProductCardData[] = products.map((product) => ({
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    condition: product.condition,
-    imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
-    category: product.category.name,
-  }));
+  const productCards: ProductCardData[] = products
+    .filter((product) => product.user) // Filter out products without users
+    .map((product) => ({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      condition: product.condition,
+      imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
+      category: product.category.name,
+      seller: {
+        id: product.user.id,
+        name: product.user.name,
+        averageRating: product.user.averageRating,
+        ratingCount: product.user.ratingCount,
+      },
+    }));
 
   return {
     products: productCards,
@@ -147,11 +163,11 @@ export default async function ListingsPage({ searchParams }: Props) {
   return (
     <Suspense
       fallback={
-        <div style={{ 
-          display: "flex", 
-          alignItems: "center", 
-          justifyContent: "center", 
-          minHeight: "50vh" 
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "50vh"
         }}>
           <div>Loading...</div>
         </div>

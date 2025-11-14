@@ -27,10 +27,20 @@ export async function getRecentProducts(
             slug: true,
           },
         },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            averageRating: true,
+            ratingCount: true,
+          },
+        },
       },
     });
 
-    return products.map((product) => {
+    return products
+      .filter((product) => product.user) // Filter out products without users
+      .map((product) => {
       let imageUrl =
         product.images[0]?.url ||
         "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400";
@@ -58,6 +68,12 @@ export async function getRecentProducts(
         condition: product.condition,
         imageUrl,
         category: product.category.name,
+        seller: {
+          id: product.user.id,
+          name: product.user.name,
+          averageRating: product.user.averageRating,
+          ratingCount: product.user.ratingCount,
+        },
       };
     });
   } catch (error) {
