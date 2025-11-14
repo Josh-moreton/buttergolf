@@ -1285,56 +1285,53 @@ const round = await prisma.round.create({
 
 ### Database Workflow
 
-**CRITICAL: Always Use Migrations in Development**
+**🚨 CRITICAL: ALWAYS USE MIGRATIONS - NO EXCEPTIONS 🚨**
 
-❌ **NEVER use `pnpm db:push` for schema changes** - This creates database drift and causes migration conflicts that require data loss to resolve.
+❌ **NEVER EVER use `pnpm db:push` for schema changes** - This creates database drift and causes migration conflicts that require data loss to resolve.
+
+❌ **DO NOT use `db:push` even when you see drift errors** - Use the proper workflow below instead.
 
 ✅ **ALWAYS use `pnpm db:migrate:dev --name descriptive-name`** - This creates proper migration files that track schema changes and prevent drift.
 
-**Correct Development Workflow:**
+**THE ONLY CORRECT WORKFLOW:**
 
 1. **Modify schema**: Edit `packages/db/prisma/schema.prisma`
-2. **Generate client**: `pnpm db:generate`
-3. **Create migration**: `pnpm db:migrate:dev --name descriptive-change-name`
+2. **Create migration**: `cd packages/db && pnpm prisma migrate dev --name descriptive-change-name`
    - This creates a migration file in `prisma/migrations/`
    - This applies the migration to your database
    - This keeps your migration history in sync with your database
-4. **Seed data** (if needed): `pnpm db:seed`
+   - This automatically runs `prisma generate`
+3. **Seed data** (if needed): `pnpm db:seed`
+
+**IF YOU ENCOUNTER DRIFT ERRORS:**
+
+If you see "Drift detected: Your database schema is not in sync with your migration history":
+
+**SOLUTION: Reset and reseed (this is the CORRECT approach)**
+```bash
+cd packages/db
+pnpm prisma migrate reset --force  # Drops DB, reapplies all migrations
+cd ../..
+pnpm db:seed  # Reseeds all data
+```
+
+This is the ONLY proper way to resolve drift. It ensures migration history is clean and the database can be deployed to production safely.
 
 **Why This Matters:**
 - `db:push` applies changes directly without creating migration files
 - This causes "drift" where your database has columns/tables that aren't in migrations
-- When you try to create a new migration later, Prisma detects drift and forces a reset
-- Reset = **all data is lost** and must be re-seeded
+- When you try to create a new migration later, Prisma detects drift and you MUST reset
 - Migrations create a proper history and allow safe deployments to production
+- **We have made this mistake 7+ times - NEVER DO IT AGAIN**
 
-**Exception:** Only use `db:push` for rapid prototyping when you don't care about losing data.
-
-**When Database Drift Occurs:**
-
-If you encounter "Database schema is not in sync with migration history" errors:
-
-1. **Understand the drift** (read-only, safe):
-   ```bash
-   cd packages/db
-   pnpm prisma migrate diff --script
-   ```
-   **NOTE:** This shows what SQL would revert your schema TO match the database. The DROP statements are confusing - they show columns/tables that exist in your schema but NOT in the database. This is a READ-ONLY preview, nothing is executed.
-
-2. **Safe resolution without data loss**:
-   ```bash
-   cd packages/db
-   pnpm prisma db push
-   ```
-   This syncs your schema to the database without creating migration files. Use this ONLY to resolve drift while preserving data. After this, return to the correct workflow above.
-
-3. **Prevention**: Never mix `migrate dev` and `db push`. Pick one approach and stick with it throughout the project.
+**NO EXCEPTIONS:** There is no "quick fix" scenario where db:push is acceptable. Always use migrations.
 
 **Understanding Prisma Commands:**
-- `prisma migrate dev` - Creates migration files, version-controlled, production-safe
-- `prisma db push` - Direct schema sync, no migration files, development-only
-- `prisma migrate diff --script` - READ-ONLY preview, shows SQL to revert schema changes (confusing output, nothing is executed)
-- `prisma migrate reset` - ⚠️ DESTRUCTIVE - Drops database, reapplies all migrations, reseeds data
+- `prisma migrate dev` - ✅ THE ONLY COMMAND YOU SHOULD USE - Creates migration files, version-controlled, production-safe
+- `prisma migrate reset --force` - ✅ CORRECT way to resolve drift - Drops database, reapplies all migrations, reseeds data
+- `prisma db push` - ❌ FORBIDDEN - Never use this, it causes drift
+- `prisma migrate resolve` - ❌ DO NOT USE - Does not actually fix drift, makes it worse
+- `prisma migrate diff` - ❌ USELESS - Confusing output, doesn't help resolve drift
 
 ### Database Setup Options
 

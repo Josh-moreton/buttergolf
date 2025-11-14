@@ -16,6 +16,7 @@ import {
 } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import { ProductInformation } from "./_components/ProductInformation";
+import { MakeOfferModal } from "./_components/MakeOfferModal";
 
 interface ProductImage {
   id: string;
@@ -60,6 +61,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [purchasing, setPurchasing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
+  const [makeOfferModalOpen, setMakeOfferModalOpen] = useState(false);
   const router = useRouter();
 
   const selectedImage = product.images[selectedImageIndex];
@@ -96,8 +98,31 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   };
 
   const handleMakeOffer = () => {
-    // TODO: Open make offer modal
-    console.log("Make offer clicked");
+    setMakeOfferModalOpen(true);
+  };
+
+  const handleSubmitOffer = async (offerAmount: number) => {
+    try {
+      const response = await fetch("/api/offers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product.id,
+          amount: offerAmount,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to submit offer");
+      }
+
+      // Show success message
+      alert(`Offer of £${offerAmount.toFixed(2)} submitted successfully! The seller will be notified.`);
+    } catch (error) {
+      console.error("Error submitting offer:", error);
+      throw error;
+    }
   };
 
   const handleKeyboardNav = (e: KeyboardEvent) => {
@@ -426,6 +451,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           }
         `
       }} />
+
+      {/* Make Offer Modal */}
+      <MakeOfferModal
+        product={product}
+        isOpen={makeOfferModalOpen}
+        onClose={() => setMakeOfferModalOpen(false)}
+        onSubmitOffer={handleSubmitOffer}
+      />
     </>
   );
 }

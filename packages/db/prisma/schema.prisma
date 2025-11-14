@@ -34,6 +34,8 @@ model User {
     addresses                Address[]
     ratingsReceived          SellerRating[] @relation("SellerRatings")
     ratingsGiven             SellerRating[] @relation("RatingsGiven")
+    buyerOffers              Offer[]        @relation("BuyerOffers")
+    sellerOffers             Offer[]        @relation("SellerOffers")
 
     @@map("users")
 }
@@ -76,6 +78,7 @@ model Product {
     createdAt   DateTime         @default(now())
     updatedAt   DateTime         @updatedAt
     orders      Order[]
+    offers      Offer[]
 
     @@index([categoryId])
     @@index([userId])
@@ -225,4 +228,47 @@ model SellerRating {
     @@index([buyerId])
     @@index([orderId])
     @@map("seller_ratings")
+}
+
+model Offer {
+    id            String         @id @default(cuid())
+    amount        Float
+    status        OfferStatus    @default(PENDING)
+    message       String?        @db.Text
+    productId     String
+    product       Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+    buyerId       String
+    buyer         User           @relation("BuyerOffers", fields: [buyerId], references: [id], onDelete: Cascade)
+    sellerId      String
+    seller        User           @relation("SellerOffers", fields: [sellerId], references: [id], onDelete: Cascade)
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    counterOffers CounterOffer[]
+
+    @@index([productId])
+    @@index([buyerId])
+    @@index([sellerId])
+    @@index([status])
+    @@map("offers")
+}
+
+model CounterOffer {
+    id         String   @id @default(cuid())
+    amount     Float
+    message    String?  @db.Text
+    fromSeller Boolean
+    offerId    String
+    offer      Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+    createdAt  DateTime @default(now())
+
+    @@index([offerId])
+    @@map("counter_offers")
+}
+
+enum OfferStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
+    COUNTERED
+    EXPIRED
 }
