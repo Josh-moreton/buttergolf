@@ -6,25 +6,44 @@ export function NewsletterSection() {
   return (
     <Column paddingVertical="$10" backgroundColor="$background">
       <Column
-        maxWidth={1200}
+        maxWidth={800}
         marginHorizontal="auto"
         paddingHorizontal="$4"
         width="100%"
         gap="$lg"
+        alignItems="center"
       >
-        <Text fontSize="$8" weight="bold">
-          Don&apos;t miss deals
-        </Text>
-        <Text opacity={0.8}>
-          Get the latest listings and price drops in your inbox
-        </Text>
+        <Column gap="$sm" alignItems="center" textAlign="center">
+          <Text fontSize="$8" weight="bold" color="$text">
+            Don&apos;t miss deals
+          </Text>
+          <Text color="$textSecondary" fontSize="$5">
+            Get the latest listings and price drops in your inbox
+          </Text>
+        </Column>
         <Row
           gap="$sm"
+          maxWidth={500}
+          width="100%"
           $sm={{ flexDirection: "column" }}
           $md={{ flexDirection: "row" }}
         >
-          <Input flex={1} size="lg" placeholder="you@example.com" />
-          <Button size="$5">Subscribe</Button>
+          <Input
+            flex={1}
+            size="lg"
+            placeholder="you@example.com"
+            borderRadius="$full"
+            paddingHorizontal="$5"
+          />
+          <Button
+            size="lg"
+            tone="primary"
+            borderRadius="$full"
+            paddingHorizontal="$6"
+            whiteSpace="nowrap"
+          >
+            Subscribe
+          </Button>
         </Row>
       </Column>
     </Column>
