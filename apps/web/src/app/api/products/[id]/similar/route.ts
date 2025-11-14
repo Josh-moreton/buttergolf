@@ -59,6 +59,13 @@ export async function GET(
             slug: true,
           },
         },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          },
+        },
       },
       orderBy: [
         // Prioritize same brand
@@ -77,6 +84,12 @@ export async function GET(
       condition: prod.condition,
       imageUrl: prod.images[0]?.url || '/placeholder-product.jpg',
       category: prod.category.name,
+      seller: {
+        id: prod.user.id,
+        name: prod.user.name || 'Unknown Seller',
+        averageRating: null, // TODO: Calculate from ratings
+        ratingCount: 0, // TODO: Get from ratings count
+      },
     }));
 
     return NextResponse.json({

@@ -86,7 +86,14 @@ async function main() {
                 model: 'Stealth 2',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000lr70gl6vchczu-main.jpg', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000lr70gl6vchczu-main.jpg', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=60', sortOrder: 3 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -99,7 +106,14 @@ async function main() {
                 model: 'Rogue ST Max',
                 userId: user2.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000vr70ggi0mn91p-main.jpg', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000vr70ggi0mn91p-main.jpg', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=60', sortOrder: 3 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -112,7 +126,14 @@ async function main() {
                 model: 'G430 Max',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=60', sortOrder: 3 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -125,7 +146,14 @@ async function main() {
                 model: 'TSi3',
                 userId: user3.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=60', sortOrder: 3 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -138,7 +166,13 @@ async function main() {
                 model: 'LTDx LS',
                 userId: user2.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -151,7 +185,13 @@ async function main() {
                 model: 'ST-Z',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -164,7 +204,13 @@ async function main() {
                 model: 'ZX5',
                 userId: user3.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -177,7 +223,13 @@ async function main() {
                 model: 'Launch Pad 2',
                 userId: user2.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
 
@@ -192,7 +244,13 @@ async function main() {
                 model: 'Stealth 2',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
         prisma.product.create({
@@ -205,7 +263,13 @@ async function main() {
                 model: 'Rogue ST Max',
                 userId: user2.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: {
+                    create: [
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                        { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                    ]
+                },
             },
         }),
         prisma.product.create({

@@ -60,8 +60,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [purchasing, setPurchasing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
-  const [similarProducts, setSimilarProducts] = useState<ProductCardData[]>([]);
-  const [loadingSimilar, setLoadingSimilar] = useState(true);
   const router = useRouter();
 
   const selectedImage = product.images[selectedImageIndex];
@@ -76,25 +74,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }
     // Use hash to generate value between 20-70
     return 20 + (Math.abs(hash) % 50);
-  }, [product.id]);
-
-  // Fetch similar products
-  useEffect(() => {
-    const fetchSimilar = async () => {
-      try {
-        const res = await fetch(`/api/products/${product.id}/similar`);
-        if (res.ok) {
-          const data = await res.json();
-          setSimilarProducts(data.products || []);
-        }
-      } catch (error) {
-        console.error("Failed to fetch similar products:", error);
-      } finally {
-        setLoadingSimilar(false);
-      }
-    };
-
-    fetchSimilar();
   }, [product.id]);
 
   // Handle scroll for mobile bar
@@ -583,84 +562,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </Card>
             </Column>
           </Row>
-
-          {/* Similar Listings Section */}
-          {!loadingSimilar && similarProducts.length > 0 && (
-            <Column gap="$xl" marginTop="$3xl">
-              <Column gap="$md">
-                <Heading level={2} color="$secondary">
-                  Similar Listings
-                </Heading>
-                <Text color="$textSecondary">
-                  Other {product.category.name.toLowerCase()} items you might like
-                </Text>
-              </Column>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-                  gap: "24px",
-                  width: "100%",
-                }}
-              >
-                {similarProducts.slice(0, 4).map((similarProduct) => (
-                  <Link
-                    key={similarProduct.id}
-                    href={`/products/${similarProduct.id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Card
-                      variant="elevated"
-                      padding={0}
-                      animation="bouncy"
-                      backgroundColor="$surface"
-                      borderRadius="$lg"
-                      hoverStyle={{
-                        borderColor: "$borderHover",
-                        transform: "translateY(-4px)",
-                        shadowColor: "$shadowColorHover",
-                        shadowRadius: 12,
-                      }}
-                      cursor="pointer"
-                    >
-                      <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
-                        <Image
-                          source={{ uri: similarProduct.imageUrl }}
-                          width="100%"
-                          height="100%"
-                          objectFit="cover"
-                          alt={similarProduct.title}
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            borderTopLeftRadius: 10,
-                            borderTopRightRadius: 10,
-                          }}
-                        />
-                      </div>
-                      <Column padding="$md" gap="$sm">
-                        <Text size="md" weight="semibold" numberOfLines={2}>
-                          {similarProduct.title}
-                        </Text>
-                        <Row alignItems="center" justifyContent="space-between">
-                          <Text size="lg" weight="bold" color="$primary">
-                            £{similarProduct.price.toFixed(2)}
-                          </Text>
-                          {similarProduct.condition && (
-                            <Badge variant="neutral" size="sm">
-                              <Text size="xs">{similarProduct.condition.replace("_", " ")}</Text>
-                            </Badge>
-                          )}
-                        </Row>
-                      </Column>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </Column>
-          )}
         </Column>
       </Container>
 
