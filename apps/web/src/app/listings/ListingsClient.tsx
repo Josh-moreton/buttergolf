@@ -322,7 +322,7 @@ export function ListingsClient({
           )}
 
           {/* Main content: Sidebar + Grid */}
-          <Row gap="$lg" alignItems="flex-start">
+          <Row gap="$2xl" alignItems="flex-start">
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
