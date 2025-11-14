@@ -21,7 +21,7 @@ export const Input = styled(TamaguiInput, {
   backgroundColor: '$surface',
   borderWidth: 1,
   borderColor: '$fieldBorder',
-  borderRadius: '$md',
+  borderRadius: 24,
   color: '$text',
   fontFamily: '$body',
   outlineWidth: 0,

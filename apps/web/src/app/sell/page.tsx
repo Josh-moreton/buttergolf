@@ -511,8 +511,8 @@ export default function SellPage() {
                 >
                   <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
-                      chromeless
-                      size="$5"
+                      tone="outline"
+                      size="lg"
                       onPress={() => router.push("/")}
                       disabled={loading}
                       flex={1}
@@ -520,19 +520,16 @@ export default function SellPage() {
                       Save draft
                     </Button>
                     <Button
-                      backgroundColor="$primary"
-                      color="$white"
-                      size="$5"
+                      tone="primary"
+                      size="lg"
                       disabled={loading}
                       onPress={() => handleSubmit({} as React.FormEvent)}
                       flex={1}
-                      hoverStyle={{ backgroundColor: "$primaryHover" }}
-                      pressStyle={{ backgroundColor: "$primaryPress" }}
                     >
                       {loading ? "Uploading..." : "Upload"}
                     </Button>
                   </Row>
-                  <Text size="xs" color="$textMuted" textAlign="center">
+                  <Text size="xs" color="$helperText" textAlign="center">
                     What do you think of our upload process?{" "}
                     <Text size="xs" color="$primary" cursor="pointer">
                       Give feedback

@@ -19,7 +19,7 @@ export const Button = styled(TamaguiButton, {
 
     fontFamily: "$body",
     fontWeight: "600",
-    borderRadius: "$md",
+    borderRadius: 24,
     gap: "$2",
 
     disabledStyle: {

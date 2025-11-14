@@ -156,7 +156,7 @@ export function ImageUpload({
                 or drag and drop
               </Text>
             </Column>
-            <Text size="xs" color="$textMuted" textAlign="center">
+            <Text size="xs" color="$primary" textAlign="center">
               {currentImages.length}/{maxImages} photos • Max 10MB each
             </Text>
           </Column>
