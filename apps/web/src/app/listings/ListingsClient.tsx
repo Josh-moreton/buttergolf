@@ -8,6 +8,8 @@ import { FilterSidebar, type FilterState } from "./_components/FilterSidebar";
 import { MobileFilterSheet } from "./_components/MobileFilterSheet";
 import { SortDropdown } from "./_components/SortDropdown";
 import { ProductsGrid } from "./_components/ProductsGrid";
+import { PageHero } from "../_components/marketplace/PageHero";
+import { FooterSection } from "../_components/marketplace/FooterSection";
 
 interface ListingsClientProps {
   initialProducts: ProductCardData[];
@@ -196,10 +198,15 @@ export function ListingsClient({
   }, [filters, initialFilters.priceRange]);
 
   return (
-    <Column width="100%" paddingVertical="$lg">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
+    <Column width="100%" backgroundColor="$surface">
+      {/* Page Hero */}
+      <PageHero />
+
+      {/* Listings Content */}
+      <Column width="100%" paddingVertical="$lg">
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           @media (min-width: 1024px) {
             .mobile-filter-button {
               display: none !important;
@@ -209,145 +216,149 @@ export function ListingsClient({
             }
           }
         `,
-        }}
-      />
-      <Column
-        maxWidth={1280}
-        marginHorizontal="auto"
-        paddingHorizontal="$6"
-        width="100%"
-        gap="$lg"
-      >
-        {/* Header */}
-        <Row
-          alignItems="center"
-          justifyContent="space-between"
-          flexWrap="wrap"
-          gap="$md"
+          }}
+        />
+        <Column
+          maxWidth={1280}
+          marginHorizontal="auto"
+          paddingHorizontal="$6"
+          width="100%"
+          gap="$lg"
         >
-          <Column gap="$xs">
-            <Text fontSize="$9" weight="bold">
-              Shop All Products
-            </Text>
-            <Text color="$textSecondary">
-              {total} {total === 1 ? "product" : "products"} found
-            </Text>
-          </Column>
+          {/* Header */}
+          <Row
+            alignItems="center"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap="$md"
+          >
+            <Column gap="$xs">
+              <Text fontSize="$9" weight="bold">
+                Shop All Products
+              </Text>
+              <Text color="$textSecondary">
+                {total} {total === 1 ? "product" : "products"} found
+              </Text>
+            </Column>
 
-          <Row gap="$md" alignItems="center">
-            {/* Mobile filter button */}
-            <div
-              style={{ display: "flex" }}
-              className="mobile-filter-button"
-            >
-              <Button
-                size="$4"
-                chromeless
-                onPress={() => setMobileFilterOpen(true)}
+            <Row gap="$md" alignItems="center">
+              {/* Mobile filter button */}
+              <div
+                style={{ display: "flex" }}
+                className="mobile-filter-button"
               >
-                <Row gap="$sm" alignItems="center">
-                  <Text>Filters</Text>
-                  {activeFilterCount > 0 && (
-                    <Badge variant="primary" size="sm">
-                      {activeFilterCount}
-                    </Badge>
-                  )}
-                </Row>
+                <Button
+                  size="$4"
+                  chromeless
+                  onPress={() => setMobileFilterOpen(true)}
+                >
+                  <Row gap="$sm" alignItems="center">
+                    <Text>Filters</Text>
+                    {activeFilterCount > 0 && (
+                      <Badge variant="primary" size="sm">
+                        {activeFilterCount}
+                      </Badge>
+                    )}
+                  </Row>
+                </Button>
+              </div>
+
+              {/* Sort dropdown */}
+              <SortDropdown value={sort} onChange={setSort} />
+            </Row>
+          </Row>
+
+          {/* Active filters chips */}
+          {activeFilterCount > 0 && (
+            <Row gap="$sm" flexWrap="wrap" alignItems="center">
+              <Text size="sm" color="$textSecondary">
+                Active filters:
+              </Text>
+              {filters.category && (
+                <Badge variant="outline" size="md">
+                  {filters.category}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() => handleFilterChange({ category: null })}
+                  >
+                    ×
+                  </span>
+                </Badge>
+              )}
+              {filters.conditions.map((condition) => (
+                <Badge key={condition} variant="outline" size="md">
+                  {condition.replace("_", " ")}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() =>
+                      handleFilterChange({
+                        conditions: filters.conditions.filter((c) => c !== condition),
+                      })
+                    }
+                  >
+                    ×
+                  </span>
+                </Badge>
+              ))}
+              {filters.brands.map((brand) => (
+                <Badge key={brand} variant="outline" size="md">
+                  {brand}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() =>
+                      handleFilterChange({
+                        brands: filters.brands.filter((b) => b !== brand),
+                      })
+                    }
+                  >
+                    ×
+                  </span>
+                </Badge>
+              ))}
+              <Button size="$3" chromeless onPress={handleClearAll}>
+                Clear all
               </Button>
-            </div>
+            </Row>
+          )}
 
-            {/* Sort dropdown */}
-            <SortDropdown value={sort} onChange={setSort} />
-          </Row>
-        </Row>
-
-        {/* Active filters chips */}
-        {activeFilterCount > 0 && (
-          <Row gap="$sm" flexWrap="wrap" alignItems="center">
-            <Text size="sm" color="$textSecondary">
-              Active filters:
-            </Text>
-            {filters.category && (
-              <Badge variant="outline" size="md">
-                {filters.category}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() => handleFilterChange({ category: null })}
-                >
-                  ×
-                </span>
-              </Badge>
-            )}
-            {filters.conditions.map((condition) => (
-              <Badge key={condition} variant="outline" size="md">
-                {condition.replace("_", " ")}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() =>
-                    handleFilterChange({
-                      conditions: filters.conditions.filter((c) => c !== condition),
-                    })
-                  }
-                >
-                  ×
-                </span>
-              </Badge>
-            ))}
-            {filters.brands.map((brand) => (
-              <Badge key={brand} variant="outline" size="md">
-                {brand}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() =>
-                    handleFilterChange({
-                      brands: filters.brands.filter((b) => b !== brand),
-                    })
-                  }
-                >
-                  ×
-                </span>
-              </Badge>
-            ))}
-            <Button size="$3" chromeless onPress={handleClearAll}>
-              Clear all
-            </Button>
-          </Row>
-        )}
-
-        {/* Main content: Sidebar + Grid */}
-        <Row gap="$lg" alignItems="flex-start">
-          {/* Desktop sidebar */}
-          <FilterSidebar
-            filters={filters}
-            availableBrands={availableFilters.availableBrands}
-            priceRange={availableFilters.priceRange}
-            onChange={handleFilterChange}
-            onClearAll={handleClearAll}
-          />
-
-          {/* Products grid */}
-          <Column flex={1}>
-            <ProductsGrid
-              products={products}
-              hasMore={hasMore}
-              isLoading={isLoading}
-              onLoadMore={handleLoadMore}
+          {/* Main content: Sidebar + Grid */}
+          <Row gap="$lg" alignItems="flex-start">
+            {/* Desktop sidebar */}
+            <FilterSidebar
+              filters={filters}
+              availableBrands={availableFilters.availableBrands}
+              priceRange={availableFilters.priceRange}
+              onChange={handleFilterChange}
+              onClearAll={handleClearAll}
             />
-          </Column>
-        </Row>
+
+            {/* Products grid */}
+            <Column flex={1}>
+              <ProductsGrid
+                products={products}
+                hasMore={hasMore}
+                isLoading={isLoading}
+                onLoadMore={handleLoadMore}
+              />
+            </Column>
+          </Row>
+        </Column>
+
+        {/* Mobile filter sheet */}
+        <MobileFilterSheet
+          open={mobileFilterOpen}
+          onOpenChange={setMobileFilterOpen}
+          filters={filters}
+          availableBrands={availableFilters.availableBrands}
+          priceRange={availableFilters.priceRange}
+          onChange={handleFilterChange}
+          onClearAll={handleClearAll}
+          onApply={() => fetchProducts(1, false)}
+        />
       </Column>
 
-      {/* Mobile filter sheet */}
-      <MobileFilterSheet
-        open={mobileFilterOpen}
-        onOpenChange={setMobileFilterOpen}
-        filters={filters}
-        availableBrands={availableFilters.availableBrands}
-        priceRange={availableFilters.priceRange}
-        onChange={handleFilterChange}
-        onClearAll={handleClearAll}
-        onApply={() => fetchProducts(1, false)}
-      />
+      {/* Footer */}
+      <FooterSection />
     </Column>
   );
 }
