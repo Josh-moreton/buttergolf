@@ -94,6 +94,13 @@ async function getListings(searchParams: SearchParams) {
             slug: true,
           },
         },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -108,11 +115,16 @@ async function getListings(searchParams: SearchParams) {
       take: limit,
     }),
     prisma.product.count({ where }),
-    prisma.product.findMany({
-      where: { isSold: false, brand: { not: null } },
-      select: { brand: true },
-      distinct: ["brand"],
-      orderBy: { brand: "asc" },
+    prisma.brand.findMany({
+      where: {
+        products: {
+          some: {
+            isSold: false,
+          },
+        },
+      },
+      select: { id: true, name: true, slug: true },
+      orderBy: { sortOrder: "asc" },
     }),
     prisma.product.aggregate({
       where: { isSold: false },
@@ -146,9 +158,7 @@ async function getListings(searchParams: SearchParams) {
     totalPages: Math.ceil(total / limit),
     hasMore: page < Math.ceil(total / limit),
     filters: {
-      availableBrands: availableBrands
-        .map((p) => p.brand)
-        .filter((b): b is string => b !== null),
+      availableBrands: availableBrands.map((b) => b.name),
       priceRange: {
         min: priceAgg._min.price || 0,
         max: priceAgg._max.price || 10000,

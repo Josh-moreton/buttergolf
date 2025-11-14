@@ -54,13 +54,62 @@ model Category {
     @@map("categories")
 }
 
+model Brand {
+    id         String      @id @default(cuid())
+    name       String      @unique
+    slug       String      @unique
+    logoUrl    String?
+    sortOrder  Int         @default(0)
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+    products   Product[]
+    clubModels ClubModel[]
+
+    @@map("brands")
+}
+
+enum ClubKind {
+    DRIVER
+    FAIRWAY_WOOD
+    HYBRID
+    IRON_SET
+    WEDGE
+    PUTTER
+    BALL
+    BAG
+    APPAREL
+    ACCESSORY
+    OTHER
+}
+
+model ClubModel {
+    id         String    @id @default(cuid())
+    brandId    String
+    brand      Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    name       String // e.g., "Apex 21", "Stealth 2"
+    kind       ClubKind
+    isVerified Boolean   @default(false) // Promoted after multiple uses
+    usageCount Int       @default(0) // How many times this model has been listed
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+
+    @@unique([brandId, name, kind])
+    @@index([brandId])
+    @@index([isVerified])
+    @@index([usageCount])
+    @@map("club_models")
+}
+
 model Product {
     id          String           @id @default(cuid())
     title       String
     description String
     price       Float
     condition   ProductCondition
-    brand       String?
+    // Brand relationship (controlled)
+    brandId     String?
+    brand       Brand?           @relation(fields: [brandId], references: [id], onDelete: SetNull)
+    // Model field (hybrid - free text for flexibility)
     model       String?
     userId      String
     user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -82,6 +131,7 @@ model Product {
 
     @@index([categoryId])
     @@index([userId])
+    @@index([brandId])
     @@index([isSold])
     @@index([views])
     @@index([favorites])

@@ -30,6 +30,8 @@ export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from 
 // Form Components
 export { Input } from './components/Input'
 export type { InputProps } from './components/Input'
+export { Autocomplete } from './components/Autocomplete'
+export type { AutocompleteProps, AutocompleteSuggestion } from './components/Autocomplete'
 export { Checkbox } from './components/Checkbox'
 export type { CheckboxProps } from './components/Checkbox'
 export { Slider } from './components/Slider'

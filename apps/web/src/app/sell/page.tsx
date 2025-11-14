@@ -11,6 +11,8 @@ import {
   Button,
   Input,
   Card,
+  Autocomplete,
+  type AutocompleteSuggestion,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 
@@ -20,12 +22,28 @@ interface Category {
   slug: string;
 }
 
+interface Brand {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl?: string;
+}
+
+interface Model {
+  id: string | null;
+  name: string;
+  source?: string;
+  isVerified?: boolean;
+  usageCount?: number;
+}
+
 interface FormData {
   title: string;
   description: string;
   price: string;
   condition: string;
-  brand: string;
+  brandId: string;
+  brandName: string; // For display
   model: string;
   categoryId: string;
   images: string[];
@@ -79,7 +97,8 @@ export default function SellPage() {
     description: "",
     price: "",
     condition: "GOOD",
-    brand: "",
+    brandId: "",
+    brandName: "",
     model: "",
     categoryId: "",
     images: [],
@@ -114,7 +133,8 @@ export default function SellPage() {
       !formData.title ||
       !formData.description ||
       !formData.price ||
-      !formData.categoryId
+      !formData.categoryId ||
+      !formData.brandId
     ) {
       setError("Please fill in all required fields");
       setLoading(false);
@@ -136,6 +156,8 @@ export default function SellPage() {
         body: JSON.stringify({
           ...formData,
           price: Number.parseFloat(formData.price),
+          // Don't send brandName (display only)
+          brandName: undefined,
           // Convert dimensions to numbers (or null if empty)
           length: formData.length ? Number.parseFloat(formData.length) : null,
           width: formData.width ? Number.parseFloat(formData.width) : null,
@@ -265,11 +287,11 @@ export default function SellPage() {
                       required
                       rows={3}
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
                         lineHeight: "22px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         fontFamily: "inherit",
@@ -278,10 +300,10 @@ export default function SellPage() {
                         transition: "border-color 0.2s",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = "#E25F2F"; // Pure Butter orange
+                        e.target.style.borderColor = "#F45314";
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = "#d1d5db";
+                        e.target.style.borderColor = "#323232";
                       }}
                     />
                     <HelperText>
@@ -300,20 +322,27 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         cursor: "pointer",
                         outline: "none",
                         appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 12px center",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 18px center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "20px",
-                        paddingRight: "40px",
+                        paddingRight: "48px",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#F45314";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "#323232";
                       }}
                     >
                       <option value="">Select a category</option>
@@ -328,29 +357,85 @@ export default function SellPage() {
                   {/* Brand & Model Row */}
                   <Row gap="$md" flexWrap="wrap">
                     <Column gap="$xs" flex={1} minWidth={200}>
-                      <FormLabel>Brand</FormLabel>
-                      <Input
-                        value={formData.brand}
-                        onChangeText={(value) =>
-                          setFormData({ ...formData, brand: value })
+                      <FormLabel required>Brand</FormLabel>
+                      <Autocomplete
+                        value={formData.brandName}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, brandName: value })
                         }
-                        placeholder="e.g., TaylorMade"
+                        onSelectSuggestion={(suggestion) => {
+                          setFormData({
+                            ...formData,
+                            brandId: suggestion.id || "",
+                            brandName: suggestion.name,
+                            // Clear model when brand changes
+                            model: "",
+                          });
+                        }}
+                        fetchSuggestions={async (query) => {
+                          const res = await fetch(
+                            `/api/brands?query=${encodeURIComponent(query)}`
+                          );
+                          const brands: Brand[] = await res.json();
+                          return brands.map((b) => ({
+                            id: b.id,
+                            name: b.name,
+                            metadata: { slug: b.slug, logoUrl: b.logoUrl },
+                          }));
+                        }}
+                        placeholder="Search brands (e.g., TaylorMade)"
                         size="md"
                         width="100%"
+                        minChars={1}
+                        allowCustom={false}
                       />
+                      <HelperText>
+                        Start typing to search golf brands
+                      </HelperText>
                     </Column>
 
                     <Column gap="$xs" flex={1} minWidth={200}>
                       <FormLabel>Model</FormLabel>
-                      <Input
+                      <Autocomplete
                         value={formData.model}
-                        onChangeText={(value) =>
+                        onValueChange={(value) =>
                           setFormData({ ...formData, model: value })
                         }
-                        placeholder="e.g., Stealth 2"
+                        onSelectSuggestion={(suggestion) => {
+                          setFormData({
+                            ...formData,
+                            model: suggestion.name,
+                          });
+                        }}
+                        fetchSuggestions={async (query) => {
+                          if (!formData.brandId) return [];
+                          const res = await fetch(
+                            `/api/models?brandId=${formData.brandId}&query=${encodeURIComponent(query)}`
+                          );
+                          const models: Model[] = await res.json();
+                          return models.map((m) => ({
+                            id: m.id,
+                            name: m.name,
+                            metadata: {
+                              isVerified: m.isVerified,
+                              usageCount: m.usageCount,
+                            },
+                          }));
+                        }}
+                        placeholder={
+                          formData.brandId
+                            ? "e.g., Stealth 2"
+                            : "Select a brand first"
+                        }
                         size="md"
                         width="100%"
+                        minChars={0}
+                        allowCustom={true}
+                        disabled={!formData.brandId}
                       />
+                      <HelperText>
+                        Type your model or select from suggestions
+                      </HelperText>
                     </Column>
                   </Row>
 
@@ -364,20 +449,27 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         cursor: "pointer",
                         outline: "none",
                         appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 12px center",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 18px center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "20px",
-                        paddingRight: "40px",
+                        paddingRight: "48px",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#F45314";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "#323232";
                       }}
                     >
                       {CONDITIONS.map((cond) => (

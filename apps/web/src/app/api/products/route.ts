@@ -41,8 +41,9 @@ export async function POST(request: Request) {
             description,
             price,
             condition,
-            brand,
+            brandId,
             model,
+            clubKind, // Optional: used for creating/updating ClubModel
             categoryId,
             images,
             // Shipping dimensions
@@ -75,6 +76,55 @@ export async function POST(request: Request) {
             );
         }
 
+        // Validate brandId exists if provided
+        if (brandId) {
+            const brandExists = await prisma.brand.findUnique({
+                where: { id: brandId },
+            });
+            if (!brandExists) {
+                return NextResponse.json(
+                    { error: 'Invalid brandId' },
+                    { status: 400 }
+                );
+            }
+        }
+
+        // If model and brandId provided, create or update ClubModel record
+        if (model && brandId && clubKind) {
+            const existingModel = await prisma.clubModel.findUnique({
+                where: {
+                    brandId_name_kind: {
+                        brandId,
+                        name: model,
+                        kind: clubKind,
+                    },
+                },
+            });
+
+            if (existingModel) {
+                // Increment usage count
+                await prisma.clubModel.update({
+                    where: { id: existingModel.id },
+                    data: {
+                        usageCount: { increment: 1 },
+                        // Auto-verify after 3+ uses
+                        isVerified: existingModel.usageCount >= 2 ? true : existingModel.isVerified,
+                    },
+                });
+            } else {
+                // Create new ClubModel
+                await prisma.clubModel.create({
+                    data: {
+                        brandId,
+                        name: model,
+                        kind: clubKind,
+                        usageCount: 1,
+                        isVerified: false,
+                    },
+                });
+            }
+        }
+
         // Create product with images
         const product = await prisma.product.create({
             data: {
@@ -82,7 +132,7 @@ export async function POST(request: Request) {
                 description,
                 price: Number(price),
                 condition,
-                brand: brand || null,
+                brandId: brandId || null,
                 model: model || null,
                 userId: user.id,
                 categoryId,
@@ -101,6 +151,7 @@ export async function POST(request: Request) {
             include: {
                 images: true,
                 category: true,
+                brand: true,
                 user: {
                     select: {
                         id: true,
