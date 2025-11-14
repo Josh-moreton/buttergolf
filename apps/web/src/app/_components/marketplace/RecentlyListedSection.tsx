@@ -244,9 +244,9 @@ export function RecentlyListedSectionClient({
                 type="button"
                 onClick={() => scrollTo(index)}
                 style={{
-                  width: "10px",
+                  width: isActive ? "48px" : "10px",
                   height: "10px",
-                  borderRadius: "50%",
+                  borderRadius: isActive ? "5px" : "50%",
                   border: "none",
                   backgroundColor: isActive ? "#F45314" : "#EDEDED",
                   cursor: "pointer",
@@ -266,7 +266,8 @@ export function RecentlyListedSectionClient({
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            paddingTop: "24px",
+            paddingTop: "8px",
+            paddingBottom: "32px",
           }}
         >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>

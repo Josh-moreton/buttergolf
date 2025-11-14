@@ -51,12 +51,12 @@ export function ProductCard({
           e.currentTarget.style.transform = "scale(1)";
         }}
       >
-        {/* Container with portrait aspect ratio (1:1.4 - taller than wide) */}
+        {/* Container with aspect ratio (9:10 - 450px x 500px) */}
         <div
           style={{
             position: "relative",
             width: "100%",
-            paddingBottom: "140%",
+            paddingBottom: "111.11%",
             overflow: "hidden",
           }}
         >

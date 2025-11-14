@@ -132,7 +132,7 @@ export function CategoriesSection() {
               style={{
                 position: "relative",
                 width: "296px",
-                height: "200px",
+                height: "329px", // 9:10 aspect ratio (296 * 1.1111)
                 borderRadius: "14px",
                 overflow: "hidden", // keep clipping + rounded corners
                 flexShrink: 0,
