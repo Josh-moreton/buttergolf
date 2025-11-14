@@ -280,13 +280,13 @@ const customTokens = createTokens({
         infoLight: brandColors.infoLight,
         infoDark: brandColors.infoDark,
 
-        // Background colors (Vanilla Cream base with Pure White cards)
-        background: brandColors.vanillaCream,
-        backgroundHover: brandColors.vanillaCreamHover,
-        backgroundPress: brandColors.vanillaCreamPress,
+        // Background colors (Pure White base with Cloud Mist hover)
+        background: brandColors.pureWhite,
+        backgroundHover: brandColors.cloudMist,
+        backgroundPress: brandColors.cloudMistPress,
         backgroundFocus: brandColors.lemonHaze,
         backgroundStrong: brandColors.lemonHaze,
-        backgroundTransparent: 'rgba(255, 250, 210, 0)',
+        backgroundTransparent: 'rgba(255, 255, 255, 0)',
 
         // Text colors (Ironstone primary, Slate Smoke secondary)
         text: brandColors.ironstone,

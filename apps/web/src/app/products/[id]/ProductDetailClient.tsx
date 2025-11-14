@@ -16,6 +16,7 @@ import {
   Spinner,
 } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
+import { ProductInformation } from "./_components/ProductInformation";
 
 interface ProductImage {
   id: string;
@@ -95,6 +96,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     router.push(`/checkout?productId=${product.id}`);
   };
 
+  const handleMakeOffer = () => {
+    // TODO: Open make offer modal
+    console.log("Make offer clicked");
+  };
+
   const handleKeyboardNav = (e: KeyboardEvent) => {
     if (!lightboxOpen) return;
 
@@ -126,7 +132,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   return (
     <>
-      <Container size="lg" padding="$md">
+      <Container size="lg" padding="$md" backgroundColor="$pureWhite">
         <Column gap="$lg" paddingVertical="$lg">
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
@@ -351,200 +357,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </Card>
             </Column>
 
-            {/* Right Column - Sticky Product Info */}
-            <Column
-              gap="$lg"
-              flex={0}
-              width="100%"
-              $lg={{
-                width: 420,
-                flexShrink: 0,
-              }}
-            >
-              {/* Status and Title Card */}
-              <Card
-                variant="elevated"
-                padding="$xl"
-                backgroundColor="$surface"
-                borderRadius="$xl"
-              >
-                <Column gap="$lg">
-                  {/* Status Badges */}
-                  <Row gap="$sm" alignItems="center" flexWrap="wrap">
-                    <Badge variant={product.isSold ? "neutral" : "success"} size="lg">
-                      {product.isSold ? "Sold Out" : "Available"}
-                    </Badge>
-                    <Badge variant="info" size="lg">
-                      {product.condition.replace("_", " ")}
-                    </Badge>
-                    {product.category && (
-                      <Badge variant="outline" size="lg">
-                        {product.category.name}
-                      </Badge>
-                    )}
-                  </Row>
-
-                  {/* Title */}
-                  <Heading level={1} size="$9">
-                    {product.title}
-                  </Heading>
-
-                  {/* Price */}
-                  <Row alignItems="baseline" gap="$sm">
-                    <Heading level={2} color="$primary" size="$10">
-                      £{product.price.toFixed(2)}
-                    </Heading>
-                  </Row>
-
-                  {/* Trust Signals */}
-                  <Card variant="filled" padding="$md" backgroundColor="$background">
-                    <Column gap="$xs">
-                      <Row gap="$sm" alignItems="center">
-                        <Text size="sm">✓</Text>
-                        <Text size="sm" color="$textSecondary">
-                          Secure checkout
-                        </Text>
-                      </Row>
-                      <Row gap="$sm" alignItems="center">
-                        <Text size="sm">✓</Text>
-                        <Text size="sm" color="$textSecondary">
-                          Buyer protection included
-                        </Text>
-                      </Row>
-                      <Row gap="$sm" alignItems="center">
-                        <Text size="sm">👁️</Text>
-                        <Text size="sm" color="$textSecondary">
-                          {viewerCount} people viewing
-                        </Text>
-                      </Row>
-                    </Column>
-                  </Card>
-                </Column>
-              </Card>
-
-              {/* CTA Buttons */}
-              <Column gap="$md">
-                <Button
-                  size="lg"
-                  tone="primary"
-                  width="100%"
-                  disabled={product.isSold || purchasing}
-                  onPress={handleBuyNow}
-                  opacity={purchasing ? 0.6 : 1}
-                  height={56}
-                  hoverStyle={{
-                    backgroundColor: "$primaryHover",
-                    transform: "scale(1.02)",
-                  }}
-                  pressStyle={{
-                    backgroundColor: "$primaryPress",
-                    transform: "scale(0.98)",
-                  }}
-                >
-                  {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy Now"}
-                </Button>
-                <Button
-                  size="lg"
-                  tone="outline"
-                  width="100%"
-                  height={56}
-                  borderColor="$primary"
-                  borderWidth={2}
-                  color="$primary"
-                  hoverStyle={{
-                    backgroundColor: "$primaryLight",
-                  }}
-                >
-                  Add to Wishlist ♥
-                </Button>
-              </Column>
-
-              {/* Delivery & Returns Info */}
-              <Card
-                variant="outlined"
-                padding="$lg"
-                backgroundColor="$surface"
-                borderRadius="$lg"
-              >
-                <Column gap="$md">
-                  <Row gap="$sm" alignItems="center">
-                    <Text size="lg">📦</Text>
-                    <Column gap="$xs" flex={1}>
-                      <Text size="sm" weight="semibold">
-                        Fast Delivery
-                      </Text>
-                      <Text size="xs" color="$textMuted">
-                        Seller typically ships within 2 business days
-                      </Text>
-                    </Column>
-                  </Row>
-                  <Row gap="$sm" alignItems="center">
-                    <Text size="lg">↩️</Text>
-                    <Column gap="$xs" flex={1}>
-                      <Text size="sm" weight="semibold">
-                        Returns Accepted
-                      </Text>
-                      <Text size="xs" color="$textMuted">
-                        30-day return policy. Item must be unused.
-                      </Text>
-                    </Column>
-                  </Row>
-                </Column>
-              </Card>
-
-              {/* Seller Info Card */}
-              <Card
-                variant="outlined"
-                padding="$lg"
-                backgroundColor="$surface"
-                borderRadius="$lg"
-              >
-                <Column gap="$md">
-                  <Text weight="semibold" color="$secondary">
-                    Seller Information
-                  </Text>
-                  <Row gap="$md" alignItems="center">
-                    {product.user.imageUrl ? (
-                      <Image
-                        source={{ uri: product.user.imageUrl }}
-                        width={56}
-                        height={56}
-                        borderRadius="$full"
-                        backgroundColor="$background"
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: 56,
-                          height: 56,
-                          borderRadius: "50%",
-                          background: "#E25F2F",
-                          color: "white",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "24px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {product.user.name?.charAt(0) || "?"}
-                      </div>
-                    )}
-                    <Column gap="$xs" flex={1}>
-                      <Text weight="semibold">{product.user.name || "Anonymous"}</Text>
-                      <Row gap="$xs" alignItems="center">
-                        <Badge variant="success" size="sm">
-                          ✓ Verified
-                        </Badge>
-                      </Row>
-                    </Column>
-                  </Row>
-                  <Button size="$4" width="100%" backgroundColor="$secondary" color="$textInverse">
-                    Contact Seller
-                  </Button>
-                </Column>
-              </Card>
-            </Column>
+            {/* Right Column - Product Information */}
+            <ProductInformation
+              product={product}
+              onBuyNow={handleBuyNow}
+              onMakeOffer={handleMakeOffer}
+              purchasing={purchasing}
+            />
           </Row>
         </Column>
       </Container>
