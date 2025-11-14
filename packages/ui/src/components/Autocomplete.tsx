@@ -162,7 +162,7 @@ export function Autocomplete({
                     backgroundColor="$surface"
                     borderRadius="$md"
                     borderWidth={1}
-                    borderColor="$border"
+                    borderColor="$fieldBorder"
                 >
                     {loading ? (
                         <Row padding="$md" justifyContent="center">

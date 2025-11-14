@@ -47,11 +47,6 @@ interface FormData {
   model: string;
   categoryId: string;
   images: string[];
-  // Shipping dimensions
-  length: string;
-  width: string;
-  height: string;
-  weight: string;
 }
 
 const CONDITIONS = [
@@ -81,7 +76,7 @@ const FormLabel = ({
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text size="xs" color="$textMuted" marginTop="$xs">
+  <Text size="xs" color="$helperText" marginTop="$xs">
     {children}
   </Text>
 );
@@ -102,11 +97,6 @@ export default function SellPage() {
     model: "",
     categoryId: "",
     images: [],
-    // Shipping dimensions
-    length: "",
-    width: "",
-    height: "",
-    weight: "",
   });
 
   // Load categories on mount
@@ -158,11 +148,6 @@ export default function SellPage() {
           price: Number.parseFloat(formData.price),
           // Don't send brandName (display only)
           brandName: undefined,
-          // Convert dimensions to numbers (or null if empty)
-          length: formData.length ? Number.parseFloat(formData.length) : null,
-          width: formData.width ? Number.parseFloat(formData.width) : null,
-          height: formData.height ? Number.parseFloat(formData.height) : null,
-          weight: formData.weight ? Number.parseFloat(formData.weight) : null,
         }),
       });
 
@@ -500,89 +485,6 @@ export default function SellPage() {
                       />
                     </Row>
                     <HelperText>Enter your asking price in GBP</HelperText>
-                  </Column>
-
-                  {/* Shipping Dimensions */}
-                  <Column gap="$md" width="100%">
-                    <Column gap="$xs" width="100%">
-                      <FormLabel>Shipping Dimensions</FormLabel>
-                      <Text size="xs" color="$textMuted">
-                        Help us calculate accurate shipping costs. Leave blank to use default estimates.
-                      </Text>
-                    </Column>
-
-                    {/* Dimensions Row */}
-                    <Row gap="$sm" flexWrap="wrap">
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Length (cm)</Text>
-                        <Input
-                          value={formData.length}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, length: value })
-                          }
-                          placeholder="30"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Width (cm)</Text>
-                        <Input
-                          value={formData.width}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, width: value })
-                          }
-                          placeholder="20"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Height (cm)</Text>
-                        <Input
-                          value={formData.height}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, height: value })
-                          }
-                          placeholder="10"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Weight (g)</Text>
-                        <Input
-                          value={formData.weight}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, weight: value })
-                          }
-                          placeholder="500"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-                    </Row>
-
-                    <Card
-                      variant="filled"
-                      padding="$sm"
-                      backgroundColor="$infoLight"
-                      borderRadius="$md"
-                    >
-                      <Row gap="$sm" alignItems="flex-start">
-                        <Text fontSize={16}>📦</Text>
-                        <Text size="xs" color="$text" lineHeight={16}>
-                          Accurate dimensions help buyers understand shipping costs upfront and ensure proper packaging.
-                        </Text>
-                      </Row>
-                    </Card>
                   </Column>
 
                   {/* Error Message */}

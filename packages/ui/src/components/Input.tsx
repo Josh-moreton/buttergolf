@@ -1,9 +1,9 @@
 /**
  * Input Component
- * 
+ *
  * A flexible input component with size variants and state styling.
  * Includes proper focus, hover, and error states.
- * 
+ *
  * @example
  * ```tsx
  * <Input size="md" placeholder="Enter text" />
@@ -16,34 +16,35 @@ import { styled, GetProps, Input as TamaguiInput } from 'tamagui'
 
 export const Input = styled(TamaguiInput, {
   name: 'Input',
-  
+
   // Base styles
   backgroundColor: '$surface',
   borderWidth: 1,
-  borderColor: '$border',
+  borderColor: '$fieldBorder',
   borderRadius: '$md',
   color: '$text',
   fontFamily: '$body',
   outlineWidth: 0,
-  
+
   // Focus styles (using border for better cross-platform support)
   focusStyle: {
-    borderColor: '$borderFocus',
+    borderColor: '$fieldBorderFocus',
     borderWidth: 2,
   },
-  
+
   // Hover styles
   hoverStyle: {
-    borderColor: '$borderHover',
+    borderColor: '$fieldBorderHover',
   },
-  
+
   // Disabled styles
   disabledStyle: {
     opacity: 0.5,
     cursor: 'not-allowed',
     backgroundColor: '$backgroundPress',
+    borderColor: '$fieldBorderDisabled',
   },
-  
+
   variants: {
     size: {
       sm: {
@@ -66,12 +67,12 @@ export const Input = styled(TamaguiInput, {
     error: {
       true: {
         borderColor: '$error',
-        
+
         focusStyle: {
           borderColor: '$error',
           borderWidth: 2,
         },
-        
+
         hoverStyle: {
           borderColor: '$errorDark',
         },
@@ -81,7 +82,7 @@ export const Input = styled(TamaguiInput, {
     success: {
       true: {
         borderColor: '$success',
-        
+
         focusStyle: {
           borderColor: '$success',
           borderWidth: 2,

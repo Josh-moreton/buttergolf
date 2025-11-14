@@ -291,20 +291,28 @@ const customTokens = createTokens({
         // Text colors (Ironstone primary, Slate Smoke secondary)
         text: brandColors.ironstone,
         textSecondary: brandColors.slateSmoke,
-        textTertiary: brandColors.slateSmokeHover,
+        textTertiary: brandColors.cloudMist,
         textMuted: brandColors.cloudMist,
         textInverse: brandColors.pureWhite,
+        helperText: brandColors.ironstone,
 
         // Surface colors (Pure White cards on Vanilla Cream background)
         surface: brandColors.pureWhite,
         card: brandColors.pureWhite,
         cardHover: brandColors.cloudMist,
 
-        // Border colors (Cloud Mist neutrals)
+        // Border colors - Structural (Cloud Mist neutrals for cards, dividers, sheets)
         border: brandColors.cloudMist,
         borderHover: brandColors.cloudMistHover,
         borderFocus: brandColors.spicedClementine,
         borderPress: brandColors.spicedClementinePress,
+
+        // Field border colors - Form inputs (Ironstone for inputs, selects, textareas)
+        fieldBorder: brandColors.ironstone,
+        fieldBorderHover: brandColors.ironstoneHover,
+        fieldBorderFocus: brandColors.spicedClementine,
+        fieldBorderPress: brandColors.ironstonePress,
+        fieldBorderDisabled: brandColors.cloudMist,
 
         // Shadow colors (soft, subtle shadows for vintage feel)
         shadowColor: brandColors.overlayDark10,
