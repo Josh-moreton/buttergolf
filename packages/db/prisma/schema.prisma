@@ -12,23 +12,28 @@ datasource db {
 
 // Marketplace models for ButterGolf
 model User {
-    id                       String    @id @default(cuid())
+    id                       String         @id @default(cuid())
     // Clerk user identifier for federated auth
-    clerkId                  String    @unique
-    email                    String    @unique
-    name                     String?
+    clerkId                  String         @unique
+    email                    String         @unique
+    name                     String // Required - sellers must have a name
     imageUrl                 String?
     // Stripe Connect seller account
-    stripeConnectId          String?   @unique // Stripe Connect account ID
-    stripeOnboardingComplete Boolean   @default(false) // Whether seller onboarding is complete
+    stripeConnectId          String?        @unique // Stripe Connect account ID
+    stripeOnboardingComplete Boolean        @default(false) // Whether seller onboarding is complete
     stripeAccountStatus      String? // Current account status (active, pending, etc.)
-    createdAt                DateTime  @default(now())
-    updatedAt                DateTime  @updatedAt
+    // Seller rating (cached for performance)
+    averageRating            Float?         @default(0)
+    ratingCount              Int            @default(0)
+    createdAt                DateTime       @default(now())
+    updatedAt                DateTime       @updatedAt
     // Marketplace relations
     products                 Product[]
-    ordersSold               Order[]   @relation("SellerOrders")
-    ordersPurchased          Order[]   @relation("BuyerOrders")
+    ordersSold               Order[]        @relation("SellerOrders")
+    ordersPurchased          Order[]        @relation("BuyerOrders")
     addresses                Address[]
+    ratingsReceived          SellerRating[] @relation("SellerRatings")
+    ratingsGiven             SellerRating[] @relation("RatingsGiven")
 
     @@map("users")
 }
@@ -166,6 +171,8 @@ model Order {
     deliveredAt        DateTime?
     createdAt          DateTime       @default(now())
     updatedAt          DateTime       @updatedAt
+    // Seller rating
+    sellerRating       SellerRating?
 
     @@index([sellerId])
     @@index([buyerId])
@@ -193,4 +200,29 @@ enum OrderStatus {
     DELIVERED // Package delivered to buyer
     CANCELLED // Order cancelled
     REFUNDED // Order refunded
+}
+
+model SellerRating {
+    id        String   @id @default(cuid())
+    // Who is being rated
+    sellerId  String
+    seller    User     @relation("SellerRatings", fields: [sellerId], references: [id], onDelete: Cascade)
+    // Who is leaving the rating
+    buyerId   String
+    buyer     User     @relation("RatingsGiven", fields: [buyerId], references: [id], onDelete: Cascade)
+    // Associated order (one rating per order)
+    orderId   String   @unique
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    // Rating (1-5 stars)
+    rating    Int // 1-5 stars overall
+    // Optional review text
+    comment   String?  @db.Text
+    // Timestamps
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([sellerId])
+    @@index([buyerId])
+    @@index([orderId])
+    @@map("seller_ratings")
 }

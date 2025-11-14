@@ -1285,10 +1285,30 @@ const round = await prisma.round.create({
 
 ### Database Workflow
 
+**CRITICAL: Always Use Migrations in Development**
+
+❌ **NEVER use `pnpm db:push` for schema changes** - This creates database drift and causes migration conflicts that require data loss to resolve.
+
+✅ **ALWAYS use `pnpm db:migrate:dev --name descriptive-name`** - This creates proper migration files that track schema changes and prevent drift.
+
+**Correct Development Workflow:**
+
 1. **Modify schema**: Edit `packages/db/prisma/schema.prisma`
 2. **Generate client**: `pnpm db:generate`
-3. **Push to database**: `pnpm db:push` (dev) or `pnpm db:migrate:dev --name change-name` (with migration)
-4. **Seed data**: `pnpm db:seed` (optional)
+3. **Create migration**: `pnpm db:migrate:dev --name descriptive-change-name`
+   - This creates a migration file in `prisma/migrations/`
+   - This applies the migration to your database
+   - This keeps your migration history in sync with your database
+4. **Seed data** (if needed): `pnpm db:seed`
+
+**Why This Matters:**
+- `db:push` applies changes directly without creating migration files
+- This causes "drift" where your database has columns/tables that aren't in migrations
+- When you try to create a new migration later, Prisma detects drift and forces a reset
+- Reset = **all data is lost** and must be re-seeded
+- Migrations create a proper history and allow safe deployments to production
+
+**Exception:** Only use `db:push` for rapid prototyping when you don't care about losing data.
 
 ### Database Setup Options
 
