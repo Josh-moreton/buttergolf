@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUser, useSignIn } from "@clerk/nextjs";
 import {
   Column,
   Row,
@@ -63,6 +64,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [showMobileBar, setShowMobileBar] = useState(false);
   const [makeOfferModalOpen, setMakeOfferModalOpen] = useState(false);
   const router = useRouter();
+  const { isSignedIn } = useUser();
+  const { openSignIn } = useSignIn();
 
   const selectedImage = product.images[selectedImageIndex];
 
@@ -98,6 +101,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   };
 
   const handleMakeOffer = () => {
+    if (!isSignedIn) {
+      // Open Clerk sign-in modal if user is not authenticated
+      openSignIn({
+        redirectUrl: window.location.href,
+      });
+      return;
+    }
     setMakeOfferModalOpen(true);
   };
 
@@ -114,8 +124,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       if (!response.ok) {
         const error = await response.json();
+        console.error("Offer submission failed:", response.status, error);
         throw new Error(error.error || "Failed to submit offer");
       }
+
+      const result = await response.json();
+      console.log("Offer submitted successfully:", result);
 
       // Show success message
       alert(`Offer of £${offerAmount.toFixed(2)} submitted successfully! The seller will be notified.`);

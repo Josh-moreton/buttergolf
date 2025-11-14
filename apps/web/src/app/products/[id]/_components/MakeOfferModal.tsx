@@ -211,9 +211,9 @@ export function MakeOfferModal({
 
                         {/* Helper Text */}
                         {/* Helper Text */}
-            <Text size="sm" color="$ironstone">
-              Minimum offer: £{(product.price * 0.5).toFixed(2)} (50% of listed price)
-            </Text>
+                        <Text size="sm" color="$ironstone">
+                            Minimum offer: £{(product.price * 0.5).toFixed(2)} (50% of listed price)
+                        </Text>
                     </Column>
 
                     {/* Submit Button */}
