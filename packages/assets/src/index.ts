@@ -36,3 +36,6 @@ export const imagePaths = {
 
 // Type-safe image keys
 export type ClubImageKey = keyof typeof images.clubs
+
+// Re-export icons
+export * from './icons'

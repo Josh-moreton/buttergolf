@@ -7,6 +7,7 @@ import { BuySellToggle } from "./marketplace/BuySellToggle";
 import { CategoriesSection } from "./marketplace/CategoriesSection";
 import { SellingPlaceholder } from "./marketplace/SellingPlaceholder";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
+import { TrustSection } from "./marketplace/TrustSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
 import type { ProductCardData } from "@buttergolf/app";
@@ -30,6 +31,7 @@ export default function MarketplaceHomeClient({
         <>
           <CategoriesSection />
           <RecentlyListedSectionClient products={products} />
+          <TrustSection />
         </>
       ) : (
         <SellingPlaceholder />
