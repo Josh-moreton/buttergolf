@@ -1,137 +1,175 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button, Card, Image, Text, Row, Column, Badge } from "@buttergolf/ui";
+import { Column } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import { AnimatedAddToCartButton } from "../../../components/AnimatedAddToCartButton";
-import { useCart } from "../../../context/CartContext";
+import { ProductCard } from "@buttergolf/app";
+import { Carousel } from "nuka-carousel";
 
 interface RecentlyListedSectionClientProps {
   readonly products: ProductCardData[];
 }
 
-function ListingCard({ product }: { readonly product: ProductCardData }) {
-  const { addItem } = useCart();
-
-  const handleAddToCart = async () => {
-    await addItem({
-      productId: product.id,
-      title: product.title,
-      price: product.price,
-      imageUrl: product.imageUrl,
-    });
-  };
-
-  return (
-    <Card
-      variant="elevated"
-      padding={0}
-      animation="bouncy"
-      backgroundColor="$surface"
-      borderColor="$border"
-      hoverStyle={{
-        borderColor: "$borderHover",
-        shadowColor: "$shadowColorHover",
-        shadowRadius: 12,
-      }}
-      width="100%"
-      minHeight={440}
-      display="flex"
-      flexDirection="column"
-    >
-      <div style={{ position: "relative" }}>
-        <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
-          {/* 1:1 Aspect Ratio Container */}
-          <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
-            <Image
-              source={{ uri: product.imageUrl }}
-              width="100%"
-              height="100%"
-              objectFit="cover"
-              borderTopLeftRadius="$lg"
-              borderTopRightRadius="$lg"
-              alt={product.title}
-              position="absolute"
-              top={0}
-              left={0}
-            />
-          </div>
-        </Link>
-
-        {/* NEW Badge Overlay */}
-        {product.condition === "NEW" && (
-          <Badge
-            variant="success"
-            size="sm"
-            {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
-          >
-            <Text>NEW</Text>
-          </Badge>
-        )}
-      </div>
-
-      <Column padding="$md" gap="$md" flex={1} justifyContent="space-between">
-        <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
-          <Column gap="$xs">
-            <Text size="md" weight="semibold" numberOfLines={2} minHeight={42}>
-              {product.title}
-            </Text>
-            <Row gap="$sm" alignItems="center" justifyContent="space-between" minHeight={24}>
-              <Text size="sm" color="$textSecondary" numberOfLines={1}>
-                {product.category}
-              </Text>
-              {product.condition && product.condition !== "NEW" && (
-                <Badge variant="neutral" size="sm">
-                  <Text size="xs" weight="medium">
-                    {product.condition.replace("_", " ")}
-                  </Text>
-                </Badge>
-              )}
-            </Row>
-            <Text size="lg" weight="bold" color="$primary" minHeight={28}>
-              £{product.price.toFixed(2)}
-            </Text>
-          </Column>
-        </Link>
-        <AnimatedAddToCartButton onAddToCart={handleAddToCart} />
-      </Column>
-    </Card>
-  );
-}
-
 export function RecentlyListedSectionClient({
   products,
 }: RecentlyListedSectionClientProps) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(4);
+
+  // Calculate cards per view based on screen width
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      if (window.innerWidth < 768) {
+        setCardsPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setCardsPerView(2);
+      } else if (window.innerWidth < 1280) {
+        setCardsPerView(3);
+      } else {
+        setCardsPerView(4);
+      }
+    };
+
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  const totalPages = Math.ceil(products.length / cardsPerView);
+
   return (
-    <Column paddingVertical="$8" backgroundColor="$surface">
+    <Column paddingVertical="$2xl" backgroundColor="$surface">
       <Column
         maxWidth={1280}
         marginHorizontal="auto"
         paddingHorizontal="$6"
         width="100%"
-        gap="$6"
+        gap="$2xl"
       >
-        <Row alignItems="center" justifyContent="space-between">
-          <Text fontSize="$9" weight="bold">
+        {/* Header - Centered */}
+        <Column alignItems="center" gap="$sm" width="100%">
+          <h2
+            style={{
+              fontFamily: "var(--font-urbanist)",
+              fontSize: "clamp(28px, 5vw, 40px)",
+              fontWeight: 700,
+              lineHeight: 1.2,
+              color: "#323232",
+              margin: 0,
+              textAlign: "center",
+            }}
+          >
             Recently listed
-          </Text>
-          <Link href="/listings" passHref>
-            <Button size="md" tone="outline">View all</Button>
-          </Link>
-        </Row>
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-urbanist)",
+              fontSize: "clamp(14px, 2.5vw, 18px)",
+              fontWeight: 400,
+              lineHeight: 1.5,
+              color: "#545454",
+              margin: 0,
+              textAlign: "center",
+            }}
+          >
+            Latest drops, hottest deals - upgrade your game today.
+          </p>
+        </Column>
 
-        {/* Grid Layout */}
+        {/* Carousel */}
+        <div style={{ width: "100%", position: "relative" }}>
+          <Carousel
+            autoplay
+            autoplayInterval={5000}
+            wrapMode="wrap"
+            showArrows={false}
+            showDots={false}
+            swiping
+            scrollDistance={cardsPerView}
+            afterSlide={(index) => setCurrentSlide(index)}
+          >
+            {products.map((product) => (
+              <div
+                key={product.id}
+                style={{
+                  width: `calc((100% - ${(cardsPerView - 1) * 24}px) / ${cardsPerView})`,
+                  padding: "0 12px",
+                  boxSizing: "border-box",
+                }}
+              >
+                <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
+                  <ProductCard
+                    product={product}
+                    onFavorite={(productId) => console.log("Favorited:", productId)}
+                  />
+                </Link>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+
+        {/* Pagination Dots - Desktop Only */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gridAutoRows: "1fr",
-            gap: "24px",
-            width: "100%",
+            display: window.innerWidth >= 1024 ? "flex" : "none",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            paddingTop: "16px",
+            paddingBottom: "16px",
           }}
         >
-          {products.map((product) => (
-            <ListingCard key={product.id} product={product} />
-          ))}
+          {Array.from({ length: totalPages }).map((_, index) => {
+            const pageStart = index * cardsPerView;
+            const isActive = currentSlide >= pageStart && currentSlide < pageStart + cardsPerView;
+
+            return (
+              <button
+                key={index}
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  border: "none",
+                  backgroundColor: isActive ? "#F45314" : "#EDEDED",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  padding: 0,
+                }}
+                aria-label={`Go to page ${index + 1}`}
+              />
+            );
+          })}
         </div>
+
+        {/* View All Button - Centered Below Carousel */}
+        <Column alignItems="center" width="100%" paddingTop="$md">
+          <Link href="/listings" passHref style={{ textDecoration: "none" }}>
+            <button
+              style={{
+                fontFamily: "var(--font-urbanist)",
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#FFFFFF",
+                backgroundColor: "#F45314",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px 32px",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#E04810";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#F45314";
+              }}
+            >
+              View all listings
+            </button>
+          </Link>
+        </Column>
       </Column>
     </Column>
   );
