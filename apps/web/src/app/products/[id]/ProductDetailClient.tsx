@@ -124,21 +124,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Text size="sm" color="$textSecondary" hoverStyle={{ color: "$primary" }}>
-                Home
+              <Text size="sm" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+                Listings
               </Text>
             </Link>
-            <Text size="sm" color="$textMuted">/</Text>
+            <Text size="sm" color="$ironstone">&gt;</Text>
             <Link
               href={`/category/${product.category.slug}`}
               style={{ textDecoration: "none" }}
             >
-              <Text size="sm" color="$textSecondary" hoverStyle={{ color: "$primary" }}>
+              <Text size="sm" color="$ironstone" hoverStyle={{ color: "$primary" }}>
                 {product.category.name}
               </Text>
             </Link>
-            <Text size="sm" color="$textMuted">/</Text>
-            <Text size="sm" color="$text">{product.title}</Text>
+            <Text size="sm" color="$ironstone">&gt;</Text>
+            <Text size="sm" color="$ironstone" weight="bold">{product.title}</Text>
           </Row>
 
           {/* Main Content Grid */}
