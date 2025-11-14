@@ -52,22 +52,22 @@ export function ProductInformation({
         <Column
             backgroundColor="$cloudMist"
             borderRadius="$xl"
-            padding="$xl"
-            gap="$lg"
+            padding="$lg"
+            gap="$md"
             width="100%"
             $lg={{
-                width: 500,
+                width: 420,
                 flexShrink: 0,
             }}
         >
             {/* Header: Title, Price, Favorite */}
-            <Row justifyContent="space-between" alignItems="flex-start" gap="$md">
-                <Column gap="$sm" flex={1}>
-                    <Heading level={2} size="$8" color="$ironstone">
+            <Row justifyContent="space-between" alignItems="flex-start" gap="$sm">
+                <Column gap="$xs" flex={1}>
+                    <Heading level={2} size="$7" color="$ironstone">
                         {product.title}
                     </Heading>
                     <Row alignItems="baseline" gap="$sm">
-                        <Text fontSize={24} fontWeight="700" color="$spicedClementine">
+                        <Text fontSize={20} fontWeight="700" color="$spicedClementine">
                             £{product.price.toFixed(2)}
                         </Text>
                         <div
@@ -133,7 +133,7 @@ export function ProductInformation({
             <div style={{ height: 1, backgroundColor: "#CCCCCC", width: "100%" }} />
 
             {/* Seller Info */}
-            <Column gap="$md">
+            <Column gap="$sm">
                 <Row justifyContent="space-between" alignItems="center">
                     <Column gap="$xs" flex={1}>
                         <Text size="sm" color="$slateSmoke" weight="bold">
@@ -171,7 +171,7 @@ export function ProductInformation({
             <div style={{ height: 1, backgroundColor: "#CCCCCC", width: "100%" }} />
 
             {/* Product Specifications */}
-            <Row gap="$lg">
+            <Row gap="$md">
                 <Column gap="$md" flex={1}>
                     <Text size="sm" color="$ironstone" weight="bold">
                         Category

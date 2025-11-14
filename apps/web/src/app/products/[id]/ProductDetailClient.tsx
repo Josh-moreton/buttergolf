@@ -143,7 +143,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           {/* Main Content Grid */}
           <Row
-            gap="$2xl"
+            gap="$xl"
             flexDirection="column"
             $lg={{ flexDirection: "row", alignItems: "flex-start" }}
             alignItems="stretch"
@@ -154,15 +154,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               flex={1}
               minWidth={0}
               $lg={{
-                flexBasis: "60%",
-                maxWidth: "calc(100% - 420px - 48px)"
+                maxWidth: "calc(100% - 420px - 32px)"
               }}
             >
               {/* Gallery Row: Thumbnails + Main Image */}
-              <Row gap="$md" alignItems="flex-start">
+              <Row gap="$sm" alignItems="flex-start">
                 {/* Thumbnail Gallery - Left Side */}
                 {product.images.length > 1 && (
-                  <Column gap="$md" flexShrink={0}>
+                  <Column gap="$sm" flexShrink={0}>
                     {product.images.map((img, index) => (
                       <Card
                         key={img.id}
@@ -178,8 +177,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                           transform: "scale(1.05)",
                         }}
                         animation="quick"
-                        width={80}
-                        height={80}
+                        width={64}
+                        height={64}
                         overflow="hidden"
                         borderRadius="$lg"
                         position="relative"
@@ -207,19 +206,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   onPress={() => setLightboxOpen(true)}
                   position="relative"
                   flex={1}
+                  height={600}
+                  $lg={{ height: 650 }}
                 >
-                  <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
-                    <Image
-                      source={{ uri: selectedImage.url }}
-                      width="100%"
-                      height="100%"
-                      objectFit="cover"
-                      alt={product.title}
-                      position="absolute"
-                      top={0}
-                      left={0}
-                    />
-                  </div>
+                  <Image
+                    source={{ uri: selectedImage.url }}
+                    width="100%"
+                    height="100%"
+                    objectFit="contain"
+                    alt={product.title}
+                  />
 
                   {/* Image Counter */}
                   {product.images.length > 1 && (
