@@ -165,105 +165,89 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 maxWidth: "calc(100% - 420px - 48px)"
               }}
             >
-              {/* Main Image */}
-              <Card
-                variant="outlined"
-                padding="$0"
-                overflow="hidden"
-                backgroundColor="$surface"
-                borderRadius="$xl"
-                cursor="pointer"
-                onPress={() => setLightboxOpen(true)}
-                position="relative"
-              >
-                <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
-                  <Image
-                    source={{ uri: selectedImage.url }}
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                    alt={product.title}
-                    position="absolute"
-                    top={0}
-                    left={0}
-                  />
-                </div>
-
-                {/* Image Counter */}
+              {/* Gallery Row: Thumbnails + Main Image */}
+              <Row gap="$md" alignItems="flex-start">
+                {/* Thumbnail Gallery - Left Side */}
                 {product.images.length > 1 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 16,
-                      right: 16,
-                      background: "rgba(0, 0, 0, 0.7)",
-                      color: "white",
-                      padding: "6px 12px",
-                      borderRadius: "20px",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {selectedImageIndex + 1} / {product.images.length}
-                  </div>
-                )}
-
-                {/* Zoom Icon Hint */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 16,
-                    background: "rgba(255, 255, 255, 0.9)",
-                    padding: "8px",
-                    borderRadius: "8px",
-                    fontSize: "20px",
-                  }}
-                >
-                  🔍
-                </div>
-              </Card>
-
-              {/* Thumbnail Gallery */}
-              {product.images.length > 1 && (
-                <Row gap="$md" flexWrap="wrap">
-                  {product.images.map((img, index) => (
-                    <Card
-                      key={img.id}
-                      variant="outlined"
-                      padding="$0"
-                      cursor="pointer"
-                      onPress={() => setSelectedImageIndex(index)}
-                      borderColor={index === selectedImageIndex ? "$primary" : "$border"}
-                      borderWidth={index === selectedImageIndex ? 3 : 1}
-                      backgroundColor="$surface"
-                      hoverStyle={{
-                        borderColor: "$primary",
-                        transform: "scale(1.05)",
-                      }}
-                      animation="quick"
-                      width={100}
-                      height={100}
-                      overflow="hidden"
-                      borderRadius="$lg"
-                      position="relative"
-                    >
-                      <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
+                  <Column gap="$md" flexShrink={0}>
+                    {product.images.map((img, index) => (
+                      <Card
+                        key={img.id}
+                        variant="outlined"
+                        padding="$0"
+                        cursor="pointer"
+                        onPress={() => setSelectedImageIndex(index)}
+                        borderColor={index === selectedImageIndex ? "$primary" : "$border"}
+                        borderWidth={index === selectedImageIndex ? 3 : 1}
+                        backgroundColor="$surface"
+                        hoverStyle={{
+                          borderColor: "$primary",
+                          transform: "scale(1.05)",
+                        }}
+                        animation="quick"
+                        width={80}
+                        height={80}
+                        overflow="hidden"
+                        borderRadius="$lg"
+                        position="relative"
+                      >
                         <Image
                           source={{ uri: img.url }}
                           width="100%"
                           height="100%"
                           objectFit="cover"
                           alt={`${product.title} - Image ${index + 1}`}
-                          position="absolute"
-                          top={0}
-                          left={0}
                         />
-                      </div>
-                    </Card>
-                  ))}
-                </Row>
-              )}
+                      </Card>
+                    ))}
+                  </Column>
+                )}
+
+                {/* Main Image */}
+                <Card
+                  variant="outlined"
+                  padding="$0"
+                  overflow="hidden"
+                  backgroundColor="$surface"
+                  borderRadius="$xl"
+                  cursor="pointer"
+                  onPress={() => setLightboxOpen(true)}
+                  position="relative"
+                  flex={1}
+                >
+                  <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden" }}>
+                    <Image
+                      source={{ uri: selectedImage.url }}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      alt={product.title}
+                      position="absolute"
+                      top={0}
+                      left={0}
+                    />
+                  </div>
+
+                  {/* Image Counter */}
+                  {product.images.length > 1 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 16,
+                        right: 16,
+                        background: "rgba(0, 0, 0, 0.7)",
+                        color: "white",
+                        padding: "6px 12px",
+                        borderRadius: "20px",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {selectedImageIndex + 1} / {product.images.length}
+                    </div>
+                  )}
+                </Card>
+              </Row>
 
               {/* Product Description */}
               <Card

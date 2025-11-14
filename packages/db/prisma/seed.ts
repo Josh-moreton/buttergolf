@@ -282,7 +282,11 @@ async function main() {
                 model: 'G425',
                 userId: user3.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -295,7 +299,11 @@ async function main() {
                 model: 'TSi2',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -308,7 +316,11 @@ async function main() {
                 model: 'Apex',
                 userId: user2.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -321,7 +333,11 @@ async function main() {
                 model: 'Stealth Rescue',
                 userId: user1.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -334,7 +350,11 @@ async function main() {
                 model: 'G430',
                 userId: user3.id,
                 categoryId: driversCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -349,7 +369,11 @@ async function main() {
                 model: 'T200',
                 userId: user1.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000hr70gmihwatcq-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000hr70gmihwatcq-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000hr70gmihwatcq-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000hr70gmihwatcq-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -362,7 +386,11 @@ async function main() {
                 model: 'Apex',
                 userId: user2.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -375,7 +403,11 @@ async function main() {
                 model: 'G425',
                 userId: user3.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000xr70gyn7w97cz-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000xr70gyn7w97cz-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000xr70gyn7w97cz-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000xr70gyn7w97cz-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -388,7 +420,11 @@ async function main() {
                 model: 'P790',
                 userId: user1.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -401,7 +437,11 @@ async function main() {
                 model: 'JPX923 Hot Metal',
                 userId: user2.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -414,7 +454,11 @@ async function main() {
                 model: 'King Forged Tec X',
                 userId: user1.id,
                 categoryId: ironsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -429,7 +473,11 @@ async function main() {
                 model: 'Vokey SM9',
                 userId: user2.id,
                 categoryId: wedgesCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000wr70gtkvh3pul-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000wr70gtkvh3pul-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000wr70gtkvh3pul-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000wr70gtkvh3pul-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -442,7 +490,11 @@ async function main() {
                 model: 'RTX ZipCore',
                 userId: user1.id,
                 categoryId: wedgesCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000jr70gg2kytzhw-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000jr70gg2kytzhw-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000jr70gg2kytzhw-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000jr70gg2kytzhw-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -455,7 +507,11 @@ async function main() {
                 model: 'Jaws Raw',
                 userId: user3.id,
                 categoryId: wedgesCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -468,7 +524,11 @@ async function main() {
                 model: 'Hi-Toe 3',
                 userId: user2.id,
                 categoryId: wedgesCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -481,7 +541,11 @@ async function main() {
                 model: 'Glide 4.0',
                 userId: user1.id,
                 categoryId: wedgesCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -496,7 +560,11 @@ async function main() {
                 model: 'Scotty Cameron Newport 2',
                 userId: user2.id,
                 categoryId: puttersCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000fr70goajqwv1c-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000fr70goajqwv1c-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000fr70goajqwv1c-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd000fr70goajqwv1c-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -509,7 +577,11 @@ async function main() {
                 model: 'White Hot OG',
                 userId: user1.id,
                 categoryId: puttersCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -522,7 +594,11 @@ async function main() {
                 model: 'Spider X',
                 userId: user3.id,
                 categoryId: puttersCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -535,7 +611,11 @@ async function main() {
                 model: 'Anser 2D',
                 userId: user2.id,
                 categoryId: puttersCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -548,7 +628,11 @@ async function main() {
                 model: 'Tri-Hot 5K',
                 userId: user1.id,
                 categoryId: puttersCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -563,7 +647,11 @@ async function main() {
                 model: 'Hoofer',
                 userId: user1.id,
                 categoryId: bagsCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd0011r70gu83v00ug-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd0011r70gu83v00ug-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd0011r70gu83v00ug-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzibd0011r70gu83v00ug-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -576,7 +664,11 @@ async function main() {
                 model: 'Pro 8.0',
                 userId: user2.id,
                 categoryId: bagsCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigx001cr70glxkmwvdh-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigx001cr70glxkmwvdh-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigx001cr70glxkmwvdh-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigx001cr70glxkmwvdh-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -589,7 +681,11 @@ async function main() {
                 model: 'Players 4',
                 userId: user3.id,
                 categoryId: bagsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -602,7 +698,11 @@ async function main() {
                 model: 'H2NO Lite',
                 userId: user1.id,
                 categoryId: bagsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -617,7 +717,11 @@ async function main() {
                 model: 'Pro V1',
                 userId: user2.id,
                 categoryId: ballsCategory.id,
-                images: { create: [{ url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigl0016r70gs581g7th-main.jpg', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigl0016r70gs581g7th-main.jpg', sortOrder: 0 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigl0016r70gs581g7th-main.jpg?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://sf84lb7mzwzvdsgj.public.blob.vercel-storage.com/products/cmhnfzigl0016r70gs581g7th-main.jpg?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -630,7 +734,11 @@ async function main() {
                 model: 'Chrome Soft',
                 userId: user1.id,
                 categoryId: ballsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -643,7 +751,11 @@ async function main() {
                 model: 'TP5x',
                 userId: user3.id,
                 categoryId: ballsCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -658,7 +770,11 @@ async function main() {
                 model: 'StaSof',
                 userId: user1.id,
                 categoryId: accessoriesCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -671,7 +787,11 @@ async function main() {
                 model: 'Players',
                 userId: user2.id,
                 categoryId: accessoriesCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
 
@@ -686,7 +806,11 @@ async function main() {
                 model: 'Pro/SL',
                 userId: user1.id,
                 categoryId: apparelCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -699,7 +823,11 @@ async function main() {
                 model: 'Tour360 22',
                 userId: user2.id,
                 categoryId: apparelCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
         prisma.product.create({
@@ -712,7 +840,11 @@ async function main() {
                 model: 'Air Zoom Victory Tour 3',
                 userId: user3.id,
                 categoryId: apparelCategory.id,
-                images: { create: [{ url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 }] },
+                images: { create: [
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800', sortOrder: 0 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80', sortOrder: 1 },
+                    { url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=70', sortOrder: 2 },
+                ] },
             },
         }),
     ])
