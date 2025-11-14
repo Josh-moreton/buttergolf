@@ -79,14 +79,14 @@ export function RecentlyListedSectionClient({
   }, [emblaApi]);
 
   return (
-    <div style={{ paddingTop: "64px", paddingBottom: "64px", backgroundColor: "#EDEDED" }}>
+    <div style={{ paddingTop: "64px", paddingBottom: "64px", backgroundColor: "#EDEDED", width: "100%" }}>
       <div
         style={{
-          maxWidth: "1280px",
+          maxWidth: "100%",
           marginLeft: "auto",
           marginRight: "auto",
-          paddingLeft: "48px",
-          paddingRight: "48px",
+          paddingLeft: "0",
+          paddingRight: "0",
           width: "100%",
           display: "flex",
           flexDirection: "column",
