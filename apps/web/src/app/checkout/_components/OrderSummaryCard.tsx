@@ -116,7 +116,7 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
                         <Text weight="semibold" size="sm" color="$ironstone">
                             Terms and conditions
                         </Text>
-                        <Text size="xs" color="$ironstone" style={{ lineHeight: 1.5 }}>
+                        <Text size="xs" color="$ironstone" lineHeight="$1">
                             Consectetur adipiscing elit. Nulla facilisi. Suspendisse potenti. Vivamus a urna sed libero convallis malesuada.
                         </Text>
                     </Column>
