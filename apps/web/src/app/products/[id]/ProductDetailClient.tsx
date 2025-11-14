@@ -7,7 +7,6 @@ import {
   Column,
   Row,
   Container,
-  Heading,
   Text,
   Button,
   Card,
@@ -117,18 +116,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     window.addEventListener("keydown", handleKeyboardNav);
     return () => window.removeEventListener("keydown", handleKeyboardNav);
   }, [lightboxOpen, selectedImageIndex]);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) return "Listed yesterday";
-    if (diffDays < 7) return `Listed ${diffDays} days ago`;
-    if (diffDays < 30) return `Listed ${Math.floor(diffDays / 7)} weeks ago`;
-    return `Listed ${date.toLocaleDateString()}`;
-  };
 
   return (
     <>
@@ -254,107 +241,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   )}
                 </Card>
               </Row>
-
-              {/* Product Description */}
-              <Card
-                variant="filled"
-                padding="$xl"
-                backgroundColor="$background"
-                borderRadius="$xl"
-              >
-                <Column gap="$lg">
-                  <Heading level={3} color="$secondary">
-                    Description
-                  </Heading>
-                  <Text
-                    color="$text"
-                    size="md"
-                    whiteSpace="pre-wrap"
-                  >
-                    {product.description}
-                  </Text>
-                </Column>
-              </Card>
-
-              {/* Specifications Table */}
-              <Card
-                variant="outlined"
-                padding="$xl"
-                borderRadius="$xl"
-                backgroundColor="$surface"
-              >
-                <Column gap="$lg">
-                  <Heading level={3} color="$secondary">
-                    Specifications
-                  </Heading>
-                  <Column gap="$sm">
-                    {product.brand && (
-                      <Row
-                        justifyContent="space-between"
-                        paddingVertical="$sm"
-                        borderBottomWidth={1}
-                        borderBottomColor="$border"
-                      >
-                        <Text size="sm" color="$textMuted">
-                          Brand
-                        </Text>
-                        <Text size="sm" weight="semibold">
-                          {product.brand}
-                        </Text>
-                      </Row>
-                    )}
-                    {product.model && (
-                      <Row
-                        justifyContent="space-between"
-                        paddingVertical="$sm"
-                        borderBottomWidth={1}
-                        borderBottomColor="$border"
-                      >
-                        <Text size="sm" color="$textMuted">
-                          Model
-                        </Text>
-                        <Text size="sm" weight="semibold">
-                          {product.model}
-                        </Text>
-                      </Row>
-                    )}
-                    <Row
-                      justifyContent="space-between"
-                      paddingVertical="$sm"
-                      borderBottomWidth={1}
-                      borderBottomColor="$border"
-                    >
-                      <Text size="sm" color="$textMuted">
-                        Condition
-                      </Text>
-                      <Text size="sm" weight="semibold">
-                        {product.condition.replace("_", " ")}
-                      </Text>
-                    </Row>
-                    <Row
-                      justifyContent="space-between"
-                      paddingVertical="$sm"
-                      borderBottomWidth={1}
-                      borderBottomColor="$border"
-                    >
-                      <Text size="sm" color="$textMuted">
-                        Category
-                      </Text>
-                      <Text size="sm" weight="semibold">
-                        {product.category.name}
-                      </Text>
-                    </Row>
-                    <Row justifyContent="space-between" paddingVertical="$sm">
-                      <Text size="sm" color="$textMuted">
-                        Listed
-                      </Text>
-                      <Text size="sm" weight="semibold">
-                        {formatDate(product.createdAt)}
-                      </Text>
-                    </Row>
-                  </Column>
-                </Column>
-              </Card>
             </Column>
 
             {/* Right Column - Product Information */}
