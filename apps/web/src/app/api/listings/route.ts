@@ -5,7 +5,7 @@ import type { ProductCardData } from "@buttergolf/app";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
+
     // Pagination
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "24");
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     // Sort options
     const sort = searchParams.get("sort") || "newest";
     let orderBy: any = { createdAt: "desc" };
-    
+
     switch (sort) {
       case "price-asc":
         orderBy = { price: "asc" };

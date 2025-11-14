@@ -41,41 +41,41 @@ export async function getRecentProducts(
     return products
       .filter((product) => product.user) // Filter out products without users
       .map((product) => {
-      let imageUrl =
-        product.images[0]?.url ||
-        "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400";
+        let imageUrl =
+          product.images[0]?.url ||
+          "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400";
 
-      // If the image URL is a relative path (local asset), use it for web but provide fallback for mobile
-      // In production, all images should be stored in Vercel Blob with full HTTPS URLs
-      if (imageUrl.startsWith("/")) {
-        const baseUrl =
-          process.env.NEXT_PUBLIC_BASE_URL ||
-            process.env.VERCEL_URL
-            ? `https://${process.env.VERCEL_URL}`
-            : "http://localhost:3000";
+        // If the image URL is a relative path (local asset), use it for web but provide fallback for mobile
+        // In production, all images should be stored in Vercel Blob with full HTTPS URLs
+        if (imageUrl.startsWith("/")) {
+          const baseUrl =
+            process.env.NEXT_PUBLIC_BASE_URL ||
+              process.env.VERCEL_URL
+              ? `https://${process.env.VERCEL_URL}`
+              : "http://localhost:3000";
 
-        // Convert to absolute URL for local testing
-        imageUrl = `${baseUrl}${imageUrl}`;
+          // Convert to absolute URL for local testing
+          imageUrl = `${baseUrl}${imageUrl}`;
 
-        // TODO: In production, replace with actual Vercel Blob upload
-        // Example: https://your-bucket.public.blob.vercel-storage.com/product-123.jpg
-      }
+          // TODO: In production, replace with actual Vercel Blob upload
+          // Example: https://your-bucket.public.blob.vercel-storage.com/product-123.jpg
+        }
 
-      return {
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        condition: product.condition,
-        imageUrl,
-        category: product.category.name,
-        seller: {
-          id: product.user.id,
-          name: product.user.name,
-          averageRating: product.user.averageRating,
-          ratingCount: product.user.ratingCount,
-        },
-      };
-    });
+        return {
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          condition: product.condition,
+          imageUrl,
+          category: product.category.name,
+          seller: {
+            id: product.user.id,
+            name: product.user.name,
+            averageRating: product.user.averageRating,
+            ratingCount: product.user.ratingCount,
+          },
+        };
+      });
   } catch (error) {
     console.error("Failed to fetch recent products:", error);
     return [];
