@@ -134,7 +134,7 @@ export function Hero({
                                             level={1}
                                             fontSize="$9"
                                             color="$ironstone"
-                                            fontWeight="900"
+                                            fontWeight="700"
                                             numberOfLines={1}
                                             ellipsizeMode="clip"
                                         >

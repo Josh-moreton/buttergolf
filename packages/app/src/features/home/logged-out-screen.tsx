@@ -153,7 +153,7 @@ export function LoggedOutHomeScreen({
         <Column paddingHorizontal="$4" paddingTop="$4" paddingBottom="$6" gap="$3">
           <Text
             fontSize="$8"
-            fontWeight="900"
+            fontWeight="700"
             color="$ironstone"
             textAlign="center"
           >
