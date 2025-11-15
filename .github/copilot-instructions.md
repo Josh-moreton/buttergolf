@@ -81,7 +81,7 @@ export const routes = {
 5. **Mobile (manual):** Register in `apps/mobile/App.tsx`:
    ```typescript
    import { MyNewScreen } from "@buttergolf/app/src/features/[feature]";
-   
+
    // Add to linking config
    const linking = {
      config: {
@@ -90,7 +90,7 @@ export const routes = {
        }
      }
    }
-   
+
    // Add to Stack Navigator
    <Stack.Screen name="MyNewScreen">
      {({ route }) => (
