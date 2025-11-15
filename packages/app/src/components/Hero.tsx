@@ -115,30 +115,32 @@ export function Hero({
                 >
                     {/* Left Side - Text Content */}
                     <Column
-                        width="100%"
+                        width="50%"
                         $md={{ width: "50%" }}
                         justifyContent="center"
-                        paddingLeft="$8"
+                        paddingLeft="$4"
                         paddingRight="$4"
                         $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
                     >
                         <Column gap="$6" maxWidth={600}>
                             {/* Heading */}
-                            <Column gap="$xs">
-                                <Column display="flex" $md={{ display: "none" }} gap="$xs">
+                            <Column gap="$1">
+                                <Column display="flex" $md={{ display: "none" }} gap="$1">
                                     {mobileHeadingWords.map((word, index) => (
                                         <Heading
                                             key={`${word}-${index}`}
                                             level={1}
-                                            fontSize="$11"
+                                            fontSize="$9"
                                             color="$ironstone"
-                                            fontWeight="700"
+                                            fontWeight="900"
+                                            numberOfLines={1}
+                                            ellipsizeMode="clip"
                                         >
                                             {word}
                                         </Heading>
                                     ))}
                                 </Column>
-                                <Column display="none" $md={{ display: "flex" }} gap="$xs">
+                                <Column display="none" $md={{ display: "flex" }} gap="$1">
                                     <Heading
                                         level={1}
                                         fontSize="$11"
@@ -219,11 +221,12 @@ export function Hero({
                         </Column>
                     </Column>
 
-                    {/* Right Side - Hero Image (Desktop only if showHeroImage true) */}
+                    {/* Right Side - Hero Image (Mobile and Desktop if showHeroImage true) */}
                     {showHeroImage && heroImageSource && (
                         <Column
                             display="flex"
-                            width="100%"
+                            width="50%"
+                            backgroundColor="transparent"
                             alignItems="center"
                             justifyContent="center"
                             paddingTop="$6"
@@ -243,8 +246,8 @@ export function Hero({
                         >
                             <Image
                                 source={heroImageSource as Parameters<typeof Image>[0]["source"]}
-                                width="85%"
-                                height="85%"
+                                width="100%"
+                                height="100%"
                                 $md={{ width: "120%", height: "120%" }}
                                 $lg={{ width: "130%", height: "130%" }}
                                 resizeMode="contain"

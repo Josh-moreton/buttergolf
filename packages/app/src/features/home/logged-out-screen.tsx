@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import {
   Column,
+  Row,
+  Button,
   ScrollView,
   Text,
 } from "@buttergolf/ui";
@@ -93,10 +95,47 @@ export function LoggedOutHomeScreen({
           subtitle="Buy, Sell, and Upgrade Your Game"
           backgroundImage={images.hero.background}
           heroImage={images.hero.club}
-          showHeroImage={false}
-          minHeight={300}
-          maxHeight={400}
+          showHeroImage={true}
+          minHeight={250}
+          maxHeight={300}
         />
+
+        {/* Buying/Selling Toggle Buttons */}
+        <Row
+          gap="$4"
+          paddingHorizontal="$4"
+          paddingVertical="$4"
+          justifyContent="center"
+        >
+          <Button
+            width="40%"
+            height={44}
+            backgroundColor="$spicedClementine"
+            color="$vanillaCream"
+            borderRadius="$full"
+            fontWeight="700"
+            pressStyle={{
+              scale: 0.98,
+              opacity: 0.9,
+            }}
+          >
+            Buying
+          </Button>
+          <Button
+            width="40%"
+            height={44}
+            backgroundColor="$cloudMist"
+            color="$ironstone"
+            borderRadius="$full"
+            fontWeight="700"
+            pressStyle={{
+              scale: 0.98,
+              opacity: 0.9,
+            }}
+          >
+            Selling
+          </Button>
+        </Row>
 
         {/* Placeholder for future content */}
         <Column padding="$8" alignItems="center">
