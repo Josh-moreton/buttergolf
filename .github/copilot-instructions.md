@@ -609,30 +609,50 @@ import { Button } from "@buttergolf/ui";
 - Compiler-optimized for performance
 - Maintains design system consistency
 
-#### ✅ **Use Brand Color Tokens or Semantic Tokens**
+#### ✅ **PREFER Specific Brand Color Tokens (Not Generic Semantic Tokens)**
+
+**🎨 IMPORTANT: Use specific brand colors for better design control and clarity**
+
+Our brand colors have specific names that describe the actual color, making the code more readable and maintainable. **Prefer these specific tokens over generic semantic names.**
 
 ```tsx
-// ✅ CORRECT - Use specific brand color tokens or semantic tokens
-<Button backgroundColor="$primary" color="$textInverse">
-  Submit
-</Button>
+// ✅ CORRECT - Use specific brand color tokens (PREFERRED)
+<Text color="$ironstone">Primary dark text</Text>           // Dark gray text
+<Text color="$slateSmoke">Secondary text</Text>             // Medium gray
+<View backgroundColor="$vanillaCream">Light background</View> // Cream background
+<View borderColor="$cloudMist">Subtle border</View>          // Light gray border
+<Button backgroundColor="$spicedClementine">CTA Button</Button> // Orange brand color
 
-<Button backgroundColor="$spicedClementine" color="$textInverse">
-  Brand Button
-</Button>
-
+// ✅ ALSO CORRECT - Generic semantic tokens (use when you need theme flexibility)
+<Button backgroundColor="$primary" color="$textInverse">Submit</Button>
 <Text color="$textMuted">Helper text</Text>
-<Text color="$ironstone">Dark text</Text>
-
-<View borderColor="$border" backgroundColor="$vanillaCream">
-  Content
-</View>
+<View borderColor="$border" backgroundColor="$background">Content</View>
 
 // ❌ WRONG - Never use numbered colors or raw hex values
 <Button backgroundColor="#F45314">Submit</Button>    // No theming, use $spicedClementine or $primary
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
+<Text color="$color11">Text</Text>                   // Numbered color (deprecated)
 ```
+
+**Brand Color Token Reference:**
+
+| Token | Hex | Use Case |
+|-------|-----|----------|
+| `$ironstone` | #323232 | Primary dark text, headings |
+| `$slateSmoke` | #545454 | Secondary text, muted content |
+| `$cloudMist` | #EDEDED | Borders, dividers, subtle lines |
+| `$vanillaCream` | #FFFAD2 | Light backgrounds, surfaces |
+| `$spicedClementine` | #F45314 | Primary brand color, CTAs |
+| `$burntOlive` | #3E3B2C | Dark accents, secondary brand |
+| `$lemonHaze` | #EDECC3 | Subtle accents, tertiary |
+| `$pureWhite` | #FFFFFF | Pure white for contrast |
+
+**When to use which:**
+- **Specific tokens** (`$ironstone`, `$vanillaCream`, etc.) - Use for consistent brand colors across light/dark themes
+- **Semantic tokens** (`$text`, `$background`, etc.) - Use only when you need automatic theme switching behavior
+
+**The OLD guidance saying "use semantic tokens" was confusing and led to incorrect code review comments. Always prefer specific brand color tokens.**
 
 #### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
@@ -698,6 +718,68 @@ import { Button } from "@buttergolf/ui";
 ```
 
 **Note**: Row and Column are thin wrappers over XStack/YStack - they preserve ALL native Tamagui props like `alignItems`, `justifyContent`, `flexWrap`, etc. Use these native props directly.
+
+#### ⚠️ **CRITICAL: Text Component Font Sizing (NEVER use size="md")**
+
+**🚨 THIS IS THE MOST COMMON ERROR - READ CAREFULLY 🚨**
+
+The Tamagui Text component has TWO different props for sizing, and mixing them up causes runtime errors:
+
+1. **`size` prop** - A **variant** that accepts semantic strings: `"xs" | "sm" | "md" | "lg" | "xl"`
+2. **`fontSize` prop** - A **direct token** that accepts token values: `"$1"` through `"$16"`
+
+**THE CRITICAL RULE:**
+
+- ✅ **CORRECT - Use `size` variant for semantic sizing**:
+  ```tsx
+  <Text size="sm">Small text</Text>
+  <Text size="md">Medium text (default)</Text>
+  <Text size="lg">Large text</Text>
+  ```
+
+- ✅ **CORRECT - Use `fontSize` with tokens for custom sizing**:
+  ```tsx
+  <Text fontSize="$4">Small (13-14px)</Text>
+  <Text fontSize="$5">Medium (15-16px) - DEFAULT</Text>
+  <Text fontSize="$6">Large (18-20px)</Text>
+  <Text fontSize="$7">XL (22-24px)</Text>
+  <Text fontSize="$8">2XL (28-32px)</Text>
+  ```
+
+- ❌ **WRONG - NEVER mix variant names with fontSize**:
+  ```tsx
+  <Text size="md">Wrong!</Text>  // This looks right but causes "No font size found md" error
+  <Text fontSize="md">Wrong!</Text>  // Missing $ prefix on token
+  <Text fontSize="$md">Wrong!</Text>  // $md is a spacing token, not a font size
+  ```
+
+**Why This Error Keeps Happening:**
+
+The `size` prop name makes developers think they can use it like `fontSize`, but it's actually a **variant** that only works with the specific variant names defined in the Text component. When you use `size="md"`, Tamagui tries to look up a font size token named "md" and fails.
+
+**Font Size Token Reference:**
+
+| Token  | Size Range | Use Case                 |
+|--------|------------|--------------------------|
+| `$1`   | 11px       | Legal text, tiny labels  |
+| `$2`   | 12px       | Captions, metadata       |
+| `$3`   | 13px       | Small labels             |
+| `$4`   | 13-14px    | Body small, helper text  |
+| **`$5`** | **15-16px** | **DEFAULT - Body text**   |
+| `$6`   | 18-20px    | Large body, subheadings  |
+| `$7`   | 22-24px    | Headings                 |
+| `$8`   | 28-32px    | Large headings           |
+| `$9`+  | 36px+      | Hero text                |
+
+**If you see "No font size found md/sm/lg" error:**
+
+1. Search for `size="sm"`, `size="md"`, `size="lg"` in Text components
+2. Replace with either:
+   - `size` variant: `size="sm"` (if using semantic sizing)
+   - OR `fontSize` token: `fontSize="$5"` (if you want specific control)
+3. **Default to `fontSize="$5"`** when unsure - it's the most common body text size
+
+**This error has appeared 4+ times in this project - following this rule prevents it.**
 
 #### ✅ **Using Colors in Text Components**
 
@@ -1940,13 +2022,13 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Design System & Components
 
-1. **ALWAYS use design tokens** - Use brand color tokens like `$spicedClementine`, `$vanillaCream`, `$ironstone`, `$cloudMist` OR semantic tokens like `$primary`, `$text`, `$border`. Never use raw hex values.
+1. **ALWAYS use specific brand color tokens** - PREFER `$ironstone`, `$spicedClementine`, `$vanillaCream`, `$cloudMist`, `$slateSmoke`, `$burntOlive`, `$lemonHaze` over generic semantic tokens like `$text`, `$primary`, `$border`. Only use semantic tokens when you need automatic theme switching. Never use raw hex values or numbered colors.
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
-3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
+3. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
 4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
 5. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
 6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
-7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, etc.
+7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
 8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
 
 ### Understanding Variants vs Direct Token Props

@@ -6,3 +6,6 @@ export type { MobileCategoryPillsProps } from "./MobileCategoryPills";
 
 export { MobileBottomNav } from "./MobileBottomNav";
 export type { MobileBottomNavProps } from "./MobileBottomNav";
+
+export { MobileCategoryHeader } from "./MobileCategoryHeader";
+export type { MobileCategoryHeaderProps } from "./MobileCategoryHeader";

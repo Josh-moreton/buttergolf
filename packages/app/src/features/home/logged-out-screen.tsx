@@ -14,6 +14,8 @@ import type { ProductCardData } from "../../types/product";
 import { Hero } from "../../components/Hero";
 import { images } from "@buttergolf/assets";
 import { MobileSearchBar, MobileBottomNav } from "../../components/mobile";
+import { useLink } from "solito/navigation";
+import { routes } from "../../navigation";
 
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
@@ -29,6 +31,20 @@ export function LoggedOutHomeScreen({
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [loading, setLoading] = useState(false);
+
+  // Navigation links for categories
+  const driversLink = useLink({
+    href: routes.category.replace("[slug]", "drivers"),
+  });
+  const ironsLink = useLink({
+    href: routes.category.replace("[slug]", "irons"),
+  });
+  const shoesLink = useLink({
+    href: routes.category.replace("[slug]", "shoes"),
+  });
+  const accessoriesLink = useLink({
+    href: routes.category.replace("[slug]", "accessories"),
+  });
 
   useEffect(() => {
     if (onFetchProducts && products.length === 0 && !loading) {
@@ -169,6 +185,7 @@ export function LoggedOutHomeScreen({
               borderRadius="$2xl"
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={driversLink.onPress}
             >
               <Image
                 source={images.clubs.club1}
@@ -197,6 +214,7 @@ export function LoggedOutHomeScreen({
               borderRadius="$2xl"
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={ironsLink.onPress}
             >
               <Image
                 source={images.clubs.club3}
@@ -228,6 +246,7 @@ export function LoggedOutHomeScreen({
               borderRadius="$2xl"
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={shoesLink.onPress}
             >
               <Image
                 source={images.clubs.club5}
@@ -256,6 +275,7 @@ export function LoggedOutHomeScreen({
               borderRadius="$2xl"
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={accessoriesLink.onPress}
             >
               <Image
                 source={images.clubs.club6}

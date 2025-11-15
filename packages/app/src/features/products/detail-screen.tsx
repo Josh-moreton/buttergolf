@@ -144,9 +144,7 @@ export function ProductDetailScreen({
                 <Text fontSize="$5" weight="semibold">
                   Description
                 </Text>
-                <Text size="md" color="$textSecondary">
-                  {product.description}
-                </Text>
+                <Text fontSize="$5">{product.description}</Text>
               </Column>
             </Card>
           )}
@@ -154,7 +152,7 @@ export function ProductDetailScreen({
           {/* Seller Info */}
           <Card variant="outlined" {...{ padding: "md" as any }}>
             <Column gap="$2">
-              <Text size="md" weight="semibold">
+              <Text fontSize="$5" weight="semibold">
                 Seller
               </Text>
               <Row gap="$2" alignItems="center">
@@ -174,7 +172,7 @@ export function ProductDetailScreen({
           {/* Additional Images */}
           {product.images && product.images.length > 1 && (
             <Column gap="$2">
-              <Text size="md" weight="semibold">
+              <Text fontSize="$5" weight="semibold">
                 More Images
               </Text>
               <Row gap="$2" flexWrap="wrap">
