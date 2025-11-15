@@ -20,8 +20,6 @@ import { routes } from "../../navigation";
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
   onFetchProducts?: () => Promise<ProductCardData[]>;
-  onProductPress?: (id: string) => void;
-  onSignIn?: () => void;
 }
 
 export function LoggedOutHomeScreen({
@@ -124,30 +122,28 @@ export function LoggedOutHomeScreen({
           justifyContent="center"
         >
           <Button
+            size="lg"
+            tone="primary"
             width="40%"
-            height={44}
-            backgroundColor="$spicedClementine"
-            color="$vanillaCream"
             borderRadius="$full"
-            fontWeight="700"
             pressStyle={{
               scale: 0.98,
               opacity: 0.9,
             }}
+            onPress={() => console.log("Buying pressed")} // TODO: Implement buying flow navigation
           >
             Buying
           </Button>
           <Button
+            size="lg"
+            tone="outline"
             width="40%"
-            height={44}
-            backgroundColor="$cloudMist"
-            color="$ironstone"
             borderRadius="$full"
-            fontWeight="700"
             pressStyle={{
               scale: 0.98,
               opacity: 0.9,
             }}
+            onPress={() => console.log("Selling pressed")} // TODO: Implement selling flow navigation
           >
             Selling
           </Button>
@@ -186,6 +182,8 @@ export function LoggedOutHomeScreen({
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
               onPress={driversLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse drivers category"
             >
               <Image
                 source={images.clubs.club1}
@@ -193,6 +191,8 @@ export function LoggedOutHomeScreen({
                 height="100%"
                 resizeMode="cover"
                 position="absolute"
+                alt="Drivers category"
+                accessibilityLabel="Drivers category"
               />
               <Column
                 flex={1}
@@ -215,6 +215,8 @@ export function LoggedOutHomeScreen({
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
               onPress={ironsLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse irons category"
             >
               <Image
                 source={images.clubs.club3}
@@ -222,6 +224,8 @@ export function LoggedOutHomeScreen({
                 height="100%"
                 resizeMode="cover"
                 position="absolute"
+                alt="Irons category"
+                accessibilityLabel="Irons category"
               />
               <Column
                 flex={1}
@@ -247,6 +251,8 @@ export function LoggedOutHomeScreen({
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
               onPress={shoesLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse shoes category"
             >
               <Image
                 source={images.clubs.club5}
@@ -254,6 +260,8 @@ export function LoggedOutHomeScreen({
                 height="100%"
                 resizeMode="cover"
                 position="absolute"
+                alt="Shoes category"
+                accessibilityLabel="Shoes category"
               />
               <Column
                 flex={1}
@@ -276,6 +284,8 @@ export function LoggedOutHomeScreen({
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
               onPress={accessoriesLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse accessories category"
             >
               <Image
                 source={images.clubs.club6}
@@ -283,6 +293,8 @@ export function LoggedOutHomeScreen({
                 height="100%"
                 resizeMode="cover"
                 position="absolute"
+                alt="Accessories category"
+                accessibilityLabel="Accessories category"
               />
               <Column
                 flex={1}

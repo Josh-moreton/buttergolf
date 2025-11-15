@@ -101,6 +101,8 @@ export function Hero({
                     left={0}
                     resizeMode="cover"
                     zIndex={0}
+                    alt=""
+                    accessibilityRole="none"
                 />
 
                 {/* Content Container - Absolute positioned on top */}
@@ -115,11 +117,11 @@ export function Hero({
                 >
                     {/* Left Side - Text Content */}
                     <Column
-                        width="100%"
+                        width="60%"
                         $md={{ width: "50%" }}
                         justifyContent="center"
                         paddingLeft="$4"
-                        paddingRight="$4"
+                        paddingRight="$2"
                         $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
                     >
                         <Column gap="$6" maxWidth={600}>
@@ -221,16 +223,11 @@ export function Hero({
                         </Column>
                     </Column>
 
-                    {/* Right Side - Hero Image (Mobile and Desktop if showHeroImage true) */}
+                    {/* Right Side - Hero Image (Side by side on all screens) */}
                     {showHeroImage && heroImageSource && (
                         <Column
-                            display="flex"
-                            width="50%"
-                            backgroundColor="transparent"
-                            alignItems="center"
-                            justifyContent="center"
-                            paddingTop="$6"
-                            paddingBottom="$4"
+                            width="40%"
+                            height="100%"
                             $md={{
                                 width: "50%",
                                 paddingLeft: "$4",
@@ -238,6 +235,11 @@ export function Hero({
                                 paddingTop: "$8",
                                 paddingBottom: 0,
                             }}
+                            backgroundColor="transparent"
+                            alignItems="flex-end"
+                            justifyContent="flex-end"
+                            paddingRight={0}
+                            marginBottom={-20}
                             $lg={{
                                 paddingLeft: "$8",
                                 paddingRight: "$12",
@@ -246,11 +248,14 @@ export function Hero({
                         >
                             <Image
                                 source={heroImageSource as Parameters<typeof Image>[0]["source"]}
-                                width="100%"
-                                height="100%"
+                                width="130%"
+                                height="auto"
+                                aspectRatio={1}
                                 $md={{ width: "120%", height: "120%" }}
                                 $lg={{ width: "130%", height: "130%" }}
                                 resizeMode="contain"
+                                alt="Premium golf club featured in hero section"
+                                accessibilityLabel="Premium golf club featured in hero section"
                             />
                         </Column>
                     )}

@@ -46,6 +46,9 @@ export function MobileBottomNav({
           minWidth={60}
           onPress={onHomePress}
           cursor="pointer"
+          accessibilityRole="button"
+          accessibilityLabel="Home"
+          accessibilityState={{ selected: activeTab === "home" }}
         >
           <Home
             size={24}
@@ -69,6 +72,9 @@ export function MobileBottomNav({
           minWidth={60}
           onPress={onWishlistPress}
           cursor="pointer"
+          accessibilityRole="button"
+          accessibilityLabel="Wishlist"
+          accessibilityState={{ selected: activeTab === "wishlist" }}
         >
           <Heart
             size={24}
@@ -92,6 +98,9 @@ export function MobileBottomNav({
           minWidth={60}
           onPress={onSellPress}
           cursor="pointer"
+          accessibilityRole="button"
+          accessibilityLabel="Sell"
+          accessibilityState={{ selected: activeTab === "sell" }}
         >
           <PlusCircle
             size={24}
@@ -115,6 +124,9 @@ export function MobileBottomNav({
           minWidth={60}
           onPress={onMessagesPress}
           cursor="pointer"
+          accessibilityRole="button"
+          accessibilityLabel="Messages"
+          accessibilityState={{ selected: activeTab === "messages" }}
         >
           <MessageCircle
             size={24}
@@ -138,6 +150,9 @@ export function MobileBottomNav({
           minWidth={60}
           onPress={onLoginPress}
           cursor="pointer"
+          accessibilityRole="button"
+          accessibilityLabel="Log in"
+          accessibilityState={{ selected: activeTab === "login" }}
         >
           <User
             size={24}
