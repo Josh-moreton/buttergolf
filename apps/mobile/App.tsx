@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Provider,
-  HomeScreen,
   RoundsScreen,
   ProductsScreen,
   ProductDetailScreen,
@@ -271,14 +270,9 @@ export default function App() {
           <SignedIn>
             <NavigationContainer linking={linking}>
               <Stack.Navigator>
-                <Stack.Screen
-                  name="Home"
-                  component={HomeScreen}
-                  options={{
-                    title: "ButterGolf",
-                    headerRight: HeaderRightComponent,
-                  }}
-                />
+                <Stack.Screen name="Home" options={{ title: "ButterGolf", headerRight: HeaderRightComponent }}>
+                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
+                </Stack.Screen>
                 <Stack.Screen
                   name="Rounds"
                   component={RoundsScreen}
@@ -355,11 +349,38 @@ function OnboardingFlow() {
     }
   };
 
+  const Stack = createNativeStackNavigator();
+
   if (showLoggedOutHome) {
     return (
-      <LoggedOutHomeScreen
-        onFetchProducts={fetchProducts}
-      />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LoggedOutHome">
+          {() => <LoggedOutHomeScreen onFetchProducts={fetchProducts} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Category"
+          options={({ route }: any) => ({
+            title: route.params?.slug
+              ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+              : "Category",
+            headerShown: false,
+          })}
+        >
+          {({ route, navigation }: any) => (
+            <CategoryListScreen
+              categorySlug={route.params?.slug || ""}
+              categoryName={
+                route.params?.slug
+                  ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                  : "Category"
+              }
+              onFetchProducts={fetchProductsByCategory}
+              onBack={() => navigation.goBack()}
+              onFilter={() => console.log("Filter pressed")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
     );
   }
 
