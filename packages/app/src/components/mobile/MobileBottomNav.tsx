@@ -35,8 +35,8 @@ export function MobileBottomNav({
       shadowOpacity={1}
       shadowRadius={8}
       elevation={8}
-      paddingVertical="$3"
-      paddingBottom="$2"
+      paddingTop="$3"
+      paddingBottom="$6"
     >
       <Row alignItems="center" justifyContent="space-around" paddingHorizontal="$4">
         {/* Home */}

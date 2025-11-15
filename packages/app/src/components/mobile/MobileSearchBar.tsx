@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Row, Column, Input } from "@buttergolf/ui";
 import { Search as SearchIcon } from "@tamagui/lucide-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export interface MobileSearchBarProps {
     placeholder?: string;
@@ -30,6 +31,7 @@ export function MobileSearchBar({
 }: Readonly<MobileSearchBarProps>) {
     const [query, setQuery] = useState("");
     const [isFocused, setIsFocused] = useState(false);
+    const insets = useSafeAreaInsets();
 
     const handleChangeText = (text: string) => {
         setQuery(text);
@@ -41,10 +43,9 @@ export function MobileSearchBar({
     return (
         <Column
             paddingHorizontal="$4"
-            paddingVertical="$3"
-            backgroundColor="$background"
-            borderBottomLeftRadius="$lg"
-            borderBottomRightRadius="$lg"
+            paddingTop={insets.top + 16}
+            paddingBottom="$3"
+            alignItems="center"
         >
             {/* Search Input Container */}
             <Row
@@ -52,14 +53,14 @@ export function MobileSearchBar({
                 alignSelf="center"
                 height={48}
                 backgroundColor="$surface"
-                borderRadius="$full"
+                borderRadius="$2xl"
                 paddingHorizontal="$4"
                 alignItems="center"
                 gap="$2"
                 borderWidth={1}
-                borderColor="$ironstone"
+                borderColor="rgba(50, 50, 50, 0.5)"
             >
-                <SearchIcon size={20} color="$ironstone" />
+                <SearchIcon size={20} color="$ironstone" opacity={0.5} />
                 <Input
                     flex={1}
                     unstyled
@@ -72,6 +73,7 @@ export function MobileSearchBar({
                     }}
                     placeholder={placeholder}
                     placeholderTextColor="$ironstone"
+                    opacity={0.5}
                     fontSize={15}
                     color="$text"
                     borderWidth={0}

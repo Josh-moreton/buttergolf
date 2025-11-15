@@ -54,14 +54,13 @@ export function LoggedOutHomeScreen({
 
   return (
     <Column flex={1} backgroundColor="$background">
-      {/* Sticky Search Bar - Fixed at top with safe area, drop shadow, and rounded corners */}
+      {/* Sticky Search Bar - Fixed at top, extends into safe area */}
       <Column
         position="absolute"
         top={0}
         left={0}
         right={0}
         zIndex={100}
-        paddingTop={insets.top}
       >
         <Column
           backgroundColor="$background"
@@ -287,14 +286,13 @@ export function LoggedOutHomeScreen({
         </Column>
       </ScrollView>
 
-      {/* Bottom Navigation - Fixed at bottom with safe area */}
+      {/* Bottom Navigation - Fixed at bottom, extends into safe area */}
       <Column
         position="absolute"
         bottom={0}
         left={0}
         right={0}
         zIndex={100}
-        paddingBottom={insets.bottom}
       >
         <MobileBottomNav
           activeTab="home"

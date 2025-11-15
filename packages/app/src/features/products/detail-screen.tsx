@@ -141,7 +141,7 @@ export function ProductDetailScreen({
           {product.description && (
             <Card variant="outlined" {...{ padding: "md" as any }}>
               <Column gap="$2">
-                <Text size="md" weight="semibold">
+                <Text fontSize="$5" weight="semibold">
                   Description
                 </Text>
                 <Text size="md" color="$textSecondary">
@@ -166,7 +166,7 @@ export function ProductDetailScreen({
                     borderRadius="$full"
                   />
                 )}
-                <Text size="md">{product.user.name || "Anonymous"}</Text>
+                <Text fontSize="$5">{product.user.name || "Anonymous"}</Text>
               </Row>
             </Column>
           </Card>
