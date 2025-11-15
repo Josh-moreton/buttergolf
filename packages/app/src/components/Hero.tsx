@@ -115,7 +115,7 @@ export function Hero({
                 >
                     {/* Left Side - Text Content */}
                     <Column
-                        width="50%"
+                        width="100%"
                         $md={{ width: "50%" }}
                         justifyContent="center"
                         paddingLeft="$4"
