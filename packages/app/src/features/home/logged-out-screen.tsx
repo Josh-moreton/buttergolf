@@ -118,13 +118,14 @@ export function LoggedOutHomeScreen({
         <Row
           gap="$4"
           paddingHorizontal="$4"
-          paddingVertical="$4"
-          justifyContent="center"
+          paddingTop="$4"
+          paddingBottom="$4"
+          justifyContent="space-between"
         >
           <Button
             size="lg"
             tone="primary"
-            width="40%"
+            flex={1}
             borderRadius="$full"
             pressStyle={{
               scale: 0.98,
@@ -137,8 +138,9 @@ export function LoggedOutHomeScreen({
           <Button
             size="lg"
             tone="outline"
-            width="40%"
+            flex={1}
             borderRadius="$full"
+            backgroundColor="$cloudMist"
             pressStyle={{
               scale: 0.98,
               opacity: 0.9,
