@@ -31,18 +31,19 @@ function rgbaToP3(r: number, g: number, b: number, a: number): string {
 }
 
 // Urbanist font for Pure Butter brand identity
+// Maps weight numbers to actual font family names (for React Native)
 const urbanistFace = {
-    normal: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    bold: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    100: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    200: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    300: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    400: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    500: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    600: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    700: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    800: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    900: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
+    normal: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    bold: { normal: 'Urbanist-Bold', italic: 'Urbanist-Bold' },
+    100: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    200: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    300: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    400: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    500: { normal: 'Urbanist-Medium', italic: 'Urbanist-Medium' },
+    600: { normal: 'Urbanist-SemiBold', italic: 'Urbanist-SemiBold' },
+    700: { normal: 'Urbanist-Bold', italic: 'Urbanist-Bold' },
+    800: { normal: 'Urbanist-ExtraBold', italic: 'Urbanist-ExtraBold' },
+    900: { normal: 'Urbanist-Black', italic: 'Urbanist-Black' },
 }
 
 const headingFont = createFont({

@@ -29,6 +29,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
 import { useFonts } from "expo-font";
+import {
+  Urbanist_400Regular,
+  Urbanist_500Medium,
+  Urbanist_600SemiBold,
+  Urbanist_700Bold,
+  Urbanist_800ExtraBold,
+  Urbanist_900Black,
+} from "@expo-google-fonts/urbanist";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 // Platform imported above with RN components
@@ -150,9 +158,15 @@ async function fetchProduct(id: string): Promise<Product | null> {
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
-  // Urbanist font is loaded via Google Fonts through Tamagui config
-  // No need to manually load fonts in mobile - Tamagui handles it
-  const [fontsLoaded] = useFonts({});
+  // Load Urbanist font weights for React Native using expo-google-fonts
+  const [fontsLoaded] = useFonts({
+    "Urbanist-Regular": Urbanist_400Regular,
+    "Urbanist-Medium": Urbanist_500Medium,
+    "Urbanist-SemiBold": Urbanist_600SemiBold,
+    "Urbanist-Bold": Urbanist_700Bold,
+    "Urbanist-ExtraBold": Urbanist_800ExtraBold,
+    "Urbanist-Black": Urbanist_900Black,
+  });
 
   useEffect(() => {
     async function hideSplash() {
