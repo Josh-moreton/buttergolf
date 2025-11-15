@@ -79,7 +79,7 @@ export function ProductDetailScreen({
           Back to Products
         </Button>
         <Column alignItems="center" justifyContent="center" flex={1}>
-          <Text color="$error" size="lg">
+          <Text color="$error" fontSize="$6">
             {error || "Product not found"}
           </Text>
         </Column>

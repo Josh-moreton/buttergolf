@@ -7,6 +7,7 @@ import {
   Button,
   ScrollView,
   Text,
+  Image,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { ProductCardData } from "../../types/product";
@@ -137,10 +138,151 @@ export function LoggedOutHomeScreen({
           </Button>
         </Row>
 
+        {/* Shop by Category Section */}
+        <Column paddingHorizontal="$4" paddingTop="$4" paddingBottom="$6" gap="$3">
+          <Text
+            fontSize="$8"
+            fontWeight="900"
+            color="$ironstone"
+            textAlign="center"
+          >
+            Shop by category
+          </Text>
+          <Text
+            fontSize="$5"
+            fontWeight="400"
+            color="$slateSmoke"
+            textAlign="center"
+          >
+            Find exactly what you need - faster.
+          </Text>
+        </Column>
+
+        {/* Category Cards Grid */}
+        <Column paddingHorizontal="$4" gap="$4">
+          {/* First row: Drivers & Irons */}
+          <Row gap="$4">
+            {/* Drivers card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$vanillaCream"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+            >
+              <Image
+                source={images.clubs.club1}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Drivers
+                </Text>
+              </Column>
+            </Column>
+
+            {/* Irons card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$secondary"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+            >
+              <Image
+                source={images.clubs.club3}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Irons
+                </Text>
+              </Column>
+            </Column>
+          </Row>
+
+          {/* Second row: Shoes & Accessories */}
+          <Row gap="$4">
+            {/* Shoes card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$vanillaCream"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+            >
+              <Image
+                source={images.clubs.club5}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Shoes
+                </Text>
+              </Column>
+            </Column>
+
+            {/* Accessories card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$secondary"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+            >
+              <Image
+                source={images.clubs.club6}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Accessories
+                </Text>
+              </Column>
+            </Column>
+          </Row>
+        </Column>
+
         {/* Placeholder for future content */}
         <Column padding="$8" alignItems="center">
           <Text color="$textSecondary" textAlign="center">
-            Content coming soon...
+            More content coming soon...
           </Text>
         </Column>
       </ScrollView>
