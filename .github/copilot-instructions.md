@@ -30,12 +30,87 @@ This guide also documents our authentication setup using Clerk for both platform
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
 - **Styling**: Tailwind CSS v4 (web), Tamagui (cross-platform)
+- **Navigation**: Solito 5.0.0 for unified cross-platform routing
 - **Bundlers**:
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
 - **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
 - **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+
+### Cross-Platform Navigation Architecture (CRITICAL)
+
+**THIS IS A SOLITO-BASED MONOREPO - NOT EXPO ROUTER**
+
+The navigation architecture uses **Solito** to share routing logic between Next.js (web) and React Navigation (mobile):
+
+**Package Structure:**
+- `packages/app/` - **Shared cross-platform screens and business logic** (works on both web and mobile)
+  - Contains: screens, components, hooks, types, navigation config
+  - Uses: `solito/link` and `solito/navigation` for platform-agnostic navigation
+  - Example: `packages/app/src/features/categories/category-list-screen.tsx`
+- `apps/web/` - **Next.js App Router** (file-based routing with `app/` directory)
+  - Solito automatically translates to Next.js `<Link>` and `useRouter()`
+  - Example: `apps/web/src/app/category/[slug]/page.tsx`
+- `apps/mobile/` - **Expo + React Navigation** (`App.tsx` entry point, NO `app/` directory)
+  - Solito translates to React Navigation via linking config in `App.tsx`
+  - Must manually register screens in the Stack Navigator
+  - Example: Add `<Stack.Screen name="Category">` in `apps/mobile/App.tsx`
+
+**Route Definition (Single Source of Truth):**
+```typescript
+// packages/app/src/navigation/routes.ts
+export const routes = {
+  home: '/',
+  category: '/category/[slug]',
+  productDetail: '/products/[id]',
+  // ... other routes
+}
+```
+
+**How to Add a New Screen:**
+
+1. **Define the route** in `packages/app/src/navigation/routes.ts`
+2. **Create the screen component** in `packages/app/src/features/[feature]/[screen-name].tsx`
+   - Use `useLink` from `solito/navigation` for navigation
+   - Must be platform-agnostic (use Tamagui, not web-specific or native-specific APIs)
+3. **Export from** `packages/app/src/index.ts` or feature-specific index
+4. **Web (automatic):** Create matching route in `apps/web/src/app/[route]/page.tsx`
+   - Import and render the shared screen component
+   - Solito handles the rest automatically
+5. **Mobile (manual):** Register in `apps/mobile/App.tsx`:
+   ```typescript
+   import { MyNewScreen } from "@buttergolf/app/src/features/[feature]";
+   
+   // Add to linking config
+   const linking = {
+     config: {
+       screens: {
+         MyNewScreen: { path: "my-route/:param" }
+       }
+     }
+   }
+   
+   // Add to Stack Navigator
+   <Stack.Screen name="MyNewScreen">
+     {({ route }) => (
+       <MyNewScreen
+         param={route.params?.param}
+         onFetchData={fetchDataFunction}
+       />
+     )}
+   </Stack.Screen>
+   ```
+
+**Common Mistakes to Avoid:**
+- ❌ Don't expect Expo Router file-based routing in `apps/mobile/` - it uses React Navigation
+- ❌ Don't create separate screens for web and mobile - use shared `packages/app/` screens
+- ❌ Don't forget to register new routes in BOTH the linking config AND Stack Navigator in `App.tsx`
+- ❌ Don't use Next.js-specific APIs in `packages/app/` (e.g., `next/image`, `next/navigation`)
+- ❌ Don't use React Native-specific APIs in `packages/app/` unless wrapped in Platform checks
+- ✅ DO use Solito's `useLink` and `Link` components for all navigation
+- ✅ DO use Tamagui components for UI (they work everywhere)
+- ✅ DO pass data fetching functions as props (keeps screens platform-agnostic)
 
 ## Critical Commands
 

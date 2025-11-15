@@ -11,6 +11,7 @@ import {
 import type { ProductCardData, Product } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
+import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
 import {
   View as RNView,
   Text as RNText,
@@ -66,6 +67,9 @@ const linking = {
       ProductDetail: {
         path: "products/:id", // 'products/:id' for dynamic routing
       },
+      Category: {
+        path: "category/:slug", // 'category/:slug' for category pages
+      },
       // Add more routes here as you create them
       // RoundDetail: routes.roundDetail.replace('[id]', ':id'),
     },
@@ -120,6 +124,36 @@ async function fetchProducts(): Promise<ProductCardData[]> {
     return await response.json();
   } catch (error) {
     console.error("Failed to fetch products:", error);
+    return [];
+  }
+}
+
+// Function to fetch products by category
+async function fetchProductsByCategory(categorySlug: string): Promise<ProductCardData[]> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+    if (!apiUrl) {
+      throw new Error(
+        "EXPO_PUBLIC_API_URL environment variable is not set. " +
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+      );
+    }
+
+    console.log("Fetching products for category:", categorySlug, "from:", apiUrl);
+    const response = await fetch(`${apiUrl}/api/products?category=${categorySlug}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch category products:", error);
     return [];
   }
 }
@@ -264,6 +298,29 @@ export default function App() {
                     />
                   )}
                 </Stack.Screen>
+                <Stack.Screen
+                  name="Category"
+                  options={({ route }: any) => ({
+                    title: route.params?.slug
+                      ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                      : "Category",
+                    headerShown: false, // CategoryListScreen has its own header
+                  })}
+                >
+                  {({ route, navigation }: any) => (
+                    <CategoryListScreen
+                      categorySlug={route.params?.slug || ""}
+                      categoryName={
+                        route.params?.slug
+                          ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                          : "Category"
+                      }
+                      onFetchProducts={fetchProductsByCategory}
+                      onBack={() => navigation.goBack()}
+                      onFilter={() => console.log("Filter pressed")}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
@@ -302,17 +359,6 @@ function OnboardingFlow() {
     return (
       <LoggedOutHomeScreen
         onFetchProducts={fetchProducts}
-        onProductPress={(id) => {
-          // TODO: Navigate to product detail screen
-          console.log("Navigate to product:", id);
-        }}
-        onSignIn={() => {
-          if (Platform.OS === "ios") {
-            handleOAuth("apple");
-          } else {
-            handleOAuth("google");
-          }
-        }}
       />
     );
   }
