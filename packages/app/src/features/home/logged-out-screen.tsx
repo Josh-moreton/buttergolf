@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { ProductCardData } from "../../types/product";
 import { Hero } from "../../components/Hero";
 import { images } from "@buttergolf/assets";
-import { MobileSearchBar } from "../../components/mobile";
+import { MobileSearchBar, MobileBottomNav } from "../../components/mobile";
 
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
@@ -81,7 +81,7 @@ export function LoggedOutHomeScreen({
       <ScrollView
         contentContainerStyle={{
           paddingTop: insets.top + 80, // Account for sticky search bar height
-          paddingBottom: insets.bottom + 20,
+          paddingBottom: insets.bottom + 80, // Account for bottom nav
         }}
       >
         {/* Hero Section - Scrolls under the search bar */}
@@ -105,6 +105,25 @@ export function LoggedOutHomeScreen({
           </Text>
         </Column>
       </ScrollView>
+
+      {/* Bottom Navigation - Fixed at bottom with safe area */}
+      <Column
+        position="absolute"
+        bottom={0}
+        left={0}
+        right={0}
+        zIndex={100}
+        paddingBottom={insets.bottom}
+      >
+        <MobileBottomNav
+          activeTab="home"
+          onHomePress={() => console.log("Home pressed")}
+          onWishlistPress={() => console.log("Wishlist pressed")}
+          onSellPress={() => console.log("Sell pressed")}
+          onMessagesPress={() => console.log("Messages pressed")}
+          onLoginPress={() => console.log("Login pressed")}
+        />
+      </Column>
     </Column>
   );
 }

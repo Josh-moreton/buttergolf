@@ -3,3 +3,6 @@ export type { MobileSearchBarProps } from "./MobileSearchBar";
 
 export { MobileCategoryPills } from "./MobileCategoryPills";
 export type { MobileCategoryPillsProps } from "./MobileCategoryPills";
+
+export { MobileBottomNav } from "./MobileBottomNav";
+export type { MobileBottomNavProps } from "./MobileBottomNav";
