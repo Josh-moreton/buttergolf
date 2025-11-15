@@ -277,13 +277,6 @@ export function LoggedOutHomeScreen({
             </Column>
           </Row>
         </Column>
-
-        {/* Placeholder for future content */}
-        <Column padding="$8" alignItems="center">
-          <Text color="$textSecondary" textAlign="center">
-            More content coming soon...
-          </Text>
-        </Column>
       </ScrollView>
 
       {/* Bottom Navigation - Fixed at bottom, extends into safe area */}
