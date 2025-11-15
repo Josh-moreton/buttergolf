@@ -1,52 +1,48 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Dimensions, Image as RNImage } from "react-native";
 import {
   Column,
   Row,
-  ScrollView,
   Button,
+  ScrollView,
   Text,
-  Card,
-  View,
+  Image,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  Search as SearchIcon,
-  Camera,
-  Home,
-  PlusCircle,
-  Mail,
-  User,
-} from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
-import { CATEGORIES } from "@buttergolf/constants";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+import { Hero } from "../../components/Hero";
+import { images } from "@buttergolf/assets";
+import { MobileSearchBar, MobileBottomNav } from "../../components/mobile";
+import { useLink } from "solito/navigation";
+import { routes } from "../../navigation";
 
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
   onFetchProducts?: () => Promise<ProductCardData[]>;
-  onProductPress?: (id: string) => void;
-  onSignIn?: () => void;
 }
 
 export function LoggedOutHomeScreen({
   products: initialProducts = [],
   onFetchProducts,
-  onProductPress,
-  onSignIn,
 }: Readonly<LoggedOutHomeScreenProps>) {
   const insets = useSafeAreaInsets();
-  const [selectedCategory, setSelectedCategory] = React.useState("All");
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [loading, setLoading] = useState(false);
 
-  // Calculate card dimensions (2 columns with gap)
-  const gap = 8;
-  const horizontalPadding = 16;
-  const cardWidth = (SCREEN_WIDTH - horizontalPadding * 2 - gap) / 2;
+  // Navigation links for categories
+  const driversLink = useLink({
+    href: routes.category.replace("[slug]", "drivers"),
+  });
+  const ironsLink = useLink({
+    href: routes.category.replace("[slug]", "irons"),
+  });
+  const shoesLink = useLink({
+    href: routes.category.replace("[slug]", "shoes"),
+  });
+  const accessoriesLink = useLink({
+    href: routes.category.replace("[slug]", "accessories"),
+  });
 
   useEffect(() => {
     if (onFetchProducts && products.length === 0 && !loading) {
@@ -71,243 +67,266 @@ export function LoggedOutHomeScreen({
   }, [onFetchProducts, products.length, loading]);
 
   return (
-    <Column flex={1} backgroundColor="$primary">
-      {/* Brand background */}
-      {/* Search Bar */}
+    <Column flex={1} backgroundColor="$background">
+      {/* Sticky Search Bar - Fixed at top, extends into safe area */}
       <Column
-        paddingTop={insets.top + 8}
-        paddingHorizontal="$4"
-        paddingBottom="$3"
-        backgroundColor="$background"
-        borderBottomWidth={1}
-        borderBottomColor="$border"
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        zIndex={100}
       >
-        <Row gap="$3" alignItems="center">
-          <Row
-            flex={1}
-            height={40}
-            backgroundColor="$background" // Cream search bar for contrast
-            borderRadius="$md"
-            paddingHorizontal="$3"
-            alignItems="center"
-            gap="$2"
-          >
-            <SearchIcon size={20} color="$textMuted" />
-            <Text color="$textMuted" fontSize={15}>
-              Search for items or members
-            </Text>
-          </Row>
-          <Button
-            size="$3"
-            chromeless
-            padding="$2"
-            onPress={() => console.log("Camera pressed")}
-          >
-            <Camera size={24} color="$primary" />
-          </Button>
-        </Row>
+        <Column
+          backgroundColor="$background"
+          borderBottomLeftRadius="$2xl"
+          borderBottomRightRadius="$2xl"
+          shadowColor="rgba(0, 0, 0, 0.15)"
+          shadowOffset={{ width: 0, height: 4 }}
+          shadowOpacity={1}
+          shadowRadius={8}
+          elevation={8}
+        >
+          <MobileSearchBar
+            placeholder="What are you looking for?"
+            onSearch={(query: string) => console.log("Search query:", query)}
+          />
+        </Column>
       </Column>
 
-      {/* Category Pills */}
+      {/* Scrollable Content */}
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          gap: 8,
+          paddingTop: insets.top + 80, // Account for sticky search bar height
+          paddingBottom: insets.bottom + 80, // Account for bottom nav
         }}
       >
-        <Button
-          key="all"
-          size="$3"
-          paddingHorizontal="$4"
-          paddingVertical="$2"
-          borderRadius="$full"
-          backgroundColor="$background"
-          borderWidth={1}
-          borderColor={selectedCategory === "All" ? "$primary" : "$border"}
-          color={selectedCategory === "All" ? "$primary" : "$text"}
-          onPress={() => setSelectedCategory("All")}
-          pressStyle={{
-            scale: 0.95,
+        {/* Hero Section - Scrolls under the search bar */}
+        <Hero
+          heading={{
+            line1: "Swing Smarter.",
+            line2: "Shop Better.",
           }}
+          subtitle="Buy, Sell, and Upgrade Your Game"
+          backgroundImage={images.hero.background}
+          heroImage={images.hero.club}
+          showHeroImage={true}
+          minHeight={250}
+          maxHeight={300}
+        />
+
+        {/* Buying/Selling Toggle Buttons */}
+        <Row
+          gap="$4"
+          paddingHorizontal="$4"
+          paddingVertical="$4"
+          justifyContent="center"
         >
-          All
-        </Button>
-        {CATEGORIES.map((category) => (
           <Button
-            key={category.slug}
-            size="$3"
-            paddingHorizontal="$4"
-            paddingVertical="$2"
+            size="lg"
+            tone="primary"
+            width="40%"
             borderRadius="$full"
-            backgroundColor="$background"
-            borderWidth={1}
-            borderColor={
-              selectedCategory === category.name ? "$primary" : "$border"
-            }
-            color={selectedCategory === category.name ? "$primary" : "$text"}
-            onPress={() => setSelectedCategory(category.name)}
             pressStyle={{
-              scale: 0.95,
+              scale: 0.98,
+              opacity: 0.9,
             }}
+            onPress={() => console.log("Buying pressed")} // TODO: Implement buying flow navigation
           >
-            {category.name}
+            Buying
           </Button>
-        ))}
-      </ScrollView>
+          <Button
+            size="lg"
+            tone="outline"
+            width="40%"
+            borderRadius="$full"
+            pressStyle={{
+              scale: 0.98,
+              opacity: 0.9,
+            }}
+            onPress={() => console.log("Selling pressed")} // TODO: Implement selling flow navigation
+          >
+            Selling
+          </Button>
+        </Row>
 
-      {/* Product Grid */}
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: horizontalPadding,
-          paddingTop: 8,
-          paddingBottom: insets.bottom + 72,
-        }}
-      >
-        {loading && products.length === 0 && (
-          <Column padding="$8" alignItems="center">
-            <Text color="$textSecondary">Loading products...</Text>
-          </Column>
-        )}
+        {/* Shop by Category Section */}
+        <Column paddingHorizontal="$4" paddingTop="$4" paddingBottom="$6" gap="$3">
+          <Text
+            fontSize="$8"
+            fontWeight="900"
+            color="$ironstone"
+            textAlign="center"
+          >
+            Shop by category
+          </Text>
+          <Text
+            fontSize="$5"
+            fontWeight="400"
+            color="$slateSmoke"
+            textAlign="center"
+          >
+            Find exactly what you need - faster.
+          </Text>
+        </Column>
 
-        {!loading && products.length === 0 && (
-          <Column padding="$8" alignItems="center">
-            <Text color="$textSecondary">No products available yet</Text>
-          </Column>
-        )}
-
-        {products.length > 0 && (
-          <Row flexWrap="wrap" gap={gap} width="100%">
-            {products.map((product) => (
-              <Card
-                key={product.id}
-                width={cardWidth}
-                padding={0}
-                borderRadius="$md"
-                overflow="hidden"
-                backgroundColor="$background" // Card surface cream for consistency
-                pressStyle={{ scale: 0.98 }}
-                animation="quick"
-                onPress={
-                  onProductPress ? () => onProductPress(product.id) : undefined
-                }
+        {/* Category Cards Grid */}
+        <Column paddingHorizontal="$4" gap="$4">
+          {/* First row: Drivers & Irons */}
+          <Row gap="$4">
+            {/* Drivers card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$vanillaCream"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={driversLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse drivers category"
+            >
+              <Image
+                source={images.clubs.club1}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+                alt="Drivers category"
+                accessibilityLabel="Drivers category"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
               >
-                {/* Product Image */}
-                <View width="100%" height={cardWidth * 1.3} position="relative">
-                  <RNImage
-                    source={{ uri: product.imageUrl }}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    resizeMode="cover"
-                  />
-                </View>
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Drivers
+                </Text>
+              </Column>
+            </Column>
 
-                {/* Product Info */}
-                <Column padding="$2" gap="$1">
-                  <Text fontSize={14} fontWeight="500" numberOfLines={1}>
-                    {product.title}
-                  </Text>
-                  <Text fontSize={12} color="$textSecondary">
-                    {product.category}
-                    {product.condition &&
-                      ` · ${product.condition.replace("_", " ")}`}
-                  </Text>
-                  <Text fontSize={16} fontWeight="600" color="$primary">
-                    £{product.price.toFixed(2)}
-                  </Text>
-                </Column>
-              </Card>
-            ))}
+            {/* Irons card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$secondary"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={ironsLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse irons category"
+            >
+              <Image
+                source={images.clubs.club3}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+                alt="Irons category"
+                accessibilityLabel="Irons category"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Irons
+                </Text>
+              </Column>
+            </Column>
           </Row>
-        )}
+
+          {/* Second row: Shoes & Accessories */}
+          <Row gap="$4">
+            {/* Shoes card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$vanillaCream"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={shoesLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse shoes category"
+            >
+              <Image
+                source={images.clubs.club5}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+                alt="Shoes category"
+                accessibilityLabel="Shoes category"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Shoes
+                </Text>
+              </Column>
+            </Column>
+
+            {/* Accessories card */}
+            <Column
+              flex={1}
+              height={180}
+              backgroundColor="$secondary"
+              borderRadius="$2xl"
+              overflow="hidden"
+              pressStyle={{ opacity: 0.9, scale: 0.98 }}
+              onPress={accessoriesLink.onPress}
+              accessibilityRole="button"
+              accessibilityLabel="Browse accessories category"
+            >
+              <Image
+                source={images.clubs.club6}
+                width="100%"
+                height="100%"
+                resizeMode="cover"
+                position="absolute"
+                alt="Accessories category"
+                accessibilityLabel="Accessories category"
+              />
+              <Column
+                flex={1}
+                padding="$4"
+                justifyContent="flex-end"
+                backgroundColor="rgba(0, 0, 0, 0.3)"
+              >
+                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                  Accessories
+                </Text>
+              </Column>
+            </Column>
+          </Row>
+        </Column>
       </ScrollView>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation - Fixed at bottom, extends into safe area */}
       <Column
         position="absolute"
         bottom={0}
         left={0}
         right={0}
-        backgroundColor="$background" // Bottom nav cream on orange background
-        borderTopWidth={1}
-        borderTopColor="$border"
-        paddingBottom={insets.bottom}
-        paddingTop="$3"
+        zIndex={100}
       >
-        <Row
-          paddingVertical="$2"
-          alignItems="center"
-          justifyContent="space-around"
-        >
-          <Button
-            chromeless
-            flexDirection="column"
-            gap="$1"
-            padding="$2"
-            onPress={() => {}}
-          >
-            <Home size={24} color="$primary" />
-            <Text fontSize={11} color="$primary" fontWeight="600">
-              Home
-            </Text>
-          </Button>
-
-          <Button
-            chromeless
-            flexDirection="column"
-            gap="$1"
-            padding="$2"
-            onPress={() => {}}
-          >
-            <SearchIcon size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
-              Search
-            </Text>
-          </Button>
-
-          <Button
-            chromeless
-            flexDirection="column"
-            gap="$1"
-            padding="$2"
-            onPress={() => {}}
-          >
-            <PlusCircle size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
-              Sell
-            </Text>
-          </Button>
-
-          <Button
-            chromeless
-            flexDirection="column"
-            gap="$1"
-            padding="$2"
-            onPress={() => {}}
-          >
-            <Mail size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
-              Inbox
-            </Text>
-          </Button>
-
-          <Button
-            chromeless
-            flexDirection="column"
-            gap="$1"
-            padding="$2"
-            onPress={onSignIn}
-          >
-            <User size={24} color="$textSecondary" />
-            <Text fontSize={11} color="$textSecondary">
-              Profile
-            </Text>
-          </Button>
-        </Row>
+        <MobileBottomNav
+          activeTab="home"
+          onHomePress={() => console.log("Home pressed")}
+          onWishlistPress={() => console.log("Wishlist pressed")}
+          onSellPress={() => console.log("Sell pressed")}
+          onMessagesPress={() => console.log("Messages pressed")}
+          onLoginPress={() => console.log("Login pressed")}
+        />
       </Column>
     </Column>
   );

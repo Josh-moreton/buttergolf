@@ -65,6 +65,7 @@ const headingFont = createFont({
         15: 96,
         16: 112,
     },
+    // LineHeight defined as explicit pixel values for predictable spacing
     lineHeight: {
         1: 16,
         2: 18,
@@ -124,6 +125,7 @@ const bodyFont = createFont({
         15: 56,
         16: 64,
     },
+    // LineHeight defined as explicit pixel values for predictable spacing
     lineHeight: {
         1: 15,
         2: 16,

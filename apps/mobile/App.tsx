@@ -255,7 +255,9 @@ export default function App() {
           </SignedIn>
           <SignedOut>
             {/* Render the designed onboarding screen (animations currently disabled for stability) */}
-            <OnboardingFlow />
+            <NavigationContainer linking={linking}>
+              <OnboardingFlow />
+            </NavigationContainer>
           </SignedOut>
         </Provider>
       </ClerkProvider>
