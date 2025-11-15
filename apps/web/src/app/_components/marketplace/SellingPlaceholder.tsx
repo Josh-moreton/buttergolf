@@ -34,7 +34,7 @@ export function SellingPlaceholder() {
                     Ready to Sell Your Golf Gear?
                 </Heading>
 
-                <Text size="lg" textAlign="center" color="$textSecondary">
+                <Text size="lg" align="center" color="$textSecondary">
                     List your clubs, bags, shoes, and accessories in minutes.
                     Reach thousands of golfers looking for quality equipment.
                 </Text>

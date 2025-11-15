@@ -28,29 +28,23 @@ export const Text = styled(TamaguiText, {
   // Base styles
   color: "$text",
   fontFamily: "$body",
-  lineHeight: "$1",
 
   variants: {
     size: {
       xs: {
         fontSize: "$2",
-        lineHeight: "$1",
       },
       sm: {
         fontSize: "$3",
-        lineHeight: "$2",
       },
       md: {
         fontSize: "$4",
-        lineHeight: "$3",
       },
       lg: {
         fontSize: "$5",
-        lineHeight: "$4",
       },
       xl: {
         fontSize: "$6",
-        lineHeight: "$5",
       },
     },
 
@@ -110,32 +104,26 @@ export const Heading = styled(HeadingBase, {
       1: {
         tag: "h1",
         fontSize: "$10",
-        lineHeight: "$10",
       },
       2: {
         tag: "h2",
         fontSize: "$9",
-        lineHeight: "$9",
       },
       3: {
         tag: "h3",
         fontSize: "$8",
-        lineHeight: "$8",
       },
       4: {
         tag: "h4",
         fontSize: "$7",
-        lineHeight: "$7",
       },
       5: {
         tag: "h5",
         fontSize: "$6",
-        lineHeight: "$6",
       },
       6: {
         tag: "h6",
         fontSize: "$5",
-        lineHeight: "$5",
       },
     },
 
@@ -164,7 +152,6 @@ export const Label = styled(TamaguiLabel, {
   color: "$text",
   fontSize: "$3",
   fontWeight: "500",
-  lineHeight: "$3",
   marginBottom: "$2",
   cursor: "pointer",
   userSelect: "none",

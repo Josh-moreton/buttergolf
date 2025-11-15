@@ -2166,6 +2166,7 @@ When creating a new component, add variants for:
 23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
 24. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
 25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
+26. **If marketplace typography looks off (e.g., HeroStatic links), remove manual `lineHeight` overrides** - The fix is to rely on the px-based values defined in `packages/config/src/tamagui.config.ts` by deleting ad-hoc `lineHeight={...}` props in shared components (like `packages/app/src/components/Hero.tsx`). The footer looked correct because it already inherited the config tokens; match that behavior whenever this regression reappears.
 
 ## Known Issues & Gotchas
 

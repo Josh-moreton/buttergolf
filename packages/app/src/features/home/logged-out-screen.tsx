@@ -22,6 +22,8 @@ import {
 } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
 import { CATEGORIES } from "@buttergolf/constants";
+import { Hero } from "../../components/Hero";
+import { images } from "@buttergolf/assets";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -71,13 +73,27 @@ export function LoggedOutHomeScreen({
   }, [onFetchProducts, products.length, loading]);
 
   return (
-    <Column flex={1} backgroundColor="$primary">
-      {/* Brand background */}
+    <Column flex={1} backgroundColor="$background">
+      {/* Hero Section - Mobile friendly, no buttons */}
+      <View paddingTop={insets.top}>
+        <Hero
+          heading={{
+            line1: "Swing Smarter.",
+            line2: "Shop Better.",
+          }}
+          subtitle="Buy, Sell, and Upgrade Your Game"
+          backgroundImage={images.hero.background}
+          heroImage={images.hero.club}
+          showHeroImage={false} // Hide club image on mobile for cleaner look
+          minHeight={300}
+          maxHeight={400}
+        />
+      </View>
+
       {/* Search Bar */}
       <Column
-        paddingTop={insets.top + 8}
         paddingHorizontal="$4"
-        paddingBottom="$3"
+        paddingVertical="$3"
         backgroundColor="$background"
         borderBottomWidth={1}
         borderBottomColor="$border"
@@ -86,11 +102,13 @@ export function LoggedOutHomeScreen({
           <Row
             flex={1}
             height={40}
-            backgroundColor="$background" // Cream search bar for contrast
+            backgroundColor="$surface"
             borderRadius="$md"
             paddingHorizontal="$3"
             alignItems="center"
             gap="$2"
+            borderWidth={1}
+            borderColor="$border"
           >
             <SearchIcon size={20} color="$textMuted" />
             <Text color="$textMuted" fontSize={15}>
@@ -248,7 +266,7 @@ export function LoggedOutHomeScreen({
             flexDirection="column"
             gap="$1"
             padding="$2"
-            onPress={() => {}}
+            onPress={() => { }}
           >
             <Home size={24} color="$primary" />
             <Text fontSize={11} color="$primary" fontWeight="600">
@@ -261,7 +279,7 @@ export function LoggedOutHomeScreen({
             flexDirection="column"
             gap="$1"
             padding="$2"
-            onPress={() => {}}
+            onPress={() => { }}
           >
             <SearchIcon size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
@@ -274,7 +292,7 @@ export function LoggedOutHomeScreen({
             flexDirection="column"
             gap="$1"
             padding="$2"
-            onPress={() => {}}
+            onPress={() => { }}
           >
             <PlusCircle size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">
@@ -287,7 +305,7 @@ export function LoggedOutHomeScreen({
             flexDirection="column"
             gap="$1"
             padding="$2"
-            onPress={() => {}}
+            onPress={() => { }}
           >
             <Mail size={24} color="$textSecondary" />
             <Text fontSize={11} color="$textSecondary">

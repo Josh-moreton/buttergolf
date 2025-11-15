@@ -10,3 +10,4 @@ export * from './provider'
 
 export * from './types/product'
 export * from './components/ProductCard'
+export * from './components/Hero'
