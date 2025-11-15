@@ -239,7 +239,7 @@ export function Hero({
                             alignItems="flex-end"
                             justifyContent="flex-end"
                             paddingRight={0}
-                            marginBottom={-20}
+                            marginBottom={0}
                             $lg={{
                                 paddingLeft: "$8",
                                 paddingRight: "$12",
@@ -248,11 +248,12 @@ export function Hero({
                         >
                             <Image
                                 source={heroImageSource as Parameters<typeof Image>[0]["source"]}
-                                width="130%"
+                                width="115%"
                                 height="auto"
                                 aspectRatio={1}
-                                $md={{ width: "120%", height: "120%" }}
-                                $lg={{ width: "130%", height: "130%" }}
+                                marginBottom={-20}
+                                $md={{ width: "115%", height: "115%", marginBottom: -48 }}
+                                $lg={{ width: "120%", height: "120%", marginBottom: -56 }}
                                 resizeMode="contain"
                                 alt="Premium golf club featured in hero section"
                                 accessibilityLabel="Premium golf club featured in hero section"
