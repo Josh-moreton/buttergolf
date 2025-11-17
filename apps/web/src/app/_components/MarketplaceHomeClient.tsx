@@ -39,7 +39,7 @@ export default function MarketplaceHomeClient({
           <div className="home-fade-in">
             <RecentlyListedSectionClient products={products} />
           </div>
-          <div className="home-fade-in-scroll">
+          <div className="home-fade-in">
             <TrustSection />
           </div>
         </>
@@ -49,7 +49,7 @@ export default function MarketplaceHomeClient({
         </div>
       )}
 
-      <div className="home-fade-in-scroll">
+      <div className="home-fade-in">
         <NewsletterSection />
       </div>
       <FooterSection />

@@ -17,16 +17,16 @@ interface HomeFadeInOnLoadProps extends PropsWithChildren {
 }
 
 /**
- * Web-only animation wrapper that fades in and slides up content on page load.
+ * Web-only animation wrapper that fades in and slides up content on scroll.
  *
  * Usage:
  * - Wrap page content in this component
- * - Add className="home-fade-in" to sections that should animate on load
- * - Add className="home-fade-in-scroll" to sections that should animate on scroll
+ * - Add className="home-fade-in" to sections that should animate when entering viewport
  *
  * Animation behavior:
- * - Sections with "home-fade-in" animate immediately on mount with stagger
- * - Sections with "home-fade-in-scroll" animate when they enter viewport
+ * - All sections animate when they enter the viewport using ScrollTrigger
+ * - First section triggers immediately (start: "top bottom")
+ * - Subsequent sections trigger at 75% viewport
  * - Respects prefers-reduced-motion user preference
  * - Cleans up GSAP context on unmount
  */
@@ -46,61 +46,32 @@ export function HomeFadeInOnLoad({
 
         if (prefersReducedMotion || disableAnimations) {
             // Skip animations but ensure content is visible
-            const allElements = rootRef.current.querySelectorAll(
-                ".home-fade-in, .home-fade-in-scroll"
-            );
+            const allElements = rootRef.current.querySelectorAll(".home-fade-in");
             allElements.forEach((el) => {
-                gsap.set(el, { opacity: 1, y: 0 });
+                gsap.set(el, { opacity: 1, y: 0, clearProps: "all" });
             });
             return;
         }
 
         // Create GSAP context for cleanup
         const ctx = gsap.context(() => {
-            // Animate immediate sections (hero, toggle, categories, etc.)
-            const immediateElements = rootRef.current!.querySelectorAll(".home-fade-in");
+            const animatedElements = rootRef.current!.querySelectorAll(".home-fade-in");
 
-            if (immediateElements.length > 0) {
-                gsap.fromTo(
-                    immediateElements,
-                    {
-                        opacity: 0,
-                        y: 40,
+            animatedElements.forEach((el, index) => {
+                gsap.to(el, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.0,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        // First element triggers immediately, others at 75% viewport
+                        start: index === 0 ? "top bottom" : "top 75%",
+                        end: "top 50%",
+                        toggleActions: "play none none reverse",
+                        // markers: true, // Uncomment for debugging
                     },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.6,
-                        ease: "power2.out",
-                        stagger: 0.1,
-                    }
-                );
-            }
-
-            // Animate scroll-triggered sections (trust badges, newsletter)
-            const scrollElements = rootRef.current!.querySelectorAll(".home-fade-in-scroll");
-
-            scrollElements.forEach((el) => {
-                gsap.fromTo(
-                    el,
-                    {
-                        opacity: 0,
-                        y: 60,
-                    },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 80%", // Start when element is 80% down the viewport
-                            end: "top 50%",   // Complete when element is 50% down
-                            toggleActions: "play none none reverse",
-                            // markers: true, // Uncomment for debugging
-                        },
-                    }
-                );
+                });
             });
         }, rootRef);
 
@@ -111,8 +82,19 @@ export function HomeFadeInOnLoad({
     }, [disableAnimations]);
 
     return (
-        <div ref={rootRef} style={{ width: "100%" }}>
-            {children}
-        </div>
+        <>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                    .home-fade-in {
+                        opacity: 0;
+                        transform: translateY(50px);
+                        will-change: opacity, transform;
+                    }
+                `
+            }} />
+            <div ref={rootRef} style={{ width: "100%" }}>
+                {children}
+            </div>
+        </>
     );
 }
