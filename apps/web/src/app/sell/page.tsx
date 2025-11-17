@@ -12,7 +12,6 @@ import {
   Input,
   Card,
   Autocomplete,
-  type AutocompleteSuggestion,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 

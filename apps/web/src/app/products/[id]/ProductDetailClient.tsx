@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import NextImage from "next/image";
 import {
   Column,
   Row,
@@ -12,10 +13,7 @@ import {
   Button,
   Card,
   Image,
-  Badge,
-  Spinner,
 } from "@buttergolf/ui";
-import type { ProductCardData } from "@buttergolf/app";
 import { ProductInformation } from "./_components/ProductInformation";
 import { MakeOfferModal } from "./_components/MakeOfferModal";
 
@@ -68,18 +66,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   const selectedImage = product.images[selectedImageIndex];
 
-  // Generate deterministic viewer count from product ID (avoid hydration mismatch)
-  const viewerCount = useMemo(() => {
-    // Convert product ID to a number for consistent random-like value
-    let hash = 0;
-    for (let i = 0; i < product.id.length; i++) {
-      hash = ((hash << 5) - hash) + product.id.charCodeAt(i);
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    // Use hash to generate value between 20-70
-    return 20 + (Math.abs(hash) % 50);
-  }, [product.id]);
-
   // Handle scroll for mobile bar
   useEffect(() => {
     const handleScroll = () => {
@@ -102,7 +88,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const handleMakeOffer = () => {
     if (!isSignedIn) {
       // Redirect to sign-in page with return URL
-      router.push(`/sign-in?redirect_url=${encodeURIComponent(window.location.href)}`);
+      const redirectUrl = typeof globalThis !== "undefined" && globalThis.location
+        ? globalThis.location.href
+        : `/products/${product.id}`;
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
       return;
     }
     setMakeOfferModalOpen(true);
@@ -136,22 +125,22 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }
   };
 
-  const handleKeyboardNav = (e: KeyboardEvent) => {
+  const handleKeyboardNav = useCallback((e: KeyboardEvent) => {
     if (!lightboxOpen) return;
 
     if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
-      setSelectedImageIndex(selectedImageIndex - 1);
+      setSelectedImageIndex((prev) => Math.max(0, prev - 1));
     } else if (e.key === "ArrowRight" && selectedImageIndex < product.images.length - 1) {
-      setSelectedImageIndex(selectedImageIndex + 1);
+      setSelectedImageIndex((prev) => Math.min(product.images.length - 1, prev + 1));
     } else if (e.key === "Escape") {
       setLightboxOpen(false);
     }
-  };
+  }, [lightboxOpen, product.images.length, selectedImageIndex]);
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyboardNav);
-    return () => window.removeEventListener("keydown", handleKeyboardNav);
-  }, [lightboxOpen, selectedImageIndex]);
+    globalThis.addEventListener?.("keydown", handleKeyboardNav);
+    return () => globalThis.removeEventListener?.("keydown", handleKeyboardNav);
+  }, [handleKeyboardNav]);
 
   return (
     <>
@@ -289,7 +278,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* Lightbox Modal */}
       {lightboxOpen && (
         <div
-          onClick={() => setLightboxOpen(false)}
           style={{
             position: "fixed",
             top: 0,
@@ -304,6 +292,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             padding: "20px",
           }}
         >
+          <button
+            type="button"
+            aria-label="Close image gallery"
+            onClick={() => setLightboxOpen(false)}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+          />
           {/* Close Button */}
           <button
             onClick={(e) => {
@@ -375,15 +375,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           )}
 
           {/* Main Image */}
-          <img
+          <NextImage
             src={selectedImage.url}
             alt={product.title}
+            width={1600}
+            height={1200}
+            sizes="90vw"
             style={{
               maxWidth: "90%",
               maxHeight: "90%",
               objectFit: "contain",
+              position: "relative",
+              zIndex: 1,
             }}
             onClick={(e) => e.stopPropagation()}
+            priority
           />
 
           {/* Image Counter */}
@@ -398,6 +404,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               borderRadius: "25px",
               fontSize: "16px",
               fontWeight: "bold",
+              zIndex: 1,
             }}
           >
             {selectedImageIndex + 1} / {product.images.length}

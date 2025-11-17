@@ -59,7 +59,13 @@ export async function calculateShippingRates(
     const { productId, toAddress, fromAddressId } = request;
 
     // Validate required fields
-    if (!productId || !toAddress || !toAddress.street1 || !toAddress.city || !toAddress.state || !toAddress.zip) {
+    if (
+        !productId ||
+        !toAddress?.street1 ||
+        !toAddress?.city ||
+        !toAddress?.state ||
+        !toAddress?.zip
+    ) {
         throw new Error("Missing required shipping calculation fields");
     }
 
@@ -171,7 +177,7 @@ export async function calculateShippingRates(
                 toAddress,
                 dimensions,
             };
-        } catch (easyPostError) {
+        } catch (easyPostError: unknown) {
             console.warn("EasyPost API error, falling back to estimation:", easyPostError);
             // Fall through to fallback calculation
         }
@@ -265,6 +271,6 @@ export async function estimateShippingRate(
         estimatedDisplay: `$${(estimatedRate / 100).toFixed(2)}`,
         fromZip: fromAddress.zip,
         toZip: zip,
-        note: "Estimate only - actual rates calculated at checkout",
+        note: `Estimate to ${zip}, ${state} only - actual rates calculated at checkout`,
     };
 }

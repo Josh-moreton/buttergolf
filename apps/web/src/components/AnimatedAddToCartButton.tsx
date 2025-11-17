@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { gsap } from "gsap";
 import styles from "./AnimatedAddToCartButton.module.css";
 
@@ -8,6 +9,11 @@ interface AnimatedAddToCartButtonProps {
     onAddToCart: () => Promise<void>;
     disabled?: boolean;
 }
+
+const BURST_SEGMENTS = Array.from({ length: 8 }, (_, idx) => ({
+    id: `burst-${idx}`,
+    order: idx,
+}));
 
 // Butter brand colors for burst animation
 const COLORS = [
@@ -21,7 +27,7 @@ const COLORS = [
 export function AnimatedAddToCartButton({
     onAddToCart,
     disabled = false,
-}: AnimatedAddToCartButtonProps) {
+}: Readonly<AnimatedAddToCartButtonProps>) {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isAdding, setIsAdding] = useState(false);
 
@@ -33,8 +39,6 @@ export function AnimatedAddToCartButton({
         // Set random delays and colors for burst animation
         gsap.set(".burst g", {
             "--d": () => gsap.utils.random(0, 0.4, 0.01),
-        });
-        gsap.set(".burst g", {
             "--color": () => COLORS[gsap.utils.random(0, COLORS.length - 1, 1)],
         });
 
@@ -124,8 +128,11 @@ export function AnimatedAddToCartButton({
                             />
                         </g>
                         <g className={`${styles.burst} burst`}>
-                            {[...Array(8)].map((_, i) => (
-                                <g key={i} style={{ "--index": i } as React.CSSProperties}>
+                            {BURST_SEGMENTS.map((segment) => (
+                                <g
+                                    key={segment.id}
+                                    style={{ "--index": segment.order } as CSSProperties}
+                                >
                                     <path
                                         className={styles.wiggle}
                                         pathLength={1}
