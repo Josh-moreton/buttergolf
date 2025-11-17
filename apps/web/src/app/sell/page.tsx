@@ -67,7 +67,7 @@ const FormLabel = ({
   required?: boolean;
 }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text size="sm" weight="medium" color="$text">
+    <Text size="$3" weight="medium" color="$text">
       {children}
     </Text>
     {required && <Text color="$error">*</Text>}
@@ -76,7 +76,7 @@ const FormLabel = ({
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text size="xs" color="$helperText" marginTop="$xs">
+  <Text size="$2" color="$helperText" marginTop="$xs">
     {children}
   </Text>
 );
@@ -229,7 +229,7 @@ export default function SellPage() {
                   >
                     <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
-                      <Text size="xs" color="$text" lineHeight={18}>
+                      <Text size="$2" color="$text" lineHeight={18}>
                         Catch your buyers&apos; eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
                       </Text>
@@ -469,7 +469,7 @@ export default function SellPage() {
                   <Column gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
                     <Row gap="$sm" alignItems="center">
-                      <Text size="lg" weight="semibold">
+                      <Text size="$6" weight="semibold">
                         £
                       </Text>
                       <Input
@@ -529,9 +529,9 @@ export default function SellPage() {
                       {loading ? "Uploading..." : "Upload"}
                     </Button>
                   </Row>
-                  <Text size="xs" color="$helperText" textAlign="center">
+                  <Text size="$2" color="$helperText" textAlign="center">
                     What do you think of our upload process?{" "}
-                    <Text size="xs" color="$primary" cursor="pointer">
+                    <Text size="$2" color="$primary" cursor="pointer">
                       Give feedback
                     </Text>
                   </Text>

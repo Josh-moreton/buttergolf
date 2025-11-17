@@ -160,21 +160,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Text size="sm" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
                 Listings
               </Text>
             </Link>
-            <Text size="sm" color="$ironstone">&gt;</Text>
+            <Text size="$3" color="$ironstone">&gt;</Text>
             <Link
               href={`/category/${product.category.slug}`}
               style={{ textDecoration: "none" }}
             >
-              <Text size="sm" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
                 {product.category.name}
               </Text>
             </Link>
-            <Text size="sm" color="$ironstone">&gt;</Text>
-            <Text size="sm" color="$ironstone" weight="bold">{product.title}</Text>
+            <Text size="$3" color="$ironstone">&gt;</Text>
+            <Text size="$3" color="$ironstone" weight="bold">{product.title}</Text>
           </Row>
 
           {/* Main Content Grid */}
@@ -424,10 +424,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         >
           <Row gap="$md" alignItems="center" justifyContent="space-between">
             <Column gap="$xs">
-              <Text size="xs" color="$textMuted">
+              <Text size="$2" color="$textMuted">
                 {product.title}
               </Text>
-              <Text size="lg" weight="bold" color="$primary">
+              <Text size="$6" weight="bold" color="$primary">
                 £{product.price.toFixed(2)}
               </Text>
             </Column>

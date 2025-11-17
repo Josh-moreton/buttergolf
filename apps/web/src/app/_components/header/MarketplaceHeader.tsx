@@ -86,7 +86,7 @@ export function MarketplaceHeader() {
                 borderBottomRightRadius="$4"
               >
                 <Text
-                  size="xs"
+                  size="$2"
                   $md={{ size: "sm" }}
                   weight="medium"
                   color="$textInverse"
@@ -157,7 +157,7 @@ export function MarketplaceHeader() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Text size="sm" weight="semibold" color="$textInverse">
+                <Text size="$3" weight="semibold" color="$textInverse">
                   Sell
                 </Text>
               </Row>
@@ -221,7 +221,7 @@ export function MarketplaceHeader() {
                     justifyContent="center"
                   >
                     <Text
-                      size="xs"
+                      size="$2"
                       fontSize={10}
                       weight="normal"
                       color="$textInverse"

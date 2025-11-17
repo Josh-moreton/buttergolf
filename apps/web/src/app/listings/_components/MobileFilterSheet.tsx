@@ -35,12 +35,12 @@ export function MobileFilterSheet({
       
       <Sheet.Header>
         <Row alignItems="center" justifyContent="space-between">
-          <Text weight="bold" size="lg">
+          <Text weight="bold" size="$6">
             Filters
           </Text>
           <Text
             color="$primary"
-            size="sm"
+            size="$3"
             cursor="pointer"
             onPress={onClearAll}
           >

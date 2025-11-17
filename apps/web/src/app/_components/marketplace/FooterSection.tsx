@@ -66,7 +66,7 @@ export function FooterSection() {
             <Column gap="$xs" alignItems="flex-start">
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
@@ -75,7 +75,7 @@ export function FooterSection() {
               </Text>
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
@@ -84,7 +84,7 @@ export function FooterSection() {
               </Text>
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 fontWeight="700"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
@@ -97,7 +97,7 @@ export function FooterSection() {
             <Column gap="$xs" alignItems="flex-start">
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -105,7 +105,7 @@ export function FooterSection() {
               </Text>
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -113,7 +113,7 @@ export function FooterSection() {
               </Text>
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -121,7 +121,7 @@ export function FooterSection() {
               </Text>
               <Text
                 color="$vanillaCream"
-                size="md"
+                size="$4"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -140,7 +140,7 @@ export function FooterSection() {
         >
           {/* Copyright */}
           {/* Copyright */}
-          <Text color="$vanillaCream" size="sm" zIndex={1}>
+          <Text color="$vanillaCream" size="$3" zIndex={1}>
             © 2025 Butter Golf. All rights reserved.
           </Text>
 

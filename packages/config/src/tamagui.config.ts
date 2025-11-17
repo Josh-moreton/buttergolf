@@ -361,6 +361,12 @@ const customTokens = createTokens({
 
     size: {
         ...defaultConfig.tokens.size,
+        // Semantic typography aliases so size variants like "lg" resolve cleanly
+        xs: 12,
+        sm: 14,
+        md: 16,
+        lg: 18,
+        xl: 20,
         // Component sizes
         buttonSm: 32,
         buttonMd: 40,

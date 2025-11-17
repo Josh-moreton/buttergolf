@@ -70,11 +70,11 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (query.trim().length < 2) {
     return (
       <Column padding="$4" gap="$3">
-        <Text size="sm" weight="medium" {...{ color: "$textMuted" }}>
+        <Text size="$3" weight="medium" {...{ color: "$textMuted" }}>
           Type to search for golf equipment...
         </Text>
         <Column gap="$2">
-          <Text size="xs" {...{ color: "$textTertiary" }}>
+          <Text size="$2" {...{ color: "$textTertiary" }}>
             Popular searches:
           </Text>
           <Row gap="$2" flexWrap="wrap">
@@ -82,7 +82,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
               (term) => (
                 <Link key={term} href={`/listings?q=${term}`} onClick={onSelect}>
                   <Text
-                    size="xs"
+                    size="$2"
                     {...{ color: "$primary" }}
                     hoverStyle={{ textDecoration: "underline" }}
                     cursor="pointer"
@@ -103,7 +103,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
     return (
       <Column padding="$6" alignItems="center" gap="$3">
         <Spinner size="md" color="$primary" />
-        <Text {...{ color: "$textMuted" }} size="sm">
+        <Text {...{ color: "$textMuted" }} size="$3">
           Searching...
         </Text>
       </Column>
@@ -114,10 +114,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (error) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text size="md" weight="semibold" {...{ color: "$error" }}>
+        <Text size="$4" weight="semibold" {...{ color: "$error" }}>
           Search Error
         </Text>
-        <Text {...{ color: "$textMuted" }} size="sm">
+        <Text {...{ color: "$textMuted" }} size="$3">
           {error}
         </Text>
       </Column>
@@ -128,10 +128,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (results.length === 0) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text size="md" weight="semibold">
+        <Text size="$4" weight="semibold">
           No results found
         </Text>
-        <Text {...{ color: "$textMuted" }} size="sm" align="center">
+        <Text {...{ color: "$textMuted" }} size="$3" align="center">
           Try a different search term or browse our categories
         </Text>
       </Column>
@@ -163,7 +163,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
         >
           <Link href={`/listings?q=${encodeURIComponent(query)}`} onClick={onSelect}>
             <Text
-              size="sm"
+              size="$3"
               weight="medium"
               {...{ color: "$primary" }}
               align="center"

@@ -6,8 +6,8 @@
  *
  * @example
  * ```tsx
- * <Text size="md">Regular text</Text>
- * <Text size="sm" color="muted">Small muted text</Text>
+ * <Text size="$4">Regular text</Text>
+ * <Text size="$3" color="muted">Small muted text</Text>
  * <Heading level={1}>Page Title</Heading>
  * <Heading level={2} color="primary">Section Title</Heading>
  * <Label htmlFor="input">Form Label</Label>
@@ -33,21 +33,11 @@ export const Text = styled(TamaguiText, {
 
   variants: {
     size: {
-      xs: {
-        fontSize: "$2",
-      },
-      sm: {
-        fontSize: "$3",
-      },
-      md: {
-        fontSize: "$4",
-      },
-      lg: {
-        fontSize: "$5",
-      },
-      xl: {
-        fontSize: "$6",
-      },
+      // Use spread fontSize variant so size props accept token values (e.g., "$5")
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+        lineHeight: font?.lineHeight?.[name],
+      }),
     },
 
     weight: {
@@ -87,7 +77,7 @@ export const Text = styled(TamaguiText, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$4",
     weight: "normal",
   },
 });
@@ -160,15 +150,10 @@ export const Label = styled(TamaguiLabel, {
 
   variants: {
     size: {
-      sm: {
-        fontSize: "$2",
-      },
-      md: {
-        fontSize: "$3",
-      },
-      lg: {
-        fontSize: "$4",
-      },
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+        lineHeight: font?.lineHeight?.[name],
+      }),
     },
 
     // Note: For required indicators, use a separate Text component for cross-platform compatibility
@@ -183,7 +168,7 @@ export const Label = styled(TamaguiLabel, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$3",
   },
 });
 
