@@ -109,7 +109,7 @@ export function AnimatedHeroText({
             style={{
                 display: "inline-block",
                 opacity: 0,
-                whiteSpace: char === " " ? "pre" : "normal",
+                ...(char === " " ? { whiteSpace: "pre" as const } : {}),
                 willChange: "transform, opacity",
             }}
         >
