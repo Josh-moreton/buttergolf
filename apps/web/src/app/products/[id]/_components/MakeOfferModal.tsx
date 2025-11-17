@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Column, Row, Text, Button, Heading } from "@buttergolf/ui";
 import type { Product } from "../ProductDetailClient";
 
@@ -24,10 +25,10 @@ export function MakeOfferModal({
     if (!isOpen) return null;
 
     const handleSubmit = async () => {
-        const amount = parseFloat(offerAmount);
+        const amount = Number.parseFloat(offerAmount);
 
         // Validation
-        if (!offerAmount || isNaN(amount) || amount <= 0) {
+        if (!offerAmount || Number.isNaN(amount) || amount <= 0) {
             setError("Please enter a valid offer amount");
             return;
         }
@@ -51,22 +52,15 @@ export function MakeOfferModal({
             // Success - close modal
             setOfferAmount("");
             onClose();
-        } catch (err) {
+        } catch {
             setError("Failed to submit offer. Please try again.");
         } finally {
             setSubmitting(false);
         }
     };
 
-    const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
-
     return (
         <div
-            onClick={handleBackdropClick}
             style={{
                 position: "fixed",
                 top: 0,
@@ -81,16 +75,28 @@ export function MakeOfferModal({
                 padding: "20px",
             }}
         >
-            <div
-                onClick={(e) => e.stopPropagation()}
+            <button
+                type="button"
+                aria-label="Close offer modal"
+                onClick={onClose}
                 style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                }}
+            />
+            <div
+                style={{
+                    position: "relative",
+                    zIndex: 1,
                     backgroundColor: "white",
                     borderRadius: "24px",
                     maxWidth: "600px",
                     width: "100%",
                     maxHeight: "90vh",
                     overflow: "auto",
-                    position: "relative",
                 }}
             >
                 {/* Close Button */}
@@ -126,17 +132,35 @@ export function MakeOfferModal({
 
                     {/* Product Info */}
                     <Row gap="$md" alignItems="center">
-                        <img
-                            src={product.images[0]?.url}
-                            alt={product.title}
-                            style={{
-                                width: 80,
-                                height: 80,
-                                objectFit: "cover",
-                                borderRadius: "12px",
-                                backgroundColor: "#f5f5f5",
-                            }}
-                        />
+                        {product.images[0]?.url ? (
+                            <Image
+                                src={product.images[0].url}
+                                alt={product.title}
+                                width={80}
+                                height={80}
+                                style={{
+                                    objectFit: "cover",
+                                    borderRadius: "12px",
+                                    backgroundColor: "#f5f5f5",
+                                }}
+                            />
+                        ) : (
+                            <div
+                                style={{
+                                    width: 80,
+                                    height: 80,
+                                    borderRadius: "12px",
+                                    backgroundColor: "#f5f5f5",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "24px",
+                                }}
+                                aria-hidden
+                            >
+                                📦
+                            </div>
+                        )}
                         <Column gap="$xs" flex={1}>
                             <Text weight="semibold" color="$text">
                                 {product.title}

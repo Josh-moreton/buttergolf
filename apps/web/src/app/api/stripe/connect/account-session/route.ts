@@ -6,14 +6,14 @@ import { prisma } from '@buttergolf/db';
 /**
  * POST /api/stripe/connect/account-session
  * Creates a new AccountSession for the embedded Connect component
- * 
+ *
  * AccountSessions are short-lived (expires in ~1 hour) and provide
  * access to embedded Connect components like account onboarding.
- * 
+ *
  * The frontend should call this endpoint to get a fresh client_secret
  * when initializing the embedded component.
  */
-export async function POST(req: Request) {
+export async function POST() {
     try {
         // 1. Authenticate user
         const { userId } = await auth();

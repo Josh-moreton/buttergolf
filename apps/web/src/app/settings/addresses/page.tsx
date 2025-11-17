@@ -165,6 +165,7 @@ export default function AddressesPage() {
             if (!response.ok) throw new Error("Failed to delete address");
             await loadAddresses();
         } catch (err) {
+            console.error("Failed to delete address:", err);
             setError("Failed to delete address");
         }
     };
@@ -177,6 +178,7 @@ export default function AddressesPage() {
             if (!response.ok) throw new Error("Failed to update default address");
             await loadAddresses();
         } catch (err) {
+            console.error("Failed to update default address:", err);
             setError("Failed to update default address");
         }
     };

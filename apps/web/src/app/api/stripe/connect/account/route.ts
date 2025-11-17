@@ -8,7 +8,7 @@ import { prisma } from '@buttergolf/db';
  * Creates or retrieves a Stripe Connect Express account for the authenticated user
  * Returns an account session client_secret for embedded onboarding
  */
-export async function POST(req: Request) {
+export async function POST() {
     try {
         // 1. Authenticate user
         const { userId } = await auth();
@@ -127,7 +127,7 @@ export async function POST(req: Request) {
  * GET /api/stripe/connect/account
  * Returns the current user's Connect account status
  */
-export async function GET(req: Request) {
+export async function GET() {
     try {
         const { userId } = await auth();
         if (!userId) {

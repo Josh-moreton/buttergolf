@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, Image, Text, Row, Column, Badge, Button } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import { useRouter } from "next/navigation";
@@ -18,10 +19,6 @@ export function ProductCardWithCart({
     const handleBuyNow = () => {
         setPurchasing(true);
         router.push(`/checkout?productId=${product.id}`);
-    };
-
-    const handleCardClick = () => {
-        router.push(`/products/${product.id}`);
     };
 
     return (
@@ -43,17 +40,10 @@ export function ProductCardWithCart({
             flexDirection="column"
         >
             <Card.Header padding={0} noBorder position="relative">
-                <div
-                    onClick={handleCardClick}
-                    style={{ cursor: "pointer" }}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            handleCardClick();
-                        }
-                    }}
+                <Link
+                    href={`/products/${product.id}`}
+                    style={{ cursor: "pointer", display: "block" }}
+                    aria-label={`View details for ${product.title}`}
                 >
                     {/* 1:1 Aspect Ratio Container */}
                     <div style={{ position: "relative", paddingBottom: "100%", overflow: "hidden", width: "100%" }}>
@@ -64,13 +54,14 @@ export function ProductCardWithCart({
                             objectFit="cover"
                             borderTopLeftRadius="$lg"
                             borderTopRightRadius="$lg"
+                            alt={product.title}
                             backgroundColor="$background"
                             position="absolute"
                             top={0}
                             left={0}
                         />
                     </div>
-                </div>
+                </Link>
 
                 {/* NEW Badge Overlay */}
                 {product.condition === "NEW" && (
@@ -88,17 +79,15 @@ export function ProductCardWithCart({
             </Card.Header>
             <Card.Body padding="$md" flex={1} display="flex">
                 <Column gap="$md" width="100%" height="100%" justifyContent="space-between">
-                    <div
-                        onClick={handleCardClick}
-                        style={{ cursor: "pointer" }}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                handleCardClick();
-                            }
+                    <Link
+                        href={`/products/${product.id}`}
+                        style={{
+                            cursor: "pointer",
+                            display: "block",
+                            color: "inherit",
+                            textDecoration: "none",
                         }}
+                        aria-label={`View ${product.title}`}
                     >
                         <Column gap="$xs" width="100%">
                             <Text size="$4" weight="semibold" numberOfLines={2} minHeight={42}>
@@ -120,7 +109,7 @@ export function ProductCardWithCart({
                                 £{product.price.toFixed(2)}
                             </Text>
                         </Column>
-                    </div>
+                    </Link>
                     <Button
                         size="md"
                         tone="primary"

@@ -1,5 +1,5 @@
 import { headers } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { prisma, Prisma, ShipmentStatus, OrderStatus } from '@buttergolf/db'
 import crypto from 'crypto'
 
@@ -41,7 +41,7 @@ interface EasyPostWebhookPayload {
 }
 
 // Map EasyPost status to our ShipmentStatus enum
-function mapEasyPostStatus(status: string, statusDetail: string): string {
+function mapEasyPostStatus(status: string): string {
   const statusLower = status.toLowerCase()
 
   if (statusLower === 'pre_transit') return 'PRE_TRANSIT'
@@ -146,7 +146,7 @@ export async function POST(req: Request) {
       }
 
       // Map EasyPost status to our enum
-      const shipmentStatus = mapEasyPostStatus(tracker.status, tracker.status_detail) as ShipmentStatus
+      const shipmentStatus = mapEasyPostStatus(tracker.status) as ShipmentStatus
       const orderStatus = mapToOrderStatus(shipmentStatus) as OrderStatus
 
       // Prepare update data

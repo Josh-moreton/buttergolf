@@ -11,7 +11,7 @@ catalog:
   "@tamagui/config": "^1.135.7"
   "@tamagui/core": "^1.135.7"
   "@tamagui/font-inter": "^1.135.7"
-  "@tamagui/lucide-icons": "^1.135.7"
+  "@tamagui/lucide-icons": "^1.138.0"
   "@tamagui/next-plugin": "^1.135.7"
   "@tamagui/next-theme": "^1.135.7"
   "@tamagui/polyfill-dev": "^1.135.7"

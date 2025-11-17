@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Column, Row, Text, Card } from "@buttergolf/ui";
 
 interface OrderSummaryCardProps {
@@ -11,8 +12,8 @@ interface OrderSummaryCardProps {
     shippingCost?: number;
 }
 
-export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryCardProps) {
-    const buyerProtectionFee = 1.0;
+export function OrderSummaryCard({ product, shippingCost = 9.99 }: Readonly<OrderSummaryCardProps>) {
+    const buyerProtectionFee = 1;
     const subtotal = product.price + buyerProtectionFee;
     const total = subtotal + shippingCost;
 
@@ -27,12 +28,14 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
                 <Column gap="$lg">
                     {/* Product Image */}
                     {product.imageUrl && (
-                        <img
+                        <Image
                             src={product.imageUrl}
                             alt={product.title}
+                            width={400}
+                            height={400}
                             style={{
                                 width: "100%",
-                                aspectRatio: "1",
+                                height: "auto",
                                 objectFit: "cover",
                                 borderRadius: "16px",
                             }}

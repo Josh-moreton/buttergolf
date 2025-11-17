@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
 import { menuData } from "./menuData";
 import { DesktopMenu } from "./DesktopMenu";
-import { SearchIcon, UserIcon, HeartIcon, CartIcon, MenuIcon, PackageIcon } from "./icons";
+import { SearchIcon, UserIcon, HeartIcon, MenuIcon, PackageIcon } from "./icons";
 import { SignInModal } from "../auth/SignInModal";
 
 export function MarketplaceHeader() {
@@ -68,9 +69,12 @@ export function MarketplaceHeader() {
               paddingVertical="$2"
               minHeight={44}
             >
-              <img
+              <Image
                 src="/logo-orange.png"
                 alt="ButterGolf"
+                width={128}
+                height={32}
+                priority
                 style={{
                   height: "32px",
                   width: "auto",

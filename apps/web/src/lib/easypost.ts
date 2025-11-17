@@ -82,9 +82,10 @@ export async function createShippingLabel(
     }
 
     // Sort rates by price and select the cheapest
-    const cheapestRate = shipment.rates.sort((a, b) => 
-      parseFloat(a.rate) - parseFloat(b.rate)
-    )[0]
+    const sortedRates = [...shipment.rates].sort(
+      (a, b) => Number.parseFloat(a.rate) - Number.parseFloat(b.rate)
+    )
+    const cheapestRate = sortedRates[0]
 
     console.log('Buying rate:', {
       id: cheapestRate.id,
@@ -110,17 +111,17 @@ export async function createShippingLabel(
       trackingUrl: purchasedShipment.tracker?.public_url || null,
       carrier: cheapestRate.carrier,
       service: cheapestRate.service,
-      rate: parseFloat(cheapestRate.rate),
+      rate: Number.parseFloat(cheapestRate.rate),
     }
   } catch (error) {
     console.error('Error creating EasyPost shipping label:', error)
-    
+
     // Log detailed error information
     if (error instanceof Error) {
       console.error('Error message:', error.message)
       console.error('Error stack:', error.stack)
     }
-    
+
     throw new Error(
       `Failed to create shipping label: ${error instanceof Error ? error.message : 'Unknown error'}`
     )
@@ -142,7 +143,7 @@ export async function getShipment(shipmentId: string) {
 }
 
 // Retrieve tracker information
-export async function getTracker(trackingCode: string, carrier: string) {
+export async function getTracker(trackingCode: string) {
   try {
     const client = getEasyPostClient()
     const tracker = await client.Tracker.retrieve(trackingCode)

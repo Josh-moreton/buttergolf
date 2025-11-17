@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button, Card, Column, Row, Text, Heading, Image, Input, Spinner } from "@buttergolf/ui";
@@ -52,22 +52,20 @@ const FormLabel = ({ children, required }: { children: React.ReactNode; required
 // Payment form component that uses Stripe Elements
 function PaymentForm({
     product,
-    shippingAddress,
     selectedRate,
     onBack
-}: {
+}: Readonly<{
     product: CheckoutFormProps['product'];
-    shippingAddress: ShippingAddress;
     selectedRate: ShippingRate;
     onBack: () => void;
-}) {
+}>) {
     const stripe = useStripe();
     const elements = useElements();
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const calculateTotal = () => {
-        const shippingCost = parseInt(selectedRate.rate) / 100;
+        const shippingCost = Number.parseInt(selectedRate.rate) / 100;
         return product.price + shippingCost;
     };
 
@@ -139,7 +137,7 @@ function PaymentForm({
     );
 }
 
-export function CheckoutForm({ product }: CheckoutFormProps) {
+export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
     const [step, setStep] = useState<'address' | 'shipping' | 'payment'>('address');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -242,7 +240,7 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
     };
 
     const calculateTotal = () => {
-        const shippingCost = selectedRate ? parseInt(selectedRate.rate) / 100 : 0;
+        const shippingCost = selectedRate ? Number.parseInt(selectedRate.rate) / 100 : 0;
         return product.price + shippingCost;
     };
 
@@ -260,6 +258,7 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
                                 width={80}
                                 height={80}
                                 borderRadius="$md"
+                                alt={product.title}
                             />
                         )}
                         <Column gap="$xs" flex={1}>
@@ -424,9 +423,9 @@ export function CheckoutForm({ product }: CheckoutFormProps) {
 
                             {/* Shipping Rates */}
                             <Column gap="$sm">
-                                {shippingRates.map((rate, index) => (
+                                {shippingRates.map((rate) => (
                                     <Card
-                                        key={index}
+                                        key={rate.id || `${rate.carrier}-${rate.service}-${rate.rate}`}
                                         variant="outlined"
                                         padding="$md"
                                         onPress={() => setSelectedRate(rate)}
