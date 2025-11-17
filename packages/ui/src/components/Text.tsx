@@ -60,9 +60,11 @@ export const Text = styled(TamaguiText, {
         const fontSize = font?.size?.[token] ?? font?.size?.[normalized];
         const lineHeight = font?.lineHeight?.[token] ?? font?.lineHeight?.[normalized];
 
+        // Note: NODE_ENV is a Node.js built-in environment variable, not a custom one requiring turbo.json declaration
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
         if (process.env.NODE_ENV !== "production" && typeof name === "string" && !name.startsWith("$")) {
           const stack = new Error().stack?.split("\n").slice(1, 4).join("\n");
-          // eslint-disable-next-line no-console
+
           console.warn(
             `[ui/Text] size="${name}" must use "$" tokens (e.g. "$6"). Automatically mapping to ${token}.\n${stack}`
           );
