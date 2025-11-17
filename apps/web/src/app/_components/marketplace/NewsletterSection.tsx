@@ -25,8 +25,9 @@ export function NewsletterSection() {
           gap="$sm"
           maxWidth={500}
           width="100%"
-          $sm={{ flexDirection: "column" }}
-          $md={{ flexDirection: "row" }}
+          alignItems="center"
+          $sm={{ flexDirection: "column", alignItems: "stretch" }}
+          $md={{ flexDirection: "row", alignItems: "center" }}
         >
           <Input
             flex={1}
@@ -38,8 +39,9 @@ export function NewsletterSection() {
           <Button
             size="lg"
             tone="primary"
-            width={180}
             whiteSpace="nowrap"
+            $sm={{ width: "100%" }}
+            $md={{ width: 180 }}
           >
             Subscribe
           </Button>
