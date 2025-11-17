@@ -26,16 +26,16 @@ export default function MarketplaceHomeClient({
       {/* Hero - No animation class, should be immediately visible */}
       <HeroStatic />
 
-      <div className="page-transition">
-        <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
-      </div>
+      {/* Buy/Sell Toggle - Above the fold, no animation */}
+      <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
 
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
-          <div className="page-transition">
-            <CategoriesSection />
-          </div>
+          {/* Categories Section - Above the fold, no animation */}
+          <CategoriesSection />
+          
+          {/* Below the fold sections - animate on scroll */}
           <div className="page-transition">
             <RecentlyListedSectionClient products={products} />
           </div>

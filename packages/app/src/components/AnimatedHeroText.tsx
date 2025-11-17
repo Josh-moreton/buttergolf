@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, ReactNode } from "react";
+import { gsap } from "gsap";
 
 interface AnimatedHeroTextProps {
     text: string;
@@ -58,40 +59,35 @@ export function AnimatedHeroText({
             return;
         }
 
-        // Dynamically import GSAP only on desktop
-        let ctx: ReturnType<typeof import("gsap").gsap.context> | undefined;
-        import("gsap").then(({ gsap }) => {
-            if (!containerRef.current) return;
+        // Animate characters with GSAP
+        const ctx = gsap.context(() => {
+            const chars = containerRef.current!.querySelectorAll(".char");
 
-            ctx = gsap.context(() => {
-                const chars = containerRef.current!.querySelectorAll(".char");
-
-                // Split-character animation with stagger
-                gsap.fromTo(
-                    chars,
-                    {
-                        opacity: 0,
-                        y: 30,
-                        rotationX: -45,
+            // Split-character animation with stagger
+            gsap.fromTo(
+                chars,
+                {
+                    opacity: 0,
+                    y: 30,
+                    rotationX: -45,
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationX: 0,
+                    duration: 0.6,
+                    ease: "back.out(1.4)",
+                    stagger: {
+                        amount: 0.4, // Total stagger duration (hardcoded for performance)
+                        from: "start",
                     },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        rotationX: 0,
-                        duration: 0.6,
-                        ease: "back.out(1.4)",
-                        stagger: {
-                            amount: 0.4, // Total stagger duration (hardcoded for performance)
-                            from: "start",
-                        },
-                        delay,
-                    }
-                );
-            }, containerRef);
-        });
+                    delay,
+                }
+            );
+        }, containerRef);
 
         return () => {
-            ctx?.revert();
+            ctx.revert();
         };
     }, [text, delay]);
 

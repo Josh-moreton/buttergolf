@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, ReactNode } from "react";
+import { gsap } from "gsap";
 
 interface ScaleBounceHeroProps {
     text: string;
@@ -48,31 +49,26 @@ export function ScaleBounceHero({
             return;
         }
 
-        // Dynamically import GSAP only on desktop
-        let ctx: ReturnType<typeof import("gsap").gsap.context> | undefined;
-        import("gsap").then(({ gsap }) => {
-            if (!containerRef.current) return;
-
-            ctx = gsap.context(() => {
-                gsap.fromTo(
-                    containerRef.current,
-                    {
-                        opacity: 0,
-                        scale: 0.5,
-                    },
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        duration: 1.2,
-                        ease: "elastic.out(1, 0.5)",
-                        delay,
-                    }
-                );
-            }, containerRef);
-        });
+        // Animate with GSAP
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                containerRef.current,
+                {
+                    opacity: 0,
+                    scale: 0.5,
+                },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "elastic.out(1, 0.5)",
+                    delay,
+                }
+            );
+        }, containerRef);
 
         return () => {
-            ctx?.revert();
+            ctx.revert();
         };
     }, [text, delay]);
 
