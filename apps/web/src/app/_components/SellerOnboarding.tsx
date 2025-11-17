@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Column,
   Row,
@@ -15,6 +15,7 @@ import {
   ConnectComponentsProvider,
 } from "@stripe/react-connect-js";
 import { loadConnectAndInitialize } from "@stripe/connect-js";
+import type { StepChange } from "@stripe/connect-js";
 
 interface SellerOnboardingProps {
   readonly onComplete?: () => void;
@@ -32,12 +33,13 @@ interface SellerOnboardingProps {
  * The embedded component is highly customizable via theming
  */
 export function SellerOnboarding({
-  onComplete: _onComplete,
+  onComplete,
   onExit,
 }: SellerOnboardingProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stripeConnectInstance, setStripeConnectInstance] = useState<ReturnType<typeof loadConnectAndInitialize> | null>(null);
+  const hasReachedSummaryRef = useRef(false);
 
   useEffect(() => {
     initializeStripeConnect();
@@ -69,7 +71,7 @@ export function SellerOnboarding({
       }
 
       // 2. Initialize Stripe Connect.js with the client secret
-      const instance = await loadConnectAndInitialize({
+      const instance = loadConnectAndInitialize({
         publishableKey,
         fetchClientSecret: async () => clientSecret,
         appearance: {
@@ -149,6 +151,19 @@ export function SellerOnboarding({
     );
   }
 
+  const handleStepChange = (stepChange: StepChange) => {
+    hasReachedSummaryRef.current =
+      stepChange.step === "summary" || stepChange.step.startsWith("summary_");
+  };
+
+  const handleExit = () => {
+    if (hasReachedSummaryRef.current) {
+      onComplete?.();
+    }
+    onExit?.();
+    hasReachedSummaryRef.current = false;
+  };
+
   return (
     <Column gap="$lg" fullWidth>
       <Column gap="$sm">
@@ -161,10 +176,8 @@ export function SellerOnboarding({
 
       <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
         <ConnectAccountOnboarding
-          onExit={() => {
-            console.log("User exited onboarding");
-            onExit?.();
-          }}
+          onExit={handleExit}
+          onStepChange={handleStepChange}
         // CollectionOptions determine what information to collect
         // collectionOptions={{
         //   fields: 'eventually_due', // Collect all eventually_due requirements

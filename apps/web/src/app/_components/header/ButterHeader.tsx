@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignIn, SignUp, UserButton } from "@clerk/nextjs";
 import { Row, Column, Text, AuthButton } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
-import { SignIn, SignUp } from "@clerk/nextjs";
 import { AuthModal } from "../auth/AuthModal";
 
 // Category navigation items
@@ -29,7 +29,11 @@ export function ButterHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
-  const [mounted, setMounted] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -86,9 +90,12 @@ export function ButterHeader() {
             {/* Logo */}
             <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
               <Row alignItems="center" gap="$2" paddingVertical="$1">
-                <img
+                <Image
                   src="/logo-orange-on-white.svg"
                   alt="ButterGolf"
+                  width={192}
+                  height={48}
+                  priority
                   style={{
                     height: "48px",
                     width: "auto",
@@ -183,7 +190,6 @@ export function ButterHeader() {
 
                   <SignedIn>
                     <UserButton
-                      afterSignOutUrl="/"
                       appearance={{
                         elements: {
                           avatarBox: "w-10 h-10",
@@ -352,7 +358,6 @@ export function ButterHeader() {
                 <SignedIn>
                   <Row justifyContent="center" paddingVertical="$4">
                     <UserButton
-                      afterSignOutUrl="/"
                       appearance={{
                         elements: {
                           avatarBox: "w-12 h-12",

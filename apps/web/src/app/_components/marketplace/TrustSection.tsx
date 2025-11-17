@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Row, Column } from "@buttergolf/ui";
 
 const TRUST_ITEMS = [
@@ -68,20 +69,20 @@ export function TrustSection() {
                         justifyItems: "center",
                     }}
                 >
-                    {TRUST_ITEMS.map((item, index) => (
+                    {TRUST_ITEMS.map((item) => (
                         <Row
-                            key={index}
+                            key={item.icon}
                             alignItems="center"
                             gap="$md"
                             maxWidth={280}
                         >
                             {/* Icon */}
-                            <img
+                            <Image
                                 src={item.icon}
                                 alt=""
+                                width={56}
+                                height={56}
                                 style={{
-                                    width: "56px",
-                                    height: "56px",
                                     flexShrink: 0,
                                     filter:
                                         "brightness(0) saturate(100%) invert(39%) sepia(89%) saturate(2532%) hue-rotate(352deg) brightness(98%) contrast(93%)",

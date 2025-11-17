@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Text, Row, Column } from "@buttergolf/ui";
 
 export function FooterSection() {
@@ -14,20 +15,27 @@ export function FooterSection() {
       }}
     >
       {/* Background B.svg pattern */}
-      <img
-        src="/_assets/logo/b.svg"
-        alt=""
+      <div
         style={{
           position: "absolute",
           right: 0,
           top: 0,
-          height: "100%",
-          width: "auto",
-          maxWidth: "50%",
+          bottom: 0,
+          width: "50%",
           zIndex: 0,
           pointerEvents: "none",
         }}
-      />
+      >
+        <Image
+          src="/_assets/logo/b.svg"
+          alt=""
+          fill
+          sizes="50vw"
+          style={{
+            objectFit: "contain",
+          }}
+        />
+      </div>
 
       {/* Content Container */}
       <div
@@ -50,9 +58,12 @@ export function FooterSection() {
           gap="$xl"
         >
           {/* Logo */}
-          <img
+          <Image
             src="/_assets/logo/logo-cream-on-white.svg"
             alt="ButterGolf"
+            width={200}
+            height={80}
+            priority
             style={{
               height: "auto",
               width: "100%",

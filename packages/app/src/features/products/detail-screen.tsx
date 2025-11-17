@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Column,
   Row,
@@ -33,28 +33,36 @@ export function ProductDetailScreen({
 
   const backLink = useLink({ href: routes.products });
 
-  useEffect(() => {
-    if (onFetchProduct && productId) {
-      setLoading(true);
-      setError(null);
-      onFetchProduct(productId)
-        .then((fetchedProduct) => {
-          if (fetchedProduct) {
-            setProduct(fetchedProduct);
-          } else {
-            setError("Product not found");
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to fetch product:", err);
-          setError("Failed to load product");
-        })
-        .finally(() => setLoading(false));
-    } else {
+  const fetchProduct = useCallback(async () => {
+
+    if (!onFetchProduct || !productId) {
       setLoading(false);
       setError("No product ID provided");
+      return;
     }
-  }, [productId, onFetchProduct]);
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const fetchedProduct = await onFetchProduct(productId);
+      if (fetchedProduct) {
+        setProduct(fetchedProduct);
+      } else {
+        setError("Product not found");
+      }
+    } catch (err) {
+      console.error("Failed to fetch product:", err);
+      setError("Failed to load product");
+    } finally {
+      setLoading(false);
+    }
+
+  }, [onFetchProduct, productId]);
+
+  useEffect(() => {
+    void fetchProduct();
+  }, [fetchProduct]);
 
   if (loading) {
     return (

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { Platform, Dimensions, Animated, Easing } from "react-native";
-import { Text, Button, YStack, Image, View } from "@buttergolf/ui";
+import { Text, YStack, Image, View } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: SCREEN_W } = Dimensions.get("window");

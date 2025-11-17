@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Column,
   Row,
@@ -24,22 +24,29 @@ export function ProductsScreen({
   const [products, setProducts] = useState<ProductCardData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (onFetchProducts) {
-      setLoading(true);
-      onFetchProducts()
-        .then((fetchedProducts) => {
-          console.log(`Fetched ${fetchedProducts.length} products`);
-          setProducts(fetchedProducts);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch products:", error);
-        })
-        .finally(() => setLoading(false));
-    } else {
+  const fetchProducts = useCallback(async () => {
+
+    if (!onFetchProducts) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const fetchedProducts = await onFetchProducts();
+      console.log(`Fetched ${fetchedProducts.length} products`);
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
       setLoading(false);
     }
+
   }, [onFetchProducts]);
+
+  useEffect(() => {
+    void fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <ScrollView flex={1} backgroundColor="$primary">

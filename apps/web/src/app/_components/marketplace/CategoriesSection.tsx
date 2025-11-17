@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { CATEGORIES } from "@buttergolf/db";
 import { gsap } from "gsap";
 import Link from "next/link";
-import { Column, Row, Text } from "@buttergolf/ui";
+import Image from "next/image";
+import { Column } from "@buttergolf/ui";
 
 export function CategoriesSection() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -24,16 +25,16 @@ export function CategoriesSection() {
 
     // Clone cards for seamless loop - only if not already cloned
     if (cards.length === CATEGORIES.length) {
-      cards.forEach((card) => {
+      for (const card of cards) {
         const clone = card.cloneNode(true) as HTMLElement;
         track.appendChild(clone);
-      });
+      }
     }
 
     // Check for reduced motion preference
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const prefersReducedMotion =
+      globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ??
+      false;
 
     if (!prefersReducedMotion) {
       // Create infinite scroll animation
@@ -43,7 +44,7 @@ export function CategoriesSection() {
         ease: "none",
         repeat: -1,
         modifiers: {
-          x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
+          x: gsap.utils.unitize((x) => Number.parseFloat(x) % totalWidth),
         },
       });
 
@@ -140,6 +141,7 @@ export function CategoriesSection() {
               }}
             >
               <div
+                className="category-card"
                 style={{
                   position: "absolute",
                   inset: 0,
@@ -147,26 +149,17 @@ export function CategoriesSection() {
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 24px rgba(0, 0, 0, 0.15)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 8px rgba(0, 0, 0, 0.1)";
-                }}
               >
-                <img
+                <Image
                   src={category.imageUrl}
                   alt={category.name}
+                  fill
+                  sizes="(max-width: 768px) 280px, 296px"
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     borderRadius: "14px",
                   }}
+                  priority={false}
                 />
 
                 <div
@@ -201,6 +194,7 @@ export function CategoriesSection() {
       </div>
 
       {/* Mobile Swipe Styles */}
+      { }
       <style jsx>{`
         @media (max-width: 768px) {
           .categories-carousel-container {
@@ -239,6 +233,11 @@ export function CategoriesSection() {
           .categories-track > a {
             scroll-snap-align: start;
           }
+        }
+
+        .category-card:hover {
+          transform: scale(1.05);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
       `}</style>
     </Column>

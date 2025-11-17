@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Column, Text } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
 
@@ -119,14 +120,15 @@ export function CategoryGrid() {
                     alignItems: "center",
                     justifyContent: "center",
                     overflow: "hidden",
+                    position: "relative",
                   }}
                 >
-                  <img
+                  <Image
                     src={category.image}
                     alt={category.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     style={{
-                      width: "100%",
-                      height: "100%",
                       objectFit: "contain",
                       transition: "transform 0.3s ease",
                     }}

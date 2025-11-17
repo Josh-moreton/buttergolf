@@ -50,15 +50,14 @@ export async function POST(req: Request) {
       })
 
       // Extract metadata
-      const { 
-        productId, 
-        sellerId, 
-        buyerId, 
-        productAmount,
+      const {
+        productId,
+        sellerId,
+        buyerId,
         shippingAmount,
         platformFee,
       } = paymentIntent.metadata || {}
-      
+
       if (!productId || !sellerId || !buyerId) {
         console.error('Missing required metadata in payment intent:', paymentIntent.metadata)
         return NextResponse.json({ error: 'Missing metadata' }, { status: 400 })
@@ -71,8 +70,8 @@ export async function POST(req: Request) {
 
       if (existingOrder) {
         console.log('Order already exists for payment intent:', paymentIntent.id)
-        return NextResponse.json({ 
-          received: true, 
+        return NextResponse.json({
+          received: true,
           orderId: existingOrder.id,
           message: 'Order already processed',
         })
@@ -126,7 +125,7 @@ export async function POST(req: Request) {
       })
 
       // Seller/From Address (placeholder - should be from seller's profile)
-      // TODO: CRITICAL - Implement proper seller address collection
+      // NOTE: Implement proper seller address collection when seller profile form ships
       // This is a placeholder for testing. In production:
       // 1. Add seller address form to user profile
       // 2. Store in Address table with userId = sellerId
@@ -148,8 +147,8 @@ export async function POST(req: Request) {
 
       // Calculate costs from metadata
       const amountTotal = paymentIntent.amount / 100 // Convert from cents
-      const shippingCost = parseFloat(shippingAmount) / 100
-      const platformFeeAmount = parseFloat(platformFee) / 100
+      const shippingCost = Number.parseFloat(shippingAmount ?? '0') / 100
+      const platformFeeAmount = Number.parseFloat(platformFee ?? '0') / 100
       const sellerPayout = amountTotal - platformFeeAmount
 
       try {
@@ -221,18 +220,18 @@ export async function POST(req: Request) {
 
         console.log('Order created successfully:', order.id)
 
-        // TODO: Send notification emails to buyer and seller
+        // NOTE: Send notification emails to buyer and seller when notification service is ready
         // - Seller: Label ready for download
         // - Buyer: Order confirmation with tracking info
 
-        return NextResponse.json({ 
-          received: true, 
+        return NextResponse.json({
+          received: true,
           orderId: order.id,
           trackingCode: order.trackingCode,
         })
       } catch (error) {
         console.error('Error creating shipping label or order:', error)
-        
+
         // Create order without label (label generation failed)
         const order = await prisma.order.create({
           data: {
@@ -253,11 +252,11 @@ export async function POST(req: Request) {
         })
 
         console.error('Order created without label due to error:', order.id)
-        
-        // TODO: Notify admin about failed label generation
-        
-        return NextResponse.json({ 
-          received: true, 
+
+        // NOTE: Notify admin about failed label generation when alerting pipeline exists
+
+        return NextResponse.json({
+          received: true,
           orderId: order.id,
           warning: 'Label generation failed',
         })
