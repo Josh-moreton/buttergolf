@@ -3,6 +3,9 @@
 import React from "react";
 import { Column, Row, Heading, Text, Button, Image, View } from "@buttergolf/ui";
 import { Link } from "solito/link";
+import { AnimatedHeroText } from "./AnimatedHeroText";
+import { TypewriterHero } from "./TypewriterHero";
+import { ScaleBounceHero } from "./ScaleBounceHero";
 
 // Image source types - accepts both React Native require() and web string paths
 type ImageSource = string | { uri: string } | number;
@@ -30,6 +33,10 @@ export interface HeroProps {
     showHeroImage?: boolean; // Default: true on desktop, false on mobile
     minHeight?: number; // Default: 500
     maxHeight?: number; // Default: 700
+
+    // Animation controls (desktop only)
+    animationVariant?: "split-character" | "typewriter" | "scale-bounce" | "none";
+    animationDelay?: number; // Delay before animation starts (in seconds)
 }
 
 /**
@@ -47,6 +54,8 @@ export function Hero({
     showHeroImage = true,
     minHeight = 500,
     maxHeight = 700,
+    animationVariant = "none",
+    animationDelay = 0.8, // Wait for hero fade-in to complete
 }: HeroProps) {
     // Determine if heading is split into two lines
     const headingLine1 = typeof heading === "string" ? heading : heading.line1;
@@ -143,17 +152,59 @@ export function Hero({
                                     ))}
                                 </Column>
                                 <Column display="none" $md={{ display: "flex" }} gap="$1">
-                                    <Heading
-                                        level={1}
-                                        fontSize="$11"
-                                        $md={{ fontSize: "$12" }}
-                                        $lg={{ fontSize: "$14" }}
-                                        color="$ironstone"
-                                        fontWeight="700"
-                                    >
-                                        {headingLine1}
-                                    </Heading>
-                                    {headingLine2 && (
+                                    {/* Line 1 - Animated */}
+                                    {animationVariant === "split-character" ? (
+                                        <AnimatedHeroText text={headingLine1} delay={animationDelay}>
+                                            <Heading
+                                                level={1}
+                                                fontSize="$11"
+                                                $md={{ fontSize: "$12" }}
+                                                $lg={{ fontSize: "$14" }}
+                                                color="$ironstone"
+                                                fontWeight="700"
+                                            >
+                                                {headingLine1.split("").map((char, i) => (
+                                                    <span
+                                                        key={i}
+                                                        className="char"
+                                                        style={{
+                                                            display: "inline-block",
+                                                            opacity: 0,
+                                                            whiteSpace: char === " " ? "pre" : "normal",
+                                                        }}
+                                                    >
+                                                        {char === " " ? "\u00A0" : char}
+                                                    </span>
+                                                ))}
+                                            </Heading>
+                                        </AnimatedHeroText>
+                                    ) : animationVariant === "typewriter" ? (
+                                        <TypewriterHero text={headingLine1} delay={animationDelay} showCursor={false}>
+                                            <Heading
+                                                level={1}
+                                                fontSize="$11"
+                                                $md={{ fontSize: "$12" }}
+                                                $lg={{ fontSize: "$14" }}
+                                                color="$ironstone"
+                                                fontWeight="700"
+                                            >
+                                                {headingLine1}
+                                            </Heading>
+                                        </TypewriterHero>
+                                    ) : animationVariant === "scale-bounce" ? (
+                                        <ScaleBounceHero text={headingLine1} delay={animationDelay}>
+                                            <Heading
+                                                level={1}
+                                                fontSize="$11"
+                                                $md={{ fontSize: "$12" }}
+                                                $lg={{ fontSize: "$14" }}
+                                                color="$ironstone"
+                                                fontWeight="700"
+                                            >
+                                                {headingLine1}
+                                            </Heading>
+                                        </ScaleBounceHero>
+                                    ) : (
                                         <Heading
                                             level={1}
                                             fontSize="$11"
@@ -162,8 +213,77 @@ export function Hero({
                                             color="$ironstone"
                                             fontWeight="700"
                                         >
-                                            {headingLine2}
+                                            {headingLine1}
                                         </Heading>
+                                    )}
+
+                                    {/* Line 2 - Animated (if exists) */}
+                                    {headingLine2 && (
+                                        <>
+                                            {animationVariant === "split-character" ? (
+                                                <AnimatedHeroText text={headingLine2} delay={animationDelay + 0.3}>
+                                                    <Heading
+                                                        level={1}
+                                                        fontSize="$11"
+                                                        $md={{ fontSize: "$12" }}
+                                                        $lg={{ fontSize: "$14" }}
+                                                        color="$ironstone"
+                                                        fontWeight="700"
+                                                    >
+                                                        {headingLine2.split("").map((char, i) => (
+                                                            <span
+                                                                key={i}
+                                                                className="char"
+                                                                style={{
+                                                                    display: "inline-block",
+                                                                    opacity: 0,
+                                                                    whiteSpace: char === " " ? "pre" : "normal",
+                                                                }}
+                                                            >
+                                                                {char === " " ? "\u00A0" : char}
+                                                            </span>
+                                                        ))}
+                                                    </Heading>
+                                                </AnimatedHeroText>
+                                            ) : animationVariant === "typewriter" ? (
+                                                <TypewriterHero text={headingLine2} delay={animationDelay + 0.5} showCursor={true}>
+                                                    <Heading
+                                                        level={1}
+                                                        fontSize="$11"
+                                                        $md={{ fontSize: "$12" }}
+                                                        $lg={{ fontSize: "$14" }}
+                                                        color="$ironstone"
+                                                        fontWeight="700"
+                                                    >
+                                                        {headingLine2}
+                                                    </Heading>
+                                                </TypewriterHero>
+                                            ) : animationVariant === "scale-bounce" ? (
+                                                <ScaleBounceHero text={headingLine2} delay={animationDelay + 0.3}>
+                                                    <Heading
+                                                        level={1}
+                                                        fontSize="$11"
+                                                        $md={{ fontSize: "$12" }}
+                                                        $lg={{ fontSize: "$14" }}
+                                                        color="$ironstone"
+                                                        fontWeight="700"
+                                                    >
+                                                        {headingLine2}
+                                                    </Heading>
+                                                </ScaleBounceHero>
+                                            ) : (
+                                                <Heading
+                                                    level={1}
+                                                    fontSize="$11"
+                                                    $md={{ fontSize: "$12" }}
+                                                    $lg={{ fontSize: "$14" }}
+                                                    color="$ironstone"
+                                                    fontWeight="700"
+                                                >
+                                                    {headingLine2}
+                                                </Heading>
+                                            )}
+                                        </>
                                     )}
                                 </Column>
                             </Column>

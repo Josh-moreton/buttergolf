@@ -6,6 +6,11 @@ import { imagePaths } from "@buttergolf/assets";
 /**
  * Static hero section for web marketplace
  * Uses cross-platform Hero component from @buttergolf/app
+ *
+ * Includes GSAP text animations on desktop only:
+ * - Split-character animation with stagger effect
+ * - Waits 0.8s for hero fade-in to complete before animating
+ * - Mobile/app shows static text immediately for performance
  */
 export function HeroStatic() {
     return (
@@ -26,6 +31,8 @@ export function HeroStatic() {
             backgroundImage={imagePaths.hero.background}
             heroImage={imagePaths.hero.club}
             showHeroImage={true}
+            animationVariant="split-character"
+            animationDelay={0.8}
         />
     );
 }
