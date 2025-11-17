@@ -30,12 +30,87 @@ This guide also documents our authentication setup using Clerk for both platform
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
 - **Styling**: Tailwind CSS v4 (web), Tamagui (cross-platform)
+- **Navigation**: Solito 5.0.0 for unified cross-platform routing
 - **Bundlers**:
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
 - **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
 - **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+
+### Cross-Platform Navigation Architecture (CRITICAL)
+
+**THIS IS A SOLITO-BASED MONOREPO - NOT EXPO ROUTER**
+
+The navigation architecture uses **Solito** to share routing logic between Next.js (web) and React Navigation (mobile):
+
+**Package Structure:**
+- `packages/app/` - **Shared cross-platform screens and business logic** (works on both web and mobile)
+  - Contains: screens, components, hooks, types, navigation config
+  - Uses: `solito/link` and `solito/navigation` for platform-agnostic navigation
+  - Example: `packages/app/src/features/categories/category-list-screen.tsx`
+- `apps/web/` - **Next.js App Router** (file-based routing with `app/` directory)
+  - Solito automatically translates to Next.js `<Link>` and `useRouter()`
+  - Example: `apps/web/src/app/category/[slug]/page.tsx`
+- `apps/mobile/` - **Expo + React Navigation** (`App.tsx` entry point, NO `app/` directory)
+  - Solito translates to React Navigation via linking config in `App.tsx`
+  - Must manually register screens in the Stack Navigator
+  - Example: Add `<Stack.Screen name="Category">` in `apps/mobile/App.tsx`
+
+**Route Definition (Single Source of Truth):**
+```typescript
+// packages/app/src/navigation/routes.ts
+export const routes = {
+  home: '/',
+  category: '/category/[slug]',
+  productDetail: '/products/[id]',
+  // ... other routes
+}
+```
+
+**How to Add a New Screen:**
+
+1. **Define the route** in `packages/app/src/navigation/routes.ts`
+2. **Create the screen component** in `packages/app/src/features/[feature]/[screen-name].tsx`
+   - Use `useLink` from `solito/navigation` for navigation
+   - Must be platform-agnostic (use Tamagui, not web-specific or native-specific APIs)
+3. **Export from** `packages/app/src/index.ts` or feature-specific index
+4. **Web (automatic):** Create matching route in `apps/web/src/app/[route]/page.tsx`
+   - Import and render the shared screen component
+   - Solito handles the rest automatically
+5. **Mobile (manual):** Register in `apps/mobile/App.tsx`:
+   ```typescript
+   import { MyNewScreen } from "@buttergolf/app/src/features/[feature]";
+
+   // Add to linking config
+   const linking = {
+     config: {
+       screens: {
+         MyNewScreen: { path: "my-route/:param" }
+       }
+     }
+   }
+
+   // Add to Stack Navigator
+   <Stack.Screen name="MyNewScreen">
+     {({ route }) => (
+       <MyNewScreen
+         param={route.params?.param}
+         onFetchData={fetchDataFunction}
+       />
+     )}
+   </Stack.Screen>
+   ```
+
+**Common Mistakes to Avoid:**
+- ❌ Don't expect Expo Router file-based routing in `apps/mobile/` - it uses React Navigation
+- ❌ Don't create separate screens for web and mobile - use shared `packages/app/` screens
+- ❌ Don't forget to register new routes in BOTH the linking config AND Stack Navigator in `App.tsx`
+- ❌ Don't use Next.js-specific APIs in `packages/app/` (e.g., `next/image`, `next/navigation`)
+- ❌ Don't use React Native-specific APIs in `packages/app/` unless wrapped in Platform checks
+- ✅ DO use Solito's `useLink` and `Link` components for all navigation
+- ✅ DO use Tamagui components for UI (they work everywhere)
+- ✅ DO pass data fetching functions as props (keeps screens platform-agnostic)
 
 ## Critical Commands
 
@@ -98,56 +173,80 @@ Our design system uses a comprehensive token system with semantic naming for mai
 
 #### Color Tokens
 
-**Brand Colors (10-shade scales)**:
+**Brand Colors (Figma Specification)**:
 
 ```tsx
-// Primary Brand (Butter Orange) - Pure Butter heritage brand
-$butter50 to $butter900   // 10 shades from lightest to darkest
-$primary: $butter400      // Main brand color (#E25F2F - Butter Orange)
-$primaryLight: $butter100 // Light variant for backgrounds
-$primaryHover: $butter500 // Hover state
-$primaryPress: $butter700 // Press/active state
-$primaryFocus: $butter400 // Focus state
+// Primary - Spiced Clementine (vibrant orange)
+$spicedClementine: #F45314
+$primary: $spicedClementine      // Main brand color
+$primaryHover: $spicedClementineHover // Hover state
+$primaryPress: $spicedClementinePress // Press/active state
+$primaryFocus: $spicedClementine      // Focus state
 
-// Secondary Brand (Navy) - Modern contrast accent
-$navy50 to $navy900       // 10 shades
-$secondary: $navy500      // Main secondary color (#1A2E44 - Navy)
-$secondaryLight: $navy100
-$secondaryHover: $navy600
-$secondaryPress: $navy700
-$secondaryFocus: $navy500
+// Primary Light - Vanilla Cream (light background)
+$vanillaCream: #FFFAD2
+$primaryLight: $vanillaCream     // Light variant for backgrounds
+
+// Secondary - Burnt Olive (dark accent)
+$burntOlive: #3E3B2C
+$secondary: $burntOlive          // Main secondary color
+$secondaryLight: $lemonHaze      // Light secondary (Lemon Haze)
+$secondaryHover: $burntOliveHover
+$secondaryPress: $burntOlivePress
+$secondaryFocus: $burntOlive
+
+// Tertiary - Lemon Haze (subtle accent)
+$lemonHaze: #EDECC3
+
+// Neutral Colors
+$cloudMist: #EDEDED    // Light borders/dividers
+$slateSmoke: #545454   // Secondary text
+$ironstone: #323232    // Primary text
+$pureWhite: #FFFFFF    // Base white
 ```
 
 **Semantic Status Colors**:
 
 ```tsx
-$success: $teal500; // Positive actions/states
-$successLight: $teal100; // Light background
-$successDark: $teal700; // Dark variant
+$success: $successBase;      // Teal (#02aaa4) - Positive actions/states
+$successLight: $successLight; // Light background
+$successDark: $successDark;   // Dark variant
 
-$error: $red600; // Error states
-$errorLight: $red100; // Error backgrounds
-$errorDark: $red700; // Dark error
+$error: $errorBase;      // Red (#dc2626) - Error states
+$errorLight: $errorLight; // Error backgrounds
+$errorDark: $errorDark;   // Dark error
 
-$warning: $butter500; // Warning states
-$warningLight: $butter100;
-$warningDark: $butter700;
+$warning: $warningBase;      // Spiced Clementine - Warning states
+$warningLight: $warningLight;
+$warningDark: $warningDark;
 
-$info: $blue500; // Informational states
-$infoLight: $blue100;
-$infoDark: $blue700;
+$info: $infoBase;      // Blue (#3c50e0) - Informational states
+$infoLight: $infoLight;
+$infoDark: $infoDark;
 ```
 
-**Neutral Colors (Gray scale)**:
+**Opacity Overlays**:
 
 ```tsx
-$gray50 to $gray900       // 10 shades for text, borders, backgrounds
+// Light overlays (for dark backgrounds like Burnt Olive)
+$overlayLight10: rgba(255, 255, 255, 0.1)
+$overlayLight20: rgba(255, 255, 255, 0.2)
+$overlayLight30: rgba(255, 255, 255, 0.3)
+$overlayLight40: rgba(255, 255, 255, 0.4)
+$overlayLight60: rgba(255, 255, 255, 0.6)
+
+// Dark overlays (for light backgrounds like Vanilla Cream)
+$overlayDark5: rgba(0, 0, 0, 0.05)
+$overlayDark10: rgba(0, 0, 0, 0.1)
+$overlayDark20: rgba(0, 0, 0, 0.2)
+$overlayDark30: rgba(0, 0, 0, 0.3)
+$overlayDark50: rgba(0, 0, 0, 0.5)
 ```
 
 **Text Colors (Semantic)**:
 
 ```tsx
-$text: $charcoal; // Primary text (#1E1E1E - warm charcoal in light theme)
+$text: $ironstone; // Primary text (#323232 - Ironstone)
 $textSecondary: #4A4A4A; // Secondary text
 $textTertiary: $gray600; // Tertiary text
 $textMuted: $gray500; // Muted/placeholder text
@@ -157,22 +256,22 @@ $textInverse: $white; // Text on dark backgrounds
 **Background Colors**:
 
 ```tsx
-$background: $cream; // Main app background (#FEFAD6 - Pure Butter cream)
+$background: $vanillaCream; // Main app background (#FFFAD2 - Vanilla Cream)
 $backgroundHover; // Hover state backgrounds
 $backgroundPress; // Press state backgrounds
 $backgroundFocus; // Focus state backgrounds
-$surface: $white; // Surface/card backgrounds
-$card: "#F6F7FB"; // Card-specific background
+$surface: $pureWhite; // Surface/card backgrounds
+$card: $pureWhite; // Card-specific background
 $cardHover; // Card hover state
 ```
 
 **Border Colors**:
 
 ```tsx
-$border: $gray300; // Default borders
-$borderHover: $gray400; // Hover state borders
-$borderFocus: $butter400; // Focus state borders (uses primary)
-$borderPress: $butter500; // Press state borders
+$border: $cloudMist; // Default borders (#EDEDED)
+$borderHover: $cloudMistHover; // Hover state borders
+$borderFocus: $spicedClementine; // Focus state borders (uses primary)
+$borderPress: $spicedClementinePress; // Press state borders
 ```
 
 **Shadow Colors**:
@@ -240,16 +339,18 @@ $tooltip: 1070;
 
 **Light Theme** (default):
 
-- Background: Cream (#FEFAD6) for warm, vintage feel
-- Text: Warm charcoal (#1E1E1E) for readability
-- Primary: Butter Orange (#E25F2F) for brand consistency
+- Background: Vanilla Cream (#FFFAD2) - soft, warm light background
+- Text: Ironstone (#323232) - dark, readable primary text
+- Primary: Spiced Clementine (#F45314) - vibrant orange for brand consistency
+- Secondary: Burnt Olive (#3E3B2C) - dark accent
 - All semantic colors optimized for light backgrounds
 
 **Dark Theme**:
 
-- Background: Navy (#020508) for modern contrast
-- Text: Light gray (#f9fafb)
-- Primary: Lighter butter (#FFE38A) for dark background contrast
+- Background: Burnt Olive (#3E3B2C) - warm, earthy dark background
+- Text: Pure White (#FFFFFF) - high contrast for readability
+- Primary: Spiced Clementine (#F45314) - maintains vibrant brand presence
+- Secondary: Lemon Haze (#EDECC3) - light accent on dark
 - All semantic colors adjusted for dark backgrounds with proper contrast
 
 **Sub-Themes for State Changes**:
@@ -538,26 +639,95 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
-#### ✅ **ALWAYS Use Semantic Tokens**
+#### ✅ **ALWAYS Use Tamagui Button Component (Never Manual HTML Buttons)**
 
 ```tsx
-// ✅ CORRECT - Use semantic tokens
-<Button backgroundColor="$primary" color="$textInverse">
-  Submit
+// ✅ CORRECT - Use Tamagui Button from @buttergolf/ui
+import { Button } from "@buttergolf/ui";
+
+<Button size="lg" tone="primary" borderRadius="$full" paddingHorizontal="$6" color="$vanillaCream">
+  View all listings
 </Button>
 
+<Button size="md" tone="secondary" fullWidth>
+  Secondary Action
+</Button>
+
+// ❌ WRONG - Never create manual HTML buttons with inline styles
+<button
+  style={{
+    fontFamily: "var(--font-urbanist)",
+    fontSize: "16px",
+    fontWeight: 600,
+    color: "#FFFAD2",
+    backgroundColor: "#F45314",
+    border: "none",
+    borderRadius: "32px",
+    padding: "14px 40px",
+    cursor: "pointer",
+  }}
+>
+  View all listings
+</button>
+
+// ❌ WRONG - Don't use native button element even with Tamagui props
+<button backgroundColor="$primary" color="$textInverse">
+  Submit
+</button>
+```
+
+**Why Tamagui Button?**
+- Ensures cross-platform consistency (works on web and mobile)
+- Proper theming with light/dark mode support
+- Built-in hover/press/focus states
+- Accessible by default
+- Compiler-optimized for performance
+- Maintains design system consistency
+
+#### ✅ **PREFER Specific Brand Color Tokens (Not Generic Semantic Tokens)**
+
+**🎨 IMPORTANT: Use specific brand colors for better design control and clarity**
+
+Our brand colors have specific names that describe the actual color, making the code more readable and maintainable. **Prefer these specific tokens over generic semantic names.**
+
+```tsx
+// ✅ CORRECT - Use specific brand color tokens (PREFERRED)
+<Text color="$ironstone">Primary dark text</Text>           // Dark gray text
+<Text color="$slateSmoke">Secondary text</Text>             // Medium gray
+<View backgroundColor="$vanillaCream">Light background</View> // Cream background
+<View borderColor="$cloudMist">Subtle border</View>          // Light gray border
+<Button backgroundColor="$spicedClementine">CTA Button</Button> // Orange brand color
+
+// ✅ ALSO CORRECT - Generic semantic tokens (use when you need theme flexibility)
+<Button backgroundColor="$primary" color="$textInverse">Submit</Button>
 <Text color="$textMuted">Helper text</Text>
+<View borderColor="$border" backgroundColor="$background">Content</View>
 
-<View borderColor="$border" backgroundColor="$surface">
-  Content
-</View>
-
-// ❌ WRONG - Never use numbered colors or raw hex
-<Button backgroundColor="$butter500">Submit</Button>  // Too specific
-<Button backgroundColor="#E25F2F">Submit</Button>    // No theming
+// ❌ WRONG - Never use numbered colors or raw hex values
+<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $spicedClementine or $primary
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
+<Text color="$color11">Text</Text>                   // Numbered color (deprecated)
 ```
+
+**Brand Color Token Reference:**
+
+| Token | Hex | Use Case |
+|-------|-----|----------|
+| `$ironstone` | #323232 | Primary dark text, headings |
+| `$slateSmoke` | #545454 | Secondary text, muted content |
+| `$cloudMist` | #EDEDED | Borders, dividers, subtle lines |
+| `$vanillaCream` | #FFFAD2 | Light backgrounds, surfaces |
+| `$spicedClementine` | #F45314 | Primary brand color, CTAs |
+| `$burntOlive` | #3E3B2C | Dark accents, secondary brand |
+| `$lemonHaze` | #EDECC3 | Subtle accents, tertiary |
+| `$pureWhite` | #FFFFFF | Pure white for contrast |
+
+**When to use which:**
+- **Specific tokens** (`$ironstone`, `$vanillaCream`, etc.) - Use for consistent brand colors across light/dark themes
+- **Semantic tokens** (`$text`, `$background`, etc.) - Use only when you need automatic theme switching behavior
+
+**The OLD guidance saying "use semantic tokens" was confusing and led to incorrect code review comments. Always prefer specific brand color tokens.**
 
 #### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
@@ -623,6 +793,68 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 ```
 
 **Note**: Row and Column are thin wrappers over XStack/YStack - they preserve ALL native Tamagui props like `alignItems`, `justifyContent`, `flexWrap`, etc. Use these native props directly.
+
+#### ⚠️ **CRITICAL: Text Component Font Sizing (NEVER use size="md")**
+
+**🚨 THIS IS THE MOST COMMON ERROR - READ CAREFULLY 🚨**
+
+The Tamagui Text component has TWO different props for sizing, and mixing them up causes runtime errors:
+
+1. **`size` prop** - A **variant** that accepts semantic strings: `"xs" | "sm" | "md" | "lg" | "xl"`
+2. **`fontSize` prop** - A **direct token** that accepts token values: `"$1"` through `"$16"`
+
+**THE CRITICAL RULE:**
+
+- ✅ **CORRECT - Use `size` variant for semantic sizing**:
+  ```tsx
+  <Text size="sm">Small text</Text>
+  <Text size="md">Medium text (default)</Text>
+  <Text size="lg">Large text</Text>
+  ```
+
+- ✅ **CORRECT - Use `fontSize` with tokens for custom sizing**:
+  ```tsx
+  <Text fontSize="$4">Small (13-14px)</Text>
+  <Text fontSize="$5">Medium (15-16px) - DEFAULT</Text>
+  <Text fontSize="$6">Large (18-20px)</Text>
+  <Text fontSize="$7">XL (22-24px)</Text>
+  <Text fontSize="$8">2XL (28-32px)</Text>
+  ```
+
+- ❌ **WRONG - NEVER mix variant names with fontSize**:
+  ```tsx
+  <Text size="md">Wrong!</Text>  // This looks right but causes "No font size found md" error
+  <Text fontSize="md">Wrong!</Text>  // Missing $ prefix on token
+  <Text fontSize="$md">Wrong!</Text>  // $md is a spacing token, not a font size
+  ```
+
+**Why This Error Keeps Happening:**
+
+The `size` prop name makes developers think they can use it like `fontSize`, but it's actually a **variant** that only works with the specific variant names defined in the Text component. When you use `size="md"`, Tamagui tries to look up a font size token named "md" and fails.
+
+**Font Size Token Reference:**
+
+| Token  | Size Range | Use Case                 |
+|--------|------------|--------------------------|
+| `$1`   | 11px       | Legal text, tiny labels  |
+| `$2`   | 12px       | Captions, metadata       |
+| `$3`   | 13px       | Small labels             |
+| `$4`   | 13-14px    | Body small, helper text  |
+| **`$5`** | **15-16px** | **DEFAULT - Body text**   |
+| `$6`   | 18-20px    | Large body, subheadings  |
+| `$7`   | 22-24px    | Headings                 |
+| `$8`   | 28-32px    | Large headings           |
+| `$9`+  | 36px+      | Hero text                |
+
+**If you see "No font size found md/sm/lg" error:**
+
+1. Search for `size="sm"`, `size="md"`, `size="lg"` in Text components
+2. Replace with either:
+   - `size` variant: `size="sm"` (if using semantic sizing)
+   - OR `fontSize` token: `fontSize="$5"` (if you want specific control)
+3. **Default to `fontSize="$5"`** when unsure - it's the most common body text size
+
+**This error has appeared 4+ times in this project - following this rule prevents it.**
 
 #### ✅ **Using Colors in Text Components**
 
@@ -751,22 +983,25 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View padding="md">               // ❌ Missing $ for direct prop
 
 // ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
+<View backgroundColor="$spicedClementine"> // ❌ Too specific, use semantic
 <Text color="$color">             // ❌ Old token name
 <View borderColor="$borderColor"> // ❌ Old token name
 ```
 
-#### ⚠️ **Type Safety Workarounds**
+#### ✅ **Web-Only CSS Properties Pattern**
 
-Some Tamagui props have strict typing that doesn't accept our semantic tokens. Use type assertions when needed:
+For web-only CSS properties that React Native doesn't support (like `position: sticky/fixed`, `overflow: auto`), use the `style` prop:
 
 ```tsx
-// When you need to use semantic tokens that TypeScript doesn't accept
-<Text {...{ color: "muted" as any }}>Muted text</Text>
-<View {...{ backgroundColor: "$surface" as any }}>Content</View>
+// ✅ CORRECT - Use style prop for web-only CSS properties
+<Column style={{ position: "sticky" }} top={0} zIndex={100}>
+<Row style={{ overflow: "auto" }}>
 
-// Or use inline style objects
-<Text style={{ color: "$textMuted" }}>Text</Text>
+// ❌ WRONG - Don't use escape hatches
+<Column {...{ position: "sticky" as any }} top={0}>
+
+// Why: The style prop is the standard React way to apply inline styles.
+// These files are web-only and will never run on React Native.
 ```
 
 ### Creating New Components
@@ -981,6 +1216,8 @@ For complex components with sub-components:
 // packages/ui/src/components/Accordion.tsx
 import { createStyledContext, styled, YStack } from "tamagui";
 
+// Note: 'as any' here is required by Tamagui's createStyledContext API
+// This is the ONLY acceptable use case - it's part of Tamagui's typed context system
 const AccordionContext = createStyledContext({
   size: "$md" as any,
 });
@@ -1210,10 +1447,53 @@ const round = await prisma.round.create({
 
 ### Database Workflow
 
+**🚨 CRITICAL: ALWAYS USE MIGRATIONS - NO EXCEPTIONS 🚨**
+
+❌ **NEVER EVER use `pnpm db:push` for schema changes** - This creates database drift and causes migration conflicts that require data loss to resolve.
+
+❌ **DO NOT use `db:push` even when you see drift errors** - Use the proper workflow below instead.
+
+✅ **ALWAYS use `pnpm db:migrate:dev --name descriptive-name`** - This creates proper migration files that track schema changes and prevent drift.
+
+**THE ONLY CORRECT WORKFLOW:**
+
 1. **Modify schema**: Edit `packages/db/prisma/schema.prisma`
-2. **Generate client**: `pnpm db:generate`
-3. **Push to database**: `pnpm db:push` (dev) or `pnpm db:migrate:dev --name change-name` (with migration)
-4. **Seed data**: `pnpm db:seed` (optional)
+2. **Create migration**: `cd packages/db && pnpm prisma migrate dev --name descriptive-change-name`
+   - This creates a migration file in `prisma/migrations/`
+   - This applies the migration to your database
+   - This keeps your migration history in sync with your database
+   - This automatically runs `prisma generate`
+3. **Seed data** (if needed): `pnpm db:seed`
+
+**IF YOU ENCOUNTER DRIFT ERRORS:**
+
+If you see "Drift detected: Your database schema is not in sync with your migration history":
+
+**SOLUTION: Reset and reseed (this is the CORRECT approach)**
+```bash
+cd packages/db
+pnpm prisma migrate reset --force  # Drops DB, reapplies all migrations
+cd ../..
+pnpm db:seed  # Reseeds all data
+```
+
+This is the ONLY proper way to resolve drift. It ensures migration history is clean and the database can be deployed to production safely.
+
+**Why This Matters:**
+- `db:push` applies changes directly without creating migration files
+- This causes "drift" where your database has columns/tables that aren't in migrations
+- When you try to create a new migration later, Prisma detects drift and you MUST reset
+- Migrations create a proper history and allow safe deployments to production
+- **We have made this mistake 7+ times - NEVER DO IT AGAIN**
+
+**NO EXCEPTIONS:** There is no "quick fix" scenario where db:push is acceptable. Always use migrations.
+
+**Understanding Prisma Commands:**
+- `prisma migrate dev` - ✅ THE ONLY COMMAND YOU SHOULD USE - Creates migration files, version-controlled, production-safe
+- `prisma migrate reset --force` - ✅ CORRECT way to resolve drift - Drops database, reapplies all migrations, reseeds data
+- `prisma db push` - ❌ FORBIDDEN - Never use this, it causes drift
+- `prisma migrate resolve` - ❌ DO NOT USE - Does not actually fix drift, makes it worse
+- `prisma migrate diff` - ❌ USELESS - Confusing output, doesn't help resolve drift
 
 ### Database Setup Options
 
@@ -1323,13 +1603,13 @@ For a detailed setup, see `docs/AUTH_SETUP_CLERK.md`.
 
 ### ButterHeader Component
 
-The web application uses a unified butter-themed header with the Pure Butter brand identity.
+The web application uses a unified header with the ButterGolf brand identity.
 
 **Location**: `apps/web/src/app/_components/header/ButterHeader.tsx`
 
 **Key Features**:
 
-- Single header bar with butter orange background (`$primary` - #E25F2F)
+- Single header bar with Spiced Clementine background (`$primary` - #F45314)
 - Fixed positioning at top (below optional TrustBar)
 - Height: ~80px (reduced from previous 180px three-layer header)
 - Sticky with shadow effect on scroll
@@ -1352,7 +1632,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 
 2. **Center Navigation** (Desktop only, hidden on mobile):
    - HOME | FEATURES | ABOUT US | CONTACT US
-   - Gotham Medium, 14px
+   - Urbanist Medium (500 weight), 14px
    - White text with underline on hover
    - Hidden below `$lg` breakpoint
 
@@ -1371,7 +1651,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
    - Hover opacity: 0.8
 
 5. **Mobile Menu Overlay**:
-   - Full-screen overlay with butter orange background
+   - Full-screen overlay with Spiced Clementine background
    - Large navigation links (XL size, bold)
    - Search bar at bottom
    - Closes on link click or close button
@@ -1412,9 +1692,9 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 ### Header Best Practices
 
 1. **Color Usage**:
-   - Always use `$primary` for header background (butter orange)
+   - Always use `$primary` for header background (Spiced Clementine)
    - Always use `$textInverse` for text/icons on orange background
-   - Badge counts use `$navy500` background for contrast
+   - Badge counts use `$secondary` (Burnt Olive) for contrast
 
 2. **Navigation Links**:
    - Use Next.js `Link` component for client-side navigation
@@ -1451,7 +1731,7 @@ The web application uses a unified butter-themed header with the Pure Butter bra
 
 - Single unified layer
 - Total height: 80px (with optional 40px TrustBar)
-- Butter orange theme (#E25F2F)
+- Spiced Clementine theme (#F45314)
 - Search on right side
 - Simplified navigation
 - Mobile-first with full-screen overlay
@@ -1822,14 +2102,39 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Design System & Components
 
-1. **ALWAYS use semantic tokens** - Use `$primary`, `$text`, `$border` instead of `$butter500`, `$color`, `$borderColor`
+1. **ALWAYS use specific brand color tokens** - PREFER `$ironstone`, `$spicedClementine`, `$vanillaCream`, `$cloudMist`, `$slateSmoke`, `$burntOlive`, `$lemonHaze` over generic semantic tokens like `$text`, `$primary`, `$border`. Only use semantic tokens when you need automatic theme switching. Never use raw hex values or numbered colors.
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
-3. **ALWAYS use Text color variants** - Use `<Text color="muted">` instead of `<Text color="$textMuted">`
+3. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
 4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
 5. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
 6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
-7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, etc.
+7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
 8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+
+### Common React/Tamagui Errors to Avoid
+
+9. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
+   - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
+   - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
+   - ❌ WRONG: Wrapping text props in style object on wrong component types
+   - ✅ CORRECT: Apply text styling props (textAlign, whiteSpace, etc.) directly to Text/Button components
+
+   **Tamagui Component Inheritance**:
+   - Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor, etc.
+   - Text extends SizableText → inherits text props like textAlign, whiteSpace, etc.
+   - ❌ **NEVER use `{...{ prop: value as any }}` escape hatches** - This bypasses type safety
+   - ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
+   - ✅ **Use direct props** for standard React/Tamagui properties the component already supports
+
+10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
+    - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
+    - ✅ CORRECT: `availableBrands={availableFilters?.availableBrands || []}`
+    - Apply to all nested property access: `data?.category?.name || 'Default'`
+
+11. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
+    - ❌ WRONG: `params.slug` → Runtime error in Next.js 15+
+    - ✅ CORRECT: `const resolvedParams = await params; resolvedParams.slug`
+    - Update Props interface: `params: Promise<{ slug: string }>` not `params: { slug: string }`
 
 ### Understanding Variants vs Direct Token Props
 
@@ -1977,7 +2282,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 </Row>
 
 // ❌ WRONG Component Usage
-<Button paddingHorizontal="$5" backgroundColor="$butter500">Submit</Button>
+<Button paddingHorizontal="$5" backgroundColor="$spicedClementine">Submit</Button>
 <Text fontSize="$3" color="$gray500">Helper text</Text>
 <Row gap="md">Wrong - use gap="$md"</Row>
 <Card elevate size="$4" bordered>
@@ -2032,19 +2337,75 @@ When creating a new component, add variants for:
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-10. **Keep React versions aligned** across web and mobile (currently 19.2.0)
-11. **Use workspace protocol** for internal dependencies: `"workspace:*"`
-12. **Export types** alongside components for better DX
-13. **Test on both platforms** before considering features complete
-14. **Leverage media queries** for responsive design instead of platform checks
-15. **Keep Metro and Babel configs** in sync with Tamagui requirements
-16. **Run type checking** regularly during development
-17. **Use `name` prop** on styled components for better compiler optimization
-18. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
-19. **Run `pnpm db:generate`** after any schema changes
-20. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
-21. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
-22. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+10. **CRITICAL: Always use Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use variants (`size`, `tone`) with token props (`borderRadius`, `paddingHorizontal`, `color`). This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
+11. **Keep React versions aligned** across web and mobile (currently 19.2.0)
+12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
+13. **Export types** alongside components for better DX
+14. **Test on both platforms** before considering features complete
+15. **Leverage media queries** for responsive design instead of platform checks
+16. **Keep Metro and Babel configs** in sync with Tamagui requirements
+17. **Run type checking** regularly during development
+18. **Use `name` prop** on styled components for better compiler optimization
+19. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+20. **Run `pnpm db:generate`** after any schema changes
+21. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+22. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
+23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+24. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
+25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
+26. **If marketplace typography looks off (e.g., in HeroStatic links), remove manual `lineHeight` overrides** - The fix is to rely on the px-based values defined in `packages/config/src/tamagui.config.ts` by deleting ad-hoc `lineHeight={...}` props in shared components (like `packages/app/src/components/Hero.tsx`). The footer looked correct because it already inherited the config tokens; match that behavior whenever this regression reappears.
+
+### GSAP Animation Patterns
+
+**CRITICAL: Separate page-load animations from scroll-triggered animations to prevent conflicts**
+
+27. **NEVER use `window.scrollTo(0, 0)` in animation components** - This breaks ScrollTrigger by constantly resetting scroll position, preventing scroll-based animations from firing. ScrollTrigger relies on natural scroll behavior to calculate trigger points.
+
+28. **Use TWO separate animation systems:**
+   - **Page-load animations** (`PageLoadAnimation` component):
+     - For above-the-fold content (Hero, Categories, Toggle, etc.)
+     - Use regular GSAP tweens with `gsap.fromTo()`
+     - Trigger immediately on mount with optional delay
+     - No ScrollTrigger dependency
+     - Location: `apps/web/src/app/_components/animations/PageLoadAnimation.tsx`
+
+   - **Scroll-triggered animations** (`PageTransition` component with `.page-transition` class):
+     - For below-the-fold content (product sections, trust badges, etc.)
+     - Use GSAP with ScrollTrigger plugin
+     - Trigger when elements enter viewport
+     - Location: `apps/web/src/app/_components/animations/PageTransition.tsx`
+
+29. **Animation timeline pattern:**
+   ```tsx
+   // Page load (immediate)
+   <PageLoadAnimation delay={0}><Hero /></PageLoadAnimation>
+   <PageLoadAnimation delay={0.2}><Toggle /></PageLoadAnimation>
+   <PageLoadAnimation delay={0.4}><Categories /></PageLoadAnimation>
+
+   // Scroll-based (on viewport entry)
+   <div className="page-transition"><ProductSection /></div>
+   <div className="page-transition"><TrustSection /></div>
+   ```
+
+30. **GSAP cleanup pattern** - Always use `gsap.context()` for proper cleanup:
+   ```tsx
+   const ctx = gsap.context(() => {
+     gsap.to(element, { /* animation */ });
+   }, containerRef);
+
+   return () => ctx.revert(); // Cleanup
+   ```
+
+31. **Respect prefers-reduced-motion** - Always check and skip animations:
+   ```tsx
+   const prefersReducedMotion = window.matchMedia(
+     "(prefers-reduced-motion: reduce)"
+   ).matches;
+   if (prefersReducedMotion) {
+     gsap.set(element, { opacity: 1, y: 0, clearProps: "all" });
+     return;
+   }
+   ```
 
 ## Known Issues & Gotchas
 

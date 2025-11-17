@@ -6,8 +6,8 @@
  *
  * @example
  * ```tsx
- * <Text size="md">Regular text</Text>
- * <Text size="sm" color="muted">Small muted text</Text>
+ * <Text size="$4">Regular text</Text>
+ * <Text size="$3" color="muted">Small muted text</Text>
  * <Heading level={1}>Page Title</Heading>
  * <Heading level={2} color="primary">Section Title</Heading>
  * <Label htmlFor="input">Form Label</Label>
@@ -19,7 +19,29 @@ import {
   GetProps,
   Text as TamaguiText,
   Label as TamaguiLabel,
+  type TextProps as TamaguiTextProps,
+  type LabelProps as TamaguiLabelProps,
 } from "tamagui";
+
+const SIZE_ALIASES: Record<string, string> = {
+  xs: "$2",
+  sm: "$3",
+  md: "$4",
+  lg: "$6",
+  xl: "$7",
+};
+
+const resolveFontToken = (name?: string) => {
+  if (!name) {
+    return "$4";
+  }
+
+  if (name.startsWith("$")) {
+    return name;
+  }
+
+  return SIZE_ALIASES[name] ?? name;
+};
 
 // Base Text Component
 export const Text = styled(TamaguiText, {
@@ -28,29 +50,28 @@ export const Text = styled(TamaguiText, {
   // Base styles
   color: "$text",
   fontFamily: "$body",
-  lineHeight: "$1",
 
   variants: {
     size: {
-      xs: {
-        fontSize: "$2",
-        lineHeight: "$1",
-      },
-      sm: {
-        fontSize: "$3",
-        lineHeight: "$2",
-      },
-      md: {
-        fontSize: "$4",
-        lineHeight: "$3",
-      },
-      lg: {
-        fontSize: "$5",
-        lineHeight: "$4",
-      },
-      xl: {
-        fontSize: "$6",
-        lineHeight: "$5",
+      // Use spread fontSize variant so size props accept token values (e.g., "$5")
+      '...fontSize': (name, { font }) => {
+        const token = resolveFontToken(typeof name === "string" ? name : undefined);
+        const normalized = token.startsWith("$") ? token.slice(1) : token;
+        const fontSize = font?.size?.[token] ?? font?.size?.[normalized];
+        const lineHeight = font?.lineHeight?.[token] ?? font?.lineHeight?.[normalized];
+
+        if (process.env.NODE_ENV !== "production" && typeof name === "string" && !name.startsWith("$")) {
+          const stack = new Error().stack?.split("\n").slice(1, 4).join("\n");
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[ui/Text] size="${name}" must use "$" tokens (e.g. "$6"). Automatically mapping to ${token}.\n${stack}`
+          );
+        }
+
+        return {
+          fontSize,
+          lineHeight,
+        };
       },
     },
 
@@ -91,7 +112,7 @@ export const Text = styled(TamaguiText, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$4",
     weight: "normal",
   },
 });
@@ -102,7 +123,6 @@ const HeadingBase = styled(TamaguiText, {
   color: "$text",
   fontFamily: "$heading",
   fontWeight: "700",
-  lineHeight: "$1",
 });
 
 export const Heading = styled(HeadingBase, {
@@ -111,32 +131,26 @@ export const Heading = styled(HeadingBase, {
       1: {
         tag: "h1",
         fontSize: "$10",
-        lineHeight: "$1",
       },
       2: {
         tag: "h2",
         fontSize: "$9",
-        lineHeight: "$2",
       },
       3: {
         tag: "h3",
         fontSize: "$8",
-        lineHeight: "$3",
       },
       4: {
         tag: "h4",
         fontSize: "$7",
-        lineHeight: "$4",
       },
       5: {
         tag: "h5",
         fontSize: "$6",
-        lineHeight: "$5",
       },
       6: {
         tag: "h6",
         fontSize: "$5",
-        lineHeight: "$6",
       },
     },
 
@@ -165,22 +179,16 @@ export const Label = styled(TamaguiLabel, {
   color: "$text",
   fontSize: "$3",
   fontWeight: "500",
-  lineHeight: "$3",
   marginBottom: "$2",
   cursor: "pointer",
   userSelect: "none",
 
   variants: {
     size: {
-      sm: {
-        fontSize: "$2",
-      },
-      md: {
-        fontSize: "$3",
-      },
-      lg: {
-        fontSize: "$4",
-      },
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+        lineHeight: font?.lineHeight?.[name],
+      }),
     },
 
     // Note: For required indicators, use a separate Text component for cross-platform compatibility
@@ -195,10 +203,12 @@ export const Label = styled(TamaguiLabel, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$3",
   },
 });
 
-export type TextProps = GetProps<typeof Text>;
-export type HeadingProps = GetProps<typeof Heading>;
-export type LabelProps = GetProps<typeof Label>;
+// Export types that include BOTH our custom variants AND all base Tamagui props
+// This ensures TypeScript knows about inherited props like color, textAlign, etc.
+export type TextProps = GetProps<typeof Text> & Omit<TamaguiTextProps, keyof GetProps<typeof Text>>;
+export type HeadingProps = GetProps<typeof Heading> & Omit<TamaguiTextProps, keyof GetProps<typeof Heading>>;
+export type LabelProps = GetProps<typeof Label> & Omit<TamaguiLabelProps, keyof GetProps<typeof Label>>;

@@ -20,7 +20,7 @@ const CheckboxBox = styled(Stack, {
   width: 20,
   height: 20,
   borderWidth: 2,
-  borderColor: "$border",
+  borderColor: "$fieldBorder",
   borderRadius: "$xs",
   backgroundColor: "$surface",
   display: "flex",
@@ -30,7 +30,7 @@ const CheckboxBox = styled(Stack, {
   transition: "all 0.2s ease",
 
   hoverStyle: {
-    borderColor: "$borderHover",
+    borderColor: "$fieldBorderHover",
   },
 
   focusStyle: {

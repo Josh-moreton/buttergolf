@@ -30,7 +30,7 @@ export function MarketplaceHeader() {
 
   return (
     <Column
-      {...{ style: { position: "fixed" } }}
+      style={{ position: "fixed" }}
       top={60}
       left={0}
       right={0}
@@ -86,8 +86,8 @@ export function MarketplaceHeader() {
                 borderBottomRightRadius="$4"
               >
                 <Text
-                  size="xs"
-                  $md={{ size: "sm" }}
+                  size="$2"
+                  $md={{ size: "$3" }}
                   weight="medium"
                   color="$textInverse"
                 >
@@ -157,7 +157,7 @@ export function MarketplaceHeader() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Text size="sm" weight="semibold" color="$textInverse">
+                <Text size="$3" weight="semibold" color="$textInverse">
                   Sell
                 </Text>
               </Row>
@@ -173,13 +173,13 @@ export function MarketplaceHeader() {
                 minHeight={44}
                 alignItems="center"
                 justifyContent="center"
-                {...{ style: { background: "none", border: "none" } }}
+                backgroundColor="transparent"
+                borderWidth={0}
                 onPress={() => {
                   setAuthMode("sign-in");
                   setAuthOpen(true);
                 }}
                 aria-label="Sign in"
-                style={{ background: "none", border: "none" }}
               >
                 <UserIcon />
               </Row>
@@ -221,7 +221,7 @@ export function MarketplaceHeader() {
                     justifyContent="center"
                   >
                     <Text
-                      size="xs"
+                      size="$2"
                       fontSize={10}
                       weight="normal"
                       color="$textInverse"
@@ -259,8 +259,9 @@ export function MarketplaceHeader() {
               minHeight={44}
               alignItems="center"
               justifyContent="center"
+              backgroundColor="transparent"
+              borderWidth={0}
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
-              {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"
             >
               <MenuIcon />

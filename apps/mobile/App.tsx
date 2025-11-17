@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Provider,
-  HomeScreen,
   RoundsScreen,
   ProductsScreen,
   ProductDetailScreen,
@@ -11,6 +10,7 @@ import {
 import type { ProductCardData, Product } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
+import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
 import {
   View as RNView,
   Text as RNText,
@@ -29,6 +29,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
 import { useFonts } from "expo-font";
+import {
+  Urbanist_400Regular,
+  Urbanist_500Medium,
+  Urbanist_600SemiBold,
+  Urbanist_700Bold,
+  Urbanist_800ExtraBold,
+  Urbanist_900Black,
+} from "@expo-google-fonts/urbanist";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 // Platform imported above with RN components
@@ -57,6 +65,9 @@ const linking = {
       },
       ProductDetail: {
         path: "products/:id", // 'products/:id' for dynamic routing
+      },
+      Category: {
+        path: "category/:slug", // 'category/:slug' for category pages
       },
       // Add more routes here as you create them
       // RoundDetail: routes.roundDetail.replace('[id]', ':id'),
@@ -94,7 +105,7 @@ async function fetchProducts(): Promise<ProductCardData[]> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
       );
     }
 
@@ -116,6 +127,36 @@ async function fetchProducts(): Promise<ProductCardData[]> {
   }
 }
 
+// Function to fetch products by category
+async function fetchProductsByCategory(categorySlug: string): Promise<ProductCardData[]> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+    if (!apiUrl) {
+      throw new Error(
+        "EXPO_PUBLIC_API_URL environment variable is not set. " +
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+      );
+    }
+
+    console.log("Fetching products for category:", categorySlug, "from:", apiUrl);
+    const response = await fetch(`${apiUrl}/api/products?category=${categorySlug}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch category products:", error);
+    return [];
+  }
+}
+
 // Function to fetch a single product by ID
 async function fetchProduct(id: string): Promise<Product | null> {
   try {
@@ -124,7 +165,7 @@ async function fetchProduct(id: string): Promise<Product | null> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
       );
     }
 
@@ -150,16 +191,14 @@ async function fetchProduct(id: string): Promise<Product | null> {
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
-  // Load Gotham fonts for Pure Butter brand
+  // Load Urbanist font weights for React Native using expo-google-fonts
   const [fontsLoaded] = useFonts({
-    "Gotham-Thin": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf"),
-    "Gotham-XLight": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf"),
-    "Gotham-Light": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Light.otf"),
-    "Gotham-Book": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Book.otf"),
-    "Gotham-Medium": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Medium.otf"),
-    "Gotham-Bold": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Bold.otf"),
-    "Gotham-Black": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Black.otf"),
-    "Gotham-Ultra": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Ultra.otf"),
+    "Urbanist-Regular": Urbanist_400Regular,
+    "Urbanist-Medium": Urbanist_500Medium,
+    "Urbanist-SemiBold": Urbanist_600SemiBold,
+    "Urbanist-Bold": Urbanist_700Bold,
+    "Urbanist-ExtraBold": Urbanist_800ExtraBold,
+    "Urbanist-Black": Urbanist_900Black,
   });
 
   useEffect(() => {
@@ -206,7 +245,7 @@ export default function App() {
           Minimal RN screen
         </RNText>
         <RNPressable
-          onPress={() => {}}
+          onPress={() => { }}
           style={{
             paddingHorizontal: 16,
             paddingVertical: 10,
@@ -231,14 +270,9 @@ export default function App() {
           <SignedIn>
             <NavigationContainer linking={linking}>
               <Stack.Navigator>
-                <Stack.Screen
-                  name="Home"
-                  component={HomeScreen}
-                  options={{
-                    title: "ButterGolf",
-                    headerRight: HeaderRightComponent,
-                  }}
-                />
+                <Stack.Screen name="Home" options={{ title: "ButterGolf", headerRight: HeaderRightComponent }}>
+                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
+                </Stack.Screen>
                 <Stack.Screen
                   name="Rounds"
                   component={RoundsScreen}
@@ -258,12 +292,37 @@ export default function App() {
                     />
                   )}
                 </Stack.Screen>
+                <Stack.Screen
+                  name="Category"
+                  options={({ route }: any) => ({
+                    title: route.params?.slug
+                      ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                      : "Category",
+                    headerShown: false, // CategoryListScreen has its own header
+                  })}
+                >
+                  {({ route, navigation }: any) => (
+                    <CategoryListScreen
+                      categorySlug={route.params?.slug || ""}
+                      categoryName={
+                        route.params?.slug
+                          ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                          : "Category"
+                      }
+                      onFetchProducts={fetchProductsByCategory}
+                      onBack={() => navigation.goBack()}
+                      onFilter={() => console.log("Filter pressed")}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
           <SignedOut>
             {/* Render the designed onboarding screen (animations currently disabled for stability) */}
-            <OnboardingFlow />
+            <NavigationContainer linking={linking}>
+              <OnboardingFlow />
+            </NavigationContainer>
           </SignedOut>
         </Provider>
       </ClerkProvider>
@@ -290,22 +349,38 @@ function OnboardingFlow() {
     }
   };
 
+  const Stack = createNativeStackNavigator();
+
   if (showLoggedOutHome) {
     return (
-      <LoggedOutHomeScreen
-        onFetchProducts={fetchProducts}
-        onProductPress={(id) => {
-          // TODO: Navigate to product detail screen
-          console.log("Navigate to product:", id);
-        }}
-        onSignIn={() => {
-          if (Platform.OS === "ios") {
-            handleOAuth("apple");
-          } else {
-            handleOAuth("google");
-          }
-        }}
-      />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LoggedOutHome">
+          {() => <LoggedOutHomeScreen onFetchProducts={fetchProducts} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Category"
+          options={({ route }: any) => ({
+            title: route.params?.slug
+              ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+              : "Category",
+            headerShown: false,
+          })}
+        >
+          {({ route, navigation }: any) => (
+            <CategoryListScreen
+              categorySlug={route.params?.slug || ""}
+              categoryName={
+                route.params?.slug
+                  ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                  : "Category"
+              }
+              onFetchProducts={fetchProductsByCategory}
+              onBack={() => navigation.goBack()}
+              onFilter={() => console.log("Filter pressed")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
     );
   }
 

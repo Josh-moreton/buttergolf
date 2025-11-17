@@ -14,7 +14,7 @@ interface SearchParams {
 }
 
 interface Props {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 export const dynamic = "force-dynamic";
@@ -34,8 +34,8 @@ async function getListings(searchParams: SearchParams) {
   const conditions = Array.isArray(searchParams.condition)
     ? searchParams.condition
     : searchParams.condition
-    ? [searchParams.condition]
-    : [];
+      ? [searchParams.condition]
+      : [];
   if (conditions.length > 0) {
     where.condition = { in: conditions };
   }
@@ -52,8 +52,8 @@ async function getListings(searchParams: SearchParams) {
   const brands = Array.isArray(searchParams.brand)
     ? searchParams.brand
     : searchParams.brand
-    ? [searchParams.brand]
-    : [];
+      ? [searchParams.brand]
+      : [];
   if (brands.length > 0) {
     where.brand = { in: brands };
   }
@@ -94,17 +94,37 @@ async function getListings(searchParams: SearchParams) {
             slug: true,
           },
         },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            averageRating: true,
+            ratingCount: true,
+          },
+        },
       },
       orderBy,
       skip,
       take: limit,
     }),
     prisma.product.count({ where }),
-    prisma.product.findMany({
-      where: { isSold: false, brand: { not: null } },
-      select: { brand: true },
-      distinct: ["brand"],
-      orderBy: { brand: "asc" },
+    prisma.brand.findMany({
+      where: {
+        products: {
+          some: {
+            isSold: false,
+          },
+        },
+      },
+      select: { id: true, name: true, slug: true },
+      orderBy: { sortOrder: "asc" },
     }),
     prisma.product.aggregate({
       where: { isSold: false },
@@ -114,14 +134,22 @@ async function getListings(searchParams: SearchParams) {
   ]);
 
   // Map to ProductCardData format
-  const productCards: ProductCardData[] = products.map((product) => ({
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    condition: product.condition,
-    imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
-    category: product.category.name,
-  }));
+  const productCards: ProductCardData[] = products
+    .filter((product) => product.user) // Filter out products without users
+    .map((product) => ({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      condition: product.condition,
+      imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
+      category: product.category.name,
+      seller: {
+        id: product.user.id,
+        name: product.user.name,
+        averageRating: product.user.averageRating,
+        ratingCount: product.user.ratingCount,
+      },
+    }));
 
   return {
     products: productCards,
@@ -130,9 +158,7 @@ async function getListings(searchParams: SearchParams) {
     totalPages: Math.ceil(total / limit),
     hasMore: page < Math.ceil(total / limit),
     filters: {
-      availableBrands: availableBrands
-        .map((p) => p.brand)
-        .filter((b): b is string => b !== null),
+      availableBrands: availableBrands.map((b) => b.name),
       priceRange: {
         min: priceAgg._min.price || 0,
         max: priceAgg._max.price || 10000,
@@ -142,27 +168,16 @@ async function getListings(searchParams: SearchParams) {
 }
 
 export default async function ListingsPage({ searchParams }: Props) {
-  const data = await getListings(searchParams);
+  const resolvedParams = await searchParams;
+  const data = await getListings(resolvedParams);
 
   return (
-    <Suspense
-      fallback={
-        <div style={{ 
-          display: "flex", 
-          alignItems: "center", 
-          justifyContent: "center", 
-          minHeight: "50vh" 
-        }}>
-          <div>Loading...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div>Loading...</div>}>
       <ListingsClient
         initialProducts={data.products}
         initialTotal={data.total}
         initialFilters={data.filters}
         initialPage={data.page}
-        initialHasMore={data.hasMore}
       />
     </Suspense>
   );

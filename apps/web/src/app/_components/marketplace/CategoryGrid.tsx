@@ -14,32 +14,32 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: "clubs",
-    name: "Clubs",
-    label: "CLUBS ON SALE",
+    id: "drivers",
+    name: "Drivers",
+    label: "DRIVERS ON SALE",
     image: imagePaths.clubs.club1,
-    link: "/listings?category=clubs",
+    link: "/category/drivers",
+  },
+  {
+    id: "irons",
+    name: "Irons",
+    label: "IRONS ON SALE",
+    image: imagePaths.clubs.club2,
+    link: "/category/irons",
   },
   {
     id: "bags",
     name: "Bags",
     label: "BAGS ON SALE",
-    image: imagePaths.clubs.club2,
-    link: "/listings?category=bags",
-  },
-  {
-    id: "shoes",
-    name: "Shoes",
-    label: "SHOES ON SALE",
     image: imagePaths.clubs.club3,
-    link: "/listings?category=shoes",
+    link: "/category/bags",
   },
   {
-    id: "clothing",
-    name: "Clothing",
-    label: "CLOTHING ON SALE",
+    id: "accessories",
+    name: "Accessories",
+    label: "ACCESSORIES ON SALE",
     image: imagePaths.clubs.club4,
-    link: "/listings?category=clothing",
+    link: "/category/accessories",
   },
 ];
 
@@ -68,7 +68,7 @@ export function CategoryGrid() {
           align="center"
           {...{
             style: {
-              fontFamily: "var(--font-gotham)",
+              fontFamily: "var(--font-urbanist)",
               fontSize: "clamp(32px, 5vw, 48px)",
               lineHeight: 1.2,
               letterSpacing: "2px",
@@ -146,7 +146,7 @@ export function CategoryGrid() {
                     color="$textInverse"
                     {...{
                       style: {
-                        fontFamily: "var(--font-gotham)",
+                        fontFamily: "var(--font-urbanist)",
                         fontSize: "18px",
                         lineHeight: 1.2,
                         letterSpacing: "1.5px",

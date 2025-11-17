@@ -33,7 +33,7 @@ export function FilterSidebar({
   return (
     <Column
       width={280}
-      {...({ position: "sticky" } as any)}
+      style={{ position: "sticky" }}
       top={140}
       minHeight={200}
       backgroundColor="$surface"
@@ -45,7 +45,7 @@ export function FilterSidebar({
       display="none"
       className="desktop-filter-sidebar"
     >
-      <Text weight="bold" size="lg">
+      <Text weight="bold" size="$6">
         Filters
       </Text>
 

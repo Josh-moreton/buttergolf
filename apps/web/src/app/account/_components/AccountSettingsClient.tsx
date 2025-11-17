@@ -35,19 +35,19 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     switch (user.accountStatus) {
       case "active":
         return (
-          <Badge variant="success" {...{ size: "md" as any }}>
+          <Badge variant="success" size="md">
             Active Seller
           </Badge>
         );
       case "restricted":
         return (
-          <Badge variant="warning" {...{ size: "md" as any }}>
+          <Badge variant="warning" size="md">
             Restricted
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="info" {...{ size: "md" as any }}>
+          <Badge variant="info" size="md">
             Pending
           </Badge>
         );
@@ -66,13 +66,14 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     if (user.hasConnectAccount && user.onboardingComplete && user.accountStatus === "active") {
       return (
         <>
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Your seller account is active and ready to receive payments. You can
             now list products and manage your sales.
           </Text>
           <Row gap="$md">
             <Button
-              {...{ size: "md" as any, tone: "outline" as any }}
+              size="md"
+              tone="outline"
               onPress={() => {
                 /* View dashboard */
               }}
@@ -80,7 +81,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
               View Dashboard
             </Button>
             <Button
-              {...{ size: "md" as any, tone: "ghost" as any }}
+              size="md"
+              tone="ghost"
               onPress={() => setShowOnboarding(true)}
             >
               Update Account
@@ -97,13 +99,14 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     ) {
       return (
         <>
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Your seller account has some restrictions. Please update your
             account information to enable full functionality.
           </Text>
           <Row>
             <Button
-              {...{ size: "md" as any, tone: "warning" as any }}
+              size="md"
+              tone="warning"
               onPress={() => setShowOnboarding(true)}
             >
               Resolve Issues
@@ -116,13 +119,14 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     if (user.hasConnectAccount && user.onboardingComplete) {
       return (
         <>
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Your seller account is being reviewed. This usually takes 1-2
             business days.
           </Text>
           <Row>
             <Button
-              {...{ size: "md" as any, tone: "outline" as any }}
+              size="md"
+              tone="outline"
               onPress={() => setShowOnboarding(true)}
             >
               View Status
@@ -135,13 +139,14 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     if (user.hasConnectAccount) {
       return (
         <>
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Your seller account setup is incomplete. Please complete the
             onboarding process to start selling.
           </Text>
           <Row gap="$md">
             <Button
-              {...{ size: "md" as any, tone: "primary" as any }}
+              size="md"
+              tone="primary"
               onPress={() => setShowOnboarding(true)}
             >
               Continue Onboarding
@@ -153,14 +158,15 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
 
     return (
       <>
-        <Text {...{ color: "secondary" as any }}>
+        <Text color="$textSecondary">
           Start selling golf equipment on ButterGolf. Complete the quick
           onboarding process to set up your seller account and begin listing
           products.
         </Text>
         <Row>
           <Button
-            {...{ size: "lg" as any, tone: "primary" as any }}
+            size="lg"
+            tone="primary"
             onPress={() => setShowOnboarding(true)}
           >
             Become a Seller
@@ -172,8 +178,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
 
   if (showOnboarding) {
     return (
-      <Container {...{ size: "lg" as any, padding: "md" as any }}>
-        <Card variant="elevated" {...{ padding: "lg" as any }}>
+      <Container size="lg" paddingHorizontal="$md">
+        <Card variant="elevated" padding="$lg">
           <SellerOnboarding
             onComplete={handleOnboardingComplete}
             onExit={() => setShowOnboarding(false)}
@@ -184,36 +190,36 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
   }
 
   return (
-    <Container {...{ size: "lg" as any, padding: "md" as any }}>
+    <Container size="lg" paddingHorizontal="$md">
       <Column gap="$xl" fullWidth>
         <Column gap="$sm">
           <Heading level={1}>Account Settings</Heading>
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Manage your account and seller settings
           </Text>
         </Column>
 
         {/* Account Info Card */}
-        <Card variant="elevated" {...{ padding: "lg" as any }}>
+        <Card variant="elevated" padding="$lg">
           <Column gap="$md">
             <Heading level={3}>Account Information</Heading>
             <Column gap="$xs">
               <Text weight="medium">Email</Text>
-              <Text {...{ color: "secondary" as any }}>{user.email}</Text>
+              <Text color="$textSecondary">{user.email}</Text>
             </Column>
             {user.name && (
               <Column gap="$xs">
                 <Text weight="medium">Name</Text>
-                <Text {...{ color: "secondary" as any }}>{user.name}</Text>
+                <Text color="$textSecondary">{user.name}</Text>
               </Column>
             )}
           </Column>
         </Card>
 
         {/* Seller Status Card */}
-        <Card variant="elevated" {...{ padding: "lg" as any }}>
+        <Card variant="elevated" padding="$lg">
           <Column gap="$lg">
-            <Row align="center" {...{ justify: "space-between" as any }}>
+            <Row align="center" justifyContent="space-between">
               <Heading level={3}>Seller Account</Heading>
               {getStatusBadge()}
             </Row>

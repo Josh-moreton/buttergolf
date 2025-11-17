@@ -12,23 +12,30 @@ datasource db {
 
 // Marketplace models for ButterGolf
 model User {
-    id                       String    @id @default(cuid())
+    id                       String         @id @default(cuid())
     // Clerk user identifier for federated auth
-    clerkId                  String    @unique
-    email                    String    @unique
-    name                     String?
+    clerkId                  String         @unique
+    email                    String         @unique
+    name                     String // Required - sellers must have a name
     imageUrl                 String?
     // Stripe Connect seller account
-    stripeConnectId          String?   @unique // Stripe Connect account ID
-    stripeOnboardingComplete Boolean   @default(false) // Whether seller onboarding is complete
+    stripeConnectId          String?        @unique // Stripe Connect account ID
+    stripeOnboardingComplete Boolean        @default(false) // Whether seller onboarding is complete
     stripeAccountStatus      String? // Current account status (active, pending, etc.)
-    createdAt                DateTime  @default(now())
-    updatedAt                DateTime  @updatedAt
+    // Seller rating (cached for performance)
+    averageRating            Float?         @default(0)
+    ratingCount              Int            @default(0)
+    createdAt                DateTime       @default(now())
+    updatedAt                DateTime       @updatedAt
     // Marketplace relations
     products                 Product[]
-    ordersSold               Order[]   @relation("SellerOrders")
-    ordersPurchased          Order[]   @relation("BuyerOrders")
+    ordersSold               Order[]        @relation("SellerOrders")
+    ordersPurchased          Order[]        @relation("BuyerOrders")
     addresses                Address[]
+    ratingsReceived          SellerRating[] @relation("SellerRatings")
+    ratingsGiven             SellerRating[] @relation("RatingsGiven")
+    buyerOffers              Offer[]        @relation("BuyerOffers")
+    sellerOffers             Offer[]        @relation("SellerOffers")
 
     @@map("users")
 }
@@ -47,13 +54,62 @@ model Category {
     @@map("categories")
 }
 
+model Brand {
+    id         String      @id @default(cuid())
+    name       String      @unique
+    slug       String      @unique
+    logoUrl    String?
+    sortOrder  Int         @default(0)
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+    products   Product[]
+    clubModels ClubModel[]
+
+    @@map("brands")
+}
+
+enum ClubKind {
+    DRIVER
+    FAIRWAY_WOOD
+    HYBRID
+    IRON_SET
+    WEDGE
+    PUTTER
+    BALL
+    BAG
+    APPAREL
+    ACCESSORY
+    OTHER
+}
+
+model ClubModel {
+    id         String    @id @default(cuid())
+    brandId    String
+    brand      Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+    name       String // e.g., "Apex 21", "Stealth 2"
+    kind       ClubKind
+    isVerified Boolean   @default(false) // Promoted after multiple uses
+    usageCount Int       @default(0) // How many times this model has been listed
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+
+    @@unique([brandId, name, kind])
+    @@index([brandId])
+    @@index([isVerified])
+    @@index([usageCount])
+    @@map("club_models")
+}
+
 model Product {
     id          String           @id @default(cuid())
     title       String
     description String
     price       Float
     condition   ProductCondition
-    brand       String?
+    // Brand relationship (controlled)
+    brandId     String?
+    brand       Brand?           @relation(fields: [brandId], references: [id], onDelete: SetNull)
+    // Model field (hybrid - free text for flexibility)
     model       String?
     userId      String
     user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -71,9 +127,11 @@ model Product {
     createdAt   DateTime         @default(now())
     updatedAt   DateTime         @updatedAt
     orders      Order[]
+    offers      Offer[]
 
     @@index([categoryId])
     @@index([userId])
+    @@index([brandId])
     @@index([isSold])
     @@index([views])
     @@index([favorites])
@@ -166,6 +224,8 @@ model Order {
     deliveredAt        DateTime?
     createdAt          DateTime       @default(now())
     updatedAt          DateTime       @updatedAt
+    // Seller rating
+    sellerRating       SellerRating?
 
     @@index([sellerId])
     @@index([buyerId])
@@ -193,4 +253,72 @@ enum OrderStatus {
     DELIVERED // Package delivered to buyer
     CANCELLED // Order cancelled
     REFUNDED // Order refunded
+}
+
+model SellerRating {
+    id        String   @id @default(cuid())
+    // Who is being rated
+    sellerId  String
+    seller    User     @relation("SellerRatings", fields: [sellerId], references: [id], onDelete: Cascade)
+    // Who is leaving the rating
+    buyerId   String
+    buyer     User     @relation("RatingsGiven", fields: [buyerId], references: [id], onDelete: Cascade)
+    // Associated order (one rating per order)
+    orderId   String   @unique
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    // Rating (1-5 stars)
+    rating    Int // 1-5 stars overall
+    // Optional review text
+    comment   String?  @db.Text
+    // Timestamps
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([sellerId])
+    @@index([buyerId])
+    @@index([orderId])
+    @@map("seller_ratings")
+}
+
+model Offer {
+    id            String         @id @default(cuid())
+    amount        Float
+    status        OfferStatus    @default(PENDING)
+    message       String?        @db.Text
+    productId     String
+    product       Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+    buyerId       String
+    buyer         User           @relation("BuyerOffers", fields: [buyerId], references: [id], onDelete: Cascade)
+    sellerId      String
+    seller        User           @relation("SellerOffers", fields: [sellerId], references: [id], onDelete: Cascade)
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    counterOffers CounterOffer[]
+
+    @@index([productId])
+    @@index([buyerId])
+    @@index([sellerId])
+    @@index([status])
+    @@map("offers")
+}
+
+model CounterOffer {
+    id         String   @id @default(cuid())
+    amount     Float
+    message    String?  @db.Text
+    fromSeller Boolean
+    offerId    String
+    offer      Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+    createdAt  DateTime @default(now())
+
+    @@index([offerId])
+    @@map("counter_offers")
+}
+
+enum OfferStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
+    COUNTERED
+    EXPIRED
 }

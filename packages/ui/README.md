@@ -165,8 +165,10 @@ import { Text } from '@buttergolf/ui'
 // Sizes: xs, sm, md, lg, xl
 <Text size="md">Regular text</Text>
 
-// Colors: default, secondary, tertiary, muted, inverse, primary, error, success, warning
-<Text color="muted">Muted text</Text>
+// Colors: use semantic tokens directly for clarity
+<Text color="$text">Default text</Text>
+<Text color="$textMuted">Muted text</Text>
+<Text color="$primary">Brand accent</Text>
 
 // Weights: normal, medium, semibold, bold
 <Text weight="bold">Bold text</Text>
@@ -201,65 +203,53 @@ import { Label } from '@buttergolf/ui'
 
 ### Layout Components
 
-**Note**: We use Tamagui's base XStack/YStack components directly instead of custom wrappers.
+Use the semantic shims that wrap Tamagui's stack primitives for readability.
 
-#### XStack (Horizontal Layout)
+#### Row (Horizontal Layout)
 
 ```tsx
-import { XStack } from '@buttergolf/ui'
+import { Row } from '@buttergolf/ui'
 
-<XStack gap="$4" alignItems="center" justifyContent="space-between">
+<Row gap="$4" alignItems="center" justifyContent="space-between">
   <Text>Left</Text>
   <Button>Right</Button>
-</XStack>
+</Row>
 ```
 
-**Common Props**:
-- `gap`: Token values like `$2`, `$3`, `$4`, `$6`, `$8`
-- `alignItems`: `'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline'`
-- `justifyContent`: `'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly'`
-- `flexWrap`: `'wrap' | 'nowrap'`
-- `width`, `height`, `flex`, etc. - All Tamagui props supported
+Row preserves all `XStack` props, so continue using native Tamagui layout props with token values.
 
-#### YStack (Vertical Layout)
+#### Column (Vertical Layout)
 
 ```tsx
-import { YStack } from '@buttergolf/ui'
+import { Column } from '@buttergolf/ui'
 
-<YStack gap="$6" alignItems="center">
+<Column gap="$6" alignItems="center">
   <Heading level={2}>Title</Heading>
   <Text>Content</Text>
   <Button>Action</Button>
-</YStack>
+</Column>
 ```
 
-#### Container Pattern
+#### Container
 
 ```tsx
-import { YStack } from '@buttergolf/ui'
+import { Container } from '@buttergolf/ui'
 
-// Use YStack with constrained width
-<YStack maxWidth={1024} width="100%" marginHorizontal="auto" paddingHorizontal="$4">
+<Container size="lg" padding="$md">
   <Text>Constrained content</Text>
-</YStack>
+</Container>
 ```
 
-#### Spacer Pattern
+#### Spacer
 
 ```tsx
-import { View, XStack, YStack } from '@buttergolf/ui'
+import { Row, Spacer } from '@buttergolf/ui'
 
-<XStack>
+<Row>
   <Text>Left</Text>
-  <View flex={1} />  {/* Flexible spacer */}
+  <Spacer />
   <Text>Right</Text>
-</XStack>
-
-<YStack>
-  <Text>Item 1</Text>
-  <View height="$4" />  {/* Fixed spacer */}
-  <Text>Item 2</Text>
-</YStack>
+</Row>
 ```
 
 ### Card
@@ -416,7 +406,7 @@ import { Column } from '@buttergolf/ui'
 ✅ **Good**:
 ```tsx
 <Button size="lg" tone="primary">Submit</Button>
-<Text size="sm" color="muted">Helper text</Text>
+<Text size="sm" color="$textMuted">Helper text</Text>
 ```
 
 ❌ **Avoid**:

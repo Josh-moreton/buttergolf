@@ -1,0 +1,128 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import Link from "next/link";
+import { Column, Row } from "@buttergolf/ui";
+import { ProductCard } from "@buttergolf/app";
+import type { ProductCardData } from "@buttergolf/app";
+
+interface ProductCarouselProps {
+    readonly products: ProductCardData[];
+    readonly autoplay?: boolean;
+    readonly autoplayDelay?: number;
+}
+
+export function ProductCarousel({
+    products,
+    autoplay = true,
+    autoplayDelay = 5000,
+}: ProductCarouselProps) {
+    const [isDesktop, setIsDesktop] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+    // Initialize Embla with optional Autoplay plugin
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+        { align: "start", loop: true, dragFree: false },
+        autoplay ? [Autoplay({ delay: autoplayDelay, stopOnInteraction: false })] : []
+    );
+
+    // Scroll to specific index (for dot navigation)
+    const scrollTo = useCallback(
+        (index: number) => emblaApi?.scrollTo(index),
+        [emblaApi]
+    );
+
+    // Check if desktop for pagination dots
+    useEffect(() => {
+        const checkDesktop = () => {
+            setIsDesktop(window.innerWidth >= 1024);
+        };
+
+        checkDesktop();
+        window.addEventListener("resize", checkDesktop);
+        return () => window.removeEventListener("resize", checkDesktop);
+    }, []);
+
+    // Update selected index and scroll snaps when carousel changes
+    useEffect(() => {
+        if (!emblaApi) return;
+
+        const onSelect = () => {
+            setSelectedIndex(emblaApi.selectedScrollSnap());
+        };
+
+        const onInit = () => {
+            setScrollSnaps(emblaApi.scrollSnapList());
+        };
+
+        onInit();
+        emblaApi.on("select", onSelect);
+        emblaApi.on("reInit", onInit);
+
+        return () => {
+            emblaApi.off("select", onSelect);
+            emblaApi.off("reInit", onInit);
+        };
+    }, [emblaApi]);
+
+    return (
+        <Column width="100%" alignItems="center" gap="$lg">
+            {/* Carousel */}
+            <div ref={emblaRef} style={{ overflow: "hidden", width: "100%" }}>
+                <Row gap="$lg" paddingHorizontal="$md">
+                    {products.map((product) => (
+                        <div
+                            key={product.id}
+                            style={{
+                                flex: "0 0 auto",
+                                width: "70vw",
+                                maxWidth: "280px",
+                            }}
+                        >
+                            <Link
+                                href={`/products/${product.id}`}
+                                style={{ textDecoration: "none" }}
+                            >
+                                <ProductCard
+                                    product={product}
+                                    onFavorite={(productId) => console.log("Favorited:", productId)}
+                                />
+                            </Link>
+                        </div>
+                    ))}
+                </Row>
+            </div>
+
+            {/* Pagination Dots (Desktop Only) */}
+            <Row
+                gap="$sm"
+                justifyContent="center"
+                display={isDesktop ? "flex" : "none"}
+            >
+                {scrollSnaps.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => scrollTo(index)}
+                        style={{
+                            width: selectedIndex === index ? "48px" : "10px",
+                            height: "10px",
+                            borderRadius: "5px",
+                            border: "none",
+                            backgroundColor:
+                                selectedIndex === index
+                                    ? "#F45314"
+                                    : "rgba(244, 83, 20, 0.5)",
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                            padding: 0,
+                        }}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </Row>
+        </Column>
+    );
+}

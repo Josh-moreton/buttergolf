@@ -20,11 +20,14 @@
  * ```
  */
 
-import { styled, GetProps, YStack } from "tamagui";
+import { styled, GetProps, YStack, type YStackProps } from "tamagui";
 import {
   Card as TamaguiCard,
   CardHeader as TamaguiCardHeader,
   CardFooter as TamaguiCardFooter,
+  type CardProps as TamaguiCardProps,
+  type CardHeaderProps as TamaguiCardHeaderProps,
+  type CardFooterProps as TamaguiCardFooterProps,
 } from "@tamagui/card";
 
 const CardBase = styled(TamaguiCard, {
@@ -165,7 +168,8 @@ Card.Header = CardHeader;
 Card.Body = CardBody;
 Card.Footer = CardFooter;
 
-export type CardProps = GetProps<typeof CardBase>;
-export type CardHeaderProps = GetProps<typeof CardHeader>;
-export type CardBodyProps = GetProps<typeof CardBody>;
-export type CardFooterProps = GetProps<typeof CardFooter>;
+// Export types that include BOTH our custom variants AND all base Tamagui Card props
+export type CardProps = GetProps<typeof CardBase> & Omit<TamaguiCardProps, keyof GetProps<typeof CardBase>>;
+export type CardHeaderProps = GetProps<typeof CardHeader> & Omit<TamaguiCardHeaderProps, keyof GetProps<typeof CardHeader>>;
+export type CardBodyProps = GetProps<typeof CardBody> & Omit<YStackProps, keyof GetProps<typeof CardBody>>;
+export type CardFooterProps = GetProps<typeof CardFooter> & Omit<TamaguiCardFooterProps, keyof GetProps<typeof CardFooter>>;

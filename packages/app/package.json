@@ -17,6 +17,7 @@
     "@tamagui/lucide-icons": "catalog:",
     "@tamagui/next-theme": "catalog:",
     "@tamagui/polyfill-dev": "catalog:",
+    "gsap": "^3.13.0",
     "react": "catalog:",
     "react-native": "catalog:",
     "solito": "catalog:",

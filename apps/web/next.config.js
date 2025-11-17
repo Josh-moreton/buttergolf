@@ -1,16 +1,15 @@
-const { withTamagui } = require("@tamagui/next-plugin");
-const { join } = require("node:path");
+const {withTamagui} = require("@tamagui/next-plugin");
+const {join} = require("node:path");
 
 const boolVals = {
   true: true,
   false: false,
 };
 
-// Enable extraction in both dev and prod for consistent styling
-// Set DISABLE_EXTRACTION=true to disable (useful for debugging)
+// Keep style extraction enabled in all environments unless explicitly disabled
+// Set DISABLE_EXTRACTION=true to opt out (useful when debugging compiler output)
 const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ??
-  process.env.NODE_ENV === "development";
+  boolVals[process.env.DISABLE_EXTRACTION] ?? false;
 
 const plugins = [
   withTamagui({
@@ -21,6 +20,10 @@ const plugins = [
       process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
     logTimings: true,
     disableExtraction,
+    // Disable debug attributes to prevent hydration warnings
+    // These are only useful for deep debugging of Tamagui compiler output
+    useReactNativeWebLite: false,
+    disableDebugAttr: true,
     shouldExtract: (path) => {
       if (path.includes(join("packages", "app"))) {
         return true;
@@ -51,7 +54,7 @@ module.exports = () => {
         {
           source: "/:path*",
           headers: [
-            { key: "Cache-Control", value: "no-store, must-revalidate" },
+            {key: "Cache-Control", value: "no-store, must-revalidate"},
           ],
         },
       ],

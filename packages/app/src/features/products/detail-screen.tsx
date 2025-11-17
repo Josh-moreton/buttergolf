@@ -79,7 +79,7 @@ export function ProductDetailScreen({
           Back to Products
         </Button>
         <Column alignItems="center" justifyContent="center" flex={1}>
-          <Text color="$error" size="lg">
+          <Text color="$error" fontSize="$6">
             {error || "Product not found"}
           </Text>
         </Column>
@@ -120,19 +120,19 @@ export function ProductDetailScreen({
             <Heading level={2}>{product.title}</Heading>
 
             <Row gap="$2" alignItems="center">
-              <Text size="sm" color="$textSecondary">
+              <Text size="$3" color="$textSecondary">
                 {product.category.name}
               </Text>
               {product.condition && (
                 <Badge variant="neutral" size="sm">
-                  <Text size="xs" weight="medium">
+                  <Text size="$2" weight="medium">
                     {formattedCondition}
                   </Text>
                 </Badge>
               )}
             </Row>
 
-            <Text size="xl" weight="bold" color="$primary">
+            <Text size="$7" weight="bold" color="$primary">
               £{product.price.toFixed(2)}
             </Text>
           </Column>
@@ -141,12 +141,10 @@ export function ProductDetailScreen({
           {product.description && (
             <Card variant="outlined" {...{ padding: "md" as any }}>
               <Column gap="$2">
-                <Text size="md" weight="semibold">
+                <Text fontSize="$5" weight="semibold">
                   Description
                 </Text>
-                <Text size="md" color="$textSecondary">
-                  {product.description}
-                </Text>
+                <Text fontSize="$5">{product.description}</Text>
               </Column>
             </Card>
           )}
@@ -154,7 +152,7 @@ export function ProductDetailScreen({
           {/* Seller Info */}
           <Card variant="outlined" {...{ padding: "md" as any }}>
             <Column gap="$2">
-              <Text size="md" weight="semibold">
+              <Text fontSize="$5" weight="semibold">
                 Seller
               </Text>
               <Row gap="$2" alignItems="center">
@@ -166,7 +164,7 @@ export function ProductDetailScreen({
                     borderRadius="$full"
                   />
                 )}
-                <Text size="md">{product.user.name || "Anonymous"}</Text>
+                <Text fontSize="$5">{product.user.name || "Anonymous"}</Text>
               </Row>
             </Column>
           </Card>
@@ -174,7 +172,7 @@ export function ProductDetailScreen({
           {/* Additional Images */}
           {product.images && product.images.length > 1 && (
             <Column gap="$2">
-              <Text size="md" weight="semibold">
+              <Text fontSize="$5" weight="semibold">
                 More Images
               </Text>
               <Row gap="$2" flexWrap="wrap">

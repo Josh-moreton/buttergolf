@@ -8,6 +8,10 @@ import { FilterSidebar, type FilterState } from "./_components/FilterSidebar";
 import { MobileFilterSheet } from "./_components/MobileFilterSheet";
 import { SortDropdown } from "./_components/SortDropdown";
 import { ProductsGrid } from "./_components/ProductsGrid";
+import { PageHero } from "../_components/marketplace/PageHero";
+import { TrustSection } from "../_components/marketplace/TrustSection";
+import { NewsletterSection } from "../_components/marketplace/NewsletterSection";
+import { FooterSection } from "../_components/marketplace/FooterSection";
 
 interface ListingsClientProps {
   initialProducts: ProductCardData[];
@@ -17,7 +21,6 @@ interface ListingsClientProps {
     priceRange: { min: number; max: number };
   };
   initialPage: number;
-  initialHasMore: boolean;
 }
 
 const STORAGE_KEY = "buttergolf-listings-filters";
@@ -27,7 +30,6 @@ export function ListingsClient({
   initialTotal,
   initialFilters,
   initialPage,
-  initialHasMore,
 }: ListingsClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -66,10 +68,9 @@ export function ListingsClient({
 
   const [filters, setFilters] = useState<FilterState>(getInitialFilters());
   const [sort, setSort] = useState(searchParams.get("sort") || "newest");
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [page, setPage] = useState(initialPage);
   const [total, setTotal] = useState(initialTotal);
-  const [hasMore, setHasMore] = useState(initialHasMore);
   const [isLoading, setIsLoading] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
@@ -103,9 +104,12 @@ export function ListingsClient({
     [initialFilters.priceRange]
   );
 
+  // Calculate total pages
+  const totalPages = Math.max(1, Math.ceil(total / 24));
+
   // Fetch products with debouncing
   const fetchProducts = useCallback(
-    async (newPage: number = 1, append: boolean = false) => {
+    async (newPage: number = 1) => {
       setIsLoading(true);
 
       try {
@@ -122,19 +126,16 @@ export function ListingsClient({
         const response = await fetch(`/api/listings?${params.toString()}`);
         const data = await response.json();
 
-        if (append) {
-          setProducts((prev) => [...prev, ...data.products]);
-        } else {
-          setProducts(data.products);
-        }
-
+        setProducts(data.products);
         setTotal(data.total);
-        setHasMore(data.hasMore);
         setPage(newPage);
         setAvailableFilters(data.filters);
 
         // Update URL
         router.push(buildURL(filters, sort, newPage), { scroll: false });
+
+        // Scroll to top of page smoothly
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
@@ -147,11 +148,20 @@ export function ListingsClient({
   // Debounced fetch on filter change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchProducts(1, false);
+      fetchProducts(1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort]);
+
+  // Redirect to last valid page if current page exceeds total pages
+  useEffect(() => {
+    if (!isLoading && totalPages > 0 && page > totalPages) {
+      fetchProducts(totalPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, totalPages, isLoading]);
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
@@ -173,10 +183,10 @@ export function ListingsClient({
     }
   };
 
-  // Load more for infinite scroll
-  const handleLoadMore = () => {
-    if (!isLoading && hasMore) {
-      fetchProducts(page + 1, true);
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages && !isLoading) {
+      fetchProducts(newPage);
     }
   };
 
@@ -196,10 +206,15 @@ export function ListingsClient({
   }, [filters, initialFilters.priceRange]);
 
   return (
-    <Column width="100%" paddingVertical="$lg">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
+    <Column width="100%" backgroundColor="$surface">
+      {/* Page Hero */}
+      <PageHero />
+
+      {/* Listings Content */}
+      <Column width="100%" paddingVertical="$lg">
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           @media (min-width: 1024px) {
             .mobile-filter-button {
               display: none !important;
@@ -209,145 +224,154 @@ export function ListingsClient({
             }
           }
         `,
-        }}
-      />
-      <Column
-        maxWidth={1280}
-        marginHorizontal="auto"
-        paddingHorizontal="$6"
-        width="100%"
-        gap="$lg"
-      >
-        {/* Header */}
-        <Row
-          alignItems="center"
-          justifyContent="space-between"
-          flexWrap="wrap"
-          gap="$md"
+          }}
+        />
+        <Column
+          maxWidth={1280}
+          marginHorizontal="auto"
+          paddingHorizontal="$6"
+          width="100%"
+          gap="$lg"
         >
-          <Column gap="$xs">
-            <Text fontSize="$9" weight="bold">
-              Shop All Products
-            </Text>
-            <Text color="$textSecondary">
-              {total} {total === 1 ? "product" : "products"} found
-            </Text>
-          </Column>
+          {/* Header */}
+          <Row
+            alignItems="center"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap="$md"
+          >
+            <Column gap="$xs">
+              <Text fontSize="$9" weight="bold">
+                Shop All Products
+              </Text>
+              <Text color="$textSecondary">
+                {total} {total === 1 ? "product" : "products"} found
+              </Text>
+            </Column>
 
-          <Row gap="$md" alignItems="center">
-            {/* Mobile filter button */}
-            <div
-              style={{ display: "flex" }}
-              className="mobile-filter-button"
-            >
-              <Button
-                size="$4"
-                chromeless
-                onPress={() => setMobileFilterOpen(true)}
+            <Row gap="$md" alignItems="center">
+              {/* Mobile filter button */}
+              <div
+                style={{ display: "flex" }}
+                className="mobile-filter-button"
               >
-                <Row gap="$sm" alignItems="center">
-                  <Text>Filters</Text>
-                  {activeFilterCount > 0 && (
-                    <Badge variant="primary" size="sm">
-                      {activeFilterCount}
-                    </Badge>
-                  )}
-                </Row>
+                <Button
+                  size="$4"
+                  chromeless
+                  onPress={() => setMobileFilterOpen(true)}
+                >
+                  <Row gap="$sm" alignItems="center">
+                    <Text>Filters</Text>
+                    {activeFilterCount > 0 && (
+                      <Badge variant="primary" size="sm">
+                        {activeFilterCount}
+                      </Badge>
+                    )}
+                  </Row>
+                </Button>
+              </div>
+
+              {/* Sort dropdown */}
+              <SortDropdown value={sort} onChange={setSort} />
+            </Row>
+          </Row>
+
+          {/* Active filters chips */}
+          {activeFilterCount > 0 && (
+            <Row gap="$sm" flexWrap="wrap" alignItems="center">
+              <Text size="$3" color="$textSecondary">
+                Active filters:
+              </Text>
+              {filters.category && (
+                <Badge variant="outline" size="md">
+                  {filters.category}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() => handleFilterChange({ category: null })}
+                  >
+                    ×
+                  </span>
+                </Badge>
+              )}
+              {filters.conditions.map((condition) => (
+                <Badge key={condition} variant="outline" size="md">
+                  {condition.replace("_", " ")}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() =>
+                      handleFilterChange({
+                        conditions: filters.conditions.filter((c) => c !== condition),
+                      })
+                    }
+                  >
+                    ×
+                  </span>
+                </Badge>
+              ))}
+              {filters.brands.map((brand) => (
+                <Badge key={brand} variant="outline" size="md">
+                  {brand}
+                  <span
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() =>
+                      handleFilterChange({
+                        brands: filters.brands.filter((b) => b !== brand),
+                      })
+                    }
+                  >
+                    ×
+                  </span>
+                </Badge>
+              ))}
+              <Button size="$3" chromeless onPress={handleClearAll}>
+                Clear all
               </Button>
-            </div>
+            </Row>
+          )}
 
-            {/* Sort dropdown */}
-            <SortDropdown value={sort} onChange={setSort} />
-          </Row>
-        </Row>
-
-        {/* Active filters chips */}
-        {activeFilterCount > 0 && (
-          <Row gap="$sm" flexWrap="wrap" alignItems="center">
-            <Text size="sm" color="$textSecondary">
-              Active filters:
-            </Text>
-            {filters.category && (
-              <Badge variant="outline" size="md">
-                {filters.category}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() => handleFilterChange({ category: null })}
-                >
-                  ×
-                </span>
-              </Badge>
-            )}
-            {filters.conditions.map((condition) => (
-              <Badge key={condition} variant="outline" size="md">
-                {condition.replace("_", " ")}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() =>
-                    handleFilterChange({
-                      conditions: filters.conditions.filter((c) => c !== condition),
-                    })
-                  }
-                >
-                  ×
-                </span>
-              </Badge>
-            ))}
-            {filters.brands.map((brand) => (
-              <Badge key={brand} variant="outline" size="md">
-                {brand}
-                <span
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() =>
-                    handleFilterChange({
-                      brands: filters.brands.filter((b) => b !== brand),
-                    })
-                  }
-                >
-                  ×
-                </span>
-              </Badge>
-            ))}
-            <Button size="$3" chromeless onPress={handleClearAll}>
-              Clear all
-            </Button>
-          </Row>
-        )}
-
-        {/* Main content: Sidebar + Grid */}
-        <Row gap="$lg" alignItems="flex-start">
-          {/* Desktop sidebar */}
-          <FilterSidebar
-            filters={filters}
-            availableBrands={availableFilters.availableBrands}
-            priceRange={availableFilters.priceRange}
-            onChange={handleFilterChange}
-            onClearAll={handleClearAll}
-          />
-
-          {/* Products grid */}
-          <Column flex={1}>
-            <ProductsGrid
-              products={products}
-              hasMore={hasMore}
-              isLoading={isLoading}
-              onLoadMore={handleLoadMore}
+          {/* Main content: Sidebar + Grid */}
+          <Row gap="$2xl" alignItems="flex-start">
+            {/* Desktop sidebar */}
+            <FilterSidebar
+              filters={filters}
+              availableBrands={availableFilters?.availableBrands || []}
+              priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
+              onChange={handleFilterChange}
+              onClearAll={handleClearAll}
             />
-          </Column>
-        </Row>
+
+            {/* Products grid */}
+            <Column flex={1}>
+              <ProductsGrid
+                products={products}
+                isLoading={isLoading}
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </Column>
+          </Row>
+        </Column>
+
+        {/* Mobile filter sheet */}
+        <MobileFilterSheet
+          open={mobileFilterOpen}
+          onOpenChange={setMobileFilterOpen}
+          filters={filters}
+          availableBrands={availableFilters?.availableBrands || []}
+          priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
+          onChange={handleFilterChange}
+          onClearAll={handleClearAll}
+          onApply={() => fetchProducts(1)}
+        />
       </Column>
 
-      {/* Mobile filter sheet */}
-      <MobileFilterSheet
-        open={mobileFilterOpen}
-        onOpenChange={setMobileFilterOpen}
-        filters={filters}
-        availableBrands={availableFilters.availableBrands}
-        priceRange={availableFilters.priceRange}
-        onChange={handleFilterChange}
-        onClearAll={handleClearAll}
-        onApply={() => fetchProducts(1, false)}
-      />
+      {/* Trust & Newsletter Sections */}
+      <TrustSection />
+      <NewsletterSection />
+
+      {/* Footer */}
+      <FooterSection />
     </Column>
   );
 }

@@ -1,6 +1,7 @@
 export * from './features/home'
 export * from './features/rounds'
 export * from './features/products'
+export * from './features/categories'
 // Note: onboarding is mobile-only and uses react-native-reanimated
 // Import directly from './features/onboarding' in mobile app only
 
@@ -10,3 +11,7 @@ export * from './provider'
 
 export * from './types/product'
 export * from './components/ProductCard'
+export * from './components/Hero'
+export * from './components/AnimatedHeroText'
+export * from './components/TypewriterHero'
+export * from './components/ScaleBounceHero'

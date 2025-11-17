@@ -236,7 +236,7 @@ export function OnboardingScreen({
           <Text
             fontSize={28}
             fontWeight="600"
-            textAlign="center"
+            align="center"
             color="$text"
             lineHeight={33.6}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -247,7 +247,7 @@ export function OnboardingScreen({
           <Text
             fontSize={16}
             fontWeight="400"
-            textAlign="center"
+            align="center"
             color="$textSecondary"
             lineHeight={22}
           >
@@ -306,7 +306,7 @@ export function OnboardingScreen({
         <Text
           fontSize={13}
           color="$textMuted"
-          textAlign="center"
+          align="center"
           textDecorationLine="underline"
           onPress={onAbout}
           cursor="pointer"

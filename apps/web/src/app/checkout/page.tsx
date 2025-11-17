@@ -1,23 +1,21 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import { Column, Container, Spinner, Text } from "@buttergolf/ui";
-import { CheckoutForm } from "./_components/ImprovedCheckoutFormV2";
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+import { useSearchParams } from "next/navigation";
+import { Column, Container, Spinner, Text, Row } from "@buttergolf/ui";
+import { CheckoutFormSimple } from "./_components/CheckoutFormSimple";
+import { OrderSummaryCard } from "./_components/OrderSummaryCard";
+import { PageHero } from "../_components/marketplace/PageHero";
+import { TrustSection } from "../_components/marketplace/TrustSection";
+import { NewsletterSection } from "../_components/marketplace/NewsletterSection";
+import { FooterSection } from "../_components/marketplace/FooterSection";
 
 function CheckoutPageContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const productId = searchParams.get("productId");
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(!!productId);
+  const [error, setError] = useState<string | null>(!productId ? "No product selected" : null);
   const [product, setProduct] = useState<{
     id: string;
     title: string;
@@ -27,8 +25,6 @@ function CheckoutPageContent() {
 
   useEffect(() => {
     if (!productId) {
-      setError("No product selected");
-      setLoading(false);
       return;
     }
 
@@ -71,7 +67,7 @@ function CheckoutPageContent() {
     return (
       <Container size="lg" paddingVertical="$2xl">
         <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
-          <Text color="$error" size="lg" weight="semibold">
+          <Text color="$error" size="$6" weight="semibold">
             {error || "Unable to load checkout"}
           </Text>
           <Text color="$textSecondary">
@@ -83,10 +79,50 @@ function CheckoutPageContent() {
   }
 
   return (
-    <Container size="md" paddingVertical="$2xl">
-      {/* We don't need Elements wrapper initially since we create payment intent later */}
-      <CheckoutForm product={product} />
-    </Container>
+    <>
+      {/* Page Hero */}
+      <PageHero />
+
+      {/* Main Content - Two Column Layout */}
+      <Container size="xl" paddingVertical="$2xl">
+        <Row
+          gap="$xl"
+          width="100%"
+          flexDirection="column"
+          $gtSm={{ flexDirection: "row", alignItems: "flex-start" }}
+          alignItems="stretch"
+        >
+          {/* Left Column - Checkout Form (66%) */}
+          <Column
+            flexBasis={0}
+            flexGrow={2}
+            flexShrink={1}
+            minWidth={0}
+          >
+            <CheckoutFormSimple product={product} />
+          </Column>
+
+          {/* Right Column - Order Summary (33%) */}
+          <Column
+            flexBasis={0}
+            flexGrow={1}
+            flexShrink={1}
+            minWidth={0}
+          >
+            <OrderSummaryCard product={product} />
+          </Column>
+        </Row>
+      </Container>
+
+      {/* Trust Section */}
+      <TrustSection />
+
+      {/* Newsletter */}
+      <NewsletterSection />
+
+      {/* Footer */}
+      <FooterSection />
+    </>
   );
 }
 

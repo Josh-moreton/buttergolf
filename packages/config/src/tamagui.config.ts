@@ -1,23 +1,53 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
 
-// Gotham font for Pure Butter brand identity
-const gothamFace = {
-    normal: { normal: 'Gotham' },
-    bold: { normal: 'Gotham' },
-    100: { normal: 'Gotham', italic: 'Gotham' },
-    200: { normal: 'Gotham', italic: 'Gotham' },
-    300: { normal: 'Gotham', italic: 'Gotham' },
-    400: { normal: 'Gotham', italic: 'Gotham' },
-    500: { normal: 'Gotham', italic: 'Gotham' },
-    600: { normal: 'Gotham', italic: 'Gotham' },
-    700: { normal: 'Gotham', italic: 'Gotham' },
-    800: { normal: 'Gotham', italic: 'Gotham' },
-    900: { normal: 'Gotham', italic: 'Gotham' },
+/**
+ * Convert hex color to Display P3 color space CSS format.
+ * This ensures colors render consistently across all devices,
+ * matching the designer's intent on wide-gamut displays.
+ */
+function hexToP3(hex: string): string {
+    const cleanHex = hex.replace('#', '')
+    const r = parseInt(cleanHex.substring(0, 2), 16)
+    const g = parseInt(cleanHex.substring(2, 4), 16)
+    const b = parseInt(cleanHex.substring(4, 6), 16)
+
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm})`
+}
+
+/**
+ * Convert rgba color to Display P3 color space CSS format with alpha.
+ */
+function rgbaToP3(r: number, g: number, b: number, a: number): string {
+    const rNorm = (r / 255).toFixed(3)
+    const gNorm = (g / 255).toFixed(3)
+    const bNorm = (b / 255).toFixed(3)
+
+    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm} / ${a})`
+}
+
+// Urbanist font for Pure Butter brand identity
+// Maps weight numbers to actual font family names (for React Native)
+const urbanistFace = {
+    normal: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    bold: { normal: 'Urbanist-Bold', italic: 'Urbanist-Bold' },
+    100: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    200: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    300: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    400: { normal: 'Urbanist-Regular', italic: 'Urbanist-Regular' },
+    500: { normal: 'Urbanist-Medium', italic: 'Urbanist-Medium' },
+    600: { normal: 'Urbanist-SemiBold', italic: 'Urbanist-SemiBold' },
+    700: { normal: 'Urbanist-Bold', italic: 'Urbanist-Bold' },
+    800: { normal: 'Urbanist-ExtraBold', italic: 'Urbanist-ExtraBold' },
+    900: { normal: 'Urbanist-Black', italic: 'Urbanist-Black' },
 }
 
 const headingFont = createFont({
-    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 12,
         2: 14,
@@ -36,6 +66,7 @@ const headingFont = createFont({
         15: 96,
         16: 112,
     },
+    // LineHeight defined as explicit pixel values for predictable spacing
     lineHeight: {
         1: 16,
         2: 18,
@@ -72,11 +103,11 @@ const headingFont = createFont({
         4: -1.5,
         5: -2,
     },
-    face: gothamFace,
+    face: urbanistFace,
 })
 
 const bodyFont = createFont({
-    family: 'Gotham, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    family: 'Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
     size: {
         1: 11,
         2: 12,
@@ -95,6 +126,7 @@ const bodyFont = createFont({
         15: 56,
         16: 64,
     },
+    // LineHeight defined as explicit pixel values for predictable spacing
     lineHeight: {
         1: 15,
         2: 16,
@@ -131,96 +163,94 @@ const bodyFont = createFont({
         4: -0.75,
         5: -1,
     },
-    face: gothamFace,
+    face: urbanistFace,
 })
 
 // Brand Colors - 10-shade scales for all color families
-// Using Display P3 color space to match modern displays
+// Brand colors from Figma - Pure Butter Golf Theme (sRGB)
 const brandColors = {
-    // Primary Brand (Butter Orange) - Pure Butter heritage brand  
-    butter50: 'color(display-p3 1.000 0.976 0.929)',
-    butter100: 'color(display-p3 1.000 0.953 0.839)',
-    butter200: 'color(display-p3 1.000 0.925 0.741)',
-    butter300: 'color(display-p3 1.000 0.890 0.541)',
-    butter400: 'color(display-p3 0.886 0.373 0.184)', // Primary brand color (Butter Orange) - RGB(226, 95, 47)
-    butter500: 'color(display-p3 0.824 0.333 0.227)', // Darker/more saturated - for hover states
-    butter600: 'color(display-p3 0.722 0.267 0.184)', // Even darker - for press states
-    butter700: 'color(display-p3 0.604 0.220 0.141)', // Dark - for text on light backgrounds
-    butter800: 'color(display-p3 0.486 0.176 0.114)',
-    butter900: 'color(display-p3 0.369 0.137 0.086)',
+    // Primary - Spiced Clementine (vibrant orange)
+    spicedClementine: '#F45314',
+    spicedClementineHover: '#D9450F', // 12% darker for hover
+    spicedClementinePress: '#BF3A0D', // 22% darker for press
 
-    // Secondary Brand (Navy) - Modern contrast accent
-    navy50: '#E8EDF3',
-    navy100: '#C7D3E0',
-    navy200: '#95AABF',
-    navy300: '#6482A0',
-    navy400: '#3B5673',
-    navy500: '#1A2E44', // Secondary brand color (Navy)
-    navy600: '#0F1F30',
-    navy700: '#0A1520',
-    navy800: '#050B10',
-    navy900: '#020508',
+    // Primary Light - Vanilla Cream (light background)
+    vanillaCream: '#FFFAD2',
+    vanillaCreamHover: '#FFF8C5', // Slightly darker
+    vanillaCreamPress: '#FFF6B8', // More contrast
 
-    // Neutral (Gray)
-    gray50: '#f9fafb',
-    gray100: '#f3f4f6',
-    gray200: '#e5e7eb',
-    gray300: '#d1d5db',
-    gray400: '#9ca3af',
-    gray500: '#6b7280',
-    gray600: '#4b5563',
-    gray700: '#374151',
-    gray800: '#1f2937',
-    gray900: '#111827',
+    // Secondary - Lemon Haze (subtle accent)
+    lemonHaze: '#EDECC3',
+    lemonHazeHover: '#E5E4B5',
+    lemonHazePress: '#DDDBA7',
 
-    // Info (Blue)
-    blue50: '#eff6ff',
-    blue100: '#dbeafe',
-    blue200: '#bfdbfe',
-    blue300: '#93c5fd',
-    blue400: '#60a5fa',
-    blue500: '#3c50e0',
-    blue600: '#2563eb',
-    blue700: '#1d4ed8',
-    blue800: '#1e40af',
-    blue900: '#1e3a8a',
+    // Tertiary - Burnt Olive (dark accent)
+    burntOlive: '#3E3B2C',
+    burntOliveHover: '#33302A', // Darker for hover
+    burntOlivePress: '#272521', // Even darker for press
 
-    // Success (Teal)
-    teal50: '#e6fffc',
-    teal100: '#b3fff5',
-    teal200: '#80ffee',
-    teal300: '#4dffe7',
-    teal400: '#1affe0',
-    teal500: '#02aaa4',
-    teal600: '#029490',
-    teal700: '#017d7a',
-    teal800: '#016765',
-    teal900: '#015150',
+    // Neutral Light - Cloud Mist (borders/dividers)
+    cloudMist: '#EDEDED',
+    cloudMistHover: '#E0E0E0',
+    cloudMistPress: '#D4D4D4',
 
-    // Error (Red)
-    red50: '#fef2f2',
-    red100: '#fee2e2',
-    red200: '#fecaca',
-    red300: '#fca5a5',
-    red400: '#f87171',
-    red500: '#ef4444',
-    red600: '#dc2626',
-    red700: '#b91c1c',
-    red800: '#991b1b',
-    red900: '#7f1d1d',
+    // Neutral Mid - Slate Smoke (secondary text)
+    slateSmoke: '#545454',
+    slateSmokeHover: '#3E3E3E',
+    slateSmokePress: '#2A2A2A',
 
-    // Utility colors
-    white: '#ffffff',
-    black: '#000000',
-    offWhite: '#fbfbf9', // Legacy
-    cream: '#FEFAD6', // Pure Butter cream background
-    creamDark: '#FFF8E7', // Slightly darker cream for accents
-    charcoal: '#1E1E1E', // Warm charcoal for text
+    // Neutral Dark - Ironstone (primary text)
+    ironstone: '#323232',
+    ironstoneHover: '#2A2A2A',
+    ironstonePress: '#1F1F1F',
 
-    // Vinted-inspired teal (for onboarding)
-    vintedTeal: '#357C7B',
-    vintedTealHover: '#2d6867',
-    vintedTealPress: '#255553',
+    // Base - Pure White
+    pureWhite: '#FFFFFF',
+
+    // Extended gray scale (for app compatibility)
+    gray100: '#F5F5F5', // Very light gray
+    gray200: '#E5E5E5', // Light gray
+    gray700: '#707070', // Medium gray (for neutral badge text)
+    gray900: '#1A1A1A', // Very dark gray
+
+    // Opacity Overlays - for elements on colored backgrounds
+    // Light overlays (for dark backgrounds like Burnt Olive)
+    overlayLight10: 'rgba(255, 255, 255, 0.1)',
+    overlayLight20: 'rgba(255, 255, 255, 0.2)',
+    overlayLight30: 'rgba(255, 255, 255, 0.3)',
+    overlayLight40: 'rgba(255, 255, 255, 0.4)',
+    overlayLight60: 'rgba(255, 255, 255, 0.6)',
+
+    // Dark overlays (for light backgrounds like Vanilla Cream)
+    overlayDark5: 'rgba(0, 0, 0, 0.05)',
+    overlayDark10: 'rgba(0, 0, 0, 0.1)',
+    overlayDark20: 'rgba(0, 0, 0, 0.2)',
+    overlayDark30: 'rgba(0, 0, 0, 0.3)',
+    overlayDark50: 'rgba(0, 0, 0, 0.5)',
+
+    // Success state (keeping existing teal palette - complements theme)
+    successBase: '#02aaa4',
+    successLight: '#e6fffc',
+    successDark: '#017d7a',
+    successHover: '#029490',
+    successPress: '#016765',
+
+    // Error state (keeping existing red palette - universal standard)
+    errorBase: '#dc2626',
+    errorLight: '#fee2e2',
+    errorDark: '#b91c1c',
+    errorHover: '#ef4444',
+    errorPress: '#991b1b',
+
+    // Warning state (using Spiced Clementine as it fits the energetic warning tone)
+    warningBase: '#F45314',
+    warningLight: '#FFF4ED',
+    warningDark: '#BF3A0D',
+
+    // Info state (using muted blue that complements the palette)
+    infoBase: '#3c50e0',
+    infoLight: '#eff6ff',
+    infoDark: '#1d4ed8',
 }
 
 // Create custom tokens with complete design system
@@ -228,92 +258,110 @@ const customTokens = createTokens({
     color: {
         ...brandColors,
 
-        // Primary semantic colors (Pure Butter theme)
-        primary: brandColors.butter400,
-        primaryLight: brandColors.butter100,
-        primaryHover: brandColors.butter500,
-        primaryPress: brandColors.butter700,
-        primaryFocus: brandColors.butter400,
+        // Primary brand color (Spiced Clementine)
+        primary: brandColors.spicedClementine,
+        primaryLight: brandColors.vanillaCream,
+        primaryHover: brandColors.spicedClementineHover,
+        primaryPress: brandColors.spicedClementinePress,
+        primaryFocus: brandColors.spicedClementine,
 
-        secondary: brandColors.navy500,
-        secondaryLight: brandColors.navy100,
-        secondaryHover: brandColors.navy600,
-        secondaryPress: brandColors.navy700,
-        secondaryFocus: brandColors.navy500,
+        // Secondary brand color (Burnt Olive)
+        secondary: brandColors.burntOlive,
+        secondaryLight: brandColors.lemonHaze,
+        secondaryHover: brandColors.burntOliveHover,
+        secondaryPress: brandColors.burntOlivePress,
+        secondaryFocus: brandColors.burntOlive,
 
-        success: brandColors.teal500,
-        successLight: brandColors.teal100,
-        successDark: brandColors.teal700,
+        // Semantic state colors
+        success: brandColors.successBase,
+        successLight: brandColors.successLight,
+        successDark: brandColors.successDark,
 
-        error: brandColors.red600,
-        errorLight: brandColors.red100,
-        errorDark: brandColors.red700,
+        error: brandColors.errorBase,
+        errorLight: brandColors.errorLight,
+        errorDark: brandColors.errorDark,
 
-        warning: brandColors.butter500,
-        warningLight: brandColors.butter100,
-        warningDark: brandColors.butter700,
+        warning: brandColors.warningBase,
+        warningLight: brandColors.warningLight,
+        warningDark: brandColors.warningDark,
 
-        info: brandColors.blue500,
-        infoLight: brandColors.blue100,
-        infoDark: brandColors.blue700,
+        info: brandColors.infoBase,
+        infoLight: brandColors.infoLight,
+        infoDark: brandColors.infoDark,
 
-        // Background colors (light theme defaults - white base with cream accents)
-        background: brandColors.white,
-        backgroundHover: '#F5F5F5',
-        backgroundPress: '#EBEBEB',
-        backgroundFocus: '#E0E0E0',
-        backgroundStrong: brandColors.cream,
+        // Background colors (Pure White base with Cloud Mist hover)
+        background: brandColors.pureWhite,
+        backgroundHover: brandColors.cloudMist,
+        backgroundPress: brandColors.cloudMistPress,
+        backgroundFocus: brandColors.lemonHaze,
+        backgroundStrong: brandColors.lemonHaze,
         backgroundTransparent: 'rgba(255, 255, 255, 0)',
 
-        // Text colors (light theme defaults - warm charcoal)
-        text: brandColors.charcoal,
-        textSecondary: '#4A4A4A',
-        textTertiary: brandColors.gray600,
-        textMuted: brandColors.gray500,
-        textInverse: brandColors.white,
+        // Text colors (Ironstone primary, Slate Smoke secondary)
+        text: brandColors.ironstone,
+        textSecondary: brandColors.slateSmoke,
+        textTertiary: brandColors.cloudMist,
+        textMuted: brandColors.cloudMist,
+        textInverse: brandColors.pureWhite,
+        helperText: brandColors.ironstone,
 
-        // Surface colors (cream background, white cards)
-        surface: brandColors.cream,
-        card: brandColors.white,
-        cardHover: '#F5F5F5',
+        // Surface colors (Pure White cards on Vanilla Cream background)
+        surface: brandColors.pureWhite,
+        card: brandColors.pureWhite,
+        cardHover: brandColors.cloudMist,
 
-        // Border colors (Pure Butter theme)
-        border: brandColors.gray300,
-        borderHover: brandColors.gray400,
-        borderFocus: brandColors.butter400,
-        borderPress: brandColors.butter500,
+        // Border colors - Structural (Cloud Mist neutrals for cards, dividers, sheets)
+        border: brandColors.cloudMist,
+        borderHover: brandColors.cloudMistHover,
+        borderFocus: brandColors.spicedClementine,
+        borderPress: brandColors.spicedClementinePress,
 
-        // Shadow colors (softer, vintage feel)
-        shadowColor: 'color(display-p3 0 0 0 / 0.08)',
-        shadowColorHover: 'color(display-p3 0 0 0 / 0.12)',
-        shadowColorPress: 'color(display-p3 0 0 0 / 0.16)',
-        shadowColorFocus: 'color(display-p3 0.886 0.373 0.184 / 0.25)', // butter tint
+        // Field border colors - Form inputs (Ironstone for inputs, selects, textareas)
+        fieldBorder: brandColors.ironstone,
+        fieldBorderHover: brandColors.ironstoneHover,
+        fieldBorderFocus: brandColors.spicedClementine,
+        fieldBorderPress: brandColors.ironstonePress,
+        fieldBorderDisabled: brandColors.cloudMist,
 
-        // Generic color states (light theme defaults)
-        color: brandColors.charcoal,
-        colorHover: brandColors.gray800,
-        colorPress: brandColors.gray700,
-        colorFocus: brandColors.charcoal,
-        colorTransparent: 'color(display-p3 0.118 0.118 0.118 / 0)',
+        // Shadow colors (soft, subtle shadows for vintage feel)
+        shadowColor: brandColors.overlayDark10,
+        shadowColorHover: brandColors.overlayDark20,
+        shadowColorPress: brandColors.overlayDark30,
+        shadowColorFocus: 'rgba(244, 83, 20, 0.25)', // Spiced Clementine tint
 
-        // Backward compatibility
-        bg: brandColors.cream,
-        bgGray: '#F7F7F7',
-        bgCard: '#F6F7FB',
-        cardBg: brandColors.white,
-        textDark: brandColors.navy500,
-        muted: brandColors.gray500,
-        blue: brandColors.blue500,
-        blueLight: brandColors.blue300,
-        teal: brandColors.teal500,
-        red: brandColors.red600,
-        cream: brandColors.cream,
-        creamDark: brandColors.creamDark,
+        // Inverse overlays for elements on dark backgrounds (headers, modals)
+        inverseSurface: brandColors.overlayLight20,
+        inverseSurfaceHover: brandColors.overlayLight30,
+        inverseSurfacePress: brandColors.overlayLight40,
+        inverseBorder: brandColors.overlayLight40,
+        inverseBorderHover: brandColors.overlayLight60,
+        inverseBorderPress: brandColors.overlayLight60,
+
+        // Generic color states (Ironstone-based)
+        color: brandColors.ironstone,
+        colorHover: brandColors.ironstoneHover,
+        colorPress: brandColors.ironstonePress,
+        colorFocus: brandColors.ironstone,
+        colorTransparent: 'rgba(50, 50, 50, 0)',
+
+        // Backward compatibility (map old names to new colors)
+        bg: brandColors.vanillaCream,
+        bgGray: brandColors.cloudMist,
+        bgCard: brandColors.pureWhite,
+        cardBg: brandColors.pureWhite,
+        textDark: brandColors.ironstone,
+        muted: brandColors.slateSmoke,
+        blue: brandColors.infoBase,
+        blueLight: brandColors.infoLight,
+        teal: brandColors.successBase,
+        red: brandColors.errorBase,
+        cream: brandColors.vanillaCream,
+        creamDark: brandColors.lemonHaze,
     },
 
     size: {
         ...defaultConfig.tokens.size,
-        // Component sizes
+        // Component sizes (button, input, icon heights)
         buttonSm: 32,
         buttonMd: 40,
         buttonLg: 48,
@@ -430,182 +478,195 @@ const lightTheme = {
     shadowColorPress: '$shadowColorPress',
     shadowColorFocus: '$shadowColorFocus',
 
+    inverseSurface: '$inverseSurface',
+    inverseSurfaceHover: '$inverseSurfaceHover',
+    inverseSurfacePress: '$inverseSurfacePress',
+    inverseBorder: '$inverseBorder',
+    inverseBorderHover: '$inverseBorderHover',
+    inverseBorderPress: '$inverseBorderPress',
+
     // Utility colors - reference tokens
     white: '$white',
     cream: '$cream',
 }
 
-// Dark theme with semantic token mappings (Navy becomes dominant)
+// Dark theme with semantic token mappings (Burnt Olive becomes dominant)
 const darkTheme = {
-    // Background colors - override tokens for dark mode (Navy)
-    background: brandColors.navy900,
-    backgroundHover: brandColors.navy800,
-    backgroundPress: brandColors.navy700,
-    backgroundFocus: brandColors.navy800,
-    backgroundStrong: brandColors.navy800,
-    backgroundTransparent: 'color(display-p3 0.008 0.020 0.031 / 0)',
+    // Background colors - override tokens for dark mode (Burnt Olive)
+    background: brandColors.burntOlive,
+    backgroundHover: brandColors.burntOliveHover,
+    backgroundPress: brandColors.burntOlivePress,
+    backgroundFocus: brandColors.burntOliveHover,
+    backgroundStrong: brandColors.ironstone,
+    backgroundTransparent: 'rgba(62, 59, 44, 0)',
 
-    // Text colors - override for dark mode
-    color: brandColors.gray50,
-    colorHover: brandColors.gray100,
-    colorPress: brandColors.white,
-    colorFocus: brandColors.gray50,
-    colorTransparent: 'color(display-p3 0.976 0.980 0.984 / 0)',
+    // Text colors - override for dark mode (Pure White on dark)
+    color: brandColors.pureWhite,
+    colorHover: brandColors.cloudMist,
+    colorPress: brandColors.lemonHaze,
+    colorFocus: brandColors.pureWhite,
+    colorTransparent: 'rgba(255, 255, 255, 0)',
 
-    // Semantic colors (adjusted for dark mode - lighter butter for contrast)
-    primary: brandColors.butter300,
-    primaryHover: brandColors.butter400,
-    primaryPress: brandColors.butter500,
-    primaryFocus: brandColors.butter300,
-    primaryLight: brandColors.butter900,
+    // Semantic colors (adjusted for dark mode - brighter for contrast)
+    primary: brandColors.spicedClementine,
+    primaryHover: brandColors.spicedClementineHover,
+    primaryPress: brandColors.spicedClementinePress,
+    primaryFocus: brandColors.spicedClementine,
+    primaryLight: brandColors.ironstone,
 
-    secondary: brandColors.navy400,
-    secondaryHover: brandColors.navy300,
-    secondaryPress: brandColors.navy500,
-    secondaryFocus: brandColors.navy400,
-    secondaryLight: brandColors.navy800,
+    secondary: brandColors.lemonHaze,
+    secondaryHover: brandColors.lemonHazeHover,
+    secondaryPress: brandColors.lemonHazePress,
+    secondaryFocus: brandColors.lemonHaze,
+    secondaryLight: brandColors.ironstone,
 
-    success: brandColors.teal400,
-    successLight: brandColors.teal900,
-    successDark: brandColors.teal300,
+    success: brandColors.successBase,
+    successLight: brandColors.ironstone,
+    successDark: brandColors.successHover,
 
-    error: brandColors.red500,
-    errorLight: brandColors.red900,
-    errorDark: brandColors.red400,
+    error: brandColors.errorBase,
+    errorLight: brandColors.ironstone,
+    errorDark: brandColors.errorHover,
 
-    warning: brandColors.butter400,
-    warningLight: brandColors.butter900,
-    warningDark: brandColors.butter300,
+    warning: brandColors.warningBase,
+    warningLight: brandColors.ironstone,
+    warningDark: brandColors.spicedClementineHover,
 
-    info: brandColors.blue400,
-    infoLight: brandColors.blue900,
-    infoDark: brandColors.blue300,
+    info: brandColors.infoBase,
+    infoLight: brandColors.ironstone,
+    infoDark: brandColors.infoLight,
 
     // Text semantic colors - override for dark mode
-    text: brandColors.gray50,
-    textSecondary: brandColors.gray300,
-    textTertiary: brandColors.gray400,
-    textMuted: brandColors.gray500,
-    textInverse: brandColors.gray900,
+    text: brandColors.pureWhite,
+    textSecondary: brandColors.cloudMist,
+    textTertiary: brandColors.slateSmoke,
+    textMuted: brandColors.slateSmokeHover,
+    textInverse: brandColors.ironstone,
 
-    // Surface colors - override for dark mode (Navy surfaces)
-    surface: brandColors.navy800,
-    card: brandColors.navy800,
-    cardHover: brandColors.navy700,
+    // Surface colors - override for dark mode (Ironstone surfaces)
+    surface: brandColors.ironstone,
+    card: brandColors.ironstone,
+    cardHover: brandColors.ironstoneHover,
 
     // Border colors - override for dark mode
-    border: brandColors.navy700,
-    borderHover: brandColors.navy600,
-    borderFocus: brandColors.butter300,
-    borderPress: brandColors.butter400,
+    border: brandColors.slateSmoke,
+    borderHover: brandColors.cloudMist,
+    borderFocus: brandColors.spicedClementine,
+    borderPress: brandColors.spicedClementinePress,
 
     // Shadow colors - override for dark mode
-    shadowColor: 'color(display-p3 0 0 0 / 0.3)',
-    shadowColorHover: 'color(display-p3 0 0 0 / 0.4)',
-    shadowColorPress: 'color(display-p3 0 0 0 / 0.5)',
-    shadowColorFocus: 'color(display-p3 0.886 0.373 0.184 / 0.3)', // butter tint
+    shadowColor: brandColors.overlayDark20,
+    shadowColorHover: brandColors.overlayDark30,
+    shadowColorPress: brandColors.overlayDark50,
+    shadowColorFocus: 'rgba(244, 83, 20, 0.3)', // Spiced Clementine tint
+
+    inverseSurface: brandColors.overlayLight20,
+    inverseSurfaceHover: brandColors.overlayLight30,
+    inverseSurfacePress: brandColors.overlayLight40,
+    inverseBorder: brandColors.overlayLight30,
+    inverseBorderHover: brandColors.overlayLight40,
+    inverseBorderPress: brandColors.overlayLight60,
 
     // Utility colors
-    white: brandColors.white,
-    cream: brandColors.cream,
+    white: brandColors.pureWhite,
+    cream: brandColors.vanillaCream,
 }
 
 // Sub-theme for active states (light mode)
 // When using <Theme name="active">, it will use light_active in light mode
 const light_active = {
     ...lightTheme,
-    // Override specific colors for active state (Butter)
-    color: brandColors.butter400,
-    colorHover: brandColors.butter500,
-    colorPress: brandColors.butter700,
-    colorFocus: brandColors.butter400,
+    // Override specific colors for active state (Spiced Clementine)
+    color: brandColors.spicedClementine,
+    colorHover: brandColors.spicedClementineHover,
+    colorPress: brandColors.spicedClementinePress,
+    colorFocus: brandColors.spicedClementine,
 
-    // Keep background subtle
-    background: brandColors.butter50,
-    backgroundHover: brandColors.butter100,
-    backgroundPress: brandColors.butter200,
+    // Keep background subtle (Lemon Haze highlight)
+    background: brandColors.lemonHaze,
+    backgroundHover: brandColors.lemonHazeHover,
+    backgroundPress: brandColors.lemonHazePress,
 }
 
 // Sub-theme for active states (dark mode)
 // When using <Theme name="active">, it will use dark_active in dark mode
 const dark_active = {
     ...darkTheme,
-    // Override specific colors for active state (Butter)
-    color: brandColors.butter300,
-    colorHover: brandColors.butter200,
-    colorPress: brandColors.butter400,
-    colorFocus: brandColors.butter300,
+    // Override specific colors for active state (Spiced Clementine)
+    colorHover: brandColors.spicedClementineHover,
+    colorPress: brandColors.spicedClementinePress,
+    colorFocus: brandColors.spicedClementine,
 
-    // Keep background subtle
-    background: brandColors.navy800,
-    backgroundHover: brandColors.navy700,
-    backgroundPress: brandColors.navy600,
+    // Keep background subtle (use Burnt Olive for dark backgrounds)
+    background: brandColors.burntOlive,
+    backgroundHover: brandColors.burntOliveHover,
+    backgroundPress: brandColors.burntOlivePress,
 }
 
 // Sub-theme for error states (light mode)
 const light_error = {
     ...lightTheme,
-    color: brandColors.red600,
-    colorHover: brandColors.red700,
-    colorPress: brandColors.red800,
-    background: brandColors.red50,
-    backgroundHover: brandColors.red100,
-    border: brandColors.red300,
+    color: brandColors.errorBase,
+    colorHover: brandColors.errorDark,
+    colorPress: brandColors.errorPress,
+    background: brandColors.errorLight,
+    backgroundHover: brandColors.errorLight,
+    border: brandColors.errorHover,
 }
 
 // Sub-theme for error states (dark mode)
 const dark_error = {
     ...darkTheme,
-    color: brandColors.red400,
-    colorHover: brandColors.red300,
-    colorPress: brandColors.red500,
-    background: brandColors.red900,
-    backgroundHover: brandColors.red800,
-    border: brandColors.red700,
+    color: brandColors.errorBase,
+    colorHover: brandColors.errorHover,
+    colorPress: brandColors.errorDark,
+    background: brandColors.ironstone,
+    backgroundHover: brandColors.ironstoneHover,
+    border: brandColors.errorBase,
 }
 
 // Sub-theme for success states (light mode)
 const light_success = {
     ...lightTheme,
-    color: brandColors.teal600,
-    colorHover: brandColors.teal700,
-    colorPress: brandColors.teal800,
-    background: brandColors.teal50,
-    backgroundHover: brandColors.teal100,
-    border: brandColors.teal300,
+    color: brandColors.successBase,
+    colorHover: brandColors.successDark,
+    colorPress: brandColors.successPress,
+    background: brandColors.successLight,
+    backgroundHover: brandColors.successLight,
+    border: brandColors.successHover,
 }
 
 // Sub-theme for success states (dark mode)
 const dark_success = {
     ...darkTheme,
-    color: brandColors.teal400,
-    colorHover: brandColors.teal300,
-    colorPress: brandColors.teal500,
-    background: brandColors.teal900,
-    backgroundHover: brandColors.teal800,
-    border: brandColors.teal700,
+    color: brandColors.successBase,
+    colorHover: brandColors.successHover,
+    colorPress: brandColors.successDark,
+    background: brandColors.ironstone,
+    backgroundHover: brandColors.ironstoneHover,
+    border: brandColors.successBase,
 }
 
 // Sub-theme for warning states (light mode)
 const light_warning = {
     ...lightTheme,
-    color: brandColors.butter700,
-    colorHover: brandColors.butter800,
-    colorPress: brandColors.butter900,
-    background: brandColors.butter50,
-    backgroundHover: brandColors.butter100,
-    border: brandColors.butter300,
+    color: brandColors.warningDark,
+    colorHover: brandColors.spicedClementinePress,
+    colorPress: brandColors.ironstone,
+    background: brandColors.warningLight,
+    backgroundHover: brandColors.warningLight,
+    border: brandColors.warningBase,
 }
 
 // Sub-theme for warning states (dark mode)
 const dark_warning = {
     ...darkTheme,
-    color: brandColors.butter300,
-    colorHover: brandColors.butter200,
-    colorPress: brandColors.butter400,
-    background: brandColors.butter900,
-    backgroundHover: brandColors.butter800,
-    border: brandColors.butter700,
+    color: brandColors.warningBase,
+    colorHover: brandColors.spicedClementineHover,
+    colorPress: brandColors.warningDark,
+    background: brandColors.ironstone,
+    backgroundHover: brandColors.ironstoneHover,
+    border: brandColors.warningBase,
 }
 
 export const config = createTamagui({
@@ -632,7 +693,7 @@ export const config = createTamagui({
         light_warning,
         dark_warning,
     },
-    // Gotham fonts for Pure Butter brand
+    // Urbanist fonts for Pure Butter brand
     fonts: {
         heading: headingFont,
         body: bodyFont,

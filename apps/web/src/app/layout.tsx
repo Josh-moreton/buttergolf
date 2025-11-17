@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 export const dynamic = "force-dynamic";
 import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
-import localFont from "next/font/local";
+import { Urbanist } from "next/font/google";
 
 // Load Tamagui CSS in production (compiled output)
 if (process.env.NODE_ENV === "production") {
@@ -12,52 +12,16 @@ if (process.env.NODE_ENV === "production") {
 import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
+import { CartProvider } from "../context/CartContext";
+import { PageTransition } from "./_components/animations/PageTransition";
 
-// Gotham font configuration for Pure Butter brand
-const gotham = localFont({
-  src: [
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Light.otf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Book.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Medium.otf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Bold.otf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Black.otf",
-      weight: "800",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Ultra.otf",
-      weight: "900",
-      style: "normal",
-    },
-  ],
-  variable: "--font-gotham",
+// Urbanist font configuration for Pure Butter brand
+// Supports weights 100-900 with italic variants
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-urbanist",
   display: "swap",
 });
 
@@ -102,17 +66,21 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`light ${gotham.variable}`}
+      className={`light ${urbanist.variable}`}
     >
-      <body className={gotham.className}>
+      <body className={urbanist.className}>
         <NextTamaguiProvider>
-          <ServiceWorkerRegistration />
-          <ButterHeader />
-          <AppPromoBanner />
-          {/* Main content wrapper with padding for fixed header */}
-          <main style={{ paddingTop: "104px" }}>
-            {children}
-          </main>
+          <CartProvider>
+            <ServiceWorkerRegistration />
+            <ButterHeader />
+            <AppPromoBanner />
+            {/* Main content wrapper */}
+            <main className="bg-white">
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+          </CartProvider>
         </NextTamaguiProvider>
       </body>
     </html>

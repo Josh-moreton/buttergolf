@@ -11,6 +11,8 @@ import {
   Button,
   Input,
   Card,
+  Autocomplete,
+  type AutocompleteSuggestion,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 
@@ -20,20 +22,31 @@ interface Category {
   slug: string;
 }
 
+interface Brand {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl?: string;
+}
+
+interface Model {
+  id: string | null;
+  name: string;
+  source?: string;
+  isVerified?: boolean;
+  usageCount?: number;
+}
+
 interface FormData {
   title: string;
   description: string;
   price: string;
   condition: string;
-  brand: string;
+  brandId: string;
+  brandName: string; // For display
   model: string;
   categoryId: string;
   images: string[];
-  // Shipping dimensions
-  length: string;
-  width: string;
-  height: string;
-  weight: string;
 }
 
 const CONDITIONS = [
@@ -54,7 +67,7 @@ const FormLabel = ({
   required?: boolean;
 }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text size="sm" weight="medium" color="$text">
+    <Text size="$3" weight="medium" color="$text">
       {children}
     </Text>
     {required && <Text color="$error">*</Text>}
@@ -63,7 +76,7 @@ const FormLabel = ({
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text size="xs" color="$textMuted" marginTop="$xs">
+  <Text size="$2" color="$helperText" marginTop="$xs">
     {children}
   </Text>
 );
@@ -79,15 +92,11 @@ export default function SellPage() {
     description: "",
     price: "",
     condition: "GOOD",
-    brand: "",
+    brandId: "",
+    brandName: "",
     model: "",
     categoryId: "",
     images: [],
-    // Shipping dimensions
-    length: "",
-    width: "",
-    height: "",
-    weight: "",
   });
 
   // Load categories on mount
@@ -114,7 +123,8 @@ export default function SellPage() {
       !formData.title ||
       !formData.description ||
       !formData.price ||
-      !formData.categoryId
+      !formData.categoryId ||
+      !formData.brandId
     ) {
       setError("Please fill in all required fields");
       setLoading(false);
@@ -136,11 +146,8 @@ export default function SellPage() {
         body: JSON.stringify({
           ...formData,
           price: Number.parseFloat(formData.price),
-          // Convert dimensions to numbers (or null if empty)
-          length: formData.length ? Number.parseFloat(formData.length) : null,
-          width: formData.width ? Number.parseFloat(formData.width) : null,
-          height: formData.height ? Number.parseFloat(formData.height) : null,
-          weight: formData.weight ? Number.parseFloat(formData.weight) : null,
+          // Don't send brandName (display only)
+          brandName: undefined,
         }),
       });
 
@@ -222,7 +229,7 @@ export default function SellPage() {
                   >
                     <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
-                      <Text size="xs" color="$text" lineHeight={18}>
+                      <Text size="$2" color="$text" lineHeight={18}>
                         Catch your buyers&apos; eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
                       </Text>
@@ -265,11 +272,11 @@ export default function SellPage() {
                       required
                       rows={3}
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
                         lineHeight: "22px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         fontFamily: "inherit",
@@ -278,10 +285,10 @@ export default function SellPage() {
                         transition: "border-color 0.2s",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = "#E25F2F"; // Pure Butter orange
+                        e.target.style.borderColor = "#F45314";
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = "#d1d5db";
+                        e.target.style.borderColor = "#323232";
                       }}
                     />
                     <HelperText>
@@ -300,20 +307,27 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         cursor: "pointer",
                         outline: "none",
                         appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 12px center",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 18px center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "20px",
-                        paddingRight: "40px",
+                        paddingRight: "48px",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#F45314";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "#323232";
                       }}
                     >
                       <option value="">Select a category</option>
@@ -328,29 +342,85 @@ export default function SellPage() {
                   {/* Brand & Model Row */}
                   <Row gap="$md" flexWrap="wrap">
                     <Column gap="$xs" flex={1} minWidth={200}>
-                      <FormLabel>Brand</FormLabel>
-                      <Input
-                        value={formData.brand}
-                        onChangeText={(value) =>
-                          setFormData({ ...formData, brand: value })
+                      <FormLabel required>Brand</FormLabel>
+                      <Autocomplete
+                        value={formData.brandName}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, brandName: value })
                         }
-                        placeholder="e.g., TaylorMade"
+                        onSelectSuggestion={(suggestion) => {
+                          setFormData({
+                            ...formData,
+                            brandId: suggestion.id || "",
+                            brandName: suggestion.name,
+                            // Clear model when brand changes
+                            model: "",
+                          });
+                        }}
+                        fetchSuggestions={async (query) => {
+                          const res = await fetch(
+                            `/api/brands?query=${encodeURIComponent(query)}`
+                          );
+                          const brands: Brand[] = await res.json();
+                          return brands.map((b) => ({
+                            id: b.id,
+                            name: b.name,
+                            metadata: { slug: b.slug, logoUrl: b.logoUrl },
+                          }));
+                        }}
+                        placeholder="Search brands (e.g., TaylorMade)"
                         size="md"
                         width="100%"
+                        minChars={1}
+                        allowCustom={false}
                       />
+                      <HelperText>
+                        Start typing to search golf brands
+                      </HelperText>
                     </Column>
 
                     <Column gap="$xs" flex={1} minWidth={200}>
                       <FormLabel>Model</FormLabel>
-                      <Input
+                      <Autocomplete
                         value={formData.model}
-                        onChangeText={(value) =>
+                        onValueChange={(value) =>
                           setFormData({ ...formData, model: value })
                         }
-                        placeholder="e.g., Stealth 2"
+                        onSelectSuggestion={(suggestion) => {
+                          setFormData({
+                            ...formData,
+                            model: suggestion.name,
+                          });
+                        }}
+                        fetchSuggestions={async (query) => {
+                          if (!formData.brandId) return [];
+                          const res = await fetch(
+                            `/api/models?brandId=${formData.brandId}&query=${encodeURIComponent(query)}`
+                          );
+                          const models: Model[] = await res.json();
+                          return models.map((m) => ({
+                            id: m.id,
+                            name: m.name,
+                            metadata: {
+                              isVerified: m.isVerified,
+                              usageCount: m.usageCount,
+                            },
+                          }));
+                        }}
+                        placeholder={
+                          formData.brandId
+                            ? "e.g., Stealth 2"
+                            : "Select a brand first"
+                        }
                         size="md"
                         width="100%"
+                        minChars={0}
+                        allowCustom={true}
+                        disabled={!formData.brandId}
                       />
+                      <HelperText>
+                        Type your model or select from suggestions
+                      </HelperText>
                     </Column>
                   </Row>
 
@@ -364,20 +434,27 @@ export default function SellPage() {
                       }
                       required
                       style={{
-                        padding: "12px 14px",
+                        padding: "12px 18px",
                         fontSize: "15px",
-                        borderRadius: "8px",
-                        border: "1px solid #d1d5db",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
                         cursor: "pointer",
                         outline: "none",
                         appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 12px center",
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 18px center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "20px",
-                        paddingRight: "40px",
+                        paddingRight: "48px",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#F45314";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "#323232";
                       }}
                     >
                       {CONDITIONS.map((cond) => (
@@ -392,7 +469,7 @@ export default function SellPage() {
                   <Column gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
                     <Row gap="$sm" alignItems="center">
-                      <Text size="lg" weight="semibold">
+                      <Text size="$6" weight="semibold">
                         £
                       </Text>
                       <Input
@@ -408,89 +485,6 @@ export default function SellPage() {
                       />
                     </Row>
                     <HelperText>Enter your asking price in GBP</HelperText>
-                  </Column>
-
-                  {/* Shipping Dimensions */}
-                  <Column gap="$md" width="100%">
-                    <Column gap="$xs" width="100%">
-                      <FormLabel>Shipping Dimensions</FormLabel>
-                      <Text size="xs" color="$textMuted">
-                        Help us calculate accurate shipping costs. Leave blank to use default estimates.
-                      </Text>
-                    </Column>
-
-                    {/* Dimensions Row */}
-                    <Row gap="$sm" flexWrap="wrap">
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Length (cm)</Text>
-                        <Input
-                          value={formData.length}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, length: value })
-                          }
-                          placeholder="30"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Width (cm)</Text>
-                        <Input
-                          value={formData.width}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, width: value })
-                          }
-                          placeholder="20"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Height (cm)</Text>
-                        <Input
-                          value={formData.height}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, height: value })
-                          }
-                          placeholder="10"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-
-                      <Column gap="$xs" flex={1} minWidth={120}>
-                        <Text size="xs" color="$textSecondary">Weight (g)</Text>
-                        <Input
-                          value={formData.weight}
-                          onChangeText={(value) =>
-                            setFormData({ ...formData, weight: value })
-                          }
-                          placeholder="500"
-                          size="md"
-                          width="100%"
-                          inputMode="decimal"
-                        />
-                      </Column>
-                    </Row>
-
-                    <Card
-                      variant="filled"
-                      padding="$sm"
-                      backgroundColor="$infoLight"
-                      borderRadius="$md"
-                    >
-                      <Row gap="$sm" alignItems="flex-start">
-                        <Text fontSize={16}>📦</Text>
-                        <Text size="xs" color="$text" lineHeight={16}>
-                          Accurate dimensions help buyers understand shipping costs upfront and ensure proper packaging.
-                        </Text>
-                      </Row>
-                    </Card>
                   </Column>
 
                   {/* Error Message */}
@@ -517,8 +511,8 @@ export default function SellPage() {
                 >
                   <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
-                      chromeless
-                      size="$5"
+                      tone="outline"
+                      size="lg"
                       onPress={() => router.push("/")}
                       disabled={loading}
                       flex={1}
@@ -526,21 +520,18 @@ export default function SellPage() {
                       Save draft
                     </Button>
                     <Button
-                      backgroundColor="$primary"
-                      color="$white"
-                      size="$5"
+                      tone="primary"
+                      size="lg"
                       disabled={loading}
                       onPress={() => handleSubmit({} as React.FormEvent)}
                       flex={1}
-                      hoverStyle={{ backgroundColor: "$primaryHover" }}
-                      pressStyle={{ backgroundColor: "$primaryPress" }}
                     >
                       {loading ? "Uploading..." : "Upload"}
                     </Button>
                   </Row>
-                  <Text size="xs" color="$textMuted" textAlign="center">
+                  <Text size="$2" color="$helperText" textAlign="center">
                     What do you think of our upload process?{" "}
-                    <Text size="xs" color="$primary" cursor="pointer">
+                    <Text size="$2" color="$primary" cursor="pointer">
                       Give feedback
                     </Text>
                   </Text>

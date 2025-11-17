@@ -1,9 +1,9 @@
 /**
  * Spinner Component
- * 
+ *
  * A loading indicator with multiple sizes and colors.
  * Re-exports Tamagui's Spinner with semantic variants.
- * 
+ *
  * @example
  * ```tsx
  * <Spinner size="md" />
@@ -12,13 +12,13 @@
  * ```
  */
 
-import { styled, GetProps, Spinner as TamaguiSpinner } from 'tamagui'
+import { styled, GetProps, Spinner as TamaguiSpinner, type SpinnerProps as TamaguiSpinnerProps } from 'tamagui'
 
 export const Spinner = styled(TamaguiSpinner, {
   name: 'Spinner',
-  
+
   color: '$primary',
-  
+
   variants: {
     size: {
       sm: {
@@ -41,4 +41,5 @@ export const Spinner = styled(TamaguiSpinner, {
   },
 })
 
-export type SpinnerProps = GetProps<typeof Spinner>
+// Export type that includes BOTH our custom variants AND all base Tamagui Spinner props
+export type SpinnerProps = GetProps<typeof Spinner> & Omit<TamaguiSpinnerProps, keyof GetProps<typeof Spinner>>

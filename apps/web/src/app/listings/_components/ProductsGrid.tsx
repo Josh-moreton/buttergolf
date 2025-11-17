@@ -1,132 +1,190 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Column, Card, Image, Text, Row, Button, Spinner } from "@buttergolf/ui";
+import { Column, Row, Text } from "@buttergolf/ui";
+import { ProductCard } from "@buttergolf/app";
 import type { ProductCardData } from "@buttergolf/app";
-import { ProductDetailModal } from "../../_components/marketplace/ProductDetailModal";
+import Link from "next/link";
 
 interface ProductsGridProps {
   products: ProductCardData[];
-  hasMore: boolean;
   isLoading: boolean;
-  onLoadMore: () => void;
-}
-
-function ProductCard({ product }: { product: ProductCardData }) {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  return (
-    <>
-      <Card
-        padding={0}
-        borderRadius="$md"
-        overflow="hidden"
-        cursor="pointer"
-        hoverStyle={{ scale: 1.01 }}
-        onPress={() => setModalOpen(true)}
-      >
-        <Image
-          source={{ uri: product.imageUrl }}
-          width="100%"
-          height={180}
-          objectFit="cover"
-          alt={product.title}
-        />
-        <Column padding="$md" gap="$xs">
-          <Text weight="bold" numberOfLines={2}>
-            {product.title}
-          </Text>
-          <Row alignItems="center" justifyContent="space-between">
-            <Text fontSize="$7" weight="bold" fontWeight="800">
-              £{product.price.toFixed(2)}
-            </Text>
-            <Text fontSize="$2" opacity={0.7}>
-              {product.condition?.replace("_", " ") || ""}
-            </Text>
-          </Row>
-          <Button size="$4" onPress={() => setModalOpen(true)}>
-            View details
-          </Button>
-        </Column>
-      </Card>
-
-      {modalOpen && (
-        <ProductDetailModal
-          productId={product.id}
-          open={modalOpen}
-          onOpenChange={setModalOpen}
-        />
-      )}
-    </>
-  );
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 function LoadingSkeleton() {
   return (
-    <Card padding={0} borderRadius="$md" overflow="hidden">
+    <div
+      style={{
+        width: "100%",
+        paddingBottom: "111.11%", // 9:10 aspect ratio
+        backgroundColor: "#f0f0f0",
+        borderRadius: "16px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: 180,
-          backgroundColor: "#f0f0f0",
+          position: "absolute",
+          inset: 0,
           animation: "pulse 1.5s ease-in-out infinite",
         }}
       />
-      <Column padding="$md" gap="$xs">
-        <div
-          style={{
-            height: 20,
-            backgroundColor: "#f0f0f0",
-            borderRadius: 4,
-            width: "80%",
-            animation: "pulse 1.5s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            height: 16,
-            backgroundColor: "#f0f0f0",
-            borderRadius: 4,
-            width: "40%",
-            animation: "pulse 1.5s ease-in-out infinite",
-            marginTop: 8,
-          }}
-        />
-      </Column>
-    </Card>
+    </div>
+  );
+}
+
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}) {
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+
+    if (totalPages <= 7) {
+      // Show all pages if 7 or fewer
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+
+      if (currentPage > 3) {
+        pages.push("...");
+      }
+
+      // Show pages around current page
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - 2) {
+        pages.push("...");
+      }
+
+      // Always show last page
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
+  return (
+    <Row
+      alignItems="center"
+      justifyContent="center"
+      gap="$sm"
+      paddingVertical="$lg"
+    >
+      {/* Previous arrow */}
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "40px",
+          height: "40px",
+          border: "none",
+          backgroundColor: "transparent",
+          cursor: currentPage === 1 ? "not-allowed" : "pointer",
+          opacity: currentPage === 1 ? 0.4 : 1,
+          fontSize: "20px",
+          color: "#F45314",
+          fontFamily: "var(--font-urbanist)",
+        }}
+      >
+        ‹
+      </button>
+
+      {/* Page numbers */}
+      {getPageNumbers().map((page, index) => {
+        if (page === "...") {
+          return (
+            <span
+              key={`ellipsis-${index}`}
+              style={{
+                padding: "0 8px",
+                color: "#545454",
+                fontFamily: "var(--font-urbanist)",
+              }}
+            >
+              …
+            </span>
+          );
+        }
+
+        const isActive = page === currentPage;
+        return (
+          <button
+            key={page}
+            onClick={() => onPageChange(page as number)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: "40px",
+              height: "40px",
+              padding: "0 12px",
+              border: "none",
+              backgroundColor: "transparent",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? "#F45314" : "#323232",
+              textDecoration: isActive ? "underline" : "none",
+              fontFamily: "var(--font-urbanist)",
+            }}
+          >
+            {page}
+          </button>
+        );
+      })}
+
+      {/* Next arrow */}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "40px",
+          height: "40px",
+          border: "none",
+          backgroundColor: "transparent",
+          cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+          opacity: currentPage === totalPages ? 0.4 : 1,
+          fontSize: "20px",
+          color: "#F45314",
+          fontFamily: "var(--font-urbanist)",
+        }}
+      >
+        ›
+      </button>
+    </Row>
   );
 }
 
 export function ProductsGrid({
   products,
-  hasMore,
   isLoading,
-  onLoadMore,
+  currentPage,
+  totalPages,
+  onPageChange,
 }: ProductsGridProps) {
-  const observerRef = useRef<HTMLDivElement>(null);
-
-  // Infinite scroll observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          onLoadMore();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, [hasMore, isLoading, onLoadMore]);
-
   if (!isLoading && products.length === 0) {
     return (
       <Column
@@ -135,7 +193,7 @@ export function ProductsGrid({
         paddingVertical="$10"
         gap="$md"
       >
-        <Text size="xl" weight="semibold" color="$textSecondary">
+        <Text size="$7" weight="semibold" color="$textSecondary">
           No products found
         </Text>
         <Text color="$textMuted">
@@ -147,41 +205,57 @@ export function ProductsGrid({
 
   return (
     <Column gap="$lg" width="100%">
+      {/* Products Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gridTemplateColumns: "repeat(1, 1fr)",
           gap: "24px",
           width: "100%",
         }}
+        className="products-grid"
       >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-
-        {/* Loading skeletons */}
-        {isLoading &&
-          Array.from({ length: 6 }).map((_, i) => (
+        {isLoading
+          ? Array.from({ length: 24 }).map((_, i) => (
             <LoadingSkeleton key={`skeleton-${i}`} />
+          ))
+          : products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/products/${product.id}`}
+              style={{ textDecoration: "none", display: "block" }}
+            >
+              <ProductCard
+                product={product}
+                onFavorite={(productId) =>
+                  console.log("Favorited:", productId)
+                }
+              />
+            </Link>
           ))}
       </div>
 
-      {/* Infinite scroll trigger */}
-      <div ref={observerRef} style={{ height: 20, width: "100%" }} />
-
-      {/* Loading indicator */}
-      {isLoading && hasMore && (
-        <Column alignItems="center" paddingVertical="$lg">
-          <Spinner size="lg" color="$primary" />
-        </Column>
+      {/* Pagination */}
+      {!isLoading && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
       )}
 
-      {/* End of results message */}
-      {!hasMore && products.length > 0 && (
-        <Column alignItems="center" paddingVertical="$lg">
-          <Text color="$textSecondary">You've reached the end</Text>
-        </Column>
-      )}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .products-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (min-width: 1024px) {
+          .products-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+      `}</style>
     </Column>
   );
 }

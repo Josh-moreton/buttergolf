@@ -15,7 +15,7 @@ export interface ProductCategory {
   slug: string;
 }
 
-export type ProductCondition = 
+export type ProductCondition =
   | "NEW"
   | "LIKE_NEW"
   | "EXCELLENT"
@@ -43,4 +43,10 @@ export interface ProductCardData {
   condition: ProductCondition | null;
   imageUrl: string;
   category: string;
+  seller: {
+    id: string;
+    name: string;
+    averageRating: number | null;
+    ratingCount: number;
+  };
 }

@@ -5,7 +5,7 @@ import type { ProductCardData } from "@buttergolf/app";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
+
     // Pagination
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "24");
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     // Sort options
     const sort = searchParams.get("sort") || "newest";
     let orderBy: any = { createdAt: "desc" };
-    
+
     switch (sort) {
       case "price-asc":
         orderBy = { price: "asc" };
@@ -89,6 +89,14 @@ export async function GET(request: NextRequest) {
               slug: true,
             },
           },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              averageRating: true,
+              ratingCount: true,
+            },
+          },
         },
         orderBy,
         skip,
@@ -99,11 +107,14 @@ export async function GET(request: NextRequest) {
 
     // Get filter options (available brands and price range)
     const [availableBrands, priceAgg] = await Promise.all([
-      prisma.product.findMany({
-        where: { isSold: false, brand: { not: null } },
-        select: { brand: true },
-        distinct: ["brand"],
-        orderBy: { brand: "asc" },
+      prisma.brand.findMany({
+        where: {
+          products: {
+            some: { isSold: false },
+          },
+        },
+        select: { name: true },
+        orderBy: { name: "asc" },
       }),
       prisma.product.aggregate({
         where: { isSold: false },
@@ -113,14 +124,22 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Map to ProductCardData format
-    const productCards: ProductCardData[] = products.map((product) => ({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      condition: product.condition,
-      imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
-      category: product.category.name,
-    }));
+    const productCards: ProductCardData[] = products
+      .filter((product) => product.user) // Filter out products without users
+      .map((product) => ({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        condition: product.condition,
+        imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
+        category: product.category.name,
+        seller: {
+          id: product.user.id,
+          name: product.user.name,
+          averageRating: product.user.averageRating,
+          ratingCount: product.user.ratingCount,
+        },
+      }));
 
     return NextResponse.json({
       products: productCards,
@@ -130,8 +149,8 @@ export async function GET(request: NextRequest) {
       hasMore: page < Math.ceil(total / limit),
       filters: {
         availableBrands: availableBrands
-          .map((p) => p.brand)
-          .filter((b): b is string => b !== null),
+          .map((b) => b.name)
+          .filter((name): name is string => name !== null),
         priceRange: {
           min: priceAgg._min.price || 0,
           max: priceAgg._max.price || 1000,

@@ -1,6 +1,6 @@
 /**
  * Butter Golf UI Component Library
- * 
+ *
  * A production-ready, cross-platform component library built on Tamagui.
  * Provides consistent, accessible, and themeable components for web and mobile.
  */
@@ -12,6 +12,8 @@ export * from '@tamagui/toast'
 // Button Components
 export { Button } from './components/Button'
 export type { ButtonProps } from './components/Button'
+export { AuthButton } from './components/AuthButton'
+export type { AuthButtonProps } from './components/AuthButton'
 
 // Typography Components
 export { Text, Heading, Label } from './components/Text'
@@ -28,6 +30,8 @@ export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from 
 // Form Components
 export { Input } from './components/Input'
 export type { InputProps } from './components/Input'
+export { Autocomplete } from './components/Autocomplete'
+export type { AutocompleteProps, AutocompleteSuggestion } from './components/Autocomplete'
 export { Checkbox } from './components/Checkbox'
 export type { CheckboxProps } from './components/Checkbox'
 export { Slider } from './components/Slider'

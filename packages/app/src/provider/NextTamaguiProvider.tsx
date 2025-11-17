@@ -16,7 +16,7 @@ import { Provider } from "./Provider";
 export function NextTamaguiProvider({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const [, setTheme] = useRootTheme();
+  const [currentTheme, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
     // @ts-expect-error - RNW StyleSheet type not available
@@ -51,14 +51,13 @@ export function NextTamaguiProvider({
   return (
     <NextThemeProvider
       skipNextHead
-      defaultTheme="light"
-      forcedTheme="light"
+      defaultTheme="system"
       onChangeTheme={(next) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setTheme(next as any);
       }}
     >
-      <Provider defaultTheme="light">{children}</Provider>
+      <Provider defaultTheme={currentTheme ?? "light"}>{children}</Provider>
     </NextThemeProvider>
   );
 }
