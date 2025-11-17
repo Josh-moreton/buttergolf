@@ -55,9 +55,10 @@ export function TrustBar() {
         tag="button"
         cursor="pointer"
         padding="$1"
+        backgroundColor="transparent"
+        borderWidth={0}
         hoverStyle={{ opacity: 0.7 }}
         onPress={() => setIsVisible(false)}
-        {...{ style: { background: "none", border: "none" } }}
         aria-label="Dismiss"
       >
         <CloseIcon />

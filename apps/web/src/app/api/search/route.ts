@@ -52,6 +52,14 @@ export async function GET(request: NextRequest) {
             slug: true,
           },
         },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            averageRating: true,
+            ratingCount: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       take: limit,
@@ -66,14 +74,22 @@ export async function GET(request: NextRequest) {
     ].slice(0, 5);
 
     // Map to ProductCardData format
-    const productCards: ProductCardData[] = products.map((product) => ({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      condition: product.condition,
-      imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
-      category: product.category.name,
-    }));
+    const productCards: ProductCardData[] = products
+      .filter((product) => product.user) // Filter out products without users
+      .map((product) => ({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        condition: product.condition,
+        imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
+        category: product.category.name,
+        seller: {
+          id: product.user.id,
+          name: product.user.name,
+          averageRating: product.user.averageRating,
+          ratingCount: product.user.ratingCount,
+        },
+      }));
 
     return NextResponse.json({
       products: productCards,

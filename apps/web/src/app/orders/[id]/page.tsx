@@ -37,6 +37,7 @@ export default async function OrderDetailPage({
             orderBy: { sortOrder: 'asc' },
           },
           category: true,
+          brand: true,
         },
       },
       seller: {
@@ -72,7 +73,10 @@ export default async function OrderDetailPage({
   // Add role information
   const orderWithRole = {
     ...order,
-    userRole: order.buyerId === user.id ? 'buyer' as const : 'seller' as const,
+    userRole: order.buyerId === user.id ? 'buyer' as const : 'seller' as const, product: {
+      ...order.product,
+      brand: order.product.brand?.name || null,
+    },
   }
 
   return (

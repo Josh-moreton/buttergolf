@@ -56,7 +56,7 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        {...{ style: { position: "sticky" } as React.CSSProperties }}
+        style={{ position: "sticky" }}
         top={0}
         zIndex={50}
         backgroundColor="$surface"
@@ -238,7 +238,7 @@ export function ButterHeader() {
             justifyContent="space-between"
             paddingHorizontal="$8"
             flexWrap="nowrap"
-            overflow="auto"
+            style={{ overflow: "auto" }}
           >
             {NAV_CATEGORIES.map((category) => (
               <Link
@@ -267,7 +267,7 @@ export function ButterHeader() {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <Column
-          {...{ style: { position: "fixed" } as React.CSSProperties }}
+          style={{ position: "fixed" }}
           top={110}
           left={0}
           right={0}
