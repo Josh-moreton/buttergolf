@@ -1,0 +1,231 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Column, Row, Text, Button, Badge, Card } from "@buttergolf/ui";
+import { Eye, Heart, Tag, Edit, Trash2 } from "@tamagui/lucide-icons";
+
+export interface SellerProduct {
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    condition: string;
+    brandId: string | null;
+    brandName: string | null;
+    model: string | null;
+    categoryId: string;
+    categoryName: string;
+    imageUrl: string;
+    isSold: boolean;
+    views: number;
+    favorites: number;
+    createdAt: string;
+    updatedAt: string;
+    images: string[];
+    offersCount: number;
+    pendingOffersCount: number;
+}
+
+interface SellerProductCardProps {
+    product: SellerProduct;
+    onEdit: (product: SellerProduct) => void;
+    onDelete: (productId: string) => void;
+    onMarkSold: (productId: string) => void;
+}
+
+const CONDITION_LABELS: Record<string, string> = {
+    NEW: "New",
+    LIKE_NEW: "Like New",
+    EXCELLENT: "Excellent",
+    GOOD: "Good",
+    FAIR: "Fair",
+    POOR: "Poor",
+};
+
+/**
+ * SellerProductCard Component
+ *
+ * Displays a seller's product with stats and management actions
+ */
+export function SellerProductCard({
+    product,
+    onEdit,
+    onDelete,
+    onMarkSold,
+}: SellerProductCardProps) {
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    const handleDelete = async () => {
+        if (!confirm("Are you sure you want to delete this listing? This action cannot be undone.")) {
+            return;
+        }
+
+        setIsDeleting(true);
+        try {
+            await onDelete(product.id);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleMarkSold = async () => {
+        if (!confirm(product.isSold ? "Mark this listing as available again?" : "Mark this listing as sold?")) {
+            return;
+        }
+
+        setIsUpdating(true);
+        try {
+            await onMarkSold(product.id);
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    return (
+        <Card
+            variant="elevated"
+            padding="$0"
+            overflow="hidden"
+            opacity={product.isSold ? 0.7 : 1}
+        >
+            <Column gap="$0">
+                {/* Image with status overlay */}
+                <div style={{ position: "relative", width: "100%", aspectRatio: "1" }}>
+                    <Image
+                        src={product.imageUrl}
+                        alt={product.title}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    {product.isSold && (
+                        <div
+                            style={{
+                                position: "absolute",
+                                top: 12,
+                                right: 12,
+                            }}
+                        >
+                            <Badge variant="error" size="md">
+                                SOLD
+                            </Badge>
+                        </div>
+                    )}
+                    {!product.isSold && product.pendingOffersCount > 0 && (
+                        <div
+                            style={{
+                                position: "absolute",
+                                top: 12,
+                                right: 12,
+                            }}
+                        >
+                            <Badge variant="warning" size="md">
+                                {product.pendingOffersCount} Offer{product.pendingOffersCount > 1 ? "s" : ""}
+                            </Badge>
+                        </div>
+                    )}
+                </div>
+
+                {/* Content */}
+                <Column gap="$md" padding="$md">
+                    {/* Title & Price */}
+                    <Column gap="$xs">
+                        <Link
+                            href={`/products/${product.id}`}
+                            style={{ textDecoration: "none" }}
+                            target="_blank"
+                        >
+                            <Text
+                                fontSize="$5"
+                                weight="semibold"
+                                color="$text"
+                                numberOfLines={2}
+                                hoverStyle={{ color: "$primary" }}
+                            >
+                                {product.title}
+                            </Text>
+                        </Link>
+                        <Row gap="$sm" alignItems="center">
+                            <Text fontSize="$6" weight="bold" color="$primary">
+                                £{product.price.toFixed(2)}
+                            </Text>
+                            <Text fontSize="$3" color="$textSecondary">
+                                {CONDITION_LABELS[product.condition] || product.condition}
+                            </Text>
+                        </Row>
+                    </Column>
+
+                    {/* Stats */}
+                    <Row gap="$lg" alignItems="center" flexWrap="wrap">
+                        <Row gap="$xs" alignItems="center">
+                            <Eye size={16} color="$slateSmoke" />
+                            <Text fontSize="$3" color="$textSecondary">
+                                {product.views}
+                            </Text>
+                        </Row>
+                        <Row gap="$xs" alignItems="center">
+                            <Heart size={16} color="$slateSmoke" />
+                            <Text fontSize="$3" color="$textSecondary">
+                                {product.favorites}
+                            </Text>
+                        </Row>
+                        {product.offersCount > 0 && (
+                            <Row gap="$xs" alignItems="center">
+                                <Tag size={16} color="$slateSmoke" />
+                                <Text fontSize="$3" color="$textSecondary">
+                                    {product.offersCount} offer{product.offersCount > 1 ? "s" : ""}
+                                </Text>
+                            </Row>
+                        )}
+                    </Row>
+
+                    {/* Category & Date */}
+                    <Row gap="$sm" alignItems="center" flexWrap="wrap">
+                        <Badge variant="neutral" size="sm">
+                            {product.categoryName}
+                        </Badge>
+                        <Text fontSize="$2" color="$textMuted">
+                            Listed {new Date(product.createdAt).toLocaleDateString()}
+                        </Text>
+                    </Row>
+
+                    {/* Actions */}
+                    <Row gap="$sm" marginTop="$sm">
+                        <Button
+                            size="sm"
+                            tone="outline"
+                            flex={1}
+                            onPress={() => onEdit(product)}
+                            disabled={isDeleting || isUpdating}
+                        >
+                            <Row gap="$xs" alignItems="center">
+                                <Edit size={14} />
+                                <Text>Edit</Text>
+                            </Row>
+                        </Button>
+                        <Button
+                            size="sm"
+                            tone={product.isSold ? "secondary" : "success"}
+                            flex={1}
+                            onPress={handleMarkSold}
+                            disabled={isDeleting || isUpdating}
+                        >
+                            {isUpdating ? "..." : product.isSold ? "Relist" : "Mark Sold"}
+                        </Button>
+                        <Button
+                            size="sm"
+                            tone="ghost"
+                            onPress={handleDelete}
+                            disabled={isDeleting || isUpdating}
+                        >
+                            <Trash2 size={14} color="$error" />
+                        </Button>
+                    </Row>
+                </Column>
+            </Column>
+        </Card>
+    );
+}
