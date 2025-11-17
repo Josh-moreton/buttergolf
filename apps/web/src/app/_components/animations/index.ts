@@ -1,1 +1,1 @@
-export { HomeFadeInOnLoad } from "./HomeFadeInOnLoad";
+export { PageTransition } from "./PageTransition";

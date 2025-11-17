@@ -128,7 +128,7 @@ export function CategoriesSection() {
           {CATEGORIES.map((category) => (
             <Link
               key={category.slug}
-              href={`/listings?category=${category.slug}`}
+              href={`/category/${category.slug}`}
               style={{
                 position: "relative",
                 width: "296px",

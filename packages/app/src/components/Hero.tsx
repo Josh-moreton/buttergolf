@@ -183,7 +183,7 @@ export function Hero({
                             {(primaryCta || secondaryCta) && (
                                 <Row gap="$md" flexWrap="wrap" marginTop="$2">
                                     {primaryCta && (
-                                        <Link href={primaryCta.href}>
+                                        <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
                                                 size="lg"
                                                 tone="primary"
@@ -198,7 +198,7 @@ export function Hero({
                                         </Link>
                                     )}
                                     {secondaryCta && (
-                                        <Link href={secondaryCta.href}>
+                                        <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
                                                 size="lg"
                                                 backgroundColor="$secondary"

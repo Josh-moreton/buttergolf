@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-interface HomeFadeInOnLoadProps extends PropsWithChildren {
+interface PageTransitionProps extends PropsWithChildren {
     /**
      * Whether to disable animations (respects prefers-reduced-motion by default)
      */
@@ -17,11 +17,11 @@ interface HomeFadeInOnLoadProps extends PropsWithChildren {
 }
 
 /**
- * Web-only animation wrapper that fades in and slides up content on scroll.
+ * Web-only page transition animation wrapper that fades in and slides up content on scroll.
  *
  * Usage:
- * - Wrap page content in this component
- * - Add className="home-fade-in" to sections that should animate when entering viewport
+ * - Wrap page content in this component (typically in layout.tsx)
+ * - Add className="page-transition" to sections that should animate when entering viewport
  *
  * Animation behavior:
  * - All sections animate when they enter the viewport using ScrollTrigger
@@ -30,10 +30,10 @@ interface HomeFadeInOnLoadProps extends PropsWithChildren {
  * - Respects prefers-reduced-motion user preference
  * - Cleans up GSAP context on unmount
  */
-export function HomeFadeInOnLoad({
+export function PageTransition({
     children,
     disableAnimations = false,
-}: HomeFadeInOnLoadProps) {
+}: PageTransitionProps) {
     const rootRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
@@ -46,7 +46,7 @@ export function HomeFadeInOnLoad({
 
         if (prefersReducedMotion || disableAnimations) {
             // Skip animations but ensure content is visible
-            const allElements = rootRef.current.querySelectorAll(".home-fade-in");
+            const allElements = rootRef.current.querySelectorAll(".page-transition");
             allElements.forEach((el) => {
                 gsap.set(el, { opacity: 1, y: 0, clearProps: "all" });
             });
@@ -55,7 +55,7 @@ export function HomeFadeInOnLoad({
 
         // Create GSAP context for cleanup
         const ctx = gsap.context(() => {
-            const animatedElements = rootRef.current!.querySelectorAll(".home-fade-in");
+            const animatedElements = rootRef.current!.querySelectorAll(".page-transition");
 
             animatedElements.forEach((el, index) => {
                 gsap.to(el, {
@@ -85,7 +85,7 @@ export function HomeFadeInOnLoad({
         <>
             <style dangerouslySetInnerHTML={{
                 __html: `
-                    .home-fade-in {
+                    .page-transition {
                         opacity: 0;
                         transform: translateY(50px);
                         will-change: opacity, transform;

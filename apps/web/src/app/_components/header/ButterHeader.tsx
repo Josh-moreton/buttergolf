@@ -12,14 +12,14 @@ import { AuthModal } from "../auth/AuthModal";
 // Category navigation items
 const NAV_CATEGORIES = [
   { name: "Shop all", href: "/listings" },
-  { name: "Drivers", href: "/listings?category=drivers" },
-  { name: "Fairway Woods", href: "/listings?category=fairway-woods" },
-  { name: "Irons", href: "/listings?category=irons" },
-  { name: "Wedges", href: "/listings?category=wedges" },
-  { name: "Putters", href: "/listings?category=putters" },
-  { name: "Hybrids", href: "/listings?category=hybrids" },
-  { name: "Shoes", href: "/listings?category=shoes" },
-  { name: "Accessories", href: "/listings?category=accessories" },
+  { name: "Drivers", href: "/category/drivers" },
+  { name: "Fairway Woods", href: "/category/fairway-woods" },
+  { name: "Irons", href: "/category/irons" },
+  { name: "Wedges", href: "/category/wedges" },
+  { name: "Putters", href: "/category/putters" },
+  { name: "Hybrids", href: "/category/hybrids" },
+  { name: "Shoes", href: "/category/shoes" },
+  { name: "Accessories", href: "/category/accessories" },
 ] as const;
 
 export function ButterHeader() {
