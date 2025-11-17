@@ -14,7 +14,7 @@ interface SearchParams {
 }
 
 interface Props {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 export const dynamic = "force-dynamic";
@@ -168,21 +168,11 @@ async function getListings(searchParams: SearchParams) {
 }
 
 export default async function ListingsPage({ searchParams }: Props) {
-  const data = await getListings(searchParams);
+  const resolvedParams = await searchParams;
+  const data = await getListings(resolvedParams);
 
   return (
-    <Suspense
-      fallback={
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "50vh"
-        }}>
-          <div>Loading...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div>Loading...</div>}>
       <ListingsClient
         initialProducts={data.products}
         initialTotal={data.total}

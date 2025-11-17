@@ -33,7 +33,7 @@ export function FilterSidebar({
   return (
     <Column
       width={280}
-      position="sticky"
+      style={{ position: "sticky" }}
       top={140}
       minHeight={200}
       backgroundColor="$surface"

@@ -30,7 +30,7 @@ export function MarketplaceHeader() {
 
   return (
     <Column
-      position="fixed"
+      style={{ position: "fixed" }}
       top={60}
       left={0}
       right={0}

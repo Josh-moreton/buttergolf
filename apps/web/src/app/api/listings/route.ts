@@ -107,11 +107,14 @@ export async function GET(request: NextRequest) {
 
     // Get filter options (available brands and price range)
     const [availableBrands, priceAgg] = await Promise.all([
-      prisma.product.findMany({
-        where: { isSold: false, brand: { not: null } },
-        select: { brand: true },
-        distinct: ["brand"],
-        orderBy: { brand: "asc" },
+      prisma.brand.findMany({
+        where: {
+          products: {
+            some: { isSold: false },
+          },
+        },
+        select: { name: true },
+        orderBy: { name: "asc" },
       }),
       prisma.product.aggregate({
         where: { isSold: false },
@@ -146,8 +149,8 @@ export async function GET(request: NextRequest) {
       hasMore: page < Math.ceil(total / limit),
       filters: {
         availableBrands: availableBrands
-          .map((p) => p.brand)
-          .filter((b): b is string => b !== null),
+          .map((b) => b.name)
+          .filter((name): name is string => name !== null),
         priceRange: {
           min: priceAgg._min.price || 0,
           max: priceAgg._max.price || 1000,

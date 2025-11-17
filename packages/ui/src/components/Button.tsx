@@ -146,6 +146,22 @@ export const Button = styled(TamaguiButton, {
                     backgroundColor: "$error",
                 },
             },
+            warning: {
+                backgroundColor: "$warning",
+                color: "$textInverse",
+                borderWidth: 0,
+                hoverStyle: {
+                    backgroundColor: "$warningDark",
+                },
+                pressStyle: {
+                    backgroundColor: "$warningDark",
+                },
+                focusStyle: {
+                    borderColor: "$warning",
+                    borderWidth: 2,
+                    backgroundColor: "$warning",
+                },
+            },
         },
 
         fullWidth: {

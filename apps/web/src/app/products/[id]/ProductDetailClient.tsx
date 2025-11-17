@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUser, useSignIn } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import {
   Column,
   Row,
@@ -65,7 +65,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [makeOfferModalOpen, setMakeOfferModalOpen] = useState(false);
   const router = useRouter();
   const { isSignedIn } = useUser();
-  const { openSignIn } = useSignIn();
 
   const selectedImage = product.images[selectedImageIndex];
 
@@ -102,10 +101,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   const handleMakeOffer = () => {
     if (!isSignedIn) {
-      // Open Clerk sign-in modal if user is not authenticated
-      openSignIn({
-        redirectUrl: window.location.href,
-      });
+      // Redirect to sign-in page with return URL
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(window.location.href)}`);
       return;
     }
     setMakeOfferModalOpen(true);

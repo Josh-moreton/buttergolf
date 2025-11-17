@@ -1,7 +1,7 @@
 'use client'
 
-import { HomeScreen } from '@buttergolf/app'
+import { LoggedOutHomeScreen } from '@buttergolf/app'
 
-export default function HomeClient() {
-  return <HomeScreen />
+export function HomeClient() {
+  return <LoggedOutHomeScreen />
 }
