@@ -193,7 +193,7 @@ export function ProductsGrid({
         paddingVertical="$10"
         gap="$md"
       >
-        <Text size="xl" weight="semibold" color="$textSecondary">
+        <Text size="$7" weight="semibold" color="$textSecondary">
           No products found
         </Text>
         <Text color="$textMuted">

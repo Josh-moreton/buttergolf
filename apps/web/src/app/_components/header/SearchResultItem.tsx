@@ -32,11 +32,11 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
 
         {/* Product Details */}
         <Column flex={1} gap="$xs">
-          <Text weight="semibold" numberOfLines={1} size="sm">
+          <Text weight="semibold" numberOfLines={1} size="$3">
             {product.title}
           </Text>
           <Row gap="$2" alignItems="center" flexWrap="wrap">
-            <Text size="xs" {...{ color: "$textMuted" }}>
+            <Text size="$2" {...{ color: "$textMuted" }}>
               {product.category}
             </Text>
             {product.condition && (

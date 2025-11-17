@@ -361,7 +361,7 @@ const customTokens = createTokens({
 
     size: {
         ...defaultConfig.tokens.size,
-        // Component sizes
+        // Component sizes (button, input, icon heights)
         buttonSm: 32,
         buttonMd: 40,
         buttonLg: 48,

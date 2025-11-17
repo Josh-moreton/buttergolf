@@ -154,56 +154,39 @@ export function Hero({
                                 <Column display="none" $md={{ display: "flex" }} gap="$1">
                                     {/* Line 1 - Animated */}
                                     {animationVariant === "split-character" ? (
-                                        <AnimatedHeroText text={headingLine1} delay={animationDelay}>
-                                            <Heading
-                                                level={1}
-                                                fontSize="$11"
-                                                $md={{ fontSize: "$12" }}
-                                                $lg={{ fontSize: "$14" }}
-                                                color="$ironstone"
-                                                fontWeight="700"
-                                            >
-                                                {headingLine1.split("").map((char, i) => (
-                                                    <span
-                                                        key={i}
-                                                        className="char"
-                                                        style={{
-                                                            display: "inline-block",
-                                                            opacity: 0,
-                                                            whiteSpace: char === " " ? "pre" : "normal",
-                                                        }}
-                                                    >
-                                                        {char === " " ? "\u00A0" : char}
-                                                    </span>
-                                                ))}
-                                            </Heading>
-                                        </AnimatedHeroText>
+                                        <AnimatedHeroText
+                                            text={headingLine1}
+                                            delay={animationDelay}
+                                            style={{
+                                                fontSize: "clamp(32px, 5vw, 72px)",
+                                                color: "#323232",
+                                                fontWeight: 700,
+                                                lineHeight: 1.1,
+                                            }}
+                                        />
                                     ) : animationVariant === "typewriter" ? (
-                                        <TypewriterHero text={headingLine1} delay={animationDelay} showCursor={false}>
-                                            <Heading
-                                                level={1}
-                                                fontSize="$11"
-                                                $md={{ fontSize: "$12" }}
-                                                $lg={{ fontSize: "$14" }}
-                                                color="$ironstone"
-                                                fontWeight="700"
-                                            >
-                                                {headingLine1}
-                                            </Heading>
-                                        </TypewriterHero>
+                                        <TypewriterHero
+                                            text={headingLine1}
+                                            delay={animationDelay}
+                                            showCursor={false}
+                                            style={{
+                                                fontSize: "clamp(32px, 5vw, 72px)",
+                                                color: "#323232",
+                                                fontWeight: 700,
+                                                lineHeight: 1.1,
+                                            }}
+                                        />
                                     ) : animationVariant === "scale-bounce" ? (
-                                        <ScaleBounceHero text={headingLine1} delay={animationDelay}>
-                                            <Heading
-                                                level={1}
-                                                fontSize="$11"
-                                                $md={{ fontSize: "$12" }}
-                                                $lg={{ fontSize: "$14" }}
-                                                color="$ironstone"
-                                                fontWeight="700"
-                                            >
-                                                {headingLine1}
-                                            </Heading>
-                                        </ScaleBounceHero>
+                                        <ScaleBounceHero
+                                            text={headingLine1}
+                                            delay={animationDelay}
+                                            style={{
+                                                fontSize: "clamp(32px, 5vw, 72px)",
+                                                color: "#323232",
+                                                fontWeight: 700,
+                                                lineHeight: 1.1,
+                                            }}
+                                        />
                                     ) : (
                                         <Heading
                                             level={1}
@@ -221,56 +204,39 @@ export function Hero({
                                     {headingLine2 && (
                                         <>
                                             {animationVariant === "split-character" ? (
-                                                <AnimatedHeroText text={headingLine2} delay={animationDelay + 0.3}>
-                                                    <Heading
-                                                        level={1}
-                                                        fontSize="$11"
-                                                        $md={{ fontSize: "$12" }}
-                                                        $lg={{ fontSize: "$14" }}
-                                                        color="$ironstone"
-                                                        fontWeight="700"
-                                                    >
-                                                        {headingLine2.split("").map((char, i) => (
-                                                            <span
-                                                                key={i}
-                                                                className="char"
-                                                                style={{
-                                                                    display: "inline-block",
-                                                                    opacity: 0,
-                                                                    whiteSpace: char === " " ? "pre" : "normal",
-                                                                }}
-                                                            >
-                                                                {char === " " ? "\u00A0" : char}
-                                                            </span>
-                                                        ))}
-                                                    </Heading>
-                                                </AnimatedHeroText>
+                                                <AnimatedHeroText
+                                                    text={headingLine2}
+                                                    delay={animationDelay + 0.3}
+                                                    style={{
+                                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                                        color: "#323232",
+                                                        fontWeight: 700,
+                                                        lineHeight: 1.1,
+                                                    }}
+                                                />
                                             ) : animationVariant === "typewriter" ? (
-                                                <TypewriterHero text={headingLine2} delay={animationDelay + 0.5} showCursor={true}>
-                                                    <Heading
-                                                        level={1}
-                                                        fontSize="$11"
-                                                        $md={{ fontSize: "$12" }}
-                                                        $lg={{ fontSize: "$14" }}
-                                                        color="$ironstone"
-                                                        fontWeight="700"
-                                                    >
-                                                        {headingLine2}
-                                                    </Heading>
-                                                </TypewriterHero>
+                                                <TypewriterHero
+                                                    text={headingLine2}
+                                                    delay={animationDelay + 0.5}
+                                                    showCursor={true}
+                                                    style={{
+                                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                                        color: "#323232",
+                                                        fontWeight: 700,
+                                                        lineHeight: 1.1,
+                                                    }}
+                                                />
                                             ) : animationVariant === "scale-bounce" ? (
-                                                <ScaleBounceHero text={headingLine2} delay={animationDelay + 0.3}>
-                                                    <Heading
-                                                        level={1}
-                                                        fontSize="$11"
-                                                        $md={{ fontSize: "$12" }}
-                                                        $lg={{ fontSize: "$14" }}
-                                                        color="$ironstone"
-                                                        fontWeight="700"
-                                                    >
-                                                        {headingLine2}
-                                                    </Heading>
-                                                </ScaleBounceHero>
+                                                <ScaleBounceHero
+                                                    text={headingLine2}
+                                                    delay={animationDelay + 0.3}
+                                                    style={{
+                                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                                        color: "#323232",
+                                                        fontWeight: 700,
+                                                        lineHeight: 1.1,
+                                                    }}
+                                                />
                                             ) : (
                                                 <Heading
                                                     level={1}

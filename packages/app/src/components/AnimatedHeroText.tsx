@@ -1,18 +1,27 @@
 "use client";
 
-import { useLayoutEffect, useRef, ReactNode } from "react";
+import { useLayoutEffect, useRef, CSSProperties } from "react";
 import { gsap } from "gsap";
 
 interface AnimatedHeroTextProps {
     text: string;
     delay?: number;
     className?: string;
-    children?: ReactNode;
+    style?: CSSProperties;
+    /** Accessibility label for screen readers (uses text if not provided) */
+    ariaLabel?: string;
 }
 
 /**
  * Split-character text animation for hero sections
  * Desktop only - animations disabled on mobile/app for performance
+ *
+ * Handles character splitting internally - no need to pass children.
+ * Add styling via className or style props.
+ *
+ * Accessibility:
+ * - Adds aria-label automatically for proper screen reader pronunciation
+ * - Each character is wrapped in span but parent announces full text
  *
  * Follows patterns from PageTransition.tsx:
  * - Uses gsap.context() for cleanup
@@ -23,7 +32,8 @@ export function AnimatedHeroText({
     text,
     delay = 0,
     className,
-    children,
+    style,
+    ariaLabel,
 }: AnimatedHeroTextProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +99,7 @@ export function AnimatedHeroText({
         return () => {
             ctx.revert();
         };
-    }, [text, delay]);
+    }, [delay]); // Removed 'text' - not used in effect logic
 
     // Split text into characters
     const characters = text.split("").map((char, i) => (
@@ -108,8 +118,13 @@ export function AnimatedHeroText({
     ));
 
     return (
-        <div ref={containerRef} className={className}>
-            {children || characters}
+        <div
+            ref={containerRef}
+            className={className}
+            style={style}
+            aria-label={ariaLabel || text}
+        >
+            {characters}
         </div>
     );
 }

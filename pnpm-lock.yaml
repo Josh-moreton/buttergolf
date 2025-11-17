@@ -377,6 +377,9 @@ importers:
       '@tamagui/polyfill-dev':
         specifier: 'catalog:'
         version: 1.135.7
+      gsap:
+        specifier: ^3.13.0
+        version: 3.13.0
       react:
         specifier: 19.1.0
         version: 19.1.0

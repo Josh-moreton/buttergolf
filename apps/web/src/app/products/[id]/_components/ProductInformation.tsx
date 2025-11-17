@@ -136,19 +136,19 @@ export function ProductInformation({
             <Column gap="$sm">
                 <Row justifyContent="space-between" alignItems="center">
                     <Column gap="$xs" flex={1}>
-                        <Text size="sm" color="$slateSmoke" weight="bold">
+                        <Text size="$3" color="$slateSmoke" weight="bold">
                             Posted by {product.user.name || "Unknown"}
                         </Text>
-                        <Text size="xs" color="$slateSmoke">
+                        <Text size="$2" color="$slateSmoke">
                             Member for 3 years
                         </Text>
                         {ratingCount > 0 && (
                             <Row gap="$xs" alignItems="center">
                                 <span style={{ color: "#F45314", fontSize: "14px" }}>★</span>
-                                <Text size="sm" color="$ironstone" weight="semibold">
+                                <Text size="$3" color="$ironstone" weight="semibold">
                                     {averageRating.toFixed(1)}
                                 </Text>
-                                <Text size="xs" color="$slateSmoke">
+                                <Text size="$2" color="$slateSmoke">
                                     ({ratingCount})
                                 </Text>
                             </Row>
@@ -173,36 +173,36 @@ export function ProductInformation({
             {/* Product Specifications */}
             <Row gap="$md">
                 <Column gap="$md" flex={1}>
-                    <Text size="sm" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold">
                         Category
                     </Text>
-                    <Text size="sm" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold">
                         Brand
                     </Text>
-                    <Text size="sm" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold">
                         Product
                     </Text>
-                    <Text size="sm" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold">
                         Product
                     </Text>
-                    <Text size="sm" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold">
                         Condition
                     </Text>
                 </Column>
                 <Column gap="$md" flex={1}>
-                    <Text size="sm" color="$ironstone">
+                    <Text size="$3" color="$ironstone">
                         {product.category.name}
                     </Text>
-                    <Text size="sm" color="$ironstone">
+                    <Text size="$3" color="$ironstone">
                         {product.brand || "N/A"}
                     </Text>
-                    <Text size="sm" color="$ironstone">
+                    <Text size="$3" color="$ironstone">
                         {product.model || "N/A"}
                     </Text>
-                    <Text size="sm" color="$ironstone">
+                    <Text size="$3" color="$ironstone">
                         {product.model || "N/A"}
                     </Text>
-                    <Text size="sm" color="$ironstone">
+                    <Text size="$3" color="$ironstone">
                         {formatCondition(product.condition)}
                     </Text>
                 </Column>
@@ -213,10 +213,10 @@ export function ProductInformation({
 
             {/* Product Description */}
             <Column gap="$md">
-                <Text size="sm" color="$ironstone" weight="bold">
+                <Text size="$3" color="$ironstone" weight="bold">
                     Product Description
                 </Text>
-                <Text size="sm" color="$ironstone" lineHeight={1.6} whiteSpace="pre-wrap">
+                <Text size="$3" color="$ironstone" lineHeight={1.6} whiteSpace="pre-wrap">
                     {product.description}
                 </Text>
             </Column>

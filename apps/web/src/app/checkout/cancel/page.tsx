@@ -43,13 +43,13 @@ export default function CheckoutCancelPage() {
             <Column gap="$md">
               <Text weight="semibold">Why was my checkout cancelled?</Text>
               <Column gap="$xs" paddingLeft="$md">
-                <Text color="$textSecondary" size="sm">
+                <Text color="$textSecondary" size="$3">
                   • You clicked the back button
                 </Text>
-                <Text color="$textSecondary" size="sm">
+                <Text color="$textSecondary" size="$3">
                   • The checkout session timed out
                 </Text>
-                <Text color="$textSecondary" size="sm">
+                <Text color="$textSecondary" size="$3">
                   • You closed the checkout window
                 </Text>
               </Column>
@@ -58,17 +58,17 @@ export default function CheckoutCancelPage() {
 
           {/* What's Next */}
           <Column gap="$sm" paddingTop="$md" fullWidth>
-            <Text weight="semibold" size="md">
+            <Text weight="semibold" size="$4">
               What would you like to do?
             </Text>
             <Column gap="$xs" paddingLeft="$md">
-              <Text color="$textSecondary" size="sm">
+              <Text color="$textSecondary" size="$3">
                 • Go back and try purchasing again
               </Text>
-              <Text color="$textSecondary" size="sm">
+              <Text color="$textSecondary" size="$3">
                 • Browse more products in our marketplace
               </Text>
-              <Text color="$textSecondary" size="sm">
+              <Text color="$textSecondary" size="$3">
                 • Contact the seller if you have questions
               </Text>
             </Column>

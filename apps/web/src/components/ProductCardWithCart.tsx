@@ -101,22 +101,22 @@ export function ProductCardWithCart({
                         }}
                     >
                         <Column gap="$xs" width="100%">
-                            <Text size="md" weight="semibold" numberOfLines={2} minHeight={42}>
+                            <Text size="$4" weight="semibold" numberOfLines={2} minHeight={42}>
                                 {product.title}
                             </Text>
                             <Row gap="$sm" alignItems="center" justifyContent="space-between" minHeight={24}>
-                                <Text size="sm" color="$textSecondary" numberOfLines={1}>
+                                <Text size="$3" color="$textSecondary" numberOfLines={1}>
                                     {product.category}
                                 </Text>
                                 {product.condition && product.condition !== "NEW" && (
                                     <Badge variant="neutral" size="sm">
-                                        <Text size="xs" weight="medium">
+                                        <Text size="$2" weight="medium">
                                             {product.condition.replace("_", " ")}
                                         </Text>
                                     </Badge>
                                 )}
                             </Row>
-                            <Text size="lg" weight="bold" color="$primary" minHeight={28}>
+                            <Text size="$6" weight="bold" color="$primary" minHeight={28}>
                                 £{product.price.toFixed(2)}
                             </Text>
                         </Column>

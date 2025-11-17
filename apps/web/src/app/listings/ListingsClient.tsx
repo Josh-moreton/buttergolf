@@ -279,7 +279,7 @@ export function ListingsClient({
           {/* Active filters chips */}
           {activeFilterCount > 0 && (
             <Row gap="$sm" flexWrap="wrap" alignItems="center">
-              <Text size="sm" color="$textSecondary">
+              <Text size="$3" color="$textSecondary">
                 Active filters:
               </Text>
               {filters.category && (

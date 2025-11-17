@@ -25,10 +25,10 @@ export function FilterSection({
         cursor="pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Text weight="semibold" size="sm">
+        <Text weight="semibold" size="$3">
           {title}
         </Text>
-        <Text color="$textSecondary" size="sm">
+        <Text color="$textSecondary" size="$3">
           {isExpanded ? "−" : "+"}
         </Text>
       </Row>
