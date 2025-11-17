@@ -34,7 +34,7 @@ export default function MarketplaceHomeClient({
         <>
           {/* Categories Section - Above the fold, no animation */}
           <CategoriesSection />
-          
+
           {/* Below the fold sections - animate on scroll */}
           <div className="page-transition">
             <RecentlyListedSectionClient products={products} />
