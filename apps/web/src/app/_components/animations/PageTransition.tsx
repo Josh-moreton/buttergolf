@@ -39,9 +39,6 @@ export function PageTransition({
     useLayoutEffect(() => {
         if (!rootRef.current) return;
 
-        // Ensure page starts at top on mount (prevents scroll position issues)
-        window.scrollTo(0, 0);
-
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia(
             "(prefers-reduced-motion: reduce)"

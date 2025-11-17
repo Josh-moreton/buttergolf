@@ -9,7 +9,7 @@ import { imagePaths } from "@buttergolf/assets";
  *
  * Includes GSAP text animations on desktop only:
  * - Split-character animation with stagger effect
- * - Waits 0.8s for hero fade-in to complete before animating
+ * - Waits 0.6s for hero container fade-in to complete before animating text
  * - Mobile/app shows static text immediately for performance
  */
 export function HeroStatic() {
@@ -32,7 +32,7 @@ export function HeroStatic() {
             heroImage={imagePaths.hero.club}
             showHeroImage={true}
             animationVariant="split-character"
-            animationDelay={0.8}
+            animationDelay={0.6}
         />
     );
 }
