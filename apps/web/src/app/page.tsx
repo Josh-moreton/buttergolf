@@ -10,7 +10,7 @@ export default async function Page() {
 
   // Structured data for the home page
   const siteUrl = process.env.SITE_URL || 'https://buttergolf.com';
-  
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
