@@ -6,8 +6,8 @@
  *
  * @example
  * ```tsx
- * <Text size="md">Regular text</Text>
- * <Text size="sm" color="muted">Small muted text</Text>
+ * <Text size="$4">Regular text</Text>
+ * <Text size="$3" color="muted">Small muted text</Text>
  * <Heading level={1}>Page Title</Heading>
  * <Heading level={2} color="primary">Section Title</Heading>
  * <Label htmlFor="input">Form Label</Label>
@@ -23,6 +23,26 @@ import {
   type LabelProps as TamaguiLabelProps,
 } from "tamagui";
 
+const SIZE_ALIASES: Record<string, string> = {
+  xs: "$2",
+  sm: "$3",
+  md: "$4",
+  lg: "$6",
+  xl: "$7",
+};
+
+const resolveFontToken = (name?: string) => {
+  if (!name) {
+    return "$4";
+  }
+
+  if (name.startsWith("$")) {
+    return name;
+  }
+
+  return SIZE_ALIASES[name] ?? name;
+};
+
 // Base Text Component
 export const Text = styled(TamaguiText, {
   name: "Text",
@@ -33,20 +53,25 @@ export const Text = styled(TamaguiText, {
 
   variants: {
     size: {
-      xs: {
-        fontSize: "$2",
-      },
-      sm: {
-        fontSize: "$3",
-      },
-      md: {
-        fontSize: "$4",
-      },
-      lg: {
-        fontSize: "$5",
-      },
-      xl: {
-        fontSize: "$6",
+      // Use spread fontSize variant so size props accept token values (e.g., "$5")
+      '...fontSize': (name, { font }) => {
+        const token = resolveFontToken(typeof name === "string" ? name : undefined);
+        const normalized = token.startsWith("$") ? token.slice(1) : token;
+        const fontSize = font?.size?.[token] ?? font?.size?.[normalized];
+        const lineHeight = font?.lineHeight?.[token] ?? font?.lineHeight?.[normalized];
+
+        if (process.env.NODE_ENV !== "production" && typeof name === "string" && !name.startsWith("$")) {
+          const stack = new Error().stack?.split("\n").slice(1, 4).join("\n");
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[ui/Text] size="${name}" must use "$" tokens (e.g. "$6"). Automatically mapping to ${token}.\n${stack}`
+          );
+        }
+
+        return {
+          fontSize,
+          lineHeight,
+        };
       },
     },
 
@@ -87,7 +112,7 @@ export const Text = styled(TamaguiText, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$4",
     weight: "normal",
   },
 });
@@ -160,15 +185,10 @@ export const Label = styled(TamaguiLabel, {
 
   variants: {
     size: {
-      sm: {
-        fontSize: "$2",
-      },
-      md: {
-        fontSize: "$3",
-      },
-      lg: {
-        fontSize: "$4",
-      },
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+        lineHeight: font?.lineHeight?.[name],
+      }),
     },
 
     // Note: For required indicators, use a separate Text component for cross-platform compatibility
@@ -183,7 +203,7 @@ export const Label = styled(TamaguiLabel, {
   } as const,
 
   defaultVariants: {
-    size: "md",
+    size: "$3",
   },
 });
 

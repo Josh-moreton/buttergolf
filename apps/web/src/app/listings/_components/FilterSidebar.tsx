@@ -45,7 +45,7 @@ export function FilterSidebar({
       display="none"
       className="desktop-filter-sidebar"
     >
-      <Text weight="bold" size="lg">
+      <Text weight="bold" size="$6">
         Filters
       </Text>
 

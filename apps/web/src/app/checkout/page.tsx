@@ -67,7 +67,7 @@ function CheckoutPageContent() {
     return (
       <Container size="lg" paddingVertical="$2xl">
         <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
-          <Text color="$error" size="lg" weight="semibold">
+          <Text color="$error" size="$6" weight="semibold">
             {error || "Unable to load checkout"}
           </Text>
           <Text color="$textSecondary">

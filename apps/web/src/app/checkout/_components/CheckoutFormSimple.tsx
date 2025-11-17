@@ -15,7 +15,7 @@ interface CheckoutFormSimpleProps {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
     <Row gap="$xs" marginBottom="$xs">
-        <Text size="sm" weight="medium" color="$ironstone">
+        <Text size="$3" weight="medium" color="$ironstone">
             {children}
         </Text>
         {required && <Text color="$error">*</Text>}

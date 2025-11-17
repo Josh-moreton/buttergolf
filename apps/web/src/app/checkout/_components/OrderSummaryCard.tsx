@@ -40,52 +40,52 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
                     )}
 
                     {/* Product Title */}
-                    <Text weight="semibold" size="lg" color="$ironstone">
+                    <Text weight="semibold" size="$6" color="$ironstone">
                         {product.title}
                     </Text>
 
                     {/* Order Breakdown */}
                     <Column gap="$md">
-                        <Text weight="semibold" size="md" color="$ironstone">
+                        <Text weight="semibold" size="$4" color="$ironstone">
                             Order breakdown
                         </Text>
 
                         {/* Item Price */}
                         <Row justifyContent="space-between" alignItems="center">
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 Item
                             </Text>
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 £{product.price.toFixed(2)}
                             </Text>
                         </Row>
 
                         {/* Buyer Protection Fee */}
                         <Row justifyContent="space-between" alignItems="center">
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 Buyer protection fee
                             </Text>
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 £{buyerProtectionFee.toFixed(2)}
                             </Text>
                         </Row>
 
                         {/* Subtotal */}
                         <Row justifyContent="space-between" alignItems="center">
-                            <Text size="sm" weight="semibold" color="$ironstone">
+                            <Text size="$3" weight="semibold" color="$ironstone">
                                 Subtotal
                             </Text>
-                            <Text size="sm" weight="semibold" color="$ironstone">
+                            <Text size="$3" weight="semibold" color="$ironstone">
                                 £{subtotal.toFixed(2)}
                             </Text>
                         </Row>
 
                         {/* Postage and Packaging */}
                         <Row justifyContent="space-between" alignItems="center">
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 Postage and packaging
                             </Text>
-                            <Text size="sm" color="$ironstone">
+                            <Text size="$3" color="$ironstone">
                                 £{shippingCost.toFixed(2)}
                             </Text>
                         </Row>
@@ -102,10 +102,10 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
 
                         {/* Total */}
                         <Row justifyContent="space-between" alignItems="center">
-                            <Text size="lg" weight="bold" color="$ironstone">
+                            <Text size="$6" weight="bold" color="$ironstone">
                                 Total
                             </Text>
-                            <Text size="lg" weight="bold" color="$ironstone">
+                            <Text size="$6" weight="bold" color="$ironstone">
                                 £{total.toFixed(2)}
                             </Text>
                         </Row>
@@ -113,10 +113,10 @@ export function OrderSummaryCard({ product, shippingCost = 9.99 }: OrderSummaryC
 
                     {/* Terms and Conditions */}
                     <Column gap="$xs">
-                        <Text weight="semibold" size="sm" color="$ironstone">
+                        <Text weight="semibold" size="$3" color="$ironstone">
                             Terms and conditions
                         </Text>
-                        <Text size="xs" color="$ironstone" lineHeight="$1">
+                        <Text size="$2" color="$ironstone" lineHeight="$1">
                             Consectetur adipiscing elit. Nulla facilisi. Suspendisse potenti. Vivamus a urna sed libero convallis malesuada.
                         </Text>
                     </Column>

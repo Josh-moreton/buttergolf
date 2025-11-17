@@ -120,7 +120,7 @@ export function ImageUpload({
         {uploading ? (
           <Column gap="$md" alignItems="center">
             <Spinner size="lg" color="$primary" />
-            <Text size="md" color="$textSecondary" textAlign="center">
+            <Text size="$4" color="$textSecondary" textAlign="center">
               Uploading... {progress.toString()}%
             </Text>
           </Column>
@@ -138,7 +138,7 @@ export function ImageUpload({
             </Column>
             <Column gap="$xs" alignItems="center">
               <Text
-                size="lg"
+                size="$6"
                 weight="semibold"
                 textAlign="center"
                 color="$text"
@@ -148,7 +148,7 @@ export function ImageUpload({
                   : "Add more photos"}
               </Text>
               <Text
-                size="sm"
+                size="$3"
                 color="$textSecondary"
                 textAlign="center"
                 lineHeight={20}
@@ -156,7 +156,7 @@ export function ImageUpload({
                 or drag and drop
               </Text>
             </Column>
-            <Text size="xs" color="$primary" textAlign="center">
+            <Text size="$2" color="$primary" textAlign="center">
               {currentImages.length}/{maxImages} photos • Max 10MB each
             </Text>
           </Column>
@@ -164,7 +164,7 @@ export function ImageUpload({
       </Column>
 
       {error && (
-        <Text size="sm" color="$error" textAlign="center">
+        <Text size="$3" color="$error" textAlign="center">
           {error}
         </Text>
       )}
@@ -205,7 +205,7 @@ export function ImageUpload({
                     padding="$xs"
                   >
                     <Text
-                      size="xs"
+                      size="$2"
                       color="$textInverse"
                       textAlign="center"
                       fontWeight="600"

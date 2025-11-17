@@ -24,7 +24,7 @@ export function CategoryFilter({
         onClick={() => onChange(null)}
       >
         <Text
-          size="sm"
+          size="$3"
           color={selectedCategory === null ? "$primary" : "$text"}
           weight={selectedCategory === null ? "semibold" : "normal"}
         >
@@ -45,7 +45,7 @@ export function CategoryFilter({
           onClick={() => onChange(category.slug)}
         >
           <Text
-            size="sm"
+            size="$3"
             color={
               selectedCategory === category.slug ? "$primary" : "$text"
             }

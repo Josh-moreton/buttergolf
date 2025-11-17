@@ -72,10 +72,10 @@ export default function SettingsPage() {
                                     <Row gap="$md" alignItems="center" flex={1}>
                                         <Text fontSize={24}>{item.icon}</Text>
                                         <Column gap="$xs" flex={1}>
-                                            <Text size="lg" weight="semibold">
+                                            <Text size="$6" weight="semibold">
                                                 {item.title}
                                             </Text>
-                                            <Text color="$textSecondary" size="sm">
+                                            <Text color="$textSecondary" size="$3">
                                                 {item.description}
                                             </Text>
                                         </Column>

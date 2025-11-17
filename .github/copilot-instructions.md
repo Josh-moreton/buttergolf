@@ -2355,6 +2355,58 @@ When creating a new component, add variants for:
 25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
 26. **If marketplace typography looks off (e.g., in HeroStatic links), remove manual `lineHeight` overrides** - The fix is to rely on the px-based values defined in `packages/config/src/tamagui.config.ts` by deleting ad-hoc `lineHeight={...}` props in shared components (like `packages/app/src/components/Hero.tsx`). The footer looked correct because it already inherited the config tokens; match that behavior whenever this regression reappears.
 
+### GSAP Animation Patterns
+
+**CRITICAL: Separate page-load animations from scroll-triggered animations to prevent conflicts**
+
+27. **NEVER use `window.scrollTo(0, 0)` in animation components** - This breaks ScrollTrigger by constantly resetting scroll position, preventing scroll-based animations from firing. ScrollTrigger relies on natural scroll behavior to calculate trigger points.
+
+28. **Use TWO separate animation systems:**
+   - **Page-load animations** (`PageLoadAnimation` component):
+     - For above-the-fold content (Hero, Categories, Toggle, etc.)
+     - Use regular GSAP tweens with `gsap.fromTo()`
+     - Trigger immediately on mount with optional delay
+     - No ScrollTrigger dependency
+     - Location: `apps/web/src/app/_components/animations/PageLoadAnimation.tsx`
+
+   - **Scroll-triggered animations** (`PageTransition` component with `.page-transition` class):
+     - For below-the-fold content (product sections, trust badges, etc.)
+     - Use GSAP with ScrollTrigger plugin
+     - Trigger when elements enter viewport
+     - Location: `apps/web/src/app/_components/animations/PageTransition.tsx`
+
+29. **Animation timeline pattern:**
+   ```tsx
+   // Page load (immediate)
+   <PageLoadAnimation delay={0}><Hero /></PageLoadAnimation>
+   <PageLoadAnimation delay={0.2}><Toggle /></PageLoadAnimation>
+   <PageLoadAnimation delay={0.4}><Categories /></PageLoadAnimation>
+
+   // Scroll-based (on viewport entry)
+   <div className="page-transition"><ProductSection /></div>
+   <div className="page-transition"><TrustSection /></div>
+   ```
+
+30. **GSAP cleanup pattern** - Always use `gsap.context()` for proper cleanup:
+   ```tsx
+   const ctx = gsap.context(() => {
+     gsap.to(element, { /* animation */ });
+   }, containerRef);
+
+   return () => ctx.revert(); // Cleanup
+   ```
+
+31. **Respect prefers-reduced-motion** - Always check and skip animations:
+   ```tsx
+   const prefersReducedMotion = window.matchMedia(
+     "(prefers-reduced-motion: reduce)"
+   ).matches;
+   if (prefersReducedMotion) {
+     gsap.set(element, { opacity: 1, y: 0, clearProps: "all" });
+     return;
+   }
+   ```
+
 ## Known Issues & Gotchas
 
 1. **TypeScript Errors in UI Package**: Some Tamagui component re-exports may show TypeScript errors about missing module exports, but runtime typically works fine

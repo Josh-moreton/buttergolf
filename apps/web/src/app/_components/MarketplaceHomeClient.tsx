@@ -10,6 +10,7 @@ import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection
 import { TrustSection } from "./marketplace/TrustSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
+import { PageLoadAnimation } from "./animations/PageLoadAnimation";
 import type { ProductCardData } from "@buttergolf/app";
 
 interface MarketplaceHomeClientProps {
@@ -23,19 +24,25 @@ export default function MarketplaceHomeClient({
 
   return (
     <Column>
-      <div className="page-transition">
+      {/* Hero - Immediate page load animation (no scroll trigger) */}
+      <PageLoadAnimation delay={0}>
         <HeroStatic />
-      </div>
-      <div className="page-transition">
+      </PageLoadAnimation>
+
+      {/* Buy/Sell Toggle - Immediate page load animation */}
+      <PageLoadAnimation delay={0.2}>
         <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
-      </div>
+      </PageLoadAnimation>
 
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
-          <div className="page-transition">
+          {/* Categories Section - Immediate page load animation */}
+          <PageLoadAnimation delay={0.4}>
             <CategoriesSection />
-          </div>
+          </PageLoadAnimation>
+
+          {/* Below the fold sections - animate on scroll */}
           <div className="page-transition">
             <RecentlyListedSectionClient products={products} />
           </div>
