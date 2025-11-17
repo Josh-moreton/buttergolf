@@ -1,26 +1,31 @@
 "use client";
 
-import { useLayoutEffect, useRef, ReactNode } from "react";
+import { useLayoutEffect, useRef, CSSProperties } from "react";
 import { gsap } from "gsap";
 
 interface ScaleBounceHeroProps {
     text: string;
     delay?: number;
     className?: string;
-    children?: ReactNode;
+    style?: CSSProperties;
+    /** Accessibility label for screen readers (uses text if not provided) */
+    ariaLabel?: string;
 }
 
 /**
  * Scale + bounce animation for hero sections
  * Desktop only - shows text immediately on mobile/app
  *
- * Fun and playful elastic bounce effect
+ * Fun and playful elastic bounce effect.
+ * Handles text rendering internally - no need to pass children.
+ * Add styling via className or style props.
  */
 export function ScaleBounceHero({
     text,
     delay = 0,
     className,
-    children,
+    style,
+    ariaLabel,
 }: ScaleBounceHeroProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +75,7 @@ export function ScaleBounceHero({
         return () => {
             ctx.revert();
         };
-    }, [text, delay]);
+    }, [delay]); // Removed 'text' - not used in effect logic
 
     return (
         <div
@@ -80,9 +85,11 @@ export function ScaleBounceHero({
                 opacity: 0,
                 transformOrigin: "center",
                 willChange: "transform, opacity",
+                ...style,
             }}
+            aria-label={ariaLabel || text}
         >
-            {children || text}
+            {text}
         </div>
     );
 }

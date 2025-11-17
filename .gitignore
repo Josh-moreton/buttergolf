@@ -42,5 +42,9 @@ yarn-error.log*
 .DS_Store
 *.pem
 
+# Generated sitemaps (should be built at deploy time)
+apps/web/public/sitemap*.xml
+apps/web/public/robots.txt
+
 # Audit Reports
 TAMAGUI_AUDIT_REPORT.json
