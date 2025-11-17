@@ -130,7 +130,7 @@ export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
                     borderRadius="$md"
                     hoverStyle={{ backgroundColor: "$backgroundHover" }}
                   >
-                    <Text size="$3" weight="medium" whiteSpace="nowrap">
+                    <Text size="$3" weight="medium">
                       {menuItem.title}
                     </Text>
                   </Row>

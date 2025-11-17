@@ -251,7 +251,6 @@ export function ButterHeader() {
                   hoverStyle={{
                     fontWeight: "600",
                   }}
-                  whiteSpace="nowrap"
                 >
                   {category.name}
                 </Text>

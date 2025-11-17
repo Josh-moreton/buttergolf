@@ -216,7 +216,7 @@ export function ProductInformation({
                 <Text size="$3" color="$ironstone" weight="bold">
                     Product Description
                 </Text>
-                <Text size="$3" color="$ironstone" lineHeight={1.6} whiteSpace="pre-wrap">
+                <Text size="$3" color="$ironstone" lineHeight={1.6}>
                     {product.description}
                 </Text>
             </Column>
