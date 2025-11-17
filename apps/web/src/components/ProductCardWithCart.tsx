@@ -42,7 +42,7 @@ export function ProductCardWithCart({
             display="flex"
             flexDirection="column"
         >
-            <Card.Header padding={0} noBorder {...{ style: { position: "relative" } }}>
+            <Card.Header padding={0} noBorder position="relative">
                 <div
                     onClick={handleCardClick}
                     style={{ cursor: "pointer" }}
@@ -77,7 +77,10 @@ export function ProductCardWithCart({
                     <Badge
                         variant="success"
                         size="sm"
-                        {...{ style: { position: "absolute", top: 8, right: 8, zIndex: 10 } }}
+                        position="absolute"
+                        top={8}
+                        right={8}
+                        zIndex={10}
                     >
                         <Text>NEW</Text>
                     </Badge>

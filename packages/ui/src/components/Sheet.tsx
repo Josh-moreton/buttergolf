@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 const SheetOverlay = styled(Stack, {
   name: "SheetOverlay",
-  tag: "div" as any,
-  position: "fixed" as any,
+  tag: "div" as any, // Web-only
+  position: "fixed" as any, // Web-only: React Native doesn't support fixed
   top: 0,
   left: 0,
   right: 0,
@@ -27,8 +27,8 @@ const SheetOverlay = styled(Stack, {
 
 const SheetContent = styled(Stack, {
   name: "SheetContent",
-  tag: "div" as any,
-  position: "fixed" as any,
+  tag: "div" as any, // Web-only
+  position: "fixed" as any, // Web-only: React Native doesn't support fixed
   bottom: 0,
   left: 0,
   right: 0,
@@ -76,9 +76,9 @@ const SheetHeader = styled(Stack, {
 
 const SheetBody = styled(Stack, {
   name: "SheetBody",
-  tag: "div" as any,
+  tag: "div" as any, // Web-only
   flex: 1,
-  overflow: "auto" as any,
+  overflow: "auto" as any, // Web-only: React Native overflow is different
   paddingHorizontal: "$4",
   paddingVertical: "$4",
 });

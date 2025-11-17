@@ -30,7 +30,7 @@ export function MarketplaceHeader() {
 
   return (
     <Column
-      {...{ style: { position: "fixed" } }}
+      position="fixed"
       top={60}
       left={0}
       right={0}
@@ -173,13 +173,13 @@ export function MarketplaceHeader() {
                 minHeight={44}
                 alignItems="center"
                 justifyContent="center"
-                {...{ style: { background: "none", border: "none" } }}
+                backgroundColor="transparent"
+                borderWidth={0}
                 onPress={() => {
                   setAuthMode("sign-in");
                   setAuthOpen(true);
                 }}
                 aria-label="Sign in"
-                style={{ background: "none", border: "none" }}
               >
                 <UserIcon />
               </Row>
@@ -259,8 +259,9 @@ export function MarketplaceHeader() {
               minHeight={44}
               alignItems="center"
               justifyContent="center"
+              backgroundColor="transparent"
+              borderWidth={0}
               onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
-              {...{ style: { background: "none", border: "none" } }}
               aria-label="Menu"
             >
               <MenuIcon />

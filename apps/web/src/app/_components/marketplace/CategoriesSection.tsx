@@ -67,7 +67,7 @@ export function CategoriesSection() {
       width="100%"
       paddingVertical="$2xl"
       backgroundColor="$surface"
-      {...{ style: { overflow: "hidden" } }}
+      overflow="hidden"
     >
       <Column
         maxWidth={1200}

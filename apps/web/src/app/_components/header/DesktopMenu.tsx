@@ -50,8 +50,9 @@ export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
                     paddingVertical="$2"
                     paddingHorizontal="$3"
                     borderRadius="$md"
+                    backgroundColor="transparent"
+                    borderWidth={0}
                     hoverStyle={{ backgroundColor: "$backgroundHover" }}
-                    {...{ style: { background: "none", border: "none" } }}
                   >
                     <Text size="sm" weight="medium" whiteSpace="nowrap">
                       {menuItem.title}

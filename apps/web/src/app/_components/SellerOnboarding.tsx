@@ -98,10 +98,10 @@ export function SellerOnboarding({
 
   if (loading) {
     return (
-      <Card variant="elevated" {...{ padding: "$xl" as any }}>
+      <Card variant="elevated" padding="$xl">
         <Column gap="$md" align="center">
           <Spinner size="lg" color="$primary" />
-          <Text {...{ color: "secondary" as any }}>
+          <Text color="$textSecondary">
             Initializing seller onboarding...
           </Text>
         </Column>
@@ -111,13 +111,13 @@ export function SellerOnboarding({
 
   if (error) {
     return (
-      <Card variant="elevated" {...{ padding: "$xl" as any }}>
+      <Card variant="elevated" padding="$xl">
         <Column gap="$lg">
           <Column gap="$sm">
-            <Heading level={3} {...{ color: "$error" as any }}>
+            <Heading level={3} color="$error">
               Onboarding Error
             </Heading>
-            <Text {...{ color: "secondary" as any }}>{error}</Text>
+            <Text color="$textSecondary">{error}</Text>
           </Column>
           <Row gap="$md">
             <Button
@@ -141,8 +141,8 @@ export function SellerOnboarding({
 
   if (!stripeConnectInstance) {
     return (
-      <Card variant="elevated" {...{ padding: "$xl" as any }}>
-        <Text {...{ color: "$error" as any }}>
+      <Card variant="elevated" padding="$xl">
+        <Text color="$error">
           Failed to load Stripe Connect
         </Text>
       </Card>
@@ -153,7 +153,7 @@ export function SellerOnboarding({
     <Column gap="$lg" fullWidth>
       <Column gap="$sm">
         <Heading level={2}>Become a Seller</Heading>
-        <Text {...{ color: "secondary" as any }}>
+        <Text color="$textSecondary">
           Complete the onboarding process to start selling golf equipment on
           ButterGolf. This should only take a few minutes.
         </Text>
@@ -165,11 +165,11 @@ export function SellerOnboarding({
             console.log("User exited onboarding");
             onExit?.();
           }}
-          // CollectionOptions determine what information to collect
-          // collectionOptions={{
-          //   fields: 'eventually_due', // Collect all eventually_due requirements
-          //   futureRequirements: 'include', // Include future requirements
-          // }}
+        // CollectionOptions determine what information to collect
+        // collectionOptions={{
+        //   fields: 'eventually_due', // Collect all eventually_due requirements
+        //   futureRequirements: 'include', // Include future requirements
+        // }}
         />
       </ConnectComponentsProvider>
 

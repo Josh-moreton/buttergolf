@@ -38,7 +38,7 @@ export function Autocomplete({
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
-    const debounceRef = useRef<NodeJS.Timeout>()
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
     // Fetch suggestions with debounce
     const fetchSuggestionsDebounced = useCallback(
@@ -140,7 +140,7 @@ export function Autocomplete({
                 ref={inputRef as any}
                 value={value}
                 onChangeText={handleInputChange}
-                onKeyDown={handleKeyDown as any}
+                {...({ onKeyDown: handleKeyDown } as any)}
                 placeholder={placeholder}
                 autoComplete="off"
                 {...inputProps}
@@ -156,7 +156,7 @@ export function Autocomplete({
                     right={0}
                     marginTop="$xs"
                     maxHeight={300}
-                    overflow="auto"
+                    {...({ overflow: "auto" } as any)}
                     zIndex={1000}
                     padding="$0"
                     backgroundColor="$surface"
