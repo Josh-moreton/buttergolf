@@ -25,7 +25,7 @@ export default function MarketplaceHomeClient({
     <Column>
       {/* Hero - No animation class, should be immediately visible */}
       <HeroStatic />
-      
+
       <div className="page-transition">
         <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
       </div>
