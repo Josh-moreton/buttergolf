@@ -62,6 +62,7 @@ export default function CartPage() {
                                     height={80}
                                     borderRadius="$md"
                                     objectFit="cover"
+                                    alt={item.title}
                                 />
                                 <Column flex={1} gap="$2">
                                     <Text size="$4" weight="semibold">

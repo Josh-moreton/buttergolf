@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Column, Text, Heading, Button, Card, Spinner, Row } from "@buttergolf/ui";
 import Link from "next/link";
 
@@ -16,7 +16,6 @@ interface OrderDetails {
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const paymentIntentId = searchParams.get("payment_intent");
 
   const [order, setOrder] = useState<OrderDetails | null>(null);

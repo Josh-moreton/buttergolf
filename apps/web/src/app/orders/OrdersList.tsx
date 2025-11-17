@@ -36,7 +36,6 @@ interface Order {
 
 interface OrdersListProps {
   orders: Order[]
-  userId: string
 }
 
 const STATUS_COLORS: Record<ShipmentStatus, string> = {
@@ -61,7 +60,7 @@ const STATUS_LABELS: Record<ShipmentStatus, string> = {
   CANCELLED: 'Cancelled',
 }
 
-export function OrdersList({ orders, userId }: OrdersListProps) {
+export function OrdersList({ orders }: Readonly<OrdersListProps>) {
   const [filter, setFilter] = useState<'all' | 'buyer' | 'seller'>('all')
 
   const filteredOrders = orders.filter(order => {
@@ -75,31 +74,28 @@ export function OrdersList({ orders, userId }: OrdersListProps) {
       <div className="flex gap-2 border-b">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 font-medium ${
-            filter === 'all'
-              ? 'border-b-2 border-blue-500 text-blue-600'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
+          className={`px-4 py-2 font-medium ${filter === 'all'
+            ? 'border-b-2 border-blue-500 text-blue-600'
+            : 'text-gray-600 hover:text-gray-800'
+            }`}
         >
           All Orders ({orders.length})
         </button>
         <button
           onClick={() => setFilter('buyer')}
-          className={`px-4 py-2 font-medium ${
-            filter === 'buyer'
-              ? 'border-b-2 border-blue-500 text-blue-600'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
+          className={`px-4 py-2 font-medium ${filter === 'buyer'
+            ? 'border-b-2 border-blue-500 text-blue-600'
+            : 'text-gray-600 hover:text-gray-800'
+            }`}
         >
           Purchases ({orders.filter(o => o.userRole === 'buyer').length})
         </button>
         <button
           onClick={() => setFilter('seller')}
-          className={`px-4 py-2 font-medium ${
-            filter === 'seller'
-              ? 'border-b-2 border-blue-500 text-blue-600'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
+          className={`px-4 py-2 font-medium ${filter === 'seller'
+            ? 'border-b-2 border-blue-500 text-blue-600'
+            : 'text-gray-600 hover:text-gray-800'
+            }`}
         >
           Sales ({orders.filter(o => o.userRole === 'seller').length})
         </button>
@@ -157,9 +153,8 @@ export function OrdersList({ orders, userId }: OrdersListProps) {
                         ${order.amountTotal.toFixed(2)}
                       </p>
                       <span
-                        className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${
-                          STATUS_COLORS[order.shipmentStatus]
-                        }`}
+                        className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${STATUS_COLORS[order.shipmentStatus]
+                          }`}
                       >
                         {STATUS_LABELS[order.shipmentStatus]}
                       </span>
