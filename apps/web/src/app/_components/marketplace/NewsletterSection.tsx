@@ -13,11 +13,11 @@ export function NewsletterSection() {
         gap="$lg"
         alignItems="center"
       >
-        <Column gap="$sm" alignItems="center" textAlign="center">
-          <Text fontSize="$8" weight="bold" color="$text">
+        <Column gap="$sm" alignItems="center">
+          <Text fontSize="$8" weight="bold" color="$text" textAlign="center">
             Don&apos;t miss deals
           </Text>
-          <Text color="$textSecondary" fontSize="$5">
+          <Text color="$textSecondary" fontSize="$5" textAlign="center">
             Get the latest listings and price drops in your inbox
           </Text>
         </Column>
@@ -40,7 +40,7 @@ export function NewsletterSection() {
             tone="primary"
             borderRadius="$full"
             paddingHorizontal="$6"
-            whiteSpace="nowrap"
+            {...{ style: { whiteSpace: 'nowrap' } }}
           >
             Subscribe
           </Button>

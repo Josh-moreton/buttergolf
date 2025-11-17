@@ -2106,6 +2106,24 @@ await mcp_upstash_conte_get-library-docs({
 7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
 8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
 
+### Common React/Tamagui Errors to Avoid
+
+9. **NEVER pass DOM-only props to Tamagui components** - Props like `textAlign`, `whiteSpace`, `cursor` are CSS properties, not React props
+   - ❌ WRONG: `<Column textAlign="center">` → React error
+   - ✅ CORRECT: `<Text textAlign="center">` or `<Column {...{ style: { textAlign: 'center' } }}>`
+   - ❌ WRONG: `<Button whiteSpace="nowrap">` → React error
+   - ✅ CORRECT: `<Button {...{ style: { whiteSpace: 'nowrap' } }}>`
+
+10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
+    - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
+    - ✅ CORRECT: `availableBrands={availableFilters?.availableBrands || []}`
+    - Apply to all nested property access: `data?.category?.name || 'Default'`
+
+11. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
+    - ❌ WRONG: `params.slug` → Runtime error in Next.js 15+
+    - ✅ CORRECT: `const resolvedParams = await params; resolvedParams.slug`
+    - Update Props interface: `params: Promise<{ slug: string }>` not `params: { slug: string }`
+
 ### Understanding Variants vs Direct Token Props
 
 **CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:

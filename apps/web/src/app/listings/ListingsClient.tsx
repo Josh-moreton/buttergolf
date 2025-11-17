@@ -334,8 +334,8 @@ export function ListingsClient({
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
-              availableBrands={availableFilters.availableBrands}
-              priceRange={availableFilters.priceRange}
+              availableBrands={availableFilters?.availableBrands || []}
+              priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
               onChange={handleFilterChange}
               onClearAll={handleClearAll}
             />
@@ -358,8 +358,8 @@ export function ListingsClient({
           open={mobileFilterOpen}
           onOpenChange={setMobileFilterOpen}
           filters={filters}
-          availableBrands={availableFilters.availableBrands}
-          priceRange={availableFilters.priceRange}
+          availableBrands={availableFilters?.availableBrands || []}
+          priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
           onChange={handleFilterChange}
           onClearAll={handleClearAll}
           onApply={() => fetchProducts(1)}
