@@ -38,9 +38,8 @@ export function NewsletterSection() {
           <Button
             size="lg"
             tone="primary"
-            borderRadius="$full"
-            paddingHorizontal="$6"
-            {...{ style: { whiteSpace: 'nowrap' } }}
+            width={180}
+            whiteSpace="nowrap"
           >
             Subscribe
           </Button>

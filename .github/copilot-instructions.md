@@ -2108,11 +2108,16 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Common React/Tamagui Errors to Avoid
 
-9. **NEVER pass DOM-only props to Tamagui components** - Props like `textAlign`, `whiteSpace`, `cursor` are CSS properties, not React props
-   - ❌ WRONG: `<Column textAlign="center">` → React error
-   - ✅ CORRECT: `<Text textAlign="center">` or `<Column {...{ style: { textAlign: 'center' } }}>`
-   - ❌ WRONG: `<Button whiteSpace="nowrap">` → React error
-   - ✅ CORRECT: `<Button {...{ style: { whiteSpace: 'nowrap' } }}>`
+9. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
+   - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
+   - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
+   - ❌ WRONG: Wrapping text props in style object on wrong component types
+   - ✅ CORRECT: Apply text styling props (textAlign, whiteSpace, etc.) directly to Text/Button components
+
+   **Tamagui Component Inheritance**:
+   - Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor, etc.
+   - Text extends SizableText → inherits text props like textAlign, whiteSpace, etc.
+   - The escape hatch `{...{ style: {...} }}` should ONLY be used for non-React properties or edge cases, NOT for standard CSS properties the component already supports
 
 10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
     - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
