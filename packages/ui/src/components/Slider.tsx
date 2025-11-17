@@ -1,11 +1,11 @@
 "use client";
 
 import { styled, GetProps, Stack } from "tamagui";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 const SliderContainer = styled(Stack, {
   name: "SliderContainer",
-  tag: "div" as any,
+  tag: "div" as 'div',
   width: "100%",
   paddingVertical: "$3",
   position: "relative",
@@ -13,7 +13,7 @@ const SliderContainer = styled(Stack, {
 
 const SliderTrack = styled(Stack, {
   name: "SliderTrack",
-  tag: "div" as any,
+  tag: "div" as 'div',
   height: 4,
   backgroundColor: "$border",
   borderRadius: "$full",
@@ -23,7 +23,7 @@ const SliderTrack = styled(Stack, {
 
 const SliderRange = styled(Stack, {
   name: "SliderRange",
-  tag: "div" as any,
+  tag: "div" as 'div',
   position: "absolute",
   height: "100%",
   backgroundColor: "$primary",
@@ -32,7 +32,7 @@ const SliderRange = styled(Stack, {
 
 const SliderThumb = styled(Stack, {
   name: "SliderThumb",
-  tag: "div" as any,
+  tag: "div" as 'div',
   width: 20,
   height: 20,
   borderRadius: "$full",
@@ -92,7 +92,7 @@ export function Slider({
     return ((val - min) / (max - min)) * 100;
   };
 
-  const getValueFromPosition = (clientX: number) => {
+  const getValueFromPosition = useCallback((clientX: number) => {
     if (!trackRef.current) return min;
 
     const rect = trackRef.current.getBoundingClientRect();
@@ -100,9 +100,9 @@ export function Slider({
     const rawValue = min + percentage * (max - min);
     const steppedValue = Math.round(rawValue / step) * step;
     return Math.max(min, Math.min(max, steppedValue));
-  };
+  }, [min, max, step]);
 
-  const updateValue = (thumbIndex: number, newValue: number) => {
+  const updateValue = useCallback((thumbIndex: number, newValue: number) => {
     const newValues = [...value];
 
     if (thumbIndex === 0) {
@@ -116,9 +116,9 @@ export function Slider({
     }
 
     onChange?.(newValues);
-  };
+  }, [value, max, min, isControlled, onChange]);
 
-  const handleMouseDown = (thumbIndex: number) => (e: any) => {
+  const handleMouseDown = (thumbIndex: number) => (e: React.MouseEvent) => {
     if (disabled) return;
     e.preventDefault();
     setActiveThumb(thumbIndex);
@@ -143,12 +143,14 @@ export function Slider({
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [activeThumb, disabled]);
+  }, [activeThumb, disabled, getValueFromPosition, updateValue]);
 
-  const handleTrackClick = (e: any) => {
+  const handleTrackClick = (e: unknown) => {
     if (disabled || activeThumb !== null) return;
 
-    const newValue = getValueFromPosition(e.clientX);
+    // Cast to access clientX for web events
+    const mouseEvent = e as React.MouseEvent;
+    const newValue = getValueFromPosition(mouseEvent.clientX);
     const distToMin = Math.abs(newValue - (minValue ?? min));
     const distToMax = Math.abs(newValue - (maxValue ?? max));
 

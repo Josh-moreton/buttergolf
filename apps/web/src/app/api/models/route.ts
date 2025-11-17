@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@buttergolf/db'
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma, Prisma, ClubKind } from '@buttergolf/db'
 
 /**
  * GET /api/models?brandId=xxx&query=apex&kind=DRIVER
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url)
         const brandId = searchParams.get('brandId')
         const query = searchParams.get('query')?.toLowerCase() || ''
-        const kind = searchParams.get('kind') as any // ClubKind enum value
+        const kind = searchParams.get('kind') as ClubKind | null
 
         if (!brandId) {
             return NextResponse.json(
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
         }
 
         // Build where clause
-        const where: any = {
+        const where: Prisma.ClubModelWhereInput = {
             brandId,
         }
 

@@ -1,10 +1,10 @@
 import { headers } from 'next/headers'
-import { NextResponse } from 'next/server'
-import { prisma } from '@buttergolf/db'
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma, Prisma, ShipmentStatus, OrderStatus } from '@buttergolf/db'
 import crypto from 'crypto'
 
 // EasyPost webhook events we care about
-type EasyPostEvent = 
+type EasyPostEvent =
   | 'tracker.created'
   | 'tracker.updated'
   | 'shipment.created'
@@ -43,7 +43,7 @@ interface EasyPostWebhookPayload {
 // Map EasyPost status to our ShipmentStatus enum
 function mapEasyPostStatus(status: string, statusDetail: string): string {
   const statusLower = status.toLowerCase()
-  
+
   if (statusLower === 'pre_transit') return 'PRE_TRANSIT'
   if (statusLower === 'in_transit') return 'IN_TRANSIT'
   if (statusLower === 'out_for_delivery') return 'OUT_FOR_DELIVERY'
@@ -51,12 +51,12 @@ function mapEasyPostStatus(status: string, statusDetail: string): string {
   if (statusLower === 'returned') return 'RETURNED'
   if (statusLower === 'failure') return 'FAILED'
   if (statusLower === 'cancelled') return 'CANCELLED'
-  
+
   // Default to IN_TRANSIT for unknown statuses that aren't errors
   if (statusLower === 'available_for_pickup' || statusLower === 'return_to_sender') {
     return 'IN_TRANSIT'
   }
-  
+
   return 'PENDING'
 }
 
@@ -74,13 +74,13 @@ function verifyWebhookSignature(payload: string, signature: string, secret: stri
     const hmac = crypto.createHmac('sha256', secret)
     hmac.update(payload)
     const computedSignature = hmac.digest('hex')
-    
+
     // Handle potential format variations
     // Some webhooks send "sha256=<hash>", others just "<hash>"
-    const signatureToVerify = signature.startsWith('sha256=') 
-      ? signature.substring(7) 
+    const signatureToVerify = signature.startsWith('sha256=')
+      ? signature.substring(7)
       : signature
-    
+
     return crypto.timingSafeEqual(
       Buffer.from(signatureToVerify),
       Buffer.from(computedSignature)
@@ -93,14 +93,14 @@ function verifyWebhookSignature(payload: string, signature: string, secret: stri
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.EASYPOST_WEBHOOK_SECRET
-  
+
   try {
     const body = await req.text()
     const headerPayload = await headers()
-    
+
     // EasyPost sends signature in X-EasyPost-Webhook-Signature header
     const signature = headerPayload.get('x-easypost-webhook-signature')
-    
+
     // Verify signature if webhook secret is configured
     if (WEBHOOK_SECRET && signature) {
       const isValid = verifyWebhookSignature(body, signature, WEBHOOK_SECRET)
@@ -114,7 +114,7 @@ export async function POST(req: Request) {
     }
 
     const payload: EasyPostWebhookPayload = JSON.parse(body)
-    
+
     console.log('EasyPost webhook event received:', {
       id: payload.id,
       description: payload.description,
@@ -146,11 +146,11 @@ export async function POST(req: Request) {
       }
 
       // Map EasyPost status to our enum
-      const shipmentStatus = mapEasyPostStatus(tracker.status, tracker.status_detail)
-      const orderStatus = mapToOrderStatus(shipmentStatus)
+      const shipmentStatus = mapEasyPostStatus(tracker.status, tracker.status_detail) as ShipmentStatus
+      const orderStatus = mapToOrderStatus(shipmentStatus) as OrderStatus
 
       // Prepare update data
-      const updateData: any = {
+      const updateData: Prisma.OrderUpdateInput = {
         shipmentStatus,
         status: orderStatus,
         updatedAt: new Date(),
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
       // Update delivered timestamp if delivered
       if (shipmentStatus === 'DELIVERED') {
         updateData.deliveredAt = new Date()
-        
+
         // Find the latest tracking detail with delivered status
         const deliveredDetail = tracker.tracking_details?.find(
           detail => detail.status.toLowerCase() === 'delivered'
@@ -177,12 +177,12 @@ export async function POST(req: Request) {
       // Update shipped timestamp if in transit for the first time
       if (shipmentStatus === 'IN_TRANSIT' && !order.shippedAt) {
         updateData.shippedAt = new Date()
-        
+
         // Find the earliest in_transit tracking detail
         const inTransitDetail = tracker.tracking_details
           ?.filter(detail => detail.status.toLowerCase() === 'in_transit')
           ?.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime())[0]
-        
+
         if (inTransitDetail?.datetime) {
           updateData.shippedAt = new Date(inTransitDetail.datetime)
         }
@@ -205,7 +205,7 @@ export async function POST(req: Request) {
       // - Buyer: Package is in transit / delivered
       // - Seller: Package was picked up
 
-      return NextResponse.json({ 
+      return NextResponse.json({
         received: true,
         orderId: order.id,
         status: shipmentStatus,

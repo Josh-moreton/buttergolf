@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@buttergolf/db";
+import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 
 export async function GET(request: NextRequest) {
@@ -12,7 +12,9 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build where clause
-    const where: any = { isSold: false };
+    const where: Prisma.ProductWhereInput = {
+      isSold: false,
+    };
 
     // Category filter (slug)
     const category = searchParams.get("category");
@@ -21,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Condition filter (multiple)
-    const conditions = searchParams.getAll("condition");
+    const conditions = searchParams.getAll("condition") as ProductCondition[];
     if (conditions.length > 0) {
       where.condition = { in: conditions };
     }
@@ -39,7 +41,7 @@ export async function GET(request: NextRequest) {
     // Brand filter (multiple)
     const brands = searchParams.getAll("brand");
     if (brands.length > 0) {
-      where.brand = { in: brands };
+      where.brandId = { in: brands };
     }
 
     // Search query
@@ -48,14 +50,15 @@ export async function GET(request: NextRequest) {
       where.OR = [
         { title: { contains: query, mode: "insensitive" } },
         { description: { contains: query, mode: "insensitive" } },
-        { brand: { contains: query, mode: "insensitive" } },
         { model: { contains: query, mode: "insensitive" } },
+        { brand: { name: { contains: query, mode: "insensitive" } } },
       ];
     }
 
     // Sort options
     const sort = searchParams.get("sort") || "newest";
-    let orderBy: any = { createdAt: "desc" };
+    // Default sort
+    let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
 
     switch (sort) {
       case "price-asc":
@@ -65,7 +68,7 @@ export async function GET(request: NextRequest) {
         orderBy = { price: "desc" };
         break;
       case "popular":
-        orderBy = [{ views: "desc" }, { favorites: "desc" }];
+        orderBy = { views: "desc" };
         break;
       case "newest":
       default:

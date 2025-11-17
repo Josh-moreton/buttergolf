@@ -139,7 +139,7 @@ export function ProductDetailScreen({
 
           {/* Description */}
           {product.description && (
-            <Card variant="outlined" {...{ padding: "md" as any }}>
+            <Card variant="outlined" padding="$md">
               <Column gap="$2">
                 <Text fontSize="$5" weight="semibold">
                   Description
@@ -150,7 +150,7 @@ export function ProductDetailScreen({
           )}
 
           {/* Seller Info */}
-          <Card variant="outlined" {...{ padding: "md" as any }}>
+          <Card variant="outlined" padding="$md">
             <Column gap="$2">
               <Text fontSize="$5" weight="semibold">
                 Seller
@@ -201,7 +201,7 @@ export function ProductDetailScreen({
             Contact Seller
           </Button>
         </Column>
-      </Column>
-    </ScrollView>
+      </Column >
+    </ScrollView >
   );
 }

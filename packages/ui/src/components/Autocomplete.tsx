@@ -5,7 +5,7 @@ import type { InputProps } from '@buttergolf/ui'
 export interface AutocompleteSuggestion {
     id: string | null
     name: string
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>
 }
 
 export interface AutocompleteProps extends Omit<InputProps, 'value' | 'onChangeText'> {
@@ -37,7 +37,6 @@ export function Autocomplete({
     const [loading, setLoading] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const containerRef = useRef<HTMLDivElement>(null)
-    const inputRef = useRef<HTMLInputElement>(null)
     const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
     // Fetch suggestions with debounce
@@ -135,12 +134,11 @@ export function Autocomplete({
     }, [])
 
     return (
-        <Column ref={containerRef as any} position="relative" width="100%">
+        <Column ref={containerRef} position="relative" width="100%">
             <Input
-                ref={inputRef as any}
                 value={value}
                 onChangeText={handleInputChange}
-                {...({ onKeyDown: handleKeyDown } as any)}
+                {...({ onKeyDown: handleKeyDown } as { onKeyDown: React.KeyboardEventHandler })}
                 placeholder={placeholder}
                 autoComplete="off"
                 {...inputProps}
@@ -156,7 +154,7 @@ export function Autocomplete({
                     right={0}
                     marginTop="$xs"
                     maxHeight={300}
-                    {...({ overflow: "auto" } as any)}
+                    style={{ overflow: "auto" }}
                     zIndex={1000}
                     padding="$0"
                     backgroundColor="$surface"

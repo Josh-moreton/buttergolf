@@ -48,4 +48,7 @@ const prisma: PrismaClient = (() => {
 })()
 
 export { prisma }
+// Re-export Prisma types for type-safe database queries
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+export type { Prisma, ClubKind, ProductCondition, ShipmentStatus, OrderStatus, OfferStatus } from '@prisma/client'
 export * from '@buttergolf/constants'

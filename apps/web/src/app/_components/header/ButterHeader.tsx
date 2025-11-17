@@ -29,11 +29,7 @@ export function ButterHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [mounted, setMounted] = useState(true);
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -255,7 +251,6 @@ export function ButterHeader() {
                   hoverStyle={{
                     fontWeight: "600",
                   }}
-                  whiteSpace="nowrap"
                 >
                   {category.name}
                 </Text>
