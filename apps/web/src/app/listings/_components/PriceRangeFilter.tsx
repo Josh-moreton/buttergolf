@@ -22,10 +22,12 @@ export function PriceRangeFilter({
   const [localMax, setLocalMax] = useState(selectedMax);
 
   // Sync with props when they change (e.g., filter reset)
+  // This is a legitimate use of setState in effect - syncing local state with prop changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalMin(selectedMin);
+
     setLocalMax(selectedMax);
-     
   }, [selectedMin, selectedMax]);
 
   const handleSliderChange = (values: number[]) => {

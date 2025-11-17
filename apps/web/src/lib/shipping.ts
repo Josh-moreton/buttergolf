@@ -146,14 +146,14 @@ export async function calculateShippingRates(
 
             // Process rates
             const rates: ShippingRate[] = shipment.rates
-                .filter((rate: any) => rate.rate && Number.parseFloat(rate.rate) > 0)
+                .filter((rate) => rate.rate && Number.parseFloat(rate.rate) > 0)
                 .slice(0, 5) // Limit to 5 options
-                .map((rate: any) => ({
+                .map((rate) => ({
                     carrier: rate.carrier || "Unknown",
                     service: rate.service || "Standard",
                     rate: Math.ceil(Number.parseFloat(rate.rate) * 100).toString(), // Convert to cents and round up
                     rateDisplay: `$${(Math.ceil(Number.parseFloat(rate.rate) * 100) / 100).toFixed(2)}`,
-                    estimatedDays: rate.est_delivery_days || 5,
+                    estimatedDays: rate.delivery_days || 5,
                     deliveryDate: rate.delivery_date || undefined,
                     id: rate.id,
                 }));
