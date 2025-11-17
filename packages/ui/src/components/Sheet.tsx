@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 const SheetOverlay = styled(Stack, {
   name: "SheetOverlay",
-  tag: "div" as any, // Web-only
-  position: "fixed" as any, // Web-only: React Native doesn't support fixed
+  tag: "div" as 'div', // Web-only
+  // Use style prop for position: fixed (web-only CSS)
   top: 0,
   left: 0,
   right: 0,
@@ -27,8 +27,8 @@ const SheetOverlay = styled(Stack, {
 
 const SheetContent = styled(Stack, {
   name: "SheetContent",
-  tag: "div" as any, // Web-only
-  position: "fixed" as any, // Web-only: React Native doesn't support fixed
+  tag: "div" as 'div', // Web-only
+  // Use style prop for position: fixed (web-only CSS)
   bottom: 0,
   left: 0,
   right: 0,
@@ -54,7 +54,7 @@ const SheetContent = styled(Stack, {
 
 const SheetHandle = styled(Stack, {
   name: "SheetHandle",
-  tag: "div" as any,
+  tag: "div" as 'div',
   width: 40,
   height: 4,
   backgroundColor: "$border",
@@ -66,7 +66,7 @@ const SheetHandle = styled(Stack, {
 
 const SheetHeader = styled(Stack, {
   name: "SheetHeader",
-  tag: "div" as any,
+  tag: "div" as 'div',
   paddingHorizontal: "$4",
   paddingVertical: "$3",
   borderBottomWidth: 1,
@@ -76,16 +76,16 @@ const SheetHeader = styled(Stack, {
 
 const SheetBody = styled(Stack, {
   name: "SheetBody",
-  tag: "div" as any, // Web-only
+  tag: "div" as 'div', // Web-only
   flex: 1,
-  overflow: "auto" as any, // Web-only: React Native overflow is different
+  // Use style prop for overflow: auto (web-only CSS)
   paddingHorizontal: "$4",
   paddingVertical: "$4",
 });
 
 const SheetFooter = styled(Stack, {
   name: "SheetFooter",
-  tag: "div" as any,
+  tag: "div" as 'div',
   paddingHorizontal: "$4",
   paddingVertical: "$4",
   borderTopWidth: 1,
@@ -127,8 +127,8 @@ export function Sheet({ open = false, onOpenChange, children }: SheetProps) {
 
   return (
     <>
-      <SheetOverlay open={isOpen} onPress={handleClose} />
-      <SheetContent open={isOpen}>{children}</SheetContent>
+      <SheetOverlay open={isOpen} onPress={handleClose} style={{ position: "fixed" }} />
+      <SheetContent open={isOpen} style={{ position: "fixed" }}>{children}</SheetContent>
     </>
   );
 }

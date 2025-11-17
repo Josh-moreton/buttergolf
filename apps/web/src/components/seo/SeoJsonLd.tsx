@@ -1,11 +1,11 @@
 import React from 'react';
 
-type Json = Record<string, any>;
+type Json = Record<string, unknown>;
 
 /**
  * Component for injecting structured data (JSON-LD) into the page.
  * Used for SEO and enabling rich results in search engines.
- * 
+ *
  * @example
  * ```tsx
  * <SeoJsonLd data={{
@@ -17,7 +17,7 @@ type Json = Record<string, any>;
  */
 export function SeoJsonLd({ data }: { data: Json | Json[] }) {
   const payload = Array.isArray(data) ? data : [data];
-  
+
   return (
     <script
       type="application/ld+json"

@@ -18,7 +18,7 @@ export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paymentIntentId = searchParams.get("payment_intent");
-  
+
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,11 +34,11 @@ export default function CheckoutSuccessPage() {
     const fetchOrder = async () => {
       try {
         const response = await fetch(`/api/orders/by-payment-intent/${paymentIntentId}`);
-        
+
         if (!response.ok) {
           throw new Error("Failed to fetch order details");
         }
-        
+
         const data = await response.json();
         setOrder(data);
       } catch (err) {
@@ -141,19 +141,19 @@ export default function CheckoutSuccessPage() {
                   {order.id.slice(0, 8).toUpperCase()}
                 </Text>
               </Row>
-              
+
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Product</Text>
                 <Text weight="semibold">{order.productTitle}</Text>
               </Row>
-              
+
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Total Paid</Text>
                 <Text weight="bold" size="$6" color="$primary">
                   ${order.amountTotal.toFixed(2)}
                 </Text>
               </Row>
-              
+
               {order.trackingCode && (
                 <>
                   <Row justifyContent="space-between" alignItems="center">
@@ -162,7 +162,7 @@ export default function CheckoutSuccessPage() {
                       {order.trackingCode}
                     </Text>
                   </Row>
-                  
+
                   {order.carrier && (
                     <Row justifyContent="space-between" alignItems="center">
                       <Text color="$textSecondary">Carrier</Text>
@@ -181,16 +181,16 @@ export default function CheckoutSuccessPage() {
             </Text>
             <Column gap="$xs" paddingLeft="$md">
               <Text color="$textSecondary" size="$3">
-                • You'll receive an order confirmation email
+                • You&apos;ll receive an order confirmation email
               </Text>
               <Text color="$textSecondary" size="$3">
                 • The seller will prepare your item for shipping
               </Text>
               <Text color="$textSecondary" size="$3">
-                • You'll get tracking updates via email
+                • You&apos;ll get tracking updates via email
               </Text>
               <Text color="$textSecondary" size="$3">
-                • Track your order anytime in "My Orders"
+                • Track your order anytime in &quot;My Orders&quot;
               </Text>
             </Column>
           </Column>

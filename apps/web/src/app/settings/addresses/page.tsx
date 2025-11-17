@@ -68,12 +68,6 @@ export default function AddressesPage() {
         isDefault: false,
     });
 
-    // Redirect if not signed in
-    if (isLoaded && !isSignedIn) {
-        router.push("/sign-in?redirect=/settings/addresses");
-        return null;
-    }
-
     // Load addresses
     const loadAddresses = async () => {
         try {
@@ -94,6 +88,12 @@ export default function AddressesPage() {
             loadAddresses();
         }
     }, [isSignedIn]);
+
+    // Redirect if not signed in
+    if (isLoaded && !isSignedIn) {
+        router.push("/sign-in?redirect=/settings/addresses");
+        return null;
+    }
 
     const handleSubmit = async () => {
         setError(null);

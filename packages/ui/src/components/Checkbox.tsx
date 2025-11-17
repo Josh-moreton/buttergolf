@@ -3,20 +3,10 @@
 import { styled, GetProps, Stack } from "tamagui";
 import { useState } from "react";
 
-// Base checkbox input (hidden)
-const HiddenCheckbox = styled(Stack, {
-  name: "HiddenCheckbox",
-  tag: "input" as any,
-  position: "absolute",
-  opacity: 0,
-  width: 0,
-  height: 0,
-});
-
 // Visible checkbox box
 const CheckboxBox = styled(Stack, {
   name: "CheckboxBox",
-  tag: "div" as any,
+  tag: "div" as 'div',
   width: 20,
   height: 20,
   borderWidth: 2,
@@ -74,30 +64,12 @@ const CheckboxBox = styled(Stack, {
   },
 });
 
-// Checkmark icon
-const Checkmark = styled(Stack, {
-  name: "Checkmark",
-  tag: "svg" as any,
-  width: 12,
-  height: 12,
-
-  variants: {
-    size: {
-      sm: {
-        width: 10,
-        height: 10,
-      },
-      md: {
-        width: 12,
-        height: 12,
-      },
-      lg: {
-        width: 14,
-        height: 14,
-      },
-    },
-  } as const,
-});
+// Checkmark icon sizes
+const checkmarkSizes = {
+  sm: 10,
+  md: 12,
+  lg: 14,
+} as const;
 
 export interface CheckboxProps {
   checked?: boolean;
@@ -137,27 +109,27 @@ export function Checkbox({
     onChange?.(newChecked);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      handleChange();
+    }
+  };
+
   return (
     <CheckboxBox
       checked={checked}
       disabled={disabled}
       size={size}
       onPress={handleChange}
-      role="checkbox"
       aria-checked={checked}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
-      {...({
-        onKeyDown: (e: any) => {
-          if (e.key === " " || e.key === "Enter") {
-            e.preventDefault();
-            handleChange();
-          }
-        }
-      } as any)}
+      {...({ onKeyDown: handleKeyDown } as { onKeyDown: React.KeyboardEventHandler })}
     >
-      <HiddenCheckbox
-        {...({ type: "checkbox" } as any)}
+      {/* Hidden input for form integration */}
+      <input
+        type="checkbox"
         checked={checked}
         disabled={disabled}
         onChange={() => { }}
@@ -165,21 +137,22 @@ export function Checkbox({
         name={name}
         value={value}
         tabIndex={-1}
+        style={{ position: "absolute", opacity: 0, width: 0, height: 0 }}
       />
       {checked && (
-        <Checkmark
-          size={size}
-          {...({
-            viewBox: "0 0 12 12",
-            fill: "none",
-            stroke: "white",
-            strokeWidth: 2,
-            strokeLinecap: "round",
-            strokeLinejoin: "round"
-          } as any)}
+        <svg
+          width={checkmarkSizes[size]}
+          height={checkmarkSizes[size]}
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="white"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ pointerEvents: "none" }}
         >
           <polyline points="2,6 5,9 10,3" />
-        </Checkmark>
+        </svg>
       )}
     </CheckboxBox>
   );

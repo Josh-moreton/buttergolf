@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { prisma } from "@buttergolf/db";
+import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 import { ListingsClient } from "../../listings/ListingsClient";
 import { getCategoryBySlug } from "@buttergolf/db";
@@ -36,17 +36,17 @@ async function getCategoryListings(
     const skip = (page - 1) * limit;
 
     // Build where clause - start with category filter
-    const where: any = {
+    const where: Prisma.ProductWhereInput = {
         isSold: false,
         category: { slug: categorySlug },
     };
 
     // Condition filter
-    const conditions = Array.isArray(searchParams.condition)
+    const conditions = (Array.isArray(searchParams.condition)
         ? searchParams.condition
         : searchParams.condition
             ? [searchParams.condition]
-            : [];
+            : []) as ProductCondition[];
     if (conditions.length > 0) {
         where.condition = { in: conditions };
     }
@@ -72,12 +72,12 @@ async function getCategoryListings(
             ? [searchParams.brand]
             : [];
     if (brands.length > 0) {
-        where.brand = { in: brands };
+        where.brandId = { in: brands };
     }
 
     // Sort options
     const sort = searchParams.sort || "newest";
-    let orderBy: any = { createdAt: "desc" };
+    let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
 
     switch (sort) {
         case "price-asc":
@@ -87,7 +87,7 @@ async function getCategoryListings(
             orderBy = { price: "desc" };
             break;
         case "popular":
-            orderBy = [{ views: "desc" }, { favorites: "desc" }];
+            orderBy = { views: "desc" };
             break;
         case "newest":
         default:

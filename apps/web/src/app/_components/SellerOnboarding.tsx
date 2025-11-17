@@ -32,12 +32,12 @@ interface SellerOnboardingProps {
  * The embedded component is highly customizable via theming
  */
 export function SellerOnboarding({
-  onComplete,
+  onComplete: _onComplete,
   onExit,
 }: SellerOnboardingProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [stripeConnectInstance, setStripeConnectInstance] = useState<any>(null);
+  const [stripeConnectInstance, setStripeConnectInstance] = useState<ReturnType<typeof loadConnectAndInitialize> | null>(null);
 
   useEffect(() => {
     initializeStripeConnect();
