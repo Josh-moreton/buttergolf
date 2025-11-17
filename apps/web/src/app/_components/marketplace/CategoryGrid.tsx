@@ -14,32 +14,32 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: "clubs",
-    name: "Clubs",
-    label: "CLUBS ON SALE",
+    id: "drivers",
+    name: "Drivers",
+    label: "DRIVERS ON SALE",
     image: imagePaths.clubs.club1,
-    link: "/category/clubs",
+    link: "/category/drivers",
+  },
+  {
+    id: "irons",
+    name: "Irons",
+    label: "IRONS ON SALE",
+    image: imagePaths.clubs.club2,
+    link: "/category/irons",
   },
   {
     id: "bags",
     name: "Bags",
     label: "BAGS ON SALE",
-    image: imagePaths.clubs.club2,
+    image: imagePaths.clubs.club3,
     link: "/category/bags",
   },
   {
-    id: "shoes",
-    name: "Shoes",
-    label: "SHOES ON SALE",
-    image: imagePaths.clubs.club3,
-    link: "/category/shoes",
-  },
-  {
-    id: "clothing",
-    name: "Clothing",
-    label: "CLOTHING ON SALE",
+    id: "accessories",
+    name: "Accessories",
+    label: "ACCESSORIES ON SALE",
     image: imagePaths.clubs.club4,
-    link: "/category/clothing",
+    link: "/category/accessories",
   },
 ];
 

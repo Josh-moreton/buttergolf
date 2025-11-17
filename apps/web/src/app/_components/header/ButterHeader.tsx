@@ -13,14 +13,15 @@ import { AuthModal } from "../auth/AuthModal";
 const NAV_CATEGORIES = [
   { name: "Shop all", href: "/listings" },
   { name: "Drivers", href: "/category/drivers" },
-  { name: "Fairway Woods", href: "/category/fairway-woods" },
   { name: "Irons", href: "/category/irons" },
   { name: "Wedges", href: "/category/wedges" },
   { name: "Putters", href: "/category/putters" },
-  { name: "Hybrids", href: "/category/hybrids" },
-  { name: "Shoes", href: "/category/shoes" },
+  { name: "Bags", href: "/category/bags" },
+  { name: "Balls", href: "/category/balls" },
+  { name: "Apparel", href: "/category/apparel" },
   { name: "Accessories", href: "/category/accessories" },
-] as const;
+  { name: "GPS & Tech", href: "/category/gps-tech" },
+];
 
 export function ButterHeader() {
   const pathname = usePathname();
