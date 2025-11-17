@@ -23,6 +23,26 @@ import {
   type LabelProps as TamaguiLabelProps,
 } from "tamagui";
 
+const SIZE_ALIASES: Record<string, string> = {
+  xs: "$2",
+  sm: "$3",
+  md: "$4",
+  lg: "$6",
+  xl: "$7",
+};
+
+const resolveFontToken = (name?: string) => {
+  if (!name) {
+    return "$4";
+  }
+
+  if (name.startsWith("$")) {
+    return name;
+  }
+
+  return SIZE_ALIASES[name] ?? name;
+};
+
 // Base Text Component
 export const Text = styled(TamaguiText, {
   name: "Text",
@@ -34,10 +54,25 @@ export const Text = styled(TamaguiText, {
   variants: {
     size: {
       // Use spread fontSize variant so size props accept token values (e.g., "$5")
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-        lineHeight: font?.lineHeight?.[name],
-      }),
+      '...fontSize': (name, { font }) => {
+        const token = resolveFontToken(typeof name === "string" ? name : undefined);
+        const normalized = token.startsWith("$") ? token.slice(1) : token;
+        const fontSize = font?.size?.[token] ?? font?.size?.[normalized];
+        const lineHeight = font?.lineHeight?.[token] ?? font?.lineHeight?.[normalized];
+
+        if (process.env.NODE_ENV !== "production" && typeof name === "string" && !name.startsWith("$")) {
+          const stack = new Error().stack?.split("\n").slice(1, 4).join("\n");
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[ui/Text] size="${name}" must use "$" tokens (e.g. "$6"). Automatically mapping to ${token}.\n${stack}`
+          );
+        }
+
+        return {
+          fontSize,
+          lineHeight,
+        };
+      },
     },
 
     weight: {

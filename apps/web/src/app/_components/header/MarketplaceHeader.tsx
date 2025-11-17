@@ -87,7 +87,7 @@ export function MarketplaceHeader() {
               >
                 <Text
                   size="$2"
-                  $md={{ size: "sm" }}
+                  $md={{ size: "$3" }}
                   weight="medium"
                   color="$textInverse"
                 >
