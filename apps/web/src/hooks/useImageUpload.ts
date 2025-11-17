@@ -9,7 +9,7 @@ export interface UploadResult {
 }
 
 export interface UseImageUploadReturn {
-  upload: (file: File) => Promise<UploadResult>
+  upload: (file: File, isFirstImage?: boolean) => Promise<UploadResult>
   uploading: boolean
   error: string | null
   progress: number
@@ -20,7 +20,7 @@ export function useImageUpload(): UseImageUploadReturn {
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
 
-  const upload = async (file: File): Promise<UploadResult> => {
+  const upload = async (file: File, isFirstImage = false): Promise<UploadResult> => {
     setUploading(true)
     setError(null)
     setProgress(0)
@@ -52,8 +52,8 @@ export function useImageUpload(): UseImageUploadReturn {
 
       setProgress(30)
 
-      // Upload to API route
-      const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}`, {
+      // Upload to API route with isFirstImage flag for background removal
+      const response = await fetch(`/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`, {
         method: 'POST',
         headers: {
           'Content-Type': file.type,
