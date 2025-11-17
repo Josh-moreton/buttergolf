@@ -207,6 +207,12 @@ const brandColors = {
     // Base - Pure White
     pureWhite: '#FFFFFF',
 
+    // Extended gray scale (for app compatibility)
+    gray100: '#F5F5F5', // Very light gray
+    gray200: '#E5E5E5', // Light gray
+    gray700: '#707070', // Medium gray (for neutral badge text)
+    gray900: '#1A1A1A', // Very dark gray
+
     // Opacity Overlays - for elements on colored backgrounds
     // Light overlays (for dark backgrounds like Burnt Olive)
     overlayLight10: 'rgba(255, 255, 255, 0.1)',
@@ -587,14 +593,14 @@ const light_active = {
 const dark_active = {
     ...darkTheme,
     // Override specific colors for active state (Spiced Clementine)
-    colorHover: brandColors.butter200,
-    colorPress: brandColors.butter400,
-    colorFocus: brandColors.butter300,
+    colorHover: brandColors.spicedClementineHover,
+    colorPress: brandColors.spicedClementinePress,
+    colorFocus: brandColors.spicedClementine,
 
-    // Keep background subtle
-    background: brandColors.navy800,
-    backgroundHover: brandColors.navy700,
-    backgroundPress: brandColors.navy600,
+    // Keep background subtle (use Burnt Olive for dark backgrounds)
+    background: brandColors.burntOlive,
+    backgroundHover: brandColors.burntOliveHover,
+    backgroundPress: brandColors.burntOlivePress,
 }
 
 // Sub-theme for error states (light mode)
