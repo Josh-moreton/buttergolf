@@ -29,9 +29,10 @@ export function ImageUpload({
       return;
     }
 
-    // Upload
+    // Upload with background removal for first image (cover photo)
     try {
-      const result = await upload(file);
+      const isFirstImage = currentImages.length === 0;
+      const result = await upload(file, isFirstImage);
       onUploadComplete(result.url);
     } catch (err) {
       console.error("Upload error:", err);
@@ -67,7 +68,8 @@ export function ImageUpload({
       }
 
       try {
-        const result = await upload(file);
+        const isFirstImage = currentImages.length === 0;
+        const result = await upload(file, isFirstImage);
         onUploadComplete(result.url);
       } catch (err) {
         console.error("Upload error:", err);

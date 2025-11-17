@@ -37,6 +37,7 @@ This guide also documents our authentication setup using Clerk for both platform
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
 - **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
 - **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+- **Image CDN**: Cloudinary (`cloudinary` + `next-cloudinary`) for image uploads, hosting, and transformations
 
 ### Cross-Platform Navigation Architecture (CRITICAL)
 
@@ -1964,6 +1965,204 @@ Full list: https://stripe.com/docs/testing
 - [ ] Review and accept terms for going live
 
 For detailed Stripe documentation: https://stripe.com/docs
+
+## Image Upload & CDN (Cloudinary)
+
+We use Cloudinary for permanent image hosting, CDN delivery, and AI-powered transformations. This replaced Vercel Blob for a unified image solution.
+
+### Packages
+
+- **Web**: `cloudinary` (Node.js SDK), `next-cloudinary` (Next.js integration)
+- **Image transformations**: Background removal, format optimization, quality optimization
+- **CDN**: Global CDN delivery with automatic caching
+
+### Architecture
+
+```
+┌─────────────────┐
+│   Sell Page     │ ──→ ImageUpload component
+│   (/sell)       │     └─→ useImageUpload hook
+└─────────────────┘
+         │
+         ↓
+┌─────────────────┐
+│  Upload API     │ ──→ /api/upload route
+│  Route          │     ├─→ Cloudinary SDK upload
+└─────────────────┘     ├─→ Background removal (first image)
+         │              ├─→ Vanilla Cream background (#FFFAD2)
+         │              └─→ Auto format/quality (all images)
+         ↓
+┌─────────────────┐
+│  Cloudinary     │ ──→ Permanent CDN storage
+│  CDN            │     └─→ Global delivery + caching
+└─────────────────┘
+```
+
+### Environment Variables
+
+Place values in `apps/web/.env.local` (see `.env.example`):
+
+```bash
+# Cloudinary (Image Uploads & CDN)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+```
+
+**Important**:
+
+- Use **Cloudinary dashboard** to get credentials (Settings → Access Keys)
+- Only `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is exposed to clients
+- Keep API key and secret server-side only
+- Free tier: 25 GB storage, 25 GB bandwidth, 25,000 transformation credits/month
+
+### Setup Steps
+
+1. **Create Cloudinary Account**:
+   - Sign up at [cloudinary.com](https://cloudinary.com)
+   - Choose free tier
+   - Verify email
+
+2. **Get API Credentials**:
+   - Navigate to: Dashboard → Settings → Access Keys
+   - Copy: Cloud Name, API Key, API Secret
+   - Add to `.env.local` and Vercel environment variables
+
+3. **Cost Optimization**:
+   - Background removal applied to **first image only** (cover photo)
+   - Reduces transformation credits usage
+   - Estimated: ~10 credits per listing (2,500 listings/month on free tier)
+
+### Background Removal Logic
+
+**Cover Photo Optimization (First Image Only)**:
+
+```typescript
+// Transformations applied automatically in /api/upload
+{
+  effect: 'background_removal',  // AI-powered background removal
+  background: 'rgb:FFFAD2',      // Vanilla Cream brand color (#FFFAD2)
+}
+```
+
+**Other Images**:
+
+```typescript
+// No transformations at upload time - stored as-is
+// Auto format/quality can be applied via URL when displaying
+```
+
+**Why First Image Only?**
+
+- ✅ **Cost effective** - Reduces Cloudinary transformation credits
+- ✅ **Visual consistency** - Cover photo most visible in listings/search
+- ✅ **Context preserved** - Other images show product in natural setting
+- ✅ **Fallback graceful** - If removal fails, original image is used
+
+### Upload Flow Implementation
+
+**Client-Side Hook** (`apps/web/src/hooks/useImageUpload.ts`):
+
+```typescript
+// Pass isFirstImage flag for background removal
+const upload = async (file: File, isFirstImage = false): Promise<UploadResult> => {
+  const response = await fetch(
+    `/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': file.type },
+      body: file,
+    }
+  );
+  // Returns Cloudinary CDN URL
+};
+```
+
+**Server-Side API** (`apps/web/src/app/api/upload/route.ts`):
+
+```typescript
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure once at module load
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Upload with conditional transformations
+const uploadOptions = {
+  folder: 'products',
+  format: 'auto',
+  quality: 'auto',
+};
+
+if (isFirstImage) {
+  uploadOptions.transformation = [
+    { effect: 'background_removal' },
+    { background: 'rgb:FFFAD2' },
+  ];
+}
+
+const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
+// Returns: result.secure_url (permanent CDN URL)
+```
+
+### URL Structure & Database Storage
+
+**Cloudinary URLs are permanent CDN URLs** - store them directly in your database:
+
+```typescript
+// Prisma schema
+model Product {
+  id     String   @id @default(cuid())
+  images String[] // Array of Cloudinary URLs
+}
+
+// Example URL
+"https://res.cloudinary.com/buttergolf/image/upload/e_background_removal,b_rgb:FFFAD2/products/1732000000-abc123.jpg"
+```
+
+**On-the-fly transformations** (add to URL for different sizes):
+
+```
+# Thumbnail (150x150)
+.../w_150,h_150,c_fill/products/abc123.jpg
+
+# Product listing (400x400)
+.../w_400,h_400,c_fit/products/abc123.jpg
+
+# Full size (original)
+.../products/abc123.jpg
+```
+
+### Best Practices
+
+1. **Store Cloudinary URLs** - No need for separate file storage, Cloudinary IS the permanent host
+2. **First image gets branded background** - Cover photo is most important for consistency
+3. **Auto optimization is free** - Apply to all images for better performance
+4. **Fallback gracefully** - If background removal fails, use original image (no error shown)
+5. **Monitor usage** - Check Cloudinary dashboard monthly for credit usage
+6. **Use transformations** - Resize images via URL parameters instead of uploading multiple sizes
+
+### Common Issues
+
+**Error: "Image upload is not configured"**
+
+- **Cause**: Missing environment variables
+- **Fix**: Add all three Cloudinary variables to `.env.local` and Vercel
+
+**Background removal not applied**
+
+- **Cause**: AI may fail on certain images (unclear subject, low quality)
+- **Fix**: Automatic fallback to original image (no action needed)
+
+**Images not displaying**
+
+- **Cause**: Incorrect cloud name in database URLs
+- **Fix**: Verify URLs match format: `https://res.cloudinary.com/{cloud_name}/...`
+
+For detailed setup instructions, see `docs/CLOUDINARY_SETUP.md`.
 
 ## Documentation References
 
