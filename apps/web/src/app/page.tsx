@@ -1,6 +1,7 @@
 import MarketplaceHomeClient from "./_components/MarketplaceHomeClient";
 import { getRecentProducts } from "./actions/products";
 import { SeoJsonLd } from "@/components/seo";
+import { HomeFadeInOnLoad } from "./_components/animations/HomeFadeInOnLoad";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,9 @@ export default async function Page() {
 
   return (
     <>
-      <MarketplaceHomeClient products={products} />
+      <HomeFadeInOnLoad>
+        <MarketplaceHomeClient products={products} />
+      </HomeFadeInOnLoad>
       <SeoJsonLd data={[organizationSchema, webSiteSchema]} />
     </>
   );
