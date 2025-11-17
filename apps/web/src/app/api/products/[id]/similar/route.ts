@@ -59,6 +59,13 @@ export async function GET(
             slug: true,
           },
         },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -68,8 +75,6 @@ export async function GET(
         },
       },
       orderBy: [
-        // Prioritize same brand
-        { brand: product.brand ? 'desc' : 'asc' },
         // Then by most recent
         { createdAt: 'desc' },
       ],

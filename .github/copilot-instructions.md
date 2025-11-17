@@ -988,17 +988,20 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <View borderColor="$borderColor"> // ❌ Old token name
 ```
 
-#### ⚠️ **Type Safety Workarounds**
+#### ✅ **Web-Only CSS Properties Pattern**
 
-Some Tamagui props have strict typing that doesn't accept our semantic tokens. Use type assertions when needed:
+For web-only CSS properties that React Native doesn't support (like `position: sticky/fixed`, `overflow: auto`), use the `style` prop:
 
 ```tsx
-// When you need to use semantic tokens that TypeScript doesn't accept
-<Text {...{ color: "muted" as any }}>Muted text</Text>
-<View {...{ backgroundColor: "$surface" as any }}>Content</View>
+// ✅ CORRECT - Use style prop for web-only CSS properties
+<Column style={{ position: "sticky" }} top={0} zIndex={100}>
+<Row style={{ overflow: "auto" }}>
 
-// Or use inline style objects
-<Text style={{ color: "$textMuted" }}>Text</Text>
+// ❌ WRONG - Don't use escape hatches
+<Column {...{ position: "sticky" as any }} top={0}>
+
+// Why: The style prop is the standard React way to apply inline styles.
+// These files are web-only and will never run on React Native.
 ```
 
 ### Creating New Components
@@ -1213,6 +1216,8 @@ For complex components with sub-components:
 // packages/ui/src/components/Accordion.tsx
 import { createStyledContext, styled, YStack } from "tamagui";
 
+// Note: 'as any' here is required by Tamagui's createStyledContext API
+// This is the ONLY acceptable use case - it's part of Tamagui's typed context system
 const AccordionContext = createStyledContext({
   size: "$md" as any,
 });
@@ -2105,6 +2110,31 @@ await mcp_upstash_conte_get-library-docs({
 6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
 7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
 8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+
+### Common React/Tamagui Errors to Avoid
+
+9. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
+   - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
+   - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
+   - ❌ WRONG: Wrapping text props in style object on wrong component types
+   - ✅ CORRECT: Apply text styling props (textAlign, whiteSpace, etc.) directly to Text/Button components
+
+   **Tamagui Component Inheritance**:
+   - Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor, etc.
+   - Text extends SizableText → inherits text props like textAlign, whiteSpace, etc.
+   - ❌ **NEVER use `{...{ prop: value as any }}` escape hatches** - This bypasses type safety
+   - ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
+   - ✅ **Use direct props** for standard React/Tamagui properties the component already supports
+
+10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
+    - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
+    - ✅ CORRECT: `availableBrands={availableFilters?.availableBrands || []}`
+    - Apply to all nested property access: `data?.category?.name || 'Default'`
+
+11. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
+    - ❌ WRONG: `params.slug` → Runtime error in Next.js 15+
+    - ✅ CORRECT: `const resolvedParams = await params; resolvedParams.slug`
+    - Update Props interface: `params: Promise<{ slug: string }>` not `params: { slug: string }`
 
 ### Understanding Variants vs Direct Token Props
 

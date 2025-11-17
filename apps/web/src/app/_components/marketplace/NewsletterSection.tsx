@@ -13,11 +13,11 @@ export function NewsletterSection() {
         gap="$lg"
         alignItems="center"
       >
-        <Column gap="$sm" alignItems="center" textAlign="center">
-          <Text fontSize="$8" weight="bold" color="$text">
+        <Column gap="$sm" alignItems="center">
+          <Text fontSize="$8" weight="bold" color="$text" textAlign="center">
             Don&apos;t miss deals
           </Text>
-          <Text color="$textSecondary" fontSize="$5">
+          <Text color="$textSecondary" fontSize="$5" textAlign="center">
             Get the latest listings and price drops in your inbox
           </Text>
         </Column>
@@ -25,6 +25,7 @@ export function NewsletterSection() {
           gap="$sm"
           maxWidth={500}
           width="100%"
+          alignItems="stretch"
           $sm={{ flexDirection: "column" }}
           $md={{ flexDirection: "row" }}
         >
@@ -38,9 +39,10 @@ export function NewsletterSection() {
           <Button
             size="lg"
             tone="primary"
-            borderRadius="$full"
-            paddingHorizontal="$6"
             whiteSpace="nowrap"
+            flexShrink={0}
+            width={180}
+            $sm={{ width: "100%" }}
           >
             Subscribe
           </Button>

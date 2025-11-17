@@ -12,7 +12,7 @@
  * ```
  */
 
-import { styled, GetProps, Input as TamaguiInput } from 'tamagui'
+import { styled, GetProps, Input as TamaguiInput, type InputProps as TamaguiInputProps } from 'tamagui'
 
 export const Input = styled(TamaguiInput, {
   name: 'Input',
@@ -102,4 +102,5 @@ export const Input = styled(TamaguiInput, {
   },
 })
 
-export type InputProps = GetProps<typeof Input>
+// Export type that includes BOTH our custom variants AND all base Tamagui Input props
+export type InputProps = GetProps<typeof Input> & Omit<TamaguiInputProps, keyof GetProps<typeof Input>>

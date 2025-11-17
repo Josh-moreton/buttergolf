@@ -19,6 +19,8 @@ import {
   GetProps,
   Text as TamaguiText,
   Label as TamaguiLabel,
+  type TextProps as TamaguiTextProps,
+  type LabelProps as TamaguiLabelProps,
 } from "tamagui";
 
 // Base Text Component
@@ -185,6 +187,8 @@ export const Label = styled(TamaguiLabel, {
   },
 });
 
-export type TextProps = GetProps<typeof Text>;
-export type HeadingProps = GetProps<typeof Heading>;
-export type LabelProps = GetProps<typeof Label>;
+// Export types that include BOTH our custom variants AND all base Tamagui props
+// This ensures TypeScript knows about inherited props like color, textAlign, etc.
+export type TextProps = GetProps<typeof Text> & Omit<TamaguiTextProps, keyof GetProps<typeof Text>>;
+export type HeadingProps = GetProps<typeof Heading> & Omit<TamaguiTextProps, keyof GetProps<typeof Heading>>;
+export type LabelProps = GetProps<typeof Label> & Omit<TamaguiLabelProps, keyof GetProps<typeof Label>>;

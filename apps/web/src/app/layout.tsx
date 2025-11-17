@@ -13,6 +13,7 @@ import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 import { CartProvider } from "../context/CartContext";
+import { PageTransition } from "./_components/animations/PageTransition";
 
 // Urbanist font configuration for Pure Butter brand
 // Supports weights 100-900 with italic variants
@@ -75,7 +76,9 @@ export default function RootLayout({
             <AppPromoBanner />
             {/* Main content wrapper */}
             <main className="bg-white">
-              {children}
+              <PageTransition>
+                {children}
+              </PageTransition>
             </main>
           </CartProvider>
         </NextTamaguiProvider>

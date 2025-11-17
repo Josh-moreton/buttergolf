@@ -12,14 +12,14 @@ import { AuthModal } from "../auth/AuthModal";
 // Category navigation items
 const NAV_CATEGORIES = [
   { name: "Shop all", href: "/listings" },
-  { name: "Drivers", href: "/listings?category=drivers" },
-  { name: "Fairway Woods", href: "/listings?category=fairway-woods" },
-  { name: "Irons", href: "/listings?category=irons" },
-  { name: "Wedges", href: "/listings?category=wedges" },
-  { name: "Putters", href: "/listings?category=putters" },
-  { name: "Hybrids", href: "/listings?category=hybrids" },
-  { name: "Shoes", href: "/listings?category=shoes" },
-  { name: "Accessories", href: "/listings?category=accessories" },
+  { name: "Drivers", href: "/category/drivers" },
+  { name: "Fairway Woods", href: "/category/fairway-woods" },
+  { name: "Irons", href: "/category/irons" },
+  { name: "Wedges", href: "/category/wedges" },
+  { name: "Putters", href: "/category/putters" },
+  { name: "Hybrids", href: "/category/hybrids" },
+  { name: "Shoes", href: "/category/shoes" },
+  { name: "Accessories", href: "/category/accessories" },
 ] as const;
 
 export function ButterHeader() {
@@ -56,7 +56,7 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        {...{ style: { position: "sticky" } as React.CSSProperties }}
+        style={{ position: "sticky" }}
         top={0}
         zIndex={50}
         backgroundColor="$surface"
@@ -238,7 +238,7 @@ export function ButterHeader() {
             justifyContent="space-between"
             paddingHorizontal="$8"
             flexWrap="nowrap"
-            overflow="auto"
+            style={{ overflow: "auto" }}
           >
             {NAV_CATEGORIES.map((category) => (
               <Link
@@ -267,7 +267,7 @@ export function ButterHeader() {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <Column
-          {...{ style: { position: "fixed" } as React.CSSProperties }}
+          style={{ position: "fixed" }}
           top={110}
           left={0}
           right={0}

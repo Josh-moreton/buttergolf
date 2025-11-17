@@ -9,10 +9,11 @@
  * <Button size="md" tone="primary">CTA</Button>
  * <Button size="sm" tone="outline">Secondary</Button>
  * <Button size="lg" tone="ghost" fullWidth>Ghost Action</Button>
+ * <Button whiteSpace="nowrap">No wrap text</Button>
  * ```
  */
 
-import { Button as TamaguiButton, GetProps, styled } from "tamagui";
+import { Button as TamaguiButton, GetProps, styled, type ButtonProps as TamaguiButtonProps } from "tamagui";
 
 export const Button = styled(TamaguiButton, {
     name: "Button",
@@ -62,7 +63,7 @@ export const Button = styled(TamaguiButton, {
                 focusStyle: {
                     borderColor: "$primaryFocus",
                     borderWidth: 2,
-                    backgroundColor: "$primaryFocus",
+                    backgroundColor: "$primary",
                 },
             },
             secondary: {
@@ -78,39 +79,39 @@ export const Button = styled(TamaguiButton, {
                 focusStyle: {
                     borderColor: "$secondaryFocus",
                     borderWidth: 2,
-                    backgroundColor: "$secondaryFocus",
+                    backgroundColor: "$secondary",
                 },
             },
             outline: {
                 backgroundColor: "transparent",
-                color: "$text",
-                borderWidth: 1,
-                borderColor: "$border",
+                color: "$primary",
+                borderWidth: 2,
+                borderColor: "$primary",
                 hoverStyle: {
-                    backgroundColor: "$surface",
-                    borderColor: "$borderHover",
+                    backgroundColor: "$primaryLight",
                 },
                 pressStyle: {
-                    backgroundColor: "$background",
-                    borderColor: "$borderPress",
+                    backgroundColor: "$primaryLight",
                 },
                 focusStyle: {
-                    borderColor: "$borderFocus",
+                    borderColor: "$primary",
                     borderWidth: 2,
                 },
             },
             ghost: {
                 backgroundColor: "transparent",
-                color: "$text",
+                color: "$primary",
                 borderWidth: 0,
                 hoverStyle: {
-                    backgroundColor: "$backgroundHover",
+                    backgroundColor: "$primaryLight",
                 },
                 pressStyle: {
-                    backgroundColor: "$backgroundPress",
+                    backgroundColor: "$primaryLight",
                 },
                 focusStyle: {
-                    backgroundColor: "$backgroundFocus",
+                    borderColor: "$primary",
+                    borderWidth: 2,
+                    backgroundColor: "transparent",
                 },
             },
             success: {
@@ -145,6 +146,22 @@ export const Button = styled(TamaguiButton, {
                     backgroundColor: "$error",
                 },
             },
+            warning: {
+                backgroundColor: "$warning",
+                color: "$textInverse",
+                borderWidth: 0,
+                hoverStyle: {
+                    backgroundColor: "$warningDark",
+                },
+                pressStyle: {
+                    backgroundColor: "$warningDark",
+                },
+                focusStyle: {
+                    borderColor: "$warning",
+                    borderWidth: 2,
+                    backgroundColor: "$warning",
+                },
+            },
         },
 
         fullWidth: {
@@ -160,4 +177,6 @@ export const Button = styled(TamaguiButton, {
     },
 });
 
-export type ButtonProps = GetProps<typeof Button>;
+// Export type that includes BOTH our custom variants AND all base Tamagui Button props
+// This ensures TypeScript knows about inherited props like whiteSpace, flexShrink, etc.
+export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, keyof GetProps<typeof Button>>;

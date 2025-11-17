@@ -18,28 +18,28 @@ const categories: Category[] = [
     name: "Clubs",
     label: "CLUBS ON SALE",
     image: imagePaths.clubs.club1,
-    link: "/listings?category=clubs",
+    link: "/category/clubs",
   },
   {
     id: "bags",
     name: "Bags",
     label: "BAGS ON SALE",
     image: imagePaths.clubs.club2,
-    link: "/listings?category=bags",
+    link: "/category/bags",
   },
   {
     id: "shoes",
     name: "Shoes",
     label: "SHOES ON SALE",
     image: imagePaths.clubs.club3,
-    link: "/listings?category=shoes",
+    link: "/category/shoes",
   },
   {
     id: "clothing",
     name: "Clothing",
     label: "CLOTHING ON SALE",
     image: imagePaths.clubs.club4,
-    link: "/listings?category=clothing",
+    link: "/category/clothing",
   },
 ];
 

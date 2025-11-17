@@ -23,21 +23,35 @@ export default function MarketplaceHomeClient({
 
   return (
     <Column>
-      <HeroStatic />
-      <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
+      <div className="page-transition">
+        <HeroStatic />
+      </div>
+      <div className="page-transition">
+        <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
+      </div>
 
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
-          <CategoriesSection />
-          <RecentlyListedSectionClient products={products} />
-          <TrustSection />
+          <div className="page-transition">
+            <CategoriesSection />
+          </div>
+          <div className="page-transition">
+            <RecentlyListedSectionClient products={products} />
+          </div>
+          <div className="page-transition">
+            <TrustSection />
+          </div>
         </>
       ) : (
-        <SellingPlaceholder />
+        <div className="page-transition">
+          <SellingPlaceholder />
+        </div>
       )}
 
-      <NewsletterSection />
+      <div className="page-transition">
+        <NewsletterSection />
+      </div>
       <FooterSection />
     </Column>
   );
