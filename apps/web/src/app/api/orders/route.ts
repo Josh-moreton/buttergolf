@@ -1,12 +1,12 @@
 import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
-import { prisma } from '@buttergolf/db'
+import { prisma, Prisma, OrderStatus } from '@buttergolf/db'
 
 // GET /api/orders - List user's orders (as buyer or seller)
 export async function GET(req: Request) {
   try {
     const { userId: clerkId } = await auth()
-    
+
     if (!clerkId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -23,11 +23,11 @@ export async function GET(req: Request) {
     // Parse query parameters
     const { searchParams } = new URL(req.url)
     const role = searchParams.get('role') // 'buyer' | 'seller' | 'all'
-    const status = searchParams.get('status') // Filter by status
+    const status = searchParams.get('status') as OrderStatus | null // Filter by status
 
-    // Build query
-    const whereClause: any = {}
-    
+    // Build where clause based on query parameters
+    const whereClause: Prisma.OrderWhereInput = {};
+
     if (role === 'buyer') {
       whereClause.buyerId = user.id
     } else if (role === 'seller') {

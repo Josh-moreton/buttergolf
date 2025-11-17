@@ -87,7 +87,7 @@ export async function POST(request: Request) {
 
     // Calculate shipping rates if not provided
     let shippingAmount = 999; // Fallback to $9.99
-    let selectedRate = null;
+    const selectedRate = null;
 
     if (selectedRateId) {
       // If a specific rate was selected, recalculate using the service directly
@@ -98,7 +98,9 @@ export async function POST(request: Request) {
           toAddress: shippingAddress,
         });
 
-        selectedRate = shippingData.rates?.find((rate: any) => rate.id === selectedRateId);
+        const selectedRate = shippingData.rates?.find(
+          (rate) => rate.id === selectedRateId
+        );
         if (selectedRate) {
           shippingAmount = parseInt(selectedRate.rate);
         }

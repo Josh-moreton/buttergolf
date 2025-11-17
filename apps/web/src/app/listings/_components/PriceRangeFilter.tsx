@@ -21,9 +21,11 @@ export function PriceRangeFilter({
   const [localMin, setLocalMin] = useState(selectedMin);
   const [localMax, setLocalMax] = useState(selectedMax);
 
+  // Sync with props when they change (e.g., filter reset)
   useEffect(() => {
     setLocalMin(selectedMin);
     setLocalMax(selectedMax);
+     
   }, [selectedMin, selectedMax]);
 
   const handleSliderChange = (values: number[]) => {

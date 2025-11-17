@@ -50,8 +50,8 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
         const data: SearchResponse = await response.json();
         setResults(data.products);
         setTotal(data.total);
-      } catch (err: any) {
-        if (err.name !== "AbortError") {
+      } catch (err) {
+        if (err instanceof Error && err.name !== "AbortError") {
           setError(err.message);
         }
       } finally {

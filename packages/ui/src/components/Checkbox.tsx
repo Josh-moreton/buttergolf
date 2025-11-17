@@ -64,30 +64,12 @@ const CheckboxBox = styled(Stack, {
   },
 });
 
-// Checkmark icon
-const Checkmark = styled(Stack, {
-  name: "Checkmark",
-  tag: "svg" as 'svg',
-  width: 12,
-  height: 12,
-
-  variants: {
-    size: {
-      sm: {
-        width: 10,
-        height: 10,
-      },
-      md: {
-        width: 12,
-        height: 12,
-      },
-      lg: {
-        width: 14,
-        height: 14,
-      },
-    },
-  } as const,
-});
+// Checkmark icon sizes
+const checkmarkSizes = {
+  sm: 10,
+  md: 12,
+  lg: 14,
+} as const;
 
 export interface CheckboxProps {
   checked?: boolean;
@@ -158,19 +140,19 @@ export function Checkbox({
         style={{ position: "absolute", opacity: 0, width: 0, height: 0 }}
       />
       {checked && (
-        <Checkmark
-          size={size}
-          {...({
-            viewBox: "0 0 12 12",
-            fill: "none",
-            stroke: "white",
-            strokeWidth: 2,
-            strokeLinecap: "round",
-            strokeLinejoin: "round"
-          } as React.SVGProps<SVGSVGElement>)}
+        <svg
+          width={checkmarkSizes[size]}
+          height={checkmarkSizes[size]}
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="white"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ pointerEvents: "none" }}
         >
-          <polyline points="2,6 5,9 10,3" stroke="currentColor" />
-        </Checkmark>
+          <polyline points="2,6 5,9 10,3" />
+        </svg>
       )}
     </CheckboxBox>
   );

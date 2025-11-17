@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@buttergolf/db";
+import { prisma, Prisma } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 
 export async function GET(request: NextRequest) {
@@ -21,13 +21,13 @@ export async function GET(request: NextRequest) {
     const limit = limitParam ? parseInt(limitParam, 10) : 10;
 
     // Build where clause
-    const whereClause: any = {
+    const whereClause: Prisma.ProductWhereInput = {
       isSold: false,
       OR: [
         { title: { contains: searchTerm, mode: "insensitive" } },
         { description: { contains: searchTerm, mode: "insensitive" } },
-        { brand: { contains: searchTerm, mode: "insensitive" } },
         { model: { contains: searchTerm, mode: "insensitive" } },
+        { brand: { name: { contains: searchTerm, mode: "insensitive" } } },
       ],
     };
 
