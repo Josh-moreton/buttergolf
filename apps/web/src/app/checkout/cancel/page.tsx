@@ -57,22 +57,18 @@ export default function CheckoutCancelPage() {
           </Card>
 
           {/* What's Next */}
-          <Column gap="$sm" paddingTop="$md" fullWidth>
-            <Text weight="semibold" size="$4">
-              What would you like to do?
+          <Column gap="$sm">
+            <Text weight="semibold" fontSize="$4">
+              What's Next?
             </Text>
-            <Column gap="$xs" paddingLeft="$md">
-              <Text color="$textSecondary" size="$3">
-                • Go back and try purchasing again
+            <Column gap="$xs">
+              <Text color="$textSecondary" fontSize="$3">
+                • Review your order details
               </Text>
-              <Text color="$textSecondary" size="$3">
-                • Browse more products in our marketplace
+              <Text color="$textSecondary" fontSize="$3">
+                • Update shipping or payment information
               </Text>
-              <Text color="$textSecondary" size="$3">
-                • Contact the seller if you have questions
-              </Text>
-            </Column>
-          </Column>
+              <Text color="$textSecondary" fontSize="$3">
 
           {/* Action Buttons */}
           <Row gap="$md" marginTop="$lg" fullWidth>

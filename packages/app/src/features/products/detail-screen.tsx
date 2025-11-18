@@ -127,18 +127,16 @@ export function ProductDetailScreen({
           <Column gap="$2">
             <Heading level={2}>{product.title}</Heading>
 
+<Row gap="$2" alignItems="center" flexWrap="wrap">
             <Row gap="$2" alignItems="center">
-              <Text size="$3" color="$textSecondary">
+              <Text fontSize="$3" color="$textSecondary">
                 {product.category.name}
               </Text>
               {product.condition && (
                 <Badge variant="neutral" size="sm">
-                  <Text size="$2" weight="medium">
-                    {formattedCondition}
+                  <Text fontSize="$2" weight="medium">
+                    {formatCondition(product.condition)}
                   </Text>
-                </Badge>
-              )}
-            </Row>
 
             <Text size="$7" weight="bold" color="$primary">
               £{product.price.toFixed(2)}

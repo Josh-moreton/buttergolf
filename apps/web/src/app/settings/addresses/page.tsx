@@ -41,10 +41,12 @@ interface AddressFormData {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
     <Row gap="$xs" marginBottom="$xs">
-        <Text size="$3" weight="medium" color="$text">
-            {children}
-        </Text>
-        {required && <Text color="$error">*</Text>}
+  return (
+    <Column gap="$xs">
+      <Column gap="$xs">
+        <Text fontSize="$3" weight="medium" color="$text">
+          {label}
+          {required && <Text color="$error"> *</Text>}
     </Row>
 );
 

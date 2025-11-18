@@ -111,7 +111,7 @@ export function ButterHeader() {
             >
               <Link href="/" style={{ textDecoration: "none" }}>
                 <Text
-                  size="$6"
+                  fontSize="$6"
                   weight={isActive("/") ? "semibold" : "medium"}
                   color={isActive("/") ? "$primary" : "$text"}
                   cursor="pointer"
@@ -124,7 +124,7 @@ export function ButterHeader() {
               </Link>
               <Link href="/listings" style={{ textDecoration: "none" }}>
                 <Text
-                  size="$6"
+                  fontSize="$6"
                   weight={isActive("/listings") ? "semibold" : "medium"}
                   color={isActive("/listings") ? "$primary" : "$text"}
                   cursor="pointer"
@@ -137,7 +137,7 @@ export function ButterHeader() {
               </Link>
               <Link href="/sell" style={{ textDecoration: "none" }}>
                 <Text
-                  size="$6"
+                  fontSize="$6"
                   weight={isActive("/sell") ? "semibold" : "medium"}
                   color={isActive("/sell") ? "$primary" : "$text"}
                   cursor="pointer"
@@ -241,7 +241,7 @@ export function ButterHeader() {
                 style={{ textDecoration: "none" }}
               >
                 <Text
-                  size="$3"
+                  fontSize="$3"
                   weight="normal"
                   color="$text"
                   cursor="pointer"
@@ -281,7 +281,7 @@ export function ButterHeader() {
             onClick={() => setMobileMenuOpen(false)}
           >
             <Text
-              size="$7"
+              fontSize="$7"
               weight={isActive("/") ? "bold" : "semibold"}
               color={isActive("/") ? "$primary" : "$text"}
             >
@@ -294,7 +294,7 @@ export function ButterHeader() {
             onClick={() => setMobileMenuOpen(false)}
           >
             <Text
-              size="$7"
+              fontSize="$7"
               weight={isActive("/listings") ? "bold" : "semibold"}
               color={isActive("/listings") ? "$primary" : "$text"}
             >
@@ -307,7 +307,7 @@ export function ButterHeader() {
             onClick={() => setMobileMenuOpen(false)}
           >
             <Text
-              size="$7"
+              fontSize="$7"
               weight={isActive("/sell") ? "bold" : "semibold"}
               color={isActive("/sell") ? "$primary" : "$text"}
             >

@@ -151,9 +151,10 @@ export function FooterSection() {
         >
           {/* Copyright */}
           {/* Copyright */}
-          <Text color="$vanillaCream" size="$3" zIndex={1}>
-            © 2025 Butter Golf. All rights reserved.
-          </Text>
+                  </Row>
+        <Row justifyContent="center">
+          <Text color="$vanillaCream" fontSize="$3" zIndex={1}>
+            © 2024 ButterGolf. All rights reserved.
 
           {/* TrustPilot Placeholder */}
           <div

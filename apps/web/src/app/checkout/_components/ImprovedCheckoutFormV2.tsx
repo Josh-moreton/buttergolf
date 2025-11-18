@@ -42,8 +42,9 @@ interface ShippingAddress {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
     <Row gap="$xs" marginBottom="$xs">
-        <Text size="$3" weight="medium" color="$text">
-            {children}
+      <Column gap="$xs">
+        <Text fontSize="$3" weight="medium" color="$text">
+          {label}
         </Text>
         {required && <Text color="$error">*</Text>}
     </Row>

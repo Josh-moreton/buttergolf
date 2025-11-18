@@ -13,14 +13,17 @@ interface CheckoutFormSimpleProps {
 }
 
 // Form Label component
-const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
-    <Row gap="$xs" marginBottom="$xs">
-        <Text size="$3" weight="medium" color="$ironstone">
-            {children}
+function FormLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <Column gap="$xs">
+      <Column gap="$xs">
+        <Text fontSize="$3" weight="medium" color="$ironstone">
+          {children}
         </Text>
-        {required && <Text color="$error">*</Text>}
-    </Row>
-);
+      </Column>
+    </Column>
+  );
+}
 
 export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
     const [billingMatchesShipping, setBillingMatchesShipping] = useState(true);
