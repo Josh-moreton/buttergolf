@@ -651,11 +651,11 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 // ✅ CORRECT - Use standard Tamagui Button with numeric size tokens and direct props
 import { Button } from "@buttergolf/ui";
 
-<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$6" paddingVertical="$3" borderRadius={32}>
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$6" paddingVertical="$3" borderRadius="$full">
   View all listings
 </Button>
 
-<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" width="100%">
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" borderRadius="$full" width="100%">
   Secondary Action
 </Button>
 
@@ -1178,13 +1178,13 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 **Standard Tamagui Button Patterns:**
 ```tsx
-// Primary button
-<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
+// Primary button (pill-shaped)
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" borderRadius="$full">
   Primary Action
 </Button>
 
-// Outline button
-<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3">
+// Outline button (pill-shaped)
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" borderRadius="$full">
   Secondary Action
 </Button>
 
@@ -1193,8 +1193,8 @@ export type { MyComponentProps } from "./components/MyComponent";
   Cancel
 </Button>
 
-// Success button
-<Button size="$5" backgroundColor="$success" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
+// Success button (pill-shaped)
+<Button size="$5" backgroundColor="$success" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" borderRadius="$full">
   Confirm
 </Button>
 ```

@@ -38,7 +38,9 @@ export function NewsletterSection() {
           />
           <Button
             size="$5"
-
+            backgroundColor="$primary"
+            color="$textInverse"
+            borderRadius="$full"
             flexShrink={0}
             width={180}
             $sm={{ width: "100%" }}
