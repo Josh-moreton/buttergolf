@@ -150,11 +150,9 @@ export function FooterSection() {
           gap="$md"
         >
           {/* Copyright */}
-          {/* Copyright */}
-                  </Row>
-        <Row justifyContent="center">
           <Text color="$vanillaCream" fontSize="$3" zIndex={1}>
             © 2024 ButterGolf. All rights reserved.
+          </Text>
 
           {/* TrustPilot Placeholder */}
           <div
