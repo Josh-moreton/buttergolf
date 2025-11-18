@@ -137,8 +137,11 @@ export function ProductDetailScreen({
                   <Text fontSize="$2" weight="medium">
                     {formatCondition(product.condition)}
                   </Text>
+                </Badge>
+              )}
+            </Row>
 
-            <Text size="$7" weight="bold" color="$primary">
+            <Text fontSize="$7" weight="bold" color="$primary">
               £{product.price.toFixed(2)}
             </Text>
           </Column>
