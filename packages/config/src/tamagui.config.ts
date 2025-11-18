@@ -146,13 +146,7 @@ const headingFont = createFont({
         8: '800',
         9: '900',
     },
-    letterSpacing: {
-        1: 0,
-        2: -0.5,
-        3: -1,
-        4: -1.5,
-        5: -2,
-    },
+    // letterSpacing removed - we don't want tight/condensed spacing
     face: urbanistFace,
 })
 
@@ -206,13 +200,7 @@ const bodyFont = createFont({
         8: '800',
         9: '900',
     },
-    letterSpacing: {
-        1: 0,
-        2: -0.25,
-        3: -0.5,
-        4: -0.75,
-        5: -1,
-    },
+    // letterSpacing removed - we don't want tight/condensed spacing
     face: urbanistFace,
 })
 

@@ -56,6 +56,7 @@ export const Text = styled(TamaguiParagraph, {
   name: "Text",
   color: "$text",
   fontFamily: "$body",
+  letterSpacing: 0, // Prevent tight/condensed letter spacing
 
   variants: {
     weight: {
@@ -113,6 +114,7 @@ export const Heading = styled(TamaguiParagraph, {
   color: "$text",
   fontFamily: "$heading",
   fontWeight: "700",
+  letterSpacing: 0, // Prevent tight/condensed letter spacing
 
   variants: {
     level: {
