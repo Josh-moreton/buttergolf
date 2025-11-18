@@ -10,7 +10,7 @@ This guide also documents our authentication setup using Clerk for both platform
 
 ### Monorepo Structure
 
-- **Build System**: Turborepo 2.5.8 for build orchestration and caching
+- **Build System**: Turborepo 2.6.0 for build orchestration and caching
 - **Package Manager**: pnpm 10.20.0 with workspace protocol
 - **Apps**:
   - `apps/web` - Next.js 16.0.1 (App Router) web application
@@ -23,9 +23,9 @@ This guide also documents our authentication setup using Clerk for both platform
 
 ### Technology Stack
 
-- **UI Framework**: Tamagui 1.135.6 for cross-platform UI components and theming
+- **UI Framework**: Tamagui 1.135.7 for cross-platform UI components and theming
 - **Database**: Prisma 6.x with PostgreSQL
-- **React**: 19.2.0 (aligned across web and mobile)
+- **React**: 19.1.0 (aligned across web and mobile)
 - **React Native**: 0.81.5
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
@@ -35,9 +35,14 @@ This guide also documents our authentication setup using Clerk for both platform
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
-- **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
-- **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+- **Auth**: Clerk 6.34.1 (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo` 2.17.3)
+- **Payments**: Stripe 19.2.1 (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
 - **Image CDN**: Cloudinary (`cloudinary` + `next-cloudinary`) for image uploads, hosting, and transformations
+
+**CRITICAL: Next.js 16+ Middleware Convention**
+- Next.js 16.0.1+ uses `src/proxy.ts` NOT `src/middleware.ts`
+- The middleware file convention was renamed in Next.js 16
+- Always use `proxy.ts` for route protection and middleware logic
 
 ### Cross-Platform Navigation Architecture (CRITICAL)
 
