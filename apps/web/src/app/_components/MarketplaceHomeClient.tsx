@@ -34,7 +34,9 @@ export default function MarketplaceHomeClient({
 
       {/* Buy/Sell Toggle - Immediate page load animation */}
       <PageLoadAnimation delay={0.2}>
-        <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
+        <Column paddingTop="$6" paddingBottom="$4">
+          <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
+        </Column>
       </PageLoadAnimation>
 
       {/* Conditionally render based on active mode */}
