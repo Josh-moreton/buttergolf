@@ -166,7 +166,7 @@ export function SellerHub() {
                 justifyContent="center"
                 backgroundColor="$background"
             >
-                <Spinner size="lg" color="$primary" />
+                <Spinner size="$5" color="$primary" />
                 <Text color="$textSecondary" marginTop="$md">
                     Loading your listings...
                 </Text>
@@ -221,7 +221,7 @@ export function SellerHub() {
                         Start selling your golf equipment today! Create your first listing in under 60 seconds.
                     </Text>
                     <Link href="/sell" style={{ textDecoration: "none" }}>
-                        <Button size="lg" tone="primary">
+                        <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
                             <Row gap="$sm" alignItems="center">
                                 <Plus size={20} />
                                 <Text>Create First Listing</Text>
@@ -245,7 +245,7 @@ export function SellerHub() {
                         </Text>
                     </Column>
                     <Link href="/sell" style={{ textDecoration: "none" }}>
-                        <Button size="lg" tone="primary">
+                        <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
                             <Row gap="$sm" alignItems="center">
                                 <Plus size={20} />
                                 <Text>New Listing</Text>
@@ -327,21 +327,21 @@ export function SellerHub() {
                             <Text weight="medium">Status:</Text>
                             <Row gap="$xs">
                                 <Button
-                                    size="sm"
+                                    size="$3"
                                     tone={statusFilter === "all" ? "primary" : "ghost"}
                                     onPress={() => setStatusFilter("all")}
                                 >
                                     All
                                 </Button>
                                 <Button
-                                    size="sm"
+                                    size="$3"
                                     tone={statusFilter === "active" ? "primary" : "ghost"}
                                     onPress={() => setStatusFilter("active")}
                                 >
                                     Active
                                 </Button>
                                 <Button
-                                    size="sm"
+                                    size="$3"
                                     tone={statusFilter === "sold" ? "primary" : "ghost"}
                                     onPress={() => setStatusFilter("sold")}
                                 >
@@ -400,7 +400,7 @@ export function SellerHub() {
                         {data.pagination.totalPages > 1 && (
                             <Row gap="$sm" alignItems="center" justifyContent="center">
                                 <Button
-                                    size="md"
+                                    size="$4"
                                     tone="outline"
                                     disabled={currentPage === 1}
                                     onPress={() => fetchListings(currentPage - 1)}
@@ -411,7 +411,7 @@ export function SellerHub() {
                                     Page {currentPage} of {data.pagination.totalPages}
                                 </Text>
                                 <Button
-                                    size="md"
+                                    size="$4"
                                     tone="outline"
                                     disabled={!data.pagination.hasMore}
                                     onPress={() => fetchListings(currentPage + 1)}

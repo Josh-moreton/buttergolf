@@ -33,7 +33,7 @@ export function HeroSection() {
 
       <Row gap="$sm" flexWrap="wrap" justifyContent="center">
         <Button
-          size="md"
+          size="$4"
           backgroundColor="$background"
           color="$textInverse"
           borderRadius="$10"
@@ -43,7 +43,7 @@ export function HeroSection() {
           Sell now
         </Button>
         <Button
-          size="md"
+          size="$4"
           backgroundColor="$background"
           color="$text"
           borderRadius="$10"

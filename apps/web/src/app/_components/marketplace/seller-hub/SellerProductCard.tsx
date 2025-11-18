@@ -109,7 +109,7 @@ export function SellerProductCard({
                                 right: 12,
                             }}
                         >
-                            <Badge variant="error" size="md">
+                            <Badge variant="error" size="$4">
                                 SOLD
                             </Badge>
                         </div>
@@ -122,7 +122,7 @@ export function SellerProductCard({
                                 right: 12,
                             }}
                         >
-                            <Badge variant="warning" size="md">
+                            <Badge variant="warning" size="$4">
                                 {product.pendingOffersCount} Offer{product.pendingOffersCount > 1 ? "s" : ""}
                             </Badge>
                         </div>
@@ -184,7 +184,7 @@ export function SellerProductCard({
 
                     {/* Category & Date */}
                     <Row gap="$sm" alignItems="center" flexWrap="wrap">
-                        <Badge variant="neutral" size="sm">
+                        <Badge variant="neutral" size="$3">
                             {product.categoryName}
                         </Badge>
                         <Text size="$2" color="$textMuted">
@@ -195,7 +195,7 @@ export function SellerProductCard({
                     {/* Actions */}
                     <Row gap="$sm" marginTop="$sm">
                         <Button
-                            size="sm"
+                            size="$3"
                             tone="outline"
                             flex={1}
                             onPress={() => onEdit(product)}
@@ -207,7 +207,7 @@ export function SellerProductCard({
                             </Row>
                         </Button>
                         <Button
-                            size="sm"
+                            size="$3"
                             tone={product.isSold ? "secondary" : "success"}
                             flex={1}
                             onPress={handleMarkSold}
@@ -216,7 +216,7 @@ export function SellerProductCard({
                             {isUpdating ? "..." : product.isSold ? "Relist" : "Mark Sold"}
                         </Button>
                         <Button
-                            size="sm"
+                            size="$3"
                             tone="ghost"
                             onPress={handleDelete}
                             disabled={isDeleting || isUpdating}

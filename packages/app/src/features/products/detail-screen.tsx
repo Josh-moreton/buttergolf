@@ -83,7 +83,7 @@ export function ProductDetailScreen({
   if (error || !product) {
     return (
       <Column flex={1} backgroundColor="$background" padding="$4" gap="$4">
-        <Button {...backLink} size="md" icon={ArrowLeft}>
+        <Button {...backLink} size="$4" icon={ArrowLeft}>
           Back to Products
         </Button>
         <Column alignItems="center" justifyContent="center" flex={1}>

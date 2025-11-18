@@ -242,7 +242,7 @@ export function MakeOfferModal({
 
                     {/* Submit Button */}
                     <Button
-                        size="lg"
+                        size="$5"
                         tone="primary"
                         borderRadius="$full"
                         paddingHorizontal="$6"

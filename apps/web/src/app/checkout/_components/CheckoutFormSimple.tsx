@@ -80,7 +80,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={shippingName}
                                 onChangeText={setShippingName}
                                 placeholder="John Doe"
-                                size="md"
+                                size="$4"
                                 fullWidth
                             />
                         </Column>
@@ -92,7 +92,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={shippingPhone}
                                 onChangeText={setShippingPhone}
                                 placeholder="+44 7XXX XXXXXX"
-                                size="md"
+                                size="$4"
                                 fullWidth
                                 inputMode="tel"
                             />
@@ -106,7 +106,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingAddress1}
                                     onChangeText={setShippingAddress1}
                                     placeholder="11 Lorem Ipsum road"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -117,7 +117,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingAddress2}
                                     onChangeText={setShippingAddress2}
                                     placeholder="Flat 2"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -131,7 +131,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingPostalCode}
                                     onChangeText={setShippingPostalCode}
                                     placeholder="LP1A 1AA"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -142,7 +142,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingCity}
                                     onChangeText={setShippingCity}
                                     placeholder="Lorem"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -156,7 +156,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingCounty}
                                     onChangeText={setShippingCounty}
                                     placeholder="Ipsum"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -211,7 +211,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={cardNumber}
                                 onChangeText={setCardNumber}
                                 placeholder="Card number"
-                                size="md"
+                                size="$4"
                                 fullWidth
                                 inputMode="numeric"
                             />
@@ -225,7 +225,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={cardName}
                                     onChangeText={setCardName}
                                     placeholder="MR L IPSUM"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -236,7 +236,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={cardCVC}
                                     onChangeText={setCardCVC}
                                     placeholder="233"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                     inputMode="numeric"
                                     maxLength={4}
@@ -289,7 +289,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={billingName}
                                     onChangeText={setBillingName}
                                     placeholder="John Doe"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -302,7 +302,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingAddress1}
                                         onChangeText={setBillingAddress1}
                                         placeholder="11 Lorem Ipsum road"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -313,7 +313,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingAddress2}
                                         onChangeText={setBillingAddress2}
                                         placeholder="Flat 2"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -327,7 +327,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingPostalCode}
                                         onChangeText={setBillingPostalCode}
                                         placeholder="LP1A 1AA"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -338,7 +338,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingCity}
                                         onChangeText={setBillingCity}
                                         placeholder="Lorem"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -352,7 +352,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingCounty}
                                         onChangeText={setBillingCounty}
                                         placeholder="Ipsum"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -396,7 +396,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
 
                 {/* Submit Button */}
                 <Button
-                    size="lg"
+                    size="$5"
                     tone="primary"
                     borderRadius="$full"
                     paddingHorizontal="$6"

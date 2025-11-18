@@ -24,7 +24,7 @@ export default function CartPage() {
                     Browse our marketplace to find great deals
                 </Text>
                 <Link href="/listings">
-                    <Button size="lg" tone="primary">
+                    <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
                         Browse Listings
                     </Button>
                 </Link>
@@ -45,7 +45,7 @@ export default function CartPage() {
                 <Text size="$7" weight="bold">
                     Shopping Cart ({items.length} {items.length === 1 ? "item" : "items"})
                 </Text>
-                <Button tone="ghost" onPress={clearCart}>
+                <Button chromeless onPress={clearCart}>
                     Clear Cart
                 </Button>
             </Row>
@@ -74,7 +74,7 @@ export default function CartPage() {
                                 </Column>
                                 <Row gap="$2" alignItems="center">
                                     <Button
-                                        size="sm"
+                                        size="$3"
                                         tone="outline"
                                         onPress={() =>
                                             updateQuantity(item.productId, item.quantity - 1)
@@ -86,7 +86,7 @@ export default function CartPage() {
                                         {item.quantity}
                                     </Text>
                                     <Button
-                                        size="sm"
+                                        size="$3"
                                         tone="outline"
                                         onPress={() =>
                                             updateQuantity(item.productId, item.quantity + 1)
@@ -96,7 +96,7 @@ export default function CartPage() {
                                     </Button>
                                 </Row>
                                 <Button
-                                    size="sm"
+                                    size="$3"
                                     tone="error"
                                     onPress={() => removeItem(item.productId)}
                                 >
@@ -143,11 +143,11 @@ export default function CartPage() {
                                 £{totalPrice.toFixed(2)}
                             </Text>
                         </Row>
-                        <Button size="lg" tone="primary" fullWidth>
+                        <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" width="100%">
                             Proceed to Checkout
                         </Button>
                         <Link href="/listings">
-                            <Button size="md" tone="outline" fullWidth>
+                            <Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" width="100%">
                                 Continue Shopping
                             </Button>
                         </Link>

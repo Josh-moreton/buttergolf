@@ -67,7 +67,7 @@ export function ProductCardWithCart({
                 {product.condition === "NEW" && (
                     <Badge
                         variant="success"
-                        size="sm"
+                        size="$3"
                         position="absolute"
                         top={8}
                         right={8}
@@ -98,7 +98,7 @@ export function ProductCardWithCart({
                                     {product.category}
                                 </Text>
                                 {product.condition && product.condition !== "NEW" && (
-                                    <Badge variant="neutral" size="sm">
+                                    <Badge variant="neutral" size="$3">
                                         <Text size="$2" weight="medium">
                                             {product.condition.replace("_", " ")}
                                         </Text>
@@ -111,7 +111,7 @@ export function ProductCardWithCart({
                         </Column>
                     </Link>
                     <Button
-                        size="md"
+                        size="$4"
                         tone="primary"
                         fullWidth
                         onPress={handleBuyNow}

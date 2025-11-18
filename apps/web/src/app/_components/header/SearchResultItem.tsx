@@ -40,7 +40,7 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
               {product.category}
             </Text>
             {product.condition && (
-              <Badge variant="neutral" size="sm">
+              <Badge variant="neutral" size="$3">
                 {product.condition.replace(/_/g, " ")}
               </Badge>
             )}

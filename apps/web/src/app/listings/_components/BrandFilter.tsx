@@ -34,7 +34,7 @@ export function BrandFilter({
   return (
     <Column gap="$sm">
       <Input
-        size="sm"
+        size="$3"
         placeholder="Search brands..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -57,7 +57,7 @@ export function BrandFilter({
               <Checkbox
                 checked={selectedBrands.includes(brand)}
                 onChange={() => handleToggle(brand)}
-                size="sm"
+                size="$3"
               />
               <Text size="$3">{brand}</Text>
             </Row>

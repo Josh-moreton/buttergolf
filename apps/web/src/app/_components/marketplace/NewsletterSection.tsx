@@ -31,13 +31,13 @@ export function NewsletterSection() {
         >
           <Input
             flex={1}
-            size="lg"
+            size="$5"
             placeholder="you@example.com"
             borderRadius="$full"
             paddingHorizontal="$5"
           />
           <Button
-            size="lg"
+            size="$5"
             tone="primary"
             flexShrink={0}
             width={180}

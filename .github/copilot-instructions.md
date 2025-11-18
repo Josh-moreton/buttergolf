@@ -645,18 +645,22 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
-#### ✅ **ALWAYS Use Tamagui Button Component (Never Manual HTML Buttons)**
+#### ✅ **ALWAYS Use Standard Tamagui Button (Never Custom Variants or Manual HTML Buttons)**
 
 ```tsx
-// ✅ CORRECT - Use Tamagui Button from @buttergolf/ui
+// ✅ CORRECT - Use standard Tamagui Button with numeric size tokens and direct props
 import { Button } from "@buttergolf/ui";
 
-<Button size="lg" tone="primary" borderRadius="$full" paddingHorizontal="$6" color="$vanillaCream">
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$6" paddingVertical="$3" borderRadius={32}>
   View all listings
 </Button>
 
-<Button size="md" tone="secondary" fullWidth>
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" width="100%">
   Secondary Action
+</Button>
+
+<Button size="$4" chromeless>
+  Ghost Button
 </Button>
 
 // ❌ WRONG - Never create manual HTML buttons with inline styles
@@ -676,19 +680,25 @@ import { Button } from "@buttergolf/ui";
   View all listings
 </button>
 
+// ❌ WRONG - Don't use custom variants (we removed them)
+<Button size="lg" tone="primary">
+  Submit
+</Button>
+
 // ❌ WRONG - Don't use native button element even with Tamagui props
 <button backgroundColor="$primary" color="$textInverse">
   Submit
 </button>
 ```
 
-**Why Tamagui Button?**
+**Why Standard Tamagui Button?**
 - Ensures cross-platform consistency (works on web and mobile)
-- Proper theming with light/dark mode support
+- Uses standard Tamagui numeric size tokens ($1-$16)
+- No abstraction layer - direct control over styling
 - Built-in hover/press/focus states
 - Accessible by default
 - Compiler-optimized for performance
-- Maintains design system consistency
+- Follows official Tamagui patterns
 
 #### ✅ **PREFER Specific Brand Color Tokens (Not Generic Semantic Tokens)**
 
@@ -1119,47 +1129,83 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 #### Understanding Component Size Props
 
-**CRITICAL: Different components use `size` differently**
+**CRITICAL: ALL components now use standard Tamagui numeric size tokens**
 
-1. **Button, Input, Badge, Spinner** - `size` variant controls **HEIGHT and padding** (geometric sizing):
+1. **Button** - `size` uses **numeric tokens** ($1-$16):
    ```tsx
-   <Button size="sm">Home</Button>  // ✅ sm/md/lg controls height (32px/40px/48px)
-   <Input size="md" />              // ✅ sm/md/lg controls height
+   <Button size="$4">Standard button</Button>  // ✅ Numeric tokens control font size
+   <Button size="$5" paddingHorizontal="$5" paddingVertical="$3">Larger</Button>
    ```
 
-2. **Text, Paragraph** - NO `size` variant, use **`fontSize` with numeric tokens**:
+2. **Text, Paragraph** - `size` uses **numeric tokens** ($1-$16):
    ```tsx
-   <Text fontSize="$5">Body text</Text>  // ✅ Use numeric tokens ($1-$16)
-   <Text size="md">Wrong!</Text>         // ❌ Text has no size variant
+   <Text size="$5">Body text</Text>  // ✅ Use numeric tokens ($1-$16)
+   <Text fontSize="$5">Also works</Text>  // ⚠️ But prefer size prop
    ```
 
-3. **Heading** - NO `size` variant, use **`level` prop** (semantic HTML):
+3. **Input, Badge, Spinner** - `size` variant controls **HEIGHT and padding** (custom sizing):
+   ```tsx
+   <Input size="sm" />   // ✅ Custom variants for these components
+   <Badge size="md" />   // ✅ sm/md/lg controls height
+   <Spinner size="lg" /> // ✅ Geometric sizing
+   ```
+
+4. **Heading** - NO `size` variant, use **`level` prop** (semantic HTML):
    ```tsx
    <Heading level={2}>Title</Heading>  // ✅ level controls h1-h6 + font size
-   <Heading fontSize="$8">Manual</Heading>  // ⚠️ Override if needed
+   <Heading size="$8">Override size</Heading>  // ⚠️ Can override with size prop
    ```
 
 #### Button
 
+**CRITICAL: We use STANDARD Tamagui Button with numeric size tokens and direct prop styling. NO custom variants.**
+
 ```tsx
 <Button
-  size="sm | md | lg" // Size variant controls HEIGHT (32/40/48px) + padding
-  tone="primary | secondary | outline | ghost | success | error" // Style variant
-  fullWidth={boolean} // Full width button
+  size="$4" // Standard Tamagui numeric size tokens ($1-$16)
+  backgroundColor="$primary" // Direct color prop
+  color="$textInverse" // Direct text color
+  paddingHorizontal="$4" // Direct padding
+  paddingVertical="$3" // Direct padding
+  borderRadius={24} // Direct styling
+  width="100%" // Full width if needed
   disabled={boolean} // Disabled state
-  loading={boolean} // Loading state
+  chromeless={boolean} // Chromeless/ghost style (use instead of tone="ghost")
 >
   Button Text
 </Button>
 ```
 
-**Important**: Button `size` controls the button's HEIGHT and padding, NOT the text font size directly. Font size is set internally by the variant (`sm: fontSize="$3"`, `md: fontSize="$4"`, `lg: fontSize="$5"`).
+**Standard Tamagui Button Patterns:**
+```tsx
+// Primary button
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
+  Primary Action
+</Button>
+
+// Outline button
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3">
+  Secondary Action
+</Button>
+
+// Ghost/chromeless button
+<Button size="$4" chromeless>
+  Cancel
+</Button>
+
+// Success button
+<Button size="$5" backgroundColor="$success" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
+  Confirm
+</Button>
+```
+
+**Important**: Button uses standard Tamagui size tokens ($1-$16) which control font size. Use paddingHorizontal/paddingVertical to control button dimensions.
 
 #### Text
 
 ```tsx
 <Text
-  fontSize="$1" | "$2" | "$3" | "$4" | "$5" | ... "$16" // Use numeric tokens (default: $5)
+  size="$1" | "$2" | "$3" | "$4" | "$5" | ... "$16" // Use numeric tokens (default: $5)
   fontWeight="400" | "500" | "600" | "700" // Font weight (or use weight prop)
   weight="normal | medium | semibold | bold" // Semantic weight variant
   textAlign="left | center | right" // Text alignment
@@ -1170,7 +1216,7 @@ export type { MyComponentProps } from "./components/MyComponent";
 </Text>
 ```
 
-**CRITICAL**: Text does NOT have a `size` variant. Always use `fontSize` with numeric tokens (`$1` through `$16`).
+**CRITICAL**: Text uses standard Tamagui `size` prop with numeric tokens (`$1` through `$16`). This is the STANDARD way.
 
 **Note**: Text does NOT have color variants. Always use direct token references like `color="$textMuted"` or `color="$primary"`.
 
@@ -2619,7 +2665,7 @@ When creating a new component, add variants for:
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-10. **CRITICAL: Always use Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use variants (`size`, `tone`) with token props (`borderRadius`, `paddingHorizontal`, `color`). This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
+10. **CRITICAL: Always use standard Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use standard Tamagui numeric size tokens (`size="$4"`) with direct prop styling (`backgroundColor`, `color`, `paddingHorizontal`, `paddingVertical`, `borderRadius`). We removed custom variants (size="sm|md|lg", tone="primary|outline") to use standard Tamagui patterns. This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
 11. **Keep React versions aligned** across web and mobile (currently 19.2.0)
 12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
 13. **Export types** alongside components for better DX

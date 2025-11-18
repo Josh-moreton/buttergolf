@@ -25,7 +25,7 @@ export function BuySellToggle({ activeMode, onModeChange }: BuySellToggleProps) 
         >
             {/* Buying Button */}
             <Button
-                size="lg"
+                size="$5"
                 onPress={() => onModeChange("buying")}
                 backgroundColor={activeMode === "buying" ? "$primary" : "$vanillaCream"}
                 color={activeMode === "buying" ? "$textInverse" : "$vanillaCream"}
@@ -48,7 +48,7 @@ export function BuySellToggle({ activeMode, onModeChange }: BuySellToggleProps) 
 
             {/* Selling Button */}
             <Button
-                size="lg"
+                size="$5"
                 onPress={() => onModeChange("selling")}
                 backgroundColor={activeMode === "selling" ? "$primary" : "$cloudMist"}
                 color={activeMode === "selling" ? "$textInverse" : "$ironstone"}

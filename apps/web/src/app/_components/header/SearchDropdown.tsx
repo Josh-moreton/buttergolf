@@ -102,7 +102,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (loading) {
     return (
       <Column padding="$6" alignItems="center" gap="$3">
-        <Spinner size="md" color="$primary" />
+        <Spinner size="$4" color="$primary" />
         <Text {...{ color: "$textMuted" }} size="$3">
           Searching...
         </Text>

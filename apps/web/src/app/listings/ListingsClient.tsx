@@ -256,14 +256,14 @@ export function ListingsClient({
                 className="mobile-filter-button"
               >
                 <Button
-                  size="md"
+                  size="$4"
                   chromeless
                   onPress={() => setMobileFilterOpen(true)}
                 >
                   <Row gap="$sm" alignItems="center">
                     <Text>Filters</Text>
                     {activeFilterCount > 0 && (
-                      <Badge variant="primary" size="sm">
+                      <Badge variant="primary" size="$3">
                         {activeFilterCount}
                       </Badge>
                     )}
@@ -283,7 +283,7 @@ export function ListingsClient({
                 Active filters:
               </Text>
               {filters.category && (
-                <Badge variant="outline" size="md">
+                <Badge variant="outline" size="$4">
                   {filters.category}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
@@ -294,7 +294,7 @@ export function ListingsClient({
                 </Badge>
               )}
               {filters.conditions.map((condition) => (
-                <Badge key={condition} variant="outline" size="md">
+                <Badge key={condition} variant="outline" size="$4">
                   {condition.replace("_", " ")}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
@@ -309,7 +309,7 @@ export function ListingsClient({
                 </Badge>
               ))}
               {filters.brands.map((brand) => (
-                <Badge key={brand} variant="outline" size="md">
+                <Badge key={brand} variant="outline" size="$4">
                   {brand}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
@@ -323,7 +323,7 @@ export function ListingsClient({
                   </span>
                 </Badge>
               ))}
-              <Button size="md" chromeless onPress={handleClearAll}>
+              <Button size="$4" chromeless onPress={handleClearAll}>
                 Clear all
               </Button>
             </Row>

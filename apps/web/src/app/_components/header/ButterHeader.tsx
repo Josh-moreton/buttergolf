@@ -161,7 +161,7 @@ export function ButterHeader() {
               <SignedOut>
                 <AuthButton
                   variant="login"
-                  size="md"
+                  size="$4"
                   onPress={() => {
                     setAuthMode("sign-in");
                     setAuthOpen(true);
@@ -171,7 +171,7 @@ export function ButterHeader() {
                 </AuthButton>
                 <AuthButton
                   variant="signup"
-                  size="md"
+                  size="$4"
                   onPress={() => {
                     setAuthMode("sign-up");
                     setAuthOpen(true);
@@ -320,7 +320,7 @@ export function ButterHeader() {
             <SignedOut>
               <AuthButton
                 variant="login"
-                size="lg"
+                size="$5"
                 fullWidth
                 onPress={() => {
                   setAuthMode("sign-in");
@@ -332,7 +332,7 @@ export function ButterHeader() {
               </AuthButton>
               <AuthButton
                 variant="signup"
-                size="lg"
+                size="$5"
                 fullWidth
                 onPress={() => {
                   setAuthMode("sign-up");

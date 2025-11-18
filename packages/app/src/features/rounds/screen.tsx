@@ -13,7 +13,7 @@ export function RoundsScreen() {
       <Text size="$5">
         Welcome to Rounds! Track your golf games here.
       </Text>
-      <Button {...homeLink} size="sm">
+      <Button {...homeLink} size="$3">
         Back to Home
       </Button>
     </YStack>

@@ -123,8 +123,9 @@ export function LoggedOutHomeScreen({
           justifyContent="space-between"
         >
           <Button
-            size="lg"
-            tone="primary"
+            size="$5"
+            backgroundColor="$primary"
+            color="$textInverse"
             flex={1}
             borderRadius="$full"
             pressStyle={{
@@ -136,11 +137,13 @@ export function LoggedOutHomeScreen({
             Buying
           </Button>
           <Button
-            size="lg"
-            tone="outline"
+            size="$5"
+            backgroundColor="transparent"
+            color="$primary"
+            borderWidth={2}
+            borderColor="$primary"
             flex={1}
             borderRadius="$full"
-            backgroundColor="$cloudMist"
             pressStyle={{
               scale: 0.98,
               opacity: 0.9,

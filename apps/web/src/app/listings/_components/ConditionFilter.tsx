@@ -42,7 +42,7 @@ export function ConditionFilter({
           <Checkbox
             checked={selectedConditions.includes(condition.value)}
             onChange={() => handleToggle(condition.value)}
-            size="sm"
+            size="$3"
           />
           <Text size="$3">{condition.label}</Text>
         </Row>

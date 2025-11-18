@@ -121,7 +121,7 @@ export function ImageUpload({
       >
         {uploading ? (
           <Column gap="$md" alignItems="center">
-            <Spinner size="lg" color="$primary" />
+            <Spinner size="$5" color="$primary" />
             <Text size="$4" color="$textSecondary" textAlign="center">
               Uploading... {progress.toString()}%
             </Text>

@@ -88,7 +88,7 @@ export function MobileFilterSheet({
       <Sheet.Footer>
         <Row gap="$md">
           <Button
-            size="md"
+            size="$4"
             flex={1}
             chromeless
             onPress={() => onOpenChange(false)}
@@ -96,7 +96,7 @@ export function MobileFilterSheet({
             Cancel
           </Button>
           <Button
-            size="md"
+            size="$4"
             flex={1}
             backgroundColor="$primary"
             color="$textInverse"

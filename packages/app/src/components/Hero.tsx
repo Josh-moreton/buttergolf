@@ -271,8 +271,8 @@ export function Hero({
                                     {primaryCta && (
                                         <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
-                                                size="lg"
-                                                tone="primary"
+                                                size="$5"
+                                                backgroundColor="$primary"
                                                 paddingHorizontal="$8"
                                                 minWidth={160}
                                                 borderRadius="$full"
@@ -286,7 +286,7 @@ export function Hero({
                                     {secondaryCta && (
                                         <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
-                                                size="lg"
+                                                size="$5"
                                                 backgroundColor="$secondary"
                                                 color="$vanillaCream"
                                                 paddingHorizontal="$8"
