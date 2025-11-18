@@ -79,6 +79,13 @@ module.exports = () => {
     ],
     experimental: {
       scrollRestoration: true,
+      // Allow Server Actions to work with dev tunnels and port forwarding
+      serverActions: {
+        allowedOrigins: [
+          "localhost:3000",
+          "ttdr3bz5-3000.uks1.devtunnels.ms",
+        ],
+      },
     },
     webpack: (webpackConfig) => {
       // Map React Native to React Native Web for web builds

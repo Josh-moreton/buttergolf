@@ -24,7 +24,7 @@ export default function AuthHeader() {
             <Button size="$4">Rounds</Button>
           </Link>
           <SignedOut>
-            <SignInButton>
+            <SignInButton mode="modal">
               <Button size="$3">Sign in</Button>
             </SignInButton>
           </SignedOut>

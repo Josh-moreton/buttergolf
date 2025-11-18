@@ -3,18 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 import { Row, Column, Text } from "@buttergolf/ui";
 import { menuData } from "./menuData";
 import { DesktopMenu } from "./DesktopMenu";
 import { SearchIcon, UserIcon, HeartIcon, MenuIcon, PackageIcon } from "./icons";
-import { SignInModal } from "../auth/SignInModal";
 
 export function MarketplaceHeader() {
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   // Wishlist count (placeholder - will wire to state later)
   const wishlistCount = 0;
@@ -168,25 +165,23 @@ export function MarketplaceHeader() {
             </Link>
 
             <SignedOut>
-              <Row
-                tag="button"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.7 }}
-                padding="$2"
-                minWidth={44}
-                minHeight={44}
-                alignItems="center"
-                justifyContent="center"
-                backgroundColor="transparent"
-                borderWidth={0}
-                onPress={() => {
-                  setAuthMode("sign-in");
-                  setAuthOpen(true);
-                }}
-                aria-label="Sign in"
-              >
-                <UserIcon />
-              </Row>
+              <SignInButton mode="modal">
+                <Row
+                  tag="button"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.7 }}
+                  padding="$2"
+                  minWidth={44}
+                  minHeight={44}
+                  alignItems="center"
+                  justifyContent="center"
+                  backgroundColor="transparent"
+                  borderWidth={0}
+                  aria-label="Sign in"
+                >
+                  <UserIcon />
+                </Row>
+              </SignInButton>
             </SignedOut>
 
             <SignedIn>
@@ -326,13 +321,6 @@ export function MarketplaceHeader() {
           <DesktopMenu menuData={menuData} stickyMenu={stickyMenu} />
         </Row>
       </Row>
-
-      {/* Auth modal */}
-      <SignInModal
-        open={authOpen}
-        onClose={() => setAuthOpen(false)}
-        mode={authMode}
-      />
     </Column>
   );
 }
