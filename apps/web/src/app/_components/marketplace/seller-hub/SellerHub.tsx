@@ -166,7 +166,7 @@ export function SellerHub() {
                 justifyContent="center"
                 backgroundColor="$background"
             >
-                <Spinner size="$5" color="$primary" />
+                <Spinner size="lg" color="$primary" />
                 <Text color="$textSecondary" marginTop="$md">
                     Loading your listings...
                 </Text>
@@ -328,21 +328,24 @@ export function SellerHub() {
                             <Row gap="$xs">
                                 <Button
                                     size="$3"
-                                    tone={statusFilter === "all" ? "primary" : "ghost"}
+                                    backgroundColor={statusFilter === "all" ? "$primary" : "transparent"}
+                                    color={statusFilter === "all" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("all")}
                                 >
                                     All
                                 </Button>
                                 <Button
                                     size="$3"
-                                    tone={statusFilter === "active" ? "primary" : "ghost"}
+                                    backgroundColor={statusFilter === "active" ? "$primary" : "transparent"}
+                                    color={statusFilter === "active" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("active")}
                                 >
                                     Active
                                 </Button>
                                 <Button
                                     size="$3"
-                                    tone={statusFilter === "sold" ? "primary" : "ghost"}
+                                    backgroundColor={statusFilter === "sold" ? "$primary" : "transparent"}
+                                    color={statusFilter === "sold" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("sold")}
                                 >
                                     Sold
@@ -401,7 +404,7 @@ export function SellerHub() {
                             <Row gap="$sm" alignItems="center" justifyContent="center">
                                 <Button
                                     size="$4"
-                                    tone="outline"
+
                                     disabled={currentPage === 1}
                                     onPress={() => fetchListings(currentPage - 1)}
                                 >
@@ -412,7 +415,7 @@ export function SellerHub() {
                                 </Text>
                                 <Button
                                     size="$4"
-                                    tone="outline"
+
                                     disabled={!data.pagination.hasMore}
                                     onPress={() => fetchListings(currentPage + 1)}
                                 >

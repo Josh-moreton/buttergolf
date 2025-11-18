@@ -383,7 +383,7 @@ export default function SellPage() {
                             {formData.title || "Auto-generated from fields below"}
                           </Text>
                           <Button
-                            tone="ghost"
+
                             size="$3"
                             onPress={() => setIsEditingTitle(true)}
                           >
@@ -654,7 +654,7 @@ export default function SellPage() {
                 >
                   <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
-                      tone="outline"
+
                       size="$5"
                       onPress={() => router.push("/")}
                       disabled={loading}
@@ -663,7 +663,7 @@ export default function SellPage() {
                       Save draft
                     </Button>
                     <Button
-                      tone="primary"
+
                       size="$5"
                       disabled={loading}
                       onPress={() => handleSubmit({} as React.FormEvent)}

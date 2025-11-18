@@ -60,7 +60,7 @@ export default function CheckoutSuccessPage() {
         paddingVertical="$3xl"
         paddingHorizontal="$lg"
       >
-        <Spinner size="$5" color="$primary" />
+        <Spinner size="lg" color="$primary" />
         <Text color="$textSecondary">Loading your order details...</Text>
       </Column>
     );

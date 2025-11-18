@@ -293,7 +293,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           }}
         >
           <button
-            type="button"
+
             aria-label="Close image gallery"
             onClick={() => setLightboxOpen(false)}
             style={{

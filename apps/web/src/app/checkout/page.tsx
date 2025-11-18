@@ -54,9 +54,9 @@ function CheckoutPageContent() {
 
   if (loading) {
     return (
-      <Container size="$5" paddingVertical="$2xl">
+      <Container size="lg" paddingVertical="$2xl">
         <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
-          <Spinner size="$5" color="$primary" />
+          <Spinner size="lg" color="$primary" />
           <Text color="$textSecondary">Preparing checkout...</Text>
         </Column>
       </Container>
@@ -65,7 +65,7 @@ function CheckoutPageContent() {
 
   if (error || !product) {
     return (
-      <Container size="$5" paddingVertical="$2xl">
+      <Container size="lg" paddingVertical="$2xl">
         <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
           <Text color="$error" size="$6" weight="semibold">
             {error || "Unable to load checkout"}
@@ -130,9 +130,9 @@ export default function CheckoutPage() {
   return (
     <Suspense
       fallback={
-        <Container size="$5" paddingVertical="$2xl">
+        <Container size="lg" paddingVertical="$2xl">
           <Column gap="$lg" alignItems="center" paddingVertical="$3xl">
-            <Spinner size="$5" color="$primary" />
+            <Spinner size="lg" color="$primary" />
           </Column>
         </Container>
       }

@@ -57,7 +57,7 @@ export function BrandFilter({
               <Checkbox
                 checked={selectedBrands.includes(brand)}
                 onChange={() => handleToggle(brand)}
-                size="$3"
+                size="sm"
               />
               <Text size="$3">{brand}</Text>
             </Row>

@@ -514,7 +514,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                 {loadingRates && step !== 'payment' && (
                     <Card variant="outlined" padding="$xl">
                         <Column gap="$md" alignItems="center">
-                            <Spinner size="$5" color="$primary" />
+                            <Spinner size="lg" color="$primary" />
                             <Text color="$textSecondary">
                                 {step === 'address' ? 'Calculating shipping options...' : 'Processing...'}
                             </Text>

@@ -35,19 +35,19 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
     switch (user.accountStatus) {
       case "active":
         return (
-          <Badge variant="success" size="$4">
+          <Badge variant="success" size="md">
             Active Seller
           </Badge>
         );
       case "restricted":
         return (
-          <Badge variant="warning" size="$4">
+          <Badge variant="warning" size="md">
             Restricted
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="info" size="$4">
+          <Badge variant="info" size="md">
             Pending
           </Badge>
         );
@@ -73,7 +73,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row gap="$md">
             <Button
               size="$4"
-              tone="outline"
+
               onPress={() => {
                 /* View dashboard */
               }}
@@ -82,7 +82,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             </Button>
             <Button
               size="$4"
-              tone="ghost"
+
               onPress={() => setShowOnboarding(true)}
             >
               Update Account
@@ -106,7 +106,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row>
             <Button
               size="$4"
-              tone="warning"
+
               onPress={() => setShowOnboarding(true)}
             >
               Resolve Issues
@@ -126,7 +126,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row>
             <Button
               size="$4"
-              tone="outline"
+
               onPress={() => setShowOnboarding(true)}
             >
               View Status
@@ -146,7 +146,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row gap="$md">
             <Button
               size="$4"
-              tone="primary"
+
               onPress={() => setShowOnboarding(true)}
             >
               Continue Onboarding
@@ -166,7 +166,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
         <Row>
           <Button
             size="$5"
-            tone="primary"
+
             onPress={() => setShowOnboarding(true)}
           >
             Become a Seller
@@ -178,7 +178,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
 
   if (showOnboarding) {
     return (
-      <Container size="$5" paddingHorizontal="$md">
+      <Container size="lg" paddingHorizontal="$md">
         <Card variant="elevated" padding="$lg">
           <SellerOnboarding
             onComplete={handleOnboardingComplete}
@@ -190,7 +190,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
   }
 
   return (
-    <Container size="$5" paddingHorizontal="$md">
+    <Container size="lg" paddingHorizontal="$md">
       <Column gap="$xl" fullWidth>
         <Column gap="$sm">
           <Heading level={1}>Account Settings</Heading>

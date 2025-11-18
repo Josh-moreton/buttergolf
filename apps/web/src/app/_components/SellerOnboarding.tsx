@@ -102,7 +102,7 @@ export function SellerOnboarding({
     return (
       <Card variant="elevated" padding="$xl">
         <Column gap="$md" align="center">
-          <Spinner size="$5" color="$primary" />
+          <Spinner size="lg" color="$primary" />
           <Text color="$textSecondary">
             Initializing seller onboarding...
           </Text>

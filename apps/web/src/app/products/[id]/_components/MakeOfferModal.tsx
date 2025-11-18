@@ -76,7 +76,7 @@ export function MakeOfferModal({
             }}
         >
             <button
-                type="button"
+
                 aria-label="Close offer modal"
                 onClick={onClose}
                 style={{
@@ -243,7 +243,7 @@ export function MakeOfferModal({
                     {/* Submit Button */}
                     <Button
                         size="$5"
-                        tone="primary"
+
                         borderRadius="$full"
                         paddingHorizontal="$6"
                         onPress={handleSubmit}

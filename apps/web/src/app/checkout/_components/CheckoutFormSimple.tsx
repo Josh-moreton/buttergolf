@@ -397,12 +397,11 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                 {/* Submit Button */}
                 <Button
                     size="$5"
-                    tone="primary"
+
                     borderRadius="$full"
                     paddingHorizontal="$6"
-                    type="submit"
                     disabled={isProcessing}
-                    fullWidth
+                    width="100%"
                 >
                     {isProcessing ? "Processing..." : `Confirm and pay £${(product.price + 9.99 + 1.0).toFixed(2)}`}
                 </Button>

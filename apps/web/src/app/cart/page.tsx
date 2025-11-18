@@ -75,7 +75,7 @@ export default function CartPage() {
                                 <Row gap="$2" alignItems="center">
                                     <Button
                                         size="$3"
-                                        tone="outline"
+
                                         onPress={() =>
                                             updateQuantity(item.productId, item.quantity - 1)
                                         }
@@ -87,7 +87,7 @@ export default function CartPage() {
                                     </Text>
                                     <Button
                                         size="$3"
-                                        tone="outline"
+
                                         onPress={() =>
                                             updateQuantity(item.productId, item.quantity + 1)
                                         }
@@ -97,7 +97,7 @@ export default function CartPage() {
                                 </Row>
                                 <Button
                                     size="$3"
-                                    tone="error"
+
                                     onPress={() => removeItem(item.productId)}
                                 >
                                     Remove

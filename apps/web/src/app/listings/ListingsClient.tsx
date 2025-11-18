@@ -263,7 +263,7 @@ export function ListingsClient({
                   <Row gap="$sm" alignItems="center">
                     <Text>Filters</Text>
                     {activeFilterCount > 0 && (
-                      <Badge variant="primary" size="$3">
+                      <Badge variant="primary" size="sm">
                         {activeFilterCount}
                       </Badge>
                     )}
@@ -283,7 +283,7 @@ export function ListingsClient({
                 Active filters:
               </Text>
               {filters.category && (
-                <Badge variant="outline" size="$4">
+                <Badge variant="outline" size="md">
                   {filters.category}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
@@ -294,7 +294,7 @@ export function ListingsClient({
                 </Badge>
               )}
               {filters.conditions.map((condition) => (
-                <Badge key={condition} variant="outline" size="$4">
+                <Badge key={condition} variant="outline" size="md">
                   {condition.replace("_", " ")}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
@@ -309,7 +309,7 @@ export function ListingsClient({
                 </Badge>
               ))}
               {filters.brands.map((brand) => (
-                <Badge key={brand} variant="outline" size="$4">
+                <Badge key={brand} variant="outline" size="md">
                   {brand}
                   <span
                     style={{ marginLeft: 8, cursor: "pointer" }}
