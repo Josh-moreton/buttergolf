@@ -13,9 +13,10 @@
  * ```
  */
 
+import { forwardRef, type ComponentRef } from "react";
 import { Button as TamaguiButton, GetProps, styled, type ButtonProps as TamaguiButtonProps } from "tamagui";
 
-export const Button = styled(TamaguiButton, {
+const ButtonFrame = styled(TamaguiButton, {
     name: "Button",
 
     fontFamily: "$body",
@@ -28,27 +29,6 @@ export const Button = styled(TamaguiButton, {
     },
 
     variants: {
-        size: {
-            sm: {
-                height: "$buttonSm",
-                paddingHorizontal: "$3",
-                paddingVertical: "$2",
-                fontSize: "$3",
-            },
-            md: {
-                height: "$buttonMd",
-                paddingHorizontal: "$4",
-                paddingVertical: "$3",
-                fontSize: "$4",
-            },
-            lg: {
-                height: "$buttonLg",
-                paddingHorizontal: "$5",
-                paddingVertical: "$3",
-                fontSize: "$5",
-            },
-        },
-
         tone: {
             primary: {
                 backgroundColor: "$primary",
@@ -170,13 +150,45 @@ export const Button = styled(TamaguiButton, {
             },
         },
     } as const,
-
     defaultVariants: {
-        size: "md",
         tone: "primary",
     },
 });
 
-// Export type that includes BOTH our custom variants AND all base Tamagui Button props
-// This ensures TypeScript knows about inherited props like whiteSpace, flexShrink, etc.
-export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, keyof GetProps<typeof Button>>;
+const BUTTON_SIZE_STYLES = {
+    sm: {
+        height: "$buttonSm",
+        paddingHorizontal: "$3",
+        paddingVertical: "$2",
+        fontSize: "$3",
+    },
+    md: {
+        height: "$buttonMd",
+        paddingHorizontal: "$4",
+        paddingVertical: "$3",
+        fontSize: "$4",
+    },
+    lg: {
+        height: "$buttonLg",
+        paddingHorizontal: "$5",
+        paddingVertical: "$3",
+        fontSize: "$5",
+    },
+} as const;
+
+type ButtonFrameProps = GetProps<typeof ButtonFrame> & Omit<TamaguiButtonProps, keyof GetProps<typeof ButtonFrame>>;
+
+export type ButtonProps = Omit<ButtonFrameProps, "size"> & {
+    size?: keyof typeof BUTTON_SIZE_STYLES;
+};
+
+type ButtonElement = ComponentRef<typeof ButtonFrame>;
+
+export const Button = forwardRef<ButtonElement, ButtonProps>(
+    ({ size = "md", ...rest }, ref) => {
+        const sizeStyle = BUTTON_SIZE_STYLES[size] ?? BUTTON_SIZE_STYLES.md;
+        return <ButtonFrame ref={ref} {...sizeStyle} {...rest} />;
+    }
+);
+
+Button.displayName = "Button";

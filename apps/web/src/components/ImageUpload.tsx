@@ -18,6 +18,7 @@ export function ImageUpload({
   const { upload, uploading, error, progress } = useImageUpload();
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const maxSizeMB = 10;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
