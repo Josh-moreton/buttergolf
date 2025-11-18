@@ -217,7 +217,7 @@ export function SellerHub() {
                     <Heading level={2} textAlign="center">
                         No listings yet
                     </Heading>
-                    <Text size="$5" align="center" color="$textSecondary">
+                    <Text fontSize="$5" align="center" color="$textSecondary">
                         Start selling your golf equipment today! Create your first listing in under 60 seconds.
                     </Text>
                     <Link href="/sell" style={{ textDecoration: "none" }}>

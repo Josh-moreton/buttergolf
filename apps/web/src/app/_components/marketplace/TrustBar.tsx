@@ -31,12 +31,14 @@ export function TrustBar() {
         flexWrap="wrap"
         gap="$xs"
       >
-        <Text size="$3" weight="medium" color="$text">
+        gap="$xs"
+      >
+        <Text fontSize="$3" weight="medium" color="$text">
           Give 10%, Get 10%.
         </Text>
         <Link href="/refer-a-friend" style={{ textDecoration: "none" }}>
           <Text
-            size="$3"
+            fontSize="$3"
             weight="medium"
             color="$primary"
             textDecorationLine="underline"

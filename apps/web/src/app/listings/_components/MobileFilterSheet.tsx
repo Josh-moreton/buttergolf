@@ -6,6 +6,7 @@ import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
 import { PriceRangeFilter } from "./PriceRangeFilter";
 import { BrandFilter } from "./BrandFilter";
+import { FavoritesFilter } from "./FavoritesFilter";
 import type { FilterState } from "./FilterSidebar";
 
 interface MobileFilterSheetProps {
@@ -35,12 +36,12 @@ export function MobileFilterSheet({
       
       <Sheet.Header>
         <Row alignItems="center" justifyContent="space-between">
-          <Text weight="bold" size="$6">
+          <Text weight="bold" fontSize="$6">
             Filters
           </Text>
           <Text
             color="$primary"
-            size="$3"
+            fontSize="$3"
             cursor="pointer"
             onPress={onClearAll}
           >
@@ -51,6 +52,13 @@ export function MobileFilterSheet({
 
       <Sheet.Body>
         <Column gap="$lg">
+          <FilterSection title="Favorites" defaultExpanded>
+            <FavoritesFilter
+              enabled={filters.favoritesOnly}
+              onChange={(favoritesOnly) => onChange({ favoritesOnly })}
+            />
+          </FilterSection>
+
           <FilterSection title="Category" defaultExpanded>
             <CategoryFilter
               selectedCategory={filters.category}
@@ -88,7 +96,6 @@ export function MobileFilterSheet({
       <Sheet.Footer>
         <Row gap="$md">
           <Button
-            size="$4"
             flex={1}
             chromeless
             onPress={() => onOpenChange(false)}
@@ -96,7 +103,6 @@ export function MobileFilterSheet({
             Cancel
           </Button>
           <Button
-            size="$4"
             flex={1}
             backgroundColor="$primary"
             color="$textInverse"

@@ -63,7 +63,7 @@ export function PriceRangeFilter({
       />
       <Row gap="$sm" alignItems="center" justifyContent="space-between">
         <Column gap="$xs" flex={1}>
-          <Text size="$2" color="$textSecondary">
+          <Text fontSize="$2" color="$textSecondary">
             Min
           </Text>
           <Input
@@ -78,7 +78,7 @@ export function PriceRangeFilter({
           −
         </Text>
         <Column gap="$xs" flex={1}>
-          <Text size="$2" color="$textSecondary">
+          <Text fontSize="$2" color="$textSecondary">
             Max
           </Text>
           <Input
@@ -90,7 +90,7 @@ export function PriceRangeFilter({
           />
         </Column>
       </Row>
-      <Text size="$2" color="$textSecondary">
+      <Text fontSize="$2" color="$textSecondary">
         ${localMin} - ${localMax}
       </Text>
     </Column>

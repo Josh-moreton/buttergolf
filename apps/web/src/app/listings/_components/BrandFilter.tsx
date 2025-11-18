@@ -41,7 +41,7 @@ export function BrandFilter({
       />
       <Column gap="$xs" maxHeight={200} overflow="scroll">
         {filteredBrands.length === 0 ? (
-          <Text size="$3" color="$textSecondary">
+          <Text fontSize="$3" color="$textSecondary">
             No brands found
           </Text>
         ) : (
@@ -59,7 +59,7 @@ export function BrandFilter({
                 onChange={() => handleToggle(brand)}
                 size="sm"
               />
-              <Text size="$3">{brand}</Text>
+              <Text fontSize="$3">{brand}</Text>
             </Row>
           ))
         )}

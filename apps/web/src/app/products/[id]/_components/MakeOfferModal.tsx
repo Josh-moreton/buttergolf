@@ -165,7 +165,7 @@ export function MakeOfferModal({
                             <Text weight="semibold" color="$text">
                                 {product.title}
                             </Text>
-                            <Text size="$3" color="$textSecondary">
+                            <Text fontSize="$3" color="$textSecondary">
                                 Listed Price: £{product.price.toFixed(2)}
                             </Text>
                         </Column>
@@ -228,14 +228,14 @@ export function MakeOfferModal({
 
                         {/* Error Message */}
                         {error && (
-                            <Text size="$3" color="$error">
+                            <Text fontSize="$3" color="$error">
                                 {error}
                             </Text>
                         )}
 
                         {/* Helper Text */}
                         {/* Helper Text */}
-                        <Text size="$3" color="$ironstone">
+                        <Text fontSize="$3" color="$ironstone">
                             Minimum offer: £{(product.price * 0.5).toFixed(2)} (50% of listed price)
                         </Text>
                     </Column>

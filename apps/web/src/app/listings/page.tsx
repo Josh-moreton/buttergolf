@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { auth } from "@clerk/nextjs/server";
 import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 import { ListingsClient } from "./ListingsClient";
@@ -11,6 +12,7 @@ interface SearchParams {
   brand?: string | string[];
   sort?: string;
   page?: string;
+  favoritesOnly?: string;
 }
 
 interface Props {
@@ -56,6 +58,26 @@ async function getListings(searchParams: SearchParams) {
       : [];
   if (brands.length > 0) {
     where.brandId = { in: brands };
+  }
+
+  // Favorites filter - requires authentication
+  if (searchParams.favoritesOnly === "true") {
+    const { userId } = await auth();
+    if (userId) {
+      // Get user's database ID from clerk ID
+      const user = await prisma.user.findUnique({
+        where: { clerkId: userId },
+        select: { id: true },
+      });
+      
+      if (user) {
+        where.favoritedBy = {
+          some: {
+            userId: user.id,
+          },
+        };
+      }
+    }
   }
 
   // Sort options

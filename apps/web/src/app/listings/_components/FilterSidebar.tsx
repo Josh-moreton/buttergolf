@@ -6,6 +6,7 @@ import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
 import { PriceRangeFilter } from "./PriceRangeFilter";
 import { BrandFilter } from "./BrandFilter";
+import { FavoritesFilter } from "./FavoritesFilter";
 
 export interface FilterState {
   category: string | null;
@@ -13,6 +14,7 @@ export interface FilterState {
   minPrice: number;
   maxPrice: number;
   brands: string[];
+  favoritesOnly: boolean;
 }
 
 interface FilterSidebarProps {
@@ -45,9 +47,16 @@ export function FilterSidebar({
       display="none"
       className="desktop-filter-sidebar"
     >
-      <Text weight="bold" size="$6">
+      <Text weight="bold" fontSize="$6">
         Filters
       </Text>
+
+      <FilterSection title="Favorites">
+        <FavoritesFilter
+          enabled={filters.favoritesOnly}
+          onChange={(favoritesOnly) => onChange({ favoritesOnly })}
+        />
+      </FilterSection>
 
       <FilterSection title="Category">
         <CategoryFilter
@@ -81,7 +90,7 @@ export function FilterSidebar({
         />
       </FilterSection>
 
-      <Button chromeless size="$4" onPress={onClearAll}>
+      <Button chromeless onPress={onClearAll}>
         Clear All
       </Button>
     </Column>

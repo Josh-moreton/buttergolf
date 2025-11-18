@@ -31,21 +31,13 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
         />
 
         {/* Product Details */}
-        <Column flex={1} gap="$xs">
-          <Text weight="semibold" numberOfLines={1} size="$3">
-            {product.title}
-          </Text>
-          <Row gap="$2" alignItems="center" flexWrap="wrap">
-            <Text size="$2" {...{ color: "$textMuted" }}>
-              {product.category}
-            </Text>
-            {product.condition && (
-              <Badge variant="neutral" size="sm">
-                {product.condition.replace(/_/g, " ")}
-              </Badge>
-            )}
-          </Row>
         </Column>
+        <Column gap="$xs" flex={1}>
+          <Text weight="semibold" numberOfLines={1} fontSize="$3">
+            {title}
+          </Text>
+          {subtitle && (
+            <Text fontSize="$2" {...{ color: "$textMuted" }}>
 
         {/* Price */}
         <Text weight="bold" {...{ color: "$primary" }} flexShrink={0}>

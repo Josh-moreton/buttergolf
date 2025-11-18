@@ -36,6 +36,7 @@ model User {
     ratingsGiven             SellerRating[] @relation("RatingsGiven")
     buyerOffers              Offer[]        @relation("BuyerOffers")
     sellerOffers             Offer[]        @relation("SellerOffers")
+    favorites                Favorite[]
 
     @@map("users")
 }
@@ -116,9 +117,9 @@ model Product {
     categoryId  String
     category    Category         @relation(fields: [categoryId], references: [id])
     images      ProductImage[]
-    isSold      Boolean          @default(false)
-    views       Int              @default(0)
-    favorites   Int              @default(0) // Number of times favorited
+    isSold       Boolean    @default(false)
+    views        Int        @default(0)
+    favoritedBy  Favorite[]
     // Shipping dimensions for EasyPost (in cm and grams)
     length      Float? // Length in cm
     width       Float? // Width in cm
@@ -134,7 +135,6 @@ model Product {
     @@index([brandId])
     @@index([isSold])
     @@index([views])
-    @@index([favorites])
     @@map("products")
 }
 
@@ -321,4 +321,18 @@ enum OfferStatus {
     REJECTED
     COUNTERED
     EXPIRED
+}
+
+model Favorite {
+    id        String   @id @default(cuid())
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    productId String
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+
+    @@unique([userId, productId])
+    @@index([userId])
+    @@index([productId])
+    @@map("favorites")
 }
