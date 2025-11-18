@@ -256,7 +256,7 @@ export function ListingsClient({
                 className="mobile-filter-button"
               >
                 <Button
-                  size="$4"
+                  size="md"
                   chromeless
                   onPress={() => setMobileFilterOpen(true)}
                 >
@@ -279,7 +279,7 @@ export function ListingsClient({
           {/* Active filters chips */}
           {activeFilterCount > 0 && (
             <Row gap="$sm" flexWrap="wrap" alignItems="center">
-              <Text size="$3" color="$textSecondary">
+              <Text fontSize="$3" color="$textSecondary">
                 Active filters:
               </Text>
               {filters.category && (
@@ -323,7 +323,7 @@ export function ListingsClient({
                   </span>
                 </Badge>
               ))}
-              <Button size="$3" chromeless onPress={handleClearAll}>
+              <Button size="md" chromeless onPress={handleClearAll}>
                 Clear all
               </Button>
             </Row>

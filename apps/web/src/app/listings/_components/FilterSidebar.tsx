@@ -45,7 +45,7 @@ export function FilterSidebar({
       display="none"
       className="desktop-filter-sidebar"
     >
-      <Text weight="bold" size="$6">
+      <Text weight="bold" fontSize="$6">
         Filters
       </Text>
 
@@ -81,7 +81,7 @@ export function FilterSidebar({
         />
       </FilterSection>
 
-      <Button chromeless size="$4" onPress={onClearAll}>
+      <Button chromeless size="md" onPress={onClearAll}>
         Clear All
       </Button>
     </Column>

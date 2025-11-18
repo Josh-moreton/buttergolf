@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Column, Row, Text, Input, Card } from '@buttergolf/ui'
-import type { InputProps } from '@buttergolf/ui'
+import { Column, Row } from './Layout'
+import { Text } from './Text'
+import { Input } from './Input'
+import { Card } from './Card'
+import type { InputProps } from './Input'
 
 export interface AutocompleteSuggestion {
     id: string | null
@@ -164,7 +167,7 @@ export function Autocomplete({
                 >
                     {loading ? (
                         <Row padding="$md" justifyContent="center">
-                            <Text size="$3" color="$textMuted">
+                            <Text fontSize="$3" color="$textMuted">
                                 Loading...
                             </Text>
                         </Row>
@@ -188,7 +191,7 @@ export function Autocomplete({
                                     {renderSuggestion ? (
                                         renderSuggestion(suggestion)
                                     ) : (
-                                        <Text size="$4">{suggestion.name}</Text>
+                                        <Text fontSize="$4">{suggestion.name}</Text>
                                     )}
                                 </Row>
                             ))}
@@ -204,7 +207,7 @@ export function Autocomplete({
                                 handleSelectSuggestion({ id: null, name: value.trim() })
                             }
                         >
-                            <Text size="$3" color="$textMuted">
+                            <Text fontSize="$3" color="$textMuted">
                                 Add &quot;{value}&quot; as new model
                             </Text>
                         </Row>

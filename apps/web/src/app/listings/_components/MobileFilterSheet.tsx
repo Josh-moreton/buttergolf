@@ -35,12 +35,12 @@ export function MobileFilterSheet({
       
       <Sheet.Header>
         <Row alignItems="center" justifyContent="space-between">
-          <Text weight="bold" size="$6">
+          <Text weight="bold" fontSize="$6">
             Filters
           </Text>
           <Text
             color="$primary"
-            size="$3"
+            fontSize="$3"
             cursor="pointer"
             onPress={onClearAll}
           >
@@ -88,7 +88,7 @@ export function MobileFilterSheet({
       <Sheet.Footer>
         <Row gap="$md">
           <Button
-            size="$4"
+            size="md"
             flex={1}
             chromeless
             onPress={() => onOpenChange(false)}
@@ -96,7 +96,7 @@ export function MobileFilterSheet({
             Cancel
           </Button>
           <Button
-            size="$4"
+            size="md"
             flex={1}
             backgroundColor="$primary"
             color="$textInverse"

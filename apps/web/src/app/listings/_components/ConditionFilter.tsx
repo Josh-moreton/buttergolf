@@ -44,7 +44,7 @@ export function ConditionFilter({
             onChange={() => handleToggle(condition.value)}
             size="sm"
           />
-          <Text size="$3">{condition.label}</Text>
+          <Text fontSize="$3">{condition.label}</Text>
         </Row>
       ))}
     </Column>
