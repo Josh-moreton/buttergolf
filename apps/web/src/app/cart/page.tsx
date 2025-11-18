@@ -17,7 +17,7 @@ export default function CartPage() {
                 gap="$4"
                 paddingHorizontal="$4"
             >
-                <Text fontSize="$7" weight="bold">
+                <Text size="$7" weight="bold">
                     Your cart is empty
                 </Text>
                 <Text color="$textSecondary">
@@ -42,7 +42,7 @@ export default function CartPage() {
             width="100%"
         >
             <Row alignItems="center" justifyContent="space-between">
-                <Text fontSize="$7" weight="bold">
+                <Text size="$7" weight="bold">
                     Shopping Cart ({items.length} {items.length === 1 ? "item" : "items"})
                 </Text>
                 <Button tone="ghost" onPress={clearCart}>
@@ -65,10 +65,10 @@ export default function CartPage() {
                                     alt={item.title}
                                 />
                                 <Column flex={1} gap="$2">
-                                    <Text fontSize="$4" weight="semibold">
+                                    <Text size="$4" weight="semibold">
                                         {item.title}
                                     </Text>
-                                    <Text fontSize="$6" weight="bold" color="$primary">
+                                    <Text size="$6" weight="bold" color="$primary">
                                         £{item.price.toFixed(2)}
                                     </Text>
                                 </Column>
@@ -82,7 +82,7 @@ export default function CartPage() {
                                     >
                                         -
                                     </Button>
-                                    <Text fontSize="$4" minWidth={30} textAlign="center">
+                                    <Text size="$4" minWidth={30} textAlign="center">
                                         {item.quantity}
                                     </Text>
                                     <Button
@@ -110,7 +110,7 @@ export default function CartPage() {
                 {/* Order Summary */}
                 <Card variant="elevated" padding="$lg" minWidth={300} width="100%" maxWidth={400}>
                     <Column gap="$4">
-                        <Text fontSize="$6" weight="bold">
+                        <Text size="$6" weight="bold">
                             Order Summary
                         </Text>
                         <Column gap="$2">
@@ -120,10 +120,10 @@ export default function CartPage() {
                                     justifyContent="space-between"
                                     alignItems="center"
                                 >
-                                    <Text fontSize="$3" color="$textSecondary">
+                                    <Text size="$3" color="$textSecondary">
                                         {item.title} × {item.quantity}
                                     </Text>
-                                    <Text fontSize="$3">
+                                    <Text size="$3">
                                         £{(item.price * item.quantity).toFixed(2)}
                                     </Text>
                                 </Row>
@@ -136,10 +136,10 @@ export default function CartPage() {
                             justifyContent="space-between"
                             alignItems="center"
                         >
-                            <Text fontSize="$6" weight="bold">
+                            <Text size="$6" weight="bold">
                                 Total
                             </Text>
-                            <Text fontSize="$7" weight="bold" color="$primary">
+                            <Text size="$7" weight="bold" color="$primary">
                                 £{totalPrice.toFixed(2)}
                             </Text>
                         </Row>

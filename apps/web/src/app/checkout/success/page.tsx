@@ -136,7 +136,7 @@ export default function CheckoutSuccessPage() {
             <Column gap="$md">
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Order ID</Text>
-                <Text weight="semibold" fontSize="$3">
+                <Text weight="semibold" size="$3">
                   {order.id.slice(0, 8).toUpperCase()}
                 </Text>
               </Row>
@@ -148,7 +148,7 @@ export default function CheckoutSuccessPage() {
 
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Total Paid</Text>
-                <Text weight="bold" fontSize="$6" color="$primary">
+                <Text weight="bold" size="$6" color="$primary">
                   ${order.amountTotal.toFixed(2)}
                 </Text>
               </Row>
@@ -157,7 +157,7 @@ export default function CheckoutSuccessPage() {
                 <>
                   <Row justifyContent="space-between" alignItems="center">
                     <Text color="$textSecondary">Tracking</Text>
-                    <Text weight="semibold" fontSize="$3">
+                    <Text weight="semibold" size="$3">
                       {order.trackingCode}
                     </Text>
                   </Row>
@@ -175,20 +175,20 @@ export default function CheckoutSuccessPage() {
 
           {/* What's Next */}
           <Column gap="$sm" paddingTop="$md" fullWidth>
-            <Text weight="semibold" fontSize="$4">
+            <Text weight="semibold" size="$4">
               What happens next?
             </Text>
             <Column gap="$xs" paddingLeft="$md">
-              <Text color="$textSecondary" fontSize="$3">
+              <Text color="$textSecondary" size="$3">
                 • You&apos;ll receive an order confirmation email
               </Text>
-              <Text color="$textSecondary" fontSize="$3">
+              <Text color="$textSecondary" size="$3">
                 • The seller will prepare your item for shipping
               </Text>
-              <Text color="$textSecondary" fontSize="$3">
+              <Text color="$textSecondary" size="$3">
                 • You&apos;ll get tracking updates via email
               </Text>
-              <Text color="$textSecondary" fontSize="$3">
+              <Text color="$textSecondary" size="$3">
                 • Track your order anytime in &quot;My Orders&quot;
               </Text>
             </Column>

@@ -42,7 +42,7 @@ interface ShippingAddress {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
     <Row gap="$xs" marginBottom="$xs">
-        <Text fontSize="$3" weight="medium" color="$text">
+        <Text size="$3" weight="medium" color="$text">
             {children}
         </Text>
         {required && <Text color="$error">*</Text>}
@@ -128,7 +128,7 @@ function PaymentForm({
                     {isProcessing ? "Processing..." : `Pay $${calculateTotal().toFixed(2)}`}
                 </Button>
 
-                <Text fontSize="$3" color="$textMuted" textAlign="center">
+                <Text size="$3" color="$textMuted" textAlign="center">
                     Your payment is secure and encrypted. By completing this purchase, you
                     agree to our terms of service.
                 </Text>
@@ -262,7 +262,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                             />
                         )}
                         <Column gap="$xs" flex={1}>
-                            <Text fontSize="$6" weight="semibold">
+                            <Text size="$6" weight="semibold">
                                 {product.title}
                             </Text>
                             <Row gap="$md" justifyContent="space-between">
@@ -284,7 +284,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                     borderTopColor="$border"
                                 >
                                     <Text weight="semibold">Total</Text>
-                                    <Text weight="bold" fontSize="$6" color="$primary">
+                                    <Text weight="bold" size="$6" color="$primary">
                                         ${calculateTotal().toFixed(2)}
                                     </Text>
                                 </Row>
@@ -411,12 +411,12 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
 
                             {/* Address Summary */}
                             <Column gap="$xs" padding="$sm" backgroundColor="$backgroundHover" borderRadius="$md">
-                                <Text fontSize="$3" weight="semibold">{shippingAddress.name}</Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" weight="semibold">{shippingAddress.name}</Text>
+                                <Text size="$3" color="$textSecondary">
                                     {shippingAddress.street1}
                                     {shippingAddress.street2 && `, ${shippingAddress.street2}`}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     {shippingAddress.city}, {shippingAddress.state} {shippingAddress.zip}
                                 </Text>
                             </Column>
@@ -437,7 +437,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                                 <Text weight="semibold">
                                                     {rate.carrier} {rate.service}
                                                 </Text>
-                                                <Text fontSize="$3" color="$textSecondary">
+                                                <Text size="$3" color="$textSecondary">
                                                     Estimated {rate.estimatedDays} business days
                                                     {rate.deliveryDate && ` • Delivery by ${rate.deliveryDate}`}
                                                 </Text>

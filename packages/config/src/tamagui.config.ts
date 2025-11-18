@@ -6,23 +6,26 @@ import { createTamagui, createTokens, createFont } from 'tamagui'
  * TAMAGUI SIZE SYSTEM DOCUMENTATION
  * ============================================================================
  *
- * This config uses NUMERIC SIZE TOKENS for reliable, predictable sizing.
+ * This config extends @tamagui/config/v4 which provides NUMERIC SIZE TOKENS
+ * for reliable, predictable sizing using standard Tamagui patterns.
  *
  * UNDERSTANDING SIZE IN TAMAGUI:
  *
- * 1. FONT SIZE TOKENS (Numeric: $1 - $16)
- *    - Defined in: bodyFont.size and headingFont.size
- *    - Used for: fontSize prop on Text, Paragraph, Heading components
- *    - Example: <Text fontSize="$4">Body text</Text>
- *    - Scale: $1=11px, $2=12px, $3=13px, $4=14px, $5=15px (default), etc.
- *    - DO NOT use size="$4" - use fontSize="$4" instead
+ * 1. TYPOGRAPHY SIZE TOKENS (Numeric: $1 - $16) - THE STANDARD TAMAGUI WAY
+ *    - Defined in: bodyFont.size and headingFont.size in this config
+ *    - Used with: size="$n" prop on Text, Paragraph, Heading, Label
+ *    - Example: <Text size="$4">Body text</Text>
+ *    - Scale: $1=11px, $2=12px, $3=13px, $4=14px, $5=15px (body default)
+ *    - The size prop automatically handles fontSize AND lineHeight from tokens
+ *    - fontSize prop is for rare overrides only, not standard usage
  *
  * 2. COMPONENT SIZE VARIANTS (Named: sm | md | lg)
  *    - Defined in: Custom component variants (Button, Input, Badge, Spinner)
  *    - Used for: Geometric sizing (height, padding) of UI components
  *    - Example: <Button size="md">Click me</Button>
- *    - These are NOT size tokens - they are custom variants per component
- *    - Button sm/md/lg maps to $buttonSm/$buttonMd/$buttonLg tokens
+ *    - These are component-specific variants, NOT typography tokens
+ *    - Internally, these variants use tokens.size for fontSize where appropriate
+ *    - Button sm/md/lg maps to $buttonSm/$buttonMd/$buttonLg for height/padding
  *
  * 3. SPACING TOKENS (Named + Numeric)
  *    - Defined in: tokens.space
@@ -31,17 +34,19 @@ import { createTamagui, createTokens, createFont } from 'tamagui'
  *    - Available: $xs, $sm, $md, $lg, $xl, $2xl, $3xl
  *    - Also: $1, $2, $3, etc. from defaultConfig
  *
- * WHY NUMERIC TOKENS?
- * - Reliable: No "no size md" errors
- * - Predictable: Consistent scale across platforms
- * - Standard: Follows Tamagui's default patterns
- * - Type-safe: Better TypeScript inference
+ * WHY THIS APPROACH?
+ * - Standard: Follows Tamagui's default patterns and documentation
+ * - Predictable: Consistent behavior across platforms (web & mobile)
+ * - Type-safe: Better TypeScript inference with standard Tamagui types
+ * - Maintainable: Less custom code, easier upgrades
  *
- * MIGRATION GUIDE:
- * - ❌ WRONG: <Text size="md">Text</Text>
- * - ✅ CORRECT: <Text fontSize="$4">Text</Text>
- * - ❌ WRONG: <Button fontSize="$4">Button</Button>
- * - ✅ CORRECT: <Button size="md">Button</Button>
+ * USAGE GUIDE:
+ * - ✅ CORRECT: <Text size="$4">Body text</Text>
+ * - ✅ CORRECT: <Heading level={2}>Title</Heading>
+ * - ✅ CORRECT: <Button size="md">Click me</Button>
+ * - ❌ WRONG: <Text fontSize="$4">Text</Text> (use size instead)
+ * - ❌ WRONG: <Text size="md">Text</Text> (no "md" token, use $4)
+ * - ❌ WRONG: <Button fontSize="$4">Button</Button> (use size="md")
  *
  * ============================================================================
  */

@@ -15,12 +15,12 @@ export function HeroSection() {
       borderBottomColor="$border"
     >
       <Column alignItems="center" gap="$sm" maxWidth={800}>
-        <Heading level={1} fontSize="$10" align="center" fontWeight="700">
+        <Heading level={1} size="$10" align="center" fontWeight="700">
           Ready to declutter your golf bag?
         </Heading>
         <Heading
           level={3}
-          fontSize="$6"
+          size="$6"
           align="center"
           color="$textSecondary"
           fontWeight="400"

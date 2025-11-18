@@ -70,11 +70,11 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (query.trim().length < 2) {
     return (
       <Column padding="$4" gap="$3">
-        <Text fontSize="$3" weight="medium" {...{ color: "$textMuted" }}>
+        <Text size="$3" weight="medium" {...{ color: "$textMuted" }}>
           Type to search for golf equipment...
         </Text>
         <Column gap="$2">
-          <Text fontSize="$2" {...{ color: "$textTertiary" }}>
+          <Text size="$2" {...{ color: "$textTertiary" }}>
             Popular searches:
           </Text>
           <Row gap="$2" flexWrap="wrap">
@@ -103,7 +103,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
     return (
       <Column padding="$6" alignItems="center" gap="$3">
         <Spinner size="md" color="$primary" />
-        <Text {...{ color: "$textMuted" }} fontSize="$3">
+        <Text {...{ color: "$textMuted" }} size="$3">
           Searching...
         </Text>
       </Column>
@@ -114,10 +114,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (error) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text fontSize="$4" weight="semibold" {...{ color: "$error" }}>
+        <Text size="$4" weight="semibold" {...{ color: "$error" }}>
           Search Error
         </Text>
-        <Text {...{ color: "$textMuted" }} fontSize="$3">
+        <Text {...{ color: "$textMuted" }} size="$3">
           {error}
         </Text>
       </Column>
@@ -128,10 +128,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (results.length === 0) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text fontSize="$4" weight="semibold">
+        <Text size="$4" weight="semibold">
           No results found
         </Text>
-        <Text {...{ color: "$textMuted" }} fontSize="$3" align="center">
+        <Text {...{ color: "$textMuted" }} size="$3" align="center">
           Try a different search term or browse our categories
         </Text>
       </Column>

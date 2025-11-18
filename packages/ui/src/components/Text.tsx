@@ -6,11 +6,11 @@
  *
  * IMPORTANT: Understanding 'size' in the design system:
  *
- * 1. For TEXT COMPONENTS (Text, Heading, Label):
- *    - Use numeric tokens: size="$1" through size="$16"
+ * 1. For TEXT COMPONENTS (Text, Heading, Paragraph, Label):
+ *    - Use numeric tokens: size="$1" through size="$16" (standard Tamagui way)
  *    - These control fontSize and lineHeight from the font scale
- *    - Example: <Text fontSize="$4">Body text</Text>
- *    - Note: Use fontSize prop directly, not size variant
+ *    - Example: <Text size="$4">Body text</Text>
+ *    - fontSize prop is for rare overrides only
  *
  * 2. For UI COMPONENTS (Button, Input, Badge, Spinner):
  *    - Use named variants: size="sm" | "md" | "lg"
@@ -19,12 +19,12 @@
  *
  * @example
  * ```tsx
- * // Text sizing - use fontSize with numeric tokens
- * <Text fontSize="$4">Regular body text (14px)</Text>
- * <Text fontSize="$5">Larger body text (15px)</Text>
- * <Text fontSize="$3" color="$textMuted">Small text</Text>
+ * // Text sizing - use size with numeric tokens (standard Tamagui)
+ * <Text size="$4">Regular body text (14px)</Text>
+ * <Text size="$5">Larger body text (15px)</Text>
+ * <Text size="$3" color="$textMuted">Small text</Text>
  *
- * // Headings - use level prop
+ * // Headings - use level prop (internally maps to size)
  * <Heading level={1}>Page Title</Heading>
  * <Heading level={2}>Section Title</Heading>
  *
@@ -37,27 +37,25 @@
 import {
   styled,
   GetProps,
-  Text as TamaguiText,
+  Paragraph as TamaguiParagraph,
   Label as TamaguiLabel,
-  type TextProps as TamaguiTextProps,
+  type ParagraphProps as TamaguiParagraphProps,
   type LabelProps as TamaguiLabelProps,
 } from "tamagui";
 
 /**
  * Base Text Component
  *
- * Uses Tamagui's built-in font size scale (numeric tokens $1-$16).
- * Control font size using the fontSize prop with numeric tokens.
+ * Re-exports Tamagui's Text with default styling.
+ * Uses Tamagui's built-in size system (numeric tokens $1-$16).
+ * The size prop controls fontSize and lineHeight from tokens.size.
  *
- * Default fontSize: $5 (15px body font)
+ * We use Paragraph as the base which already has the fontSize variant system.
  */
-export const Text = styled(TamaguiText, {
+export const Text = styled(TamaguiParagraph, {
   name: "Text",
-
-  // Base styles
   color: "$text",
   fontFamily: "$body",
-  fontSize: "$5", // Default to body text size (15px)
 
   variants: {
     weight: {
@@ -101,40 +99,46 @@ export const Text = styled(TamaguiText, {
   },
 });
 
-// Heading Components
-const HeadingBase = styled(TamaguiText, {
+/**
+ * Heading Components
+ *
+ * Semantic heading component that maps level to size tokens.
+ * Uses Paragraph as base to get full Tamagui size prop support.
+ *
+ * The level prop controls the semantic HTML tag and the default size,
+ * but you can override with an explicit size prop.
+ */
+export const Heading = styled(TamaguiParagraph, {
   name: "Heading",
   color: "$text",
   fontFamily: "$heading",
   fontWeight: "700",
-});
 
-export const Heading = styled(HeadingBase, {
   variants: {
     level: {
       1: {
         tag: "h1",
-        fontSize: "$10",
+        fontSize: "$10", // 48px heading (use fontSize in variant, size on component)
       },
       2: {
         tag: "h2",
-        fontSize: "$9",
+        fontSize: "$9", // 40px heading
       },
       3: {
         tag: "h3",
-        fontSize: "$8",
+        fontSize: "$8", // 32px heading
       },
       4: {
         tag: "h4",
-        fontSize: "$7",
+        fontSize: "$7", // 28px heading
       },
       5: {
         tag: "h5",
-        fontSize: "$6",
+        fontSize: "$6", // 24px heading
       },
       6: {
         tag: "h6",
-        fontSize: "$5",
+        fontSize: "$5", // 20px heading
       },
     },
 
@@ -159,14 +163,14 @@ export const Heading = styled(HeadingBase, {
 /**
  * Label Component for forms
  *
- * Uses fontSize prop with numeric tokens for sizing.
- * Default: $3 (13px)
+ * Uses Tamagui's standard size prop with numeric tokens.
+ * Default: $3 (13px body font, 18px line-height)
  */
 export const Label = styled(TamaguiLabel, {
   name: "Label",
 
   color: "$text",
-  fontSize: "$3", // Default to small label size (13px)
+  size: "$3", // Default to small label size (13px)
   fontWeight: "500",
   marginBottom: "$2",
   cursor: "pointer",
@@ -186,7 +190,7 @@ export const Label = styled(TamaguiLabel, {
 });
 
 // Export types that include BOTH our custom variants AND all base Tamagui props
-// This ensures TypeScript knows about inherited props like color, textAlign, etc.
-export type TextProps = GetProps<typeof Text> & Omit<TamaguiTextProps, keyof GetProps<typeof Text>>;
-export type HeadingProps = GetProps<typeof Heading> & Omit<TamaguiTextProps, keyof GetProps<typeof Heading>>;
+// This ensures TypeScript knows about inherited props like color, textAlign, size, etc.
+export type TextProps = GetProps<typeof Text> & Omit<TamaguiParagraphProps, keyof GetProps<typeof Text>>;
+export type HeadingProps = GetProps<typeof Heading> & Omit<TamaguiParagraphProps, keyof GetProps<typeof Heading>>;
 export type LabelProps = GetProps<typeof Label> & Omit<TamaguiLabelProps, keyof GetProps<typeof Label>>;

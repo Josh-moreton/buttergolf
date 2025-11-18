@@ -154,7 +154,7 @@ export function LoggedOutHomeScreen({
         {/* Shop by Category Section */}
         <Column paddingHorizontal="$4" paddingTop="$4" paddingBottom="$6" gap="$3">
           <Text
-            fontSize="$8"
+            size="$8"
             fontWeight="700"
             color="$ironstone"
             textAlign="center"
@@ -162,7 +162,7 @@ export function LoggedOutHomeScreen({
             Shop by category
           </Text>
           <Text
-            fontSize="$5"
+            size="$5"
             fontWeight="400"
             color="$slateSmoke"
             textAlign="center"
@@ -202,7 +202,7 @@ export function LoggedOutHomeScreen({
                 justifyContent="flex-end"
                 backgroundColor="rgba(0, 0, 0, 0.3)"
               >
-                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                <Text size="$8" fontWeight="700" color="$vanillaCream">
                   Drivers
                 </Text>
               </Column>
@@ -235,7 +235,7 @@ export function LoggedOutHomeScreen({
                 justifyContent="flex-end"
                 backgroundColor="rgba(0, 0, 0, 0.3)"
               >
-                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                <Text size="$8" fontWeight="700" color="$vanillaCream">
                   Irons
                 </Text>
               </Column>
@@ -271,7 +271,7 @@ export function LoggedOutHomeScreen({
                 justifyContent="flex-end"
                 backgroundColor="rgba(0, 0, 0, 0.3)"
               >
-                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                <Text size="$8" fontWeight="700" color="$vanillaCream">
                   Shoes
                 </Text>
               </Column>
@@ -304,7 +304,7 @@ export function LoggedOutHomeScreen({
                 justifyContent="flex-end"
                 backgroundColor="rgba(0, 0, 0, 0.3)"
               >
-                <Text fontSize="$8" fontWeight="700" color="$vanillaCream">
+                <Text size="$8" fontWeight="700" color="$vanillaCream">
                   Accessories
                 </Text>
               </Column>

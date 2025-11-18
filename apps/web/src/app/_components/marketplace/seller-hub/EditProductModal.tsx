@@ -323,7 +323,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                             {/* Error Message */}
                             {error && (
                                 <Card variant="filled" padding="$sm" backgroundColor="$errorLight">
-                                    <Text color="$error" fontSize="$3">
+                                    <Text color="$error" size="$3">
                                         {error}
                                     </Text>
                                 </Card>

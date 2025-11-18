@@ -14,10 +14,10 @@ export function NewsletterSection() {
         alignItems="center"
       >
         <Column gap="$sm" alignItems="center">
-          <Text fontSize="$8" weight="bold" color="$text" textAlign="center">
+          <Text size="$8" weight="bold" color="$text" textAlign="center">
             Don&apos;t miss deals
           </Text>
-          <Text color="$textSecondary" fontSize="$5" textAlign="center">
+          <Text color="$textSecondary" size="$5" textAlign="center">
             Get the latest listings and price drops in your inbox
           </Text>
         </Column>

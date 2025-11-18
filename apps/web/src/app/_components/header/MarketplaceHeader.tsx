@@ -158,7 +158,7 @@ export function MarketplaceHeader() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Text fontSize="$3" weight="semibold" color="$textInverse">
+                <Text size="$3" weight="semibold" color="$textInverse">
                   Sell
                 </Text>
               </Row>

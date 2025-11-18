@@ -66,7 +66,7 @@ const FormLabel = ({
   required?: boolean;
 }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text fontSize="$3" weight="medium" color="$text">
+    <Text size="$3" weight="medium" color="$text">
       {children}
     </Text>
     {required && <Text color="$error">*</Text>}
@@ -75,7 +75,7 @@ const FormLabel = ({
 
 // Helper text component
 const HelperText = ({ children }: { children: React.ReactNode }) => (
-  <Text fontSize="$2" color="$helperText" marginTop="$xs">
+  <Text size="$2" color="$helperText" marginTop="$xs">
     {children}
   </Text>
 );
@@ -326,7 +326,7 @@ export default function SellPage() {
                   >
                     <Row gap="$sm" alignItems="flex-start">
                       <Text fontSize={18}>📸</Text>
-                      <Text fontSize="$2" color="$text" lineHeight={18}>
+                      <Text size="$2" color="$text" lineHeight={18}>
                         Catch your buyers&apos; eye — use quality photos. Good
                         lighting and clear images help your item sell faster!
                       </Text>
@@ -359,7 +359,7 @@ export default function SellPage() {
                           width="100%"
                           required
                         />
-                        <Text fontSize="$2" color="$textSecondary">
+                        <Text size="$2" color="$textSecondary">
                           Title auto-updates as you fill in brand, model, category, and condition
                         </Text>
                       </Column>
@@ -377,7 +377,7 @@ export default function SellPage() {
                         >
                           <Text
                             flex={1}
-                            fontSize="$5"
+                            size="$5"
                             color={formData.title ? "$text" : "$textMuted"}
                           >
                             {formData.title || "Auto-generated from fields below"}
@@ -390,7 +390,7 @@ export default function SellPage() {
                             Edit
                           </Button>
                         </Row>
-                        <Text fontSize="$2" color="$textSecondary">
+                        <Text size="$2" color="$textSecondary">
                           Auto-generated - Click Edit to add custom text
                         </Text>
                       </Column>
@@ -612,7 +612,7 @@ export default function SellPage() {
                   <Column gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
                     <Row gap="$sm" alignItems="center">
-                      <Text fontSize="$6" weight="semibold">
+                      <Text size="$6" weight="semibold">
                         £
                       </Text>
                       <Input
@@ -672,9 +672,9 @@ export default function SellPage() {
                       {loading ? "Uploading..." : "Upload"}
                     </Button>
                   </Row>
-                  <Text fontSize="$2" color="$helperText" textAlign="center">
+                  <Text size="$2" color="$helperText" textAlign="center">
                     What do you think of our upload process?{" "}
-                    <Text fontSize="$2" color="$primary" cursor="pointer">
+                    <Text size="$2" color="$primary" cursor="pointer">
                       Give feedback
                     </Text>
                   </Text>

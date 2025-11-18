@@ -33,7 +33,6 @@ export function BuySellToggle({ activeMode, onModeChange }: BuySellToggleProps) 
                 paddingVertical="$4"
                 width="25%"
                 minWidth={280}
-                fontSize="$5"
                 fontWeight="500"
                 hoverStyle={{
                     backgroundColor: activeMode === "buying" ? "$primaryHover" : "$vanillaCreamHover",
@@ -57,7 +56,6 @@ export function BuySellToggle({ activeMode, onModeChange }: BuySellToggleProps) 
                 paddingVertical="$4"
                 width="25%"
                 minWidth={280}
-                fontSize="$5"
                 fontWeight="500"
                 hoverStyle={{
                     backgroundColor: activeMode === "selling" ? "$primaryHover" : "$cloudMistHover",

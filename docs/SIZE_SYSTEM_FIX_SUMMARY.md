@@ -1,12 +1,20 @@
-# Tamagui Size System - Complete Fix Summary
+# Tamagui Size System - Standard Implementation
 
-## Problem Statement
+## Summary
 
-The project was experiencing frequent "no size md" and "no size lg" errors because of confusion between:
-1. **Font size tokens** (numeric: `$1` - `$16`) used for typography
-2. **Component size variants** (named: `sm | md | lg`) used for UI component dimensions
+Successfully migrated the project to use the **standard Tamagui size system** where:
+1. **Typography components** (Text, Heading, Paragraph, Label) use `size="$1"` through `size="$16"` (numeric tokens)
+2. **UI components** (Button, Input, Badge, Spinner) use `size="sm" | "md" | "lg"` (component-specific variants)
 
-Many components were using `size="md"` on Text components, which don't have size variants, causing runtime errors.
+This aligns with Tamagui's default patterns and official documentation.
+
+## Problem Statement (Previous Implementation)
+
+The project had been incorrectly using `fontSize="$n"` on Text components instead of the standard Tamagui `size="$n"` prop. This was a workaround that:
+- Diverged from Tamagui's standard patterns
+- Made code less maintainable
+- Required custom documentation explaining the non-standard approach
+- Made it harder to use Tamagui's built-in features and examples
 
 ## Root Cause Analysis
 

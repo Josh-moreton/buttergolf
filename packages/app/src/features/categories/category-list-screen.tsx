@@ -105,7 +105,7 @@ export function CategoryListScreen({
                     </Column>
                 ) : filteredProducts.length === 0 ? (
                     <Column padding="$8" alignItems="center">
-                        <Text fontSize="$6" color="$textSecondary" textAlign="center">
+                        <Text size="$6" color="$textSecondary" textAlign="center">
                             {searchQuery
                                 ? `No products found matching "${searchQuery}"`
                                 : `No products available in ${categoryName}`}

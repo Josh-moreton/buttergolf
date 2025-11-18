@@ -34,7 +34,7 @@ export function SellingPlaceholder() {
                     Ready to Sell Your Golf Gear?
                 </Heading>
 
-                <Text fontSize="$6" align="center" color="$textSecondary">
+                <Text size="$6" align="center" color="$textSecondary">
                     List your clubs, bags, shoes, and accessories in minutes.
                     Reach thousands of golfers looking for quality equipment.
                 </Text>
@@ -54,20 +54,20 @@ export function SellingPlaceholder() {
 
                 <Column gap="$sm" marginTop="$lg" width="100%">
                     <Row gap="$sm" alignItems="center">
-                        <Text fontSize="$7">✓</Text>
-                        <Text fontSize="$4" color="$text">List items in under 60 seconds</Text>
+                        <Text size="$7">✓</Text>
+                        <Text size="$4" color="$text">List items in under 60 seconds</Text>
                     </Row>
                     <Row gap="$sm" alignItems="center">
-                        <Text fontSize="$7">✓</Text>
-                        <Text fontSize="$4" color="$text">No listing fees - only pay when you sell</Text>
+                        <Text size="$7">✓</Text>
+                        <Text size="$4" color="$text">No listing fees - only pay when you sell</Text>
                     </Row>
                     <Row gap="$sm" alignItems="center">
-                        <Text fontSize="$7">✓</Text>
-                        <Text fontSize="$4" color="$text">Secure payments and buyer protection</Text>
+                        <Text size="$7">✓</Text>
+                        <Text size="$4" color="$text">Secure payments and buyer protection</Text>
                     </Row>
                     <Row gap="$sm" alignItems="center">
-                        <Text fontSize="$7">✓</Text>
-                        <Text fontSize="$4" color="$text">Reach a community of passionate golfers</Text>
+                        <Text size="$7">✓</Text>
+                        <Text size="$4" color="$text">Reach a community of passionate golfers</Text>
                     </Row>
                 </Column>
             </Column>

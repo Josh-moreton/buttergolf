@@ -217,7 +217,7 @@ export function SellerHub() {
                     <Heading level={2} textAlign="center">
                         No listings yet
                     </Heading>
-                    <Text fontSize="$5" align="center" color="$textSecondary">
+                    <Text size="$5" align="center" color="$textSecondary">
                         Start selling your golf equipment today! Create your first listing in under 60 seconds.
                     </Text>
                     <Link href="/sell" style={{ textDecoration: "none" }}>
@@ -263,10 +263,10 @@ export function SellerHub() {
                                     <Package size={20} color="$primary" />
                                     <Text color="$textSecondary">Total Listings</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalListings}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     {data.stats.activeListings} active • {data.stats.soldListings} sold
                                 </Text>
                             </Column>
@@ -278,10 +278,10 @@ export function SellerHub() {
                                     <Eye size={20} color="$info" />
                                     <Text color="$textSecondary">Total Views</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalViews}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     Across all listings
                                 </Text>
                             </Column>
@@ -293,10 +293,10 @@ export function SellerHub() {
                                     <Heart size={20} color="$error" />
                                     <Text color="$textSecondary">Total Favorites</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalFavorites}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     People interested
                                 </Text>
                             </Column>
@@ -308,10 +308,10 @@ export function SellerHub() {
                                     <Tag size={20} color="$warning" />
                                     <Text color="$textSecondary">Pending Offers</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.pendingOffers}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     Awaiting response
                                 </Text>
                             </Column>

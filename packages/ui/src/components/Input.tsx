@@ -7,7 +7,7 @@
  * IMPORTANT: Input 'size' is a COMPONENT VARIANT (not a font size token)
  * - size="sm" | "md" | "lg" controls the input's HEIGHT and PADDING
  * - Font size is set internally by each variant
- * - For text components, use fontSize="$1" through fontSize="$16" instead
+ * - For text components, use size="$1" through size="$16" instead
  *
  * @example
  * ```tsx

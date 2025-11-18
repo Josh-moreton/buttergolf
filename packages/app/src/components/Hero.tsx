@@ -141,7 +141,7 @@ export function Hero({
                                         <Heading
                                             key={`${word}-${index}`}
                                             level={1}
-                                            fontSize="$9"
+                                            size="$9"
                                             color="$ironstone"
                                             fontWeight="700"
                                             numberOfLines={1}
@@ -190,7 +190,7 @@ export function Hero({
                                     ) : (
                                         <Heading
                                             level={1}
-                                            fontSize="$11"
+                                            size="$11"
                                             $md={{ fontSize: "$12" }}
                                             $lg={{ fontSize: "$14" }}
                                             color="$ironstone"
@@ -240,7 +240,7 @@ export function Hero({
                                             ) : (
                                                 <Heading
                                                     level={1}
-                                                    fontSize="$11"
+                                                    size="$11"
                                                     $md={{ fontSize: "$12" }}
                                                     $lg={{ fontSize: "$14" }}
                                                     color="$ironstone"
