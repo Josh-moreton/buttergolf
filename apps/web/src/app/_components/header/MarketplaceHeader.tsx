@@ -165,7 +165,7 @@ export function MarketplaceHeader() {
             </Link>
 
             <SignedOut>
-              <SignInButton mode="modal">
+              <SignInButton mode="modal" forceRedirectUrl="/listings">
                 <Row
                   tag="button"
                   cursor="pointer"
