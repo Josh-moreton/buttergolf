@@ -220,6 +220,7 @@ export function SellerProductCard({
                             tone="ghost"
                             onPress={handleDelete}
                             disabled={isDeleting || isUpdating}
+                            aria-label="Delete listing"
                         >
                             <Trash2 size={14} color="$error" />
                         </Button>

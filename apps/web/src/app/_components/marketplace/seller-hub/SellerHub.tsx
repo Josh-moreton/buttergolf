@@ -360,7 +360,7 @@ export function SellerHub() {
                                     padding: "8px 12px",
                                     fontSize: "14px",
                                     borderRadius: "16px",
-                                    border: "1px solid #EDEDED",
+                                    border: "1px solid var(--color-cloudMist)",
                                     backgroundColor: "white",
                                     cursor: "pointer",
                                 }}

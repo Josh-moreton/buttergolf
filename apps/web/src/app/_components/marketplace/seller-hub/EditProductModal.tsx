@@ -62,15 +62,43 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
     // Load categories and brands on mount
     useEffect(() => {
-        Promise.all([
-            fetch("/api/categories").then((res) => res.json()),
-            fetch("/api/brands").then((res) => res.json()),
-        ])
-            .then(([categoriesData, brandsData]) => {
+        async function loadData() {
+            try {
+                const [categoriesRes, brandsRes] = await Promise.all([
+                    fetch("/api/categories"),
+                    fetch("/api/brands"),
+                ]);
+
+                if (!categoriesRes.ok) {
+                    throw new Error(`Failed to load categories: ${categoriesRes.status}`);
+                }
+                if (!brandsRes.ok) {
+                    throw new Error(`Failed to load brands: ${brandsRes.status}`);
+                }
+
+                const categoriesData = await categoriesRes.json();
+                const brandsData = await brandsRes.json();
+
+                if (!Array.isArray(categoriesData)) {
+                    throw new Error("Categories data is not an array");
+                }
+                if (!Array.isArray(brandsData)) {
+                    throw new Error("Brands data is not an array");
+                }
+
                 setCategories(categoriesData);
                 setBrands(brandsData);
-            })
-            .catch((err) => console.error("Failed to load data:", err));
+            } catch (err) {
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to load categories or brands"
+                );
+                setCategories([]);
+                setBrands([]);
+            }
+        }
+        void loadData();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -171,7 +199,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                         padding: "12px 18px",
                                         fontSize: "15px",
                                         borderRadius: "24px",
-                                        border: "1px solid #323232",
+                                        border: "1px solid var(--color-ironstone)",
                                         backgroundColor: "white",
                                         width: "100%",
                                         fontFamily: "inherit",
@@ -208,7 +236,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                             padding: "12px 18px",
                                             fontSize: "15px",
                                             borderRadius: "24px",
-                                            border: "1px solid #323232",
+                                            border: "1px solid var(--color-ironstone)",
                                             backgroundColor: "white",
                                             width: "100%",
                                             cursor: "pointer",
@@ -236,7 +264,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                         padding: "12px 18px",
                                         fontSize: "15px",
                                         borderRadius: "24px",
-                                        border: "1px solid #323232",
+                                        border: "1px solid var(--color-ironstone)",
                                         backgroundColor: "white",
                                         width: "100%",
                                         cursor: "pointer",
@@ -277,7 +305,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                         padding: "12px 18px",
                                         fontSize: "15px",
                                         borderRadius: "24px",
-                                        border: "1px solid #323232",
+                                        border: "1px solid var(--color-ironstone)",
                                         backgroundColor: "white",
                                         width: "100%",
                                         cursor: "pointer",
