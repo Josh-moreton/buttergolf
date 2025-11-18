@@ -101,9 +101,25 @@ export default function SellPage() {
   // Load categories on mount
   useEffect(() => {
     fetch("/api/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.error("Failed to load categories:", err));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Ensure data is an array before setting
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          console.error("Invalid categories response:", data);
+          setCategories([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load categories:", err);
+        setCategories([]);
+      });
   }, []);
 
   // Redirect if not signed in
