@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
@@ -62,7 +62,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const base64Image = `data:${contentType};base64,${buffer.toString('base64')}`;
 
     // Build upload options
-    const uploadOptions: any = {
+    const uploadOptions: UploadApiOptions = {
       folder: 'products',
       public_id: filename.replace(/\.[^/.]+$/, ''), // Remove file extension
       resource_type: 'image',

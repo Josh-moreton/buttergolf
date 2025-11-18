@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 import { Column } from "@buttergolf/ui";
 import { HeroStatic } from "./marketplace/HeroStatic";
 import { BuySellToggle } from "./marketplace/BuySellToggle";
 import { CategoriesSection } from "./marketplace/CategoriesSection";
 import { SellingPlaceholder } from "./marketplace/SellingPlaceholder";
+import { SellerHub } from "./marketplace/seller-hub/SellerHub";
 import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection";
 import { TrustSection } from "./marketplace/TrustSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
@@ -21,6 +23,7 @@ export default function MarketplaceHomeClient({
   products,
 }: Readonly<MarketplaceHomeClientProps>) {
   const [activeMode, setActiveMode] = useState<"buying" | "selling">("buying");
+  const { isSignedIn } = useUser();
 
   return (
     <Column>
@@ -52,7 +55,7 @@ export default function MarketplaceHomeClient({
         </>
       ) : (
         <div className="page-transition">
-          <SellingPlaceholder />
+          {isSignedIn ? <SellerHub /> : <SellingPlaceholder />}
         </div>
       )}
 

@@ -504,7 +504,6 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                     >
                         <PaymentForm
                             product={product}
-                            shippingAddress={shippingAddress}
                             selectedRate={selectedRate}
                             onBack={() => setStep('shipping')}
                         />
