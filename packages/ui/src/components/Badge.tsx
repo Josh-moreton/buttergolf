@@ -4,6 +4,10 @@
  * A small label component for status indicators, counts, and tags.
  * Supports multiple variants and sizes.
  *
+ * IMPORTANT: Badge 'size' is a COMPONENT VARIANT (not a font size token)
+ * - size="sm" | "md" | "lg" controls the badge's HEIGHT and PADDING
+ * - For text within badges, use <Text fontSize="$x"> with numeric tokens
+ *
  * @example
  * ```tsx
  * <Badge variant="success">Active</Badge>

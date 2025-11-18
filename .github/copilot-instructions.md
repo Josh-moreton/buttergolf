@@ -800,67 +800,104 @@ Our brand colors have specific names that describe the actual color, making the 
 
 **Note**: Row and Column are thin wrappers over XStack/YStack - they preserve ALL native Tamagui props like `alignItems`, `justifyContent`, `flexWrap`, etc. Use these native props directly.
 
-#### ⚠️ **CRITICAL: Text Component Font Sizing (NEVER use size="md")**
+#### ⚠️ **CRITICAL: Understanding 'size' - Two Different Meanings**
 
 **🚨 THIS IS THE MOST COMMON ERROR - READ CAREFULLY 🚨**
 
-The Tamagui Text component has TWO different props for sizing, and mixing them up causes runtime errors:
+The word "size" has **TWO COMPLETELY DIFFERENT meanings** in our design system:
 
-1. **`size` prop** - A **variant** that accepts semantic strings: `"xs" | "sm" | "md" | "lg" | "xl"`
-2. **`fontSize` prop** - A **direct token** that accepts token values: `"$1"` through `"$16"`
+### 1️⃣ Font Size Tokens (for Text/Typography)
 
-**THE CRITICAL RULE:**
+**THE CRITICAL RULE: Text components use `fontSize` prop with NUMERIC tokens ($1-$16)**
 
-- ✅ **CORRECT - Use `size` variant for semantic sizing**:
+Tamagui uses a standard **numbered font size scale** (`$1` through `$16`). Our Text component does NOT have a `size` variant - it uses `fontSize` instead.
+
+- ✅ **CORRECT - Use `fontSize` with numbered tokens on Text**:
   ```tsx
-  <Text size="sm">Small text</Text>
-  <Text size="md">Medium text (default)</Text>
-  <Text size="lg">Large text</Text>
+  <Text fontSize="$4">Small (14px)</Text>
+  <Text fontSize="$5">Medium (15px) - DEFAULT</Text>
+  <Text fontSize="$6">Large (16px)</Text>
+  <Text fontSize="$7">XL (18px)</Text>
+  <Text fontSize="$8">2XL (20px)</Text>
   ```
 
-- ✅ **CORRECT - Use `fontSize` with tokens for custom sizing**:
+- ❌ **WRONG - NEVER use size prop on Text, NEVER use named sizes**:
   ```tsx
-  <Text fontSize="$4">Small (13-14px)</Text>
-  <Text fontSize="$5">Medium (15-16px) - DEFAULT</Text>
-  <Text fontSize="$6">Large (18-20px)</Text>
-  <Text fontSize="$7">XL (22-24px)</Text>
-  <Text fontSize="$8">2XL (28-32px)</Text>
+  <Text size="md">Wrong!</Text>           // Text has NO size variant
+  <Text size="$5">Wrong!</Text>           // Text has NO size variant
+  <Text fontSize="md">Wrong!</Text>       // Named sizes don't exist
+  <Text fontSize="$md">Wrong!</Text>      // $md is spacing, not font size
   ```
 
-- ❌ **WRONG - NEVER mix variant names with fontSize**:
+### 2️⃣ Component Size Variants (for UI Components)
+
+**For Button, Input, Badge, Spinner - use named `size` VARIANTS (sm|md|lg)**
+
+These components have custom `size` variants that control **geometric dimensions** (height, padding, width) - NOT font size.
+
+- ✅ **CORRECT - Use named size variants on UI components**:
   ```tsx
-  <Text size="md">Wrong!</Text>  // This looks right but causes "No font size found md" error
-  <Text fontSize="md">Wrong!</Text>  // Missing $ prefix on token
-  <Text fontSize="$md">Wrong!</Text>  // $md is a spacing token, not a font size
+  <Button size="md">Click me</Button>     // Controls height (40px) and padding
+  <Input size="lg" />                     // Controls height (48px) and padding
+  <Badge size="sm">NEW</Badge>            // Controls min-height (20px)
+  <Spinner size="lg" />                   // Controls width/height (24px)
   ```
 
-**Why This Error Keeps Happening:**
+- ❌ **WRONG - Don't mix contexts**:
+  ```tsx
+  <Text size="md">Wrong!</Text>           // Text has NO size variant
+  <Button fontSize="$5">Wrong!</Button>   // Button uses size variant, not fontSize
+  ```
 
-The `size` prop name makes developers think they can use it like `fontSize`, but it's actually a **variant** that only works with the specific variant names defined in the Text component. When you use `size="md"`, Tamagui tries to look up a font size token named "md" and fails.
+**Summary Table:**
 
-**Font Size Token Reference:**
+| Component Type | Prop to Use | Valid Values | Controls | Example |
+|----------------|-------------|--------------|----------|---------|
+| **Text, Heading, Label** | `fontSize` | `$1` - `$16` | Font size & line height | `<Text fontSize="$5">` |
+| **Button, Input, Badge, Spinner** | `size` | `sm \| md \| lg` | Height, padding, dimensions | `<Button size="md">` |
 
-| Token  | Size Range | Use Case                 |
-|--------|------------|--------------------------|
-| `$1`   | 11px       | Legal text, tiny labels  |
-| `$2`   | 12px       | Captions, metadata       |
-| `$3`   | 13px       | Small labels             |
-| `$4`   | 13-14px    | Body small, helper text  |
-| **`$5`** | **15-16px** | **DEFAULT - Body text**   |
-| `$6`   | 18-20px    | Large body, subheadings  |
-| `$7`   | 22-24px    | Headings                 |
-| `$8`   | 28-32px    | Large headings           |
-| `$9`+  | 36px+      | Hero text                |
+**See full documentation:** `/docs/TAMAGUI_SIZE_SYSTEM.md`
 
-**If you see "No font size found md/sm/lg" error:**
+**Why This Works:**
 
-1. Search for `size="sm"`, `size="md"`, `size="lg"` in Text components
-2. Replace with either:
-   - `size` variant: `size="sm"` (if using semantic sizing)
-   - OR `fontSize` token: `fontSize="$5"` (if you want specific control)
-3. **Default to `fontSize="$5"`** when unsure - it's the most common body text size
+Tamagui's default design system uses numeric tokens for font sizes. Our config defines `bodyFont.size` with keys `1` through `16`, mapping to pixel values. When you use `fontSize="$5"`, Tamagui looks up `font.size[5]` and applies `15px` (body) or `20px` (heading).
 
-**This error has appeared 4+ times in this project - following this rule prevents it.**
+**Font Size Token Reference (Body Font):**
+
+| Token    | Size (px) | Use Case                 |
+|----------|-----------|--------------------------|
+| `$1`     | 11        | Legal text, tiny labels  |
+| `$2`     | 12        | Captions, metadata       |
+| `$3`     | 13        | Small labels             |
+| `$4`     | 14        | Body small, helper text  |
+| **`$5`** | **15**    | **DEFAULT - Body text**  |
+| `$6`     | 16        | Large body text          |
+| `$7`     | 18        | Subheadings              |
+| `$8`     | 20        | Large subheadings        |
+| `$9`     | 22        | Small headings           |
+| `$10`    | 24        | Medium headings          |
+| `$11`    | 28        | Large headings           |
+| `$12`    | 32        | XL headings              |
+| `$13`+   | 40+       | Hero text                |
+
+**Heading Font Scale (for H1-H6 components):**
+- Heading font sizes are slightly larger: `$1: 12px`, `$5: 20px`, `$8: 32px`, etc.
+- Use `<Heading level={2}>` instead of manually setting fontSize for semantic HTML
+
+**Common Patterns:**
+```tsx
+// Body text (most common)
+<Text fontSize="$5">Regular paragraph text</Text>
+
+// Helper text / captions
+<Text fontSize="$4" color="$textSecondary">Helper text</Text>
+
+// Subheadings
+<Text fontSize="$7" fontWeight="600">Section title</Text>
+
+// Large display text
+<Text fontSize="$11" fontWeight="700">Hero headline</Text>
+```
 
 #### ✅ **Using Colors in Text Components**
 
@@ -1080,11 +1117,33 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 ### Component API Reference
 
+#### Understanding Component Size Props
+
+**CRITICAL: Different components use `size` differently**
+
+1. **Button, Input, Badge, Spinner** - `size` variant controls **HEIGHT and padding** (geometric sizing):
+   ```tsx
+   <Button size="sm">Home</Button>  // ✅ sm/md/lg controls height (32px/40px/48px)
+   <Input size="md" />              // ✅ sm/md/lg controls height
+   ```
+
+2. **Text, Paragraph** - NO `size` variant, use **`fontSize` with numeric tokens**:
+   ```tsx
+   <Text fontSize="$5">Body text</Text>  // ✅ Use numeric tokens ($1-$16)
+   <Text size="md">Wrong!</Text>         // ❌ Text has no size variant
+   ```
+
+3. **Heading** - NO `size` variant, use **`level` prop** (semantic HTML):
+   ```tsx
+   <Heading level={2}>Title</Heading>  // ✅ level controls h1-h6 + font size
+   <Heading fontSize="$8">Manual</Heading>  // ⚠️ Override if needed
+   ```
+
 #### Button
 
 ```tsx
 <Button
-  size="sm | md | lg" // Size variant (default: md)
+  size="sm | md | lg" // Size variant controls HEIGHT (32/40/48px) + padding
   tone="primary | secondary | outline | ghost | success | error" // Style variant
   fullWidth={boolean} // Full width button
   disabled={boolean} // Disabled state
@@ -1094,19 +1153,24 @@ export type { MyComponentProps } from "./components/MyComponent";
 </Button>
 ```
 
+**Important**: Button `size` controls the button's HEIGHT and padding, NOT the text font size directly. Font size is set internally by the variant (`sm: fontSize="$3"`, `md: fontSize="$4"`, `lg: fontSize="$5"`).
+
 #### Text
 
 ```tsx
 <Text
-  size="xs | sm | md | lg | xl" // Font size (default: md)
-  weight="normal | medium | semibold | bold" // Font weight
-  align="left | center | right" // Text alignment
+  fontSize="$1" | "$2" | "$3" | "$4" | "$5" | ... "$16" // Use numeric tokens (default: $5)
+  fontWeight="400" | "500" | "600" | "700" // Font weight (or use weight prop)
+  weight="normal | medium | semibold | bold" // Semantic weight variant
+  textAlign="left | center | right" // Text alignment
   truncate={boolean} // Truncate with ellipsis
   color="$token" // Use direct token references (e.g., "$text", "$textSecondary", "$primary")
 >
   Text content
 </Text>
 ```
+
+**CRITICAL**: Text does NOT have a `size` variant. Always use `fontSize` with numeric tokens (`$1` through `$16`).
 
 **Note**: Text does NOT have color variants. Always use direct token references like `color="$textMuted"` or `color="$primary"`.
 
@@ -2304,20 +2368,34 @@ await mcp_upstash_conte_get-library-docs({
 
 ## Best Practices
 
+### Critical: Size System Rules
+
+**⚠️ MOST COMMON ERROR: Confusing font size tokens with component size variants**
+
+0. **ALWAYS use correct prop for context**:
+   - **Text components**: Use `fontSize="$1"` through `fontSize="$16"` (NEVER `size=`)
+   - **UI components**: Use `size="sm" | "md" | "lg"` variants
+   - ❌ WRONG: `<Text size="md">` → Text has NO size variant
+   - ✅ CORRECT: `<Text fontSize="$5">` → Uses numeric font size token
+   - ❌ WRONG: `<Button fontSize="$4">` → Button uses size variant
+   - ✅ CORRECT: `<Button size="md">` → Uses component size variant
+   - **See full documentation**: `/docs/TAMAGUI_SIZE_SYSTEM.md`
+
 ### Design System & Components
 
 1. **ALWAYS use specific brand color tokens** - PREFER `$ironstone`, `$spicedClementine`, `$vanillaCream`, `$cloudMist`, `$slateSmoke`, `$burntOlive`, `$lemonHaze` over generic semantic tokens like `$text`, `$primary`, `$border`. Only use semantic tokens when you need automatic theme switching. Never use raw hex values or numbered colors.
 2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
-3. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
-4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
-5. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
-6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
-7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
-8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+3. **ALWAYS use Text fontSize with numeric tokens** - Use `<Text fontSize="$5">` for body text, `fontSize="$3"` for small text (Text has NO size variant)
+4. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
+5. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
+6. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
+7. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
+8. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
+9. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
 
 ### Common React/Tamagui Errors to Avoid
 
-9. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
+10. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
    - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
    - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
    - ❌ WRONG: Wrapping text props in style object on wrong component types
@@ -2330,12 +2408,12 @@ await mcp_upstash_conte_get-library-docs({
    - ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
    - ✅ **Use direct props** for standard React/Tamagui properties the component already supports
 
-10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
+11. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
     - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
     - ✅ CORRECT: `availableBrands={availableFilters?.availableBrands || []}`
     - Apply to all nested property access: `data?.category?.name || 'Default'`
 
-11. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
+12. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
     - ❌ WRONG: `params.slug` → Runtime error in Next.js 15+
     - ✅ CORRECT: `const resolvedParams = await params; resolvedParams.slug`
     - Update Props interface: `params: Promise<{ slug: string }>` not `params: { slug: string }`

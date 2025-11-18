@@ -2,15 +2,60 @@ import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
 
 /**
+ * ============================================================================
+ * TAMAGUI SIZE SYSTEM DOCUMENTATION
+ * ============================================================================
+ *
+ * This config uses NUMERIC SIZE TOKENS for reliable, predictable sizing.
+ *
+ * UNDERSTANDING SIZE IN TAMAGUI:
+ *
+ * 1. FONT SIZE TOKENS (Numeric: $1 - $16)
+ *    - Defined in: bodyFont.size and headingFont.size
+ *    - Used for: fontSize prop on Text, Paragraph, Heading components
+ *    - Example: <Text fontSize="$4">Body text</Text>
+ *    - Scale: $1=11px, $2=12px, $3=13px, $4=14px, $5=15px (default), etc.
+ *    - DO NOT use size="$4" - use fontSize="$4" instead
+ *
+ * 2. COMPONENT SIZE VARIANTS (Named: sm | md | lg)
+ *    - Defined in: Custom component variants (Button, Input, Badge, Spinner)
+ *    - Used for: Geometric sizing (height, padding) of UI components
+ *    - Example: <Button size="md">Click me</Button>
+ *    - These are NOT size tokens - they are custom variants per component
+ *    - Button sm/md/lg maps to $buttonSm/$buttonMd/$buttonLg tokens
+ *
+ * 3. SPACING TOKENS (Named + Numeric)
+ *    - Defined in: tokens.space
+ *    - Used for: padding, margin, gap props
+ *    - Example: padding="$md" or gap="$4"
+ *    - Available: $xs, $sm, $md, $lg, $xl, $2xl, $3xl
+ *    - Also: $1, $2, $3, etc. from defaultConfig
+ *
+ * WHY NUMERIC TOKENS?
+ * - Reliable: No "no size md" errors
+ * - Predictable: Consistent scale across platforms
+ * - Standard: Follows Tamagui's default patterns
+ * - Type-safe: Better TypeScript inference
+ *
+ * MIGRATION GUIDE:
+ * - ❌ WRONG: <Text size="md">Text</Text>
+ * - ✅ CORRECT: <Text fontSize="$4">Text</Text>
+ * - ❌ WRONG: <Button fontSize="$4">Button</Button>
+ * - ✅ CORRECT: <Button size="md">Button</Button>
+ *
+ * ============================================================================
+ */
+
+/**
  * Convert hex color to Display P3 color space CSS format.
  * This ensures colors render consistently across all devices,
  * matching the designer's intent on wide-gamut displays.
  */
 function hexToP3(hex: string): string {
     const cleanHex = hex.replace('#', '')
-    const r = parseInt(cleanHex.substring(0, 2), 16)
-    const g = parseInt(cleanHex.substring(2, 4), 16)
-    const b = parseInt(cleanHex.substring(4, 6), 16)
+    const r = Number.parseInt(cleanHex.substring(0, 2), 16)
+    const g = Number.parseInt(cleanHex.substring(2, 4), 16)
+    const b = Number.parseInt(cleanHex.substring(4, 6), 16)
 
     const rNorm = (r / 255).toFixed(3)
     const gNorm = (g / 255).toFixed(3)

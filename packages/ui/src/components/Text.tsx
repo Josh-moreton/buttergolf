@@ -2,15 +2,35 @@
  * Typography Components
  *
  * A comprehensive set of text components with semantic variants for different use cases.
- * Includes Text, Heading, and Label components with size and color variants.
+ * Includes Text, Heading, and Label components.
+ *
+ * IMPORTANT: Understanding 'size' in the design system:
+ *
+ * 1. For TEXT COMPONENTS (Text, Heading, Label):
+ *    - Use numeric tokens: size="$1" through size="$16"
+ *    - These control fontSize and lineHeight from the font scale
+ *    - Example: <Text fontSize="$4">Body text</Text>
+ *    - Note: Use fontSize prop directly, not size variant
+ *
+ * 2. For UI COMPONENTS (Button, Input, Badge, Spinner):
+ *    - Use named variants: size="sm" | "md" | "lg"
+ *    - These control height, padding, and geometric dimensions
+ *    - Example: <Button size="md">Click me</Button>
  *
  * @example
  * ```tsx
- * <Text size="$4">Regular text</Text>
- * <Text size="$3" color="muted">Small muted text</Text>
+ * // Text sizing - use fontSize with numeric tokens
+ * <Text fontSize="$4">Regular body text (14px)</Text>
+ * <Text fontSize="$5">Larger body text (15px)</Text>
+ * <Text fontSize="$3" color="$textMuted">Small text</Text>
+ *
+ * // Headings - use level prop
  * <Heading level={1}>Page Title</Heading>
- * <Heading level={2} color="primary">Section Title</Heading>
- * <Label htmlFor="input">Form Label</Label>
+ * <Heading level={2}>Section Title</Heading>
+ *
+ * // Component sizing - use named size variants
+ * <Button size="md">Medium button</Button>
+ * <Input size="lg">Large input</Input>
  * ```
  */
 
@@ -23,13 +43,21 @@ import {
   type LabelProps as TamaguiLabelProps,
 } from "tamagui";
 
-// Base Text Component
+/**
+ * Base Text Component
+ *
+ * Uses Tamagui's built-in font size scale (numeric tokens $1-$16).
+ * Control font size using the fontSize prop with numeric tokens.
+ *
+ * Default fontSize: $5 (15px body font)
+ */
 export const Text = styled(TamaguiText, {
   name: "Text",
 
   // Base styles
   color: "$text",
   fontFamily: "$body",
+  fontSize: "$5", // Default to body text size (15px)
 
   variants: {
     weight: {
@@ -128,25 +156,23 @@ export const Heading = styled(HeadingBase, {
   },
 });
 
-// Label Component for forms
+/**
+ * Label Component for forms
+ *
+ * Uses fontSize prop with numeric tokens for sizing.
+ * Default: $3 (13px)
+ */
 export const Label = styled(TamaguiLabel, {
   name: "Label",
 
   color: "$text",
-  fontSize: "$3",
+  fontSize: "$3", // Default to small label size (13px)
   fontWeight: "500",
   marginBottom: "$2",
   cursor: "pointer",
   userSelect: "none",
 
   variants: {
-    size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-        lineHeight: font?.lineHeight?.[name],
-      }),
-    },
-
     // Note: For required indicators, use a separate Text component for cross-platform compatibility
     // Example: <Row><Label>Name</Label><Text color="$error">*</Text></Row>
 
@@ -157,10 +183,6 @@ export const Label = styled(TamaguiLabel, {
       },
     },
   } as const,
-
-  defaultVariants: {
-    size: "$3",
-  },
 });
 
 // Export types that include BOTH our custom variants AND all base Tamagui props

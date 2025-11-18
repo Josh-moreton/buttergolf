@@ -4,6 +4,11 @@
  * Semantic wrapper around Tamagui's Button with ButterGolf design system variants.
  * Provides size and tone variants that align with the shared token set.
  *
+ * IMPORTANT: Button 'size' is a COMPONENT VARIANT (not a font size token)
+ * - size="sm" | "md" | "lg" controls the button's HEIGHT and PADDING
+ * - Font size is set internally by each variant
+ * - For text components, use fontSize="$1" through fontSize="$16" instead
+ *
  * @example
  * ```tsx
  * <Button size="md" tone="primary">CTA</Button>
@@ -28,6 +33,8 @@ export const Button = styled(TamaguiButton, {
     },
 
     variants: {
+        // NOTE: This 'size' variant controls button geometry (height/padding), NOT font size
+        // The fontSize is set within each size variant for proper proportions
         size: {
             sm: {
                 height: "$buttonSm",

@@ -15,7 +15,7 @@ export function CategoryButton({
 }: Readonly<CategoryButtonProps>) {
   return (
     <Button
-      size="$3"
+      size="sm"
       paddingHorizontal="$4"
       borderRadius="$10"
       backgroundColor={active ? "$primary" : "$backgroundPress"}

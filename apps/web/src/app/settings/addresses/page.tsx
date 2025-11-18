@@ -41,7 +41,7 @@ interface AddressFormData {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
     <Row gap="$xs" marginBottom="$xs">
-        <Text size="$3" weight="medium" color="$text">
+        <Text fontSize="$3" weight="medium" color="$text">
             {children}
         </Text>
         {required && <Text color="$error">*</Text>}
@@ -353,7 +353,7 @@ export default function AddressesPage() {
                                             onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
                                             id="isDefault"
                                         />
-                                        <Text size="$3" color="$text" onPress={() =>
+                                        <Text fontSize="$3" color="$text" onPress={() =>
                                             setFormData({ ...formData, isDefault: !formData.isDefault })
                                         }>
                                             Set as default shipping address
@@ -406,7 +406,7 @@ export default function AddressesPage() {
                                     <Row justifyContent="space-between" alignItems="flex-start">
                                         <Column gap="$sm" flex={1}>
                                             <Row gap="$sm" alignItems="center">
-                                                <Text size="$6" weight="semibold">
+                                                <Text fontSize="$6" weight="semibold">
                                                     {address.name}
                                                 </Text>
                                                 {address.isDefault && (

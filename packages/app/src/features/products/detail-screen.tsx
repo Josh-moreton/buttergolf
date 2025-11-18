@@ -83,7 +83,7 @@ export function ProductDetailScreen({
   if (error || !product) {
     return (
       <Column flex={1} backgroundColor="$background" padding="$4" gap="$4">
-        <Button {...backLink} size="$4" icon={ArrowLeft}>
+        <Button {...backLink} size="md" icon={ArrowLeft}>
           Back to Products
         </Button>
         <Column alignItems="center" justifyContent="center" flex={1}>
@@ -128,19 +128,19 @@ export function ProductDetailScreen({
             <Heading level={2}>{product.title}</Heading>
 
             <Row gap="$2" alignItems="center">
-              <Text size="$3" color="$textSecondary">
+              <Text fontSize="$3" color="$textSecondary">
                 {product.category.name}
               </Text>
               {product.condition && (
                 <Badge variant="neutral" size="sm">
-                  <Text size="$2" weight="medium">
+                  <Text fontSize="$2" weight="medium">
                     {formattedCondition}
                   </Text>
                 </Badge>
               )}
             </Row>
 
-            <Text size="$7" weight="bold" color="$primary">
+            <Text fontSize="$7" weight="bold" color="$primary">
               £{product.price.toFixed(2)}
             </Text>
           </Column>
