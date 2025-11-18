@@ -25,7 +25,7 @@ This guide also documents our authentication setup using Clerk for both platform
 
 - **UI Framework**: Tamagui 1.135.7 for cross-platform UI components and theming
 - **Database**: Prisma 6.x with PostgreSQL
-- **React**: 19.1.0 (aligned across web and mobile)
+- **React**: 19.x (aligned across web and mobile)
 - **React Native**: 0.81.5
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
@@ -142,7 +142,6 @@ pnpm lint          # Lint all packages
 
 # Database (Prisma)
 pnpm db:generate        # Generate Prisma Client
-pnpm db:push            # Push schema to database (dev)
 pnpm db:migrate:dev     # Create and apply migration
 pnpm db:studio          # Open Prisma Studio GUI
 pnpm db:seed            # Seed database with sample data
@@ -634,8 +633,8 @@ function ThemedComponent() {
 
 We have **8 hardened component families** in `packages/ui` (~1,500 lines of production code):
 
-1. **Button** - 6 tones (primary, secondary, outline, ghost, success, error), 3 sizes
-2. **Typography** - Text, Heading (h1-h6), Label with full variants
+1. **Button** - Standard Tamagui Button with numeric size tokens ($1-$16) and direct prop styling
+2. **Typography** - Text, Heading (h1-h6), Label with fontSize tokens
 3. **Layout** - Row, Column, Container, Spacer for flexible layouts
 4. **Card** - 4 variants (elevated, outlined, filled, ghost) with compound components
 5. **Input** - 3 sizes with validation states (error, success, disabled)
@@ -707,20 +706,19 @@ import { Button } from "@buttergolf/ui";
 Our brand colors have specific names that describe the actual color, making the code more readable and maintainable. **Prefer these specific tokens over generic semantic names.**
 
 ```tsx
-// ✅ CORRECT - Use specific brand color tokens (PREFERRED)
-<Text color="$ironstone">Primary dark text</Text>           // Dark gray text
-<Text color="$slateSmoke">Secondary text</Text>             // Medium gray
-<View backgroundColor="$vanillaCream">Light background</View> // Cream background
-<View borderColor="$cloudMist">Subtle border</View>          // Light gray border
-<Button backgroundColor="$spicedClementine">CTA Button</Button> // Orange brand color
-
-// ✅ ALSO CORRECT - Generic semantic tokens (use when you need theme flexibility)
+// ✅ CORRECT - Use semantic tokens in app code
 <Button backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text color="$text">Primary text</Text>
+<Text color="$textSecondary">Secondary text</Text>
 <Text color="$textMuted">Helper text</Text>
 <View borderColor="$border" backgroundColor="$background">Content</View>
 
+// ✅ ALSO CORRECT - Brand tokens in component libraries or when theme-independent
+<Text color="$ironstone">Always dark gray</Text>
+<View backgroundColor="$vanillaCream">Always cream</View>
+
 // ❌ WRONG - Never use numbered colors or raw hex values
-<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $spicedClementine or $primary
+<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $primary
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
 <Text color="$color11">Text</Text>                   // Numbered color (deprecated)
@@ -740,23 +738,22 @@ Our brand colors have specific names that describe the actual color, making the 
 | `$pureWhite` | #FFFFFF | Pure white for contrast |
 
 **When to use which:**
-- **Specific tokens** (`$ironstone`, `$vanillaCream`, etc.) - Use for consistent brand colors across light/dark themes
-- **Semantic tokens** (`$text`, `$background`, etc.) - Use only when you need automatic theme switching behavior
+- **Semantic tokens** (`$text`, `$background`, `$primary`, etc.) - Use in app code for automatic theme switching and maintainability
+- **Brand tokens** (`$ironstone`, `$vanillaCream`, `$spicedClementine`, etc.) - Use when defining component defaults in `packages/ui` or when you need a specific brand color that won't change with themes
 
-**The OLD guidance saying "use semantic tokens" was confusing and led to incorrect code review comments. Always prefer specific brand color tokens.**
+In most app code, prefer semantic tokens for better theme support. Brand tokens are the underlying palette used by semantic tokens and component libraries.
 
 #### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
 ```tsx
-// ✅ CORRECT - Use built-in variants
-<Button size="lg" tone="primary">Submit</Button>
-<Text size="sm" weight="semibold">Helper text</Text>
+// ✅ CORRECT - Use standard Tamagui patterns
+<Button size="$5" backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text fontSize="$4" fontWeight="600">Helper text</Text>
 <Card variant="elevated" padding="lg">Content</Card>
 <Input size="md" error fullWidth />
 
-// ❌ WRONG - Don't manually style with primitives
-<Button paddingHorizontal="$5" height={48}>Submit</Button>
-<Text fontSize="$3">Helper text</Text>
+// ❌ WRONG - Don't use outdated custom variants
+<Button size="lg" tone="primary">Submit</Button>
 ```
 
 #### ✅ **ALWAYS Use Compound Components for Cards**
@@ -1609,7 +1606,6 @@ This is the ONLY proper way to resolve drift. It ensures migration history is cl
 - `prisma migrate reset --force` - ✅ CORRECT way to resolve drift - Drops database, reapplies all migrations, reseeds data
 - `prisma db push` - ❌ FORBIDDEN - Never use this, it causes drift
 - `prisma migrate resolve` - ❌ DO NOT USE - Does not actually fix drift, makes it worse
-- `prisma migrate diff` - ❌ USELESS - Confusing output, doesn't help resolve drift
 
 ### Database Setup Options
 
@@ -2587,18 +2583,17 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Text color="$textMuted">         // ❌ Use variant name "muted"
 <View padding="md">               // ❌ Missing $ for direct prop
 
-// ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
-<Text color="$color">             // ❌ Old token name
-<View borderColor="$borderColor"> // ❌ Old token name
+// ❌ WRONG - Using old token names
+<Text color="$color">             // ❌ Old token name, use $text
+<View borderColor="$borderColor"> // ❌ Old token name, use $border
 ```
 
 ### Component Usage Cheat Sheet
 
 ```tsx
 // ✅ CORRECT Component Usage
-<Button size="lg" tone="primary">Submit</Button>
-<Text color="muted" size="sm">Helper text</Text>
+<Button size="$5" backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text color="$textMuted" fontSize="$4">Helper text</Text>
 <Card variant="elevated" padding="lg">
   <Card.Header><Heading level={3}>Title</Heading></Card.Header>
   <Card.Body><Text>Content</Text></Card.Body>
@@ -2630,9 +2625,9 @@ Use this matrix when creating or updating components:
 | Property Type              | Use Variant                      | Use Direct Token           | Example                                            |
 | -------------------------- | -------------------------------- | -------------------------- | -------------------------------------------------- |
 | **Spacing (gap, padding)** | ❌ DON'T (native props)          | ✅ Always use tokens       | `<Row gap="$md">` (gap is native to XStack)        |
-| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>`       |
-| **Colors**                 | ✅ For semantic colors           | ❌ Never use direct        | `<Text color="muted">` not `color="$gray500"`      |
-| **Typography (fontSize)**  | ✅ For component variants        | ⚠️ For direct styling      | `<Text size="sm">` vs `<Text fontSize="$3">`       |
+| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Input size="md">` vs `<View width={200}>`       |
+| **Colors**                 | ✅ For semantic tokens           | ⚠️ For brand tokens in UI  | `<Text color="$text">` or `color="$primary"`      |
+| **Typography (fontSize)**  | ❌ No variants on Text           | ✅ Use numeric tokens      | `<Text fontSize="$5">` (Text has no size variant) |
 | **Border radius**          | ⚠️ Rare (use defaults)           | ✅ For geometric control   | Usually inherit, or `borderRadius="$md"`           |
 | **Alignment**              | ✅ Always use variants           | ❌ Never direct            | `<Row align="center">` never `alignItems="center"` |
 | **Component state**        | ✅ Always (tone, variant)        | ❌ Never                   | `<Button tone="primary">` never manual colors      |
@@ -2666,7 +2661,7 @@ When creating a new component, add variants for:
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
 10. **CRITICAL: Always use standard Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use standard Tamagui numeric size tokens (`size="$4"`) with direct prop styling (`backgroundColor`, `color`, `paddingHorizontal`, `paddingVertical`, `borderRadius`). We removed custom variants (size="sm|md|lg", tone="primary|outline") to use standard Tamagui patterns. This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
-11. **Keep React versions aligned** across web and mobile (currently 19.2.0)
+11. **Keep React versions aligned** across web and mobile
 12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
 13. **Export types** alongside components for better DX
 14. **Test on both platforms** before considering features complete
@@ -2679,9 +2674,8 @@ When creating a new component, add variants for:
 21. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
 22. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
 23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
-24. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
-25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
-26. **If marketplace typography looks off (e.g., in HeroStatic links), remove manual `lineHeight` overrides** - The fix is to rely on the px-based values defined in `packages/config/src/tamagui.config.ts` by deleting ad-hoc `lineHeight={...}` props in shared components (like `packages/app/src/components/Hero.tsx`). The footer looked correct because it already inherited the config tokens; match that behavior whenever this regression reappears.
+24. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
+25. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
 
 ### GSAP Animation Patterns
 
@@ -2771,17 +2765,17 @@ When generating new code:
   <Column gap="$xs">
     <Row gap="$xs">
       <Label htmlFor="email">Email</Label>
-      <Text color="error">*</Text>
+      <Text color="$error">*</Text>
     </Row>
     <Input id="email" type="email" size="md" error={!!emailError} fullWidth />
     {emailError && (
-      <Text size="sm" color="error">
+      <Text fontSize="$4" color="$error">
         {emailError}
       </Text>
     )}
   </Column>
 
-  <Button size="lg" tone="primary" fullWidth>
+  <Button size="$5" backgroundColor="$primary" color="$textInverse" width="100%">
     Submit
   </Button>
 </Column>
@@ -2833,7 +2827,7 @@ When generating new code:
         <Text color="secondary">Active Users</Text>
       </Row>
       <Heading level={2}>1,234</Heading>
-      <Text size="sm" color="success">
+      <Text fontSize="$4" color="$success">
         +12% from last month
       </Text>
     </Column>
@@ -2846,7 +2840,7 @@ When generating new code:
         <Text color="secondary">Revenue</Text>
       </Row>
       <Heading level={2}>$45.2K</Heading>
-      <Text size="sm" color="info">
+      <Text fontSize="$4" color="$info">
         +8% from last month
       </Text>
     </Column>
