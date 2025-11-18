@@ -9,7 +9,6 @@ import {
     Button,
     Input,
     Card,
-    Autocomplete,
 } from "@buttergolf/ui";
 import type { SellerProduct } from "./SellerProductCard";
 
@@ -121,7 +120,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                 maxWidth={600}
                 width="100%"
                 maxHeight="90vh"
-                overflow="auto"
+                style={{ overflow: "auto" }}
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
                 <form onSubmit={handleSubmit} style={{ width: "100%" }}>
@@ -227,19 +226,29 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                             {/* Brand */}
                             <Column gap="$xs">
                                 <Text weight="medium">Brand *</Text>
-                                <Autocomplete
-                                    items={brands.map((brand) => ({
-                                        id: brand.id,
-                                        label: brand.name,
-                                        value: brand.id,
-                                    }))}
+                                <select
                                     value={formData.brandId}
-                                    onValueChange={(value) =>
-                                        setFormData({ ...formData, brandId: value || "" })
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, brandId: e.target.value })
                                     }
-                                    placeholder="Select or type brand..."
-                                    size="md"
-                                />
+                                    required
+                                    style={{
+                                        padding: "12px 18px",
+                                        fontSize: "15px",
+                                        borderRadius: "24px",
+                                        border: "1px solid #323232",
+                                        backgroundColor: "white",
+                                        width: "100%",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <option value="">Select a brand</option>
+                                    {brands.map((brand) => (
+                                        <option key={brand.id} value={brand.id}>
+                                            {brand.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </Column>
 
                             {/* Model */}

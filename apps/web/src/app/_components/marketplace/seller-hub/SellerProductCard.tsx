@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Column, Row, Text, Button, Badge, Card } from "@buttergolf/ui";
-import { Eye, Heart, Tag, Edit, Trash2 } from "@tamagui/lucide-icons";
+import { Eye, Heart, Tag, Edit3, Trash2 } from "@tamagui/lucide-icons";
 
 export interface SellerProduct {
     id: string;
@@ -202,7 +202,7 @@ export function SellerProductCard({
                             disabled={isDeleting || isUpdating}
                         >
                             <Row gap="$xs" alignItems="center">
-                                <Edit size={14} />
+                                <Edit3 size={14} />
                                 <Text>Edit</Text>
                             </Row>
                         </Button>
