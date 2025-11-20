@@ -49,6 +49,7 @@ export function ListingsClient({
             minPrice: parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
             maxPrice: parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
             brands: searchParams.getAll("brand") || parsed.brands || [],
+            showFavoritesOnly: searchParams.get("favorites") === "true" || parsed.showFavoritesOnly || false,
           };
         } catch {
           // Fall through to URL parsing
@@ -63,6 +64,7 @@ export function ListingsClient({
       minPrice: parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
       maxPrice: parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
       brands: searchParams.getAll("brand") || [],
+      showFavoritesOnly: searchParams.get("favorites") === "true" || false,
     };
   };
 
@@ -96,6 +98,7 @@ export function ListingsClient({
         params.set("maxPrice", newFilters.maxPrice.toString());
       }
       newFilters.brands.forEach((b) => params.append("brand", b));
+      if (newFilters.showFavoritesOnly) params.set("favorites", "true");
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
 
@@ -119,6 +122,7 @@ export function ListingsClient({
         if (filters.minPrice) params.set("minPrice", filters.minPrice.toString());
         if (filters.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
         filters.brands.forEach((b) => params.append("brand", b));
+        if (filters.showFavoritesOnly) params.set("favorites", "true");
         params.set("sort", sort);
         params.set("page", newPage.toString());
         params.set("limit", "24");
@@ -176,6 +180,7 @@ export function ListingsClient({
       minPrice: initialFilters.priceRange.min,
       maxPrice: initialFilters.priceRange.max,
       brands: [],
+      showFavoritesOnly: false,
     };
     setFilters(defaultFilters);
     if (typeof window !== "undefined") {
@@ -241,7 +246,7 @@ export function ListingsClient({
             gap="$md"
           >
             <Column gap="$xs">
-              <Text fontSize="$9" weight="bold">
+              <Text size="$9" weight="bold">
                 Shop All Products
               </Text>
               <Text color="$textSecondary">
@@ -323,7 +328,7 @@ export function ListingsClient({
                   </span>
                 </Badge>
               ))}
-              <Button size="$3" chromeless onPress={handleClearAll}>
+              <Button size="$4" chromeless onPress={handleClearAll}>
                 Clear all
               </Button>
             </Row>

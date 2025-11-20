@@ -82,6 +82,33 @@ export function MobileFilterSheet({
               onChange={(brands) => onChange({ brands })}
             />
           </FilterSection>
+
+          <FilterSection title="Favorites" defaultExpanded>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={filters.showFavoritesOnly}
+                onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
+                style={{
+                  width: 20,
+                  height: 20,
+                  cursor: "pointer",
+                  accentColor: "#F45314",
+                }}
+              />
+              <Text size="$4" color="$text">
+                Show favorites only
+              </Text>
+            </label>
+          </FilterSection>
         </Column>
       </Sheet.Body>
 

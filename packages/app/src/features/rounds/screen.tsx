@@ -10,7 +10,7 @@ export function RoundsScreen() {
   return (
     <YStack flex={1} padding="$4" gap="$lg" backgroundColor="$background">
       <H2>Your Rounds</H2>
-      <Text fontSize="$5">
+      <Text size="$5">
         Welcome to Rounds! Track your golf games here.
       </Text>
       <Button {...homeLink} size="$3">

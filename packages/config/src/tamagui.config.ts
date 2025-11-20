@@ -2,15 +2,65 @@ import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
 
 /**
+ * ============================================================================
+ * TAMAGUI SIZE SYSTEM DOCUMENTATION
+ * ============================================================================
+ *
+ * This config extends @tamagui/config/v4 which provides NUMERIC SIZE TOKENS
+ * for reliable, predictable sizing using standard Tamagui patterns.
+ *
+ * UNDERSTANDING SIZE IN TAMAGUI:
+ *
+ * 1. TYPOGRAPHY SIZE TOKENS (Numeric: $1 - $16) - THE STANDARD TAMAGUI WAY
+ *    - Defined in: bodyFont.size and headingFont.size in this config
+ *    - Used with: size="$n" prop on Text, Paragraph, Heading, Label
+ *    - Example: <Text size="$4">Body text</Text>
+ *    - Scale: $1=11px, $2=12px, $3=13px, $4=14px, $5=15px (body default)
+ *    - The size prop automatically handles fontSize AND lineHeight from tokens
+ *    - fontSize prop is for rare overrides only, not standard usage
+ *
+ * 2. COMPONENT SIZE VARIANTS (Named: sm | md | lg)
+ *    - Defined in: Custom component variants (Button, Input, Badge, Spinner)
+ *    - Used for: Geometric sizing (height, padding) of UI components
+ *    - Example: <Button size="md">Click me</Button>
+ *    - These are component-specific variants, NOT typography tokens
+ *    - Internally, these variants use tokens.size for fontSize where appropriate
+ *    - Button sm/md/lg maps to $buttonSm/$buttonMd/$buttonLg for height/padding
+ *
+ * 3. SPACING TOKENS (Named + Numeric)
+ *    - Defined in: tokens.space
+ *    - Used for: padding, margin, gap props
+ *    - Example: padding="$md" or gap="$4"
+ *    - Available: $xs, $sm, $md, $lg, $xl, $2xl, $3xl
+ *    - Also: $1, $2, $3, etc. from defaultConfig
+ *
+ * WHY THIS APPROACH?
+ * - Standard: Follows Tamagui's default patterns and documentation
+ * - Predictable: Consistent behavior across platforms (web & mobile)
+ * - Type-safe: Better TypeScript inference with standard Tamagui types
+ * - Maintainable: Less custom code, easier upgrades
+ *
+ * USAGE GUIDE:
+ * - ✅ CORRECT: <Text size="$4">Body text</Text>
+ * - ✅ CORRECT: <Heading level={2}>Title</Heading>
+ * - ✅ CORRECT: <Button size="md">Click me</Button>
+ * - ❌ WRONG: <Text fontSize="$4">Text</Text> (use size instead)
+ * - ❌ WRONG: <Text size="md">Text</Text> (no "md" token, use $4)
+ * - ❌ WRONG: <Button fontSize="$4">Button</Button> (use size="md")
+ *
+ * ============================================================================
+ */
+
+/**
  * Convert hex color to Display P3 color space CSS format.
  * This ensures colors render consistently across all devices,
  * matching the designer's intent on wide-gamut displays.
  */
 function hexToP3(hex: string): string {
     const cleanHex = hex.replace('#', '')
-    const r = parseInt(cleanHex.substring(0, 2), 16)
-    const g = parseInt(cleanHex.substring(2, 4), 16)
-    const b = parseInt(cleanHex.substring(4, 6), 16)
+    const r = Number.parseInt(cleanHex.substring(0, 2), 16)
+    const g = Number.parseInt(cleanHex.substring(2, 4), 16)
+    const b = Number.parseInt(cleanHex.substring(4, 6), 16)
 
     const rNorm = (r / 255).toFixed(3)
     const gNorm = (g / 255).toFixed(3)
@@ -96,13 +146,7 @@ const headingFont = createFont({
         8: '800',
         9: '900',
     },
-    letterSpacing: {
-        1: 0,
-        2: -0.5,
-        3: -1,
-        4: -1.5,
-        5: -2,
-    },
+    // letterSpacing removed - we don't want tight/condensed spacing
     face: urbanistFace,
 })
 
@@ -156,13 +200,7 @@ const bodyFont = createFont({
         8: '800',
         9: '900',
     },
-    letterSpacing: {
-        1: 0,
-        2: -0.25,
-        3: -0.5,
-        4: -0.75,
-        5: -1,
-    },
+    // letterSpacing removed - we don't want tight/condensed spacing
     face: urbanistFace,
 })
 

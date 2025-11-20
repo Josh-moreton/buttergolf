@@ -306,7 +306,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                         value={shippingAddress.name}
                                         onChangeText={(value) => setShippingAddress({ ...shippingAddress, name: value })}
                                         placeholder="John Doe"
-                                        size="md"
+                                        size="$4"
                                     />
                                 </Column>
 
@@ -317,7 +317,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                         value={shippingAddress.street1}
                                         onChangeText={(value) => setShippingAddress({ ...shippingAddress, street1: value })}
                                         placeholder="123 Main St"
-                                        size="md"
+                                        size="$4"
                                     />
                                 </Column>
 
@@ -328,7 +328,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                         value={shippingAddress.street2}
                                         onChangeText={(value) => setShippingAddress({ ...shippingAddress, street2: value })}
                                         placeholder="Apt 4B"
-                                        size="md"
+                                        size="$4"
                                     />
                                 </Column>
 
@@ -340,7 +340,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                             value={shippingAddress.city}
                                             onChangeText={(value) => setShippingAddress({ ...shippingAddress, city: value })}
                                             placeholder="San Francisco"
-                                            size="md"
+                                            size="$4"
                                         />
                                     </Column>
                                     <Column gap="$xs" flex={1} minWidth={120}>
@@ -349,7 +349,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                             value={shippingAddress.state}
                                             onChangeText={(value) => setShippingAddress({ ...shippingAddress, state: value })}
                                             placeholder="CA"
-                                            size="md"
+                                            size="$4"
                                         />
                                     </Column>
                                     <Column gap="$xs" flex={1} minWidth={120}>
@@ -358,7 +358,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                             value={shippingAddress.zip}
                                             onChangeText={(value) => setShippingAddress({ ...shippingAddress, zip: value })}
                                             placeholder="94102"
-                                            size="md"
+                                            size="$4"
                                         />
                                     </Column>
                                 </Row>
@@ -370,7 +370,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                                         value={shippingAddress.phone}
                                         onChangeText={(value) => setShippingAddress({ ...shippingAddress, phone: value })}
                                         placeholder="(555) 123-4567"
-                                        size="md"
+                                        size="$4"
                                         inputMode="tel"
                                     />
                                 </Column>
@@ -504,7 +504,6 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                     >
                         <PaymentForm
                             product={product}
-                            shippingAddress={shippingAddress}
                             selectedRate={selectedRate}
                             onBack={() => setStep('shipping')}
                         />

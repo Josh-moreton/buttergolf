@@ -141,7 +141,7 @@ export function Hero({
                                         <Heading
                                             key={`${word}-${index}`}
                                             level={1}
-                                            fontSize="$9"
+                                            size="$9"
                                             color="$ironstone"
                                             fontWeight="700"
                                             numberOfLines={1}
@@ -190,7 +190,7 @@ export function Hero({
                                     ) : (
                                         <Heading
                                             level={1}
-                                            fontSize="$11"
+                                            size="$11"
                                             $md={{ fontSize: "$12" }}
                                             $lg={{ fontSize: "$14" }}
                                             color="$ironstone"
@@ -240,7 +240,7 @@ export function Hero({
                                             ) : (
                                                 <Heading
                                                     level={1}
-                                                    fontSize="$11"
+                                                    size="$11"
                                                     $md={{ fontSize: "$12" }}
                                                     $lg={{ fontSize: "$14" }}
                                                     color="$ironstone"
@@ -271,8 +271,8 @@ export function Hero({
                                     {primaryCta && (
                                         <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
-                                                size="lg"
-                                                tone="primary"
+                                                size="$5"
+                                                backgroundColor="$primary"
                                                 paddingHorizontal="$8"
                                                 minWidth={160}
                                                 borderRadius="$full"
@@ -286,7 +286,7 @@ export function Hero({
                                     {secondaryCta && (
                                         <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
                                             <Button
-                                                size="lg"
+                                                size="$5"
                                                 backgroundColor="$secondary"
                                                 color="$vanillaCream"
                                                 paddingHorizontal="$8"

@@ -4,6 +4,10 @@
  * A loading indicator with multiple sizes and colors.
  * Re-exports Tamagui's Spinner with semantic variants.
  *
+ * IMPORTANT: Spinner 'size' is a COMPONENT VARIANT (not a font size token)
+ * - size="sm" | "md" | "lg" controls the spinner's WIDTH and HEIGHT
+ * - Uses space tokens ($4, $5, $6) for geometric dimensions
+ *
  * @example
  * ```tsx
  * <Spinner size="md" />

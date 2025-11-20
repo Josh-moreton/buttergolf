@@ -67,7 +67,7 @@ export function PriceRangeFilter({
             Min
           </Text>
           <Input
-            size="sm"
+            size="$3"
             type="number"
             value={localMin.toString()}
             onChange={(e) => handleMinInputChange(e.target.value)}
@@ -82,7 +82,7 @@ export function PriceRangeFilter({
             Max
           </Text>
           <Input
-            size="sm"
+            size="$3"
             type="number"
             value={localMax.toString()}
             onChange={(e) => handleMaxInputChange(e.target.value)}

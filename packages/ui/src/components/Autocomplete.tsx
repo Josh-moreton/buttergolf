@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Column, Row, Text, Input, Card } from '@buttergolf/ui'
-import type { InputProps } from '@buttergolf/ui'
+import { Column, Row } from './Layout'
+import { Text } from './Text'
+import { Input } from './Input'
+import { Card } from './Card'
+import type { InputProps } from './Input'
 
 export interface AutocompleteSuggestion {
     id: string | null

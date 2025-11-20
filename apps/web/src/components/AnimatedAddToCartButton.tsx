@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { gsap } from "gsap";
+import { Button } from "@buttergolf/ui";
 import styles from "./AnimatedAddToCartButton.module.css";
 
 interface AnimatedAddToCartButtonProps {
@@ -69,13 +70,14 @@ export function AnimatedAddToCartButton({
     };
 
     return (
-        <button
+        <Button
             ref={buttonRef}
-            onClick={handleClick}
+            onPress={handleClick}
             aria-label="Add to cart"
             className={styles.addToCart}
             data-adding={isAdding}
             disabled={disabled}
+            chromeless
         >
             <span className={`${styles.flex} ${styles.addToCartText}`}>
                 <span className={`${styles.svgWrapper} ${styles.addToCartIcon}`}>
@@ -157,6 +159,6 @@ export function AnimatedAddToCartButton({
                     </svg>
                 </span>
             </span>
-        </button>
+        </Button>
     );
 }

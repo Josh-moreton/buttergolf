@@ -10,7 +10,7 @@ This guide also documents our authentication setup using Clerk for both platform
 
 ### Monorepo Structure
 
-- **Build System**: Turborepo 2.5.8 for build orchestration and caching
+- **Build System**: Turborepo 2.6.0 for build orchestration and caching
 - **Package Manager**: pnpm 10.20.0 with workspace protocol
 - **Apps**:
   - `apps/web` - Next.js 16.0.1 (App Router) web application
@@ -23,9 +23,9 @@ This guide also documents our authentication setup using Clerk for both platform
 
 ### Technology Stack
 
-- **UI Framework**: Tamagui 1.135.6 for cross-platform UI components and theming
+- **UI Framework**: Tamagui 1.135.7 for cross-platform UI components and theming
 - **Database**: Prisma 6.x with PostgreSQL
-- **React**: 19.2.0 (aligned across web and mobile)
+- **React**: 19.x (aligned across web and mobile)
 - **React Native**: 0.81.5
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
@@ -35,8 +35,14 @@ This guide also documents our authentication setup using Clerk for both platform
   - Metro (mobile) - custom workspace-aware configuration
   - Webpack (Next.js)
 - **Babel**: Custom configuration with `@tamagui/babel-plugin`
-- **Auth**: Clerk (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo`)
-- **Payments**: Stripe (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+- **Auth**: Clerk 6.34.1 (Web: `@clerk/nextjs`, Mobile: `@clerk/clerk-expo` 2.17.3)
+- **Payments**: Stripe 19.2.1 (Web: `stripe` + `@stripe/stripe-js` + `@stripe/react-stripe-js`, Mobile: `@stripe/stripe-react-native`)
+- **Image CDN**: Cloudinary (`cloudinary` + `next-cloudinary`) for image uploads, hosting, and transformations
+
+**CRITICAL: Next.js 16+ Middleware Convention**
+- Next.js 16.0.1+ uses `src/proxy.ts` NOT `src/middleware.ts`
+- The middleware file convention was renamed in Next.js 16
+- Always use `proxy.ts` for route protection and middleware logic
 
 ### Cross-Platform Navigation Architecture (CRITICAL)
 
@@ -136,7 +142,6 @@ pnpm lint          # Lint all packages
 
 # Database (Prisma)
 pnpm db:generate        # Generate Prisma Client
-pnpm db:push            # Push schema to database (dev)
 pnpm db:migrate:dev     # Create and apply migration
 pnpm db:studio          # Open Prisma Studio GUI
 pnpm db:seed            # Seed database with sample data
@@ -628,8 +633,8 @@ function ThemedComponent() {
 
 We have **8 hardened component families** in `packages/ui` (~1,500 lines of production code):
 
-1. **Button** - 6 tones (primary, secondary, outline, ghost, success, error), 3 sizes
-2. **Typography** - Text, Heading (h1-h6), Label with full variants
+1. **Button** - Standard Tamagui Button with numeric size tokens ($1-$16) and direct prop styling
+2. **Typography** - Text, Heading (h1-h6), Label with fontSize tokens
 3. **Layout** - Row, Column, Container, Spacer for flexible layouts
 4. **Card** - 4 variants (elevated, outlined, filled, ghost) with compound components
 5. **Input** - 3 sizes with validation states (error, success, disabled)
@@ -639,18 +644,22 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
-#### ✅ **ALWAYS Use Tamagui Button Component (Never Manual HTML Buttons)**
+#### ✅ **ALWAYS Use Standard Tamagui Button (Never Custom Variants or Manual HTML Buttons)**
 
 ```tsx
-// ✅ CORRECT - Use Tamagui Button from @buttergolf/ui
+// ✅ CORRECT - Use standard Tamagui Button with numeric size tokens and direct props
 import { Button } from "@buttergolf/ui";
 
-<Button size="lg" tone="primary" borderRadius="$full" paddingHorizontal="$6" color="$vanillaCream">
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$6" paddingVertical="$3" borderRadius="$full">
   View all listings
 </Button>
 
-<Button size="md" tone="secondary" fullWidth>
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" borderRadius="$full" width="100%">
   Secondary Action
+</Button>
+
+<Button size="$4" chromeless>
+  Ghost Button
 </Button>
 
 // ❌ WRONG - Never create manual HTML buttons with inline styles
@@ -670,47 +679,60 @@ import { Button } from "@buttergolf/ui";
   View all listings
 </button>
 
+// ❌ WRONG - Don't use custom variants (we removed them)
+<Button size="lg" tone="primary">
+  Submit
+</Button>
+
 // ❌ WRONG - Don't use native button element even with Tamagui props
 <button backgroundColor="$primary" color="$textInverse">
   Submit
 </button>
 ```
 
-**Why Tamagui Button?**
+**Why Standard Tamagui Button?**
 - Ensures cross-platform consistency (works on web and mobile)
-- Proper theming with light/dark mode support
+- Uses standard Tamagui numeric size tokens ($1-$16)
+- No abstraction layer - direct control over styling
 - Built-in hover/press/focus states
 - Accessible by default
 - Compiler-optimized for performance
-- Maintains design system consistency
+- Follows official Tamagui patterns
 
-#### ✅ **PREFER Specific Brand Color Tokens (Not Generic Semantic Tokens)**
+#### ✅ **ALWAYS Use Semantic Color Tokens in App Code**
 
-**🎨 IMPORTANT: Use specific brand colors for better design control and clarity**
+**🎨 IMPORTANT: Use semantic tokens for theme support and maintainability**
 
-Our brand colors have specific names that describe the actual color, making the code more readable and maintainable. **Prefer these specific tokens over generic semantic names.**
+Semantic tokens automatically adapt to theme changes and make intent clear. **Prefer these in all app code.**
 
 ```tsx
-// ✅ CORRECT - Use specific brand color tokens (PREFERRED)
-<Text color="$ironstone">Primary dark text</Text>           // Dark gray text
-<Text color="$slateSmoke">Secondary text</Text>             // Medium gray
-<View backgroundColor="$vanillaCream">Light background</View> // Cream background
-<View borderColor="$cloudMist">Subtle border</View>          // Light gray border
-<Button backgroundColor="$spicedClementine">CTA Button</Button> // Orange brand color
-
-// ✅ ALSO CORRECT - Generic semantic tokens (use when you need theme flexibility)
+// ✅ CORRECT - Use semantic tokens in app code (PREFERRED)
 <Button backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text color="$text">Primary text</Text>
+<Text color="$textSecondary">Secondary text</Text>
 <Text color="$textMuted">Helper text</Text>
 <View borderColor="$border" backgroundColor="$background">Content</View>
 
+// ⚠️ USE SPARINGLY - Brand tokens only in component libraries or theme-independent contexts
+<Text color="$ironstone">Always dark gray (no theme switching)</Text>
+<View backgroundColor="$vanillaCream">Always cream (no theme switching)</View>
+
 // ❌ WRONG - Never use numbered colors or raw hex values
-<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $spicedClementine or $primary
+<Button backgroundColor="#F45314">Submit</Button>    // No theming, use $primary
 <Text color="$color">Text</Text>                     // Old token name
 <View borderColor="$borderColor">Content</View>      // Old token name
 <Text color="$color11">Text</Text>                   // Numbered color (deprecated)
 ```
 
-**Brand Color Token Reference:**
+**Token Usage Guidelines:**
+
+| Context | Use This | Not This | Reason |
+|---------|----------|----------|--------|
+| **App code (99% of cases)** | `$primary`, `$text`, `$background`, `$border` | `$spicedClementine`, `$ironstone`, `#F45314` | Semantic tokens enable theme switching |
+| **Component library defaults** | `$ironstone`, `$vanillaCream` | Direct hex values | Brand tokens are the foundation |
+| **When you need a specific color** | `$spicedClementine` (sparingly) | `#F45314` | Token enables tooling & consistency |
+
+**Brand Color Token Reference (for component library use):**
 
 | Token | Hex | Use Case |
 |-------|-----|----------|
@@ -724,23 +746,20 @@ Our brand colors have specific names that describe the actual color, making the 
 | `$pureWhite` | #FFFFFF | Pure white for contrast |
 
 **When to use which:**
-- **Specific tokens** (`$ironstone`, `$vanillaCream`, etc.) - Use for consistent brand colors across light/dark themes
-- **Semantic tokens** (`$text`, `$background`, etc.) - Use only when you need automatic theme switching behavior
-
-**The OLD guidance saying "use semantic tokens" was confusing and led to incorrect code review comments. Always prefer specific brand color tokens.**
+- **Semantic tokens** (`$text`, `$background`, `$primary`, etc.) - **USE IN 99% OF APP CODE** for automatic theme switching and maintainability
+- **Brand tokens** (`$ironstone`, `$vanillaCream`, `$spicedClementine`, etc.) - Use ONLY when defining component defaults in `packages/ui` or when you need a specific brand color that absolutely won't change with themes
 
 #### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
 ```tsx
-// ✅ CORRECT - Use built-in variants
-<Button size="lg" tone="primary">Submit</Button>
-<Text size="sm" weight="semibold">Helper text</Text>
+// ✅ CORRECT - Use standard Tamagui patterns
+<Button size="$5" backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text fontSize="$4" fontWeight="600">Helper text</Text>
 <Card variant="elevated" padding="lg">Content</Card>
 <Input size="md" error fullWidth />
 
-// ❌ WRONG - Don't manually style with primitives
-<Button paddingHorizontal="$5" height={48}>Submit</Button>
-<Text fontSize="$3">Helper text</Text>
+// ❌ WRONG - Don't use outdated custom variants
+<Button size="lg" tone="primary">Submit</Button>
 ```
 
 #### ✅ **ALWAYS Use Compound Components for Cards**
@@ -794,67 +813,104 @@ Our brand colors have specific names that describe the actual color, making the 
 
 **Note**: Row and Column are thin wrappers over XStack/YStack - they preserve ALL native Tamagui props like `alignItems`, `justifyContent`, `flexWrap`, etc. Use these native props directly.
 
-#### ⚠️ **CRITICAL: Text Component Font Sizing (NEVER use size="md")**
+#### ⚠️ **CRITICAL: Understanding 'size' - Two Different Meanings**
 
 **🚨 THIS IS THE MOST COMMON ERROR - READ CAREFULLY 🚨**
 
-The Tamagui Text component has TWO different props for sizing, and mixing them up causes runtime errors:
+The word "size" has **TWO COMPLETELY DIFFERENT meanings** in our design system:
 
-1. **`size` prop** - A **variant** that accepts semantic strings: `"xs" | "sm" | "md" | "lg" | "xl"`
-2. **`fontSize` prop** - A **direct token** that accepts token values: `"$1"` through `"$16"`
+### 1️⃣ Font Size Tokens (for Text/Typography)
 
-**THE CRITICAL RULE:**
+**THE CRITICAL RULE: Text/SizableText/Paragraph components use `size` prop with NUMERIC tokens ($1-$16)**
 
-- ✅ **CORRECT - Use `size` variant for semantic sizing**:
+Tamagui's **official SizableText and Paragraph components** use a standard **numbered font size scale** (`$1` through `$16`). The `size` prop is the standard Tamagui pattern for typography sizing.
+
+- ✅ **CORRECT - Use `size` with numbered tokens on Text/SizableText/Paragraph**:
   ```tsx
-  <Text size="sm">Small text</Text>
-  <Text size="md">Medium text (default)</Text>
-  <Text size="lg">Large text</Text>
+  <Text size="$4">Small (14px)</Text>
+  <Text size="$5">Medium (15px) - DEFAULT</Text>
+  <Text size="$6">Large (16px)</Text>
+  <Text size="$7">XL (18px)</Text>
+  <Text size="$8">2XL (20px)</Text>
+  <Paragraph size="$5">Body text with default size</Paragraph>
   ```
 
-- ✅ **CORRECT - Use `fontSize` with tokens for custom sizing**:
+- ❌ **WRONG - NEVER use fontSize prop, NEVER use named sizes**:
   ```tsx
-  <Text fontSize="$4">Small (13-14px)</Text>
-  <Text fontSize="$5">Medium (15-16px) - DEFAULT</Text>
-  <Text fontSize="$6">Large (18-20px)</Text>
-  <Text fontSize="$7">XL (22-24px)</Text>
-  <Text fontSize="$8">2XL (28-32px)</Text>
+  <Text fontSize="$5">Wrong!</Text>       // Use size, not fontSize
+  <Text size="md">Wrong!</Text>           // Named sizes don't exist
+  <Text size="$md">Wrong!</Text>          // $md is spacing, not font size
   ```
 
-- ❌ **WRONG - NEVER mix variant names with fontSize**:
+### 2️⃣ Component Size Variants (for UI Components)
+
+**For Button, Input, Badge, Spinner - use NUMERIC `size` tokens ($1-$16)**
+
+These components also use numeric `size` tokens that control **geometric dimensions** (height, padding, width).
+
+- ✅ **CORRECT - Use numeric size tokens on UI components**:
   ```tsx
-  <Text size="md">Wrong!</Text>  // This looks right but causes "No font size found md" error
-  <Text fontSize="md">Wrong!</Text>  // Missing $ prefix on token
-  <Text fontSize="$md">Wrong!</Text>  // $md is a spacing token, not a font size
+  <Button size="$4">Click me</Button>     // Controls height and padding
+  <Input size="$5" />                     // Controls height and padding
+  <Badge size="$3">NEW</Badge>            // Controls min-height
+  <Spinner size="$4" />                   // Controls width/height
   ```
 
-**Why This Error Keeps Happening:**
+- ❌ **WRONG - Don't use named sizes**:
+  ```tsx
+  <Button size="md">Wrong!</Button>       // Use numeric tokens like $4
+  <Input size="lg">Wrong!</Input>         // Use numeric tokens like $5
+  ```
 
-The `size` prop name makes developers think they can use it like `fontSize`, but it's actually a **variant** that only works with the specific variant names defined in the Text component. When you use `size="md"`, Tamagui tries to look up a font size token named "md" and fails.
+**Summary Table:**
+
+| Component Type | Prop to Use | Valid Values | Controls | Example |
+|----------------|-------------|--------------|----------|---------|
+| **Text, SizableText, Paragraph** | `size` | `$1` - `$16` | Font size & line height | `<Text size="$5">` |
+| **Button, Input, Badge, Spinner** | `size` | `$1` - `$16` | Height, padding, dimensions | `<Button size="$4">` |
+
+**Why This Works:**
+
+Tamagui's design system uses numeric tokens for all sizing. Our config defines font sizing with keys `1` through `16`, mapping to pixel values. When you use `size="$5"`, Tamagui looks up the appropriate size from your theme configuration.
 
 **Font Size Token Reference:**
 
-| Token  | Size Range | Use Case                 |
-|--------|------------|--------------------------|
-| `$1`   | 11px       | Legal text, tiny labels  |
-| `$2`   | 12px       | Captions, metadata       |
-| `$3`   | 13px       | Small labels             |
-| `$4`   | 13-14px    | Body small, helper text  |
-| **`$5`** | **15-16px** | **DEFAULT - Body text**   |
-| `$6`   | 18-20px    | Large body, subheadings  |
-| `$7`   | 22-24px    | Headings                 |
-| `$8`   | 28-32px    | Large headings           |
-| `$9`+  | 36px+      | Hero text                |
+| Token    | Size (px) | Use Case                 |
+|----------|-----------|--------------------------|
+| `$1`     | 11        | Legal text, tiny labels  |
+| `$2`     | 12        | Captions, metadata       |
+| `$3`     | 13        | Small labels             |
+| `$4`     | 14        | Body small, helper text  |
+| **`$5`** | **15**    | **DEFAULT - Body text**  |
+| `$6`     | 16        | Large body text          |
+| `$7`     | 18        | Subheadings              |
+| `$8`     | 20        | Large subheadings        |
+| `$9`     | 22        | Small headings           |
+| `$10`    | 24        | Medium headings          |
+| `$11`    | 28        | Large headings           |
+| `$12`    | 32        | XL headings              |
+| `$13`+   | 40+       | Hero text                |
 
-**If you see "No font size found md/sm/lg" error:**
+**Common Patterns:**
+```tsx
+// Body text (most common)
+<Text size="$5">Regular paragraph text</Text>
+<Paragraph size="$5">Paragraph with default theme color</Paragraph>
 
-1. Search for `size="sm"`, `size="md"`, `size="lg"` in Text components
-2. Replace with either:
-   - `size` variant: `size="sm"` (if using semantic sizing)
-   - OR `fontSize` token: `fontSize="$5"` (if you want specific control)
-3. **Default to `fontSize="$5"`** when unsure - it's the most common body text size
+// Helper text / captions
+<Text size="$4" color="$textSecondary">Helper text</Text>
 
-**This error has appeared 4+ times in this project - following this rule prevents it.**
+// Subheadings
+<Text size="$7" fontWeight="600">Section title</Text>
+
+// Large display text
+<Text size="$11" fontWeight="700">Hero headline</Text>
+
+// Buttons with consistent sizing
+<Button size="$4">Small button</Button>
+<Button size="$5">Medium button</Button>
+<Button size="$6">Large button</Button>
+```
 
 #### ✅ **Using Colors in Text Components**
 
@@ -881,21 +937,21 @@ The `size` prop name makes developers think they can use it like `fontSize`, but
 
 **CRITICAL DISTINCTION:** Tamagui has two ways to use design tokens:
 
-#### 1️⃣ **Custom Variants** (For NEW Component APIs Only)
+#### 1️⃣ **Custom Variants** (For Custom Component APIs Only)
 
 Variants are **named options** defined in `styled()` components. They use **plain strings WITHOUT `$`** that map to tokens internally.
 
 ```tsx
-// ✅ CORRECT - Using custom variants (NO $ prefix)
-<Button size="lg">          // "lg" is a variant option
-<Text color="muted">        // "muted" is a variant option (if it existed - it doesn't!)
-<Card padding="lg">         // "lg" is a variant option
+// ✅ CORRECT - Using custom variants (NO $ prefix) in custom components
+<Card padding="lg">         // "lg" is a variant option we defined
+<Container size="lg">       // Custom variant for max-width
+<Badge variant="primary">   // Custom variant for visual style
 
 // Defined in styled() like this:
-const Button = styled(View, {
+const Card = styled(View, {
   variants: {
-    size: {
-      lg: { height: '$10', paddingHorizontal: '$4' },
+    padding: {
+      lg: { padding: '$lg' },
     }
   }
 })
@@ -903,9 +959,9 @@ const Button = styled(View, {
 
 **⚠️ IMPORTANT:** Never create variants for props that **already exist on the base component** (like `gap`, `padding`, `margin`, `alignItems`, `justifyContent`). This causes TypeScript intersection type errors!
 
-**When to use:** Component-specific props that have a fixed set of semantic options (button size/tone, card variant, input size).
+**When to use:** Component-specific props that have a fixed set of semantic options (card padding, container size, badge variant).
 
-#### 2️⃣ **Direct Token Props** (For Layout & Styling)
+#### 2️⃣ **Direct Token Props** (For Standard Tamagui Components & Styling)
 
 Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui component. This is how Tamagui's built-in components work.
 
@@ -915,12 +971,13 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Column gap="$lg">                      // Use tokens directly - gap is native to YStack
 <View padding="$md">                    // Direct token reference
 <YStack gap="$4">                       // Direct token reference
-<Text fontSize="$5" color="$textMuted"> // Direct token references
+<Text size="$5" color="$textMuted">     // Direct token references
+<Button size="$4" backgroundColor="$primary"> // Standard Tamagui Button with direct props
 <View backgroundColor="$surface">       // Direct token reference
 <View borderRadius="$lg">               // Direct token reference
 ```
 
-**When to use:** Layout spacing (gap, padding, margin), geometric properties (width, height, borderRadius), colors, and any prop that exists natively on the base component.
+**When to use:** Layout spacing (gap, padding, margin), geometric properties (width, height, borderRadius), colors, Button styling, and any prop that exists natively on the base component.
 
 ### Real-World Examples
 
@@ -930,7 +987,7 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 // Layout components use DIRECT TOKENS for native props
 <Row gap="$md" alignItems="center">     // gap="$md" - direct token (native prop)
   <Column gap="$lg">                     // gap="$lg" - direct token (native prop)
-    <Text color="$textMuted" size="sm">  // color - direct token, size - variant
+    <Text color="$textMuted" size="$4">  // color & size - both direct tokens
       Helper text
     </Text>
   </Column>
@@ -939,16 +996,17 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 // Primitives use direct tokens (flexible, ad-hoc)
 <View padding="$4" backgroundColor="$surface" borderRadius="$md">
   <YStack gap="$3">
-    <Text fontSize="$4" color="$text">Direct token usage</Text>
+    <Text size="$4" color="$text">Direct token usage</Text>
   </YStack>
 </View>
 
-// Components use their defined variants
-<Button size="lg" tone="primary">      // size/tone - variants
+// Standard Tamagui Button uses direct props
+<Button size="$5" backgroundColor="$primary" color="$textInverse">
   Submit
 </Button>
 
-<Card variant="elevated" padding="lg">  // variant/padding - variants
+// Custom components use their defined variants
+<Card variant="elevated" padding="lg">  // variant/padding - custom variants
   <Card.Body>
     <Text>Content</Text>
   </Card.Body>
@@ -963,14 +1021,12 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Column gap="$lg">                // Don't use variants for native props!
 <YStack gap="$4">                 // Direct prop on primitive
 <View padding="$md">              // Direct prop on primitive
-<Text fontSize="$5" color="$textMuted"> // Direct props (not using variants)
+<Text size="$5" color="$textMuted"> // Direct props (not using size variant)
 <View borderRadius="$lg">         // Direct geometric prop
 <View backgroundColor="$surface"> // Direct color token
 
 // ✅ CORRECT - Custom variants (NO $ prefix) for component-specific props
-<Button size="lg">                // Button component variant
-<Text size="md">                  // Text size variant (exists)
-<Card padding="lg">               // Card padding variant (custom, not native padding)
+<Card padding="lg">               // Card component variant (custom, not native padding)
 <Container size="lg">             // Container size variant
 
 // ❌ WRONG - Creating variants for native props
@@ -978,8 +1034,6 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Column gap="lg">                 // ❌ gap exists natively, use gap="$lg"
 
 // ❌ WRONG - Mixing them up
-<Button size="$lg">               // ❌ Don't use $ with variants
-<Text color="muted">              // ❌ Text has NO color variants, use color="$textMuted"
 <View padding="md">               // ❌ Missing $ for direct prop
 
 // ❌ WRONG - Using specific/old tokens
@@ -1074,33 +1128,96 @@ export type { MyComponentProps } from "./components/MyComponent";
 
 ### Component API Reference
 
+#### Understanding Component Size Props
+
+**CRITICAL: ALL components now use standard Tamagui numeric size tokens**
+
+1. **Button** - `size` uses **numeric tokens** ($1-$16):
+   ```tsx
+   <Button size="$4">Standard button</Button>  // ✅ Numeric tokens control font size
+   <Button size="$5" paddingHorizontal="$5" paddingVertical="$3">Larger</Button>
+   ```
+
+2. **Text, Paragraph** - `size` uses **numeric tokens** ($1-$16):
+   ```tsx
+   <Text size="$5">Body text</Text>  // ✅ Use numeric tokens ($1-$16)
+   <Paragraph size="$5">Paragraph with theme colors</Paragraph>
+   ```
+
+3. **Input, Badge, Spinner** - `size` variant controls **HEIGHT and padding** (custom sizing):
+   ```tsx
+   <Input size="sm" />   // ✅ Custom variants for these components
+   <Badge size="md" />   // ✅ sm/md/lg controls height
+   <Spinner size="lg" /> // ✅ Geometric sizing
+   ```
+
+4. **Heading** - NO `size` variant, use **`level` prop** (semantic HTML):
+   ```tsx
+   <Heading level={2}>Title</Heading>  // ✅ level controls h1-h6 + font size
+   <Heading size="$8">Override size</Heading>  // ⚠️ Can override with size prop
+   ```
+
 #### Button
+
+**CRITICAL: We use STANDARD Tamagui Button with numeric size tokens and direct prop styling. NO custom variants.**
 
 ```tsx
 <Button
-  size="sm | md | lg" // Size variant (default: md)
-  tone="primary | secondary | outline | ghost | success | error" // Style variant
-  fullWidth={boolean} // Full width button
+  size="$4" // Standard Tamagui numeric size tokens ($1-$16)
+  backgroundColor="$primary" // Direct color prop
+  color="$textInverse" // Direct text color
+  paddingHorizontal="$4" // Direct padding
+  paddingVertical="$3" // Direct padding
+  borderRadius={24} // Direct styling
+  width="100%" // Full width if needed
   disabled={boolean} // Disabled state
-  loading={boolean} // Loading state
+  chromeless={boolean} // Chromeless/ghost style (use instead of tone="ghost")
 >
   Button Text
 </Button>
 ```
 
+**Standard Tamagui Button Patterns:**
+```tsx
+// Primary button (pill-shaped)
+<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" borderRadius="$full">
+  Primary Action
+</Button>
+
+// Outline button (pill-shaped)
+<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" borderRadius="$full">
+  Secondary Action
+</Button>
+
+// Ghost/chromeless button
+<Button size="$4" chromeless>
+  Cancel
+</Button>
+
+// Success button (pill-shaped)
+<Button size="$5" backgroundColor="$success" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" borderRadius="$full">
+  Confirm
+</Button>
+```
+
+**Important**: Button uses standard Tamagui size tokens ($1-$16) which control font size. Use paddingHorizontal/paddingVertical to control button dimensions.
+
 #### Text
 
 ```tsx
 <Text
-  size="xs | sm | md | lg | xl" // Font size (default: md)
-  weight="normal | medium | semibold | bold" // Font weight
-  align="left | center | right" // Text alignment
+  size="$1" | "$2" | "$3" | "$4" | "$5" | ... "$16" // Use numeric tokens (default: $5)
+  fontWeight="400" | "500" | "600" | "700" // Font weight (or use weight prop)
+  weight="normal | medium | semibold | bold" // Semantic weight variant
+  textAlign="left | center | right" // Text alignment
   truncate={boolean} // Truncate with ellipsis
   color="$token" // Use direct token references (e.g., "$text", "$textSecondary", "$primary")
 >
   Text content
 </Text>
 ```
+
+**CRITICAL**: Text uses standard Tamagui `size` prop with numeric tokens (`$1` through `$16`). This is the STANDARD way.
 
 **Note**: Text does NOT have color variants. Always use direct token references like `color="$textMuted"` or `color="$primary"`.
 
@@ -1493,7 +1610,6 @@ This is the ONLY proper way to resolve drift. It ensures migration history is cl
 - `prisma migrate reset --force` - ✅ CORRECT way to resolve drift - Drops database, reapplies all migrations, reseeds data
 - `prisma db push` - ❌ FORBIDDEN - Never use this, it causes drift
 - `prisma migrate resolve` - ❌ DO NOT USE - Does not actually fix drift, makes it worse
-- `prisma migrate diff` - ❌ USELESS - Confusing output, doesn't help resolve drift
 
 ### Database Setup Options
 
@@ -1965,6 +2081,204 @@ Full list: https://stripe.com/docs/testing
 
 For detailed Stripe documentation: https://stripe.com/docs
 
+## Image Upload & CDN (Cloudinary)
+
+We use Cloudinary for permanent image hosting, CDN delivery, and AI-powered transformations. This replaced Vercel Blob for a unified image solution.
+
+### Packages
+
+- **Web**: `cloudinary` (Node.js SDK), `next-cloudinary` (Next.js integration)
+- **Image transformations**: Background removal, format optimization, quality optimization
+- **CDN**: Global CDN delivery with automatic caching
+
+### Architecture
+
+```
+┌─────────────────┐
+│   Sell Page     │ ──→ ImageUpload component
+│   (/sell)       │     └─→ useImageUpload hook
+└─────────────────┘
+         │
+         ↓
+┌─────────────────┐
+│  Upload API     │ ──→ /api/upload route
+│  Route          │     ├─→ Cloudinary SDK upload
+└─────────────────┘     ├─→ Background removal (first image)
+         │              ├─→ Vanilla Cream background (#FFFAD2)
+         │              └─→ Auto format/quality (all images)
+         ↓
+┌─────────────────┐
+│  Cloudinary     │ ──→ Permanent CDN storage
+│  CDN            │     └─→ Global delivery + caching
+└─────────────────┘
+```
+
+### Environment Variables
+
+Place values in `apps/web/.env.local` (see `.env.example`):
+
+```bash
+# Cloudinary (Image Uploads & CDN)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+```
+
+**Important**:
+
+- Use **Cloudinary dashboard** to get credentials (Settings → Access Keys)
+- Only `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is exposed to clients
+- Keep API key and secret server-side only
+- Free tier: 25 GB storage, 25 GB bandwidth, 25,000 transformation credits/month
+
+### Setup Steps
+
+1. **Create Cloudinary Account**:
+   - Sign up at [cloudinary.com](https://cloudinary.com)
+   - Choose free tier
+   - Verify email
+
+2. **Get API Credentials**:
+   - Navigate to: Dashboard → Settings → Access Keys
+   - Copy: Cloud Name, API Key, API Secret
+   - Add to `.env.local` and Vercel environment variables
+
+3. **Cost Optimization**:
+   - Background removal applied to **first image only** (cover photo)
+   - Reduces transformation credits usage
+   - Estimated: ~10 credits per listing (2,500 listings/month on free tier)
+
+### Background Removal Logic
+
+**Cover Photo Optimization (First Image Only)**:
+
+```typescript
+// Transformations applied automatically in /api/upload
+{
+  effect: 'background_removal',  // AI-powered background removal
+  background: 'rgb:FFFAD2',      // Vanilla Cream brand color (#FFFAD2)
+}
+```
+
+**Other Images**:
+
+```typescript
+// No transformations at upload time - stored as-is
+// Auto format/quality can be applied via URL when displaying
+```
+
+**Why First Image Only?**
+
+- ✅ **Cost effective** - Reduces Cloudinary transformation credits
+- ✅ **Visual consistency** - Cover photo most visible in listings/search
+- ✅ **Context preserved** - Other images show product in natural setting
+- ✅ **Fallback graceful** - If removal fails, original image is used
+
+### Upload Flow Implementation
+
+**Client-Side Hook** (`apps/web/src/hooks/useImageUpload.ts`):
+
+```typescript
+// Pass isFirstImage flag for background removal
+const upload = async (file: File, isFirstImage = false): Promise<UploadResult> => {
+  const response = await fetch(
+    `/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': file.type },
+      body: file,
+    }
+  );
+  // Returns Cloudinary CDN URL
+};
+```
+
+**Server-Side API** (`apps/web/src/app/api/upload/route.ts`):
+
+```typescript
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure once at module load
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Upload with conditional transformations
+const uploadOptions = {
+  folder: 'products',
+  format: 'auto',
+  quality: 'auto',
+};
+
+if (isFirstImage) {
+  uploadOptions.transformation = [
+    { effect: 'background_removal' },
+    { background: 'rgb:FFFAD2' },
+  ];
+}
+
+const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
+// Returns: result.secure_url (permanent CDN URL)
+```
+
+### URL Structure & Database Storage
+
+**Cloudinary URLs are permanent CDN URLs** - store them directly in your database:
+
+```typescript
+// Prisma schema
+model Product {
+  id     String   @id @default(cuid())
+  images String[] // Array of Cloudinary URLs
+}
+
+// Example URL
+"https://res.cloudinary.com/buttergolf/image/upload/e_background_removal,b_rgb:FFFAD2/products/1732000000-abc123.jpg"
+```
+
+**On-the-fly transformations** (add to URL for different sizes):
+
+```
+# Thumbnail (150x150)
+.../w_150,h_150,c_fill/products/abc123.jpg
+
+# Product listing (400x400)
+.../w_400,h_400,c_fit/products/abc123.jpg
+
+# Full size (original)
+.../products/abc123.jpg
+```
+
+### Best Practices
+
+1. **Store Cloudinary URLs** - No need for separate file storage, Cloudinary IS the permanent host
+2. **First image gets branded background** - Cover photo is most important for consistency
+3. **Auto optimization is free** - Apply to all images for better performance
+4. **Fallback gracefully** - If background removal fails, use original image (no error shown)
+5. **Monitor usage** - Check Cloudinary dashboard monthly for credit usage
+6. **Use transformations** - Resize images via URL parameters instead of uploading multiple sizes
+
+### Common Issues
+
+**Error: "Image upload is not configured"**
+
+- **Cause**: Missing environment variables
+- **Fix**: Add all three Cloudinary variables to `.env.local` and Vercel
+
+**Background removal not applied**
+
+- **Cause**: AI may fail on certain images (unclear subject, low quality)
+- **Fix**: Automatic fallback to original image (no action needed)
+
+**Images not displaying**
+
+- **Cause**: Incorrect cloud name in database URLs
+- **Fix**: Verify URLs match format: `https://res.cloudinary.com/{cloud_name}/...`
+
+For detailed setup instructions, see `docs/CLOUDINARY_SETUP.md`.
+
 ## Documentation References
 
 - **Tamagui Full Documentation**: https://tamagui.dev/llms-full.txt
@@ -2100,20 +2414,35 @@ await mcp_upstash_conte_get-library-docs({
 
 ## Best Practices
 
+### Critical: Size System Rules
+
+**⚠️ MOST COMMON ERROR: Using outdated size system documentation**
+
+0. **ALWAYS use standard Tamagui size prop with numeric tokens**:
+   - **Text/SizableText/Paragraph**: Use `size="$1"` through `size="$16"` (standard Tamagui)
+   - **Button**: Use `size="$1"` through `size="$16"` (standard Tamagui numeric tokens)
+   - **Input, Badge, Spinner**: Use `size="sm" | "md" | "lg"` (custom variants for these specific components)
+   - ❌ WRONG: `<Text fontSize="$5">` → Use size prop, not fontSize
+   - ✅ CORRECT: `<Text size="$5">` → Standard Tamagui pattern
+   - ❌ WRONG: `<Button size="lg">` → Use numeric tokens
+   - ✅ CORRECT: `<Button size="$5" backgroundColor="$primary" color="$textInverse">` → Standard Tamagui Button
+   - **See full documentation**: Official Tamagui docs confirm Text/Button use `size` prop
+
 ### Design System & Components
 
-1. **ALWAYS use specific brand color tokens** - PREFER `$ironstone`, `$spicedClementine`, `$vanillaCream`, `$cloudMist`, `$slateSmoke`, `$burntOlive`, `$lemonHaze` over generic semantic tokens like `$text`, `$primary`, `$border`. Only use semantic tokens when you need automatic theme switching. Never use raw hex values or numbered colors.
-2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
-3. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
-4. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
-5. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
-6. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
-7. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
-8. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+1. **ALWAYS use semantic color tokens in app code** - PREFER `$primary`, `$text`, `$textSecondary`, `$textMuted`, `$border`, `$background`, `$surface` for automatic theme switching. Use brand tokens (`$ironstone`, `$spicedClementine`, `$vanillaCream`) only in `packages/ui` component definitions or when you need a specific color that won't change with themes. Never use raw hex values or numbered colors.
+2. **ALWAYS use standard Tamagui Button with numeric size tokens and direct props** - Use `<Button size="$5" backgroundColor="$primary" color="$textInverse">` with direct prop styling instead of manual HTML buttons. Button has NO tone/variant props in official Tamagui.
+3. **ALWAYS use Text size with numeric tokens** - Use `<Text size="$5">` for body text, `size="$3"` for small text. This is the standard Tamagui pattern (NOT fontSize).
+4. **ALWAYS use Text color with direct tokens** - Use `<Text color="$text">` or `<Text color="$textMuted">` (Text has NO color variants)
+5. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
+6. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
+7. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
+8. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
+9. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
 
 ### Common React/Tamagui Errors to Avoid
 
-9. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
+10. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
    - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
    - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
    - ❌ WRONG: Wrapping text props in style object on wrong component types
@@ -2126,12 +2455,12 @@ await mcp_upstash_conte_get-library-docs({
    - ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
    - ✅ **Use direct props** for standard React/Tamagui properties the component already supports
 
-10. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
+11. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
     - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
     - ✅ CORRECT: `availableBrands={availableFilters?.availableBrands || []}`
     - Apply to all nested property access: `data?.category?.name || 'Default'`
 
-11. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
+12. **ALWAYS await params and searchParams in Next.js 15+ page components** - They are Promises now
     - ❌ WRONG: `params.slug` → Runtime error in Next.js 15+
     - ✅ CORRECT: `const resolvedParams = await params; resolvedParams.slug`
     - Update Props interface: `params: Promise<{ slug: string }>` not `params: { slug: string }`
@@ -2205,9 +2534,9 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 // ✅ CORRECT - Mixed usage based on context
 
 // Layout components use DIRECT TOKENS for native props
-<Row gap="$md" align="center">          // gap="$md" - direct token (native prop)
+<Row gap="$md" alignItems="center">    // gap="$md" - direct token (native prop)
   <Column gap="$lg">                     // gap="$lg" - direct token (native prop)
-    <Text color="muted" size="sm">       // color="muted" - variant (component-specific)
+    <Text color="$textMuted" size="$4">  // color & size - both direct tokens
       Helper text
     </Text>
   </Column>
@@ -2216,16 +2545,17 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 // Primitives use direct tokens (flexible, ad-hoc)
 <View padding="$4" backgroundColor="$surface" borderRadius="$md">
   <YStack gap="$3">
-    <Text fontSize="$4">Direct token usage</Text>
+    <Text size="$4" color="$text">Direct token usage</Text>
   </YStack>
 </View>
 
-// Components use their defined variants
-<Button size="lg" tone="primary">      // size/tone - variants
+// Standard Tamagui Button uses direct props
+<Button size="$5" backgroundColor="$primary" color="$textInverse">
   Submit
 </Button>
 
-<Card variant="elevated" padding="lg">  // variant/padding - variants
+// Custom components use their defined variants
+<Card variant="elevated" padding="lg">  // variant/padding - custom variants
   <Card.Body>
     <Text>Content</Text>
   </Card.Body>
@@ -2240,42 +2570,38 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 <Column gap="$lg">                // Don't use variants for native props!
 <YStack gap="$4">                 // Direct prop on primitive
 <View padding="$md">              // Direct prop on primitive
-<Text fontSize="$5">              // Direct prop (not using size variant)
+<Text size="$5" color="$textMuted"> // Direct token references
+<Button size="$4" backgroundColor="$primary"> // Standard Tamagui Button with direct props
 <View borderRadius="$lg">         // Direct geometric prop
 <View backgroundColor="$surface"> // Direct color token
 
 // ✅ CORRECT - Custom variants (NO $ prefix) for component-specific props
-<Button size="lg">                // Button component variant
-<Text color="muted">              // Text component variant
 <Card padding="lg">               // Card component variant (custom, not native padding)
-<Container size="lg">             // Container component variant
+<Container size="lg">             // Container size variant
 
 // ❌ WRONG - Creating variants for native props
 <Row gap="md">                    // ❌ gap exists natively, use gap="$md"
 <Column gap="lg">                 // ❌ gap exists natively, use gap="$lg"
 
 // ❌ WRONG - Mixing them up
-<Button size="$lg">               // ❌ Don't use $ with variants
-<Text color="$textMuted">         // ❌ Use variant name "muted"
 <View padding="md">               // ❌ Missing $ for direct prop
 
-// ❌ WRONG - Using specific/old tokens
-<View backgroundColor="$butter500"> // ❌ Too specific, use semantic
-<Text color="$color">             // ❌ Old token name
-<View borderColor="$borderColor"> // ❌ Old token name
+// ❌ WRONG - Using old token names
+<Text color="$color">             // ❌ Old token name, use $text
+<View borderColor="$borderColor"> // ❌ Old token name, use $border
 ```
 
 ### Component Usage Cheat Sheet
 
 ```tsx
 // ✅ CORRECT Component Usage
-<Button size="lg" tone="primary">Submit</Button>
-<Text color="muted" size="sm">Helper text</Text>
+<Button size="$5" backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text color="$textMuted" size="$4">Helper text</Text>
 <Card variant="elevated" padding="lg">
   <Card.Header><Heading level={3}>Title</Heading></Card.Header>
   <Card.Body><Text>Content</Text></Card.Body>
 </Card>
-<Row gap="$md" align="center">
+<Row gap="$md" alignItems="center">
   <Text>Label</Text>
   <Spacer flex />
   <Button>Action</Button>
@@ -2302,11 +2628,11 @@ Use this matrix when creating or updating components:
 | Property Type              | Use Variant                      | Use Direct Token           | Example                                            |
 | -------------------------- | -------------------------------- | -------------------------- | -------------------------------------------------- |
 | **Spacing (gap, padding)** | ❌ DON'T (native props)          | ✅ Always use tokens       | `<Row gap="$md">` (gap is native to XStack)        |
-| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Button size="lg">` vs `<View width={200}>`       |
-| **Colors**                 | ✅ For semantic colors           | ❌ Never use direct        | `<Text color="muted">` not `color="$gray500"`      |
-| **Typography (fontSize)**  | ✅ For component variants        | ⚠️ For direct styling      | `<Text size="sm">` vs `<Text fontSize="$3">`       |
+| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Input size="md">` vs `<View width={200}>`       |
+| **Colors**                 | ✅ For semantic tokens           | ⚠️ For brand tokens in UI  | `<Text color="$text">` or `color="$primary"`      |
+| **Typography (size)**      | ❌ No variants on Text           | ✅ Use numeric tokens      | `<Text size="$5">` (standard Tamagui pattern) |
 | **Border radius**          | ⚠️ Rare (use defaults)           | ✅ For geometric control   | Usually inherit, or `borderRadius="$md"`           |
-| **Alignment**              | ✅ Always use variants           | ❌ Never direct            | `<Row align="center">` never `alignItems="center"` |
+| **Alignment**              | ❌ No custom variants           | ✅ Use native flexbox      | `<Row alignItems="center">` native React Native prop |
 | **Component state**        | ✅ Always (tone, variant)        | ❌ Never                   | `<Button tone="primary">` never manual colors      |
 
 **Legend:**
@@ -2337,23 +2663,23 @@ When creating a new component, add variants for:
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-10. **CRITICAL: Always use Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use variants (`size`, `tone`) with token props (`borderRadius`, `paddingHorizontal`, `color`). This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
-11. **Keep React versions aligned** across web and mobile (currently 19.2.0)
-12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
-13. **Export types** alongside components for better DX
-14. **Test on both platforms** before considering features complete
-15. **Leverage media queries** for responsive design instead of platform checks
-16. **Keep Metro and Babel configs** in sync with Tamagui requirements
-17. **Run type checking** regularly during development
-18. **Use `name` prop** on styled components for better compiler optimization
-19. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
-20. **Run `pnpm db:generate`** after any schema changes
-21. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
-22. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
-23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
-24. **NEVER use inline `style` prop with Tamagui components** - It bypasses the optimizing compiler and causes text rendering/hydration issues. Always use Tamagui's native props instead (e.g., `whiteSpace="pre-wrap"` not `style={{ whiteSpace: "pre-wrap" }}`)
-25. **CRITICAL: Tamagui Text components cause line height issues** - When using Tamagui Text/Heading with inline styles for responsive typography (clamp, custom font sizes), the base component styles interfere and cause text overlap. **ALWAYS use plain HTML elements (h1, h2, p, div) with explicit lineHeight values** for custom typography. Use Tamagui Text only when using predefined size variants. Example: `<h2 style={{ fontSize: "clamp(24px, 5vw, 32px)", lineHeight: 1.2, fontWeight: 600, margin: 0 }}>Text</h2>` NOT `<Text fontSize="$8">Text</Text>` with style overrides.
-26. **If marketplace typography looks off (e.g., in HeroStatic links), remove manual `lineHeight` overrides** - The fix is to rely on the px-based values defined in `packages/config/src/tamagui.config.ts` by deleting ad-hoc `lineHeight={...}` props in shared components (like `packages/app/src/components/Hero.tsx`). The footer looked correct because it already inherited the config tokens; match that behavior whenever this regression reappears.
+10. **CRITICAL: Always use semantic color tokens in app code** - Use `$primary`, `$text`, `$textSecondary`, `$textMuted`, `$border`, `$background`, `$surface` for automatic theme switching and maintainability. Only use brand tokens (`$ironstone`, `$spicedClementine`, `$vanillaCream`) when defining component defaults in `packages/ui` or when you need a specific color that absolutely won't change with themes. Never use raw hex values or numbered colors.
+11. **CRITICAL: Always use standard Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use standard Tamagui numeric size tokens (`size="$4"`) with direct prop styling (`backgroundColor`, `color`, `paddingHorizontal`, `paddingVertical`, `borderRadius`). We removed custom variants (size="sm|md|lg", tone="primary|outline") to use standard Tamagui patterns. This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
+12. **Keep React versions aligned** across web and mobile
+13. **Use workspace protocol** for internal dependencies: `"workspace:*"`
+14. **Export types** alongside components for better DX
+15. **Test on both platforms** before considering features complete
+16. **Leverage media queries** for responsive design instead of platform checks
+17. **Keep Metro and Babel configs** in sync with Tamagui requirements
+18. **Run type checking** regularly during development
+19. **Use `name` prop** on styled components for better compiler optimization
+20. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+21. **Run `pnpm db:generate`** after any schema changes
+22. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+23. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
+24. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+25. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
+26. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
 
 ### GSAP Animation Patterns
 
@@ -2443,17 +2769,17 @@ When generating new code:
   <Column gap="$xs">
     <Row gap="$xs">
       <Label htmlFor="email">Email</Label>
-      <Text color="error">*</Text>
+      <Text color="$error">*</Text>
     </Row>
     <Input id="email" type="email" size="md" error={!!emailError} fullWidth />
     {emailError && (
-      <Text size="sm" color="error">
+      <Text size="$4" color="$error">
         {emailError}
       </Text>
     )}
   </Column>
 
-  <Button size="lg" tone="primary" fullWidth>
+  <Button size="$5" backgroundColor="$primary" color="$textInverse" width="100%">
     Submit
   </Button>
 </Column>
@@ -2476,9 +2802,9 @@ When generating new code:
   <Card.Body padding="lg">
     <Column gap="$sm">
       <Heading level={4}>{product.name}</Heading>
-      <Text color="secondary">{product.category}</Text>
-      <Row align="center" justify="between">
-        <Text size="xl" weight="bold">
+      <Text color="$textSecondary">{product.category}</Text>
+      <Row alignItems="center" justifyContent="space-between">
+        <Text size="$8" fontWeight="700">
           ${product.price}
         </Text>
         <Badge variant="success">In Stock</Badge>
@@ -2487,7 +2813,7 @@ When generating new code:
   </Card.Body>
 
   <Card.Footer align="right">
-    <Button tone="outline" size="md">
+    <Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary">
       Add to Cart
     </Button>
   </Card.Footer>
@@ -2497,15 +2823,15 @@ When generating new code:
 ### Dashboard Stats
 
 ```tsx
-<Row gap="$lg" wrap>
+<Row gap="$lg" flexWrap="wrap">
   <Card variant="filled" padding="lg" flex={1}>
     <Column gap="$sm">
-      <Row align="center" gap="$sm">
+      <Row alignItems="center" gap="$sm">
         <Badge variant="success" dot />
-        <Text color="secondary">Active Users</Text>
+        <Text color="$textSecondary">Active Users</Text>
       </Row>
       <Heading level={2}>1,234</Heading>
-      <Text size="sm" color="success">
+      <Text size="$4" color="$success">
         +12% from last month
       </Text>
     </Column>
@@ -2513,12 +2839,12 @@ When generating new code:
 
   <Card variant="filled" padding="lg" flex={1}>
     <Column gap="$sm">
-      <Row align="center" gap="$sm">
+      <Row alignItems="center" gap="$sm">
         <Badge variant="info" dot />
-        <Text color="secondary">Revenue</Text>
+        <Text color="$textSecondary">Revenue</Text>
       </Row>
       <Heading level={2}>$45.2K</Heading>
-      <Text size="sm" color="info">
+      <Text size="$4" color="$info">
         +8% from last month
       </Text>
     </Column>
@@ -2530,9 +2856,9 @@ When generating new code:
 
 ```tsx
 <Card variant="elevated" padding="lg">
-  <Column gap="$md" align="center">
+  <Column gap="$md" alignItems="center">
     <Spinner size="lg" color="$primary" />
-    <Text color="secondary">Loading content...</Text>
+    <Text color="$textSecondary">Loading content...</Text>
   </Column>
 </Card>
 ```
@@ -2541,13 +2867,13 @@ When generating new code:
 
 ```tsx
 <Card variant="outlined" padding="md">
-  <Row gap="$md" align="start">
+  <Row gap="$md" alignItems="flex-start">
     <Badge variant="error" size="sm" />
     <Column gap="$xs" flex={1}>
-      <Text weight="semibold">Error</Text>
-      <Text color="secondary">Something went wrong. Please try again.</Text>
+      <Text fontWeight="600">Error</Text>
+      <Text color="$textSecondary">Something went wrong. Please try again.</Text>
     </Column>
-    <Button tone="ghost" size="sm">
+    <Button size="$3" chromeless>
       Dismiss
     </Button>
   </Row>

@@ -111,9 +111,8 @@ export function ProductCardWithCart({
                         </Column>
                     </Link>
                     <Button
-                        size="md"
-                        tone="primary"
-                        fullWidth
+                        size="$4"
+                        width="100%"
                         onPress={handleBuyNow}
                         disabled={purchasing}
                         opacity={purchasing ? 0.6 : 1}

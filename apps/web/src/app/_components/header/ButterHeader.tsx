@@ -112,7 +112,7 @@ export function ButterHeader() {
               <Link href="/" style={{ textDecoration: "none" }}>
                 <Text
                   size="$6"
-                  weight={isActive("/") ? "semibold" : "medium"}
+                  weight={isActive("/") ? "bold" : "normal"}
                   color={isActive("/") ? "$primary" : "$text"}
                   cursor="pointer"
                   hoverStyle={{
@@ -125,7 +125,7 @@ export function ButterHeader() {
               <Link href="/listings" style={{ textDecoration: "none" }}>
                 <Text
                   size="$6"
-                  weight={isActive("/listings") ? "semibold" : "medium"}
+                  weight={isActive("/listings") ? "bold" : "normal"}
                   color={isActive("/listings") ? "$primary" : "$text"}
                   cursor="pointer"
                   hoverStyle={{
@@ -138,7 +138,7 @@ export function ButterHeader() {
               <Link href="/sell" style={{ textDecoration: "none" }}>
                 <Text
                   size="$6"
-                  weight={isActive("/sell") ? "semibold" : "medium"}
+                  weight={isActive("/sell") ? "bold" : "normal"}
                   color={isActive("/sell") ? "$primary" : "$text"}
                   cursor="pointer"
                   hoverStyle={{
@@ -161,7 +161,7 @@ export function ButterHeader() {
               <SignedOut>
                 <AuthButton
                   variant="login"
-                  size="md"
+                  size="$4"
                   onPress={() => {
                     setAuthMode("sign-in");
                     setAuthOpen(true);
@@ -171,7 +171,7 @@ export function ButterHeader() {
                 </AuthButton>
                 <AuthButton
                   variant="signup"
-                  size="md"
+                  size="$4"
                   onPress={() => {
                     setAuthMode("sign-up");
                     setAuthOpen(true);
@@ -282,7 +282,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/") ? "bold" : "semibold"}
+              weight={isActive("/") ? "bold" : "normal"}
               color={isActive("/") ? "$primary" : "$text"}
             >
               Home
@@ -295,7 +295,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/listings") ? "bold" : "semibold"}
+              weight={isActive("/listings") ? "bold" : "normal"}
               color={isActive("/listings") ? "$primary" : "$text"}
             >
               Buying
@@ -308,7 +308,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/sell") ? "bold" : "semibold"}
+              weight={isActive("/sell") ? "bold" : "normal"}
               color={isActive("/sell") ? "$primary" : "$text"}
             >
               Selling
@@ -320,7 +320,7 @@ export function ButterHeader() {
             <SignedOut>
               <AuthButton
                 variant="login"
-                size="lg"
+                size="$5"
                 fullWidth
                 onPress={() => {
                   setAuthMode("sign-in");
@@ -332,7 +332,7 @@ export function ButterHeader() {
               </AuthButton>
               <AuthButton
                 variant="signup"
-                size="lg"
+                size="$5"
                 fullWidth
                 onPress={() => {
                   setAuthMode("sign-up");

@@ -34,7 +34,7 @@ export function BrandFilter({
   return (
     <Column gap="$sm">
       <Input
-        size="sm"
+        size="$3"
         placeholder="Search brands..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

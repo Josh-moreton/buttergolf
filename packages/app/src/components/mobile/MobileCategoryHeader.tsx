@@ -97,7 +97,7 @@ export function MobileCategoryHeader({
 
             {/* Category Name */}
             <Text
-                fontSize="$6"
+                size="$6"
                 fontWeight="700"
                 color="$ironstone"
                 alignSelf="flex-start"

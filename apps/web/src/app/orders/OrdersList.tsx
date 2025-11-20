@@ -1,7 +1,8 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState } from 'react';
+import { Button, Row, Text } from '@buttergolf/ui';
+import Link from 'next/link';
 import Image from 'next/image'
 
 type OrderStatus = 'PAYMENT_CONFIRMED' | 'LABEL_GENERATED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'REFUNDED'
@@ -22,15 +23,25 @@ interface Order {
   product: {
     id: string
     title: string
-    images: Array<{ url: string }>
+    images: Array<{ 
+      id: string
+      url: string 
+      createdAt: Date
+      productId: string
+      sortOrder: number
+    }>
   }
   seller: {
+    id: string
     name: string | null
     email: string
+    imageUrl: string | null
   }
   buyer: {
+    id: string
     name: string | null
     email: string
+    imageUrl: string | null
   }
 }
 
@@ -71,35 +82,44 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
   return (
     <div className="space-y-6">
       {/* Filter Tabs */}
-      <div className="flex gap-2 border-b">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-4 py-2 font-medium ${filter === 'all'
-            ? 'border-b-2 border-blue-500 text-blue-600'
-            : 'text-gray-600 hover:text-gray-800'
-            }`}
+      <Row gap="$xs" borderBottomWidth={1} borderBottomColor="$border">
+        <Button
+          chromeless
+          onPress={() => setFilter('all')}
+          paddingHorizontal="$4"
+          paddingVertical="$xs"
+          borderBottomWidth={filter === 'all' ? 2 : 0}
+          borderBottomColor="$primary"
         >
-          All Orders ({orders.length})
-        </button>
-        <button
-          onClick={() => setFilter('buyer')}
-          className={`px-4 py-2 font-medium ${filter === 'buyer'
-            ? 'border-b-2 border-blue-500 text-blue-600'
-            : 'text-gray-600 hover:text-gray-800'
-            }`}
+          <Text fontWeight="500" color={filter === 'all' ? '$primary' : '$textSecondary'}>
+            All Orders ({orders.length})
+          </Text>
+        </Button>
+        <Button
+          chromeless
+          onPress={() => setFilter('buyer')}
+          paddingHorizontal="$4"
+          paddingVertical="$xs"
+          borderBottomWidth={filter === 'buyer' ? 2 : 0}
+          borderBottomColor="$primary"
         >
-          Purchases ({orders.filter(o => o.userRole === 'buyer').length})
-        </button>
-        <button
-          onClick={() => setFilter('seller')}
-          className={`px-4 py-2 font-medium ${filter === 'seller'
-            ? 'border-b-2 border-blue-500 text-blue-600'
-            : 'text-gray-600 hover:text-gray-800'
-            }`}
+          <Text fontWeight="500" color={filter === 'buyer' ? '$primary' : '$textSecondary'}>
+            Purchases ({orders.filter(o => o.userRole === 'buyer').length})
+          </Text>
+        </Button>
+        <Button
+          chromeless
+          onPress={() => setFilter('seller')}
+          paddingHorizontal="$4"
+          paddingVertical="$xs"
+          borderBottomWidth={filter === 'seller' ? 2 : 0}
+          borderBottomColor="$primary"
         >
-          Sales ({orders.filter(o => o.userRole === 'seller').length})
-        </button>
-      </div>
+          <Text fontWeight="500" color={filter === 'seller' ? '$primary' : '$textSecondary'}>
+            Sales ({orders.filter(o => o.userRole === 'seller').length})
+          </Text>
+        </Button>
+      </Row>
 
       {/* Orders List */}
       {filteredOrders.length === 0 ? (

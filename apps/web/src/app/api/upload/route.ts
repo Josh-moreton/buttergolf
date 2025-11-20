@@ -1,17 +1,22 @@
-import { put } from '@vercel/blob';
+import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
-export const runtime = 'edge';
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request: Request): Promise<NextResponse> {
-  // Check if Vercel Blob is configured
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    console.error('BLOB_READ_WRITE_TOKEN is not configured');
+  // Check if Cloudinary is configured
+  if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    console.error('Cloudinary is not configured');
     return NextResponse.json(
       {
-        error: 'Image upload is not configured. Please add BLOB_READ_WRITE_TOKEN to your environment variables.',
-        details: 'See docs/VERCEL_BLOB_SETUP.md for setup instructions'
+        error: 'Image upload is not configured. Please add Cloudinary credentials to your environment variables.',
+        details: 'Required: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET'
       },
       { status: 500 }
     );
@@ -30,6 +35,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // Get the file from the request
   const { searchParams } = new URL(request.url);
   const filename = searchParams.get('filename');
+  const isFirstImage = searchParams.get('isFirstImage') === 'true';
 
   if (!filename) {
     return NextResponse.json(
@@ -50,22 +56,57 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    // Upload to Vercel Blob
-    const blob = await put(filename, request.body as ReadableStream, {
-      access: 'public',
-      contentType,
-    });
+    // Convert request body to base64 for Cloudinary upload
+    const arrayBuffer = await request.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const base64Image = `data:${contentType};base64,${buffer.toString('base64')}`;
+
+    // Build upload options
+    const uploadOptions: UploadApiOptions = {
+      folder: 'products',
+      public_id: filename.replace(/\.[^/.]+$/, ''), // Remove file extension
+      resource_type: 'image',
+    };
+
+    // Apply background removal ONLY to first image (cost optimization)
+    if (isFirstImage) {
+      uploadOptions.transformation = [
+        {
+          effect: 'background_removal',
+        },
+        {
+          background: 'rgb:FFFAD2', // Vanilla Cream brand color
+        },
+      ];
+    }
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
 
     return NextResponse.json({
-      url: blob.url,
-      pathname: blob.pathname,
-      contentType: blob.contentType,
+      url: result.secure_url,
+      publicId: result.public_id,
+      width: result.width,
+      height: result.height,
+      format: result.format,
     });
   } catch (error) {
     console.error('Upload error:', error);
 
     // Provide more specific error messages
     const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+
+    // If background removal fails, provide helpful error
+    if (errorMessage.includes('background_removal')) {
+      return NextResponse.json(
+        {
+          error: 'Background removal failed',
+          details: 'The image may not be suitable for automatic background removal. Please try a different image or contact support.',
+          fallback: 'Upload will proceed without background removal'
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       {
