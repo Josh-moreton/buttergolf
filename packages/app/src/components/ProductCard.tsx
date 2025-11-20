@@ -127,6 +127,7 @@ export function ProductCard({
             borderTopWidth={0}
             borderRadius="$lg"
             zIndex={1}
+            backgroundColor="rgba(255, 255, 255, 0.15)"
             style={{
               ...getGlassmorphismStyles("medium"),
             }}

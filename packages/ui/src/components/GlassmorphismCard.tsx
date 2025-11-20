@@ -64,9 +64,9 @@ export const GlassmorphismCard = styled(View, {
  */
 export const getGlassmorphismStyles = (blur: "light" | "medium" | "strong" = "medium") => {
   const blurAmount = {
-    light: "10px",
-    medium: "20px",
-    strong: "30px",
+    light: "4px",
+    medium: "8px",
+    strong: "12px",
   }[blur];
 
   return {
