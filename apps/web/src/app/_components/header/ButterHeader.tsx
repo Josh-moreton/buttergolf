@@ -52,9 +52,9 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        style={{ position: "sticky" }}
+        position="sticky"
         top={0}
-        zIndex={50}
+        zIndex={999}
         suppressHydrationWarning
       >
         {/* Main Header Row */}
