@@ -93,24 +93,26 @@ import { useLink } from "solito/navigation";
 import { Button } from "@buttergolf/ui";
 
 export function Component() {
-  const link = useLink({
+  const linkProps = useLink({
     href: "/courses",
   });
 
+  // useLink returns { href, onPress, accessibilityRole }
+  // Spread onto Pressable/Button or use onPress directly
   return (
-    <Button onPress={link.onPress}>
+    <Button onPress={linkProps.onPress}>
       View Courses
     </Button>
   );
 }
 
 // With parameters
-const link = useLink({
+const linkProps = useLink({
   href: `/courses/${courseId}`,
 });
 
-// With query params
-const link = useLink({
+// With query params (object form)
+const linkProps = useLink({
   href: {
     pathname: "/courses",
     query: { category: "golf" },
@@ -119,6 +121,30 @@ const link = useLink({
 ```
 
 ### Reading Route Parameters
+
+**IMPORTANT**: Use `createParam` for type-safe parameters (recommended pattern):
+
+```tsx
+// src/navigation/params.ts
+import { createParam } from "solito";
+
+// Create typed parameter hook
+export const { useParam } = createParam<{ id: string }>();
+```
+
+```tsx
+// In your screen component
+import { useParam } from "../../navigation/params";
+
+export function CourseDetailScreen() {
+  const [id] = useParam("id");
+  // id is type-safe string | undefined
+
+  return <Text>Course ID: {id}</Text>;
+}
+```
+
+**Alternative**: Use `useParams` from Solito (less type-safe):
 
 ```tsx
 import { useParams } from "solito/navigation";
@@ -190,7 +216,7 @@ export function CourseListScreen({
 
 import { useEffect, useState } from "react";
 import { Column, Text, Spinner } from "@buttergolf/ui";
-import { useParams } from "solito/navigation";
+import { useParam } from "../../navigation/params"; // Using createParam
 
 interface Course {
   id: string;
@@ -211,8 +237,7 @@ export function CourseDetailScreen({
   course: initialCourse,
   onFetchCourse,
 }: CourseDetailScreenProps) {
-  const params = useParams();
-  const courseId = params?.id as string;
+  const [courseId] = useParam("id"); // Type-safe parameter reading
 
   const [course, setCourse] = useState<Course | null>(
     initialCourse || null
