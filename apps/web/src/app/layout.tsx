@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 import { Urbanist } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 // Load Tamagui CSS in production (compiled output)
 if (process.env.NODE_ENV === "production") {
@@ -85,6 +86,7 @@ export default function RootLayout({
             </CartProvider>
           </FavoritesProvider>
         </NextTamaguiProvider>
+        <Analytics />
       </body>
     </html>
   );
