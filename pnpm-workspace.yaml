@@ -17,7 +17,7 @@ catalog:
   "@tamagui/polyfill-dev": "^1.135.7"
   "@tamagui/shorthands": "^1.135.7"
   "@tamagui/themes": "^1.135.7"
-  "@tamagui/toast": "^1.135.7"
+  "@tamagui/toast": "^1.138.0"
 
   # React Ecosystem
   "react": "19.1.0"
