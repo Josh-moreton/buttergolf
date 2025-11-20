@@ -9,30 +9,6 @@ type OrderStatus = 'PAYMENT_CONFIRMED' | 'LABEL_GENERATED' | 'SHIPPED' | 'DELIVE
 type ShipmentStatus = 'PENDING' | 'PRE_TRANSIT' | 'IN_TRANSIT' | 'OUT_FOR_DELIVERY' | 'DELIVERED' | 'RETURNED' | 'FAILED' | 'CANCELLED'
 
 interface Order {
-  id: string;
-  orderNumber: string;
-  userRole: 'buyer' | 'seller';
-  product: {
-    name: string;
-    images: { url: string }[];
-  };
-  price: number;
-  status: OrderStatus;
-  shipment?: {
-    status: ShipmentStatus;
-    trackingNumber?: string;
-    carrierName?: string;
-  };
-  createdAt: string;
-  buyer?: {
-    name: string;
-  };
-  seller?: {
-    name: string;
-  };
-}
-
-interface Order {
   id: string
   createdAt: Date
   status: OrderStatus
@@ -47,15 +23,25 @@ interface Order {
   product: {
     id: string
     title: string
-    images: Array<{ url: string }>
+    images: Array<{ 
+      id: string
+      url: string 
+      createdAt: Date
+      productId: string
+      sortOrder: number
+    }>
   }
   seller: {
+    id: string
     name: string | null
     email: string
+    imageUrl: string | null
   }
   buyer: {
+    id: string
     name: string | null
     email: string
+    imageUrl: string | null
   }
 }
 
