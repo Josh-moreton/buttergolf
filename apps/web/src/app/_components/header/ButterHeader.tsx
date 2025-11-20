@@ -55,13 +55,6 @@ export function ButterHeader() {
         style={{ position: "sticky" }}
         top={0}
         zIndex={50}
-        backgroundColor="$surface"
-        {...(stickyMenu && {
-          shadowColor: "$shadowColor",
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-        })}
         suppressHydrationWarning
       >
         {/* Main Header Row */}
@@ -215,24 +208,31 @@ export function ButterHeader() {
           </Row>
         </Row>
 
-        {/* Category Navigation Sub-header */}
+        {/* Category Navigation Sub-header - iOS Liquid Glass Effect */}
         <Row
-          backgroundColor="$cloudMist"
-          borderBottomWidth={1}
-          borderBottomColor="$border"
           paddingHorizontal="$4"
-          paddingVertical="$2"
-          $md={{ paddingHorizontal: "$6", paddingVertical: "$3" }}
+          paddingVertical="$3"
+          $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
           justifyContent="center"
+          backgroundColor="transparent"
         >
-
           <Row
-            maxWidth={1440}
+            maxWidth={1280}
             width="100%"
+            backgroundColor="rgba(255, 255, 255, 0.4)"
+            borderRadius="$2xl"
+            paddingHorizontal="$6"
+            paddingVertical="$3"
             justifyContent="space-between"
-            paddingHorizontal="$8"
             flexWrap="nowrap"
-            style={{ overflow: "auto" }}
+            borderWidth={1}
+            borderColor="rgba(255, 255, 255, 0.3)"
+            style={{
+              overflow: "auto",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 2px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.08)",
+            }}
           >
             {NAV_CATEGORIES.map((category) => (
               <Link
