@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "name": "ButterGolf Mobile",
+  "description": "Expo mobile application for iOS and Android",
+  "extends": "../../.claude/claude.json",
+  "context": {
+    "directories": [
+      "src",
+      "assets"
+    ],
+    "focus": [
+      "App.tsx",
+      "src/components",
+      "src/screens",
+      "src/navigation"
+    ],
+    "ignore": [
+      ".expo/**",
+      "node_modules/**",
+      "*.log"
+    ]
+  },
+  "framework": {
+    "name": "Expo",
+    "version": "~54.0.20",
+    "reactNative": "0.81.5",
+    "navigation": "React Navigation (NOT Expo Router)",
+    "bundler": "Metro"
+  },
+  "dependencies": {
+    "internal": [
+      "@buttergolf/ui",
+      "@buttergolf/app",
+      "@buttergolf/config",
+      "@buttergolf/constants"
+    ],
+    "external": {
+      "ui": ["tamagui", "solito"],
+      "navigation": ["@react-navigation/native", "@react-navigation/native-stack"],
+      "auth": ["@clerk/clerk-expo"],
+      "payments": ["@stripe/stripe-react-native"]
+    }
+  },
+  "rules": {
+    "navigation": {
+      "useReactNavigation": true,
+      "noExpoRouter": true,
+      "manualScreenRegistration": true,
+      "entryPoint": "App.tsx"
+    },
+    "components": {
+      "useTamaguiOnly": true,
+      "noWebSpecificApis": true,
+      "platformChecksRequired": true
+    },
+    "dataFetching": {
+      "clientSideOnly": true,
+      "noDirectDatabaseAccess": true,
+      "useApiEndpoints": true
+    },
+    "styling": {
+      "primaryMethod": "Tamagui",
+      "noTailwind": true,
+      "useSemanticTokens": true
+    }
+  },
+  "commands": {
+    "dev": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "build:ios": "eas build --platform ios",
+    "build:android": "eas build --platform android",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  }
+}

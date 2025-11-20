@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "name": "ButterGolf App",
+  "description": "Shared cross-platform screens and business logic using Solito",
+  "extends": "../../.claude/claude.json",
+  "context": {
+    "directories": [
+      "src"
+    ],
+    "focus": [
+      "src/features",
+      "src/navigation",
+      "src/hooks",
+      "src/types"
+    ],
+    "ignore": [
+      "node_modules/**",
+      "*.log"
+    ]
+  },
+  "package": {
+    "type": "library",
+    "sourceFirst": true,
+    "noBuildStep": true,
+    "main": "src/index.ts",
+    "crossPlatform": true
+  },
+  "architecture": {
+    "pattern": "Feature-based",
+    "navigation": "Solito",
+    "platformAgnostic": true
+  },
+  "dependencies": {
+    "internal": [
+      "@buttergolf/ui",
+      "@buttergolf/config",
+      "@buttergolf/constants"
+    ],
+    "external": {
+      "navigation": ["solito"],
+      "ui": ["tamagui"],
+      "utilities": ["react", "react-native"]
+    }
+  },
+  "rules": {
+    "screens": {
+      "platformAgnostic": true,
+      "noWebSpecificApis": true,
+      "noNativeSpecificApis": "without platform checks",
+      "dataFetchingAsProps": true,
+      "useTamaguiOnly": true
+    },
+    "navigation": {
+      "useSolito": true,
+      "defineRoutesFirst": true,
+      "noDirectNavigation": "use Solito hooks"
+    },
+    "dataFetching": {
+      "passAsProps": true,
+      "noDirectDatabaseAccess": true,
+      "noApiCallsInScreens": true
+    },
+    "components": {
+      "importFromUI": true,
+      "noHtmlElements": true,
+      "noWebOnlyComponents": true
+    }
+  },
+  "structure": {
+    "features": "src/features/[feature-name]/",
+    "screens": "src/features/[feature-name]/[screen-name]-screen.tsx",
+    "components": "src/features/[feature-name]/components/",
+    "hooks": "src/hooks/",
+    "types": "src/types/",
+    "navigation": "src/navigation/routes.ts"
+  },
+  "commands": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  }
+}

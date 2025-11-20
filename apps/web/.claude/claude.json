@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "name": "ButterGolf Web",
+  "description": "Next.js 16 web application with App Router",
+  "extends": "../../.claude/claude.json",
+  "context": {
+    "directories": [
+      "src",
+      "public"
+    ],
+    "focus": [
+      "src/app",
+      "src/components",
+      "src/lib",
+      "src/proxy.ts"
+    ],
+    "ignore": [
+      ".next/**",
+      "out/**",
+      "*.log"
+    ]
+  },
+  "framework": {
+    "name": "Next.js",
+    "version": "16.0.1",
+    "router": "App Router",
+    "serverComponents": true,
+    "middleware": "src/proxy.ts"
+  },
+  "dependencies": {
+    "internal": [
+      "@buttergolf/ui",
+      "@buttergolf/app",
+      "@buttergolf/db",
+      "@buttergolf/config"
+    ],
+    "external": {
+      "ui": ["tamagui", "react-native-web"],
+      "auth": ["@clerk/nextjs"],
+      "payments": ["stripe", "@stripe/stripe-js", "@stripe/react-stripe-js"],
+      "images": ["next-cloudinary"],
+      "analytics": ["@vercel/analytics"]
+    }
+  },
+  "rules": {
+    "components": {
+      "defaultToServerComponents": true,
+      "addClientDirectiveOnlyWhenNeeded": true,
+      "noHtmlButtons": true,
+      "useTamaguiComponents": true
+    },
+    "routing": {
+      "useAppRouter": true,
+      "fileBasedRouting": true,
+      "middlewareFile": "src/proxy.ts"
+    },
+    "styling": {
+      "primaryMethod": "Tamagui",
+      "tailwindCss": "v4",
+      "useSemanticTokens": true
+    },
+    "dataFetching": {
+      "preferServerComponents": true,
+      "useServerActions": true,
+      "noClientSideDbAccess": true
+    }
+  },
+  "commands": {
+    "dev": "pnpm dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  }
+}
