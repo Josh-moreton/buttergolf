@@ -15,7 +15,7 @@ export default function AuthHeader() {
     >
       <Row alignItems="center" justifyContent="space-between">
         <Link href="/">
-          <Text fontSize="$5" fontWeight="700">
+          <Text size="$5" fontWeight="700">
             ButterGolf
           </Text>
         </Link>

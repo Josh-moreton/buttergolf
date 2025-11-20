@@ -17,7 +17,7 @@ catalog:
   "@tamagui/polyfill-dev": "^1.135.7"
   "@tamagui/shorthands": "^1.135.7"
   "@tamagui/themes": "^1.135.7"
-  "@tamagui/toast": "^1.135.7"
+  "@tamagui/toast": "^1.138.0"
 
   # React Ecosystem
   "react": "19.1.0"
@@ -44,7 +44,7 @@ catalog:
   "eslint-config-expo": "^10.0.0"
 
   # Prisma (Database ORM)
-  "prisma": "^6.0.1"
+  "prisma": "^6.19.0"
   "@prisma/client": "^6.0.1"
 
   # Clerk (Authentication)

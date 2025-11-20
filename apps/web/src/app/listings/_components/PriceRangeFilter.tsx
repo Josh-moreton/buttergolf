@@ -63,11 +63,11 @@ export function PriceRangeFilter({
       />
       <Row gap="$sm" alignItems="center" justifyContent="space-between">
         <Column gap="$xs" flex={1}>
-          <Text fontSize="$2" color="$textSecondary">
+          <Text size="$2" color="$textSecondary">
             Min
           </Text>
           <Input
-            size="sm"
+            size="$3"
             type="number"
             value={localMin.toString()}
             onChange={(e) => handleMinInputChange(e.target.value)}
@@ -78,11 +78,11 @@ export function PriceRangeFilter({
           −
         </Text>
         <Column gap="$xs" flex={1}>
-          <Text fontSize="$2" color="$textSecondary">
+          <Text size="$2" color="$textSecondary">
             Max
           </Text>
           <Input
-            size="sm"
+            size="$3"
             type="number"
             value={localMax.toString()}
             onChange={(e) => handleMaxInputChange(e.target.value)}
@@ -90,7 +90,7 @@ export function PriceRangeFilter({
           />
         </Column>
       </Row>
-      <Text fontSize="$2" color="$textSecondary">
+      <Text size="$2" color="$textSecondary">
         ${localMin} - ${localMax}
       </Text>
     </Column>

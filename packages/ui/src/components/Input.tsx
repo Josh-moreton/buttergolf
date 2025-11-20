@@ -4,6 +4,11 @@
  * A flexible input component with size variants and state styling.
  * Includes proper focus, hover, and error states.
  *
+ * IMPORTANT: Input 'size' is a COMPONENT VARIANT (not a font size token)
+ * - size="sm" | "md" | "lg" controls the input's HEIGHT and PADDING
+ * - Font size is set internally by each variant
+ * - For text components, use size="$1" through size="$16" instead
+ *
  * @example
  * ```tsx
  * <Input size="md" placeholder="Enter text" />

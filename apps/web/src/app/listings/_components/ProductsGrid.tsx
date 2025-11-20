@@ -1,16 +1,16 @@
 "use client";
 
-import { Column, Row, Text } from "@buttergolf/ui";
-import { ProductCard } from "@buttergolf/app";
+import { Button, Column, Row, Text } from "@buttergolf/ui";
+import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductsGridProps {
-  products: ProductCardData[];
-  isLoading: boolean;
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  readonly products: ProductCardData[];
+  readonly isLoading: boolean;
+  readonly currentPage: number;
+  readonly totalPages: number;
+  readonly onPageChange: (page: number) => void;
 }
 
 function LoadingSkeleton() {
@@ -88,26 +88,21 @@ function Pagination({
       paddingVertical="$lg"
     >
       {/* Previous arrow */}
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
+      <Button
+        chromeless
+        onPress={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "40px",
-          height: "40px",
-          border: "none",
-          backgroundColor: "transparent",
-          cursor: currentPage === 1 ? "not-allowed" : "pointer",
-          opacity: currentPage === 1 ? 0.4 : 1,
-          fontSize: "20px",
-          color: "#F45314",
-          fontFamily: "var(--font-urbanist)",
-        }}
+        width={40}
+        height={40}
+        alignItems="center"
+        justifyContent="center"
+        opacity={currentPage === 1 ? 0.4 : 1}
+        cursor={currentPage === 1 ? "not-allowed" : "pointer"}
       >
-        ‹
-      </button>
+        <Text size="$8" color="$primary">
+          ‹
+        </Text>
+      </Button>
 
       {/* Page numbers */}
       {getPageNumbers().map((page, index) => {
@@ -128,52 +123,44 @@ function Pagination({
 
         const isActive = page === currentPage;
         return (
-          <button
+          <Button
             key={page}
-            onClick={() => onPageChange(page as number)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minWidth: "40px",
-              height: "40px",
-              padding: "0 12px",
-              border: "none",
-              backgroundColor: "transparent",
-              cursor: "pointer",
-              fontSize: "16px",
-              fontWeight: isActive ? 600 : 400,
-              color: isActive ? "#F45314" : "#323232",
-              textDecoration: isActive ? "underline" : "none",
-              fontFamily: "var(--font-urbanist)",
-            }}
+            chromeless
+            onPress={() => onPageChange(page as number)}
+            minWidth={40}
+            height={40}
+            paddingHorizontal="$3"
+            alignItems="center"
+            justifyContent="center"
           >
-            {page}
-          </button>
+            <Text
+              size="$6"
+              fontWeight={isActive ? "600" : "400"}
+              color={isActive ? "$primary" : "$text"}
+              textDecorationLine={isActive ? "underline" : "none"}
+            >
+              {page}
+            </Text>
+          </Button>
         );
       })}
 
       {/* Next arrow */}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
+      <Button
+        chromeless
+        onPress={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "40px",
-          height: "40px",
-          border: "none",
-          backgroundColor: "transparent",
-          cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-          opacity: currentPage === totalPages ? 0.4 : 1,
-          fontSize: "20px",
-          color: "#F45314",
-          fontFamily: "var(--font-urbanist)",
-        }}
+        width={40}
+        height={40}
+        alignItems="center"
+        justifyContent="center"
+        opacity={currentPage === totalPages ? 0.4 : 1}
+        cursor={currentPage === totalPages ? "not-allowed" : "pointer"}
       >
-        ›
-      </button>
+        <Text size="$8" color="$primary">
+          ›
+        </Text>
+      </Button>
     </Row>
   );
 }
@@ -184,7 +171,9 @@ export function ProductsGrid({
   currentPage,
   totalPages,
   onPageChange,
-}: ProductsGridProps) {
+}: Readonly<ProductsGridProps>) {
+  const router = useRouter();
+
   if (!isLoading && products.length === 0) {
     return (
       <Column
@@ -193,7 +182,7 @@ export function ProductsGrid({
         paddingVertical="$10"
         gap="$md"
       >
-        <Text fontSize="$7" weight="semibold" color="$textSecondary">
+        <Text size="$7" weight="semibold" color="$textSecondary">
           No products found
         </Text>
         <Text color="$textMuted">
@@ -220,18 +209,11 @@ export function ProductsGrid({
             <LoadingSkeleton key={`skeleton-${i}`} />
           ))
           : products.map((product) => (
-            <Link
+            <ProductCard
               key={product.id}
-              href={`/products/${product.id}`}
-              style={{ textDecoration: "none", display: "block" }}
-            >
-              <ProductCard
-                product={product}
-                onFavorite={(productId) =>
-                  console.log("Favorited:", productId)
-                }
-              />
-            </Link>
+              product={product}
+              onPress={() => router.push(`/products/${product.id}`)}
+            />
           ))}
       </div>
 

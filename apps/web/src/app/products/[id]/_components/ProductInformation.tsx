@@ -155,7 +155,7 @@ export function ProductInformation({
                         )}
                     </Column>
                     <Button
-                        size="md"
+                        size="$4"
                         backgroundColor="$spicedClementine"
                         color="$vanillaCream"
                         borderRadius="$full"
@@ -227,7 +227,7 @@ export function ProductInformation({
             {/* CTA Buttons */}
             <Column gap="$md" width="100%">
                 <Button
-                    size="lg"
+                    size="$5"
                     width="100%"
                     backgroundColor="$spicedClementine"
                     color="$vanillaCream"
@@ -241,7 +241,7 @@ export function ProductInformation({
                     {product.isSold ? "Sold Out" : purchasing ? "Processing..." : "Buy now"}
                 </Button>
                 <Button
-                    size="lg"
+                    size="$5"
                     width="100%"
                     backgroundColor="$ironstone"
                     color="$vanillaCream"

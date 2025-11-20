@@ -167,7 +167,7 @@ export function Autocomplete({
                 >
                     {loading ? (
                         <Row padding="$md" justifyContent="center">
-                            <Text fontSize="$3" color="$textMuted">
+                            <Text size="$3" color="$textMuted">
                                 Loading...
                             </Text>
                         </Row>
@@ -191,7 +191,7 @@ export function Autocomplete({
                                     {renderSuggestion ? (
                                         renderSuggestion(suggestion)
                                     ) : (
-                                        <Text fontSize="$4">{suggestion.name}</Text>
+                                        <Text size="$4">{suggestion.name}</Text>
                                     )}
                                 </Row>
                             ))}
@@ -207,7 +207,7 @@ export function Autocomplete({
                                 handleSelectSuggestion({ id: null, name: value.trim() })
                             }
                         >
-                            <Text fontSize="$3" color="$textMuted">
+                            <Text size="$3" color="$textMuted">
                                 Add &quot;{value}&quot; as new model
                             </Text>
                         </Row>

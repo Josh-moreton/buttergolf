@@ -35,12 +35,12 @@ export function MobileFilterSheet({
       
       <Sheet.Header>
         <Row alignItems="center" justifyContent="space-between">
-          <Text weight="bold" fontSize="$6">
+          <Text weight="bold" size="$6">
             Filters
           </Text>
           <Text
             color="$primary"
-            fontSize="$3"
+            size="$3"
             cursor="pointer"
             onPress={onClearAll}
           >
@@ -82,13 +82,40 @@ export function MobileFilterSheet({
               onChange={(brands) => onChange({ brands })}
             />
           </FilterSection>
+
+          <FilterSection title="Favorites" defaultExpanded>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={filters.showFavoritesOnly}
+                onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
+                style={{
+                  width: 20,
+                  height: 20,
+                  cursor: "pointer",
+                  accentColor: "#F45314",
+                }}
+              />
+              <Text size="$4" color="$text">
+                Show favorites only
+              </Text>
+            </label>
+          </FilterSection>
         </Column>
       </Sheet.Body>
 
       <Sheet.Footer>
         <Row gap="$md">
           <Button
-            size="md"
+            size="$4"
             flex={1}
             chromeless
             onPress={() => onOpenChange(false)}
@@ -96,7 +123,7 @@ export function MobileFilterSheet({
             Cancel
           </Button>
           <Button
-            size="md"
+            size="$4"
             flex={1}
             backgroundColor="$primary"
             color="$textInverse"

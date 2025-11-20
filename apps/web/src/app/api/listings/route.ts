@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 
@@ -7,14 +8,52 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
 
     // Pagination
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "24");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const limit = Number.parseInt(searchParams.get("limit") || "24");
     const skip = (page - 1) * limit;
 
     // Build where clause
     const where: Prisma.ProductWhereInput = {
       isSold: false,
     };
+
+    // Favorites filter (requires authentication)
+    const showFavoritesOnly = searchParams.get("favorites") === "true";
+    if (showFavoritesOnly) {
+      const { userId: clerkId } = await auth();
+
+      if (!clerkId) {
+        return NextResponse.json(
+          { error: "Authentication required to filter favorites" },
+          { status: 401 }
+        );
+      }
+
+      // Get user from database
+      const user = await prisma.user.findUnique({
+        where: { clerkId },
+        select: { id: true },
+      });
+
+      if (!user) {
+        // User not synced yet, return empty results
+        return NextResponse.json({
+          products: [],
+          pagination: {
+            page: 1,
+            limit: 24,
+            totalPages: 0,
+            totalCount: 0,
+          },
+        });
+      }
+
+      where.favorites = {
+        some: {
+          userId: user.id,
+        },
+      };
+    }
 
     // Category filter (slug)
     const category = searchParams.get("category");

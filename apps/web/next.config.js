@@ -87,6 +87,10 @@ module.exports = () => {
         ],
       },
     },
+    // Allow dev server access from local network devices (mobile testing, etc.)
+    allowedDevOrigins: [
+      "192.168.1.41:3000", // Add your local network IP
+    ],
     webpack: (webpackConfig) => {
       // Map React Native to React Native Web for web builds
       webpackConfig.resolve.alias = {

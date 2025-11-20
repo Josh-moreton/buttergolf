@@ -355,7 +355,7 @@ export default function SellPage() {
                             }
                           }}
                           placeholder="e.g. Titleist a 2023 Driver"
-                          size="md"
+                          size="$4"
                           width="100%"
                           required
                         />
@@ -377,14 +377,14 @@ export default function SellPage() {
                         >
                           <Text
                             flex={1}
-                            fontSize="$5"
+                            size="$5"
                             color={formData.title ? "$text" : "$textMuted"}
                           >
                             {formData.title || "Auto-generated from fields below"}
                           </Text>
                           <Button
-                            tone="ghost"
-                            size="sm"
+
+                            size="$3"
                             onPress={() => setIsEditingTitle(true)}
                           >
                             Edit
@@ -512,7 +512,7 @@ export default function SellPage() {
                           }));
                         }}
                         placeholder="Search brands (e.g., TaylorMade)"
-                        size="md"
+                        size="$4"
                         width="100%"
                         minChars={1}
                         allowCustom={false}
@@ -555,7 +555,7 @@ export default function SellPage() {
                             ? "e.g., Stealth 2"
                             : "Select a brand first"
                         }
-                        size="md"
+                        size="$4"
                         width="100%"
                         minChars={0}
                         allowCustom={true}
@@ -621,7 +621,7 @@ export default function SellPage() {
                           setFormData({ ...formData, price: value })
                         }
                         placeholder="0.00"
-                        size="md"
+                        size="$4"
                         width="100%"
                         required
                         inputMode="decimal"
@@ -654,8 +654,8 @@ export default function SellPage() {
                 >
                   <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
-                      tone="outline"
-                      size="lg"
+
+                      size="$5"
                       onPress={() => router.push("/")}
                       disabled={loading}
                       flex={1}
@@ -663,8 +663,8 @@ export default function SellPage() {
                       Save draft
                     </Button>
                     <Button
-                      tone="primary"
-                      size="lg"
+
+                      size="$5"
                       disabled={loading}
                       onPress={() => handleSubmit({} as React.FormEvent)}
                       flex={1}

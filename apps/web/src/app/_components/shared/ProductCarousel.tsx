@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Column, Row } from "@buttergolf/ui";
-import { ProductCard } from "@buttergolf/app";
+import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
 
 interface ProductCarouselProps {
@@ -19,6 +19,7 @@ export function ProductCarousel({
     autoplay = true,
     autoplayDelay = 5000,
 }: ProductCarouselProps) {
+    const router = useRouter();
     const [isDesktop, setIsDesktop] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -82,15 +83,10 @@ export function ProductCarousel({
                                 maxWidth: "280px",
                             }}
                         >
-                            <Link
-                                href={`/products/${product.id}`}
-                                style={{ textDecoration: "none" }}
-                            >
-                                <ProductCard
-                                    product={product}
-                                    onFavorite={(productId) => console.log("Favorited:", productId)}
-                                />
-                            </Link>
+                            <ProductCard
+                                product={product}
+                                onPress={() => router.push(`/products/${product.id}`)}
+                            />
                         </div>
                     ))}
                 </Row>
