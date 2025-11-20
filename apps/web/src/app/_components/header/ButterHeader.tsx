@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, SignIn, SignUp, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text, AuthButton } from "@buttergolf/ui";
+import { Row, Column, Text, AuthButton, getGlassmorphismStyles } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { AuthModal } from "../auth/AuthModal";
 
@@ -229,9 +229,7 @@ export function ButterHeader() {
             borderColor="rgba(255, 255, 255, 0.3)"
             style={{
               overflow: "auto",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 2px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.08)",
+              ...getGlassmorphismStyles("medium"),
             }}
           >
             {NAV_CATEGORIES.map((category) => (

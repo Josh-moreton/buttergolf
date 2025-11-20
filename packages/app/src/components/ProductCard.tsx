@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@buttergolf/ui";
+import { Card, getGlassmorphismStyles } from "@buttergolf/ui";
 import type { ProductCardData } from "../types/product";
 
 export interface ProductCardProps {
@@ -72,20 +72,6 @@ export function ProductCard({
             }}
           />
 
-          {/* Dark Gradient Overlay for Text Readability */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%)",
-              pointerEvents: "none",
-            }}
-          />
-
           {/* Favorite Heart Button - Top Right */}
           <button
             onClick={handleFavoriteClick}
@@ -127,14 +113,19 @@ export function ProductCard({
             </svg>
           </button>
 
-          {/* Text Overlay - Bottom Left */}
+          {/* iOS Liquid Glass Info Card - Bottom */}
           <div
             style={{
               position: "absolute",
-              bottom: "16px",
-              left: "16px",
-              right: "16px",
+              bottom: "12px",
+              left: "12px",
+              right: "12px",
+              backgroundColor: "rgba(255, 255, 255, 0.4)",
+              borderRadius: "20px",
+              padding: "16px",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
               zIndex: 1,
+              ...getGlassmorphismStyles("medium"),
             }}
           >
             {/* Product Title - Bold */}
@@ -144,9 +135,8 @@ export function ProductCard({
                 fontSize: "18px",
                 fontWeight: 700,
                 lineHeight: 1.3,
-                color: "#FFFFFF",
+                color: "#323232",
                 margin: "0 0 8px 0",
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
@@ -163,9 +153,8 @@ export function ProductCard({
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: 1,
-                color: "#FFFFFF",
+                color: "#323232",
                 margin: "0 0 6px 0",
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
               £{product.price.toFixed(2)}
@@ -186,13 +175,11 @@ export function ProductCard({
                   fontSize: "13px",
                   fontWeight: 400,
                   lineHeight: 1,
-                  color: "#FFFFFF",
-                  opacity: 0.9,
+                  color: "#545454",
                   margin: 0,
-                  textShadow: "0 2px 8px rgba(0,0,0,0.5)",
                 }}
               >
-                by {product.seller.name}
+                {product.seller.name}
               </p>
               {product.seller.ratingCount > 0 ? (
                 <div
@@ -202,14 +189,13 @@ export function ProductCard({
                     gap: "3px",
                   }}
                 >
-                  <span style={{ color: "#FFFFFF", fontSize: "12px" }}>★</span>
+                  <span style={{ color: "#F45314", fontSize: "12px" }}>★</span>
                   <span
                     style={{
                       fontFamily: "var(--font-urbanist)",
                       fontSize: "12px",
                       fontWeight: 600,
-                      color: "#FFFFFF",
-                      textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                      color: "#323232",
                     }}
                   >
                     {product.seller.averageRating?.toFixed(1)} ({product.seller.ratingCount})
@@ -222,10 +208,9 @@ export function ProductCard({
                     fontSize: "11px",
                     fontWeight: 600,
                     color: "#FFFFFF",
-                    backgroundColor: "rgba(244, 83, 20, 0.9)",
+                    backgroundColor: "#F45314",
                     padding: "2px 6px",
                     borderRadius: "4px",
-                    textShadow: "none",
                   }}
                 >
                   NEW SELLER

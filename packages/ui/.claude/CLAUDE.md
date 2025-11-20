@@ -639,6 +639,104 @@ export const CourseCard = memo(({ course }) => {
 });
 ```
 
+## Special Effects
+
+### GlassmorphismCard - iOS Liquid Glass Effect
+
+A standardized component for applying iOS-style glassmorphism effects throughout the app.
+
+```tsx
+import { GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
+
+// ✅ CORRECT - Using the GlassmorphismCard component
+<GlassmorphismCard intensity="medium" padding="$md">
+  <Text>Content with glassmorphism effect</Text>
+</GlassmorphismCard>
+
+// ✅ CORRECT - Using getGlassmorphismStyles helper for web-specific styling
+<div
+  style={{
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    borderRadius: "20px",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    ...getGlassmorphismStyles("medium"),
+  }}
+>
+  <Text>Content</Text>
+</div>
+```
+
+**Features:**
+- Backdrop blur (frosted glass effect)
+- Semi-transparent background
+- Curved corners (`$2xl` = 26px radius)
+- Inner shadows for dimensional appearance
+- Subtle border with transparency
+
+**Intensity Variants:**
+- `light` - 20% opacity, subtle effect
+- `medium` - 40% opacity, balanced (default)
+- `strong` - 60% opacity, more opaque
+- `dark` - 30% black opacity with lighter border
+
+**Blur Variants:**
+- `light` - 10px blur
+- `medium` - 20px blur (default)
+- `strong` - 30px blur
+
+**When to Use:**
+- Navigation bars that need to float over content
+- Information overlays on images (product cards)
+- Modal dialogs with see-through backgrounds
+- Status bars and headers
+- Floating action buttons or panels
+
+**Example - Product Card Overlay:**
+```tsx
+<div style={{ position: "relative" }}>
+  <img src={product.image} />
+  <div
+    style={{
+      position: "absolute",
+      bottom: "12px",
+      left: "12px",
+      right: "12px",
+      backgroundColor: "rgba(255, 255, 255, 0.4)",
+      borderRadius: "20px",
+      padding: "16px",
+      border: "1px solid rgba(255, 255, 255, 0.3)",
+      ...getGlassmorphismStyles("medium"),
+    }}
+  >
+    <Text>{product.title}</Text>
+    <Text>£{product.price}</Text>
+  </div>
+</div>
+```
+
+**Example - Navigation Bar:**
+```tsx
+<Row
+  backgroundColor="transparent"
+  paddingVertical="$3"
+>
+  <Row
+    maxWidth={1280}
+    backgroundColor="rgba(255, 255, 255, 0.4)"
+    borderRadius="$2xl"
+    paddingHorizontal="$6"
+    paddingVertical="$3"
+    borderWidth={1}
+    borderColor="rgba(255, 255, 255, 0.3)"
+    style={{
+      ...getGlassmorphismStyles("medium"),
+    }}
+  >
+    {/* Nav items */}
+  </Row>
+</Row>
+```
+
 ## Common Issues & Solutions
 
 ### Issue: TypeScript errors with variants
