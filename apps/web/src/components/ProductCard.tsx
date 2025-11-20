@@ -6,6 +6,7 @@ import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Card, Text } from "@buttergolf/ui";
 
 export interface ProductCardProps {
   readonly product: ProductCardData;
@@ -57,18 +58,19 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
             bottom: "24px",
             left: "50%",
             transform: "translateX(-50%)",
-            backgroundColor: "#323232",
-            color: "#FFFFFF",
-            padding: "12px 24px",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: 500,
             zIndex: 9999,
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-            animation: "slideUp 0.3s ease",
           }}
         >
-          Please sign in to add favorites
+          <Card
+            variant="elevated"
+            padding="$md"
+            backgroundColor="$secondary"
+            borderRadius="$md"
+          >
+            <Text fontSize="$4" color="$textInverse" fontWeight="500">
+              Please sign in to add favorites
+            </Text>
+          </Card>
         </div>
       )}
     </>

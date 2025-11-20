@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Column, Row, Text, Heading, Spinner } from "@buttergolf/ui";
+import { Column, Row, Text, Heading, Spinner, Button } from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
 import { useRouter } from "next/navigation";
@@ -123,7 +123,7 @@ export function FavoritesClient() {
               height="80"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#EDEDED"
+              stroke="var(--cloudMist)"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -136,32 +136,18 @@ export function FavoritesClient() {
             <Text fontSize="$5" color="$textSecondary" textAlign="center" maxWidth={400}>
               Start favoriting golf equipment you love by clicking the heart icon on product cards
             </Text>
-            <button
-              onClick={() => router.push("/listings")}
-              style={{
-                marginTop: "16px",
-                fontFamily: "var(--font-urbanist)",
-                fontSize: "16px",
-                fontWeight: 600,
-                color: "#FFFAD2",
-                backgroundColor: "#F45314",
-                border: "none",
-                borderRadius: "32px",
-                padding: "14px 32px",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#d94812";
-                e.currentTarget.style.transform = "scale(1.02)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#F45314";
-                e.currentTarget.style.transform = "scale(1)";
-              }}
+            <Button
+              size="$5"
+              backgroundColor="$primary"
+              color="$textInverse"
+              paddingHorizontal="$6"
+              paddingVertical="$3"
+              borderRadius="$full"
+              marginTop="$md"
+              onPress={() => router.push("/listings")}
             >
               Browse Listings
-            </button>
+            </Button>
           </Column>
         )}
 
@@ -196,45 +182,39 @@ export function FavoritesClient() {
             {/* Pagination */}
             {totalPages > 1 && (
               <Row gap="$md" alignItems="center" justifyContent="center" marginTop="$xl">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                <Button
+                  size="$4"
+                  backgroundColor={page === 1 ? "$backgroundPress" : "$surface"}
+                  color={page === 1 ? "$textMuted" : "$text"}
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$md"
+                  paddingHorizontal="$4"
+                  paddingVertical="$2"
                   disabled={page === 1}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    border: "1px solid #EDEDED",
-                    backgroundColor: page === 1 ? "#F5F5F5" : "#FFFFFF",
-                    color: page === 1 ? "#999" : "#323232",
-                    cursor: page === 1 ? "not-allowed" : "pointer",
-                    fontFamily: "var(--font-urbanist)",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                  }}
+                  onPress={() => setPage((p) => Math.max(1, p - 1))}
                 >
                   Previous
-                </button>
+                </Button>
 
                 <Text fontSize="$4" color="$text">
                   Page {page} of {totalPages}
                 </Text>
 
-                <button
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                <Button
+                  size="$4"
+                  backgroundColor={page === totalPages ? "$backgroundPress" : "$surface"}
+                  color={page === totalPages ? "$textMuted" : "$text"}
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$md"
+                  paddingHorizontal="$4"
+                  paddingVertical="$2"
                   disabled={page === totalPages}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    border: "1px solid #EDEDED",
-                    backgroundColor: page === totalPages ? "#F5F5F5" : "#FFFFFF",
-                    color: page === totalPages ? "#999" : "#323232",
-                    cursor: page === totalPages ? "not-allowed" : "pointer",
-                    fontFamily: "var(--font-urbanist)",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                  }}
+                  onPress={() => setPage((p) => Math.min(totalPages, p + 1))}
                 >
                   Next
-                </button>
+                </Button>
               </Row>
             )}
           </>
