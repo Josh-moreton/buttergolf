@@ -226,7 +226,7 @@ export function ProductsGrid({
         />
       )}
 
-      <style jsx>{`
+      <style>{`
         @media (min-width: 768px) {
           .products-grid {
             grid-template-columns: repeat(2, 1fr) !important;

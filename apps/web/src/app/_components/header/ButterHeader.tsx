@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, SignIn, SignUp, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text, AuthButton } from "@buttergolf/ui";
+import { Row, Column, Text, AuthButton, GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { AuthModal } from "../auth/AuthModal";
 
@@ -52,16 +52,9 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        style={{ position: "sticky" }}
+        position="sticky"
         top={0}
-        zIndex={50}
-        backgroundColor="$surface"
-        {...(stickyMenu && {
-          shadowColor: "$shadowColor",
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-        })}
+        zIndex={999}
         suppressHydrationWarning
       >
         {/* Main Header Row */}
@@ -215,24 +208,30 @@ export function ButterHeader() {
           </Row>
         </Row>
 
-        {/* Category Navigation Sub-header */}
+        {/* Category Navigation Sub-header - iOS Liquid Glass Effect */}
         <Row
-          backgroundColor="$cloudMist"
-          borderBottomWidth={1}
-          borderBottomColor="$border"
           paddingHorizontal="$4"
-          paddingVertical="$2"
-          $md={{ paddingHorizontal: "$6", paddingVertical: "$3" }}
+          paddingVertical="$3"
+          $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
           justifyContent="center"
+          backgroundColor="transparent"
         >
-
-          <Row
-            maxWidth={1440}
+          <GlassmorphismCard
+            intensity="medium"
+            blur="light"
+            maxWidth={1280}
             width="100%"
+            paddingHorizontal="$6"
+            paddingVertical="$3"
             justifyContent="space-between"
-            paddingHorizontal="$8"
             flexWrap="nowrap"
-            style={{ overflow: "auto" }}
+            backgroundColor="rgba(217, 217, 217, 0.3)"
+            style={{
+              overflow: "auto",
+              display: "flex",
+              flexDirection: "row",
+              ...getGlassmorphismStyles("light"),
+            }}
           >
             {NAV_CATEGORIES.map((category) => (
               <Link
@@ -253,7 +252,7 @@ export function ButterHeader() {
                 </Text>
               </Link>
             ))}
-          </Row>
+          </GlassmorphismCard>
         </Row>
       </Column>
 

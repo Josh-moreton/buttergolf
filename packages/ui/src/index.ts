@@ -26,6 +26,8 @@ export type { RowProps, ColumnProps, ContainerProps, SpacerProps, XStackProps, Y
 // Card Components
 export { Card, CardHeader, CardBody, CardFooter } from './components/Card'
 export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from './components/Card'
+export { GlassmorphismCard, getGlassmorphismStyles } from './components/GlassmorphismCard'
+export type { GlassmorphismCardProps } from './components/GlassmorphismCard'
 
 // Form Components
 export { Input } from './components/Input'
