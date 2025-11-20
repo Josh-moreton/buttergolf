@@ -14,6 +14,7 @@ import {
   Autocomplete,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
+import { PhotoTipsCard } from "./_components/PhotoTipsCard";
 
 interface Category {
   id: string;
@@ -306,32 +307,33 @@ export default function SellPage() {
               <Column gap="$0" width="100%" alignItems="stretch">
                 {/* Photo Upload Section - Prominent at top */}
                 <Column
-                  gap="$md"
+                  gap="$lg"
                   padding="$6"
                   backgroundColor="$background"
                   borderBottomWidth={1}
                   borderBottomColor="$border"
                   width="100%"
                 >
-                  <ImageUpload
-                    onUploadComplete={handleImageUpload}
-                    currentImages={formData.images}
-                    maxImages={5}
-                  />
-                  <Card
-                    variant="filled"
-                    padding="$sm"
-                    backgroundColor="$infoLight"
-                    borderRadius="$md"
+                  <Row
+                    gap="$lg"
+                    flexWrap="wrap"
+                    $gtMd={{ flexWrap: "nowrap" }}
+                    width="100%"
                   >
-                    <Row gap="$sm" alignItems="flex-start">
-                      <Text fontSize={18}>📸</Text>
-                      <Text size="$2" color="$text" lineHeight={18}>
-                        Catch your buyers&apos; eye — use quality photos. Good
-                        lighting and clear images help your item sell faster!
-                      </Text>
-                    </Row>
-                  </Card>
+                    {/* Left: Image Upload (2/3 width on desktop) */}
+                    <Column flex={2} minWidth={300} width="100%">
+                      <ImageUpload
+                        onUploadComplete={handleImageUpload}
+                        currentImages={formData.images}
+                        maxImages={5}
+                      />
+                    </Column>
+
+                    {/* Right: Photo Tips Card (1/3 width on desktop) */}
+                    <Column flex={1} minWidth={280} width="100%">
+                      <PhotoTipsCard />
+                    </Column>
+                  </Row>
                 </Column>
 
                 {/* Form Fields Section */}

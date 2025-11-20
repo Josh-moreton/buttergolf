@@ -52,7 +52,7 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
-        position="sticky"
+        style={{ position: "sticky" } as React.CSSProperties}
         top={0}
         zIndex={999}
         suppressHydrationWarning
