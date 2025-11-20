@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 
@@ -7,14 +8,33 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
 
     // Pagination
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "24");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const limit = Number.parseInt(searchParams.get("limit") || "24");
     const skip = (page - 1) * limit;
 
     // Build where clause
     const where: Prisma.ProductWhereInput = {
       isSold: false,
     };
+
+    // Favorites filter (requires authentication)
+    const showFavoritesOnly = searchParams.get("favorites") === "true";
+    if (showFavoritesOnly) {
+      const { userId } = await auth();
+
+      if (!userId) {
+        return NextResponse.json(
+          { error: "Authentication required to filter favorites" },
+          { status: 401 }
+        );
+      }
+
+      where.favorites = {
+        some: {
+          userId,
+        },
+      };
+    }
 
     // Category filter (slug)
     const category = searchParams.get("category");

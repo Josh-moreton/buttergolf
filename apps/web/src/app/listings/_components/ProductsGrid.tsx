@@ -1,16 +1,16 @@
 "use client";
 
 import { Button, Column, Row, Text } from "@buttergolf/ui";
-import { ProductCard } from "@buttergolf/app";
+import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductsGridProps {
-  products: ProductCardData[];
-  isLoading: boolean;
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  readonly products: ProductCardData[];
+  readonly isLoading: boolean;
+  readonly currentPage: number;
+  readonly totalPages: number;
+  readonly onPageChange: (page: number) => void;
 }
 
 function LoadingSkeleton() {
@@ -171,7 +171,9 @@ export function ProductsGrid({
   currentPage,
   totalPages,
   onPageChange,
-}: ProductsGridProps) {
+}: Readonly<ProductsGridProps>) {
+  const router = useRouter();
+
   if (!isLoading && products.length === 0) {
     return (
       <Column
@@ -207,18 +209,11 @@ export function ProductsGrid({
             <LoadingSkeleton key={`skeleton-${i}`} />
           ))
           : products.map((product) => (
-            <Link
+            <ProductCard
               key={product.id}
-              href={`/products/${product.id}`}
-              style={{ textDecoration: "none", display: "block" }}
-            >
-              <ProductCard
-                product={product}
-                onFavorite={(productId) =>
-                  console.log("Favorited:", productId)
-                }
-              />
-            </Link>
+              product={product}
+              onPress={() => router.push(`/products/${product.id}`)}
+            />
           ))}
       </div>
 

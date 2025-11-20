@@ -13,14 +13,15 @@ export interface FilterState {
   minPrice: number;
   maxPrice: number;
   brands: string[];
+  showFavoritesOnly: boolean;
 }
 
 interface FilterSidebarProps {
-  filters: FilterState;
-  availableBrands: string[];
-  priceRange: { min: number; max: number };
-  onChange: (filters: Partial<FilterState>) => void;
-  onClearAll: () => void;
+  readonly filters: FilterState;
+  readonly availableBrands: string[];
+  readonly priceRange: { readonly min: number; readonly max: number };
+  readonly onChange: (filters: Partial<FilterState>) => void;
+  readonly onClearAll: () => void;
 }
 
 export function FilterSidebar({
@@ -29,7 +30,7 @@ export function FilterSidebar({
   priceRange,
   onChange,
   onClearAll,
-}: FilterSidebarProps) {
+}: Readonly<FilterSidebarProps>) {
   return (
     <Column
       width={280}
@@ -79,6 +80,33 @@ export function FilterSidebar({
           selectedBrands={filters.brands}
           onChange={(brands) => onChange({ brands })}
         />
+      </FilterSection>
+
+      <FilterSection title="Favorites">
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            cursor: "pointer",
+            userSelect: "none",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={filters.showFavoritesOnly}
+            onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
+            style={{
+              width: 20,
+              height: 20,
+              cursor: "pointer",
+              accentColor: "#F45314",
+            }}
+          />
+          <Text size="$4" color="$text">
+            Show favorites only
+          </Text>
+        </label>
       </FilterSection>
 
       <Button chromeless size="$4" onPress={onClearAll}>

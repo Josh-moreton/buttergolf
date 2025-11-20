@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "@buttergolf/ui";
 import type { ProductCardData } from "../types/product";
 
@@ -8,18 +7,17 @@ export interface ProductCardProps {
   product: ProductCardData;
   onPress?: () => void;
   onFavorite?: (productId: string) => void;
+  isFavorited?: boolean;
 }
 
 export function ProductCard({
   product,
   onPress,
-  onFavorite
+  onFavorite,
+  isFavorited = false
 }: Readonly<ProductCardProps>) {
-  const [isFavorited, setIsFavorited] = useState(false);
-
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsFavorited(!isFavorited);
     onFavorite?.(product.id);
   };
 
