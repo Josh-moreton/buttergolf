@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, SignIn, SignUp, UserButton } from "@clerk/nextjs";
-import { Row, Column, Text, AuthButton, getGlassmorphismStyles } from "@buttergolf/ui";
+import { Row, Column, Text, AuthButton, GlassmorphismCard } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { AuthModal } from "../auth/AuthModal";
 
@@ -216,20 +216,20 @@ export function ButterHeader() {
           justifyContent="center"
           backgroundColor="transparent"
         >
-          <Row
+          <GlassmorphismCard
+            intensity="medium"
+            blur="medium"
             maxWidth={1280}
             width="100%"
-            backgroundColor="rgba(255, 255, 255, 0.4)"
-            borderRadius="$2xl"
             paddingHorizontal="$6"
             paddingVertical="$3"
             justifyContent="space-between"
             flexWrap="nowrap"
-            borderWidth={1}
-            borderColor="rgba(255, 255, 255, 0.3)"
+            backgroundColor="rgba(217, 217, 217, 0.3)"
             style={{
               overflow: "auto",
-              ...getGlassmorphismStyles("medium"),
+              display: "flex",
+              flexDirection: "row",
             }}
           >
             {NAV_CATEGORIES.map((category) => (
@@ -251,7 +251,7 @@ export function ButterHeader() {
                 </Text>
               </Link>
             ))}
-          </Row>
+          </GlassmorphismCard>
         </Row>
       </Column>
 

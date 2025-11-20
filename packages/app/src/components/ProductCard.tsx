@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, getGlassmorphismStyles } from "@buttergolf/ui";
+import { Card, GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 import type { ProductCardData } from "../types/product";
 
 export interface ProductCardProps {
@@ -114,17 +114,20 @@ export function ProductCard({
           </button>
 
           {/* iOS Liquid Glass Info Card - Bottom */}
-          <div
+          <GlassmorphismCard
+            intensity="light"
+            blur="medium"
+            padding="$md"
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            borderWidth={1}
+            borderColor="rgba(255, 255, 255, 0.2)"
+            borderTopWidth={0}
+            borderRadius="$lg"
+            zIndex={1}
             style={{
-              position: "absolute",
-              bottom: "12px",
-              left: "12px",
-              right: "12px",
-              backgroundColor: "rgba(255, 255, 255, 0.4)",
-              borderRadius: "20px",
-              padding: "16px",
-              border: "1px solid rgba(255, 255, 255, 0.3)",
-              zIndex: 1,
               ...getGlassmorphismStyles("medium"),
             }}
           >
@@ -217,7 +220,7 @@ export function ProductCard({
                 </span>
               )}
             </div>
-          </div>
+          </GlassmorphismCard>
         </div>
       </div>
     </Card>

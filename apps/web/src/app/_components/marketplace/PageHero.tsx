@@ -50,7 +50,7 @@ export function PageHero() {
         </h1>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @media (min-width: 768px) {
           div {
             height: 150px !important;

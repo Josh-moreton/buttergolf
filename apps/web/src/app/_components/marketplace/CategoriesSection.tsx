@@ -194,8 +194,7 @@ export function CategoriesSection() {
       </div>
 
       {/* Mobile Swipe Styles */}
-      { }
-      <style jsx>{`
+      <style>{`
         @media (max-width: 768px) {
           .categories-carousel-container {
             overflow-x: auto;

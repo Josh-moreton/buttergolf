@@ -50,12 +50,12 @@ export const GlassmorphismCard = styled(View, {
       medium: {},
       strong: {},
     },
-  },
+  } as const,
 
   defaultVariants: {
     intensity: "medium",
     blur: "medium",
-  },
+  } as const,
 });
 
 /**
