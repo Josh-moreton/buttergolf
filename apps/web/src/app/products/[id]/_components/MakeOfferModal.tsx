@@ -75,17 +75,15 @@ export function MakeOfferModal({
                 padding: "20px",
             }}
         >
-            <button
-
+            <Button
+                chromeless
                 aria-label="Close offer modal"
-                onClick={onClose}
-                style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                }}
+                onPress={onClose}
+                position="absolute"
+                inset={0}
+                backgroundColor="transparent"
+                cursor="pointer"
+                padding={0}
             />
             <div
                 style={{
@@ -100,29 +98,28 @@ export function MakeOfferModal({
                 }}
             >
                 {/* Close Button */}
-                <button
-                    onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: 24,
-                        right: 24,
-                        background: "transparent",
-                        border: "none",
-                        fontSize: "32px",
-                        cursor: "pointer",
-                        color: "#F45314",
-                        lineHeight: 1,
-                        padding: 0,
-                        width: 32,
-                        height: 32,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                    aria-label="Close modal"
+                <Button
+                    chromeless
+                    onPress={onClose}
+                    position="absolute"
+                    top={20}
+                    right={20}
+                    backgroundColor="$surface"
+                    borderRadius="$full"
+                    width={48}
+                    height={48}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    cursor="pointer"
+                    zIndex={1}
+                    padding={0}
+                    shadowColor="$shadowColor"
+                    shadowRadius={8}
+                    shadowOffset={{ width: 0, height: 2 }}
                 >
-                    ✕
-                </button>
+                    <Text size="$8" fontWeight="700" color="$text">×</Text>
+                </Button>
 
                 <Column gap="$xl" padding="$2xl">
                     {/* Header */}

@@ -292,40 +292,39 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             padding: "20px",
           }}
         >
-          <button
-
+          <Button
+            chromeless
             aria-label="Close image gallery"
-            onClick={() => setLightboxOpen(false)}
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-            }}
+            onPress={() => setLightboxOpen(false)}
+            position="absolute"
+            inset={0}
+            backgroundColor="transparent"
+            cursor="pointer"
+            padding={0}
           />
           {/* Close Button */}
-          <button
-            onClick={(e) => {
+          <Button
+            chromeless
+            onPress={(e) => {
               e.stopPropagation();
               setLightboxOpen(false);
             }}
-            style={{
-              position: "absolute",
-              top: 20,
-              right: 20,
-              background: "white",
-              border: "none",
-              borderRadius: "50%",
-              width: 48,
-              height: 48,
-              fontSize: "24px",
-              cursor: "pointer",
-              zIndex: 10000,
-            }}
+            position="absolute"
+            top={20}
+            right={20}
+            backgroundColor="$surface"
+            borderRadius="$full"
+            width={48}
+            height={48}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            zIndex={10000}
+            padding={0}
           >
-            ✕
-          </button>
+            <Text size="$8" fontWeight="700" color="$text">✕</Text>
+          </Button>
 
           {/* Navigation Arrows */}
           {selectedImageIndex > 0 && (

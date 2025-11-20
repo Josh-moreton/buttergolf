@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Button, Column, Row, Text, Heading, Input } from "@buttergolf/ui";
+import { Form } from "@tamagui/form";
 
 interface CheckoutFormSimpleProps {
     product: {
@@ -50,8 +51,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
     const [cardName, setCardName] = useState("");
     const [cardCVC, setCardCVC] = useState("");
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         setIsProcessing(true);
 
         // TODO: Implement payment processing
@@ -64,7 +64,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
             <Column gap="$xl">
                 {/* Shipping Address */}
                 <Column gap="$lg">
@@ -394,18 +394,19 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                     )}
                 </Column>
 
-                {/* Submit Button */}
-                <Button
-                    size="$5"
-
-                    borderRadius="$full"
-                    paddingHorizontal="$6"
-                    disabled={isProcessing}
-                    width="100%"
-                >
-                    {isProcessing ? "Processing..." : `Confirm and pay £${(product.price + 9.99 + 1.0).toFixed(2)}`}
-                </Button>
+                {/* Submit Button - Using Tamagui Form.Trigger for cross-platform form submission */}
+                <Form.Trigger asChild>
+                    <Button
+                        size="$5"
+                        borderRadius="$full"
+                        paddingHorizontal="$6"
+                        disabled={isProcessing}
+                        width="100%"
+                    >
+                        {isProcessing ? "Processing..." : `Confirm and pay £${(product.price + 9.99 + 1).toFixed(2)}`}
+                    </Button>
+                </Form.Trigger>
             </Column>
-        </form>
+        </Form>
     );
 }
