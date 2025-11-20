@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "name": "ButterGolf Database",
+  "description": "Prisma database client and schema for PostgreSQL",
+  "extends": "../../.claude/claude.json",
+  "context": {
+    "directories": [
+      "prisma",
+      "src"
+    ],
+    "focus": [
+      "prisma/schema.prisma",
+      "prisma/seed.ts",
+      "src/index.ts"
+    ],
+    "ignore": [
+      "node_modules/**",
+      "*.log"
+    ]
+  },
+  "database": {
+    "orm": "Prisma",
+    "version": "6.x",
+    "database": "PostgreSQL",
+    "provider": "postgresql",
+    "client": "@prisma/client"
+  },
+  "structure": {
+    "schema": "prisma/schema.prisma",
+    "migrations": "prisma/migrations",
+    "seed": "prisma/seed.ts",
+    "client": "src/index.ts"
+  },
+  "rules": {
+    "schema": {
+      "useStrict": true,
+      "relationMode": "foreignKeys",
+      "namingConvention": "camelCase",
+      "includeTimestamps": true
+    },
+    "migrations": {
+      "alwaysGenerateAfterSchemaChange": true,
+      "useMigrationNames": true,
+      "testBeforeApplying": true
+    },
+    "client": {
+      "exportDefault": true,
+      "exportTypes": true,
+      "useSingleton": true
+    },
+    "queries": {
+      "useTypeDefinitions": true,
+      "handleErrors": true,
+      "useTransactions": "when necessary"
+    }
+  },
+  "commands": {
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "studio": "prisma studio",
+    "seed": "tsx prisma/seed.ts",
+    "reset": "prisma migrate reset",
+    "push": "prisma db push"
+  }
+}

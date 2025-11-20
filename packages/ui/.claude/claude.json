@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "name": "ButterGolf UI",
+  "description": "Tamagui-based cross-platform UI component library",
+  "extends": "../../.claude/claude.json",
+  "context": {
+    "directories": [
+      "src"
+    ],
+    "focus": [
+      "src/components",
+      "src/index.ts",
+      "tamagui.config.ts"
+    ],
+    "ignore": [
+      "dist/**",
+      "*.log"
+    ]
+  },
+  "package": {
+    "type": "library",
+    "sourceFirst": true,
+    "noBuildStep": true,
+    "main": "src/index.ts",
+    "exports": "./src/index.ts"
+  },
+  "framework": {
+    "name": "Tamagui",
+    "version": "1.135.7",
+    "configLocation": "../../packages/config/src/tamagui.config.ts"
+  },
+  "dependencies": {
+    "internal": [
+      "@buttergolf/config"
+    ],
+    "external": {
+      "ui": ["tamagui", "@tamagui/core", "react-native-web"],
+      "components": [
+        "@tamagui/button",
+        "@tamagui/text",
+        "@tamagui/image",
+        "@tamagui/spinner"
+      ]
+    }
+  },
+  "rules": {
+    "components": {
+      "useStyledFactory": true,
+      "semanticTokensOnly": true,
+      "numericSizeTokens": true,
+      "noCustomVariants": "avoid when base component has native support",
+      "reExportFromTamagui": true
+    },
+    "tokens": {
+      "preferSemanticTokens": true,
+      "brandTokensInLibraryOnly": true,
+      "alwaysUseDollarPrefix": true
+    },
+    "exports": {
+      "namedExportsOnly": true,
+      "exportTypes": true,
+      "noDefaultExports": true
+    }
+  },
+  "architecture": {
+    "componentFamilies": [
+      "Button",
+      "Typography (Text, Heading, Label)",
+      "Layout (Row, Column, Container, Spacer)",
+      "Card (with compound components)",
+      "Input",
+      "Badge",
+      "Spinner",
+      "Image & ScrollView"
+    ],
+    "totalComponents": "8 hardened families (~1,500 lines)"
+  },
+  "commands": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  }
+}
