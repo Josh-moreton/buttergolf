@@ -699,23 +699,23 @@ import { Button } from "@buttergolf/ui";
 - Compiler-optimized for performance
 - Follows official Tamagui patterns
 
-#### ✅ **PREFER Specific Brand Color Tokens (Not Generic Semantic Tokens)**
+#### ✅ **ALWAYS Use Semantic Color Tokens in App Code**
 
-**🎨 IMPORTANT: Use specific brand colors for better design control and clarity**
+**🎨 IMPORTANT: Use semantic tokens for theme support and maintainability**
 
-Our brand colors have specific names that describe the actual color, making the code more readable and maintainable. **Prefer these specific tokens over generic semantic names.**
+Semantic tokens automatically adapt to theme changes and make intent clear. **Prefer these in all app code.**
 
 ```tsx
-// ✅ CORRECT - Use semantic tokens in app code
+// ✅ CORRECT - Use semantic tokens in app code (PREFERRED)
 <Button backgroundColor="$primary" color="$textInverse">Submit</Button>
 <Text color="$text">Primary text</Text>
 <Text color="$textSecondary">Secondary text</Text>
 <Text color="$textMuted">Helper text</Text>
 <View borderColor="$border" backgroundColor="$background">Content</View>
 
-// ✅ ALSO CORRECT - Brand tokens in component libraries or when theme-independent
-<Text color="$ironstone">Always dark gray</Text>
-<View backgroundColor="$vanillaCream">Always cream</View>
+// ⚠️ USE SPARINGLY - Brand tokens only in component libraries or theme-independent contexts
+<Text color="$ironstone">Always dark gray (no theme switching)</Text>
+<View backgroundColor="$vanillaCream">Always cream (no theme switching)</View>
 
 // ❌ WRONG - Never use numbered colors or raw hex values
 <Button backgroundColor="#F45314">Submit</Button>    // No theming, use $primary
@@ -724,7 +724,15 @@ Our brand colors have specific names that describe the actual color, making the 
 <Text color="$color11">Text</Text>                   // Numbered color (deprecated)
 ```
 
-**Brand Color Token Reference:**
+**Token Usage Guidelines:**
+
+| Context | Use This | Not This | Reason |
+|---------|----------|----------|--------|
+| **App code (99% of cases)** | `$primary`, `$text`, `$background`, `$border` | `$spicedClementine`, `$ironstone`, `#F45314` | Semantic tokens enable theme switching |
+| **Component library defaults** | `$ironstone`, `$vanillaCream` | Direct hex values | Brand tokens are the foundation |
+| **When you need a specific color** | `$spicedClementine` (sparingly) | `#F45314` | Token enables tooling & consistency |
+
+**Brand Color Token Reference (for component library use):**
 
 | Token | Hex | Use Case |
 |-------|-----|----------|
@@ -738,10 +746,8 @@ Our brand colors have specific names that describe the actual color, making the 
 | `$pureWhite` | #FFFFFF | Pure white for contrast |
 
 **When to use which:**
-- **Semantic tokens** (`$text`, `$background`, `$primary`, etc.) - Use in app code for automatic theme switching and maintainability
-- **Brand tokens** (`$ironstone`, `$vanillaCream`, `$spicedClementine`, etc.) - Use when defining component defaults in `packages/ui` or when you need a specific brand color that won't change with themes
-
-In most app code, prefer semantic tokens for better theme support. Brand tokens are the underlying palette used by semantic tokens and component libraries.
+- **Semantic tokens** (`$text`, `$background`, `$primary`, etc.) - **USE IN 99% OF APP CODE** for automatic theme switching and maintainability
+- **Brand tokens** (`$ironstone`, `$vanillaCream`, `$spicedClementine`, etc.) - Use ONLY when defining component defaults in `packages/ui` or when you need a specific brand color that absolutely won't change with themes
 
 #### ✅ **ALWAYS Use Component Variants (When They Exist)**
 
@@ -2425,8 +2431,8 @@ await mcp_upstash_conte_get-library-docs({
 
 ### Design System & Components
 
-1. **ALWAYS use specific brand color tokens** - PREFER `$ironstone`, `$spicedClementine`, `$vanillaCream`, `$cloudMist`, `$slateSmoke`, `$burntOlive`, `$lemonHaze` over generic semantic tokens like `$text`, `$primary`, `$border`. Only use semantic tokens when you need automatic theme switching. Never use raw hex values or numbered colors.
-2. **ALWAYS use component variants** - Use `<Button size="lg" tone="primary">` instead of manual styling
+1. **ALWAYS use semantic color tokens in app code** - PREFER `$primary`, `$text`, `$textSecondary`, `$textMuted`, `$border`, `$background`, `$surface` for automatic theme switching. Use brand tokens (`$ironstone`, `$spicedClementine`, `$vanillaCream`) only in `packages/ui` component definitions or when you need a specific color that won't change with themes. Never use raw hex values or numbered colors.
+2. **ALWAYS use standard Tamagui Button with numeric size tokens and direct props** - Use `<Button size="$5" backgroundColor="$primary" color="$textInverse">` with direct prop styling instead of manual HTML buttons or outdated custom variants
 3. **ALWAYS use Text fontSize with numeric tokens** - Use `<Text fontSize="$5">` for body text, `fontSize="$3"` for small text (Text has NO size variant)
 4. **ALWAYS use Text color with direct tokens** - Use `<Text color="$ironstone">` or `<Text color="$textMuted">` (Text has NO color variants)
 5. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`
@@ -2660,22 +2666,23 @@ When creating a new component, add variants for:
 ### General Best Practices
 
 9. **Always use Tamagui components** from `@buttergolf/ui` for cross-platform consistency
-10. **CRITICAL: Always use standard Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use standard Tamagui numeric size tokens (`size="$4"`) with direct prop styling (`backgroundColor`, `color`, `paddingHorizontal`, `paddingVertical`, `borderRadius`). We removed custom variants (size="sm|md|lg", tone="primary|outline") to use standard Tamagui patterns. This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
-11. **Keep React versions aligned** across web and mobile
-12. **Use workspace protocol** for internal dependencies: `"workspace:*"`
-13. **Export types** alongside components for better DX
-14. **Test on both platforms** before considering features complete
-15. **Leverage media queries** for responsive design instead of platform checks
-16. **Keep Metro and Babel configs** in sync with Tamagui requirements
-17. **Run type checking** regularly during development
-18. **Use `name` prop** on styled components for better compiler optimization
-19. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
-20. **Run `pnpm db:generate`** after any schema changes
-21. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
-22. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
-23. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
-24. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
-25. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
+10. **CRITICAL: Always use semantic color tokens in app code** - Use `$primary`, `$text`, `$textSecondary`, `$textMuted`, `$border`, `$background`, `$surface` for automatic theme switching and maintainability. Only use brand tokens (`$ironstone`, `$spicedClementine`, `$vanillaCream`) when defining component defaults in `packages/ui` or when you need a specific color that absolutely won't change with themes. Never use raw hex values or numbered colors.
+11. **CRITICAL: Always use standard Tamagui Button component** - Never create manual HTML `<button>` elements with inline styles. Import `{ Button }` from `@buttergolf/ui` and use standard Tamagui numeric size tokens (`size="$4"`) with direct prop styling (`backgroundColor`, `color`, `paddingHorizontal`, `paddingVertical`, `borderRadius`). We removed custom variants (size="sm|md|lg", tone="primary|outline") to use standard Tamagui patterns. This ensures consistency, proper theming, hover/press states, and cross-platform compatibility.
+12. **Keep React versions aligned** across web and mobile
+13. **Use workspace protocol** for internal dependencies: `"workspace:*"`
+14. **Export types** alongside components for better DX
+15. **Test on both platforms** before considering features complete
+16. **Leverage media queries** for responsive design instead of platform checks
+17. **Keep Metro and Babel configs** in sync with Tamagui requirements
+18. **Run type checking** regularly during development
+19. **Use `name` prop** on styled components for better compiler optimization
+20. **Use Prisma Client singleton** from `@buttergolf/db` - never create new instances
+21. **Run `pnpm db:generate`** after any schema changes
+22. **Use migrations** (`db:migrate:dev`) for production-bound changes, `db:push` for quick dev iteration
+23. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
+24. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
+25. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
+26. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
 
 ### GSAP Animation Patterns
 
