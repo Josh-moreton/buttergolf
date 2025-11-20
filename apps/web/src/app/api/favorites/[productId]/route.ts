@@ -11,9 +11,9 @@ export async function DELETE(
   context: { params: Promise<{ productId: string }> }
 ) {
   try {
-    const { userId } = await auth();
+    const { userId: clerkId } = await auth();
 
-    if (!userId) {
+    if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -26,12 +26,25 @@ export async function DELETE(
       );
     }
 
+    // Get user from database
+    const user = await prisma.user.findUnique({
+      where: { clerkId },
+      select: { id: true },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
+    }
+
     // Delete favorite using unique constraint
     try {
       await prisma.favorite.delete({
         where: {
           userId_productId: {
-            userId,
+            userId: user.id,
             productId,
           },
         },

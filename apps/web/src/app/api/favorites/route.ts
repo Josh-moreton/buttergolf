@@ -9,10 +9,29 @@ import { prisma } from "@buttergolf/db";
  */
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const { userId: clerkId } = await auth();
 
-    if (!userId) {
+    if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Get user from database
+    const user = await prisma.user.findUnique({
+      where: { clerkId },
+      select: { id: true },
+    });
+
+    if (!user) {
+      // User not synced yet, return empty array
+      return NextResponse.json({
+        favorites: [],
+        pagination: {
+          page: 1,
+          limit: 24,
+          totalPages: 0,
+          totalCount: 0,
+        },
+      });
     }
 
     // Get pagination params
@@ -24,7 +43,7 @@ export async function GET(req: NextRequest) {
     // Fetch user's favorites with product details
     const [favorites, totalCount] = await Promise.all([
       prisma.favorite.findMany({
-        where: { userId },
+        where: { userId: user.id },
         include: {
           product: {
             include: {
@@ -55,7 +74,7 @@ export async function GET(req: NextRequest) {
         take: limit,
       }),
       prisma.favorite.count({
-        where: { userId },
+        where: { userId: user.id },
       }),
     ]);
 
@@ -110,9 +129,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const { userId: clerkId } = await auth();
 
-    if (!userId) {
+    if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -140,12 +159,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Ensure user exists in database (create if webhook hasn't synced yet)
-    await prisma.user.upsert({
-      where: { clerkId: userId },
+    const user = await prisma.user.upsert({
+      where: { clerkId },
       update: {},
       create: {
-        clerkId: userId,
-        email: `temp-${userId}@buttergolf.app`, // Temporary email, will be updated by webhook
+        clerkId,
+        email: `temp-${clerkId}@buttergolf.app`, // Temporary email, will be updated by webhook
         name: "User", // Placeholder name, will be updated by webhook
       },
     });
@@ -154,7 +173,7 @@ export async function POST(req: NextRequest) {
     try {
       const favorite = await prisma.favorite.create({
         data: {
-          userId,
+          userId: user.id, // Use database User ID, not Clerk ID
           productId,
         },
       });
