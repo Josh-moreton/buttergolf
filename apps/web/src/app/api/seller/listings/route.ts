@@ -105,6 +105,11 @@ export async function GET(request: NextRequest) {
                             status: true,
                         },
                     },
+                    favorites: {
+                        select: {
+                            id: true,
+                        },
+                    },
                 },
                 orderBy,
                 skip,
@@ -114,8 +119,8 @@ export async function GET(request: NextRequest) {
             // Get aggregated stats for dashboard
             prisma.product.aggregate({
                 where: { userId: user.id },
-                _count: { id: true },
-                _sum: { views: true, favorites: true },
+                _count: true,
+                _sum: { views: true },
             }),
         ]);
 
@@ -151,7 +156,7 @@ export async function GET(request: NextRequest) {
                 imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
                 isSold: product.isSold,
                 views: product.views,
-                favorites: product.favorites,
+                favorites: product.favorites.length,
                 createdAt: product.createdAt,
                 updatedAt: product.updatedAt,
                 images: product.images.map((img) => img.url),
@@ -166,11 +171,11 @@ export async function GET(request: NextRequest) {
                 hasMore: page < Math.ceil(total / limit),
             },
             stats: {
-                totalListings: stats._count.id,
+                totalListings: stats._count,
                 activeListings: activeCount,
                 soldListings: soldCount,
                 totalViews: stats._sum.views || 0,
-                totalFavorites: stats._sum.favorites || 0,
+                totalFavorites: products.reduce((sum, product) => sum + product.favorites.length, 0),
                 pendingOffers: pendingOffersCount,
             },
         });

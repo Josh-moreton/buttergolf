@@ -162,7 +162,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                         >
                             <Row alignItems="center" justifyContent="space-between">
                                 <Heading level={3}>Edit Listing</Heading>
-                                <Button size="sm" tone="ghost" onPress={onClose} type="button">
+                                <Button size="$3" chromeless onPress={onClose}>
                                     ✕
                                 </Button>
                             </Row>
@@ -179,7 +179,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                         setFormData({ ...formData, title: value })
                                     }
                                     placeholder="e.g., TaylorMade Stealth 2 Driver"
-                                    size="md"
+                                    size="$4"
                                     required
                                 />
                             </Column>
@@ -218,7 +218,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                             setFormData({ ...formData, price: value })
                                         }
                                         placeholder="0.00"
-                                        size="md"
+                                        size="$4"
                                         inputMode="decimal"
                                         required
                                     />
@@ -288,7 +288,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                                         setFormData({ ...formData, model: value })
                                     }
                                     placeholder="e.g., Stealth 2, Apex 21"
-                                    size="md"
+                                    size="$4"
                                 />
                             </Column>
 
@@ -323,7 +323,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                             {/* Error Message */}
                             {error && (
                                 <Card variant="filled" padding="$sm" backgroundColor="$errorLight">
-                                    <Text color="$error" fontSize="$3">
+                                    <Text color="$error" size="$3">
                                         {error}
                                     </Text>
                                 </Card>
@@ -338,10 +338,10 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                             borderTopColor="$border"
                         >
                             <Row gap="$sm" justifyContent="flex-end">
-                                <Button size="md" tone="ghost" onPress={onClose} type="button" disabled={loading}>
+                                <Button size="$4" chromeless onPress={onClose} disabled={loading}>
                                     Cancel
                                 </Button>
-                                <Button size="md" tone="primary" type="submit" disabled={loading}>
+                                <Button size="$4" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$4" paddingVertical="$3" disabled={loading}>
                                     {loading ? "Saving..." : "Save Changes"}
                                 </Button>
                             </Row>

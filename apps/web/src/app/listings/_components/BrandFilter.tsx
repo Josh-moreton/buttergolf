@@ -34,14 +34,14 @@ export function BrandFilter({
   return (
     <Column gap="$sm">
       <Input
-        size="sm"
+        size="$3"
         placeholder="Search brands..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <Column gap="$xs" maxHeight={200} overflow="scroll">
         {filteredBrands.length === 0 ? (
-          <Text fontSize="$3" color="$textSecondary">
+          <Text size="$3" color="$textSecondary">
             No brands found
           </Text>
         ) : (
@@ -59,7 +59,7 @@ export function BrandFilter({
                 onChange={() => handleToggle(brand)}
                 size="sm"
               />
-              <Text fontSize="$3">{brand}</Text>
+              <Text size="$3">{brand}</Text>
             </Row>
           ))
         )}

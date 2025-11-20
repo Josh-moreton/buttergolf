@@ -221,7 +221,7 @@ export function SellerHub() {
                         Start selling your golf equipment today! Create your first listing in under 60 seconds.
                     </Text>
                     <Link href="/sell" style={{ textDecoration: "none" }}>
-                        <Button size="lg" tone="primary">
+                        <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
                             <Row gap="$sm" alignItems="center">
                                 <Plus size={20} />
                                 <Text>Create First Listing</Text>
@@ -245,7 +245,7 @@ export function SellerHub() {
                         </Text>
                     </Column>
                     <Link href="/sell" style={{ textDecoration: "none" }}>
-                        <Button size="lg" tone="primary">
+                        <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3">
                             <Row gap="$sm" alignItems="center">
                                 <Plus size={20} />
                                 <Text>New Listing</Text>
@@ -263,10 +263,10 @@ export function SellerHub() {
                                     <Package size={20} color="$primary" />
                                     <Text color="$textSecondary">Total Listings</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalListings}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     {data.stats.activeListings} active • {data.stats.soldListings} sold
                                 </Text>
                             </Column>
@@ -278,10 +278,10 @@ export function SellerHub() {
                                     <Eye size={20} color="$info" />
                                     <Text color="$textSecondary">Total Views</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalViews}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     Across all listings
                                 </Text>
                             </Column>
@@ -293,10 +293,10 @@ export function SellerHub() {
                                     <Heart size={20} color="$error" />
                                     <Text color="$textSecondary">Total Favorites</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.totalFavorites}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     People interested
                                 </Text>
                             </Column>
@@ -308,10 +308,10 @@ export function SellerHub() {
                                     <Tag size={20} color="$warning" />
                                     <Text color="$textSecondary">Pending Offers</Text>
                                 </Row>
-                                <Text fontSize="$9" weight="bold">
+                                <Text size="$9" weight="bold">
                                     {data.stats.pendingOffers}
                                 </Text>
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     Awaiting response
                                 </Text>
                             </Column>
@@ -327,22 +327,25 @@ export function SellerHub() {
                             <Text weight="medium">Status:</Text>
                             <Row gap="$xs">
                                 <Button
-                                    size="sm"
-                                    tone={statusFilter === "all" ? "primary" : "ghost"}
+                                    size="$3"
+                                    backgroundColor={statusFilter === "all" ? "$primary" : "transparent"}
+                                    color={statusFilter === "all" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("all")}
                                 >
                                     All
                                 </Button>
                                 <Button
-                                    size="sm"
-                                    tone={statusFilter === "active" ? "primary" : "ghost"}
+                                    size="$3"
+                                    backgroundColor={statusFilter === "active" ? "$primary" : "transparent"}
+                                    color={statusFilter === "active" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("active")}
                                 >
                                     Active
                                 </Button>
                                 <Button
-                                    size="sm"
-                                    tone={statusFilter === "sold" ? "primary" : "ghost"}
+                                    size="$3"
+                                    backgroundColor={statusFilter === "sold" ? "$primary" : "transparent"}
+                                    color={statusFilter === "sold" ? "$textInverse" : "$text"}
                                     onPress={() => setStatusFilter("sold")}
                                 >
                                     Sold
@@ -400,8 +403,8 @@ export function SellerHub() {
                         {data.pagination.totalPages > 1 && (
                             <Row gap="$sm" alignItems="center" justifyContent="center">
                                 <Button
-                                    size="md"
-                                    tone="outline"
+                                    size="$4"
+
                                     disabled={currentPage === 1}
                                     onPress={() => fetchListings(currentPage - 1)}
                                 >
@@ -411,8 +414,8 @@ export function SellerHub() {
                                     Page {currentPage} of {data.pagination.totalPages}
                                 </Text>
                                 <Button
-                                    size="md"
-                                    tone="outline"
+                                    size="$4"
+
                                     disabled={!data.pagination.hasMore}
                                     onPress={() => fetchListings(currentPage + 1)}
                                 >

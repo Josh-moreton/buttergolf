@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Button, Column, Row, Text, Heading, Input } from "@buttergolf/ui";
+import { Form } from "@tamagui/form";
 
 interface CheckoutFormSimpleProps {
     product: {
@@ -50,8 +51,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
     const [cardName, setCardName] = useState("");
     const [cardCVC, setCardCVC] = useState("");
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         setIsProcessing(true);
 
         // TODO: Implement payment processing
@@ -64,7 +64,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
             <Column gap="$xl">
                 {/* Shipping Address */}
                 <Column gap="$lg">
@@ -80,7 +80,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={shippingName}
                                 onChangeText={setShippingName}
                                 placeholder="John Doe"
-                                size="md"
+                                size="$4"
                                 fullWidth
                             />
                         </Column>
@@ -92,7 +92,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={shippingPhone}
                                 onChangeText={setShippingPhone}
                                 placeholder="+44 7XXX XXXXXX"
-                                size="md"
+                                size="$4"
                                 fullWidth
                                 inputMode="tel"
                             />
@@ -106,7 +106,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingAddress1}
                                     onChangeText={setShippingAddress1}
                                     placeholder="11 Lorem Ipsum road"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -117,7 +117,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingAddress2}
                                     onChangeText={setShippingAddress2}
                                     placeholder="Flat 2"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -131,7 +131,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingPostalCode}
                                     onChangeText={setShippingPostalCode}
                                     placeholder="LP1A 1AA"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -142,7 +142,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingCity}
                                     onChangeText={setShippingCity}
                                     placeholder="Lorem"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -156,7 +156,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={shippingCounty}
                                     onChangeText={setShippingCounty}
                                     placeholder="Ipsum"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -211,7 +211,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                 value={cardNumber}
                                 onChangeText={setCardNumber}
                                 placeholder="Card number"
-                                size="md"
+                                size="$4"
                                 fullWidth
                                 inputMode="numeric"
                             />
@@ -225,7 +225,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={cardName}
                                     onChangeText={setCardName}
                                     placeholder="MR L IPSUM"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -236,7 +236,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={cardCVC}
                                     onChangeText={setCardCVC}
                                     placeholder="233"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                     inputMode="numeric"
                                     maxLength={4}
@@ -289,7 +289,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                     value={billingName}
                                     onChangeText={setBillingName}
                                     placeholder="John Doe"
-                                    size="md"
+                                    size="$4"
                                     fullWidth
                                 />
                             </Column>
@@ -302,7 +302,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingAddress1}
                                         onChangeText={setBillingAddress1}
                                         placeholder="11 Lorem Ipsum road"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -313,7 +313,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingAddress2}
                                         onChangeText={setBillingAddress2}
                                         placeholder="Flat 2"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -327,7 +327,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingPostalCode}
                                         onChangeText={setBillingPostalCode}
                                         placeholder="LP1A 1AA"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -338,7 +338,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingCity}
                                         onChangeText={setBillingCity}
                                         placeholder="Lorem"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -352,7 +352,7 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                                         value={billingCounty}
                                         onChangeText={setBillingCounty}
                                         placeholder="Ipsum"
-                                        size="md"
+                                        size="$4"
                                         fullWidth
                                     />
                                 </Column>
@@ -394,19 +394,19 @@ export function CheckoutFormSimple({ product }: CheckoutFormSimpleProps) {
                     )}
                 </Column>
 
-                {/* Submit Button */}
-                <Button
-                    size="lg"
-                    tone="primary"
-                    borderRadius="$full"
-                    paddingHorizontal="$6"
-                    type="submit"
-                    disabled={isProcessing}
-                    fullWidth
-                >
-                    {isProcessing ? "Processing..." : `Confirm and pay £${(product.price + 9.99 + 1.0).toFixed(2)}`}
-                </Button>
+                {/* Submit Button - Using Tamagui Form.Trigger for cross-platform form submission */}
+                <Form.Trigger asChild>
+                    <Button
+                        size="$5"
+                        borderRadius="$full"
+                        paddingHorizontal="$6"
+                        disabled={isProcessing}
+                        width="100%"
+                    >
+                        {isProcessing ? "Processing..." : `Confirm and pay £${(product.price + 9.99 + 1).toFixed(2)}`}
+                    </Button>
+                </Form.Trigger>
             </Column>
-        </form>
+        </Form>
     );
 }

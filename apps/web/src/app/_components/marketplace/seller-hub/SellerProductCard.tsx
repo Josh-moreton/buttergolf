@@ -139,7 +139,7 @@ export function SellerProductCard({
                             target="_blank"
                         >
                             <Text
-                                fontSize="$5"
+                                size="$5"
                                 weight="semibold"
                                 color="$text"
                                 numberOfLines={2}
@@ -149,10 +149,10 @@ export function SellerProductCard({
                             </Text>
                         </Link>
                         <Row gap="$sm" alignItems="center">
-                            <Text fontSize="$6" weight="bold" color="$primary">
+                            <Text size="$6" weight="bold" color="$primary">
                                 £{product.price.toFixed(2)}
                             </Text>
-                            <Text fontSize="$3" color="$textSecondary">
+                            <Text size="$3" color="$textSecondary">
                                 {CONDITION_LABELS[product.condition] || product.condition}
                             </Text>
                         </Row>
@@ -162,20 +162,20 @@ export function SellerProductCard({
                     <Row gap="$lg" alignItems="center" flexWrap="wrap">
                         <Row gap="$xs" alignItems="center">
                             <Eye size={16} color="$slateSmoke" />
-                            <Text fontSize="$3" color="$textSecondary">
+                            <Text size="$3" color="$textSecondary">
                                 {product.views}
                             </Text>
                         </Row>
                         <Row gap="$xs" alignItems="center">
                             <Heart size={16} color="$slateSmoke" />
-                            <Text fontSize="$3" color="$textSecondary">
+                            <Text size="$3" color="$textSecondary">
                                 {product.favorites}
                             </Text>
                         </Row>
                         {product.offersCount > 0 && (
                             <Row gap="$xs" alignItems="center">
                                 <Tag size={16} color="$slateSmoke" />
-                                <Text fontSize="$3" color="$textSecondary">
+                                <Text size="$3" color="$textSecondary">
                                     {product.offersCount} offer{product.offersCount > 1 ? "s" : ""}
                                 </Text>
                             </Row>
@@ -187,7 +187,7 @@ export function SellerProductCard({
                         <Badge variant="neutral" size="sm">
                             {product.categoryName}
                         </Badge>
-                        <Text fontSize="$2" color="$textMuted">
+                        <Text size="$2" color="$textMuted">
                             Listed {new Date(product.createdAt).toLocaleDateString()}
                         </Text>
                     </Row>
@@ -195,8 +195,8 @@ export function SellerProductCard({
                     {/* Actions */}
                     <Row gap="$sm" marginTop="$sm">
                         <Button
-                            size="sm"
-                            tone="outline"
+                            size="$3"
+
                             flex={1}
                             onPress={() => onEdit(product)}
                             disabled={isDeleting || isUpdating}
@@ -207,8 +207,9 @@ export function SellerProductCard({
                             </Row>
                         </Button>
                         <Button
-                            size="sm"
-                            tone={product.isSold ? "secondary" : "success"}
+                            size="$3"
+                            backgroundColor={product.isSold ? "$secondary" : "$success"}
+                            color="$textInverse"
                             flex={1}
                             onPress={handleMarkSold}
                             disabled={isDeleting || isUpdating}
@@ -216,8 +217,8 @@ export function SellerProductCard({
                             {isUpdating ? "..." : product.isSold ? "Relist" : "Mark Sold"}
                         </Button>
                         <Button
-                            size="sm"
-                            tone="ghost"
+                            size="$3"
+
                             onPress={handleDelete}
                             disabled={isDeleting || isUpdating}
                             aria-label="Delete listing"

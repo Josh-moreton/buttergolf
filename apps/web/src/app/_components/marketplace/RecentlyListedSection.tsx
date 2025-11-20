@@ -71,7 +71,7 @@ export function RecentlyListedSectionClient({
 
         <div style={{ display: "none" }}>
           <button
-            type="button"
+
             onClick={() => { }}
             style={{
               pointerEvents: "auto",
@@ -88,7 +88,7 @@ export function RecentlyListedSectionClient({
             
           </button>
           <button
-            type="button"
+
             onClick={() => { }}
             style={{
               pointerEvents: "auto",
@@ -119,8 +119,8 @@ export function RecentlyListedSectionClient({
         >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
             <Button
-              size="lg"
-              tone="primary"
+              size="$5"
+
               borderRadius="$full"
               paddingHorizontal="$6"
               color="$vanillaCream"

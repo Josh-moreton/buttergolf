@@ -271,7 +271,7 @@ export default function AddressesPage() {
                                             value={formData.name}
                                             onChangeText={(value) => setFormData({ ...formData, name: value })}
                                             placeholder="John Doe"
-                                            size="md"
+                                            size="$4"
                                             required
                                         />
                                     </Column>
@@ -283,7 +283,7 @@ export default function AddressesPage() {
                                             value={formData.street1}
                                             onChangeText={(value) => setFormData({ ...formData, street1: value })}
                                             placeholder="123 Main St"
-                                            size="md"
+                                            size="$4"
                                             required
                                         />
                                     </Column>
@@ -295,7 +295,7 @@ export default function AddressesPage() {
                                             value={formData.street2}
                                             onChangeText={(value) => setFormData({ ...formData, street2: value })}
                                             placeholder="Apt, suite, unit, building, floor, etc."
-                                            size="md"
+                                            size="$4"
                                         />
                                     </Column>
 
@@ -307,7 +307,7 @@ export default function AddressesPage() {
                                                 value={formData.city}
                                                 onChangeText={(value) => setFormData({ ...formData, city: value })}
                                                 placeholder="San Francisco"
-                                                size="md"
+                                                size="$4"
                                                 required
                                             />
                                         </Column>
@@ -317,7 +317,7 @@ export default function AddressesPage() {
                                                 value={formData.state}
                                                 onChangeText={(value) => setFormData({ ...formData, state: value })}
                                                 placeholder="CA"
-                                                size="md"
+                                                size="$4"
                                                 required
                                             />
                                         </Column>
@@ -327,7 +327,7 @@ export default function AddressesPage() {
                                                 value={formData.zip}
                                                 onChangeText={(value) => setFormData({ ...formData, zip: value })}
                                                 placeholder="94102"
-                                                size="md"
+                                                size="$4"
                                                 required
                                             />
                                         </Column>
@@ -340,7 +340,7 @@ export default function AddressesPage() {
                                             value={formData.phone}
                                             onChangeText={(value) => setFormData({ ...formData, phone: value })}
                                             placeholder="(555) 123-4567"
-                                            size="md"
+                                            size="$4"
                                             inputMode="tel"
                                         />
                                     </Column>

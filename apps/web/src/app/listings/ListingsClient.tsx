@@ -241,7 +241,7 @@ export function ListingsClient({
             gap="$md"
           >
             <Column gap="$xs">
-              <Text fontSize="$9" weight="bold">
+              <Text size="$9" weight="bold">
                 Shop All Products
               </Text>
               <Text color="$textSecondary">
@@ -256,7 +256,7 @@ export function ListingsClient({
                 className="mobile-filter-button"
               >
                 <Button
-                  size="md"
+                  size="$4"
                   chromeless
                   onPress={() => setMobileFilterOpen(true)}
                 >
@@ -279,7 +279,7 @@ export function ListingsClient({
           {/* Active filters chips */}
           {activeFilterCount > 0 && (
             <Row gap="$sm" flexWrap="wrap" alignItems="center">
-              <Text fontSize="$3" color="$textSecondary">
+              <Text size="$3" color="$textSecondary">
                 Active filters:
               </Text>
               {filters.category && (
@@ -323,7 +323,7 @@ export function ListingsClient({
                   </span>
                 </Badge>
               ))}
-              <Button size="md" chromeless onPress={handleClearAll}>
+              <Button size="$4" chromeless onPress={handleClearAll}>
                 Clear all
               </Button>
             </Row>

@@ -72,8 +72,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row gap="$md">
             <Button
-              size="md"
-              tone="outline"
+              size="$4"
+
               onPress={() => {
                 /* View dashboard */
               }}
@@ -81,8 +81,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
               View Dashboard
             </Button>
             <Button
-              size="md"
-              tone="ghost"
+              size="$4"
+
               onPress={() => setShowOnboarding(true)}
             >
               Update Account
@@ -105,8 +105,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row>
             <Button
-              size="md"
-              tone="warning"
+              size="$4"
+
               onPress={() => setShowOnboarding(true)}
             >
               Resolve Issues
@@ -125,8 +125,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row>
             <Button
-              size="md"
-              tone="outline"
+              size="$4"
+
               onPress={() => setShowOnboarding(true)}
             >
               View Status
@@ -145,8 +145,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row gap="$md">
             <Button
-              size="md"
-              tone="primary"
+              size="$4"
+
               onPress={() => setShowOnboarding(true)}
             >
               Continue Onboarding
@@ -165,8 +165,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
         </Text>
         <Row>
           <Button
-            size="lg"
-            tone="primary"
+            size="$5"
+
             onPress={() => setShowOnboarding(true)}
           >
             Become a Seller
