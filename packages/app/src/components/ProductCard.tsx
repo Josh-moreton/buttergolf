@@ -114,8 +114,13 @@ export function ProductCard({
             lineHeight={1.3}
             color="$text"
             marginBottom="$2"
-            numberOfLines={2}
-            ellipse
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
           >
             {product.title}
           </Text>
