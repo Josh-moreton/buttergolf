@@ -103,27 +103,30 @@ export function ProductCard({
           borderRadius="$lg"
           zIndex={1}
           backgroundColor="rgba(255, 255, 255, 0.15)"
+          overflow="visible"
           style={{
             ...getGlassmorphismStyles("medium"),
           }}
         >
           {/* Product Title - Bold */}
-          <Text
-            size="$7"
-            fontWeight="700"
-            lineHeight={1.3}
-            color="$text"
-            marginBottom="$2"
+          <p
             style={{
+              fontFamily: "var(--font-urbanist)",
+              fontSize: "18px",
+              fontWeight: 700,
+              lineHeight: "1.4",
+              color: "#323232",
+              margin: "0 0 8px 0",
+              padding: 0,
+              maxHeight: "50px",
+              overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
+              WebkitBoxOrient: "vertical" as any,
             }}
           >
             {product.title}
-          </Text>
+          </p>
 
           {/* Price */}
           <Text
