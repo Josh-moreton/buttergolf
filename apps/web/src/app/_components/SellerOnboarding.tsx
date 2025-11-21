@@ -101,7 +101,7 @@ export function SellerOnboarding({
   if (loading) {
     return (
       <Card variant="elevated" padding="$xl">
-        <Column gap="$md" align="center">
+        <Column gap="$md" alignItems="center">
           <Spinner size="lg" color="$primary" />
           <Text color="$textSecondary">
             Initializing seller onboarding...
@@ -187,7 +187,7 @@ export function SellerOnboarding({
       </ConnectComponentsProvider>
 
       {onExit && (
-        <Row justify="center">
+        <Row justifyContent="center">
           <Button chromeless onPress={onExit}>
             Save and Exit
           </Button>

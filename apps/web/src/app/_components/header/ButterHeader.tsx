@@ -93,12 +93,12 @@ export function ButterHeader() {
             </Link>
 
             {/* Spacer to push navigation to the right */}
-            <Row flex={1} display="none" $lg={{ display: "flex" }} />
+            <Row flex={1} display="none" $gtMd={{ display: "flex" }} />
 
             {/* Navigation - Desktop Only (Right-aligned) */}
             <Row
               display="none"
-              $lg={{ display: "flex" }}
+              $gtMd={{ display: "flex" }}
               gap="$8"
               alignItems="center"
             >
@@ -146,7 +146,7 @@ export function ButterHeader() {
             {/* Right Side: Auth Buttons - Desktop Only */}
             <Row
               display="none"
-              $lg={{ display: "flex" }}
+              $gtMd={{ display: "flex" }}
               gap="$3"
               alignItems="center"
               flexShrink={0}
@@ -188,7 +188,7 @@ export function ButterHeader() {
             {/* Mobile Menu Toggle */}
             <Row
               display="flex"
-              $lg={{ display: "none" }}
+              $gtMd={{ display: "none" }}
               tag="button"
               cursor="pointer"
               hoverStyle={{ opacity: 0.8 }}

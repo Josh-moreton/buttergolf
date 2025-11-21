@@ -20,7 +20,7 @@ interface Props {
 export const dynamic = "force-dynamic";
 
 async function getListings(searchParams: SearchParams) {
-  const page = parseInt(searchParams.page || "1");
+  const page = Number.parseInt(searchParams.page || "1");
   const limit = 24;
   const skip = (page - 1) * limit;
 
@@ -31,17 +31,18 @@ async function getListings(searchParams: SearchParams) {
     where.category = { slug: searchParams.category };
   }
 
-  const conditions = (Array.isArray(searchParams.condition)
-    ? searchParams.condition
-    : searchParams.condition
-      ? [searchParams.condition]
-      : []) as ProductCondition[];
+  let conditions: ProductCondition[] = [];
+  if (Array.isArray(searchParams.condition)) {
+    conditions = searchParams.condition as ProductCondition[];
+  } else if (searchParams.condition) {
+    conditions = [searchParams.condition as ProductCondition];
+  }
   if (conditions.length > 0) {
     where.condition = { in: conditions };
   }
 
-  const minPrice = searchParams.minPrice ? parseFloat(searchParams.minPrice) : undefined;
-  const maxPrice = searchParams.maxPrice ? parseFloat(searchParams.maxPrice) : undefined;
+  const minPrice = searchParams.minPrice ? Number.parseFloat(searchParams.minPrice) : undefined;
+  const maxPrice = searchParams.maxPrice ? Number.parseFloat(searchParams.maxPrice) : undefined;
   if (minPrice || maxPrice) {
     where.price = {
       ...(minPrice && { gte: minPrice }),
@@ -49,18 +50,19 @@ async function getListings(searchParams: SearchParams) {
     };
   }
 
-  const brands = Array.isArray(searchParams.brand)
-    ? searchParams.brand
-    : searchParams.brand
-      ? [searchParams.brand]
-      : [];
+  let brands: string[] = [];
+  if (Array.isArray(searchParams.brand)) {
+    brands = searchParams.brand;
+  } else if (searchParams.brand) {
+    brands = [searchParams.brand];
+  }
   if (brands.length > 0) {
     where.brandId = { in: brands };
   }
 
   // Sort options
   const sort = searchParams.sort || "newest";
-  let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
+  let orderBy: Prisma.ProductOrderByWithRelationInput;
 
   switch (sort) {
     case "price-asc":
@@ -167,7 +169,7 @@ async function getListings(searchParams: SearchParams) {
   };
 }
 
-export default async function ListingsPage({ searchParams }: Props) {
+export default async function ListingsPage({ searchParams }: Readonly<Props>) {
   const resolvedParams = await searchParams;
   const data = await getListings(resolvedParams);
 

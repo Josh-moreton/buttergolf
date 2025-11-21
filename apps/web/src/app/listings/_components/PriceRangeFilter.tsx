@@ -17,7 +17,7 @@ export function PriceRangeFilter({
   selectedMin,
   selectedMax,
   onChange,
-}: PriceRangeFilterProps) {
+}: Readonly<PriceRangeFilterProps>) {
   const [localMin, setLocalMin] = useState(selectedMin);
   const [localMax, setLocalMax] = useState(selectedMax);
 
@@ -37,7 +37,7 @@ export function PriceRangeFilter({
   };
 
   const handleMinInputChange = (value: string) => {
-    const num = parseFloat(value) || minPrice;
+    const num = Number.parseFloat(value) || minPrice;
     setLocalMin(num);
     if (num >= minPrice && num <= localMax) {
       onChange(num, localMax);
@@ -45,7 +45,7 @@ export function PriceRangeFilter({
   };
 
   const handleMaxInputChange = (value: string) => {
-    const num = parseFloat(value) || maxPrice;
+    const num = Number.parseFloat(value) || maxPrice;
     setLocalMax(num);
     if (num <= maxPrice && num >= localMin) {
       onChange(localMin, num);

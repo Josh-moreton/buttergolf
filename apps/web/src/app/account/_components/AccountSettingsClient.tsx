@@ -219,7 +219,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
         {/* Seller Status Card */}
         <Card variant="elevated" padding="$lg">
           <Column gap="$lg">
-            <Row align="center" justifyContent="space-between">
+            <Row alignItems="center" justifyContent="space-between">
               <Heading level={3}>Seller Account</Heading>
               {getStatusBadge()}
             </Row>

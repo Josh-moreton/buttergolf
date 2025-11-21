@@ -11,7 +11,7 @@ interface CategoryFilterProps {
 export function CategoryFilter({
   selectedCategory,
   onChange,
-}: CategoryFilterProps) {
+}: Readonly<CategoryFilterProps>) {
   return (
     <Column gap="$xs">
       <Row

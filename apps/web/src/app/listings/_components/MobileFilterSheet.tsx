@@ -28,7 +28,7 @@ export function MobileFilterSheet({
   onChange,
   onClearAll,
   onApply,
-}: MobileFilterSheetProps) {
+}: Readonly<MobileFilterSheetProps>) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <Sheet.Handle />
@@ -84,14 +84,12 @@ export function MobileFilterSheet({
           </FilterSection>
 
           <FilterSection title="Favorites" defaultExpanded>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-                userSelect: "none",
-              }}
+            <Row
+              alignItems="center"
+              gap="$2"
+              cursor="pointer"
+              userSelect="none"
+              onPress={() => onChange({ showFavoritesOnly: !filters.showFavoritesOnly })}
             >
               <input
                 type="checkbox"
@@ -101,13 +99,13 @@ export function MobileFilterSheet({
                   width: 20,
                   height: 20,
                   cursor: "pointer",
-                  accentColor: "#F45314",
+                  accentColor: "var(--primary)",
                 }}
               />
               <Text size="$4" color="$text">
                 Show favorites only
               </Text>
-            </label>
+            </Row>
           </FilterSection>
         </Column>
       </Sheet.Body>

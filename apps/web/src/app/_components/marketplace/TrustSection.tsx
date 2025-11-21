@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Row, Column } from "@buttergolf/ui";
+import { Row, Column, Text } from "@buttergolf/ui";
 
 const TRUST_ITEMS = [
     {
@@ -28,45 +28,38 @@ const TRUST_ITEMS = [
 
 export function TrustSection() {
     return (
-        <div
-            style={{
-                backgroundColor: "#FFFFFF",
-                paddingTop: "80px",
-                paddingBottom: "80px",
-            }}
+        <Column
+            backgroundColor="$background"
+            paddingVertical="$10"
         >
-            <div
-                style={{
-                    maxWidth: "1280px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    paddingLeft: "48px",
-                    paddingRight: "48px",
-                }}
+            <Column
+                maxWidth={1280}
+                marginHorizontal="auto"
+                paddingHorizontal="$12"
+                width="100%"
             >
                 {/* Main Heading */}
-                <h2
-                    style={{
-                        fontFamily: "var(--font-urbanist)",
-                        fontSize: "clamp(28px, 5vw, 40px)",
-                        fontWeight: 700,
-                        lineHeight: 1.2,
-                        color: "#323232",
-                        textAlign: "center",
-                        margin: 0,
-                        marginBottom: "64px",
-                    }}
+                <Text
+                    style={{ fontSize: "clamp(28px, 5vw, 40px)" }}
+                    fontWeight="700"
+                    lineHeight={1.2}
+                    color="$text"
+                    textAlign="center"
+                    marginBottom="$16"
                 >
                     Fresh takes on second-hand reassurance
-                </h2>
+                </Text>
 
                 {/* Trust Items Grid */}
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                        gap: "48px",
-                        justifyItems: "center",
+                <Column
+                    display="grid"
+                    gridTemplateColumns="1"
+                    gap="$12"
+                    $gtMd={{
+                        gridTemplateColumns: "repeat(2, 1fr)",
+                    }}
+                    $gtLg={{
+                        gridTemplateColumns: "repeat(4, 1fr)",
                     }}
                 >
                     {TRUST_ITEMS.map((item) => (
@@ -75,6 +68,7 @@ export function TrustSection() {
                             alignItems="center"
                             gap="$md"
                             maxWidth={280}
+                            marginHorizontal="auto"
                         >
                             {/* Icon */}
                             <Image
@@ -99,6 +93,7 @@ export function TrustSection() {
                                         lineHeight: 1.3,
                                         color: "#323232",
                                         margin: 0,
+                                        padding: 0,
                                     }}
                                 >
                                     {item.title}
@@ -111,6 +106,7 @@ export function TrustSection() {
                                         lineHeight: 1.3,
                                         color: "#323232",
                                         margin: 0,
+                                        padding: 0,
                                     }}
                                 >
                                     {item.subtitle}
@@ -118,8 +114,8 @@ export function TrustSection() {
                             </Column>
                         </Row>
                     ))}
-                </div>
-            </div>
-        </div>
+                </Column>
+            </Column>
+        </Column>
     );
 }

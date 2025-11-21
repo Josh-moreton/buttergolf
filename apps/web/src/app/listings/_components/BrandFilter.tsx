@@ -13,7 +13,7 @@ export function BrandFilter({
   availableBrands,
   selectedBrands,
   onChange,
-}: BrandFilterProps) {
+}: Readonly<BrandFilterProps>) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredBrands = useMemo(() => {
