@@ -15,6 +15,7 @@ catalog:
   "@tamagui/next-plugin": "^1.135.7"
   "@tamagui/next-theme": "^1.135.7"
   "@tamagui/polyfill-dev": "^1.135.7"
+  "@tamagui/sheet": "^1.135.7"
   "@tamagui/shorthands": "^1.135.7"
   "@tamagui/themes": "^1.135.7"
   "@tamagui/toast": "^1.138.0"
