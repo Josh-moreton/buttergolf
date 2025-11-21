@@ -19,7 +19,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean && rm -rf node_modules",
-    "clean-install": "pnpm clean && pnpm install"
+    "clean-install": "pnpm clean && pnpm install",
+    "deps:check": "bash scripts/deps-check.sh",
+    "deps:upgrade": "bash scripts/deps-upgrade.sh",
+    "deps:outdated": "pnpm outdated --recursive",
+    "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
     "@tamagui/cli": "^1.135.7",

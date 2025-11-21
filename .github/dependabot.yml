@@ -1,60 +1,113 @@
-# Dependabot configuration for ButterGolf monorepo
-# Automatically checks for dependency updates across all packages
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# =============================================================================
+# Dependabot Configuration for ButterGolf Monorepo
+# =============================================================================
+#
+# STRATEGY: Aligns with pnpm-workspace.yaml tiered versioning
+#
+# TIER 1 (IGNORED): Framework-critical packages - manual upgrades only
+#   - React, React Native, Expo, Tamagui, Next.js, Solito
+#   - These are pinned to exact versions and should NEVER be auto-upgraded
+#
+# TIER 2 (GROUPED): Patch-safe packages - auto PRs allowed
+#   - Prisma, Clerk, TypeScript types
+#   - Updates are grouped by concern for easier review
+#
+# TIER 3 (AUTO): Utility packages - standard auto-update
+#   - General utilities with stable APIs
+# =============================================================================
 
 version: 2
 updates:
-  # Root workspace dependencies
+  # ===========================================================================
+  # Root Workspace
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 10
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "automerge-safe"
+    # TIER 1: Never auto-upgrade these (pinned in catalog)
+    ignore:
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
     groups:
-      react:
-        patterns:
-          - "react"
-          - "react-dom"
       dev-dependencies:
         patterns:
           - "prettier"
           - "turbo"
-          - "typescript"
+          - "tsx"
 
-  # Web app (Next.js)
+  # ===========================================================================
+  # Web App (Next.js)
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/apps/web"
     schedule:
       interval: "weekly"
       day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "web"
+    # TIER 1: Pinned packages - manual upgrades only
+    ignore:
+      - dependency-name: "next"
+      - dependency-name: "@next/*"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "tamagui"
+      - dependency-name: "@tamagui/*"
+    # TIER 2: Grouped for review
     groups:
-      nextjs:
-        patterns:
-          - "next"
-          - "@next/*"
       clerk:
         patterns:
           - "@clerk/*"
           - "svix"
+      types:
+        patterns:
+          - "@types/*"
 
-  # Mobile app (Expo)
+  # ===========================================================================
+  # Mobile App (Expo)
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/apps/mobile"
     schedule:
       interval: "weekly"
       day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "mobile"
+    # TIER 1: Expo ecosystem - requires coordinated upgrades
+    # See: pnpm run deps:upgrade -- --expo
+    ignore:
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+      - dependency-name: "@react-native/*"
+      - dependency-name: "react"
+      - dependency-name: "tamagui"
+      - dependency-name: "@tamagui/*"
+    # TIER 2: Safe to update
     groups:
-      expo:
-        patterns:
-          - "expo"
-          - "expo-*"
-      react-native:
-        patterns:
-          - "react-native"
-          - "react-native-*"
       clerk:
         patterns:
           - "@clerk/*"
@@ -62,56 +115,106 @@ updates:
         patterns:
           - "@react-navigation/*"
 
-  # UI package
+  # ===========================================================================
+  # UI Package
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/packages/ui"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
-    groups:
-      tamagui:
-        patterns:
-          - "tamagui"
-          - "@tamagui/*"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "ui"
+    # TIER 1: Tamagui - all packages must update together
+    ignore:
+      - dependency-name: "tamagui"
+      - dependency-name: "@tamagui/*"
+      - dependency-name: "react"
+      - dependency-name: "react-native"
 
-  # Database package (Prisma)
+  # ===========================================================================
+  # Database Package (Prisma)
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/packages/db"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "database"
+    # Prisma is TIER 2 - patch updates OK
     groups:
       prisma:
         patterns:
           - "prisma"
           - "@prisma/*"
 
-  # App package (shared features)
+  # ===========================================================================
+  # App Package (Shared Features)
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/packages/app"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+    # TIER 1: Cross-platform packages
+    ignore:
+      - dependency-name: "solito"
+      - dependency-name: "tamagui"
+      - dependency-name: "@tamagui/*"
+      - dependency-name: "react"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-web"
 
-  # Config package
+  # ===========================================================================
+  # Config Package
+  # ===========================================================================
   - package-ecosystem: "npm"
     directory: "/packages/config"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
-    groups:
-      tamagui:
-        patterns:
-          - "tamagui"
-          - "@tamagui/*"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+    # TIER 1: Tamagui config
+    ignore:
+      - dependency-name: "tamagui"
+      - dependency-name: "@tamagui/*"
 
-  # GitHub Actions workflows
+  # ===========================================================================
+  # GitHub Actions
+  # ===========================================================================
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+    labels:
+      - "dependencies"
+      - "ci"

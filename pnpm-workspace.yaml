@@ -1,9 +1,59 @@
+# =============================================================================
+# pnpm Workspace Configuration
+# =============================================================================
+#
+# DEPENDENCY VERSIONING STRATEGY
+# ------------------------------
+# This monorepo uses a tiered versioning strategy via pnpm catalogs:
+#
+# TIER 1 - PINNED (exact versions, no prefix)
+#   - Framework-critical packages where ANY update can break builds
+#   - Examples: React, React Native, Expo, Tamagui, Next.js
+#   - Updated: Only via explicit upgrade workflow (see scripts/upgrade-deps.sh)
+#
+# TIER 2 - MINOR-SAFE (~ tilde prefix)
+#   - Packages where patch updates are safe, but minor versions may have breaking changes
+#   - Examples: Prisma, Clerk, Stripe SDKs
+#   - Updated: Automatically via Dependabot within tilde range
+#
+# TIER 3 - FLEXIBLE (^ caret prefix)
+#   - Utility packages with stable APIs
+#   - Examples: lodash, date-fns, utility types
+#   - Updated: Automatically via Dependabot
+#
+# HOW TO ADD DEPENDENCIES
+# -----------------------
+# 1. Add version to catalog below under appropriate tier
+# 2. Reference in package.json as: "package-name": "catalog:"
+# 3. Run: pnpm install
+#
+# HOW TO UPGRADE DEPENDENCIES
+# ---------------------------
+# Safe upgrade: pnpm run deps:check && pnpm run deps:upgrade
+# Single package: pnpm update <package> --latest
+# =============================================================================
+
 packages:
   - "apps/*"
   - "packages/*"
 
 catalog:
-  # Tamagui UI Framework - all pinned to 1.135.7 for consistency
+  # ===========================================================================
+  # TIER 1: PINNED - Framework Critical (exact versions)
+  # ===========================================================================
+  # WARNING: Do not change these without running full test suite
+  # These packages have tight coupling and version-specific APIs
+
+  # React Ecosystem - Must match across all packages
+  "react": "19.1.0"
+  "react-dom": "19.1.0"
+  "react-native": "0.81.5"
+  "react-native-web": "0.21.2"
+  "react-native-safe-area-context": "5.6.2"
+  "react-native-screens": "4.18.0"
+
+  # Tamagui UI Framework - All packages must use same version
+  # See: https://tamagui.dev/docs/intro/releases for changelog
   "tamagui": "1.135.7"
   "@tamagui/animations-css": "1.135.7"
   "@tamagui/animations-react-native": "1.135.7"
@@ -21,40 +71,46 @@ catalog:
   "@tamagui/themes": "1.135.7"
   "@tamagui/toast": "1.135.7"
 
-  # React Ecosystem
-  "react": "19.1.0"
-  "react-dom": "19.1.0"
-  "react-native": "0.81.5"
-  "react-native-web": "0.21.2"
-  "react-native-safe-area-context": "5.6.2"
-  "react-native-screens": "4.18.0"
-
-  # Cross-Platform Navigation
-  "solito": "5.0.0"
-
-  # Next.js
-  "next": "16.0.1"
-
-  # TypeScript
-  "typescript": "5.9.3"
-  "@types/react": "19.2.6"
-  "@types/react-dom": "19.2.3"
-  "@types/node": "20.19.24"
-
-  # ESLint
-  "eslint": "9.39.1"
-  "eslint-config-expo": "10.0.0"
-
-  # Prisma (Database ORM)
-  "prisma": "6.19.0"
-  "@prisma/client": "6.19.0"
-
-  # Clerk (Authentication)
-  "@clerk/nextjs": "6.34.1"
-  "@clerk/clerk-expo": "2.17.3"
-
-  # Expo
+  # Expo - Tied to specific React Native version
+  # Expo 54 requires RN 0.81.x - DO NOT upgrade independently
   "expo": "54.0.23"
   "expo-auth-session": "7.0.8"
   "expo-secure-store": "15.0.7"
   "expo-status-bar": "3.0.8"
+
+  # Next.js - Major framework, test thoroughly before upgrading
+  "next": "16.0.1"
+
+  # Cross-Platform Navigation
+  "solito": "5.0.0"
+
+  # TypeScript - Compiler version affects type checking
+  "typescript": "5.9.3"
+
+  # ===========================================================================
+  # TIER 2: MINOR-SAFE - Stable within minor version (~)
+  # ===========================================================================
+  # These packages follow semver well; patch updates are safe
+
+  # Type Definitions - Should match runtime versions
+  "@types/react": "~19.2.6"
+  "@types/react-dom": "~19.2.3"
+  "@types/node": "~20.19.24"
+
+  # Database ORM - Schema-sensitive, test migrations
+  "prisma": "~6.19.0"
+  "@prisma/client": "~6.19.0"
+
+  # Authentication - Test auth flows after updates
+  "@clerk/nextjs": "~6.34.1"
+  "@clerk/clerk-expo": "~2.17.3"
+
+  # Linting - Minor versions may add new rules
+  "eslint": "~9.39.1"
+  "eslint-config-expo": "~10.0.0"
+
+  # ===========================================================================
+  # TIER 3: FLEXIBLE - Utility packages (^)
+  # ===========================================================================
+  # These packages have stable APIs; minor updates are generally safe
+  # Add common utility packages here as needed
