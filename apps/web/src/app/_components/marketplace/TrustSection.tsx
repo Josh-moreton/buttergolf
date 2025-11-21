@@ -85,22 +85,32 @@ export function TrustSection() {
 
                             {/* Text */}
                             <Column gap="$xs">
-                                <Text
-                                    size="$7"
-                                    fontWeight="700"
-                                    lineHeight={1.3}
-                                    color="$text"
+                                <p
+                                    style={{
+                                        fontFamily: "var(--font-urbanist)",
+                                        fontSize: "18px",
+                                        fontWeight: 700,
+                                        lineHeight: 1.3,
+                                        color: "#323232",
+                                        margin: 0,
+                                        padding: 0,
+                                    }}
                                 >
                                     {item.title}
-                                </Text>
-                                <Text
-                                    size="$7"
-                                    fontWeight="500"
-                                    lineHeight={1.3}
-                                    color="$text"
+                                </p>
+                                <p
+                                    style={{
+                                        fontFamily: "var(--font-urbanist)",
+                                        fontSize: "18px",
+                                        fontWeight: 500,
+                                        lineHeight: 1.3,
+                                        color: "#323232",
+                                        margin: 0,
+                                        padding: 0,
+                                    }}
                                 >
                                     {item.subtitle}
-                                </Text>
+                                </p>
                             </Column>
                         </Row>
                     ))}
