@@ -1,8 +1,6 @@
 "use client";
 
 import "@tamagui/core/reset.css";
-import "@tamagui/font-inter/css/400.css";
-import "@tamagui/font-inter/css/700.css";
 import "@tamagui/polyfill-dev";
 
 import type { ReactNode } from "react";
@@ -19,8 +17,7 @@ export function NextTamaguiProvider({
   const [currentTheme, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
-    // @ts-expect-error - RNW StyleSheet type not available
-    const rnwStyle = StyleSheet.getSheet();
+    const rnwStyle = StyleSheet.getSheet() as { id: string; textContent: string } | null;
 
     return (
       <>

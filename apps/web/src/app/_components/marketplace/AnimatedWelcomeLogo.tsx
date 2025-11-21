@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useTheme } from "tamagui";
+import { useTheme } from "@buttergolf/ui";
 
 /**
  * Animated SVG logo for "Welcome to Butter Golf"
