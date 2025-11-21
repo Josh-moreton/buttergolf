@@ -13,7 +13,7 @@ export function FilterSection({
   title,
   children,
   defaultExpanded = true,
-}: FilterSectionProps) {
+}: Readonly<FilterSectionProps>) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (

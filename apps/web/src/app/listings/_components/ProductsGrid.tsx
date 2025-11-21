@@ -31,11 +31,11 @@ function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}: {
+}: Readonly<{
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-}) {
+}>) {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
 
@@ -100,7 +100,7 @@ function Pagination({
         if (page === "...") {
           return (
             <Text
-              key={`ellipsis-${index}`}
+              key={`ellipsis-${currentPage}-${index}`}
               paddingHorizontal="$2"
               color="$textSecondary"
             >
@@ -196,8 +196,8 @@ export function ProductsGrid({
         }}
       >
         {isLoading
-          ? Array.from({ length: 24 }).map((_, i) => (
-            <LoadingSkeleton key={`skeleton-${i}`} />
+          ? Array.from({ length: 24 }, (_, i) => (
+            <LoadingSkeleton key={`loading-skeleton-${i}`} />
           ))
           : products.map((product) => (
             <ProductCard

@@ -19,7 +19,7 @@ interface ConditionFilterProps {
 export function ConditionFilter({
   selectedConditions,
   onChange,
-}: ConditionFilterProps) {
+}: Readonly<ConditionFilterProps>) {
   const handleToggle = (condition: string) => {
     if (selectedConditions.includes(condition)) {
       onChange(selectedConditions.filter((c) => c !== condition));
