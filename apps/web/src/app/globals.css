@@ -44,8 +44,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ensure Tamagui theme transitions smoothly */
-* {
+/* Smooth transitions for interactive elements only */
+body,
+button,
+input,
+select,
+textarea,
+a {
   transition:
     background-color 200ms ease,
     color 200ms ease,

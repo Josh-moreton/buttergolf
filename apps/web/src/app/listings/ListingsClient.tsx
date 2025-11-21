@@ -217,20 +217,6 @@ export function ListingsClient({
 
       {/* Listings Content */}
       <Column width="100%" paddingVertical="$lg">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-          @media (min-width: 1024px) {
-            .mobile-filter-button {
-              display: none !important;
-            }
-            .desktop-filter-sidebar {
-              display: flex !important;
-            }
-          }
-        `,
-          }}
-        />
         <Column
           maxWidth={1280}
           marginHorizontal="auto"
@@ -256,9 +242,9 @@ export function ListingsClient({
 
             <Row gap="$md" alignItems="center">
               {/* Mobile filter button */}
-              <div
-                style={{ display: "flex" }}
-                className="mobile-filter-button"
+              <Row
+                display="flex"
+                $gtLg={{ display: "none" }}
               >
                 <Button
                   size="$4"
@@ -274,7 +260,7 @@ export function ListingsClient({
                     )}
                   </Row>
                 </Button>
-              </div>
+              </Row>
 
               {/* Sort dropdown */}
               <SortDropdown value={sort} onChange={setSort} />

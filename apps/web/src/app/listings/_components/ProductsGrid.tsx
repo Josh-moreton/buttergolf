@@ -15,24 +15,15 @@ interface ProductsGridProps {
 
 function LoadingSkeleton() {
   return (
-    <div
-      style={{
-        width: "100%",
-        paddingBottom: "111.11%", // 9:10 aspect ratio
-        backgroundColor: "#f0f0f0",
-        borderRadius: "16px",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          animation: "pulse 1.5s ease-in-out infinite",
-        }}
-      />
-    </div>
+    <Column
+      width="100%"
+      paddingBottom="111.11%"
+      backgroundColor="$border"
+      borderRadius="$lg"
+      position="relative"
+      overflow="hidden"
+      animation="quick"
+    />
   );
 }
 
@@ -108,16 +99,13 @@ function Pagination({
       {getPageNumbers().map((page, index) => {
         if (page === "...") {
           return (
-            <span
+            <Text
               key={`ellipsis-${index}`}
-              style={{
-                padding: "0 8px",
-                color: "#545454",
-                fontFamily: "var(--font-urbanist)",
-              }}
+              paddingHorizontal="$2"
+              color="$textSecondary"
             >
               …
-            </span>
+            </Text>
           );
         }
 
@@ -195,14 +183,17 @@ export function ProductsGrid({
   return (
     <Column gap="$lg" width="100%">
       {/* Products Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
-      <div
-        style={{
+      <Column
+        width="100%"
+        gap="$6"
+        $gtMd={{
           display: "grid",
-          gridTemplateColumns: "repeat(1, 1fr)",
-          gap: "24px",
-          width: "100%",
+          gridTemplateColumns: "repeat(2, 1fr)",
         }}
-        className="products-grid"
+        $gtLg={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+        }}
       >
         {isLoading
           ? Array.from({ length: 24 }).map((_, i) => (
@@ -215,7 +206,7 @@ export function ProductsGrid({
               onPress={() => router.push(`/products/${product.id}`)}
             />
           ))}
-      </div>
+      </Column>
 
       {/* Pagination */}
       {!isLoading && totalPages > 1 && (
@@ -225,19 +216,6 @@ export function ProductsGrid({
           onPageChange={onPageChange}
         />
       )}
-
-      <style>{`
-        @media (min-width: 768px) {
-          .products-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .products-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-        }
-      `}</style>
     </Column>
   );
 }
