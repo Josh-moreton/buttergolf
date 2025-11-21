@@ -250,26 +250,116 @@ import { Button } from "@buttergolf/ui";
 <Button size="md">Wrong!</Button>  // Use numeric tokens like $4
 ```
 
-#### ✅ Use Layout Components
+#### ✅ Use Layout Components (Row/Column)
+
+**CRITICAL: Row and Column are minimal shims over Tamagui primitives. They expose the FULL Tamagui API.**
+
+Row and Column components do NOT have custom variants. Always use native Tamagui props directly.
+
+##### ✅ CORRECT - Use Native Tamagui Props
 
 ```tsx
-// ✅ CORRECT - Semantic layout components with native Tamagui props
-<Column gap="$lg">
+// ✅ Gap with $ prefix (Tamagui token)
+<Row gap="$md">
+  <Text>Item 1</Text>
+  <Text>Item 2</Text>
+</Row>
+
+// ✅ Alignment with native React Native flexbox props
+<Row alignItems="center" justifyContent="space-between">
+  <Text>Left</Text>
+  <Text>Right</Text>
+</Row>
+
+// ✅ Full example with all common props
+<Column
+  gap="$lg"
+  padding="$md"
+  alignItems="stretch"
+  justifyContent="flex-start"
+  width="100%"
+>
   <Heading level={2}>Title</Heading>
   <Text>Description</Text>
   <Button>Action</Button>
 </Column>
 
-<Row gap="$md" alignItems="center" justifyContent="space-between">
-  <Text>Left content</Text>
-  <Button>Right action</Button>
+// ✅ Media queries work naturally
+<Row
+  gap="$sm"
+  $gtMd={{ gap: "$lg" }}
+  flexDirection="row"
+  $gtMd={{ flexDirection: "row-reverse" }}
+>
+  <Text>Responsive content</Text>
+</Row>
+```
+
+##### ❌ WRONG - Old Patterns (REMOVED)
+
+```tsx
+// ❌ NEVER use custom variants (these were removed)
+<Row align="center">          // WRONG! Use alignItems="center"
+<Row justify="between">        // WRONG! Use justifyContent="space-between"
+<Column align="stretch">       // WRONG! Use alignItems="stretch"
+
+// ❌ NEVER use gap without $ prefix
+<Row gap="md">                 // WRONG! Use gap="$md"
+
+// ❌ NEVER use type assertions to bypass errors
+<Row {...{ gap: "md" as any }}>  // WRONG! This means you're using wrong prop
+
+// ❌ Don't use XStack/YStack directly when Row/Column exist
+<XStack gap="$4">              // Use <Row> instead
+<YStack gap="$4">              // Use <Column> instead
+```
+
+##### Common Layout Patterns
+
+```tsx
+// Horizontal spacing
+<Row gap="$md">
+  <Button>One</Button>
+  <Button>Two</Button>
 </Row>
 
-// ❌ WRONG - Don't use raw YStack/XStack when semantic components exist
-<YStack gap="$6" alignItems="stretch">
+// Vertical stack
+<Column gap="$lg">
+  <Heading level={2}>Title</Heading>
   <Text>Content</Text>
-</YStack>
+</Column>
+
+// Centered content
+<Column gap="$md" alignItems="center" justifyContent="center">
+  <Spinner />
+  <Text>Loading...</Text>
+</Column>
+
+// Space between with alignment
+<Row alignItems="center" justifyContent="space-between" width="100%">
+  <Text>Label</Text>
+  <Badge>Status</Badge>
+</Row>
+
+// Nested layouts
+<Column gap="$xl" fullWidth>
+  <Row alignItems="center" justifyContent="space-between">
+    <Heading level={2}>Section Title</Heading>
+    <Button>Action</Button>
+  </Row>
+  <Column gap="$md">
+    <Text>Content here</Text>
+  </Column>
+</Column>
 ```
+
+##### Why This Approach?
+
+1. **Type Safety**: No custom variants means no TypeScript conflicts
+2. **Full API Access**: All Tamagui/React Native flexbox props available
+3. **Better IntelliSense**: IDEs autocomplete all available props
+4. **Cross-Platform**: Works identically on web and mobile
+5. **Future-Proof**: No breaking changes when Tamagui updates
 
 #### ✅ Use Compound Components for Cards
 
@@ -578,6 +668,46 @@ await db.course.delete({
 - Consult package-specific CLAUDE.md files
 - Check Tamagui documentation for UI issues
 - Review Solito docs for navigation issues
+
+## Layout Pattern Documentation
+
+**IMPORTANT**: The codebase recently completed a comprehensive layout migration. All routes now follow the minimal shim pattern for Row/Column components.
+
+### Migration Documentation
+
+For detailed information about layout patterns and component architecture:
+
+- **[Layout Migration Complete](../docs/LAYOUT_MIGRATION_COMPLETE.md)** - Complete migration report with statistics and verification
+- **[Component Library Audit](../docs/COMPONENT_LIBRARY_AUDIT.md)** - Full audit of all UI components with variant usage guidelines
+- **[Listings Layout Fix](../docs/LISTINGS_LAYOUT_FIX_COMPLETE.md)** - Deep dive into the pattern that established best practices
+
+### Quick Reference: Layout Patterns
+
+**✅ DO:**
+- Use `alignItems` for cross-axis alignment
+- Use `justifyContent` for main-axis alignment
+- Use tokens with `$` prefix (e.g., `gap="$md"`)
+- Use Row/Column for semantic layout
+
+**❌ DON'T:**
+- Use removed `align` prop (use `alignItems` instead)
+- Use removed `justify` prop (use `justifyContent` instead)
+- Use gap without `$` prefix (always `gap="$md"`, never `gap="md"`)
+- Use `as any` type assertions (if you need this, you're using the wrong prop)
+- Use XStack/YStack directly (use Row/Column instead)
+
+### Detection Script
+
+To check for old patterns that may have been reintroduced:
+
+```bash
+# Check for Row/Column with old props
+grep -r '<Row.*align="' apps/web/src/app --include="*.tsx"
+grep -r '<Column.*align="' apps/web/src/app --include="*.tsx"
+grep -r '<Row.*justify="' apps/web/src/app --include="*.tsx"
+
+# Should return no results if codebase is clean
+```
 
 ## Additional Resources
 
