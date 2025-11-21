@@ -225,19 +225,6 @@ export function ProductsGrid({
           onPageChange={onPageChange}
         />
       )}
-
-      <style>{`
-        @media (min-width: 768px) {
-          .products-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .products-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-        }
-      `}</style>
     </Column>
   );
 }

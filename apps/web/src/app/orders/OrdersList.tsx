@@ -86,7 +86,7 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
         <Button
           chromeless
           onPress={() => setFilter('all')}
-          paddingHorizontal="$4"
+          paddingHorizontal="$md"
           paddingVertical="$xs"
           borderBottomWidth={filter === 'all' ? 2 : 0}
           borderBottomColor="$primary"
@@ -98,7 +98,7 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
         <Button
           chromeless
           onPress={() => setFilter('buyer')}
-          paddingHorizontal="$4"
+          paddingHorizontal="$md"
           paddingVertical="$xs"
           borderBottomWidth={filter === 'buyer' ? 2 : 0}
           borderBottomColor="$primary"
@@ -110,7 +110,7 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
         <Button
           chromeless
           onPress={() => setFilter('seller')}
-          paddingHorizontal="$4"
+          paddingHorizontal="$md"
           paddingVertical="$xs"
           borderBottomWidth={filter === 'seller' ? 2 : 0}
           borderBottomColor="$primary"

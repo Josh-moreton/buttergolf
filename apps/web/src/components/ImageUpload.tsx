@@ -98,7 +98,7 @@ export function ImageUpload({
         borderColor={dragActive ? "$primary" : "$border"}
         borderStyle="dashed"
         borderRadius="$xl"
-        padding="$10"
+        padding="$2xl"
         alignItems="center"
         justifyContent="center"
         minHeight={currentImages.length === 0 ? 280 : 180}

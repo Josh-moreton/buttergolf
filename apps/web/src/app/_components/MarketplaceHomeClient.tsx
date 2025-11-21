@@ -34,7 +34,7 @@ export default function MarketplaceHomeClient({
 
       {/* Buy/Sell Toggle - Immediate page load animation */}
       <PageLoadAnimation delay={0.2}>
-        <Column paddingTop="$6" paddingBottom="$4">
+        <Column paddingTop="$xl" paddingBottom="$md">
           <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
         </Column>
       </PageLoadAnimation>

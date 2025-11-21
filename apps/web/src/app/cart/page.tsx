@@ -14,8 +14,8 @@ export default function CartPage() {
                 minHeight="60vh"
                 alignItems="center"
                 justifyContent="center"
-                gap="$4"
-                paddingHorizontal="$4"
+                gap="$md"
+                paddingHorizontal="$md"
             >
                 <Text size="$7" weight="bold">
                     Your cart is empty
@@ -36,9 +36,9 @@ export default function CartPage() {
         <Column
             maxWidth={1280}
             marginHorizontal="auto"
-            paddingHorizontal="$6"
-            paddingVertical="$8"
-            gap="$6"
+            paddingHorizontal="$xl"
+            paddingVertical="$2xl"
+            gap="$xl"
             width="100%"
         >
             <Row alignItems="center" justifyContent="space-between">
@@ -130,7 +130,7 @@ export default function CartPage() {
                             ))}
                         </Column>
                         <Row
-                            paddingTop="$4"
+                            paddingTop="$md"
                             borderTopWidth={1}
                             borderColor="$border"
                             justifyContent="space-between"

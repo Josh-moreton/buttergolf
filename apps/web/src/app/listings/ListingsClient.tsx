@@ -217,24 +217,10 @@ export function ListingsClient({
 
       {/* Listings Content */}
       <Column width="100%" paddingVertical="$lg">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-          @media (min-width: 1024px) {
-            .mobile-filter-button {
-              display: none !important;
-            }
-            .desktop-filter-sidebar {
-              display: flex !important;
-            }
-          }
-        `,
-          }}
-        />
         <Column
           maxWidth={1280}
           marginHorizontal="auto"
-          paddingHorizontal="$6"
+          paddingHorizontal="$xl"
           width="100%"
           gap="$lg"
         >
@@ -244,6 +230,7 @@ export function ListingsClient({
             justifyContent="space-between"
             flexWrap="wrap"
             gap="$md"
+            width="100%"
           >
             <Column gap="$xs">
               <Text size="$9" weight="bold">
@@ -256,10 +243,7 @@ export function ListingsClient({
 
             <Row gap="$md" alignItems="center">
               {/* Mobile filter button */}
-              <div
-                style={{ display: "flex" }}
-                className="mobile-filter-button"
-              >
+              <Row display="flex" $gtMd={{ display: "none" }}>
                 <Button
                   size="$4"
                   chromeless
@@ -274,7 +258,7 @@ export function ListingsClient({
                     )}
                   </Row>
                 </Button>
-              </div>
+              </Row>
 
               {/* Sort dropdown */}
               <SortDropdown value={sort} onChange={setSort} />
@@ -283,7 +267,7 @@ export function ListingsClient({
 
           {/* Active filters chips */}
           {activeFilterCount > 0 && (
-            <Row gap="$sm" flexWrap="wrap" alignItems="center">
+            <Row gap="$sm" flexWrap="wrap" alignItems="center" width="100%">
               <Text size="$3" color="$textSecondary">
                 Active filters:
               </Text>
@@ -335,7 +319,7 @@ export function ListingsClient({
           )}
 
           {/* Main content: Sidebar + Grid */}
-          <Row gap="$2xl" alignItems="flex-start">
+          <Row gap="$2xl" alignItems="flex-start" width="100%">
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
@@ -346,7 +330,7 @@ export function ListingsClient({
             />
 
             {/* Products grid */}
-            <Column flex={1}>
+            <Column flex={1} minWidth={0}>
               <ProductsGrid
                 products={products}
                 isLoading={isLoading}

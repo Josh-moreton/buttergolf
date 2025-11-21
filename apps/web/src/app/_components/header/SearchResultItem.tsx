@@ -13,8 +13,8 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
   return (
     <Link href={`/products/${product.id}`} onClick={onSelect}>
       <Row
-        padding="$3"
-        gap="$3"
+        padding="$sm"
+        gap="$sm"
         hoverStyle={{ backgroundColor: "$backgroundHover" }}
         cursor="pointer"
         alignItems="center"
