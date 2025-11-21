@@ -20,8 +20,6 @@
     "@buttergolf/eslint-config": "workspace:*",
     "@buttergolf/typescript-config": "workspace:*",
     "@tamagui/card": "catalog:",
-    "@tamagui/sheet": "catalog:",
-    "@tamagui/toast": "catalog:",
     "tamagui": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
@@ -34,9 +32,7 @@
     "react-dom": "*",
     "react-native": "*",
     "tamagui": "*",
-    "@tamagui/card": "*",
-    "@tamagui/sheet": "*",
-    "@tamagui/toast": "*"
+    "@tamagui/card": "*"
   },
   "peerDependenciesMeta": {
     "react-native": {

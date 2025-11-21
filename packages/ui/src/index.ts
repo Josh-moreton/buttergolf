@@ -7,7 +7,6 @@
 
 // Re-export all Tamagui primitives
 export * from 'tamagui'
-export * from '@tamagui/toast'
 
 // Button Components
 export { Button } from './components/Button'
