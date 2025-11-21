@@ -5,7 +5,7 @@ interface SortDropdownProps {
   onChange: (value: string) => void;
 }
 
-export function SortDropdown({ value, onChange }: SortDropdownProps) {
+export function SortDropdown({ value, onChange }: Readonly<SortDropdownProps>) {
   return (
     <select
       value={value}

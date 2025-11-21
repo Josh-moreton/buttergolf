@@ -28,7 +28,7 @@ export function MobileFilterSheet({
   onChange,
   onClearAll,
   onApply,
-}: MobileFilterSheetProps) {
+}: Readonly<MobileFilterSheetProps>) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <Sheet.Handle />

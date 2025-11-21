@@ -30,14 +30,14 @@ export function ListingsClient({
   initialTotal,
   initialFilters,
   initialPage,
-}: ListingsClientProps) {
+}: Readonly<ListingsClientProps>) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Parse initial filters from URL
   const getInitialFilters = (): FilterState => {
     // Try to load from localStorage first
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         try {
@@ -46,8 +46,8 @@ export function ListingsClient({
           return {
             category: searchParams.get("category") || parsed.category || null,
             conditions: searchParams.getAll("condition") || parsed.conditions || [],
-            minPrice: parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
-            maxPrice: parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
+            minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
+            maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
             brands: searchParams.getAll("brand") || parsed.brands || [],
             showFavoritesOnly: searchParams.get("favorites") === "true" || parsed.showFavoritesOnly || false,
           };
@@ -61,8 +61,8 @@ export function ListingsClient({
     return {
       category: searchParams.get("category") || null,
       conditions: searchParams.getAll("condition") || [],
-      minPrice: parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
-      maxPrice: parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
+      minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
+      maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
       brands: searchParams.getAll("brand") || [],
       showFavoritesOnly: searchParams.get("favorites") === "true" || false,
     };
@@ -79,7 +79,7 @@ export function ListingsClient({
 
   // Save filters to localStorage
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
     }
   }, [filters]);
@@ -90,14 +90,18 @@ export function ListingsClient({
       const params = new URLSearchParams();
 
       if (newFilters.category) params.set("category", newFilters.category);
-      newFilters.conditions.forEach((c) => params.append("condition", c));
+      for (const c of newFilters.conditions) {
+        params.append("condition", c);
+      }
       if (newFilters.minPrice !== initialFilters.priceRange.min) {
         params.set("minPrice", newFilters.minPrice.toString());
       }
       if (newFilters.maxPrice !== initialFilters.priceRange.max) {
         params.set("maxPrice", newFilters.maxPrice.toString());
       }
-      newFilters.brands.forEach((b) => params.append("brand", b));
+      for (const b of newFilters.brands) {
+        params.append("brand", b);
+      }
       if (newFilters.showFavoritesOnly) params.set("favorites", "true");
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
@@ -118,10 +122,14 @@ export function ListingsClient({
       try {
         const params = new URLSearchParams();
         if (filters.category) params.set("category", filters.category);
-        filters.conditions.forEach((c) => params.append("condition", c));
+        for (const c of filters.conditions) {
+          params.append("condition", c);
+        }
         if (filters.minPrice) params.set("minPrice", filters.minPrice.toString());
         if (filters.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
-        filters.brands.forEach((b) => params.append("brand", b));
+        for (const b of filters.brands) {
+          params.append("brand", b);
+        }
         if (filters.showFavoritesOnly) params.set("favorites", "true");
         params.set("sort", sort);
         params.set("page", newPage.toString());
@@ -183,7 +191,7 @@ export function ListingsClient({
       showFavoritesOnly: false,
     };
     setFilters(defaultFilters);
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       localStorage.removeItem(STORAGE_KEY);
     }
   };
@@ -275,43 +283,58 @@ export function ListingsClient({
               </Text>
               {filters.category && (
                 <Badge variant="outline" size="md">
-                  {filters.category}
-                  <span
-                    style={{ marginLeft: 8, cursor: "pointer" }}
-                    onClick={() => handleFilterChange({ category: null })}
-                  >
-                    ×
-                  </span>
+                  <Row gap="$2" alignItems="center">
+                    <Text>{filters.category}</Text>
+                    <Button
+                      size="$2"
+                      chromeless
+                      padding="$0"
+                      onPress={() => handleFilterChange({ category: null })}
+                      aria-label="Remove category filter"
+                    >
+                      <Text>×</Text>
+                    </Button>
+                  </Row>
                 </Badge>
               )}
               {filters.conditions.map((condition) => (
                 <Badge key={condition} variant="outline" size="md">
-                  {condition.replace("_", " ")}
-                  <span
-                    style={{ marginLeft: 8, cursor: "pointer" }}
-                    onClick={() =>
-                      handleFilterChange({
-                        conditions: filters.conditions.filter((c) => c !== condition),
-                      })
-                    }
-                  >
-                    ×
-                  </span>
+                  <Row gap="$2" alignItems="center">
+                    <Text>{condition.replace("_", " ")}</Text>
+                    <Button
+                      size="$2"
+                      chromeless
+                      padding="$0"
+                      onPress={() =>
+                        handleFilterChange({
+                          conditions: filters.conditions.filter((c) => c !== condition),
+                        })
+                      }
+                      aria-label={`Remove ${condition} filter`}
+                    >
+                      <Text>×</Text>
+                    </Button>
+                  </Row>
                 </Badge>
               ))}
               {filters.brands.map((brand) => (
                 <Badge key={brand} variant="outline" size="md">
-                  {brand}
-                  <span
-                    style={{ marginLeft: 8, cursor: "pointer" }}
-                    onClick={() =>
-                      handleFilterChange({
-                        brands: filters.brands.filter((b) => b !== brand),
-                      })
-                    }
-                  >
-                    ×
-                  </span>
+                  <Row gap="$2" alignItems="center">
+                    <Text>{brand}</Text>
+                    <Button
+                      size="$2"
+                      chromeless
+                      padding="$0"
+                      onPress={() =>
+                        handleFilterChange({
+                          brands: filters.brands.filter((b) => b !== brand),
+                        })
+                      }
+                      aria-label={`Remove ${brand} filter`}
+                    >
+                      <Text>×</Text>
+                    </Button>
+                  </Row>
                 </Badge>
               ))}
               <Button size="$4" chromeless onPress={handleClearAll}>
