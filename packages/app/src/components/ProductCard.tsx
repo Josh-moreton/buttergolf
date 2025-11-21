@@ -91,7 +91,8 @@ export function ProductCard({
         <GlassmorphismCard
           intensity="light"
           blur="medium"
-          padding="$md"
+          paddingHorizontal="$md"
+          paddingVertical="$lg"
           position="absolute"
           bottom={0}
           left={0}
