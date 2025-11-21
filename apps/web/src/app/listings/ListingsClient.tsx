@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Column, Row, Text, Button, Badge } from "@buttergolf/ui";
+import { useMedia } from "tamagui";
 import type { ProductCardData } from "@buttergolf/app";
 import { FilterSidebar, type FilterState } from "./_components/FilterSidebar";
 import { MobileFilterSheet } from "./_components/MobileFilterSheet";
@@ -76,6 +77,7 @@ export function ListingsClient({
   const [isLoading, setIsLoading] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
+  const media = useMedia();
 
   // Save filters to localStorage
   useEffect(() => {
@@ -211,12 +213,14 @@ export function ListingsClient({
   }, [filters, initialFilters.priceRange]);
 
   return (
-    <Column width="100%" backgroundColor="$surface">
-      {/* Page Hero */}
-      <PageHero />
+    <Column width="100%">
+      {/* Page Hero - Top section */}
+      <Column width="100%" backgroundColor="$surface">
+        <PageHero />
+      </Column>
 
-      {/* Listings Content */}
-      <Column width="100%" paddingVertical="$lg">
+      {/* Listings Content - Main section */}
+      <Column width="100%" backgroundColor="$background" paddingVertical="$lg" minHeight="60vh">
         <Column
           maxWidth={1280}
           marginHorizontal="auto"
@@ -242,8 +246,8 @@ export function ListingsClient({
             </Column>
 
             <Row gap="$md" alignItems="center">
-              {/* Mobile filter button */}
-              <Row display="flex" $gtMd={{ display: "none" }}>
+              {/* Mobile filter button - show only on mobile/tablet */}
+              {!media.gtMd && (
                 <Button
                   size="$4"
                   chromeless
@@ -258,7 +262,7 @@ export function ListingsClient({
                     )}
                   </Row>
                 </Button>
-              </Row>
+              )}
 
               {/* Sort dropdown */}
               <SortDropdown value={sort} onChange={setSort} />
@@ -355,12 +359,16 @@ export function ListingsClient({
         />
       </Column>
 
-      {/* Trust & Newsletter Sections */}
-      <TrustSection />
-      <NewsletterSection />
+      {/* Trust & Newsletter Sections - Bottom sections */}
+      <Column width="100%">
+        <TrustSection />
+        <NewsletterSection />
+      </Column>
 
-      {/* Footer */}
-      <FooterSection />
+      {/* Footer - Bottom section */}
+      <Column width="100%">
+        <FooterSection />
+      </Column>
     </Column>
   );
 }

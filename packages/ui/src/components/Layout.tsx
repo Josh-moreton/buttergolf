@@ -7,8 +7,26 @@
  * These are intentionally minimal shims that preserve all Tamagui primitive behavior
  * while providing more semantic naming for application code.
  *
+ * ## Responsive Visibility
+ *
+ * For conditional rendering based on screen size, use the `useMedia()` hook instead of
+ * media query props like `$gtMd={{ display: "flex" }}`. This avoids hydration issues
+ * and matches the proven pattern used throughout the app.
+ *
  * @example
  * ```tsx
+ * // ✅ CORRECT - Use useMedia() hook for responsive visibility
+ * import { useMedia } from "tamagui";
+ * 
+ * const media = useMedia();
+ * 
+ * {media.gtMd && <DesktopSidebar />}
+ * {!media.gtMd && <MobileMenu />}
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // ✅ CORRECT - Basic layout usage
  * <Column gap="$lg">
  *   <Row gap="$md" alignItems="center" justifyContent="space-between">
  *     <Text>Left content</Text>

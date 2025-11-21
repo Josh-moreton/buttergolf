@@ -33,9 +33,7 @@ export function NextTamaguiProvider({
         )}
         <style
           dangerouslySetInnerHTML={{
-            __html: config.getCSS({
-              exclude: "design-system",
-            }),
+            __html: config.getCSS(),
           }}
         />
         <script

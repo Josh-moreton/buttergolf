@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { useMedia } from "tamagui";
 import {
   Column,
   Row,
@@ -84,6 +85,7 @@ const HelperText = ({ children }: { children: React.ReactNode }) => (
 export default function SellPage() {
   const router = useRouter();
   const { isSignedIn, isLoaded } = useUser();
+  const media = useMedia();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -316,8 +318,7 @@ export default function SellPage() {
                 >
                   <Row
                     gap="$lg"
-                    flexWrap="wrap"
-                    $gtMd={{ flexWrap: "nowrap" }}
+                    flexWrap={media.gtMd ? "nowrap" : "wrap"}
                     width="100%"
                   >
                     {/* Left: Image Upload (2/3 width on desktop) */}

@@ -1,6 +1,5 @@
 "use client";
 
-import { Column } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
 
 /**
@@ -13,14 +12,8 @@ import { imagePaths } from "@buttergolf/assets";
  */
 export function PageHero() {
   return (
-    <Column
-      width="100%"
-      paddingHorizontal="$md"
-      paddingTop="$md"
-      backgroundColor="$surface"
-    >
-      <div
-        style={{
+    <div
+      style={{
           width: "100%",
           height: "100px",
           borderRadius: "24px",
@@ -48,7 +41,6 @@ export function PageHero() {
         >
           Swing Smarter. Shop Better.
         </h1>
-      </div>
 
       <style>{`
         @media (min-width: 768px) {
@@ -64,6 +56,6 @@ export function PageHero() {
           }
         }
       `}</style>
-    </Column>
+    </div>
   );
 }

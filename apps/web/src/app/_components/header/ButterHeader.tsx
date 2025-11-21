@@ -210,9 +210,8 @@ export function ButterHeader() {
 
         {/* Category Navigation Sub-header - iOS Liquid Glass Effect */}
         <Row
-          paddingHorizontal="$4"
-          paddingVertical="$3"
-          $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
+          paddingHorizontal="$3"
+          paddingVertical="$2"
           justifyContent="center"
           backgroundColor="transparent"
         >

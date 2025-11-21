@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useMedia } from "tamagui";
 import { Column, Container, Spinner, Text, Row } from "@buttergolf/ui";
 import { CheckoutFormSimple } from "./_components/CheckoutFormSimple";
 import { OrderSummaryCard } from "./_components/OrderSummaryCard";
@@ -13,6 +14,7 @@ import { FooterSection } from "../_components/marketplace/FooterSection";
 function CheckoutPageContent() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId");
+  const media = useMedia();
 
   const [loading, setLoading] = useState(!!productId);
   const [error, setError] = useState<string | null>(!productId ? "No product selected" : null);
@@ -88,9 +90,8 @@ function CheckoutPageContent() {
         <Row
           gap="$xl"
           width="100%"
-          flexDirection="column"
-          $gtSm={{ flexDirection: "row", alignItems: "flex-start" }}
-          alignItems="stretch"
+          flexDirection={media.gtSm ? "row" : "column"}
+          alignItems={media.gtSm ? "flex-start" : "stretch"}
         >
           {/* Left Column - Checkout Form (66%) */}
           <Column

@@ -1,6 +1,7 @@
 "use client";
 
 import { Column, Button, Text } from "@buttergolf/ui";
+import { useMedia } from "tamagui";
 import { FilterSection } from "./FilterSection";
 import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
@@ -31,6 +32,11 @@ export function FilterSidebar({
   onChange,
   onClearAll,
 }: Readonly<FilterSidebarProps>) {
+  const media = useMedia();
+
+  // Hide sidebar on mobile - MobileFilterSheet handles filters
+  if (!media.gtMd) return null;
+
   return (
     <Column
       width={280}
@@ -43,8 +49,6 @@ export function FilterSidebar({
       borderRadius="$md"
       padding="$lg"
       gap="$lg"
-      display="none"
-      $gtMd={{ display: "flex" }}
     >
       <Text weight="bold" size="$6">
         Filters
