@@ -10,7 +10,7 @@ export type ProviderProps = PropsWithChildren<
   }
 >;
 
-export function Provider({ defaultTheme, ...rest }: ProviderProps) {
+export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
   const colorScheme = useColorScheme();
   const theme = defaultTheme ?? (colorScheme === "dark" ? "dark" : "light");
 
@@ -19,6 +19,8 @@ export function Provider({ defaultTheme, ...rest }: ProviderProps) {
       config={config}
       defaultTheme={theme}
       {...rest}
-    />
+    >
+      {children}
+    </TamaguiProvider>
   );
 }

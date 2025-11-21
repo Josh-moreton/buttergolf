@@ -14,15 +14,15 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@buttergolf/config": "workspace:*",
-    "@tamagui/card": "catalog:",
-    "@tamagui/sheet": "catalog:",
-    "@tamagui/toast": "catalog:",
-    "tamagui": "catalog:"
+    "@buttergolf/config": "workspace:*"
   },
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",
     "@buttergolf/typescript-config": "workspace:*",
+    "@tamagui/card": "catalog:",
+    "@tamagui/sheet": "catalog:",
+    "@tamagui/toast": "catalog:",
+    "tamagui": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -32,7 +32,11 @@
   "peerDependencies": {
     "react": "*",
     "react-dom": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "tamagui": "*",
+    "@tamagui/card": "*",
+    "@tamagui/sheet": "*",
+    "@tamagui/toast": "*"
   },
   "peerDependenciesMeta": {
     "react-native": {
