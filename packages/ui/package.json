@@ -16,6 +16,7 @@
   "dependencies": {
     "@buttergolf/config": "workspace:*",
     "@tamagui/card": "catalog:",
+    "@tamagui/sheet": "^1.138.1",
     "@tamagui/toast": "catalog:",
     "tamagui": "catalog:"
   },

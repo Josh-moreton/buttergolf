@@ -51,35 +51,6 @@ import { createTamagui, createTokens, createFont } from 'tamagui'
  * ============================================================================
  */
 
-/**
- * Convert hex color to Display P3 color space CSS format.
- * This ensures colors render consistently across all devices,
- * matching the designer's intent on wide-gamut displays.
- */
-function hexToP3(hex: string): string {
-    const cleanHex = hex.replace('#', '')
-    const r = Number.parseInt(cleanHex.substring(0, 2), 16)
-    const g = Number.parseInt(cleanHex.substring(2, 4), 16)
-    const b = Number.parseInt(cleanHex.substring(4, 6), 16)
-
-    const rNorm = (r / 255).toFixed(3)
-    const gNorm = (g / 255).toFixed(3)
-    const bNorm = (b / 255).toFixed(3)
-
-    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm})`
-}
-
-/**
- * Convert rgba color to Display P3 color space CSS format with alpha.
- */
-function rgbaToP3(r: number, g: number, b: number, a: number): string {
-    const rNorm = (r / 255).toFixed(3)
-    const gNorm = (g / 255).toFixed(3)
-    const bNorm = (b / 255).toFixed(3)
-
-    return `color(display-p3 ${rNorm} ${gNorm} ${bNorm} / ${a})`
-}
-
 // Urbanist font for Pure Butter brand identity
 // Maps weight numbers to actual font family names (for React Native)
 const urbanistFace = {

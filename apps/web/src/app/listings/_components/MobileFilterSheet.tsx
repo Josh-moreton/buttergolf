@@ -30,110 +30,126 @@ export function MobileFilterSheet({
   onApply,
 }: Readonly<MobileFilterSheetProps>) {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <Sheet.Handle />
-      
-      <Sheet.Header>
-        <Row alignItems="center" justifyContent="space-between">
-          <Text weight="bold" size="$6">
-            Filters
-          </Text>
-          <Text
-            color="$primary"
-            size="$3"
-            cursor="pointer"
-            onPress={onClearAll}
-          >
-            Clear All
-          </Text>
-        </Row>
-      </Sheet.Header>
+    <Sheet modal open={open} onOpenChange={onOpenChange} snapPoints={[85]}>
+      <Sheet.Overlay />
+      <Sheet.Frame>
+        <Sheet.Handle />
 
-      <Sheet.Body>
-        <Column gap="$lg">
-          <FilterSection title="Category" defaultExpanded>
-            <CategoryFilter
-              selectedCategory={filters.category}
-              onChange={(category) => onChange({ category })}
-            />
-          </FilterSection>
-
-          <FilterSection title="Condition" defaultExpanded>
-            <ConditionFilter
-              selectedConditions={filters.conditions}
-              onChange={(conditions) => onChange({ conditions })}
-            />
-          </FilterSection>
-
-          <FilterSection title="Price Range" defaultExpanded>
-            <PriceRangeFilter
-              minPrice={priceRange.min}
-              maxPrice={priceRange.max}
-              selectedMin={filters.minPrice}
-              selectedMax={filters.maxPrice}
-              onChange={(minPrice, maxPrice) => onChange({ minPrice, maxPrice })}
-            />
-          </FilterSection>
-
-          <FilterSection title="Brand" defaultExpanded>
-            <BrandFilter
-              availableBrands={availableBrands}
-              selectedBrands={filters.brands}
-              onChange={(brands) => onChange({ brands })}
-            />
-          </FilterSection>
-
-          <FilterSection title="Favorites" defaultExpanded>
-            <Row
-              alignItems="center"
-              gap="$2"
+        {/* Header */}
+        <Column
+          paddingHorizontal="$4"
+          paddingVertical="$3"
+          borderBottomWidth={1}
+          borderBottomColor="$border"
+        >
+          <Row alignItems="center" justifyContent="space-between">
+            <Text weight="bold" size="$6">
+              Filters
+            </Text>
+            <Text
+              color="$primary"
+              size="$3"
               cursor="pointer"
-              userSelect="none"
-              onPress={() => onChange({ showFavoritesOnly: !filters.showFavoritesOnly })}
+              onPress={onClearAll}
             >
-              <input
-                type="checkbox"
-                checked={filters.showFavoritesOnly}
-                onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
-                style={{
-                  width: 20,
-                  height: 20,
-                  cursor: "pointer",
-                  accentColor: "var(--primary)",
-                }}
-              />
-              <Text size="$4" color="$text">
-                Show favorites only
-              </Text>
-            </Row>
-          </FilterSection>
+              Clear All
+            </Text>
+          </Row>
         </Column>
-      </Sheet.Body>
 
-      <Sheet.Footer>
-        <Row gap="$md">
-          <Button
-            size="$4"
-            flex={1}
-            chromeless
-            onPress={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            size="$4"
-            flex={1}
-            backgroundColor="$primary"
-            color="$textInverse"
-            onPress={() => {
-              onApply();
-              onOpenChange(false);
-            }}
-          >
-            Apply Filters
-          </Button>
-        </Row>
-      </Sheet.Footer>
+        {/* Body */}
+        <Sheet.ScrollView>
+          <Column padding="$4" gap="$lg">
+            <FilterSection title="Category" defaultExpanded>
+              <CategoryFilter
+                selectedCategory={filters.category}
+                onChange={(category) => onChange({ category })}
+              />
+            </FilterSection>
+
+            <FilterSection title="Condition" defaultExpanded>
+              <ConditionFilter
+                selectedConditions={filters.conditions}
+                onChange={(conditions) => onChange({ conditions })}
+              />
+            </FilterSection>
+
+            <FilterSection title="Price Range" defaultExpanded>
+              <PriceRangeFilter
+                minPrice={priceRange.min}
+                maxPrice={priceRange.max}
+                selectedMin={filters.minPrice}
+                selectedMax={filters.maxPrice}
+                onChange={(minPrice, maxPrice) => onChange({ minPrice, maxPrice })}
+              />
+            </FilterSection>
+
+            <FilterSection title="Brand" defaultExpanded>
+              <BrandFilter
+                availableBrands={availableBrands}
+                selectedBrands={filters.brands}
+                onChange={(brands) => onChange({ brands })}
+              />
+            </FilterSection>
+
+            <FilterSection title="Favorites" defaultExpanded>
+              <Row
+                alignItems="center"
+                gap="$2"
+                cursor="pointer"
+                userSelect="none"
+                onPress={() => onChange({ showFavoritesOnly: !filters.showFavoritesOnly })}
+              >
+                <input
+                  type="checkbox"
+                  checked={filters.showFavoritesOnly}
+                  onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    cursor: "pointer",
+                    accentColor: "var(--primary)",
+                  }}
+                />
+                <Text size="$4" color="$text">
+                  Show favorites only
+                </Text>
+              </Row>
+            </FilterSection>
+          </Column>
+        </Sheet.ScrollView>
+
+        {/* Footer */}
+        <Column
+          paddingHorizontal="$4"
+          paddingVertical="$4"
+          borderTopWidth={1}
+          borderTopColor="$border"
+        >
+          <Row gap="$md">
+            <Button
+              size="$4"
+              flex={1}
+              chromeless
+              onPress={() => onOpenChange(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="$4"
+              flex={1}
+              backgroundColor="$primary"
+              color="$textInverse"
+              onPress={() => {
+                onApply();
+                onOpenChange(false);
+              }}
+            >
+              Apply Filters
+            </Button>
+          </Row>
+        </Column>
+      </Sheet.Frame>
     </Sheet>
   );
 }

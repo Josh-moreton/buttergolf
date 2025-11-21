@@ -1,5 +1,5 @@
 // Import config BEFORE importing TamaguiProvider to ensure createTamagui runs first
-import { config } from "@buttergolf/config";
+import { config, type AppConfig } from "@buttergolf/config";
 import type { PropsWithChildren } from "react";
 import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";
@@ -16,10 +16,9 @@ export function Provider({ defaultTheme, ...rest }: ProviderProps) {
 
   return (
     <TamaguiProvider
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      config={config as any}
+      config={config}
       defaultTheme={theme}
-      {...(rest as TamaguiProviderProps)}
+      {...rest}
     />
   );
 }

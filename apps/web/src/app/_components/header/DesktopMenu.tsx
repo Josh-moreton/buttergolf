@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Row, Column, Text } from "@buttergolf/ui";
-import { Theme } from "tamagui";
+import { Row, Column, Text, Theme } from "@buttergolf/ui";
 import type { MenuItem } from "./menuData";
 import { ChevronDownIcon } from "./icons";
 

@@ -40,8 +40,16 @@ export { Slider } from './components/Slider'
 export type { SliderProps } from './components/Slider'
 
 // Overlay Components
-export { Sheet } from './components/Sheet'
-export type { SheetProps } from './components/Sheet'
+export {
+  Sheet,
+  Handle,
+  Overlay,
+  Frame,
+  SheetScrollView,
+} from './components/Sheet'
+export type {
+  SheetProps,
+} from './components/Sheet'
 
 // Feedback Components
 export { Badge } from './components/Badge'
