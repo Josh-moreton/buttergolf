@@ -1,6 +1,6 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
-import { createAnimations } from '@tamagui/animations-react-native'
+import { createAnimations } from '@tamagui/animations-css'
 
 /**
  * ============================================================================
@@ -419,24 +419,14 @@ const customTokens = createTokens({
 })
 
 // Animation configuration for Sheet and other animated components
+// Using CSS animations for web compatibility
 const animations = createAnimations({
-    fast: {
-        type: 'spring',
-        damping: 20,
-        mass: 1.2,
-        stiffness: 250,
-    },
-    medium: {
-        type: 'spring',
-        damping: 10,
-        mass: 0.9,
-        stiffness: 100,
-    },
-    slow: {
-        type: 'spring',
-        damping: 20,
-        stiffness: 60,
-    },
+    fast: 'ease-in 150ms',
+    medium: 'ease-in-out 300ms',
+    slow: 'ease-out 450ms',
+    bouncy: 'cubic-bezier(0.68, -0.6, 0.32, 1.6) 300ms',
+    lazy: 'ease-in-out 600ms',
+    quick: 'ease-out 100ms',
 })
 
 // Light theme with semantic token mappings
