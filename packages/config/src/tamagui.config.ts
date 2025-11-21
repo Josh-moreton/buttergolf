@@ -1,5 +1,6 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui, createTokens, createFont } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-react-native'
 
 /**
  * ============================================================================
@@ -417,6 +418,27 @@ const customTokens = createTokens({
     },
 })
 
+// Animation configuration for Sheet and other animated components
+const animations = createAnimations({
+    fast: {
+        type: 'spring',
+        damping: 20,
+        mass: 1.2,
+        stiffness: 250,
+    },
+    medium: {
+        type: 'spring',
+        damping: 10,
+        mass: 0.9,
+        stiffness: 100,
+    },
+    slow: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 60,
+    },
+})
+
 // Light theme with semantic token mappings
 const lightTheme = {
     // Background colors - reference tokens
@@ -707,6 +729,8 @@ export const config = createTamagui({
         heading: headingFont,
         body: bodyFont,
     },
+    // Animations for Sheet and other animated components
+    animations,
     // Media queries for responsive design
     media: {
         xs: { maxWidth: 660 },
