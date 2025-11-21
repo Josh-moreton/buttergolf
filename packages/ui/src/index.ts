@@ -39,18 +39,6 @@ export type { CheckboxProps } from './components/Checkbox'
 export { Slider } from './components/Slider'
 export type { SliderProps } from './components/Slider'
 
-// Overlay Components
-export {
-  Sheet,
-  Handle,
-  Overlay,
-  Frame,
-  SheetScrollView,
-} from './components/Sheet'
-export type {
-  SheetProps,
-} from './components/Sheet'
-
 // Feedback Components
 export { Badge } from './components/Badge'
 export type { BadgeProps } from './components/Badge'
