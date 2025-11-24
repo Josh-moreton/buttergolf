@@ -130,24 +130,24 @@ export function CategoriesSection() {
             <Link
               key={category.slug}
               href={`/category/${category.slug}`}
+              className="category-card"
               style={{
                 position: "relative",
                 width: "296px",
                 height: "329px", // 9:10 aspect ratio (296 * 1.1111)
                 borderRadius: "14px",
-                overflow: "hidden", // keep clipping + rounded corners
                 flexShrink: 0,
                 textDecoration: "none",
+                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
               }}
             >
               <div
-                className="category-card"
                 style={{
                   position: "absolute",
                   inset: 0,
                   borderRadius: "14px",
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  overflow: "hidden",
                 }}
               >
                 <Image
@@ -236,7 +236,7 @@ export function CategoriesSection() {
 
         .category-card:hover {
           transform: scale(1.05);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.15);
         }
       `}</style>
     </Column>

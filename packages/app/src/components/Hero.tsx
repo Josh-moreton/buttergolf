@@ -12,7 +12,7 @@ type ImageSource = string | { uri: string } | number;
 
 export interface HeroProps {
     // Content
-    heading: string | { line1: string; line2: string };
+    heading: string | { line1: string; line2?: string };
     subtitle: string;
 
     // CTAs (optional - omit for mobile button-less variant)

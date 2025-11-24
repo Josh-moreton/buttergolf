@@ -16,8 +16,7 @@ export function HeroStatic() {
     return (
         <Hero
             heading={{
-                line1: "Swing Smarter.",
-                line2: "Shop Better.",
+                line1: "Butter Up Your Game",
             }}
             subtitle="Buy, Sell, and Upgrade Your Game"
             primaryCta={{

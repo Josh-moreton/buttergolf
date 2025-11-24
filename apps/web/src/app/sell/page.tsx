@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import {
@@ -134,7 +134,7 @@ export default function SellPage() {
   };
 
   // Helper function to generate title from form fields
-  const generateTitle = (): string => {
+  const generateTitle = useCallback((): string => {
     const parts: string[] = [];
     
     // Add brand name
@@ -165,7 +165,7 @@ export default function SellPage() {
     }
     
     return parts.join(" ");
-  };
+  }, [formData.brandName, formData.model, formData.categoryId, formData.condition, categories]);
 
   // Auto-generate title when relevant fields change
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function SellPage() {
     if (newTitle !== formData.title) {
       setFormData(prev => ({ ...prev, title: newTitle }));
     }
-  }, [formData.brandName, formData.model, formData.categoryId, formData.condition, userAddedText, categories]);
+  }, [formData.brandName, formData.model, formData.categoryId, formData.condition, userAddedText, categories, generateTitle]);
 
   // Load categories on mount
   useEffect(() => {
