@@ -95,6 +95,18 @@ module.exports = () => {
     allowedDevOrigins: [
       "192.168.1.41:3000", // Add your local network IP
     ],
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "res.cloudinary.com",
+        },
+        {
+          protocol: "https",
+          hostname: "images.unsplash.com",
+        },
+      ],
+    },
     webpack: (webpackConfig) => {
       // Map React Native to React Native Web for web builds
       webpackConfig.resolve.alias = {

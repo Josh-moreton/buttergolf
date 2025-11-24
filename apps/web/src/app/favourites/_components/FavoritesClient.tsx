@@ -33,14 +33,14 @@ export function FavoritesClient() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/favorites?page=${page}&limit=24`);
+        const response = await fetch(`/api/favourites?page=${page}&limit=24`);
 
         if (!response.ok) {
           if (response.status === 401) {
-            router.push("/sign-in?redirect_url=/favorites");
+            router.push("/sign-in?redirect_url=/favourites");
             return;
           }
-          throw new Error("Failed to fetch favorites");
+          throw new Error("Failed to fetch favourites");
         }
 
         const data: FavoritesResponse = await response.json();
@@ -48,7 +48,7 @@ export function FavoritesClient() {
         setTotalPages(data.pagination.totalPages);
       } catch (err) {
         console.error("Error fetching favorites:", err);
-        setError(err instanceof Error ? err.message : "Failed to load favorites");
+        setError(err instanceof Error ? err.message : "Failed to load favourites");
       } finally {
         setLoading(false);
       }
@@ -93,19 +93,19 @@ export function FavoritesClient() {
   // Remove from Favorites Handler
   const handleRemove = async (productId: string) => {
     try {
-      const response = await fetch(`/api/favorites/${productId}`, {
+      const response = await fetch(`/api/favourites/${productId}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to remove favorite");
+        throw new Error("Failed to remove favourite");
       }
 
       // Optimistically remove from UI
       setProducts((prev) => prev.filter((p) => p.id !== productId));
     } catch (err) {
-      console.error("Error removing favorite:", err);
-      setError("Failed to remove from favorites");
+      console.error("Error removing favourite:", err);
+      setError("Failed to remove from favourites");
     }
   };
 

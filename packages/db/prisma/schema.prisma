@@ -299,6 +299,7 @@ model Offer {
     amount        Float
     status        OfferStatus    @default(PENDING)
     message       String?        @db.Text
+    expiresAt     DateTime? // Offers expire after 7 days if not accepted/rejected
     productId     String
     product       Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
     buyerId       String
@@ -313,6 +314,7 @@ model Offer {
     @@index([buyerId])
     @@index([sellerId])
     @@index([status])
+    @@index([expiresAt])
     @@map("offers")
 }
 

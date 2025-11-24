@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        // Create offer
+        // Create offer with 7-day expiration
         const offer = await prisma.offer.create({
             data: {
                 amount,
@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
                 buyerId: buyer.id,
                 sellerId: product.userId,
                 status: "PENDING",
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
             },
             include: {
                 product: true,
