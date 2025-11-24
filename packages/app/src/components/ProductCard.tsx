@@ -39,13 +39,19 @@ export function ProductCard({
         transform: "scale(1.02)",
       }}
     >
-      {/* Container with aspect ratio (9:10 - 450px x 500px) */}
+      {/* Inner container for border radius clipping */}
       <Column
-        position="relative"
         width="100%"
-        paddingBottom="111.11%"
         overflow="hidden"
+        borderRadius="$lg"
       >
+        {/* Container with aspect ratio (9:10 - 450px x 500px) */}
+        <Column
+          position="relative"
+          width="100%"
+          paddingBottom="111.11%"
+          overflow="hidden"
+        >
         {/* Background Image - Full Card */}
         <img
           src={product.imageUrl}
@@ -187,6 +193,7 @@ export function ProductCard({
             )}
           </Row>
         </GlassmorphismCard>
+        </Column>
       </Column>
     </Card>
   );

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ProductCardData } from "@buttergolf/app";
-import { Button } from "@buttergolf/ui";
-import { ProductCarousel } from "../shared/ProductCarousel";
+import { Button, Column } from "@buttergolf/ui";
+import { ProductCard } from "@/components/ProductCard";
 
 interface RecentlyListedSectionClientProps {
   readonly products: ProductCardData[];
@@ -12,16 +13,17 @@ interface RecentlyListedSectionClientProps {
 export function RecentlyListedSectionClient({
   products,
 }: RecentlyListedSectionClientProps) {
+  const router = useRouter();
 
   return (
     <div style={{ paddingTop: "64px", paddingBottom: "64px", backgroundColor: "#EDEDED", width: "100%" }}>
       <div
         style={{
-          maxWidth: "100%",
+          maxWidth: "1440px",
           marginLeft: "auto",
           marginRight: "auto",
-          paddingLeft: "0",
-          paddingRight: "0",
+          paddingLeft: "32px",
+          paddingRight: "32px",
           width: "100%",
           display: "flex",
           flexDirection: "column",
@@ -66,8 +68,30 @@ export function RecentlyListedSectionClient({
           </p>
         </div>
 
-        {/* Carousel */}
-        <ProductCarousel products={products} autoplay={true} autoplayDelay={5000} />
+        {/* 5-column Grid */}
+        <Column
+          width="100%"
+          style={{ display: "grid" }}
+          gridTemplateColumns="repeat(2, 1fr)"
+          gap="$6"
+          $gtSm={{
+            gridTemplateColumns: "repeat(3, 1fr)",
+          }}
+          $gtMd={{
+            gridTemplateColumns: "repeat(4, 1fr)",
+          }}
+          $gtLg={{
+            gridTemplateColumns: "repeat(5, 1fr)",
+          }}
+        >
+          {products.slice(0, 5).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onPress={() => router.push(`/products/${product.id}`)}
+            />
+          ))}
+        </Column>
 
         <div style={{ display: "none" }}>
           <button
@@ -114,16 +138,16 @@ export function RecentlyListedSectionClient({
             justifyContent: "center",
             width: "100%",
             paddingTop: "8px",
-            paddingBottom: "32px",
           }}
         >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
             <Button
               size="$5"
-
+              backgroundColor="$primary"
+              color="$textInverse"
               borderRadius="$full"
               paddingHorizontal="$6"
-              color="$vanillaCream"
+              paddingVertical="$3"
             >
               View all listings
             </Button>
