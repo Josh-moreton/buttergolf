@@ -49,11 +49,15 @@ export function OfferMessage({
                         </Text>
                         {isInitialOffer ? (
                             <Badge variant="info" size="sm">
-                                Initial Offer
+                                <Text size="$3" fontWeight="600">
+                                    Initial Offer
+                                </Text>
                             </Badge>
                         ) : (
                             <Badge variant="warning" size="sm">
-                                Counter
+                                <Text size="$3" fontWeight="600">
+                                    Counter
+                                </Text>
                             </Badge>
                         )}
                     </Row>

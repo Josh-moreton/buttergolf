@@ -75,7 +75,8 @@ export function useOfferUpdates({
       }
 
       const data = await response.json();
-      setOffer(data.offer);
+      // API returns offer directly, not wrapped in { offer: ... }
+      setOffer(data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);

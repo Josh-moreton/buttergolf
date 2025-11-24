@@ -113,7 +113,9 @@ export function ProductSummaryCard({
 
             {/* Status Badge */}
             <Badge variant={getStatusBadgeVariant()} size="md">
-                {offer.status}
+                <Text size="$4" fontWeight="600">
+                    {offer.status}
+                </Text>
             </Badge>
 
             {/* Title and Current Offer */}

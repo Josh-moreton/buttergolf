@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Column, Row, Text, Badge, Image, Button } from "@buttergolf/ui";
-import { Sheet } from "@tamagui/sheet";
+import { Column, Row, Text, Badge, Image, Button, View } from "@buttergolf/ui";
+import { X } from "@tamagui/lucide-icons";
 
 interface MobileProductBarProps {
     product: {
@@ -106,7 +106,9 @@ export function MobileProductBar({
                             £{offer.amount.toFixed(2)}
                         </Text>
                         <Badge variant={getStatusBadgeVariant()} size="sm">
-                            {offer.status}
+                            <Text size="$3" fontWeight="600">
+                                {offer.status}
+                            </Text>
                         </Badge>
                     </Row>
                 </Column>
@@ -125,18 +127,51 @@ export function MobileProductBar({
                 </svg>
             </Row>
 
-            {/* Expandable sheet */}
-            <Sheet
-                open={open}
-                onOpenChange={setOpen}
-                snapPoints={[85]}
-                dismissOnSnapToBottom
-                modal
-                zIndex={100000}
-            >
-                <Sheet.Overlay backgroundColor="rgba(0,0,0,0.5)" />
-                <Sheet.Frame backgroundColor="$surface" padding="$lg">
-                    <Sheet.Handle />
+            {/* Expandable modal overlay */}
+            {open && (
+                <>
+                    {/* Backdrop */}
+                    <View
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        right={0}
+                        bottom={0}
+                        backgroundColor="rgba(0,0,0,0.5)"
+                        zIndex={10000}
+                        onPress={() => setOpen(false)}
+                        style={{
+                            position: "fixed",
+                        }}
+                    />
+                    
+                    {/* Modal Content */}
+                    <Column
+                        backgroundColor="$surface"
+                        borderTopLeftRadius="$2xl"
+                        borderTopRightRadius="$2xl"
+                        padding="$lg"
+                        zIndex={10001}
+                        maxHeight="85vh"
+                        style={{
+                            position: "fixed",
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            overflowY: "auto",
+                        }}
+                    >
+                        {/* Close button */}
+                        <Row justifyContent="flex-end" marginBottom="$md">
+                            <Button
+                                size="$4"
+                                chromeless
+                                onPress={() => setOpen(false)}
+                                padding="$2"
+                            >
+                                <X size={24} color="$text" />
+                            </Button>
+                        </Row>
                     <Column gap="$md" paddingTop="$md">
                         {/* Product Image */}
                         <Image
@@ -275,8 +310,9 @@ export function MobileProductBar({
                             </>
                         )}
                     </Column>
-                </Sheet.Frame>
-            </Sheet>
+                </Column>
+            </>
+            )}
         </>
     );
 }
