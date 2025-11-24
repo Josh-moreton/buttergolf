@@ -70,7 +70,7 @@ export function HorizontalProductCard({
 
         {/* Category */}
         <Text size="$4" color="$textSecondary">
-          {product.category}
+          {typeof product.category === 'string' ? product.category : product.category?.name || 'Uncategorized'}
         </Text>
 
         {/* Price */}

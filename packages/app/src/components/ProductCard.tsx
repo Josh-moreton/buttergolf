@@ -70,7 +70,10 @@ export function ProductCard({
         <Button
           circular
           chromeless
-          onPress={handleFavoriteClick}
+          onPress={(e) => {
+            e?.stopPropagation?.();
+            handleFavoriteClick();
+          }}
           position="absolute"
           top={12}
           right={12}
