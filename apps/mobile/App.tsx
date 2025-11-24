@@ -347,7 +347,7 @@ export default function App() {
 }
 
 function OnboardingFlow() {
-  const [showLoggedOutHome, setShowLoggedOutHome] = useState(false);
+  const [showLoggedOutHome, setShowLoggedOutHome] = useState<boolean>(false);
   const { startOAuthFlow: startGoogle } = useOAuth({
     strategy: "oauth_google",
   });
@@ -416,10 +416,6 @@ function OnboardingFlow() {
         } else {
           handleOAuth("google");
         }
-      }}
-      onAbout={() => {
-        // In a real app, this would navigate to an about page
-        console.log("Navigate to about page");
       }}
     />
   );

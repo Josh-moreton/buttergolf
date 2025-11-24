@@ -1,23 +1,26 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Platform, Dimensions, Animated, Easing } from "react-native";
-import { Text, YStack, Image, View } from "@buttergolf/ui";
+import { Dimensions, Animated, Easing } from "react-native";
+import { Text, YStack, View, Image, Button } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// Logo - Using SVG
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const LogoSvg = require("../../../../../apps/mobile/assets/logo-orange-on-white.svg").default;
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
-// Grid configuration for 2 rows x 3 columns (Vinted style)
-const CARDS_PER_ROW = 3;
-const HORIZONTAL_PADDING = 16; // Side padding
-const GAP = 8; // Grid gap
-const AVAILABLE_WIDTH =
-  SCREEN_W - HORIZONTAL_PADDING * 2 - GAP * (CARDS_PER_ROW - 1);
-const CARD_WIDTH = Math.round(AVAILABLE_WIDTH / CARDS_PER_ROW);
-const CARD_HEIGHT = Math.round(CARD_WIDTH * 1.2); // 1:1.2 ratio like Vinted
+// Two-row scrolling layout configuration
+const HORIZONTAL_PADDING = 16;
+const { height: SCREEN_H } = Dimensions.get("window");
+const CAROUSEL_HEIGHT = SCREEN_H * 0.35; // 35% of screen height (reduced from 45%)
+const CARD_WIDTH = SCREEN_W * 0.55; // 55% of screen width (reduced from 70%)
+const CARD_HEIGHT = CAROUSEL_HEIGHT * 0.42; // Each row is ~42% of carousel height
+const GAP = 16; // Gap between cards
 
-// Golf equipment images for the carousel
-const images = [
+// Golf equipment images - simple list for two-row layout
+const carouselImages = [
   {
     id: "clubs-1",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -71,37 +74,24 @@ export function OnboardingScreen({
 }: Readonly<OnboardingScreenProps>) {
   const insets = useSafeAreaInsets();
 
-  // Animation for gentle horizontal scroll
-  // eslint-disable-next-line react-hooks/refs
-  const translateXRow1 = useRef(new Animated.Value(0)).current;
-  // eslint-disable-next-line react-hooks/refs
-  const translateXRow2 = useRef(new Animated.Value(-CARD_WIDTH / 2)).current; // Offset second row
+  // Animation for two-row horizontal scroll
+  // Top row scrolls left, bottom row scrolls right for staggered effect
+  const topRowX = useRef(new Animated.Value(0)).current;
+  const bottomRowX = useRef(new Animated.Value(0)).current;
 
-  // Duplicate images for seamless loop - different order for each row
-  const itemsRow1 = [...images, ...images];
-  const itemsRow2 = [
-    images[3],
-    images[4],
-    images[5],
-    images[0],
-    images[1],
-    images[2],
-    images[3],
-    images[4],
-    images[5],
-    images[0],
-    images[1],
-    images[2],
-  ];
-  const singleWidth = images.length * (CARD_WIDTH + GAP);
+  // Duplicate images for seamless loop
+  const loopedImages = [...carouselImages, ...carouselImages];
+  
+  // Calculate total width of one set of images
+  const singleWidth = carouselImages.length * (CARD_WIDTH + GAP);
 
   useEffect(() => {
-    // Doubled duration for slower, more relaxed movement (36-40 seconds)
-    const duration = Math.max(36000, Math.floor(singleWidth * 48));
+    // Duration for smooth scrolling
+    const duration = 35000; // 35 seconds for full loop
 
-    // First row animation
-    const animationRow1 = Animated.loop(
-      Animated.timing(translateXRow1, {
+    // Top row scrolls left
+    const topAnimation = Animated.loop(
+      Animated.timing(topRowX, {
         toValue: -singleWidth,
         duration,
         easing: Easing.linear,
@@ -109,118 +99,155 @@ export function OnboardingScreen({
       })
     );
 
-    // Second row animation (same speed, offset start)
-    const animationRow2 = Animated.loop(
-      Animated.timing(translateXRow2, {
-        toValue: -singleWidth - CARD_WIDTH / 2,
+    // Bottom row scrolls right (starts offset for stagger effect)
+    const bottomAnimation = Animated.loop(
+      Animated.timing(bottomRowX, {
+        toValue: singleWidth,
         duration,
         easing: Easing.linear,
         useNativeDriver: true,
       })
     );
 
-    animationRow1.start();
-    animationRow2.start();
+    topAnimation.start();
+    bottomAnimation.start();
 
     return () => {
-      animationRow1.stop();
-      animationRow2.stop();
+      topAnimation.stop();
+      bottomAnimation.stop();
     };
-    // eslint-disable-next-line react-hooks/refs
-  }, [singleWidth, translateXRow1, translateXRow2]);
+  }, [topRowX, bottomRowX, singleWidth]);
 
   return (
     <YStack
       flex={1}
-      backgroundColor="$primary" // Brand butter orange background
+      backgroundColor="$vanillaCream" // Vanilla Cream background
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
-      {/* Skip Button - Plain Text */}
+      {/* Header Section - Logo and Tagline */}
       <YStack
         paddingHorizontal={HORIZONTAL_PADDING}
-        paddingTop="$sm"
-        paddingBottom="$sm"
+        paddingTop={24}
+        paddingBottom={24}
+        alignItems="center"
+        gap={20}
       >
-        <Text
-          fontSize={15}
-          color="$textMuted"
-          fontWeight="400"
-          alignSelf="flex-end"
-          onPress={onSkip}
-          cursor="pointer"
-          pressStyle={{
-            color: "$textSecondary",
+        {/* Logo - Scaled to ~50% screen width */}
+        <View width={SCREEN_W * 0.5} height={Math.round((SCREEN_W * 0.5) * (79 / 209))}>
+          <LogoSvg
+            width="100%"
+            height="100%"
+            accessible={true}
+            accessibilityLabel="Butter Golf Logo"
+          />
+        </View>
+        
+        {/* Tagline */}
+        <YStack gap={4} alignItems="center">
+          <Text
+            fontSize={25}
+            fontWeight="500"
+            align="center"
+            color="$text"
+            lineHeight={32}
+          >
+            The Marketplace to
+          </Text>
+          <Text
+            fontSize={25}
+            fontWeight="500"
+            align="center"
+            color="$text"
+            lineHeight={32}
+          >
+            Buy, Sell & Upgrade
+          </Text>
+        </YStack>
+      </YStack>
+
+      {/* Scrolling Carousel - Two Rows Staggered */}
+      <View 
+        height={CAROUSEL_HEIGHT} 
+        overflow="hidden"
+        marginTop={12}
+        marginBottom={32}
+      >
+        {/* Top Row - Scrolls Left */}
+        <Animated.View
+          style={{
+            flexDirection: "row",
+            height: CARD_HEIGHT,
+            marginBottom: GAP, // Gap between rows matches card gap
+            transform: [{ translateX: topRowX }],
           }}
         >
-          Skip
-        </Text>
-      </YStack>
-
-      {/* Scrolling Image Grid - 2 Rows (Vinted style) */}
-      <YStack paddingTop={48} paddingBottom={32} gap={GAP}>
-        {/* First Row - Scrolling */}
-        <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View
-            style={{
-              flexDirection: "row",
-              transform: [{ translateX: translateXRow1 }],
-            }}
-          >
-            {itemsRow1.map((item, index) => (
-              <View
-                key={`row1-${item.id}-${index}`}
+          {carouselImages.concat(carouselImages).map((item, index) => (
+            <View
+              key={`top-${item.id}-${index}`}
+              width={CARD_WIDTH}
+              height={CARD_HEIGHT}
+              marginRight={GAP}
+              borderRadius={20}
+              overflow="hidden"
+              backgroundColor="$gray200"
+              style={{
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.15,
+                shadowRadius: 8,
+                elevation: 3,
+              }}
+            >
+              <Image
+                source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                borderRadius={16}
-                overflow="hidden"
-                marginRight={GAP}
-                backgroundColor="$gray200"
-              >
-                <Image
-                  source={item.source}
-                  width={CARD_WIDTH}
-                  height={CARD_HEIGHT}
-                  style={{ objectFit: "cover" }}
-                  accessible={true}
-                  accessibilityLabel={item.label}
-                />
-              </View>
-            ))}
-          </Animated.View>
-        </View>
+                style={{ objectFit: "cover" }}
+                accessible={true}
+                accessibilityLabel={item.label}
+              />
+            </View>
+          ))}
+        </Animated.View>
 
-        {/* Second Row - Scrolling (offset start) */}
-        <View height={CARD_HEIGHT} overflow="hidden">
-          <Animated.View
-            style={{
-              flexDirection: "row",
-              transform: [{ translateX: translateXRow2 }],
-            }}
-          >
-            {itemsRow2.map((item, index) => (
-              <View
-                key={`row2-${item.id}-${index}`}
+        {/* Bottom Row - Scrolls Right (reverse direction) */}
+        <Animated.View
+          style={{
+            flexDirection: "row-reverse",
+            height: CARD_HEIGHT,
+            transform: [{ translateX: bottomRowX }],
+          }}
+        >
+          {carouselImages.concat(carouselImages).map((item, index) => (
+            <View
+              key={`bottom-${item.id}-${index}`}
+              width={CARD_WIDTH}
+              height={CARD_HEIGHT}
+              marginLeft={GAP}
+              borderRadius={20}
+              overflow="hidden"
+              backgroundColor="$gray200"
+              style={{
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.15,
+                shadowRadius: 8,
+                elevation: 3,
+              }}
+            >
+              <Image
+                source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                borderRadius={16}
-                overflow="hidden"
-                marginRight={GAP}
-                backgroundColor="$gray200"
-              >
-                <Image
-                  source={item.source}
-                  width={CARD_WIDTH}
-                  height={CARD_HEIGHT}
-                  style={{ objectFit: "cover" }}
-                  accessible={true}
-                  accessibilityLabel={item.label}
-                />
-              </View>
-            ))}
-          </Animated.View>
-        </View>
-      </YStack>
+                style={{ objectFit: "cover" }}
+                accessible={true}
+                accessibilityLabel={item.label}
+              />
+            </View>
+          ))}
+        </Animated.View>
+      </View>
 
       <YStack flex={1} />
 
@@ -231,90 +258,60 @@ export function OnboardingScreen({
         paddingBottom={20}
         alignItems="center"
       >
-        {/* Headline and Subtext */}
-        <YStack gap={8} alignItems="center" paddingHorizontal={16}>
-          <Text
-            fontSize={28}
-            fontWeight="600"
-            align="center"
-            color="$text"
-            lineHeight={33.6}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            fontFamily={(Platform.OS === "ios" ? "Georgia" : "serif") as any}
-          >
-            From old clubs to new rounds
-          </Text>
-          <Text
-            fontSize={16}
-            fontWeight="400"
-            align="center"
-            color="$textSecondary"
-            lineHeight={22}
-          >
-            Buy, sell, and play smarter
-          </Text>
-        </YStack>
-
-        {/* CTAs - Testing basic Tamagui primitives */}
+        {/* CTAs - Design System Buttons */}
         <YStack gap={12} width="100%" paddingHorizontal={24}>
-          {/* Test Button 1 - Using YStack as button base */}
-          <YStack
+          {/* Primary Button - Pill-shaped with Spiced Clementine */}
+          <Button
+            size="$4"
+            backgroundColor="$primary"
+            color="$textInverse"
+            borderRadius="$full"
+            paddingHorizontal="$6"
+            paddingVertical="$2"
+            width="100%"
             onPress={onSignUp}
-            backgroundColor="#E25F2F"
-            height={52}
-            borderRadius={14}
-            alignItems="center"
-            justifyContent="center"
             pressStyle={{
-              opacity: 0.8,
+              scale: 0.98,
+              opacity: 0.9,
             }}
           >
-            <Text
-              fontSize={17}
-              fontWeight="600"
-              color="#FFFFFF"
-            >
-              TEST SIGN UP BUTTON
-            </Text>
-          </YStack>
+            Create account
+          </Button>
 
-          {/* Test Button 2 - Using YStack with border */}
-          <YStack
-            onPress={onSignIn}
-            backgroundColor="#FFFFFF"
-            borderColor="#E25F2F"
+          {/* Secondary Button - Pill-shaped with Vanilla Cream background */}
+          <Button
+            size="$4"
+            backgroundColor="$vanillaCream"
+            color="$primary"
             borderWidth={2}
-            height={52}
-            borderRadius={14}
-            alignItems="center"
-            justifyContent="center"
+            borderColor="$primary"
+            borderRadius="$full"
+            paddingHorizontal="$6"
+            paddingVertical="$2"
+            width="100%"
+            onPress={onSignIn}
             pressStyle={{
-              opacity: 0.8,
+              scale: 0.98,
+              backgroundColor: "$vanillaCreamHover",
             }}
           >
-            <Text
-              fontSize={17}
-              fontWeight="600"
-              color="#E25F2F"
-            >
-              TEST SIGN IN BUTTON
-            </Text>
-          </YStack>
+            I already have an account
+          </Button>
         </YStack>
 
-        {/* Footer Link - Plain Text */}
+        {/* Skip Button - Navigate to Home */}
         <Text
-          fontSize={13}
-          color="$textMuted"
+          fontSize={15}
+          color="$ironstone"
           align="center"
-          textDecorationLine="underline"
-          onPress={onAbout}
+          fontWeight="400"
+          onPress={onSkip}
           cursor="pointer"
           pressStyle={{
-            color: "$textSecondary",
+            opacity: 0.7,
           }}
         >
-          About Butter Golf: Our platform
+          Skip
         </Text>
       </YStack>
     </YStack>

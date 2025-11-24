@@ -75,7 +75,12 @@ export async function POST(request: Request): Promise<NextResponse> {
           effect: 'background_removal',
         },
         {
-          background: 'rgb:FFFAD2', // Vanilla Cream brand color
+          // Use branded pattern background (uploaded to Cloudinary as 'backgrounds/butter-pattern')
+          underlay: 'backgrounds:butter-pattern',
+          flags: 'tiled', // Tile the pattern across the entire image
+        },
+        {
+          flags: 'layer_apply', // Apply the tiled underlay
         },
       ];
     }
