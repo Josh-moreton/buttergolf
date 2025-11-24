@@ -108,6 +108,7 @@ export function CategoryGrid() {
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
+                  boxShadow: "0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.3)",
                 }}
                 className="category-card"
               >

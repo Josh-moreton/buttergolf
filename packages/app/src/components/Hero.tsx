@@ -57,10 +57,6 @@ export function Hero({
     animationVariant = "none",
     animationDelay = 0.8, // Wait for hero fade-in to complete
 }: HeroProps) {
-    // Determine if heading is split into two lines
-    const headingLine1 = typeof heading === "string" ? heading : heading.line1;
-    const headingLine2 = typeof heading === "string" ? undefined : heading.line2;
-
     const mobileHeadingWords = React.useMemo(() => {
         const combined =
             typeof heading === "string"
@@ -151,11 +147,11 @@ export function Hero({
                                         </Heading>
                                     ))}
                                 </Column>
-                                <Column display="none" $md={{ display: "flex" }} gap="$1">
-                                    {/* Line 1 - Animated */}
+                                <Column display="none" $md={{ display: "flex" }}>
+                                    {/* Single line heading with natural wrapping */}
                                     {animationVariant === "split-character" ? (
                                         <AnimatedHeroText
-                                            text={headingLine1}
+                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
                                             delay={animationDelay}
                                             style={{
                                                 fontSize: "clamp(32px, 5vw, 72px)",
@@ -166,9 +162,9 @@ export function Hero({
                                         />
                                     ) : animationVariant === "typewriter" ? (
                                         <TypewriterHero
-                                            text={headingLine1}
+                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
                                             delay={animationDelay}
-                                            showCursor={false}
+                                            showCursor={true}
                                             style={{
                                                 fontSize: "clamp(32px, 5vw, 72px)",
                                                 color: "#323232",
@@ -178,7 +174,7 @@ export function Hero({
                                         />
                                     ) : animationVariant === "scale-bounce" ? (
                                         <ScaleBounceHero
-                                            text={headingLine1}
+                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
                                             delay={animationDelay}
                                             style={{
                                                 fontSize: "clamp(32px, 5vw, 72px)",
@@ -196,60 +192,8 @@ export function Hero({
                                             color="$ironstone"
                                             fontWeight="700"
                                         >
-                                            {headingLine1}
+                                            {typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
                                         </Heading>
-                                    )}
-
-                                    {/* Line 2 - Animated (if exists) */}
-                                    {headingLine2 && (
-                                        <>
-                                            {animationVariant === "split-character" ? (
-                                                <AnimatedHeroText
-                                                    text={headingLine2}
-                                                    delay={animationDelay + 0.3}
-                                                    style={{
-                                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                                        color: "#323232",
-                                                        fontWeight: 700,
-                                                        lineHeight: 1.1,
-                                                    }}
-                                                />
-                                            ) : animationVariant === "typewriter" ? (
-                                                <TypewriterHero
-                                                    text={headingLine2}
-                                                    delay={animationDelay + 0.5}
-                                                    showCursor={true}
-                                                    style={{
-                                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                                        color: "#323232",
-                                                        fontWeight: 700,
-                                                        lineHeight: 1.1,
-                                                    }}
-                                                />
-                                            ) : animationVariant === "scale-bounce" ? (
-                                                <ScaleBounceHero
-                                                    text={headingLine2}
-                                                    delay={animationDelay + 0.3}
-                                                    style={{
-                                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                                        color: "#323232",
-                                                        fontWeight: 700,
-                                                        lineHeight: 1.1,
-                                                    }}
-                                                />
-                                            ) : (
-                                                <Heading
-                                                    level={1}
-                                                    size="$11"
-                                                    $md={{ fontSize: "$12" }}
-                                                    $lg={{ fontSize: "$14" }}
-                                                    color="$ironstone"
-                                                    fontWeight="700"
-                                                >
-                                                    {headingLine2}
-                                                </Heading>
-                                            )}
-                                        </>
                                     )}
                                 </Column>
                             </Column>

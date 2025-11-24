@@ -31,7 +31,13 @@ export function ProductCard({
       onPress={onPress}
       width="100%"
       interactive
-      hoverStyle={{ transform: "scale(1.02)" }}
+      overflow="visible"
+      style={{
+        boxShadow: "0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.3)",
+      }}
+      hoverStyle={{ 
+        transform: "scale(1.02)",
+      }}
     >
       {/* Container with aspect ratio (9:10 - 450px x 500px) */}
       <Column

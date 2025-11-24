@@ -42,16 +42,16 @@ const CardBase = styled(TamaguiCard, {
   variants: {
     variant: {
       elevated: {
-        shadowColor: "rgba(0, 0, 0, 0.15)",
-        shadowRadius: 16,
-        shadowOffset: { width: 0, height: 8 },
-        elevation: 8,
+        shadowColor: "rgba(0, 0, 0, 0.35)",
+        shadowRadius: 24,
+        shadowOffset: { width: 0, height: 12 },
+        elevation: 12,
 
         hoverStyle: {
-          shadowColor: "rgba(0, 0, 0, 0.2)",
-          shadowRadius: 32,
-          shadowOffset: { width: 0, height: 16 },
-          elevation: 16,
+          shadowColor: "rgba(0, 0, 0, 0.45)",
+          shadowRadius: 40,
+          shadowOffset: { width: 0, height: 20 },
+          elevation: 20,
         },
       },
 

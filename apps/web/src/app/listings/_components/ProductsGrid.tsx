@@ -182,16 +182,13 @@ export function ProductsGrid({
 
   return (
     <Column gap="$lg" width="100%">
-      {/* Products Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
+      {/* Products Grid - Responsive: 2 col mobile, 3 col tablet/desktop */}
       <Column
         width="100%"
         style={{ display: "grid" }}
-        gridTemplateColumns="1"
+        gridTemplateColumns="repeat(2, 1fr)"
         gap="$6"
-        $gtMd={{
-          gridTemplateColumns: "repeat(2, 1fr)",
-        }}
-        $gtLg={{
+        $gtSm={{
           gridTemplateColumns: "repeat(3, 1fr)",
         }}
       >
