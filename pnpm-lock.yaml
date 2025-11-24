@@ -262,6 +262,9 @@ importers:
       '@buttergolf/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@buttergolf/ui-web':
+        specifier: workspace:*
+        version: link:../../packages/ui-web
       '@clerk/nextjs':
         specifier: 'catalog:'
         version: 6.34.1(next@16.0.1(@babel/core@7.28.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -622,6 +625,37 @@ importers:
       tamagui:
         specifier: 'catalog:'
         version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/ui-web:
+    dependencies:
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: 19.1.0
+        version: 19.1.0(react@19.1.0)
+    devDependencies:
+      '@buttergolf/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@buttergolf/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.24
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.6
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.6)
+      eslint:
+        specifier: 'catalog:'
+        version: 9.39.1(jiti@2.6.1)
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

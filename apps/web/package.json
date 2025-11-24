@@ -14,6 +14,7 @@
     "@buttergolf/app": "workspace:*",
     "@buttergolf/assets": "workspace:*",
     "@buttergolf/ui": "workspace:*",
+    "@buttergolf/ui-web": "workspace:*",
     "@clerk/nextjs": "catalog:",
     "@easypost/api": "^8.2.0",
     "@stripe/connect-js": "^3.3.31",

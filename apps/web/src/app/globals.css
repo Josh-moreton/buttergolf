@@ -4,6 +4,9 @@
  * These CSS variables provide fallbacks for non-Tamagui elements
  */
 
+/* Import Tailwind CSS with ButterGolf design tokens from ui-web package */
+@import "@buttergolf/ui-web/src/styles/tokens.css";
+
 :root {
   /* Light theme - Pure Butter Brand */
   --background: #ffffff;

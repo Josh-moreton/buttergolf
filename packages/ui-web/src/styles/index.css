@@ -1,0 +1,161 @@
+/**
+ * ButterGolf UI Web - Main Stylesheet
+ *
+ * Import this file in your app to get all styles:
+ * import "@buttergolf/ui-web/src/styles/index.css"
+ */
+
+@import "./tokens.css";
+
+/* ============================================
+ * BASE STYLES
+ * ============================================ */
+
+@layer base {
+  /* Focus ring utility */
+  .focus-ring {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Disabled state utility */
+  .disabled {
+    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  }
+}
+
+/* ============================================
+ * COMPONENT UTILITIES
+ * ============================================ */
+
+@layer components {
+  /* Button base styles */
+  .btn {
+    @apply inline-flex items-center justify-center font-medium transition-colors;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Button sizes */
+  .btn-sm {
+    height: var(--size-button-sm);
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .btn-md {
+    height: var(--size-button-md);
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+
+  .btn-lg {
+    height: var(--size-button-lg);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+    font-size: var(--font-size-md);
+  }
+
+  /* Input base styles */
+  .input {
+    @apply w-full transition-colors;
+    @apply focus:outline-none;
+    border-radius: var(--radius-pill);
+    border-width: 1px;
+    border-color: var(--color-field-border);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .input:hover {
+    border-color: var(--color-field-border-hover);
+  }
+
+  .input:focus {
+    border-color: var(--color-field-border-focus);
+    border-width: 2px;
+  }
+
+  .input:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    background-color: var(--color-cloud);
+    border-color: var(--color-cloud);
+  }
+
+  /* Input sizes */
+  .input-sm {
+    height: var(--size-input-sm);
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .input-md {
+    height: var(--size-input-md);
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+
+  .input-lg {
+    height: var(--size-input-lg);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+    font-size: var(--font-size-md);
+  }
+
+  /* Card base styles */
+  .card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-elevated {
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .card-outlined {
+    border-width: 1px;
+    border-color: var(--color-border);
+  }
+
+  .card-outlined:hover {
+    border-color: var(--color-border-hover);
+  }
+
+  /* Badge base styles */
+  .badge {
+    @apply inline-flex items-center justify-center;
+    border-radius: var(--radius-full);
+  }
+
+  .badge-sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 20px;
+    min-width: 20px;
+    font-size: var(--font-size-xs);
+  }
+
+  .badge-md {
+    padding: calc(var(--spacing-xs) * 1.5) calc(var(--spacing-sm) * 1.25);
+    min-height: 24px;
+    min-width: 24px;
+    font-size: var(--font-size-sm);
+  }
+
+  .badge-lg {
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 28px;
+    min-width: 28px;
+    font-size: var(--font-size-base);
+  }
+}

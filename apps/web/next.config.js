@@ -63,6 +63,7 @@ module.exports = () => {
       "@buttergolf/app",
       "@buttergolf/config",
       "@buttergolf/ui",
+      "@buttergolf/ui-web",
       "react-native-web",
       "react-native",
       "solito",
