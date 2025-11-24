@@ -199,6 +199,7 @@ export function OfferDetailClient({
             flexGrow: 0,
             flexShrink: 0,
             minWidth: 280,
+            paddingRight: "$lg",
           }}
         >
           <OffersSidebar offers={allOffers} currentUserId={currentUserId} />
@@ -213,6 +214,9 @@ export function OfferDetailClient({
             flexGrow: 1,
             flexShrink: 1,
             minWidth: 400,
+            borderLeftWidth: 1,
+            borderLeftColor: "$border",
+            paddingLeft: "$lg",
           }}
         >
           <ConversationThread
