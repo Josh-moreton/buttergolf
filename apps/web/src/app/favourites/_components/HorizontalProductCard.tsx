@@ -2,8 +2,7 @@
 
 import { Row, Column, Text, Button, Image } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
-import { Popover } from "tamagui";
-import { MoreHorizontal, ExternalLink, Trash2 } from "@tamagui/lucide-icons";
+import { Trash2 } from "@tamagui/lucide-icons";
 
 interface HorizontalProductCardProps {
   readonly product: ProductCardData & { description?: string };
@@ -162,78 +161,28 @@ export function HorizontalProductCard({
           Make an offer
         </Button>
 
-        {/* More Actions Dropdown */}
-        <Popover placement="bottom-end">
-          <Popover.Trigger asChild>
-            <Button
-              size="$4"
-              backgroundColor="$surface"
-              color="$text"
-              borderWidth={1}
-              borderColor="$border"
-              borderRadius="$full"
-              width={48}
-              height={48}
-              padding={0}
-              justifyContent="center"
-              alignItems="center"
-              icon={<MoreHorizontal size={20} />}
-            />
-          </Popover.Trigger>
-
-          <Popover.Content
-            backgroundColor="$surface"
-            borderWidth={1}
-            borderColor="$border"
-            borderRadius="$md"
-            padding="$xs"
-            shadowColor="rgba(0,0,0,0.12)"
-            shadowOffset={{ width: 0, height: 4 }}
-            shadowRadius={12}
-            elevation={4}
-            enterStyle={{ opacity: 0, y: -10 }}
-            exitStyle={{ opacity: 0, y: -10 }}
-            animation="quick"
-          >
-            <Column gap="$xs" minWidth={180}>
-              {/* View Details */}
-              <Button
-                size="$4"
-                backgroundColor="transparent"
-                color="$text"
-                justifyContent="flex-start"
-                paddingHorizontal="$3"
-                paddingVertical="$2"
-                borderRadius="$sm"
-                icon={<ExternalLink size={16} />}
-                onPress={() => onViewDetails(product.id)}
-                hoverStyle={{
-                  backgroundColor: "$backgroundHover",
-                }}
-              >
-                View Details
-              </Button>
-
-              {/* Remove from Favourites */}
-              <Button
-                size="$4"
-                backgroundColor="transparent"
-                color="$error"
-                justifyContent="flex-start"
-                paddingHorizontal="$3"
-                paddingVertical="$2"
-                borderRadius="$sm"
-                icon={<Trash2 size={16} />}
-                onPress={() => onRemove(product.id)}
-                hoverStyle={{
-                  backgroundColor: "$errorLight",
-                }}
-              >
-                Remove from Favourites
-              </Button>
-            </Column>
-          </Popover.Content>
-        </Popover>
+        {/* Remove from Favourites Button */}
+        <Button
+          size="$4"
+          backgroundColor="$surface"
+          color="$error"
+          borderWidth={1}
+          borderColor="$border"
+          borderRadius="$full"
+          width={48}
+          height={48}
+          padding={0}
+          justifyContent="center"
+          alignItems="center"
+          onPress={() => onRemove(product.id)}
+          hoverStyle={{
+            backgroundColor: "$errorLight",
+            borderColor: "$error",
+          }}
+          aria-label="Remove from favourites"
+        >
+          <Trash2 size={20} />
+        </Button>
       </Row>
     </Row>
   );
