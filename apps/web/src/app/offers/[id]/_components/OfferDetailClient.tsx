@@ -21,7 +21,7 @@ import type { Prisma } from "@prisma/client";
  * Mobile: Full-screen conversation with expandable product bar at top
  * 
  * Features:
- * - Polling for real-time updates (5 seconds)
+ * - Manual refresh only (after user actions like accept/reject/counter)
  * - Accept/Reject offer actions
  * - Counter-offer submission
  * - Responsive layout with mobile-first design
@@ -54,11 +54,11 @@ export function OfferDetailClient({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [allOffers, setAllOffers] = useState<OfferWithRelations[]>([]);
 
-  // Poll for updates every 5 seconds
+  // Manual refresh only - no auto-polling
   const { offer, loading, refetch } = useOfferUpdates({
     offerId: initialOffer.id,
-    enabled: true,
-    interval: 5000,
+    enabled: false, // Disabled - only refetch manually after user actions
+    interval: 15000,
     initialOffer,
   });
 
@@ -180,6 +180,8 @@ export function OfferDetailClient({
       {/* Desktop Three-Column Layout */}
       <Row
         width="100%"
+        maxWidth={1600}
+        marginHorizontal="auto"
         gap="$lg"
         paddingHorizontal="$lg"
         paddingTop="$lg"
@@ -193,9 +195,10 @@ export function OfferDetailClient({
           display="none"
           $gtLg={{
             display: "flex",
-            width: "20%",
-            minWidth: 250,
-            maxWidth: 300,
+            flexBasis: "25%",
+            flexGrow: 0,
+            flexShrink: 0,
+            minWidth: 280,
           }}
         >
           <OffersSidebar offers={allOffers} currentUserId={currentUserId} />
@@ -203,10 +206,14 @@ export function OfferDetailClient({
 
         {/* Center: Conversation + Form */}
         <Column
-          flex={1}
           gap="$lg"
           width="100%"
-          $gtLg={{ width: "45%" }}
+          $gtLg={{
+            flexBasis: "50%",
+            flexGrow: 1,
+            flexShrink: 1,
+            minWidth: 400,
+          }}
         >
           <ConversationThread
             initialOffer={{
@@ -238,8 +245,10 @@ export function OfferDetailClient({
           display="none"
           $gtLg={{
             display: "flex",
-            width: "35%",
-            minWidth: 350,
+            flexBasis: "25%",
+            flexGrow: 0,
+            flexShrink: 0,
+            minWidth: 320,
           }}
         >
           <ProductSummaryCard

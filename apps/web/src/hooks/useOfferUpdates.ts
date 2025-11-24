@@ -5,6 +5,7 @@ import type { Prisma } from "@prisma/client";
  * Custom Hook: Poll for Offer Updates
  * 
  * Fetches offer data from API at regular intervals for real-time updates.
+ * Uses initial server data and polls in background without causing visible refresh.
  * Provides refetch function for manual updates after actions.
  * 
  * Usage:
@@ -12,7 +13,7 @@ import type { Prisma } from "@prisma/client";
  * const { offer, loading, error, refetch } = useOfferUpdates({
  *   offerId: "123",
  *   enabled: true,
- *   interval: 5000, // 5 seconds
+ *   interval: 15000, // 15 seconds recommended
  *   initialOffer: serverOffer
  * });
  * ```
@@ -92,10 +93,8 @@ export function useOfferUpdates({
   useEffect(() => {
     if (!enabled) return;
 
-    // Fetch immediately on mount
-    fetchOffer();
-
-    // Set up interval for polling
+    // Don't fetch immediately - use initialOffer from server
+    // Only start polling after first interval
     const intervalId = setInterval(() => {
       fetchOffer();
     }, interval);

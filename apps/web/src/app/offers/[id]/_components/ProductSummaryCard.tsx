@@ -91,11 +91,6 @@ export function ProductSummaryCard({
             padding="$lg"
             gap="$md"
             width="100%"
-            $gtLg={{
-                width: "35%",
-                maxWidth: 420,
-                flexShrink: 0,
-            }}
             style={{
                 position: "sticky",
                 top: "100px",
