@@ -31,18 +31,22 @@ import {
   SheetScrollView as TamaguiSheetScrollView,
 } from '@tamagui/sheet';
 
-// Re-export with consistent naming
+// Re-export components individually
 export const Sheet = TamaguiSheet;
 export const Handle = TamaguiHandle;
 export const Overlay = TamaguiOverlay;
 export const Frame = TamaguiFrame;
 export const SheetScrollView = TamaguiSheetScrollView;
 
-// Attach subcomponents for compound component usage
-// Note: These must be attached AFTER export for type compatibility
+// Attach subcomponents for compound component pattern
+// Note: Type casting is required here for Tamagui's compound component pattern
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Sheet as any).Overlay = Overlay;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Sheet as any).Handle = Handle;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Sheet as any).Frame = Frame;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (Sheet as any).ScrollView = SheetScrollView;
 
 // Export types

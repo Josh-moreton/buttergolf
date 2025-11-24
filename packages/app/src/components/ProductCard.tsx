@@ -122,8 +122,8 @@ export function ProductCard({
               overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical" as any,
-            }}
+              WebkitBoxOrient: "vertical",
+            } as React.CSSProperties}
           >
             {product.title}
           </p>

@@ -39,10 +39,20 @@ import {
 } from "@expo-google-fonts/urbanist";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-// Platform imported above with RN components
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
+
+// Define navigation param types
+type RootStackParamList = {
+  ProductDetail: { id?: string };
+  Category: { slug?: string };
+  [key: string]: undefined | Record<string, string | undefined>;
+};
+
+type RouteParams<T extends keyof RootStackParamList> = {
+  params?: RootStackParamList[T];
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -285,35 +295,41 @@ export default function App() {
                   name="ProductDetail"
                   options={{ title: "Product Details" }}
                 >
-                  {({ route }: any) => (
+                  {({ route }: { route: RouteParams<"ProductDetail"> }) => (
                     <ProductDetailScreen
-                      productId={route.params?.id}
+                      productId={(route.params as { id?: string })?.id || ""}
                       onFetchProduct={fetchProduct}
                     />
                   )}
                 </Stack.Screen>
                 <Stack.Screen
                   name="Category"
-                  options={({ route }: any) => ({
-                    title: route.params?.slug
-                      ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
-                      : "Category",
-                    headerShown: false, // CategoryListScreen has its own header
-                  })}
+                  options={({ route }: { route: RouteParams<"Category"> }) => {
+                    const slug = (route.params as { slug?: string })?.slug;
+                    return {
+                      title: slug
+                        ? slug.charAt(0).toUpperCase() + slug.slice(1)
+                        : "Category",
+                      headerShown: false, // CategoryListScreen has its own header
+                    };
+                  }}
                 >
-                  {({ route, navigation }: any) => (
+                  {({ route, navigation }) => {
+                    const slug = (route.params as { slug?: string })?.slug;
+                    return (
                     <CategoryListScreen
-                      categorySlug={route.params?.slug || ""}
+                      categorySlug={slug || ""}
                       categoryName={
-                        route.params?.slug
-                          ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                        slug
+                          ? slug.charAt(0).toUpperCase() + slug.slice(1)
                           : "Category"
                       }
                       onFetchProducts={fetchProductsByCategory}
                       onBack={() => navigation.goBack()}
                       onFilter={() => console.log("Filter pressed")}
                     />
-                  )}
+                    );
+                  }}
                 </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
@@ -359,26 +375,32 @@ function OnboardingFlow() {
         </Stack.Screen>
         <Stack.Screen
           name="Category"
-          options={({ route }: any) => ({
-            title: route.params?.slug
-              ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
-              : "Category",
-            headerShown: false,
-          })}
+          options={({ route }: { route: RouteParams<"Category"> }) => {
+            const slug = (route.params as { slug?: string })?.slug;
+            return {
+              title: slug
+                ? slug.charAt(0).toUpperCase() + slug.slice(1)
+                : "Category",
+              headerShown: false,
+            };
+          }}
         >
-          {({ route, navigation }: any) => (
+          {({ route, navigation }) => {
+            const slug = (route.params as { slug?: string })?.slug;
+            return (
             <CategoryListScreen
-              categorySlug={route.params?.slug || ""}
+              categorySlug={slug || ""}
               categoryName={
-                route.params?.slug
-                  ? route.params.slug.charAt(0).toUpperCase() + route.params.slug.slice(1)
+                slug
+                  ? slug.charAt(0).toUpperCase() + slug.slice(1)
                   : "Category"
               }
               onFetchProducts={fetchProductsByCategory}
               onBack={() => navigation.goBack()}
               onFilter={() => console.log("Filter pressed")}
             />
-          )}
+            );
+          }}
         </Stack.Screen>
       </Stack.Navigator>
     );

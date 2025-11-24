@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,7 +25,6 @@ const NAV_CATEGORIES = [
 
 export function ButterHeader() {
   const pathname = usePathname();
-  const [stickyMenu, setStickyMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
@@ -37,16 +36,6 @@ export function ButterHeader() {
     }
     return pathname?.startsWith(path);
   };
-
-  // Sticky menu handler
-  useEffect(() => {
-    const handleStickyMenu = () => {
-      setStickyMenu(window.scrollY >= 40);
-    };
-
-    window.addEventListener("scroll", handleStickyMenu);
-    return () => window.removeEventListener("scroll", handleStickyMenu);
-  }, []);
 
   return (
     <>
