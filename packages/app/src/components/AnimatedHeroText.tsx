@@ -121,7 +121,11 @@ export function AnimatedHeroText({
         <div
             ref={containerRef}
             className={className}
-            style={style}
+            style={{
+                ...style,
+                whiteSpace: "normal",
+                wordBreak: "keep-all",
+            }}
             aria-label={ariaLabel || text}
         >
             {characters}

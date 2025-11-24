@@ -57,18 +57,6 @@ export function Hero({
     animationVariant = "none",
     animationDelay = 0.8, // Wait for hero fade-in to complete
 }: HeroProps) {
-    const mobileHeadingWords = React.useMemo(() => {
-        const combined =
-            typeof heading === "string"
-                ? heading
-                : [heading.line1, heading.line2].filter(Boolean).join(" ");
-
-        return combined
-            .split(/\s+/)
-            .map((word) => word.trim())
-            .filter(Boolean);
-    }, [heading]);
-
     // Determine image source format (React Native require() or web string)
     const backgroundSource =
         typeof backgroundImage === "string"
@@ -130,73 +118,60 @@ export function Hero({
                         $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
                     >
                         <Column gap="$6" maxWidth={600}>
-                            {/* Heading */}
-                            <Column gap="$1">
-                                <Column display="flex" $md={{ display: "none" }} gap="$1">
-                                    {mobileHeadingWords.map((word, index) => (
-                                        <Heading
-                                            key={`${word}-${index}`}
-                                            level={1}
-                                            size="$9"
-                                            color="$ironstone"
-                                            fontWeight="700"
-                                            numberOfLines={1}
-                                            ellipsizeMode="clip"
-                                        >
-                                            {word}
-                                        </Heading>
-                                    ))}
-                                </Column>
-                                <Column display="none" $md={{ display: "flex" }}>
-                                    {/* Single line heading with natural wrapping */}
-                                    {animationVariant === "split-character" ? (
-                                        <AnimatedHeroText
-                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                            delay={animationDelay}
-                                            style={{
-                                                fontSize: "clamp(32px, 5vw, 72px)",
-                                                color: "#323232",
-                                                fontWeight: 700,
-                                                lineHeight: 1.1,
-                                            }}
-                                        />
-                                    ) : animationVariant === "typewriter" ? (
-                                        <TypewriterHero
-                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                            delay={animationDelay}
-                                            showCursor={true}
-                                            style={{
-                                                fontSize: "clamp(32px, 5vw, 72px)",
-                                                color: "#323232",
-                                                fontWeight: 700,
-                                                lineHeight: 1.1,
-                                            }}
-                                        />
-                                    ) : animationVariant === "scale-bounce" ? (
-                                        <ScaleBounceHero
-                                            text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                            delay={animationDelay}
-                                            style={{
-                                                fontSize: "clamp(32px, 5vw, 72px)",
-                                                color: "#323232",
-                                                fontWeight: 700,
-                                                lineHeight: 1.1,
-                                            }}
-                                        />
-                                    ) : (
-                                        <Heading
-                                            level={1}
-                                            size="$11"
-                                            $md={{ fontSize: "$12" }}
-                                            $lg={{ fontSize: "$14" }}
-                                            color="$ironstone"
-                                            fontWeight="700"
-                                        >
-                                            {typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                        </Heading>
-                                    )}
-                                </Column>
-                            </Column>
+                            {/* Heading - Natural wrapping on all screen sizes */}
+                            {animationVariant === "split-character" ? (
+                                <AnimatedHeroText
+                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
+                                    delay={animationDelay}
+                                    style={{
+                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                        color: "#323232",
+                                        fontWeight: 700,
+                                        lineHeight: 1.1,
+                                        whiteSpace: "normal",
+                                        wordBreak: "keep-all",
+                                    }}
+                                />
+                            ) : animationVariant === "typewriter" ? (
+                                <TypewriterHero
+                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
+                                    delay={animationDelay}
+                                    showCursor={true}
+                                    style={{
+                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                        color: "#323232",
+                                        fontWeight: 700,
+                                        lineHeight: 1.1,
+                                        whiteSpace: "normal",
+                                        wordBreak: "keep-all",
+                                    }}
+                                />
+                            ) : animationVariant === "scale-bounce" ? (
+                                <ScaleBounceHero
+                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
+                                    delay={animationDelay}
+                                    style={{
+                                        fontSize: "clamp(32px, 5vw, 72px)",
+                                        color: "#323232",
+                                        fontWeight: 700,
+                                        lineHeight: 1.1,
+                                        whiteSpace: "normal",
+                                        wordBreak: "keep-all",
+                                    }}
+                                />
+                            ) : (
+                                <Heading
+                                    level={1}
+                                    size="$9"
+                                    $md={{ fontSize: "$11" }}
+                                    $lg={{ fontSize: "$14" }}
+                                    color="$ironstone"
+                                    fontWeight="700"
+                                    style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
+                                >
+                                    {typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
+                                </Heading>
+                            )}
 
                             {/* Subtitle */}
                             <Text
