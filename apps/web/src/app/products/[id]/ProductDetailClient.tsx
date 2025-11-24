@@ -117,8 +117,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       const result = await response.json();
       console.log("Offer submitted successfully:", result);
 
-      // Show success message
-      alert(`Offer of £${offerAmount.toFixed(2)} submitted successfully! The seller will be notified.`);
+      // Close modal
+      setMakeOfferModalOpen(false);
+
+      // Redirect to offer detail page
+      router.push(`/offers/${result.id}`);
     } catch (error) {
       console.error("Error submitting offer:", error);
       throw error;
