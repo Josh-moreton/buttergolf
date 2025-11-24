@@ -49,7 +49,7 @@ export function PageHero() {
           color="$primary"
           textAlign="center"
         >
-          Swing Smarter. Shop Better.
+          Discover your buttery swing
         </TamaguiText>
       </Column>
     </Column>
