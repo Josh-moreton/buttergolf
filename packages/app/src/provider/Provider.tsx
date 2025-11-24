@@ -16,7 +16,7 @@ export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
 
   return (
     <TamaguiProvider
-      config={config}
+      config={config as any}
       defaultTheme={theme}
       {...rest}
     >

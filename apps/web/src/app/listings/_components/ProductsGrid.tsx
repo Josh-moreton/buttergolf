@@ -185,7 +185,7 @@ export function ProductsGrid({
       {/* Products Grid - Responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
       <Column
         width="100%"
-        display="grid"
+        style={{ display: "grid" }}
         gridTemplateColumns="1"
         gap="$6"
         $gtMd={{

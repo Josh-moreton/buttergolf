@@ -68,13 +68,13 @@ export function MobileFilterSheet({
         backgroundColor="$surface"
         borderTopLeftRadius="$2xl"
         borderTopRightRadius="$2xl"
-        position="fixed"
         bottom={0}
         left={0}
         right={0}
         zIndex={1001}
         maxHeight="85vh"
         style={{
+          position: "fixed",
           boxShadow: "0 -20px 60px rgba(0, 0, 0, 0.25)",
           paddingBottom: "env(safe-area-inset-bottom)",
         }}
@@ -114,7 +114,7 @@ export function MobileFilterSheet({
         </Column>
 
         {/* Body */}
-        <Column flex={1} overflow="auto">
+        <Column flex={1} style={{ overflow: "auto" }}>
           <Column padding="$4" gap="$lg">
             <FilterSection title="Category" defaultExpanded>
               <CategoryFilter

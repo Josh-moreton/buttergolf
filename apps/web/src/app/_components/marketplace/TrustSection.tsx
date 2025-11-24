@@ -52,7 +52,7 @@ export function TrustSection() {
 
                 {/* Trust Items Grid */}
                 <Column
-                    display="grid"
+                    style={{ display: "grid" }}
                     gridTemplateColumns="1"
                     gap="$12"
                     $gtMd={{

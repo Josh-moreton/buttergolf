@@ -4,7 +4,6 @@ import "@tamagui/core/reset.css";
 import "@tamagui/polyfill-dev";
 
 import type { ReactNode } from "react";
-import { StyleSheet } from "react-native";
 import { useServerInsertedHTML } from "next/navigation";
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
 import { config } from "@buttergolf/config";
@@ -17,17 +16,9 @@ export function NextTamaguiProvider({
   const [currentTheme, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
-    const rnwStyle = StyleSheet.getSheet() as { id: string; textContent: string } | null;
-
     return (
       <>
         <link rel="stylesheet" href="/tamagui.css" />
-        {rnwStyle && (
-          <style
-            id={rnwStyle.id}
-            dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
-          />
-        )}
         <style
           dangerouslySetInnerHTML={{
             __html: config.getCSS({
