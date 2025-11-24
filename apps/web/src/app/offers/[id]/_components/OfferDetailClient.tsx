@@ -69,7 +69,7 @@ export function OfferDetailClient({
         const response = await fetch("/api/offers");
         if (response.ok) {
           const data = await response.json();
-          setAllOffers(data.offers || []);
+          setAllOffers(Array.isArray(data) ? data : []);
         }
       } catch (error) {
         console.error("Error fetching offers:", error);
