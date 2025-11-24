@@ -30,7 +30,7 @@
     "expo-auth-session": "catalog:",
     "expo-font": "~14.0.6",
     "expo-secure-store": "catalog:",
-    "expo-splash-screen": "^31.0.10",
+    "expo-splash-screen": "^31.0.11",
     "expo-status-bar": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
