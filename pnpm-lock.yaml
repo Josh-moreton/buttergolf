@@ -7,10 +7,10 @@ settings:
 catalogs:
   default:
     '@clerk/clerk-expo':
-      specifier: ^2.17.3
+      specifier: 2.17.3
       version: 2.17.3
     '@clerk/nextjs':
-      specifier: ^6.34.1
+      specifier: 6.34.1
       version: 6.34.1
     '@tamagui/animations-css':
       specifier: 1.135.7
@@ -58,49 +58,49 @@ catalogs:
       specifier: 1.135.7
       version: 1.135.7
     '@types/node':
-      specifier: ^22.15.3
-      version: 22.19.0
+      specifier: 20.19.24
+      version: 20.19.24
     '@types/react':
-      specifier: ~19.2.6
+      specifier: 19.2.6
       version: 19.2.6
     '@types/react-dom':
-      specifier: ~19.2.3
+      specifier: 19.2.3
       version: 19.2.3
     eslint:
-      specifier: ^9.39.1
+      specifier: 9.39.1
       version: 9.39.1
     eslint-config-expo:
-      specifier: ^10.0.0
+      specifier: 10.0.0
       version: 10.0.0
     expo-auth-session:
-      specifier: ^7.0.8
+      specifier: 7.0.8
       version: 7.0.8
     expo-secure-store:
-      specifier: ^15.0.7
+      specifier: 15.0.7
       version: 15.0.7
     expo-status-bar:
-      specifier: ~3.0.8
+      specifier: 3.0.8
       version: 3.0.8
     next:
       specifier: 16.0.1
       version: 16.0.1
     prisma:
-      specifier: ^6.19.0
+      specifier: 6.19.0
       version: 6.19.0
     react-native:
       specifier: 0.81.5
       version: 0.81.5
     react-native-safe-area-context:
-      specifier: ^5.6.2
+      specifier: 5.6.2
       version: 5.6.2
     react-native-screens:
-      specifier: ~4.18.0
+      specifier: 4.18.0
       version: 4.18.0
     react-native-web:
-      specifier: ^0.21.2
+      specifier: 0.21.2
       version: 0.21.2
     solito:
-      specifier: ^5.0.0
+      specifier: 5.0.0
       version: 5.0.0
     tamagui:
       specifier: 1.135.7
@@ -280,10 +280,28 @@ importers:
       '@stripe/stripe-js':
         specifier: ^8.3.0
         version: 8.3.0
+      '@tamagui/animations-css':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
       '@tamagui/card':
         specifier: 'catalog:'
         version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/config':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
       '@tamagui/core':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/lucide-icons':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/polyfill-dev':
+        specifier: 'catalog:'
+        version: 1.135.7
+      '@tamagui/shorthands':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/themes':
         specifier: 'catalog:'
         version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
       '@vercel/analytics':
@@ -565,9 +583,24 @@ importers:
       '@tamagui/card':
         specifier: 'catalog:'
         version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      '@tamagui/config':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      '@tamagui/lucide-icons':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      '@tamagui/polyfill-dev':
+        specifier: 'catalog:'
+        version: 1.135.7
+      '@tamagui/shorthands':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      '@tamagui/themes':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
       '@types/node':
         specifier: 'catalog:'
-        version: 22.19.0
+        version: 20.19.24
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.6
@@ -3073,9 +3106,6 @@ packages:
 
   '@types/node@20.19.25':
     resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
-
-  '@types/node@22.19.0':
-    resolution: {integrity: sha512-xpr/lmLPQEj+TUnHmR+Ab91/glhJvsqcjB+yY0Ix9GO70H6Lb4FHH5GeqdOE5btAx7eIMwuHkp4H2MSkLcqWbA==}
 
   '@types/node@24.10.0':
     resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
@@ -8608,7 +8638,7 @@ snapshots:
       '@emotion/memoize': 0.9.0
       '@emotion/unitless': 0.10.0
       '@emotion/utils': 1.4.2
-      csstype: 3.1.3
+      csstype: 3.2.3
 
   '@emotion/sheet@1.4.0': {}
 
@@ -9239,14 +9269,14 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       jest-mock: 29.7.0
 
   '@jest/fake-timers@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -9280,7 +9310,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       '@types/yargs': 17.0.34
       chalk: 4.1.2
 
@@ -9799,7 +9829,7 @@ snapshots:
 
   '@scure/bip32@1.7.0':
     dependencies:
-      '@noble/curves': 1.9.1
+      '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
 
@@ -10184,6 +10214,17 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
     transitivePeerDependencies:
       - react-native
+
+  '@tamagui/animations-moti@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/use-presence': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      moti: 0.30.0(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native-reanimated
 
   '@tamagui/animations-moti@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -10641,6 +10682,26 @@ snapshots:
       - react-dom
       - react-native
 
+  '@tamagui/config@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/animations-css': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/animations-moti': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/animations-react-native': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/colors': 1.135.7
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/font-inter': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/font-silkscreen': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/react-native-media-driver': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/shorthands': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/theme-builder': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/themes': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/web': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - react-native
+      - react-native-reanimated
+
   '@tamagui/config@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/animations-css': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
@@ -10972,6 +11033,14 @@ snapshots:
       - react-dom
       - react-native
 
+  '@tamagui/font-inter@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - react-native
+
   '@tamagui/font-inter@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
@@ -10983,6 +11052,14 @@ snapshots:
   '@tamagui/font-inter@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - react-native
+
+  '@tamagui/font-silkscreen@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -11221,11 +11298,29 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
+  '@tamagui/helpers-icon@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-native-svg: 15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
   '@tamagui/helpers-icon@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-native-svg: 15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
+  '@tamagui/helpers-icon@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-native-svg: 15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - react-dom
       - react-native
@@ -11433,12 +11528,32 @@ snapshots:
       - react-dom
       - react-native
 
+  '@tamagui/lucide-icons@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/helpers-icon': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-native-svg: 15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
   '@tamagui/lucide-icons@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
       '@tamagui/helpers-icon': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-native-svg: 15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
+  '@tamagui/lucide-icons@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/core': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      '@tamagui/helpers-icon': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-native-svg: 15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - react-dom
       - react-native
@@ -12691,6 +12806,18 @@ snapshots:
       - react-dom
       - react-native
 
+  '@tamagui/themes@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@tamagui/colors': 1.135.7
+      '@tamagui/create-theme': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/theme-builder': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      '@tamagui/web': 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      color2k: 2.0.3
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - react-native
+
   '@tamagui/themes@1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tamagui/colors': 1.135.7
@@ -13154,7 +13281,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
 
   '@types/html-minifier-terser@6.1.0': {}
 
@@ -13179,10 +13306,6 @@ snapshots:
       undici-types: 6.21.0
 
   '@types/node@20.19.25':
-    dependencies:
-      undici-types: 6.21.0
-
-  '@types/node@22.19.0':
     dependencies:
       undici-types: 6.21.0
 
@@ -13234,23 +13357,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/eslint-plugin@8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
-    dependencies:
-      '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.46.2
-      '@typescript-eslint/type-utils': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/visitor-keys': 8.46.2
-      eslint: 9.39.1(jiti@2.6.1)
-      graphemer: 1.4.0
-      ignore: 7.0.5
-      natural-compare: 1.4.0
-      ts-api-utils: 2.1.0(typescript@5.9.3)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/eslint-plugin@8.47.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
@@ -13276,18 +13382,6 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.46.2
       debug: 4.4.3
       eslint: 9.39.0(jiti@2.6.1)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
-    dependencies:
-      '@typescript-eslint/scope-manager': 8.46.2
-      '@typescript-eslint/types': 8.46.2
-      '@typescript-eslint/typescript-estree': 8.46.2(typescript@5.9.3)
-      '@typescript-eslint/visitor-keys': 8.46.2
-      debug: 4.4.3
-      eslint: 9.39.1(jiti@2.6.1)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -13352,18 +13446,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/type-utils@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
-    dependencies:
-      '@typescript-eslint/types': 8.46.2
-      '@typescript-eslint/typescript-estree': 8.46.2(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      debug: 4.4.3
-      eslint: 9.39.1(jiti@2.6.1)
-      ts-api-utils: 2.1.0(typescript@5.9.3)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/type-utils@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 8.47.0
@@ -13419,17 +13501,6 @@ snapshots:
       '@typescript-eslint/types': 8.46.2
       '@typescript-eslint/typescript-estree': 8.46.2(typescript@5.9.3)
       eslint: 9.39.0(jiti@2.6.1)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@typescript-eslint/utils@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
-    dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1(jiti@2.6.1))
-      '@typescript-eslint/scope-manager': 8.46.2
-      '@typescript-eslint/types': 8.46.2
-      '@typescript-eslint/typescript-estree': 8.46.2(typescript@5.9.3)
-      eslint: 9.39.1(jiti@2.6.1)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -14203,7 +14274,7 @@ snapshots:
 
   chrome-launcher@0.15.2:
     dependencies:
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -14214,7 +14285,7 @@ snapshots:
 
   chromium-edge-launcher@0.2.0:
     dependencies:
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -14822,12 +14893,12 @@ snapshots:
 
   eslint-config-expo@10.0.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/parser': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 8.47.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-expo: 1.0.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.39.1(jiti@2.6.1))
       globals: 16.5.0
@@ -14895,7 +14966,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -14910,11 +14981,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
@@ -14923,7 +14994,7 @@ snapshots:
 
   eslint-plugin-expo@1.0.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/types': 8.46.2
+      '@typescript-eslint/types': 8.47.0
       '@typescript-eslint/utils': 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.1(jiti@2.6.1)
     transitivePeerDependencies:
@@ -14959,7 +15030,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -14970,7 +15041,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -14982,7 +15053,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -16093,7 +16164,7 @@ snapshots:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -16103,7 +16174,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -16130,7 +16201,7 @@ snapshots:
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       jest-util: 29.7.0
 
   jest-regex-util@29.6.3: {}
@@ -16138,7 +16209,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -16161,7 +16232,7 @@ snapshots:
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 20.19.24
+      '@types/node': 20.19.25
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -16796,6 +16867,14 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
+  moti@0.30.0(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react@19.1.0):
+    dependencies:
+      framer-motion: 6.5.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-native-reanimated: 4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
   moti@0.30.0(react-dom@19.1.0(react@19.1.0))(react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react@19.1.0):
     dependencies:
       framer-motion: 6.5.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -17085,7 +17164,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.1.0(typescript@5.9.3)(zod@3.25.76)
+      abitype: 1.1.1(typescript@5.9.3)(zod@3.25.76)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.9.3
@@ -17426,6 +17505,11 @@ snapshots:
 
   react-is@19.2.0: {}
 
+  react-native-is-edge-to-edge@1.2.1(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0)
+
   react-native-is-edge-to-edge@1.2.1(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
@@ -17435,6 +17519,15 @@ snapshots:
     dependencies:
       react: 19.1.0
       react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0)
+
+  react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      '@babel/core': 7.28.5
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0)
+      react-native-is-edge-to-edge: 1.2.1(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      react-native-worklets: 0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
+      semver: 7.7.2
 
   react-native-reanimated@4.1.3(@babel/core@7.28.5)(react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -17466,12 +17559,28 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0)
       warn-once: 0.1.1
 
+  react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      css-select: 5.2.2
+      css-tree: 1.1.3
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0)
+      warn-once: 0.1.1
+
   react-native-svg@15.14.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0):
     dependencies:
       css-select: 5.2.2
       css-tree: 1.1.3
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0)
+      warn-once: 0.1.1
+
+  react-native-svg@15.14.0(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      css-select: 5.2.2
+      css-tree: 1.1.3
+      react: 19.1.0
+      react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0)
       warn-once: 0.1.1
 
   react-native-url-polyfill@2.0.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0)):
@@ -17508,6 +17617,25 @@ snapshots:
       styleq: 0.1.3
     transitivePeerDependencies:
       - encoding
+
+  react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      '@babel/core': 7.28.5
+      '@babel/plugin-transform-arrow-functions': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-class-properties': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-classes': 7.28.4(@babel/core@7.28.5)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-optional-chaining': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-shorthand-properties': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-template-literals': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-transform-unicode-regex': 7.27.1(@babel/core@7.28.5)
+      '@babel/preset-typescript': 7.28.5(@babel/core@7.28.5)
+      convert-source-map: 2.0.0
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.2.2)(react@19.1.0)
+      semver: 7.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   react-native-worklets@0.5.2(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.6)(react@19.1.0))(react@19.1.0):
     dependencies:
