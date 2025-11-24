@@ -49,3 +49,7 @@ export { Image } from './components/Image'
 export type { ImageProps } from './components/Image'
 export { ScrollView } from './components/ScrollView'
 export type { ScrollViewProps } from './components/ScrollView'
+
+// Error Handling
+export { ErrorBoundary, useErrorBoundary } from './components/ErrorBoundary'
+export type { ErrorBoundaryProps, ErrorBoundaryState } from './components/ErrorBoundary'

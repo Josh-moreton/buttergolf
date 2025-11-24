@@ -9,6 +9,10 @@
     "./*": "./src/*.tsx"
   },
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "lint": "eslint . --fix --max-warnings 0",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit"
@@ -25,19 +29,20 @@
     "@tamagui/polyfill-dev": "catalog:",
     "@tamagui/shorthands": "catalog:",
     "@tamagui/themes": "catalog:",
-    "tamagui": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
-    "typescript": "catalog:"
+    "tamagui": "catalog:",
+    "typescript": "catalog:",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
+    "@tamagui/card": "*",
     "react": "*",
     "react-dom": "*",
     "react-native": "*",
-    "tamagui": "*",
-    "@tamagui/card": "*"
+    "tamagui": "*"
   },
   "peerDependenciesMeta": {
     "react-native": {
