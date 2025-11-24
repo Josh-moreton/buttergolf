@@ -23,31 +23,16 @@
  * ```
  */
 
-import {
-  Sheet as TamaguiSheet,
-  Handle as TamaguiHandle,
-  Overlay as TamaguiOverlay,
-  Frame as TamaguiFrame,
-  SheetScrollView as TamaguiSheetScrollView,
+// Re-export Sheet and its components
+// Note: Tamagui Sheet is a ForwardRefExoticComponent that comes with built-in compound components.
+// We re-export both the main Sheet component and individual subcomponents for flexibility.
+export {
+  Sheet,
+  Handle,
+  Overlay,
+  Frame,
+  SheetScrollView,
 } from '@tamagui/sheet';
-
-// Re-export components individually
-export const Sheet = TamaguiSheet;
-export const Handle = TamaguiHandle;
-export const Overlay = TamaguiOverlay;
-export const Frame = TamaguiFrame;
-export const SheetScrollView = TamaguiSheetScrollView;
-
-// Attach subcomponents for compound component pattern
-// Note: Type casting is required here for Tamagui's compound component pattern
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Sheet as any).Overlay = Overlay;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Sheet as any).Handle = Handle;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Sheet as any).Frame = Frame;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(Sheet as any).ScrollView = SheetScrollView;
 
 // Export types
 export type { SheetProps } from '@tamagui/sheet';

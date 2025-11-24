@@ -297,7 +297,7 @@ export default function App() {
                 >
                   {({ route }: { route: RouteParams<"ProductDetail"> }) => (
                     <ProductDetailScreen
-                      productId={(route.params as { id?: string })?.id || ""}
+                      productId={route.params?.id || ""}
                       onFetchProduct={fetchProduct}
                     />
                   )}
@@ -305,7 +305,7 @@ export default function App() {
                 <Stack.Screen
                   name="Category"
                   options={({ route }: { route: RouteParams<"Category"> }) => {
-                    const slug = (route.params as { slug?: string })?.slug;
+                    const slug = route.params?.slug;
                     return {
                       title: slug
                         ? slug.charAt(0).toUpperCase() + slug.slice(1)
@@ -314,8 +314,8 @@ export default function App() {
                     };
                   }}
                 >
-                  {({ route, navigation }) => {
-                    const slug = (route.params as { slug?: string })?.slug;
+                  {({ route, navigation }: { route: RouteParams<"Category">; navigation: any }) => {
+                    const slug = route.params?.slug;
                     return (
                     <CategoryListScreen
                       categorySlug={slug || ""}

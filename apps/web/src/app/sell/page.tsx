@@ -179,7 +179,7 @@ export default function SellPage() {
     if (newTitle !== formData.title) {
       setFormData(prev => ({ ...prev, title: newTitle }));
     }
-  }, [formData.brandName, formData.model, formData.categoryId, formData.condition, formData.title, userAddedText, categories, generateTitle]);
+  }, [formData.brandName, formData.model, formData.categoryId, formData.condition, userAddedText, categories, generateTitle]);
 
   // Load categories on mount
   useEffect(() => {

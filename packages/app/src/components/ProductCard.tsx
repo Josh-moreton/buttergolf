@@ -122,7 +122,7 @@ export function ProductCard({
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
-            } as React.CSSProperties}
+            }}
           >
             {product.title}
           </p>
