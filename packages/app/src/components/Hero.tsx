@@ -144,18 +144,21 @@ export function Hero({
                 overflow="hidden"
                 position="relative"
             >
-                {/* Background Image - Absolute positioned */}
-                <Image
-                    source={backgroundSource as Parameters<typeof Image>[0]["source"]}
-                    width="100%"
-                    height="100%"
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    objectFit="cover"
-                    zIndex={0}
-                    alt=""
-                    accessibilityRole="none"
+                {/* Background Image - Absolute positioned with 70% opacity */}
+                <div
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: "url(/_assets/images/butter-background.webp)",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        opacity: 0.7,
+                        zIndex: 0,
+                    }}
                 />
 
                 {/* Content Container - Absolute positioned on top */}
