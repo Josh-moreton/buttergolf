@@ -1,9 +1,10 @@
 "use client";
 
-import { Column, Row, Heading, Text, Button, View } from "@buttergolf/ui";
+import { Platform } from "react-native";
+import { Column, Row, Heading, Text, Button, View, Image } from "@buttergolf/ui";
+import { images } from "@buttergolf/assets";
 import { Link } from "solito/link";
 import { FadeUpText } from "./FadeUpText";
-import { TypewriterHero } from "./TypewriterHero";
 
 // Image source types - accepts both React Native require() and web string paths
 type ImageSource = string | { uri: string } | number;
@@ -33,7 +34,7 @@ export interface HeroProps {
     readonly maxHeight?: number; // Default: 700
 
     // Animation controls (desktop only)
-    readonly animationVariant?: "fade-up" | "typewriter" | "none";
+    readonly animationVariant?: "fade-up" | "none";
     readonly animationDelay?: number; // Delay before animation starts (in seconds)
 }
 
@@ -63,7 +64,7 @@ const headingStyle = {
 
 interface HeroHeadingProps {
     readonly heading: string | { line1: string; line2?: string };
-    readonly animationVariant: "fade-up" | "typewriter" | "none";
+    readonly animationVariant: "fade-up" | "none";
     readonly animationDelay: number;
 }
 
@@ -75,17 +76,6 @@ function HeroHeading({ heading, animationVariant, animationDelay }: HeroHeadingP
             <FadeUpText
                 text={text}
                 delay={animationDelay}
-                style={headingStyle}
-            />
-        );
-    }
-
-    if (animationVariant === "typewriter") {
-        return (
-            <TypewriterHero
-                text={text}
-                delay={animationDelay}
-                showCursor={true}
                 style={headingStyle}
             />
         );
@@ -144,21 +134,35 @@ export function Hero({
                 position="relative"
             >
                 {/* Background Image - Absolute positioned with 70% opacity */}
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundImage: "url(/_assets/images/butter-background.webp)",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                        opacity: 0.7,
-                        zIndex: 0,
-                    }}
-                />
+                {Platform.OS === "web" ? (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundImage: "url(/_assets/images/butter-background.webp)",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            opacity: 0.7,
+                            zIndex: 0,
+                        }}
+                    />
+                ) : (
+                    <Image
+                        source={images.hero.butterBackground}
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
+                        opacity={0.7}
+                        zIndex={0}
+                    />
+                )}
 
                 {/* Content Container - Absolute positioned on top */}
                 <Row
@@ -263,6 +267,8 @@ interface HeroImageProps {
 }
 
 function HeroImage({ source }: HeroImageProps) {
+    const isWeb = Platform.OS === "web";
+    
     return (
         <Column
             width="40%"
@@ -278,18 +284,28 @@ function HeroImage({ source }: HeroImageProps) {
                 paddingRight: "$8",
             }}
         >
-            <img
-                src={typeof source === 'object' && 'uri' in source ? source.uri : ''}
-                alt="Premium golf club featured in hero section"
-                style={{
-                    width: 'auto',
-                    height: '115%',
-                    maxWidth: '120%',
-                    objectFit: 'contain',
-                    objectPosition: 'center bottom',
-                    marginBottom: 0,
-                }}
-            />
+            {isWeb ? (
+                <img
+                    src={typeof source === 'object' && 'uri' in source ? source.uri : ''}
+                    alt="Premium golf club featured in hero section"
+                    style={{
+                        width: 'auto',
+                        height: '115%',
+                        maxWidth: '120%',
+                        objectFit: 'contain',
+                        objectPosition: 'center bottom',
+                        marginBottom: 0,
+                    }}
+                />
+            ) : (
+                <Image
+                    source={source as Parameters<typeof Image>[0]["source"]}
+                    width="100%"
+                    height="100%"
+                    objectFit="contain"
+                    marginBottom={0}
+                />
+            )}
         </Column>
     );
 }

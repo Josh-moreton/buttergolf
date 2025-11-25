@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import type { CSSProperties } from "react";
+import { Platform } from "react-native";
+import { Text as TamaguiText } from "@buttergolf/ui";
 
 interface FadeUpTextProps {
     readonly text: string;
@@ -32,27 +34,43 @@ export function FadeUpText({
     ariaLabel,
 }: FadeUpTextProps) {
     const [isVisible, setIsVisible] = useState(false);
+    const isWeb = Platform.OS === "web";
 
-    // Check for reduced motion preference
+    // Check for reduced motion preference (web only)
     const prefersReducedMotion = useMemo(() => {
-        if (globalThis.window === undefined) return false;
+        if (!isWeb || globalThis.window === undefined) return false;
         return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }, []);
+    }, [isWeb]);
 
     // Check if desktop (memoized, no state update)
     const isDesktop = useMemo(() => {
-        if (globalThis.window === undefined) return false;
+        if (!isWeb || globalThis.window === undefined) return false;
         return globalThis.innerWidth >= 1024;
-    }, []);
+    }, [isWeb]);
 
     useEffect(() => {
+        if (!isWeb) return;
+        
         // Apply delay using vanilla JS setTimeout
         const timer = setTimeout(() => {
             setIsVisible(true);
         }, delay * 1000); // Convert seconds to ms
 
         return () => clearTimeout(timer);
-    }, [delay]);
+    }, [delay, isWeb]);
+
+    // On native, just return static text
+    if (!isWeb) {
+        return (
+            <TamaguiText
+                fontSize={style?.fontSize as number || 32}
+                fontWeight={String(style?.fontWeight || "700")}
+                color="$text"
+            >
+                {text}
+            </TamaguiText>
+        );
+    }
 
     // On mobile or with reduced motion, show static text immediately
     if (!isDesktop || prefersReducedMotion) {

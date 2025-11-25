@@ -12,6 +12,7 @@ export const images = {
   hero: {
     golfCourse: require('../images/steven-shircliff-N21z4eG8aKg-unsplash.jpg'),
     background: require('../images/hero-background.avif'),
+    butterBackground: require('../images/butter-background.webp'),
     club: require('../images/hero-club.png'),
   }
 } as const
@@ -30,6 +31,7 @@ export const imagePaths = {
   hero: {
     golfCourse: '/_assets/images/steven-shircliff-N21z4eG8aKg-unsplash.jpg',
     background: '/_assets/images/hero-background.avif',
+    butterBackground: '/_assets/images/butter-background.webp',
     club: '/_assets/images/hero-club.svg',
   }
 } as const

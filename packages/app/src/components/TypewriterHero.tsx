@@ -1,6 +1,8 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, CSSProperties } from "react";
+import { Platform } from "react-native";
+import { Text as TamaguiText } from "@buttergolf/ui";
 
 interface TypewriterHeroProps {
     text: string;
@@ -32,16 +34,20 @@ export function TypewriterHero({
     className,
     style,
     ariaLabel,
-}: TypewriterHeroProps) {
+}: Readonly<TypewriterHeroProps>) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [displayText, setDisplayText] = useState("");
     const [isAnimating, setIsAnimating] = useState(false);
+    const isWeb = Platform.OS === "web";
 
     useLayoutEffect(() => {
-        if (typeof window === "undefined") return;
+        if (!isWeb || globalThis.window === undefined) {
+            setDisplayText(text);
+            return;
+        }
 
         // Desktop only - skip animation on mobile/app
-        const isDesktop = window.innerWidth >= 1024;
+        const isDesktop = globalThis.innerWidth >= 1024;
         if (!isDesktop) {
             setDisplayText(text);
             setIsAnimating(false);
@@ -49,7 +55,7 @@ export function TypewriterHero({
         }
 
         // Check for reduced motion preference
-        const prefersReducedMotion = window.matchMedia(
+        const prefersReducedMotion = globalThis.matchMedia(
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
@@ -81,7 +87,20 @@ export function TypewriterHero({
             clearTimeout(startTimeout);
             if (intervalId) clearInterval(intervalId);
         };
-    }, [text, speed, delay]);
+    }, [text, speed, delay, isWeb]);
+
+    // On native, just return static text
+    if (!isWeb) {
+        return (
+            <TamaguiText
+                fontSize={style?.fontSize as number || 32}
+                fontWeight={String(style?.fontWeight || "700")}
+                color="$text"
+            >
+                {text}
+            </TamaguiText>
+        );
+    }
 
     // Always render for SEO/accessibility, control visibility with CSS
     return (
