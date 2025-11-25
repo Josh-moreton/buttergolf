@@ -268,33 +268,26 @@ function HeroImage({ source }: HeroImageProps) {
             height="100%"
             $md={{
                 width: "50%",
-                paddingLeft: "$4",
-                paddingRight: "$8",
-                paddingTop: "$8",
-                paddingBottom: 0,
             }}
             backgroundColor="transparent"
-            alignItems="flex-end"
+            alignItems="center"
             justifyContent="flex-end"
-            paddingRight={0}
-            marginBottom={0}
+            paddingRight="$4"
             $lg={{
-                paddingLeft: "$8",
-                paddingRight: "$12",
-                paddingTop: "$12",
+                paddingRight: "$8",
             }}
         >
-            <Image
-                source={source as Parameters<typeof Image>[0]["source"]}
-                width="115%"
-                height="auto"
-                aspectRatio={1}
-                marginBottom={-20}
-                $md={{ width: "115%", height: "115%", marginBottom: -48 }}
-                $lg={{ width: "120%", height: "120%", marginBottom: -56 }}
-                objectFit="contain"
+            <img
+                src={typeof source === 'object' && 'uri' in source ? source.uri : ''}
                 alt="Premium golf club featured in hero section"
-                accessibilityLabel="Premium golf club featured in hero section"
+                style={{
+                    width: 'auto',
+                    height: '115%',
+                    maxWidth: '120%',
+                    objectFit: 'contain',
+                    objectPosition: 'center bottom',
+                    marginBottom: 0,
+                }}
             />
         </Column>
     );

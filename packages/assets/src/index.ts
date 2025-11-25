@@ -30,7 +30,7 @@ export const imagePaths = {
   hero: {
     golfCourse: '/_assets/images/steven-shircliff-N21z4eG8aKg-unsplash.jpg',
     background: '/_assets/images/hero-background.avif',
-    club: '/_assets/images/hero-club.png',
+    club: '/_assets/images/hero-club.svg',
   }
 } as const
 
