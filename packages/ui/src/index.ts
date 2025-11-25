@@ -21,6 +21,8 @@ export type { TextProps, HeadingProps, LabelProps } from './components/Text'
 // Layout Components (semantic components with variants)
 export { Row, Column, Container, Spacer, XStack, YStack, View } from './components/Layout'
 export type { RowProps, ColumnProps, ContainerProps, SpacerProps, XStackProps, YStackProps, ViewProps } from './components/Layout'
+export { PageContainer } from './components/PageContainer'
+export type { PageContainerProps } from './components/PageContainer'
 
 // Card Components
 export { Card, CardHeader, CardBody, CardFooter } from './components/Card'

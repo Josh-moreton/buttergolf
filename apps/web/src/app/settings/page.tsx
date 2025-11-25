@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Column, Row, Heading, Text, Card } from "@buttergolf/ui";
+import { PageContainer, Column, Row, Heading, Text, Card } from "@buttergolf/ui";
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -28,7 +28,7 @@ export default function SettingsPage() {
     ];
 
     return (
-        <Column
+        <PageContainer
             backgroundColor="$background"
             minHeight="100vh"
             alignItems="center"
@@ -87,6 +87,6 @@ export default function SettingsPage() {
                     </Column>
                 </Column>
             </Column>
-        </Column>
+        </PageContainer>
     );
 }
