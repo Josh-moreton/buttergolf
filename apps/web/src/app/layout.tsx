@@ -14,7 +14,6 @@ import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 import { CartProvider } from "../context/CartContext";
-import { PageTransition } from "./_components/animations/PageTransition";
 import { FavoritesProvider } from "../providers/FavoritesProvider";
 
 // Urbanist font configuration for Pure Butter brand
@@ -79,9 +78,7 @@ export default function RootLayout({
               <AppPromoBanner />
               {/* Main content wrapper */}
               <main className="bg-white">
-                <PageTransition>
-                  {children}
-                </PageTransition>
+                {children}
               </main>
             </CartProvider>
           </FavoritesProvider>

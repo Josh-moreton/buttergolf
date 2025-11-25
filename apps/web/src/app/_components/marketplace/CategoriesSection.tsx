@@ -1,67 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { CATEGORIES } from "@buttergolf/db";
-import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
 import { Column } from "@buttergolf/ui";
 
 export function CategoriesSection() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<gsap.core.Tween | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Check for reduced motion preference (memoized)
+  const prefersReducedMotion = useMemo(() => {
+    if (globalThis.window === undefined) return false;
+    return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  // Duplicate categories for seamless infinite loop
+  const duplicatedCategories = useMemo(() => {
+    // Triple the categories for smoother infinite loop
+    return [...CATEGORIES, ...CATEGORIES, ...CATEGORIES];
+  }, []);
 
   useEffect(() => {
-    if (!trackRef.current) return;
-
-    const track = trackRef.current;
-    const cards = Array.from(track.children) as HTMLElement[];
-    if (cards.length === 0) return;
-
-    // Calculate total width
-    const cardWidth = cards[0].offsetWidth;
-    const gap = 24;
-    const totalWidth = (cardWidth + gap) * CATEGORIES.length;
-
-    // Clone cards for seamless loop - only if not already cloned
-    if (cards.length === CATEGORIES.length) {
-      for (const card of cards) {
-        const clone = card.cloneNode(true) as HTMLElement;
-        track.appendChild(clone);
-      }
-    }
-
-    // Check for reduced motion preference
-    const prefersReducedMotion =
-      globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ??
-      false;
-
-    if (!prefersReducedMotion) {
-      // Create infinite scroll animation
-      animationRef.current = gsap.to(track, {
-        x: -totalWidth,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-        modifiers: {
-          x: gsap.utils.unitize((x) => Number.parseFloat(x) % totalWidth),
-        },
-      });
-
-      // Pause on hover (desktop only)
-      const handleMouseEnter = () => animationRef.current?.pause();
-      const handleMouseLeave = () => animationRef.current?.play();
-
-      track.addEventListener("mouseenter", handleMouseEnter);
-      track.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        track.removeEventListener("mouseenter", handleMouseEnter);
-        track.removeEventListener("mouseleave", handleMouseLeave);
-        animationRef.current?.kill();
-      };
-    }
+    setIsMounted(true);
   }, []);
+
+  // Calculate animation duration based on number of items
+  const animationDuration = CATEGORIES.length * 4; // 4 seconds per category
 
   return (
     <Column
@@ -106,7 +73,8 @@ export function CategoriesSection() {
       </Column>
 
       {/* Carousel Container - Full Width */}
-      <div
+      <section
+        aria-label="Product categories carousel"
         style={{
           position: "relative",
           width: "100%",
@@ -116,6 +84,10 @@ export function CategoriesSection() {
           padding: "20px 0",
         }}
         className="categories-carousel-container"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
       >
         <div
           ref={trackRef}
@@ -123,12 +95,17 @@ export function CategoriesSection() {
             display: "flex",
             gap: "24px",
             willChange: "transform",
+            // CSS animation for infinite scroll
+            animation: isMounted && !prefersReducedMotion 
+              ? `scroll-infinite ${animationDuration}s linear infinite` 
+              : "none",
+            animationPlayState: isPaused ? "paused" : "running",
           }}
           className="categories-track"
         >
-          {CATEGORIES.map((category) => (
+          {duplicatedCategories.map((category, index) => (
             <Link
-              key={category.slug}
+              key={`${category.slug}-${index}`}
               href={`/category/${category.slug}`}
               className="category-card"
               style={{
@@ -191,10 +168,20 @@ export function CategoriesSection() {
             </Link>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Mobile Swipe Styles */}
+      {/* CSS Keyframes for Infinite Scroll + Mobile Styles */}
       <style>{`
+        @keyframes scroll-infinite {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            /* Move exactly one set of categories (320px card + 24px gap) */
+            transform: translateX(calc(-1 * ${CATEGORIES.length} * (296px + 24px)));
+          }
+        }
+
         @media (max-width: 768px) {
           .categories-carousel-container {
             overflow-x: auto;
@@ -210,7 +197,7 @@ export function CategoriesSection() {
           }
 
           .categories-track {
-            transform: none !important;
+            animation: none !important;
           }
 
           .categories-track > a {
@@ -221,7 +208,7 @@ export function CategoriesSection() {
 
         @media (prefers-reduced-motion: reduce) {
           .categories-track {
-            transform: none !important;
+            animation: none !important;
           }
 
           .categories-carousel-container {

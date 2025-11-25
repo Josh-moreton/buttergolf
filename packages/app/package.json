@@ -20,7 +20,6 @@
     "@tamagui/polyfill-dev": "catalog:",
     "@tamagui/sheet": "catalog:",
     "@tamagui/toast": "catalog:",
-    "gsap": "^3.13.0",
     "react": "catalog:",
     "react-native": "catalog:",
     "solito": "catalog:",
