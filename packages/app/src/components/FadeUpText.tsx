@@ -15,18 +15,10 @@ interface FadeUpTextProps {
 }
 
 /**
- * Simple fade-up text animation for hero sections
- * Uses CSS transitions instead of GSAP for simplicity
- * 
- * Desktop only - shows text immediately on mobile for performance
- * 
- * Replaces the complex split-character GSAP animation with a simpler
- * fade-up animation using CSS transitions.
- * 
- * Accessibility:
- * - Adds aria-label automatically for proper screen reader pronunciation
+ * Web-only animated version of FadeUpText
+ * This component is only rendered on web, so it's safe to use window APIs
  */
-export function FadeUpText({
+function FadeUpTextWeb({
     text,
     delay = 0,
     className,
@@ -34,45 +26,26 @@ export function FadeUpText({
     ariaLabel,
 }: FadeUpTextProps) {
     const [isVisible, setIsVisible] = useState(false);
-    const isWeb = Platform.OS === "web";
 
-    // Check for reduced motion preference (web only)
     const prefersReducedMotion = useMemo(() => {
-        if (!isWeb || globalThis.window === undefined) return false;
-        return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }, [isWeb]);
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }, []);
 
-    // Check if desktop (memoized, no state update)
     const isDesktop = useMemo(() => {
-        if (!isWeb || globalThis.window === undefined) return false;
-        return globalThis.innerWidth >= 1024;
-    }, [isWeb]);
+        if (typeof window === "undefined") return false;
+        return window.innerWidth >= 1024;
+    }, []);
 
     useEffect(() => {
-        if (!isWeb) return;
-        
-        // Apply delay using vanilla JS setTimeout
         const timer = setTimeout(() => {
             setIsVisible(true);
-        }, delay * 1000); // Convert seconds to ms
+        }, delay * 1000);
 
         return () => clearTimeout(timer);
-    }, [delay, isWeb]);
+    }, [delay]);
 
-    // On native, just return static text
-    if (!isWeb) {
-        return (
-            <TamaguiText
-                fontSize={style?.fontSize as number || 32}
-                fontWeight={String(style?.fontWeight || "700")}
-                color="$text"
-            >
-                {text}
-            </TamaguiText>
-        );
-    }
-
-    // On mobile or with reduced motion, show static text immediately
+    // On mobile web or with reduced motion, show static text immediately
     if (!isDesktop || prefersReducedMotion) {
         return (
             <div
@@ -100,4 +73,34 @@ export function FadeUpText({
             {text}
         </div>
     );
+}
+
+/**
+ * Simple fade-up text animation for hero sections
+ * Uses CSS transitions instead of GSAP for simplicity
+ * 
+ * Desktop only - shows text immediately on mobile for performance
+ * 
+ * Replaces the complex split-character GSAP animation with a simpler
+ * fade-up animation using CSS transitions.
+ * 
+ * Accessibility:
+ * - Adds aria-label automatically for proper screen reader pronunciation
+ */
+export function FadeUpText(props: FadeUpTextProps) {
+    // On native, just return static text - no web APIs used
+    if (Platform.OS !== "web") {
+        return (
+            <TamaguiText
+                fontSize={props.style?.fontSize as number || 32}
+                fontWeight={String(props.style?.fontWeight || "700")}
+                color="$text"
+            >
+                {props.text}
+            </TamaguiText>
+        );
+    }
+
+    // On web, use the animated version
+    return <FadeUpTextWeb {...props} />;
 }

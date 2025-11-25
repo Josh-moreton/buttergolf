@@ -1,6 +1,6 @@
 'use client'
 
-import { NextTamaguiProvider as BaseProvider } from '@buttergolf/app'
+import { NextTamaguiProvider as BaseProvider } from '@buttergolf/app/src/provider/NextTamaguiProvider'
 import type { ReactNode } from 'react'
 import { ClerkProvider } from '@clerk/nextjs'
 
