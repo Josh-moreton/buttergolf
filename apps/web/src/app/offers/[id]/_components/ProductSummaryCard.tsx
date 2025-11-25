@@ -10,13 +10,13 @@ interface ProductSummaryCardProps {
         title: string;
         price: number;
         condition: string;
-        brand: string | null;
+        brand?: { name: string } | null;
         model: string | null;
-        images: Array<{ id: string; url: string; alt: string | null }>;
+        images: Array<{ id: string; url: string; alt?: string | null }>;
         user: {
             id: string;
-            name: string;
-            averageRating: number;
+            name: string | null;
+            averageRating: number | null;
             ratingCount: number;
         };
     };
@@ -57,7 +57,7 @@ export function ProductSummaryCard({
     const isOfferRejected = offer.status === "REJECTED";
 
     const formatCondition = (condition: string) => {
-        return condition.replace(/_/g, " ");
+        return condition.replaceAll("_", " ");
     };
 
     const primaryImage = product.images[0]?.url || "/placeholder-product.png";
@@ -175,7 +175,7 @@ export function ProductSummaryCard({
                 </Column>
                 <Column gap="$sm" flex={1}>
                     <Text size="$3" color="$ironstone">
-                        {product.brand || "N/A"}
+                        {product.brand?.name || "N/A"}
                     </Text>
                     <Text size="$3" color="$ironstone">
                         {product.model || "N/A"}

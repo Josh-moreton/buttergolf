@@ -10,12 +10,12 @@ interface MobileProductBarProps {
         title: string;
         price: number;
         condition: string;
-        brand: string | null;
+        brand?: { name: string } | null;
         model: string | null;
         images: Array<{ id: string; url: string }>;
         user: {
-            name: string;
-            averageRating: number;
+            name: string | null;
+            averageRating: number | null;
             ratingCount: number;
         };
     };
@@ -252,7 +252,7 @@ export function MobileProductBar({
                                     Brand:
                                 </Text>
                                 <Text size="$4" color="$text">
-                                    {product.brand || "N/A"}
+                                    {product.brand?.name || "N/A"}
                                 </Text>
                             </Row>
                             <Row justifyContent="space-between">

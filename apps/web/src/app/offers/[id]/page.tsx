@@ -49,6 +49,7 @@ export default async function OfferDetailPage({ params }: PageProps) {
             orderBy: { sortOrder: "asc" },
           },
           user: true, // Seller info
+          brand: true, // Brand info for display
         },
       },
       buyer: true,

@@ -34,6 +34,7 @@ type OfferWithRelations = Prisma.OfferGetPayload<{
       include: {
         images: true;
         user: true;
+        brand: true;
       };
     };
     buyer: true;
