@@ -103,7 +103,7 @@ export function ProductCard({
 
         {/* iOS Liquid Glass Info Card - Bottom */}
         <GlassmorphismCard
-          intensity="light"
+          intensity="medium"
           blur="medium"
           paddingHorizontal="$md"
           paddingVertical="$lg"
@@ -111,18 +111,15 @@ export function ProductCard({
           bottom={0}
           left={0}
           right={0}
-          borderWidth={1}
-          borderColor="rgba(255, 255, 255, 0.2)"
           borderTopWidth={0}
           borderRadius="$lg"
           zIndex={1}
-          backgroundColor="rgba(255, 255, 255, 0.15)"
           overflow="visible"
           style={{
             ...getGlassmorphismStyles("medium"),
           }}
         >
-          {/* Product Title - Bold */}
+          {/* Product Title - Bold, fixed height for 2 lines */}
           <p
             style={{
               fontFamily: "var(--font-urbanist)",
@@ -132,7 +129,7 @@ export function ProductCard({
               color: "#323232",
               margin: "0 0 8px 0",
               padding: 0,
-              maxHeight: "50px",
+              height: "50px", // Fixed height: 18px * 1.4 * 2 lines ≈ 50px
               overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: 2,

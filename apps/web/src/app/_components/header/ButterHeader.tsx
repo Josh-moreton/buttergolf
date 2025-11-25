@@ -235,19 +235,18 @@ export function ButterHeader() {
         >
           <GlassmorphismCard
             intensity="medium"
-            blur="light"
+            blur="medium"
             maxWidth={1280}
             width="100%"
             paddingHorizontal="$6"
             paddingVertical="$3"
             justifyContent="space-between"
             flexWrap="nowrap"
-            backgroundColor="rgba(217, 217, 217, 0.3)"
             style={{
               overflow: "auto",
               display: "flex",
               flexDirection: "row",
-              ...getGlassmorphismStyles("light"),
+              ...getGlassmorphismStyles("medium"),
             }}
           >
             {NAV_CATEGORIES.map((category) => (
