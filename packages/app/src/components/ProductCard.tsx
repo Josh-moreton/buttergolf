@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, GlassmorphismCard, getGlassmorphismStyles, Column, Row, Text } from "@buttergolf/ui";
+import { Card, GlassmorphismCard, getGlassmorphismStyles, Column } from "@buttergolf/ui";
 import type { ProductCardData } from "../types/product";
 
 export interface ProductCardProps {
@@ -124,9 +124,11 @@ export function ProductCard({
           borderRadius="$lg"
           zIndex={1}
           overflow="hidden"
-          justifyContent="center"
           style={{
             ...getGlassmorphismStyles("medium"),
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
           {/* Product Title - Bold, fixed height for 2 lines */}
@@ -139,7 +141,7 @@ export function ProductCard({
               color: "#323232",
               margin: "0 0 8px 0",
               padding: 0,
-              height: "42px", // Fixed height: 16px * 1.3 * 2 lines ≈ 42px
+              height: "42px",
               overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: 2,
@@ -150,58 +152,76 @@ export function ProductCard({
           </p>
 
           {/* Price */}
-          <Text
-            fontSize={16}
-            fontWeight="600"
-            lineHeight={1}
-            color="$text"
-            marginBottom="$1.5"
+          <p
+            style={{
+              fontFamily: "var(--font-urbanist)",
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "1",
+              color: "#323232",
+              margin: "0 0 6px 0",
+              padding: 0,
+            }}
           >
             £{product.price.toFixed(2)}
-          </Text>
+          </p>
 
           {/* Seller Info with Rating */}
-          <Row
-            alignItems="center"
-            gap="$2"
-            flexWrap="wrap"
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              flexWrap: "wrap",
+            }}
           >
-            <Text
-              fontSize={16}
-              fontWeight="400"
-              lineHeight={1}
-              color="$textSecondary"
+            <span
+              style={{
+                fontFamily: "var(--font-urbanist)",
+                fontSize: "16px",
+                fontWeight: 400,
+                lineHeight: "1",
+                color: "#545454",
+              }}
             >
               {product.seller.name}
-            </Text>
+            </span>
             {product.seller.ratingCount > 0 ? (
-              <Row
-                alignItems="center"
-                gap="$1"
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
               >
-                <Text color="$primary" fontSize={16}>★</Text>
-                <Text
-                  fontSize={16}
-                  fontWeight="600"
-                  color="$text"
+                <span style={{ color: "#F45314", fontSize: "16px" }}>★</span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-urbanist)",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "#323232",
+                  }}
                 >
                   {product.seller.averageRating?.toFixed(1)} ({product.seller.ratingCount})
-                </Text>
-              </Row>
+                </span>
+              </span>
             ) : (
-              <Text
-                fontSize={14}
-                fontWeight="600"
-                color="$textInverse"
-                backgroundColor="$primary"
-                paddingHorizontal="$1.5"
-                paddingVertical="$0.5"
-                borderRadius="$xs"
+              <span
+                style={{
+                  fontFamily: "var(--font-urbanist)",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#FFFAD2",
+                  backgroundColor: "#F45314",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                }}
               >
                 NEW SELLER
-              </Text>
+              </span>
             )}
-          </Row>
+          </div>
         </GlassmorphismCard>
         </Column>
       </Column>
