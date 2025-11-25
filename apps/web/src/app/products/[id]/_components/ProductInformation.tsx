@@ -216,17 +216,9 @@ export function ProductInformation({
                 <Text size="$3" color="$ironstone" weight="bold">
                     Product Description
                 </Text>
-                <p
-                    style={{
-                        fontSize: "13px",
-                        lineHeight: "1.6",
-                        color: "#323232",
-                        margin: 0,
-                        fontFamily: "var(--font-urbanist), sans-serif",
-                    }}
-                >
+                <Text size="$3" color="$ironstone">
                     {product.description}
-                </p>
+                </Text>
             </Column>
 
             {/* Divider */}
