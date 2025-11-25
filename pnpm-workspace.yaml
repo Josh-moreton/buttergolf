@@ -3,12 +3,16 @@ packages:
   - "packages/*"
 
 catalog:
-  # Tamagui UI Framework - all pinned to 1.135.7 for consistency
+  # =============================================================================
+  # TAMAGUI UI FRAMEWORK
+  # All Tamagui packages MUST be pinned to the exact same version
+  # =============================================================================
   "tamagui": "1.135.7"
   "@tamagui/animations-css": "1.135.7"
   "@tamagui/animations-react-native": "1.135.7"
   "@tamagui/babel-plugin": "1.135.7"
   "@tamagui/card": "1.135.7"
+  "@tamagui/cli": "1.135.7"
   "@tamagui/config": "1.135.7"
   "@tamagui/core": "1.135.7"
   "@tamagui/font-inter": "1.135.7"
@@ -21,7 +25,10 @@ catalog:
   "@tamagui/themes": "1.135.7"
   "@tamagui/toast": "1.135.7"
 
-  # React Ecosystem
+  # =============================================================================
+  # REACT ECOSYSTEM
+  # React versions MUST match across web and mobile
+  # =============================================================================
   "react": "19.1.0"
   "react-dom": "19.1.0"
   "react-native": "0.81.5"
@@ -29,32 +36,61 @@ catalog:
   "react-native-safe-area-context": "5.6.2"
   "react-native-screens": "4.18.0"
 
-  # Cross-Platform Navigation
+  # =============================================================================
+  # CROSS-PLATFORM NAVIGATION
+  # =============================================================================
   "solito": "5.0.0"
 
-  # Next.js
+  # =============================================================================
+  # NEXT.JS
+  # =============================================================================
   "next": "16.0.1"
 
-  # TypeScript
+  # =============================================================================
+  # TYPESCRIPT & TYPE DEFINITIONS
+  # Type packages should match the runtime package versions
+  # =============================================================================
   "typescript": "5.9.3"
-  "@types/react": "19.2.6"
-  "@types/react-dom": "19.2.3"
-  "@types/node": "20.19.24"
+  "@types/react": "19.1.0"
+  "@types/react-dom": "19.1.0"
+  "@types/node": "22.15.30"
+  "tsx": "4.20.6"
 
-  # ESLint
-  "eslint": "9.39.1"
+  # =============================================================================
+  # ESLINT
+  # =============================================================================
+  "eslint": "9.28.0"
   "eslint-config-expo": "10.0.0"
+  "eslint-config-next": "16.0.1"
 
-  # Prisma (Database ORM)
+  # =============================================================================
+  # PRISMA (Database ORM)
+  # Client and CLI versions MUST match exactly
+  # =============================================================================
   "prisma": "6.19.0"
   "@prisma/client": "6.19.0"
 
-  # Clerk (Authentication)
+  # =============================================================================
+  # CLERK (Authentication)
+  # =============================================================================
   "@clerk/nextjs": "6.34.1"
   "@clerk/clerk-expo": "2.17.3"
 
-  # Expo
+  # =============================================================================
+  # EXPO
+  # Expo packages are tied to SDK version - update together
+  # =============================================================================
   "expo": "54.0.23"
   "expo-auth-session": "7.0.8"
+  "expo-font": "14.0.6"
   "expo-secure-store": "15.0.7"
+  "expo-splash-screen": "31.0.10"
   "expo-status-bar": "3.0.8"
+
+  # =============================================================================
+  # TESTING
+  # =============================================================================
+  "vitest": "4.0.13"
+  "@testing-library/react": "16.3.0"
+  "@testing-library/jest-dom": "6.9.1"
+  "jsdom": "27.2.0"

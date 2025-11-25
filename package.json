@@ -22,30 +22,33 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
+    "check-deps": "check-dependency-version-consistency .",
     "clean": "turbo run clean && rm -rf node_modules",
     "clean-install": "pnpm clean && pnpm install"
   },
   "devDependencies": {
-    "@tamagui/cli": "^1.135.7",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
+    "@tamagui/cli": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
     "@testing-library/react-native": "^13.3.3",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/ui": "^4.0.13",
     "check-dependency-version-consistency": "^5.0.1",
     "dotenv": "^17.2.3",
     "happy-dom": "^20.0.10",
-    "jsdom": "^27.2.0",
+    "jsdom": "catalog:",
     "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
+    "tsx": "catalog:",
     "turbo": "^2.6.0",
     "typescript": "catalog:",
-    "vitest": "^4.0.13"
+    "vitest": "catalog:"
   },
   "pnpm": {
     "overrides": {
       "react": "19.1.0",
-      "react-dom": "19.1.0"
+      "react-dom": "19.1.0",
+      "@types/react": "19.1.0",
+      "@types/react-dom": "19.1.0"
     }
   },
   "packageManager": "pnpm@10.20.0",
