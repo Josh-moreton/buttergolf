@@ -55,7 +55,7 @@ export function ProductInformation({
             padding="$lg"
             gap="$md"
             width="100%"
-            $lg={{
+            $gtMd={{
                 width: 420,
                 flexShrink: 0,
             }}
@@ -172,37 +172,37 @@ export function ProductInformation({
 
             {/* Product Specifications */}
             <Row gap="$md">
-                <Column gap="$md" flex={1}>
-                    <Text size="$3" color="$ironstone" weight="bold">
+                <Column gap="$sm" flex={1}>
+                    <Text size="$3" color="$ironstone" weight="bold" lineHeight="$3">
                         Category
                     </Text>
-                    <Text size="$3" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold" lineHeight="$3">
                         Brand
                     </Text>
-                    <Text size="$3" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold" lineHeight="$3">
                         Product
                     </Text>
-                    <Text size="$3" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold" lineHeight="$3">
                         Product
                     </Text>
-                    <Text size="$3" color="$ironstone" weight="bold">
+                    <Text size="$3" color="$ironstone" weight="bold" lineHeight="$3">
                         Condition
                     </Text>
                 </Column>
-                <Column gap="$md" flex={1}>
-                    <Text size="$3" color="$ironstone">
+                <Column gap="$sm" flex={1}>
+                    <Text size="$3" color="$ironstone" lineHeight="$3">
                         {product.category.name}
                     </Text>
-                    <Text size="$3" color="$ironstone">
+                    <Text size="$3" color="$ironstone" lineHeight="$3">
                         {product.brand || "N/A"}
                     </Text>
-                    <Text size="$3" color="$ironstone">
+                    <Text size="$3" color="$ironstone" lineHeight="$3">
                         {product.model || "N/A"}
                     </Text>
-                    <Text size="$3" color="$ironstone">
+                    <Text size="$3" color="$ironstone" lineHeight="$3">
                         {product.model || "N/A"}
                     </Text>
-                    <Text size="$3" color="$ironstone">
+                    <Text size="$3" color="$ironstone" lineHeight="$3">
                         {formatCondition(product.condition)}
                     </Text>
                 </Column>
@@ -216,9 +216,17 @@ export function ProductInformation({
                 <Text size="$3" color="$ironstone" weight="bold">
                     Product Description
                 </Text>
-                <Text size="$3" color="$ironstone" lineHeight={1.6}>
+                <p
+                    style={{
+                        fontSize: "13px",
+                        lineHeight: "1.6",
+                        color: "#323232",
+                        margin: 0,
+                        fontFamily: "var(--font-urbanist), sans-serif",
+                    }}
+                >
                     {product.description}
-                </Text>
+                </p>
             </Column>
 
             {/* Divider */}

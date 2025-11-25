@@ -173,15 +173,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <Row
             gap="$xl"
             flexDirection="column"
-            $lg={{ flexDirection: "row", alignItems: "flex-start" }}
+            $gtMd={{ flexDirection: "row", alignItems: "flex-start" }}
             alignItems="stretch"
+            width="100%"
           >
             {/* Left Column - Image Gallery */}
             <Column
               gap="$lg"
               flex={1}
               minWidth={0}
-              $lg={{
+              width="100%"
+              $gtMd={{
+                width: "auto",
                 maxWidth: "calc(100% - 420px - 32px)"
               }}
             >
@@ -235,7 +238,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   position="relative"
                   flex={1}
                   height={600}
-                  $lg={{ height: 650 }}
+                  $gtMd={{ height: 650 }}
                 >
                   <Image
                     source={{ uri: selectedImage.url }}

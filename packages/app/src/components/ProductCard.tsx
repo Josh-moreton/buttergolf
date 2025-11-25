@@ -127,7 +127,7 @@ export function ProductCard({
               fontWeight: 700,
               lineHeight: "1.4",
               color: "#323232",
-              margin: "0 0 8px 0",
+              margin: "0 0 12px 0",
               padding: 0,
               height: "50px", // Fixed height: 18px * 1.4 * 2 lines ≈ 50px
               overflow: "hidden",
@@ -145,7 +145,7 @@ export function ProductCard({
             fontWeight="600"
             lineHeight={1}
             color="$text"
-            marginBottom="$1.5"
+            marginBottom="$2.5"
           >
             £{product.price.toFixed(2)}
           </Text>
@@ -153,7 +153,7 @@ export function ProductCard({
           {/* Seller Info with Rating */}
           <Row
             alignItems="center"
-            gap="$1.5"
+            gap="$2"
             flexWrap="wrap"
           >
             <Text
