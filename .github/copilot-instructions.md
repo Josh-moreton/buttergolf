@@ -2681,55 +2681,55 @@ When creating a new component, add variants for:
 25. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
 26. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
 
-### GSAP Animation Patterns
+### Animation Patterns (Tamagui-Based)
 
-**CRITICAL: Separate page-load animations from scroll-triggered animations to prevent conflicts**
+**We use Tamagui's built-in animation system, not GSAP.** All animations use `@tamagui/animations-react-native` with spring-based presets.
 
-27. **NEVER use `window.scrollTo(0, 0)` in animation components** - This breaks ScrollTrigger by constantly resetting scroll position, preventing scroll-based animations from firing. ScrollTrigger relies on natural scroll behavior to calculate trigger points.
-
-28. **Use TWO separate animation systems:**
-   - **Page-load animations** (`PageLoadAnimation` component):
-     - For above-the-fold content (Hero, Categories, Toggle, etc.)
-     - Use regular GSAP tweens with `gsap.fromTo()`
-     - Trigger immediately on mount with optional delay
-     - No ScrollTrigger dependency
-     - Location: `apps/web/src/app/_components/animations/PageLoadAnimation.tsx`
-
-   - **Scroll-triggered animations** (`PageTransition` component with `.page-transition` class):
-     - For below-the-fold content (product sections, trust badges, etc.)
-     - Use GSAP with ScrollTrigger plugin
-     - Trigger when elements enter viewport
-     - Location: `apps/web/src/app/_components/animations/PageTransition.tsx`
-
-29. **Animation timeline pattern:**
+27. **Use `AnimatedView` for page-load animations:**
    ```tsx
-   // Page load (immediate)
-   <PageLoadAnimation delay={0}><Hero /></PageLoadAnimation>
-   <PageLoadAnimation delay={0.2}><Toggle /></PageLoadAnimation>
-   <PageLoadAnimation delay={0.4}><Categories /></PageLoadAnimation>
+   // apps/web/src/app/_components/animations/AnimatedView.tsx
+   import { AnimatedView } from "./animations/AnimatedView";
 
-   // Scroll-based (on viewport entry)
-   <div className="page-transition"><ProductSection /></div>
-   <div className="page-transition"><TrustSection /></div>
+   // Staggered entrance with millisecond delays
+   <AnimatedView delay={0}><Hero /></AnimatedView>
+   <AnimatedView delay={200}><Toggle /></AnimatedView>
+   <AnimatedView delay={400}><Categories /></AnimatedView>
    ```
 
-30. **GSAP cleanup pattern** - Always use `gsap.context()` for proper cleanup:
+28. **Use Tamagui's enterStyle for inline animations:**
    ```tsx
-   const ctx = gsap.context(() => {
-     gsap.to(element, { /* animation */ });
-   }, containerRef);
-
-   return () => ctx.revert(); // Cleanup
+   <View
+     animation="medium"
+     enterStyle={{ opacity: 0, y: 30 }}
+     opacity={1}
+     y={0}
+   >
+     {children}
+   </View>
    ```
 
-31. **Respect prefers-reduced-motion** - Always check and skip animations:
+29. **Use CSS @keyframes for infinite/loop animations:**
+   - For carousels or infinite scroll, use pure CSS animations
+   - Example: `CategoriesSection.tsx` uses CSS `@keyframes scroll-infinite`
+   - No JavaScript animation libraries needed
+
+30. **Animation preset reference (from tamagui.config.ts):**
+   - `animation="fast"` - Quick response (0.3 damping)
+   - `animation="medium"` - Default, balanced (0.5 damping)
+   - `animation="slow"` - Smooth, deliberate (0.7 damping)
+   - `animation="bouncy"` - Playful spring (0.5 damping, 2 stiffness)
+   - `animation="lazy"` - Slow reveal (0.9 damping)
+   - `animation="quick"` - Snappy (0.4 damping)
+
+31. **Respect prefers-reduced-motion:**
    ```tsx
-   const prefersReducedMotion = window.matchMedia(
-     "(prefers-reduced-motion: reduce)"
-   ).matches;
+   const prefersReducedMotion = useMemo(() => {
+     if (globalThis.window === undefined) return false;
+     return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+   }, []);
+
    if (prefersReducedMotion) {
-     gsap.set(element, { opacity: 1, y: 0, clearProps: "all" });
-     return;
+     return <View>{children}</View>; // No animation
    }
    ```
 

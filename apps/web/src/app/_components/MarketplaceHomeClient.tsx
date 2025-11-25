@@ -12,7 +12,7 @@ import { RecentlyListedSectionClient } from "./marketplace/RecentlyListedSection
 import { TrustSection } from "./marketplace/TrustSection";
 import { NewsletterSection } from "./marketplace/NewsletterSection";
 import { FooterSection } from "./marketplace/FooterSection";
-import { PageLoadAnimation } from "./animations/PageLoadAnimation";
+import { AnimatedView } from "./animations/AnimatedView";
 import type { ProductCardData } from "@buttergolf/app";
 
 interface MarketplaceHomeClientProps {
@@ -28,42 +28,42 @@ export default function MarketplaceHomeClient({
   return (
     <Column>
       {/* Hero - Immediate page load animation (no scroll trigger) */}
-      <PageLoadAnimation delay={0}>
+      <AnimatedView delay={0}>
         <HeroStatic />
-      </PageLoadAnimation>
+      </AnimatedView>
 
       {/* Buy/Sell Toggle - Immediate page load animation */}
-      <PageLoadAnimation delay={0.2}>
+      <AnimatedView delay={200}>
         <Column paddingTop="$6" paddingBottom="$4">
           <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
         </Column>
-      </PageLoadAnimation>
+      </AnimatedView>
 
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
           {/* Categories Section - Immediate page load animation */}
-          <PageLoadAnimation delay={0.4}>
+          <AnimatedView delay={400}>
             <CategoriesSection />
-          </PageLoadAnimation>
+          </AnimatedView>
 
-          {/* Below the fold sections - animate on scroll */}
-          <div className="page-transition">
+          {/* Below the fold sections - simple fade in */}
+          <AnimatedView delay={600}>
             <RecentlyListedSectionClient products={products} />
-          </div>
-          <div className="page-transition">
+          </AnimatedView>
+          <AnimatedView delay={800}>
             <TrustSection />
-          </div>
+          </AnimatedView>
         </>
       ) : (
-        <div className="page-transition">
+        <AnimatedView delay={400}>
           {isSignedIn ? <SellerHub /> : <SellingPlaceholder />}
-        </div>
+        </AnimatedView>
       )}
 
-      <div className="page-transition">
+      <AnimatedView delay={1000}>
         <NewsletterSection />
-      </div>
+      </AnimatedView>
       <FooterSection />
     </Column>
   );

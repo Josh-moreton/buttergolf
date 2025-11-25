@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { gsap } from "gsap";
 import { Button } from "@buttergolf/ui";
 import styles from "./AnimatedAddToCartButton.module.css";
 
@@ -25,6 +24,17 @@ const COLORS = [
     "#1A2E44", // Navy secondary
 ];
 
+// Utility function to get random value in range (replaces gsap.utils.random)
+function randomInRange(min: number, max: number, snap = 0.01): number {
+    const value = Math.random() * (max - min) + min;
+    return snap ? Math.round(value / snap) * snap : value;
+}
+
+// Utility function to get random item from array
+function randomFromArray<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
 export function AnimatedAddToCartButton({
     onAddToCart,
     disabled = false,
@@ -37,11 +47,13 @@ export function AnimatedAddToCartButton({
 
         const button = buttonRef.current;
 
-        // Set random delays and colors for burst animation
-        gsap.set(".burst g", {
-            "--d": () => gsap.utils.random(0, 0.4, 0.01),
-            "--color": () => COLORS[gsap.utils.random(0, COLORS.length - 1, 1)],
-        });
+        // Set random delays and colors for burst animation using vanilla JS
+        const burstElements = button.querySelectorAll(".burst g");
+        for (const el of burstElements) {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.setProperty("--d", String(randomInRange(0, 0.4, 0.01)));
+            htmlEl.style.setProperty("--color", randomFromArray(COLORS));
+        }
 
         // Start loading state
         setIsAdding(true);

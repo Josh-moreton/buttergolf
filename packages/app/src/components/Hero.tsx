@@ -1,42 +1,110 @@
 "use client";
 
-import React from "react";
 import { Column, Row, Heading, Text, Button, Image, View } from "@buttergolf/ui";
 import { Link } from "solito/link";
-import { AnimatedHeroText } from "./AnimatedHeroText";
+import { FadeUpText } from "./FadeUpText";
 import { TypewriterHero } from "./TypewriterHero";
-import { ScaleBounceHero } from "./ScaleBounceHero";
 
 // Image source types - accepts both React Native require() and web string paths
 type ImageSource = string | { uri: string } | number;
 
 export interface HeroProps {
     // Content
-    heading: string | { line1: string; line2?: string };
-    subtitle: string;
+    readonly heading: string | { line1: string; line2?: string };
+    readonly subtitle: string;
 
     // CTAs (optional - omit for mobile button-less variant)
-    primaryCta?: {
+    readonly primaryCta?: {
         label: string;
         href: string;
     };
-    secondaryCta?: {
+    readonly secondaryCta?: {
         label: string;
         href: string;
     };
 
     // Images - accepts both require() (mobile) and string (web)
-    backgroundImage: ImageSource;
-    heroImage?: ImageSource;
+    readonly backgroundImage: ImageSource;
+    readonly heroImage?: ImageSource;
 
     // Layout controls
-    showHeroImage?: boolean; // Default: true on desktop, false on mobile
-    minHeight?: number; // Default: 500
-    maxHeight?: number; // Default: 700
+    readonly showHeroImage?: boolean; // Default: true on desktop, false on mobile
+    readonly minHeight?: number; // Default: 500
+    readonly maxHeight?: number; // Default: 700
 
     // Animation controls (desktop only)
-    animationVariant?: "split-character" | "typewriter" | "scale-bounce" | "none";
-    animationDelay?: number; // Delay before animation starts (in seconds)
+    readonly animationVariant?: "fade-up" | "typewriter" | "none";
+    readonly animationDelay?: number; // Delay before animation starts (in seconds)
+}
+
+// Helper to get heading text
+function getHeadingText(heading: string | { line1: string; line2?: string }): string {
+    if (typeof heading === "string") return heading;
+    return [heading.line1, heading.line2].filter(Boolean).join(" ");
+}
+
+// Helper to get image source in correct format
+function getImageSource(image: ImageSource): { uri: string } | number {
+    if (typeof image === "string") {
+        return { uri: image };
+    }
+    return image as { uri: string } | number;
+}
+
+// Shared heading style
+const headingStyle = {
+    fontSize: "clamp(32px, 5vw, 72px)",
+    color: "#323232",
+    fontWeight: 700,
+    lineHeight: 1.1,
+    whiteSpace: "normal" as const,
+    wordBreak: "keep-all" as const,
+};
+
+interface HeroHeadingProps {
+    readonly heading: string | { line1: string; line2?: string };
+    readonly animationVariant: "fade-up" | "typewriter" | "none";
+    readonly animationDelay: number;
+}
+
+function HeroHeading({ heading, animationVariant, animationDelay }: HeroHeadingProps) {
+    const text = getHeadingText(heading);
+
+    if (animationVariant === "fade-up") {
+        return (
+            <FadeUpText
+                text={text}
+                delay={animationDelay}
+                style={headingStyle}
+            />
+        );
+    }
+
+    if (animationVariant === "typewriter") {
+        return (
+            <TypewriterHero
+                text={text}
+                delay={animationDelay}
+                showCursor={true}
+                style={headingStyle}
+            />
+        );
+    }
+
+    // Default: no animation
+    return (
+        <Heading
+            level={1}
+            size="$9"
+            $md={{ fontSize: "$11" }}
+            $lg={{ fontSize: "$14" }}
+            color="$ironstone"
+            fontWeight="700"
+            style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
+        >
+            {text}
+        </Heading>
+    );
 }
 
 /**
@@ -55,18 +123,10 @@ export function Hero({
     minHeight = 500,
     maxHeight = 700,
     animationVariant = "none",
-    animationDelay = 0.8, // Wait for hero fade-in to complete
-}: HeroProps) {
-    // Determine image source format (React Native require() or web string)
-    const backgroundSource =
-        typeof backgroundImage === "string"
-            ? ({ uri: backgroundImage } as const)
-            : backgroundImage;
-
-    const heroImageSource =
-        heroImage && typeof heroImage === "string"
-            ? ({ uri: heroImage } as const)
-            : heroImage;
+    animationDelay = 0.8,
+}: Readonly<HeroProps>) {
+    const backgroundSource = getImageSource(backgroundImage);
+    const heroImageSource = heroImage ? getImageSource(heroImage) : null;
 
     return (
         <Column
@@ -92,7 +152,7 @@ export function Hero({
                     position="absolute"
                     top={0}
                     left={0}
-                    resizeMode="cover"
+                    objectFit="cover"
                     zIndex={0}
                     alt=""
                     accessibilityRole="none"
@@ -118,60 +178,12 @@ export function Hero({
                         $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
                     >
                         <Column gap="$6" maxWidth={600}>
-                            {/* Heading - Natural wrapping on all screen sizes */}
-                            {animationVariant === "split-character" ? (
-                                <AnimatedHeroText
-                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                    delay={animationDelay}
-                                    style={{
-                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                        color: "#323232",
-                                        fontWeight: 700,
-                                        lineHeight: 1.1,
-                                        whiteSpace: "normal",
-                                        wordBreak: "keep-all",
-                                    }}
-                                />
-                            ) : animationVariant === "typewriter" ? (
-                                <TypewriterHero
-                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                    delay={animationDelay}
-                                    showCursor={true}
-                                    style={{
-                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                        color: "#323232",
-                                        fontWeight: 700,
-                                        lineHeight: 1.1,
-                                        whiteSpace: "normal",
-                                        wordBreak: "keep-all",
-                                    }}
-                                />
-                            ) : animationVariant === "scale-bounce" ? (
-                                <ScaleBounceHero
-                                    text={typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                    delay={animationDelay}
-                                    style={{
-                                        fontSize: "clamp(32px, 5vw, 72px)",
-                                        color: "#323232",
-                                        fontWeight: 700,
-                                        lineHeight: 1.1,
-                                        whiteSpace: "normal",
-                                        wordBreak: "keep-all",
-                                    }}
-                                />
-                            ) : (
-                                <Heading
-                                    level={1}
-                                    size="$9"
-                                    $md={{ fontSize: "$11" }}
-                                    $lg={{ fontSize: "$14" }}
-                                    color="$ironstone"
-                                    fontWeight="700"
-                                    style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
-                                >
-                                    {typeof heading === "string" ? heading : [heading.line1, heading.line2].filter(Boolean).join(" ")}
-                                </Heading>
-                            )}
+                            {/* Heading */}
+                            <HeroHeading
+                                heading={heading}
+                                animationVariant={animationVariant}
+                                animationDelay={animationDelay}
+                            />
 
                             {/* Subtitle */}
                             <Text
@@ -184,89 +196,106 @@ export function Hero({
                                 {subtitle}
                             </Text>
 
-                            {/* CTA Buttons - Only render if CTAs provided */}
-                            {(primaryCta || secondaryCta) && (
-                                <Row gap="$md" flexWrap="wrap" marginTop="$2">
-                                    {primaryCta && (
-                                        <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
-                                            <Button
-                                                size="$5"
-                                                backgroundColor="$primary"
-                                                paddingHorizontal="$8"
-                                                minWidth={160}
-                                                borderRadius="$full"
-                                                color="$vanillaCream"
-                                                fontWeight="700"
-                                            >
-                                                {primaryCta.label}
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    {secondaryCta && (
-                                        <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
-                                            <Button
-                                                size="$5"
-                                                backgroundColor="$secondary"
-                                                color="$vanillaCream"
-                                                paddingHorizontal="$8"
-                                                minWidth={160}
-                                                borderRadius="$full"
-                                                fontWeight="700"
-                                                hoverStyle={{
-                                                    backgroundColor: "$secondaryHover",
-                                                }}
-                                                pressStyle={{
-                                                    backgroundColor: "$secondaryPress",
-                                                }}
-                                            >
-                                                {secondaryCta.label}
-                                            </Button>
-                                        </Link>
-                                    )}
-                                </Row>
-                            )}
+                            {/* CTA Buttons */}
+                            <HeroCTAButtons primaryCta={primaryCta} secondaryCta={secondaryCta} />
                         </Column>
                     </Column>
 
-                    {/* Right Side - Hero Image (Side by side on all screens) */}
+                    {/* Right Side - Hero Image */}
                     {showHeroImage && heroImageSource && (
-                        <Column
-                            width="40%"
-                            height="100%"
-                            $md={{
-                                width: "50%",
-                                paddingLeft: "$4",
-                                paddingRight: "$8",
-                                paddingTop: "$8",
-                                paddingBottom: 0,
-                            }}
-                            backgroundColor="transparent"
-                            alignItems="flex-end"
-                            justifyContent="flex-end"
-                            paddingRight={0}
-                            marginBottom={0}
-                            $lg={{
-                                paddingLeft: "$8",
-                                paddingRight: "$12",
-                                paddingTop: "$12",
-                            }}
-                        >
-                            <Image
-                                source={heroImageSource as Parameters<typeof Image>[0]["source"]}
-                                width="115%"
-                                height="auto"
-                                aspectRatio={1}
-                                marginBottom={-20}
-                                $md={{ width: "115%", height: "115%", marginBottom: -48 }}
-                                $lg={{ width: "120%", height: "120%", marginBottom: -56 }}
-                                resizeMode="contain"
-                                alt="Premium golf club featured in hero section"
-                                accessibilityLabel="Premium golf club featured in hero section"
-                            />
-                        </Column>
+                        <HeroImage source={heroImageSource} />
                     )}
                 </Row>
             </View>
+        </Column>
+    );
+}
+
+interface HeroCTAButtonsProps {
+    readonly primaryCta?: { label: string; href: string };
+    readonly secondaryCta?: { label: string; href: string };
+}
+
+function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
+    if (!primaryCta && !secondaryCta) return null;
+
+    return (
+        <Row gap="$md" flexWrap="wrap" marginTop="$2">
+            {primaryCta && (
+                <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
+                    <Button
+                        size="$5"
+                        backgroundColor="$primary"
+                        paddingHorizontal="$8"
+                        minWidth={160}
+                        borderRadius="$full"
+                        color="$vanillaCream"
+                        fontWeight="700"
+                    >
+                        {primaryCta.label}
+                    </Button>
+                </Link>
+            )}
+            {secondaryCta && (
+                <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
+                    <Button
+                        size="$5"
+                        backgroundColor="$secondary"
+                        color="$vanillaCream"
+                        paddingHorizontal="$8"
+                        minWidth={160}
+                        borderRadius="$full"
+                        fontWeight="700"
+                        hoverStyle={{ backgroundColor: "$secondaryHover" }}
+                        pressStyle={{ backgroundColor: "$secondaryPress" }}
+                    >
+                        {secondaryCta.label}
+                    </Button>
+                </Link>
+            )}
+        </Row>
+    );
+}
+
+interface HeroImageProps {
+    readonly source: { uri: string } | number;
+}
+
+function HeroImage({ source }: HeroImageProps) {
+    return (
+        <Column
+            width="40%"
+            height="100%"
+            $md={{
+                width: "50%",
+                paddingLeft: "$4",
+                paddingRight: "$8",
+                paddingTop: "$8",
+                paddingBottom: 0,
+            }}
+            backgroundColor="transparent"
+            alignItems="flex-end"
+            justifyContent="flex-end"
+            paddingRight={0}
+            marginBottom={0}
+            $lg={{
+                paddingLeft: "$8",
+                paddingRight: "$12",
+                paddingTop: "$12",
+            }}
+        >
+            <Image
+                source={source as Parameters<typeof Image>[0]["source"]}
+                width="115%"
+                height="auto"
+                aspectRatio={1}
+                marginBottom={-20}
+                $md={{ width: "115%", height: "115%", marginBottom: -48 }}
+                $lg={{ width: "120%", height: "120%", marginBottom: -56 }}
+                objectFit="contain"
+                alt="Premium golf club featured in hero section"
+                accessibilityLabel="Premium golf club featured in hero section"
+            />
         </Column>
     );
 }
