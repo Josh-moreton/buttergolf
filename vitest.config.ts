@@ -3,12 +3,13 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 // Base Vitest configuration shared across all packages
+// NOTE: Using 'node' environment - DOM-based tests should be in apps/web
 export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
+    environment: 'node',
+    // setupFiles: ['./vitest.setup.ts'], // Disabled - was for jsdom
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

@@ -29,17 +29,12 @@
     "@tamagui/polyfill-dev": "catalog:",
     "@tamagui/shorthands": "catalog:",
     "@tamagui/themes": "catalog:",
-    "@testing-library/jest-dom": "catalog:",
-    "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
-    "jsdom": "catalog:",
     "tamagui": "catalog:",
-    "typescript": "catalog:",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "catalog:"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "@tamagui/card": "^1.135.0",
