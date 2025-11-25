@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import type { CSSProperties } from "react";
-import { Text, View } from "@buttergolf/ui";
-import type { ViewStyle } from "react-native";
 
 interface FadeUpTextProps {
     readonly text: string;
@@ -16,12 +14,12 @@ interface FadeUpTextProps {
 
 /**
  * Simple fade-up text animation for hero sections
- * Uses Tamagui's built-in animation system instead of GSAP
+ * Uses CSS transitions instead of GSAP for simplicity
  * 
  * Desktop only - shows text immediately on mobile for performance
  * 
  * Replaces the complex split-character GSAP animation with a simpler
- * word-level fade-up animation using Tamagui enterStyle.
+ * fade-up animation using CSS transitions.
  * 
  * Accessibility:
  * - Adds aria-label automatically for proper screen reader pronunciation
@@ -56,9 +54,6 @@ export function FadeUpText({
         return () => clearTimeout(timer);
     }, [delay]);
 
-    // Split text into words for staggered animation
-    const words = text.split(" ");
-
     // On mobile or with reduced motion, show static text immediately
     if (!isDesktop || prefersReducedMotion) {
         return (
@@ -72,47 +67,19 @@ export function FadeUpText({
         );
     }
 
-    // Animated version: words fade up with staggered delays
+    // Animated version: simple fade-up with CSS transition
     return (
-        <View
-            flexDirection="row"
-            flexWrap="wrap"
-            gap="$2"
-            aria-label={ariaLabel ?? text}
+        <div
             className={className}
-            // Cast CSSProperties to ViewStyle for Tamagui compatibility
-            style={style as unknown as ViewStyle}
+            style={{
+                ...style,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+            }}
+            aria-label={ariaLabel ?? text}
         >
-            {words.map((word, index) => (
-                <View
-                    key={`${word}-${index}`}
-                    animation="medium"
-                    enterStyle={{
-                        opacity: 0,
-                        y: 20,
-                    }}
-                    opacity={isVisible ? 1 : 0}
-                    y={isVisible ? 0 : 20}
-                    // Stagger each word by 60ms
-                    animateOnly={['opacity', 'transform']}
-                    style={{
-                        // Use CSS transition-delay for stagger effect
-                        transitionDelay: isVisible ? `${index * 60}ms` : '0ms',
-                    }}
-                >
-                    <Text
-                        fontWeight="700"
-                        color="$ironstone"
-                        // Inherit font size from parent style
-                        style={{
-                            fontSize: 'inherit',
-                            lineHeight: 'inherit',
-                        }}
-                    >
-                        {word}
-                    </Text>
-                </View>
-            ))}
-        </View>
+            {text}
+        </div>
     );
 }
