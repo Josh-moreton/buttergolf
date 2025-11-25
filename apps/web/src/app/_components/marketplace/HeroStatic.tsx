@@ -18,7 +18,7 @@ export function HeroStatic() {
             heading={{
                 line1: "Butter Up Your Game",
             }}
-            subtitle="Buy, Sell, and Upgrade Your Game"
+            subtitle="The Marketplace to Buy, Sell & Upgrade"
             primaryCta={{
                 label: "Sell now",
                 href: "/sell",

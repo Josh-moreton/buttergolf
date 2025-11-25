@@ -1,6 +1,6 @@
 "use client";
 
-import { Column, Row, Heading, Text, Button, Image, View } from "@buttergolf/ui";
+import { Column, Row, Heading, Text, Button, View } from "@buttergolf/ui";
 import { Link } from "solito/link";
 import { FadeUpText } from "./FadeUpText";
 import { TypewriterHero } from "./TypewriterHero";
@@ -125,7 +125,6 @@ export function Hero({
     animationVariant = "none",
     animationDelay = 0.8,
 }: Readonly<HeroProps>) {
-    const backgroundSource = getImageSource(backgroundImage);
     const heroImageSource = heroImage ? getImageSource(heroImage) : null;
 
     return (
@@ -174,13 +173,13 @@ export function Hero({
                     {/* Left Side - Text Content */}
                     <Column
                         width="60%"
-                        $md={{ width: "50%" }}
+                        $md={{ width: "55%" }}
                         justifyContent="center"
-                        paddingLeft="$4"
+                        paddingLeft="$12"
                         paddingRight="$2"
-                        $lg={{ paddingLeft: "$12", paddingRight: "$8" }}
+                        $lg={{ paddingLeft: "$20", paddingRight: "$8" }}
                     >
-                        <Column gap="$6" maxWidth={600}>
+                        <Column gap="$6" maxWidth={700}>
                             {/* Heading */}
                             <HeroHeading
                                 heading={heading}
@@ -190,11 +189,10 @@ export function Hero({
 
                             {/* Subtitle */}
                             <Text
-                                display="none"
-                                $md={{ display: "flex", fontSize: "$7" }}
-                                $lg={{ fontSize: "$8" }}
+                                fontSize={25}
                                 color="$slateSmoke"
                                 fontWeight="500"
+                                marginTop="$2"
                             >
                                 {subtitle}
                             </Text>
@@ -223,17 +221,17 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
     if (!primaryCta && !secondaryCta) return null;
 
     return (
-        <Row gap="$md" flexWrap="wrap" marginTop="$2">
+        <Row gap="$md" flexWrap="wrap" marginTop="$4">
             {primaryCta && (
                 <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
                     <Button
-                        size="$5"
+                        width={133}
+                        height={41}
                         backgroundColor="$primary"
-                        paddingHorizontal="$8"
-                        minWidth={160}
                         borderRadius="$full"
                         color="$vanillaCream"
                         fontWeight="700"
+                        fontSize={14}
                     >
                         {primaryCta.label}
                     </Button>
@@ -242,13 +240,13 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
             {secondaryCta && (
                 <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
                     <Button
-                        size="$5"
+                        width={133}
+                        height={41}
                         backgroundColor="$secondary"
                         color="$vanillaCream"
-                        paddingHorizontal="$8"
-                        minWidth={160}
                         borderRadius="$full"
                         fontWeight="700"
+                        fontSize={14}
                         hoverStyle={{ backgroundColor: "$secondaryHover" }}
                         pressStyle={{ backgroundColor: "$secondaryPress" }}
                     >
