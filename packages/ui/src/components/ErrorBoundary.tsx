@@ -12,7 +12,7 @@
  * ```
  */
 
-import { Component, type ReactNode, type ErrorInfo } from 'react'
+import { Component, type ReactNode, type ErrorInfo, useCallback, useEffect, useState } from 'react'
 import { Column, Row, Text, Heading, Button } from '../index'
 
 export interface ErrorBoundaryProps {
@@ -22,7 +22,7 @@ export interface ErrorBoundaryProps {
   onReset?: () => void
 }
 
-interface ErrorBoundaryState {
+export interface ErrorBoundaryState {
   hasError: boolean
   error: Error | null
   errorInfo: ErrorInfo | null
@@ -88,7 +88,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       // Default fallback UI
       return (
         <Column
-          fullScreen
+          flex={1}
+          width="100%"
+          minHeight="100vh"
           alignItems="center"
           justifyContent="center"
           padding="$xl"
@@ -116,7 +118,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                   Error: {this.state.error.message}
                 </Text>
                 {this.state.errorInfo && (
-                  <Text color="$error" size="$2" fontFamily="$mono">
+                  <Text color="$error" size="$2">
                     {this.state.errorInfo.componentStack}
                   </Text>
                 )}
@@ -143,8 +145,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 color="$text"
                 onPress={() => {
                   // Navigate to home or reload page
-                  if (typeof window !== 'undefined') {
-                    window.location.href = '/'
+                  if (globalThis.window !== undefined) {
+                    globalThis.window.location.href = '/'
                   }
                 }}
               >
@@ -182,8 +184,3 @@ export function useErrorBoundary() {
     reset,
   }
 }
-
-// Export types
-export type { ErrorBoundaryState }
-
-import { useCallback, useEffect, useState } from 'react'

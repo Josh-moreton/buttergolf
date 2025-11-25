@@ -1,9 +1,10 @@
-import '@testing-library/jest-dom'
+/// <reference types="@testing-library/jest-dom/vitest" />
+import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
-import { afterEach, beforeAll, vi } from 'vitest'
+import { afterEach, vi } from 'vitest'
 
 // Mock matchMedia for jsdom environment (must be sync and before any Tamagui imports)
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(globalThis.window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,

@@ -15,7 +15,7 @@
     "test:coverage": "vitest --coverage",
     "lint": "eslint . --fix --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@buttergolf/config": "workspace:*"
@@ -29,13 +29,17 @@
     "@tamagui/polyfill-dev": "catalog:",
     "@tamagui/shorthands": "catalog:",
     "@tamagui/themes": "catalog:",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
+    "jsdom": "^27.2.0",
     "tamagui": "catalog:",
     "typescript": "catalog:",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.13"
   },
   "peerDependencies": {
     "@tamagui/card": "*",

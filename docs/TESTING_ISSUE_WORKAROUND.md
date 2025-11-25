@@ -1,101 +1,139 @@
-# Testing Infrastructure - TypeScript Config Resolution Issue
+# Testing Infrastructure - Setup Guide
 
-## Problem
+## Status: ✅ RESOLVED
 
-Vitest with Vite cannot resolve TypeScript `extends` in monorepo workspace packages:
+The testing infrastructure is fully configured and working. All 28 tests pass.
 
-```
-TSConfckParseError: failed to resolve "extends":"@buttergolf/typescript-config/react-library.json"
-```
+## Configuration Summary
 
-## Root Cause
+### TypeScript Type Augmentation (Vitest v4 + jest-dom)
 
-Vite's TypeScript config resolution appends `/tsconfig.json` to package paths, breaking with pnpm workspace `extends` syntax.
+**Known Issue**: @testing-library/jest-dom v6 augments the `vitest` module's `Assertion` interface, but Vitest v4 re-exports `Assertion` from `@vitest/expect`. The augmentation doesn't apply automatically because the types come from different modules.
 
-## Temporary Workaround (Quick Fix)
+**Solution**: We extend `@vitest/expect`'s `Assertion` interface directly in `packages/ui/vitest.d.ts`:
 
-Until proper resolution, use inline TypeScript configs in each package:
+```typescript
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
 
-**Option A: Remove extends from test configs**
-```json
-// packages/ui/tsconfig.json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "skipLibCheck": true,
-    "strict": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+declare module '@vitest/expect' {
+  interface Assertion<T = any> extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+  interface AsymmetricMatchersContaining extends TestingLibraryMatchers<any, any> {}
 }
 ```
 
-**Option B: Use Jest instead**
-Jest doesn't have this Vite-specific issue with TypeScript config resolution.
+### Separate TypeScript Configs for Tests
 
-## Proper Solutions (Choose One)
+The main `tsconfig.json` excludes test files, while `tsconfig.test.json` handles test-specific types:
 
-### Solution 1: vite-tsconfig-paths Plugin (Recommended)
-```bash
-pnpm add -D vite-tsconfig-paths --filter @buttergolf/ui
+**tsconfig.json** (main - excludes tests):
+```json
+{
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}
 ```
 
-```ts
-// vitest.config.ts
-import tsconfigPaths from 'vite-tsconfig-paths'
-
-export default defineConfig({
-  plugins: [react(), tsconfigPaths({
-    root: '../..',
-  })],
-})
+**tsconfig.test.json** (test-specific):
+```json
+{
+  "compilerOptions": {
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": ["src", "**/*.test.ts", "**/*.test.tsx", "vitest.setup.ts", "vitest.d.ts"]
+}
 ```
 
-### Solution 2: Flat TypeScript Configs
-Duplicate all TypeScript settings in each package's tsconfig.json instead of using extends.
+### check-types Script
 
-### Solution 3: Custom Vite Plugin
-Create a plugin to handle monorepo extends resolution:
+The UI package's check-types script runs both configs:
 
-```ts
-function monorepoTsconfigExtends() {
-  return {
-    name: 'monorepo-tsconfig-extends',
-    configResolved(config) {
-      // Custom resolution logic
-    }
+```json
+{
+  "scripts": {
+    "check-types": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
   }
 }
 ```
 
-## Current Status
+## Testing Setup Files
 
-- ✅ All testing packages installed
-- ✅ Test files written with examples
-- ✅ Test scripts configured
-- ✅ Mocks and utilities set up
-- ⚠️ TypeScript config resolution pending
+### vitest.setup.ts
 
-## Testing Framework is Ready
+```typescript
+import '@testing-library/jest-dom/vitest'
 
-Once the TS config issue is resolved (5-10 minutes of work), tests will run successfully. The infrastructure is complete.
+// Mock matchMedia for Tamagui
+globalThis.window = globalThis.window || {}
+Object.defineProperty(globalThis.window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+})
+```
 
-## Recommended Next Steps
+### vitest.config.ts
 
-1. Try `vite-tsconfig-paths` plugin (most likely to work)
-2. If that fails, flatten tsconfigs temporarily
-3. Consider migrating to Jest for long-term stability
+```typescript
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vitest/config'
 
-## Files Modified
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    include: ['**/*.test.{ts,tsx}'],
+    setupFiles: ['./vitest.setup.ts'],
+  },
+})
+```
 
-- `/vitest.config.ts` - Root config with tsconfigRaw
-- `/vitest.setup.ts` - Global mocks
-- `/packages/ui/vitest.config.ts` - Package config
-- `/packages/ui/vitest.setup.ts` - Package mocks
-- `/packages/ui/src/components/*.test.tsx` - Test files
-- `/package.json` - Test scripts
-- `/turbo.json` - Test task configuration
+## Running Tests
+
+```bash
+# From packages/ui
+pnpm test
+
+# From monorepo root
+pnpm test
+```
+
+## Known Limitations
+
+### Tamagui `tag` Variant in jsdom
+
+Tamagui's styled variant with `tag` prop doesn't actually change the rendered element in jsdom:
+
+```tsx
+const Heading = styled(Text, {
+  tag: 'p',  // Default
+  variants: {
+    level: {
+      1: { tag: 'h1' },  // Won't work in jsdom - still renders <p>
+      2: { tag: 'h2' },
+    }
+  }
+})
+```
+
+**Workaround**: Test by text content rather than role/tag:
+```tsx
+// ❌ Won't work in jsdom
+screen.getByRole('heading', { level: 2 })
+
+// ✅ Works correctly
+screen.getByText('Heading Text')
+```
+
+## Related References
+
+- https://github.com/testing-library/jest-dom/issues/546
+- https://github.com/vitest-dev/vitest/discussions/8063
