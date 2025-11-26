@@ -1,6 +1,7 @@
 // Type-only import to avoid bundling @prisma/client in React Native.
+// Import from the custom output location configured in schema.prisma
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../generated/client'
 
 // Determine if we're running in a React Native environment.
 const isReactNative =
@@ -29,7 +30,8 @@ const prisma: PrismaClient = (() => {
     // exhausting your database connection limit.
     const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined }
 
-    const { PrismaClient: PrismaClientRuntime } = require('@prisma/client') as {
+    // Import from custom output location to fix pnpm monorepo module resolution
+    const { PrismaClient: PrismaClientRuntime } = require('../generated/client') as {
         PrismaClient: new (...args: any[]) => PrismaClient
     }
 
@@ -49,6 +51,7 @@ const prisma: PrismaClient = (() => {
 
 export { prisma }
 // Re-export Prisma types for type-safe database queries
+// Import from custom output location
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-export type { Prisma, ClubKind, ProductCondition, ShipmentStatus, OrderStatus, OfferStatus } from '@prisma/client'
+export type { Prisma, ClubKind, ProductCondition, ShipmentStatus, OrderStatus, OfferStatus } from '../generated/client'
 export * from '@buttergolf/constants'
