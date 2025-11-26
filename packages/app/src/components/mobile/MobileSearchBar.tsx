@@ -57,8 +57,8 @@ export function MobileSearchBar({
                 paddingHorizontal="$4"
                 alignItems="center"
                 gap="$2"
-                borderWidth={1}
-                borderColor="rgba(50, 50, 50, 0.5)"
+                borderWidth={isFocused ? 2 : 1}
+                borderColor={isFocused ? "$primary" : "rgba(50, 50, 50, 0.5)"}
             >
                 <SearchIcon size={20} color="$ironstone" opacity={0.5} />
                 <Input
@@ -72,13 +72,17 @@ export function MobileSearchBar({
                         setTimeout(() => setIsFocused(false), 200);
                     }}
                     placeholder={placeholder}
-                    placeholderTextColor="$ironstone"
-                    opacity={0.5}
+                    placeholderTextColor="rgba(50, 50, 50, 0.5)"
                     fontSize={15}
                     color="$text"
                     borderWidth={0}
                     backgroundColor="transparent"
                     height="100%"
+                    // Prevent default focus styling - container handles visual state
+                    focusStyle={{
+                        borderWidth: 0,
+                        outlineWidth: 0,
+                    }}
                 />
             </Row>
 
