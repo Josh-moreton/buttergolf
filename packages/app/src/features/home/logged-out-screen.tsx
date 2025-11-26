@@ -105,14 +105,14 @@ export function LoggedOutHomeScreen({
         {/* Hero Section - Scrolls under the search bar */}
         <Hero
           heading={{
-            line1: "Swing Smarter.",
-            line2: "Shop Better.",
+            line1: "Butter",
+            line2: "up your",
+            line3: "game",
           }}
-          subtitle="Buy, Sell, and Upgrade Your Game"
           backgroundImage={images.hero.background}
           heroImage={images.hero.club}
           showHeroImage={true}
-          minHeight={250}
+          minHeight={240}
           maxHeight={300}
         />
 

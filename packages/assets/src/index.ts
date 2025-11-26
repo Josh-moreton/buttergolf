@@ -13,7 +13,7 @@ export const images = {
     golfCourse: require('../images/steven-shircliff-N21z4eG8aKg-unsplash.jpg'),
     background: require('../images/hero-background.avif'),
     butterBackground: require('../images/butter-background.webp'),
-    club: require('../images/hero-club.png'),
+    club: require('../images/TM25CWD-TC370-Qi35-Core-3Q-v2 1.png'),
   }
 } as const
 
