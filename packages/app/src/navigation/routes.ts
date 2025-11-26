@@ -10,6 +10,11 @@ export const routes = {
     productDetail: '/products/[id]',
     category: '/category/[slug]',
     sell: '/sell',
+    signIn: '/sign-in',
+    signUp: '/sign-up',
+    verifyEmail: '/verify-email',
+    forgotPassword: '/forgot-password',
+    resetPassword: '/reset-password',
 } as const
 
 export type AppRoutes = typeof routes

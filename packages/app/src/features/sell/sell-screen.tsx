@@ -9,7 +9,6 @@ import {
   Heading,
   Button,
   View,
-  Spinner,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ArrowLeft, X } from "@tamagui/lucide-icons";
@@ -83,12 +82,8 @@ export function SellScreen({
   const [error, setError] = useState<string | null>(null);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
-  // Check auth on mount
-  React.useEffect(() => {
-    if (!isAuthenticated && onRequireAuth) {
-      onRequireAuth();
-    }
-  }, [isAuthenticated, onRequireAuth]);
+  // Auth is checked at submission time, not on mount
+  // This allows signed-out users to browse and fill the form
 
   // Update form data helper
   const updateFormData = useCallback((updates: Partial<SellFormData>) => {
@@ -110,8 +105,14 @@ export function SellScreen({
     }
   }, [currentStep]);
 
-  // Submit handler
+  // Submit handler - checks auth before submitting
   const handleSubmit = useCallback(async () => {
+    // If not authenticated, redirect to sign in
+    if (!isAuthenticated) {
+      onRequireAuth?.();
+      return;
+    }
+
     if (!onSubmitListing) {
       setError("Submission not configured");
       return;
@@ -129,7 +130,7 @@ export function SellScreen({
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, onSubmitListing, onSuccess]);
+  }, [formData, isAuthenticated, onRequireAuth, onSubmitListing, onSuccess]);
 
   // Validation for each step
   const canProceed = useCallback(() => {
@@ -154,24 +155,6 @@ export function SellScreen({
         return false;
     }
   }, [currentStep, formData]);
-
-  // Show loading if checking auth
-  if (!isAuthenticated) {
-    return (
-      <Column
-        flex={1}
-        backgroundColor="$background"
-        alignItems="center"
-        justifyContent="center"
-        paddingTop={insets.top}
-      >
-        <Spinner size="lg" color="$primary" />
-        <Text color="$textSecondary" marginTop="$3">
-          Checking authentication...
-        </Text>
-      </Column>
-    );
-  }
 
   // SELL_STEPS always has 4 elements (steps 1-4), so this is safe
   const stepInfo = SELL_STEPS[currentStep - 1]!;

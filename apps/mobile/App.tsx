@@ -7,6 +7,11 @@ import {
   ProductDetailScreen,
   SellScreen,
   routes,
+  SignInScreen,
+  SignUpScreen,
+  VerifyEmailScreen,
+  ForgotPasswordScreen,
+  ResetPasswordScreen,
 } from "@buttergolf/app";
 import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
@@ -16,13 +21,11 @@ import {
   View as RNView,
   Text as RNText,
   Pressable as RNPressable,
-  Platform,
 } from "react-native";
 import {
   ClerkProvider,
   SignedIn,
   SignedOut,
-  useOAuth,
   useAuth,
 } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
@@ -82,6 +85,21 @@ const linking = {
       },
       Sell: {
         path: routes.sell.slice(1), // 'sell'
+      },
+      SignIn: {
+        path: routes.signIn.slice(1), // 'sign-in'
+      },
+      SignUp: {
+        path: routes.signUp.slice(1), // 'sign-up'
+      },
+      VerifyEmail: {
+        path: routes.verifyEmail.slice(1), // 'verify-email'
+      },
+      ForgotPassword: {
+        path: routes.forgotPassword.slice(1), // 'forgot-password'
+      },
+      ResetPassword: {
+        path: routes.resetPassword.slice(1), // 'reset-password'
       },
     },
   },
@@ -459,27 +477,14 @@ export default function App() {
 }
 
 function OnboardingFlow() {
-  const [showLoggedOutHome, setShowLoggedOutHome] = useState<boolean>(false);
-  const { startOAuthFlow: startGoogle } = useOAuth({
-    strategy: "oauth_google",
-  });
-  const { startOAuthFlow: startApple } = useOAuth({ strategy: "oauth_apple" });
-
-  const handleOAuth = async (provider: "google" | "apple") => {
-    const start = provider === "google" ? startGoogle : startApple;
-    const { createdSessionId, setActive, signIn, signUp } = await start();
-
-    if (createdSessionId) {
-      await setActive?.({ session: createdSessionId });
-    } else {
-      // Handle MFA or additional steps if required
-      console.warn("Additional steps required", { signIn, signUp });
-    }
-  };
+  const [flowState, setFlowState] = useState<
+    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "loggedOutHome"
+  >("onboarding");
+  const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
 
   const Stack = createNativeStackNavigator();
 
-  if (showLoggedOutHome) {
+  if (flowState === "loggedOutHome") {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoggedOutHome">
@@ -531,9 +536,9 @@ function OnboardingFlow() {
             <SellScreen
               isAuthenticated={false}
               onRequireAuth={() => {
-                // Close modal and trigger sign-in
+                // Close modal and navigate to sign in
                 navigation.goBack();
-                handleOAuth("google");
+                setFlowState("signIn");
               }}
               onClose={() => navigation.goBack()}
             />
@@ -543,17 +548,102 @@ function OnboardingFlow() {
     );
   }
 
+  if (flowState === "signIn") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SignIn">
+          {() => (
+            <SignInScreen
+              onSuccess={() => {
+                // Auth successful, ClerkProvider handles session
+              }}
+              onNavigateToSignUp={() => setFlowState("signUp")}
+              onNavigateToForgotPassword={() => setFlowState("forgotPassword")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "signUp") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SignUp">
+          {() => (
+            <SignUpScreen
+              onSuccess={() => setFlowState("verifyEmail")}
+              onNavigateToSignIn={() => setFlowState("signIn")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "verifyEmail") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="VerifyEmail">
+          {() => (
+            <VerifyEmailScreen
+              onSuccess={() => {
+                // Auth successful, ClerkProvider handles session
+              }}
+              onNavigateBack={() => setFlowState("signUp")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "forgotPassword") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ForgotPassword">
+          {() => (
+            <ForgotPasswordScreen
+              onSuccess={(email) => {
+                setResetPasswordEmail(email);
+                setFlowState("resetPassword");
+              }}
+              onNavigateBack={() => setFlowState("signIn")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "resetPassword") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ResetPassword">
+          {() => (
+            <ResetPasswordScreen
+              email={resetPasswordEmail}
+              onSuccess={() => setFlowState("signIn")}
+              onNavigateBack={() => setFlowState("forgotPassword")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  // Default: Onboarding screen
   return (
-    <OnboardingScreen
-      onSkip={() => setShowLoggedOutHome(true)}
-      onSignUp={() => handleOAuth("google")}
-      onSignIn={() => {
-        if (Platform.OS === "ios") {
-          handleOAuth("apple");
-        } else {
-          handleOAuth("google");
-        }
-      }}
-    />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Onboarding">
+        {() => (
+          <OnboardingScreen
+            onSkip={() => setFlowState("loggedOutHome")}
+            onSignUp={() => setFlowState("signUp")}
+            onSignIn={() => setFlowState("signIn")}
+          />
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
   );
 }
