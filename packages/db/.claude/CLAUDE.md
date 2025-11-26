@@ -620,7 +620,8 @@ pnpm db:reset
 
 ```typescript
 // prisma/seed.ts
-import { PrismaClient } from "@prisma/client";
+// IMPORTANT: Import from generated client, NOT from @prisma/client
+import { PrismaClient } from "../generated/client";
 
 const prisma = new PrismaClient();
 
