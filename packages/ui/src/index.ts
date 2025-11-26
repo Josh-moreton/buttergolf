@@ -13,6 +13,8 @@ export { Button } from './components/Button'
 export type { ButtonProps } from './components/Button'
 export { AuthButton } from './components/AuthButton'
 export type { AuthButtonProps } from './components/AuthButton'
+export { BuySellToggle } from './components/BuySellToggle'
+export type { BuySellToggleProps, BuySellMode } from './components/BuySellToggle'
 
 // Typography Components
 export { Text, Heading, Label } from './components/Text'

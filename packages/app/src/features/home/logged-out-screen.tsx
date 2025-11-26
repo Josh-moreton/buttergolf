@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import {
   Column,
   Row,
-  Button,
   ScrollView,
   Text,
   Image,
+  BuySellToggle,
+  type BuySellMode,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { ProductCardData } from "../../types/product";
@@ -29,6 +30,7 @@ export function LoggedOutHomeScreen({
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [loading, setLoading] = useState(false);
+  const [buySellMode, setBuySellMode] = useState<BuySellMode>("buying");
 
   // Navigation links for categories
   const driversLink = useLink({
@@ -115,43 +117,11 @@ export function LoggedOutHomeScreen({
         />
 
         {/* Buying/Selling Toggle Buttons */}
-        <Row
-          gap="$4"
-          paddingHorizontal="$4"
-          paddingTop="$4"
-          paddingBottom="$4"
-          justifyContent="space-between"
-        >
-          <Button
-            size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
-            flex={1}
-            borderRadius="$full"
-            pressStyle={{
-              scale: 0.98,
-              opacity: 0.9,
-            }}
-            onPress={() => console.log("Buying pressed")} // TODO: Implement buying flow navigation
-          >
-            Buying
-          </Button>
-          <Button
-            size="$5"
-            backgroundColor="transparent"
-            color="$primary"
-            borderWidth={2}
-            borderColor="$primary"
-            flex={1}
-            borderRadius="$full"
-            pressStyle={{
-              scale: 0.98,
-              opacity: 0.9,
-            }}
-            onPress={() => console.log("Selling pressed")} // TODO: Implement selling flow navigation
-          >
-            Selling
-          </Button>
+        <Row paddingHorizontal="$4" paddingVertical="$4">
+          <BuySellToggle
+            activeMode={buySellMode}
+            onModeChange={setBuySellMode}
+          />
         </Row>
 
         {/* Shop by Category Section */}
