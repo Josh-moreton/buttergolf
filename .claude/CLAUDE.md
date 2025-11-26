@@ -579,11 +579,23 @@ function Screen() {
 
 ### Database Access
 
-```tsx
-import { db } from "@buttergolf/db";
+**🚨 CRITICAL: NEVER import from `@prisma/client` directly**
 
+```tsx
+// ❌ WRONG - Causes "Cannot find module '.prisma/client/default'" errors
+import { ProductCondition } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+// ✅ CORRECT - Always import from @buttergolf/db
+import { prisma, ProductCondition } from "@buttergolf/db";
+import type { Prisma } from "@buttergolf/db";
+```
+
+**Why:** pnpm uses symlinks and strict module resolution. Our custom Prisma output (`packages/db/generated/client`) only works when importing via `@buttergolf/db`.
+
+```tsx
 // Create
-const course = await db.course.create({
+const course = await prisma.course.create({
   data: {
     name: "Pebble Beach",
     location: "California",
@@ -591,19 +603,19 @@ const course = await db.course.create({
 });
 
 // Read
-const courses = await db.course.findMany({
+const courses = await prisma.course.findMany({
   where: { active: true },
   include: { holes: true },
 });
 
 // Update
-await db.course.update({
+await prisma.course.update({
   where: { id: courseId },
   data: { name: "New Name" },
 });
 
 // Delete
-await db.course.delete({
+await prisma.course.delete({
   where: { id: courseId },
 });
 ```
