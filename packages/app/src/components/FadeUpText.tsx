@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { Platform } from "react-native";
 import { Text as TamaguiText } from "@buttergolf/ui";
@@ -16,7 +16,9 @@ interface FadeUpTextProps {
 
 /**
  * Web-only animated version of FadeUpText
- * This component is only rendered on web, so it's safe to use window APIs
+ * 
+ * SSR-SAFE: Always renders the same initial state on server and client (hidden).
+ * Animation is triggered via useEffect after hydration completes.
  */
 function FadeUpTextWeb({
     text,
@@ -25,19 +27,24 @@ function FadeUpTextWeb({
     style,
     ariaLabel,
 }: FadeUpTextProps) {
+    // Start hidden - same on server and client to prevent hydration mismatch
     const [isVisible, setIsVisible] = useState(false);
-
-    const prefersReducedMotion = useMemo(() => {
-        if (typeof window === "undefined") return false;
-        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }, []);
-
-    const isDesktop = useMemo(() => {
-        if (typeof window === "undefined") return false;
-        return window.innerWidth >= 1024;
-    }, []);
+    // Check for reduced motion AFTER mount to avoid SSR mismatch
+    const [shouldAnimate, setShouldAnimate] = useState(true);
 
     useEffect(() => {
+        // Check reduced motion preference on client only
+        const prefersReducedMotion = globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const isDesktop = globalThis.innerWidth >= 1024;
+        
+        // If user prefers reduced motion or on mobile, show immediately without animation
+        if (prefersReducedMotion || !isDesktop) {
+            setShouldAnimate(false);
+            setIsVisible(true);
+            return;
+        }
+
+        // Apply delay then show with animation
         const timer = setTimeout(() => {
             setIsVisible(true);
         }, delay * 1000);
@@ -45,20 +52,8 @@ function FadeUpTextWeb({
         return () => clearTimeout(timer);
     }, [delay]);
 
-    // On mobile web or with reduced motion, show static text immediately
-    if (!isDesktop || prefersReducedMotion) {
-        return (
-            <div
-                className={className}
-                style={style}
-                aria-label={ariaLabel ?? text}
-            >
-                {text}
-            </div>
-        );
-    }
-
-    // Animated version: simple fade-up with CSS transition
+    // Always render with the same structure - just toggle visibility via CSS
+    // This prevents hydration mismatches by keeping DOM structure identical
     return (
         <div
             className={className}
@@ -66,7 +61,7 @@ function FadeUpTextWeb({
                 ...style,
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+                transition: shouldAnimate ? 'opacity 0.6s ease-out, transform 0.6s ease-out' : 'none',
             }}
             aria-label={ariaLabel ?? text}
         >

@@ -58,10 +58,6 @@ export const Text = styled(TamaguiParagraph, {
   fontFamily: "$body",
   letterSpacing: 0, // Prevent tight/condensed letter spacing
   lineHeight: 1.5, // Ensure proper vertical spacing between lines
-  
-  // NOTE: Do NOT use display: "block" here - it breaks React Native
-  // React Native only supports display: "flex" | "none"
-  // Tamagui handles cross-platform layout automatically
 
   variants: {
     weight: {
@@ -121,8 +117,6 @@ export const Heading = styled(TamaguiParagraph, {
   fontWeight: "700",
   letterSpacing: 0, // Prevent tight/condensed letter spacing
   lineHeight: 1.3, // Tighter line height for headings
-  
-  // NOTE: Do NOT use display: "block" here - it breaks React Native
 
   variants: {
     level: {

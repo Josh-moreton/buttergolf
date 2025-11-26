@@ -326,6 +326,12 @@ const customTokens = createTokens({
         borderFocus: brandColors.spicedClementine,
         borderPress: brandColors.spicedClementinePress,
 
+        // Alias for Tamagui's expected token names (some components use borderColor* prefix)
+        borderColor: brandColors.cloudMist,
+        borderColorHover: brandColors.cloudMistHover,
+        borderColorFocus: brandColors.spicedClementine,
+        borderColorPress: brandColors.spicedClementinePress,
+
         // Field border colors - Form inputs (Ironstone for inputs, selects, textareas)
         fieldBorder: brandColors.ironstone,
         fieldBorderHover: brandColors.ironstoneHover,
