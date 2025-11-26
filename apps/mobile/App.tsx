@@ -1,3 +1,8 @@
+// Polyfill for Hermes engine - SharedArrayBuffer is not available
+if (typeof globalThis !== 'undefined' && !globalThis.SharedArrayBuffer) {
+  globalThis.SharedArrayBuffer = ArrayBuffer as any;
+}
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {

@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react";
 import { Column, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
-import { AuthFormInput, AuthErrorDisplay, OAuthButtons } from "./components";
+import { AuthFormInput, AuthErrorDisplay } from "./components";
 import {
   validateSignInForm,
   mapClerkErrorToMessage,
@@ -195,23 +195,6 @@ export function SignInScreen({
             )}
           </Button>
 
-          {/* Divider */}
-          <Column
-            alignItems="center"
-            gap="$2"
-            marginVertical="$4"
-          >
-            <Text size="$4" color="$textSecondary">
-              or continue with
-            </Text>
-          </Column>
-
-          {/* OAuth Buttons */}
-          <OAuthButtons
-            onSuccess={onSuccess}
-            onError={(err) => setError(err)}
-            isLoading={isSubmitting}
-          />
 
           {/* Sign Up Link */}
           <Column

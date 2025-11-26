@@ -6,7 +6,7 @@ export { ForgotPasswordScreen } from "./forgot-password-screen";
 export { ResetPasswordScreen } from "./reset-password-screen";
 
 // Components
-export { AuthFormInput, AuthErrorDisplay, OAuthButtons } from "./components";
+export { AuthFormInput, AuthErrorDisplay } from "./components";
 
 // Types
 export type {

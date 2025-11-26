@@ -4,14 +4,14 @@ import React, { useState, useCallback } from "react";
 import { Column, ScrollView, Text, Button, Heading, Row } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
-import { AuthFormInput, AuthErrorDisplay, OAuthButtons } from "./components";
+import { Spinner } from "tamagui";
+import { AuthFormInput, AuthErrorDisplay } from "./components";
 import {
   validateSignUpForm,
   getPasswordStrength,
   mapClerkErrorToMessage,
 } from "./utils";
 import { SignUpFormData, PasswordStrength } from "./types";
-import { Spinner } from "tamagui";
 
 interface SignUpScreenProps {
   onSuccess?: () => void;
@@ -293,23 +293,6 @@ export function SignUpScreen({
             )}
           </Button>
 
-          {/* Divider */}
-          <Column
-            alignItems="center"
-            gap="$2"
-            marginVertical="$4"
-          >
-            <Text size="$4" color="$textSecondary">
-              or continue with
-            </Text>
-          </Column>
-
-          {/* OAuth Buttons */}
-          <OAuthButtons
-            onSuccess={onSuccess}
-            onError={(err) => setError(err)}
-            isLoading={isSubmitting}
-          />
 
           {/* Sign In Link */}
           <Column
