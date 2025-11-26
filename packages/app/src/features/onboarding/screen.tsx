@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Dimensions, Animated, Easing } from "react-native";
+import { Dimensions, Animated, Easing, Text as RNText, TouchableOpacity } from "react-native";
 import { Text, YStack, View, Image, Button } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -249,14 +249,14 @@ export function OnboardingScreen({
         </Animated.View>
       </View>
 
-      <YStack flex={1} />
-
-      {/* Content Section */}
+      {/* Content Section - Use flex to push to bottom */}
       <YStack
-        gap={32}
+        flex={1}
+        gap={24}
         paddingHorizontal={HORIZONTAL_PADDING}
-        paddingBottom={20}
+        paddingBottom={24}
         alignItems="center"
+        justifyContent="flex-end"
       >
         {/* CTAs - Design System Buttons */}
         <YStack gap={12} width="100%" paddingHorizontal={24}>
@@ -300,19 +300,14 @@ export function OnboardingScreen({
         </YStack>
 
         {/* Skip Button - Navigate to Home */}
-        <Text
-          fontSize={15}
-          color="$ironstone"
-          align="center"
-          fontWeight="400"
+        <TouchableOpacity
           onPress={onSkip}
-          cursor="pointer"
-          pressStyle={{
-            opacity: 0.7,
-          }}
+          style={{ paddingVertical: 12, paddingHorizontal: 24 }}
         >
-          Skip
-        </Text>
+          <RNText style={{ color: '#545454', fontSize: 16, textAlign: 'center', textDecorationLine: 'underline' }}>
+            Skip for now
+          </RNText>
+        </TouchableOpacity>
       </YStack>
     </YStack>
   );

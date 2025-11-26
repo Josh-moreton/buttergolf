@@ -59,9 +59,9 @@ export const Text = styled(TamaguiParagraph, {
   letterSpacing: 0, // Prevent tight/condensed letter spacing
   lineHeight: 1.5, // Ensure proper vertical spacing between lines
   
-  // CRITICAL: Override Tamagui's flex-based layout for proper text rendering
-  // Without this, multi-line text can overlap because flex doesn't calculate height correctly
-  display: "block",
+  // NOTE: Do NOT use display: "block" here - it breaks React Native
+  // React Native only supports display: "flex" | "none"
+  // Tamagui handles cross-platform layout automatically
 
   variants: {
     weight: {
@@ -122,8 +122,7 @@ export const Heading = styled(TamaguiParagraph, {
   letterSpacing: 0, // Prevent tight/condensed letter spacing
   lineHeight: 1.3, // Tighter line height for headings
   
-  // CRITICAL: Override Tamagui's flex-based layout for proper text rendering
-  display: "block",
+  // NOTE: Do NOT use display: "block" here - it breaks React Native
 
   variants: {
     level: {
