@@ -9,6 +9,7 @@ export const routes = {
     products: '/products',
     productDetail: '/products/[id]',
     category: '/category/[slug]',
+    sell: '/sell',
 } as const
 
 export type AppRoutes = typeof routes

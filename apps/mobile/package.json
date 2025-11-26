@@ -29,6 +29,7 @@
     "expo": "catalog:",
     "expo-auth-session": "catalog:",
     "expo-font": "catalog:",
+    "expo-image-picker": "^17.0.8",
     "expo-secure-store": "catalog:",
     "expo-splash-screen": "catalog:",
     "expo-status-bar": "catalog:",

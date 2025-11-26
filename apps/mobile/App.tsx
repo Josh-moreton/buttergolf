@@ -5,9 +5,10 @@ import {
   RoundsScreen,
   ProductsScreen,
   ProductDetailScreen,
+  SellScreen,
   routes,
 } from "@buttergolf/app";
-import type { ProductCardData, Product } from "@buttergolf/app";
+import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
@@ -79,8 +80,9 @@ const linking = {
       Category: {
         path: "category/:slug", // 'category/:slug' for category pages
       },
-      // Add more routes here as you create them
-      // RoundDetail: routes.roundDetail.replace('[id]', ':id'),
+      Sell: {
+        path: routes.sell.slice(1), // 'sell'
+      },
     },
   },
 };
@@ -196,6 +198,94 @@ async function fetchProduct(id: string): Promise<Product | null> {
     console.error("Failed to fetch product:", error);
     return null;
   }
+}
+
+// Function to fetch categories for sell flow
+async function fetchCategories(): Promise<Category[]> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrl) return [];
+
+    const response = await fetch(`${apiUrl}/api/categories`, {
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return [];
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+    return [];
+  }
+}
+
+// Function to search brands
+async function searchBrands(query: string): Promise<Brand[]> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrl || !query) return [];
+
+    const response = await fetch(`${apiUrl}/api/brands?query=${encodeURIComponent(query)}`, {
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return [];
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to search brands:", error);
+    return [];
+  }
+}
+
+// Function to search models for a brand
+async function searchModels(brandId: string, query: string): Promise<Model[]> {
+  try {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrl || !brandId) return [];
+
+    const params = new URLSearchParams({ brandId });
+    if (query) params.append("query", query);
+
+    const response = await fetch(`${apiUrl}/api/models?${params.toString()}`, {
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return [];
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to search models:", error);
+    return [];
+  }
+}
+
+// Function to submit a listing
+async function submitListing(data: SellFormData): Promise<{ id: string }> {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  if (!apiUrl) throw new Error("API URL not configured");
+
+  const response = await fetch(`${apiUrl}/api/products`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      title: data.title,
+      description: data.description,
+      price: parseFloat(data.price),
+      categoryId: data.categoryId,
+      brandId: data.brandId,
+      modelId: data.modelId || undefined,
+      condition: data.condition,
+      images: data.images.map((img) => img.uri),
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || "Failed to create listing");
+  }
+
+  return await response.json();
 }
 
 export default function App() {
@@ -327,9 +417,31 @@ export default function App() {
                       onFetchProducts={fetchProductsByCategory}
                       onBack={() => navigation.goBack()}
                       onFilter={() => console.log("Filter pressed")}
+                      onSellPress={() => navigation.navigate("Sell")}
                     />
                     );
                   }}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="Sell"
+                  options={{
+                    headerShown: false, // SellScreen has its own header
+                    presentation: "modal",
+                  }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <SellScreen
+                      isAuthenticated={true}
+                      onFetchCategories={fetchCategories}
+                      onSearchBrands={searchBrands}
+                      onSearchModels={searchModels}
+                      onSubmitListing={submitListing}
+                      onClose={() => navigation.goBack()}
+                      onSuccess={(productId) => {
+                        navigation.navigate("ProductDetail", { id: productId });
+                      }}
+                    />
+                  )}
                 </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
@@ -371,7 +483,12 @@ function OnboardingFlow() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoggedOutHome">
-          {() => <LoggedOutHomeScreen onFetchProducts={fetchProducts} />}
+          {({ navigation }: { navigation: any }) => (
+            <LoggedOutHomeScreen
+              onFetchProducts={fetchProducts}
+              onSellPress={() => navigation.navigate("Sell")}
+            />
+          )}
         </Stack.Screen>
         <Stack.Screen
           name="Category"
@@ -398,9 +515,29 @@ function OnboardingFlow() {
               onFetchProducts={fetchProductsByCategory}
               onBack={() => navigation.goBack()}
               onFilter={() => console.log("Filter pressed")}
+              onSellPress={() => navigation.navigate("Sell")}
             />
             );
           }}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Sell"
+          options={{
+            headerShown: false,
+            presentation: "modal",
+          }}
+        >
+          {({ navigation }: { navigation: any }) => (
+            <SellScreen
+              isAuthenticated={false}
+              onRequireAuth={() => {
+                // Close modal and trigger sign-in
+                navigation.goBack();
+                handleOAuth("google");
+              }}
+              onClose={() => navigation.goBack()}
+            />
+          )}
         </Stack.Screen>
       </Stack.Navigator>
     );
