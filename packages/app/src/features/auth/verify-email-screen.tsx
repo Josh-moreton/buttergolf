@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
-import { Column, ScrollView, Text, Button, Heading } from "@buttergolf/ui";
+import { Column, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
 import { validateVerificationCode, mapClerkErrorToMessage } from "./utils";
-import { Spinner } from "tamagui";
 
 interface VerifyEmailScreenProps {
   email?: string;
@@ -186,7 +185,7 @@ export function VerifyEmailScreen({
             opacity={isSubmitting || code.length !== 6 ? 0.7 : 1}
           >
             {isSubmitting ? (
-              <Spinner size="small" color="$textInverse" />
+              <Spinner size="sm" color="$textInverse" />
             ) : (
               <Text>Verify Email</Text>
             )}
@@ -206,7 +205,7 @@ export function VerifyEmailScreen({
               opacity={resendCountdown > 0 || isResending ? 0.5 : 1}
             >
               {isResending ? (
-                <Spinner size="small" color="$primary" />
+                <Spinner size="sm" color="$primary" />
               ) : resendCountdown > 0 ? (
                 <Text color="$textMuted" fontWeight="600">
                   Resend in {resendCountdown}s

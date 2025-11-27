@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Platform } from "react-native";
 import {
   Column,
   Row,

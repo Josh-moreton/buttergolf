@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, ScrollView, Text, Button, Heading } from "@buttergolf/ui";
+import { Column, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
 import { validateEmail, mapClerkErrorToMessage } from "./utils";
-import { Spinner } from "tamagui";
 
 interface ForgotPasswordScreenProps {
   onSuccess?: (email: string) => void;
@@ -56,7 +55,7 @@ export function ForgotPasswordScreen({
     try {
       // Initiate sign-in with email for password reset
       // This automatically prepares the password reset code verification
-      const result = await signIn.create({
+      await signIn.create({
         identifier: email,
         // The password reset will be handled via firstFactorVerification
       });
@@ -138,7 +137,7 @@ export function ForgotPasswordScreen({
             opacity={isSubmitting ? 0.7 : 1}
           >
             {isSubmitting ? (
-              <Spinner size="small" color="$textInverse" />
+              <Spinner size="sm" color="$textInverse" />
             ) : (
               <Text>Send Reset Code</Text>
             )}

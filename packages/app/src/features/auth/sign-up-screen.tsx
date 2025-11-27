@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, ScrollView, Text, Button, Heading, Row } from "@buttergolf/ui";
+import { Column, ScrollView, Text, Button, Heading, Row, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
-import { Spinner } from "tamagui";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
 import {
   validateSignUpForm,
@@ -27,7 +26,7 @@ export function SignUpScreen({
   onNavigateToSignIn,
 }: Readonly<SignUpScreenProps>) {
   const insets = useSafeAreaInsets();
-  const { signUp, setActive, isLoaded } = useSignUp();
+  const { signUp, isLoaded } = useSignUp();
 
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: "",
@@ -114,7 +113,7 @@ export function SignUpScreen({
 
     try {
       // Create the sign-up
-      const result = await signUp.create({
+      await signUp.create({
         emailAddress: formData.email,
         password: formData.password,
         firstName: formData.firstName,
@@ -287,7 +286,7 @@ export function SignUpScreen({
             opacity={isSubmitting ? 0.7 : 1}
           >
             {isSubmitting ? (
-              <Spinner size="small" color="$textInverse" />
+              <Spinner size="sm" color="$textInverse" />
             ) : (
               <Text>Create Account</Text>
             )}

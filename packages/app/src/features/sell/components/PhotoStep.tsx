@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Platform, TouchableOpacity, Alert } from "react-native";
 import {
   Column,
@@ -30,10 +30,11 @@ interface PhotoStepProps {
 export function PhotoStep({
   images,
   onImagesChange,
-  onUploadImage,
+  onUploadImage: _onUploadImage,
   direction,
 }: Readonly<PhotoStepProps>) {
-  const [isUploading, setIsUploading] = useState(false);
+  // Note: _onUploadImage is available for server-side image upload integration
+  // Currently images are stored locally until form submission
 
   const requestPermissions = useCallback(async () => {
     if (Platform.OS !== "web") {

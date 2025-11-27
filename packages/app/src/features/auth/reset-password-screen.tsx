@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, ScrollView, Text, Button, Heading, Row } from "@buttergolf/ui";
+import { Column, ScrollView, Text, Button, Heading, Row, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -13,7 +13,6 @@ import {
   mapClerkErrorToMessage,
 } from "./utils";
 import { PasswordStrength } from "./types";
-import { Spinner } from "tamagui";
 
 interface ResetPasswordScreenProps {
   email?: string;
@@ -262,7 +261,7 @@ export function ResetPasswordScreen({
             opacity={isSubmitting || code.length !== 6 ? 0.7 : 1}
           >
             {isSubmitting ? (
-              <Spinner size="small" color="$textInverse" />
+              <Spinner size="sm" color="$textInverse" />
             ) : (
               <Text>Reset Password</Text>
             )}
