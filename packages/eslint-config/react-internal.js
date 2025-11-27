@@ -35,6 +35,33 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+      // Prevent direct tamagui imports - use @buttergolf/ui instead
+      // This ensures consistent component behavior and custom variants
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "tamagui",
+              importNames: [
+                "Spinner",
+                "Button",
+                "Input",
+                "Text",
+                "Heading",
+                "Card",
+                "Image",
+                "ScrollView",
+                "View",
+                "XStack",
+                "YStack",
+              ],
+              message:
+                "Import UI components from '@buttergolf/ui' instead of 'tamagui' directly. Our UI package provides custom variants and consistent theming.",
+            },
+          ],
+        },
+      ],
     },
   },
 ];
