@@ -175,7 +175,7 @@ export function PhotoStep({
           {/* Existing Images */}
           {images.map((image, index) => (
             <View
-              key={`image-${index}`}
+              key={image.uri}
               width="30%"
               aspectRatio={1}
               borderRadius="$lg"

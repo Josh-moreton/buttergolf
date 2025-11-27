@@ -146,7 +146,7 @@ export function SellScreen({
         return (
           formData.title.trim() !== "" &&
           formData.price !== "" &&
-          parseFloat(formData.price) > 0
+          Number.parseFloat(formData.price) > 0
         );
       case 4:
         return true;
@@ -179,7 +179,7 @@ export function SellScreen({
           chromeless
           onPress={currentStep === 1 ? onClose : goToPreviousStep}
           icon={currentStep === 1 ? <X size={24} /> : <ArrowLeft size={24} />}
-          accessibilityLabel={currentStep === 1 ? "Close" : "Go back"}
+          aria-label={currentStep === 1 ? "Close" : "Go back"}
         />
 
         <Column alignItems="center">
@@ -212,7 +212,7 @@ export function SellScreen({
 
       {/* Step Content */}
       <Column flex={1}>
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           {currentStep === 1 && (
             <PhotoStep
               key="photo"

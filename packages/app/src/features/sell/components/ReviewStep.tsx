@@ -77,8 +77,8 @@ export function ReviewStep({
     CONDITION_OPTIONS.find((c) => c.value === formData.condition)?.label || "";
 
   const formatPrice = (price: string) => {
-    const num = parseFloat(price);
-    if (isNaN(num)) return "£0.00";
+    const num = Number.parseFloat(price);
+    if (Number.isNaN(num)) return "£0.00";
     return `£${num.toFixed(2)}`;
   };
 
@@ -117,7 +117,7 @@ export function ReviewStep({
             <Row gap="$2" flexWrap="wrap">
               {formData.images.map((image, index) => (
                 <View
-                  key={`review-image-${index}`}
+                  key={image.uri}
                   width={70}
                   height={70}
                   borderRadius="$md"
@@ -135,7 +135,7 @@ export function ReviewStep({
               ))}
             </Row>
             <Text fontSize={12} color="$textSecondary" marginTop="$2">
-              {formData.images.length} photo{formData.images.length !== 1 ? "s" : ""} added
+              {formData.images.length} photo{formData.images.length === 1 ? "" : "s"} added
             </Text>
           </ReviewSection>
 
@@ -189,7 +189,7 @@ export function ReviewStep({
                 </Text>
               </Column>
 
-              {formData.description && (
+              {Boolean(formData.description) && (
                 <Column gap="$1">
                   <Text fontSize={12} color="$textSecondary">
                     Description

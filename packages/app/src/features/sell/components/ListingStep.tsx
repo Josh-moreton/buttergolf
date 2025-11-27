@@ -79,7 +79,7 @@ export function ListingStep({
 
   const handlePriceChange = (text: string) => {
     // Only allow numbers and one decimal point
-    const cleaned = text.replace(/[^0-9.]/g, "");
+    const cleaned = text.replaceAll(/[^0-9.]/g, "");
     const parts = cleaned.split(".");
     if (parts.length > 2) {
       return;
