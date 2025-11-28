@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Provider,
   RoundsScreen,
-  ProductsScreen,
   ProductDetailScreen,
   SellScreen,
   routes,
@@ -15,7 +14,7 @@ import {
 } from "@buttergolf/app";
 import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
-import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
+import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
 import {
   View as RNView,
@@ -71,10 +70,6 @@ const linking = {
       },
       Rounds: {
         path: routes.rounds.slice(1), // Remove leading '/' for React Navigation
-        exact: true,
-      },
-      Products: {
-        path: routes.products.slice(1), // 'products'
         exact: true,
       },
       ProductDetail: {
@@ -395,18 +390,20 @@ export default function App() {
         <Provider>
           <SignedIn>
             <NavigationContainer linking={linking}>
-              <Stack.Navigator>
-                <Stack.Screen name="Home" options={{ title: "ButterGolf", headerRight: HeaderRightComponent }}>
-                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Home">
+                  {({ navigation }: { navigation: any }) => (
+                    <HomeScreen
+                      onFetchProducts={fetchProducts}
+                      onSellPress={() => navigation.navigate("Sell")}
+                    />
+                  )}
                 </Stack.Screen>
                 <Stack.Screen
                   name="Rounds"
                   component={RoundsScreen}
                   options={{ title: "Your Rounds" }}
                 />
-                <Stack.Screen name="Products" options={{ title: "Products" }}>
-                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
-                </Stack.Screen>
                 <Stack.Screen
                   name="ProductDetail"
                   options={{ title: "Product Details" }}
@@ -498,7 +495,7 @@ function OnboardingFlow() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoggedOutHome">
           {({ navigation }: { navigation: any }) => (
-            <LoggedOutHomeScreen
+            <HomeScreen
               onFetchProducts={fetchProducts}
               onSellPress={() => navigation.navigate("Sell")}
             />
