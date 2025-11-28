@@ -21,6 +21,7 @@ interface CategoryListScreenProps {
     onFetchProducts?: (categorySlug: string) => Promise<ProductCardData[]>;
     onBack?: () => void;
     onFilter?: () => void;
+    onSellPress?: () => void;
 }
 
 export function CategoryListScreen({
@@ -29,6 +30,7 @@ export function CategoryListScreen({
     onFetchProducts,
     onBack,
     onFilter,
+    onSellPress,
 }: Readonly<CategoryListScreenProps>) {
     const insets = useSafeAreaInsets();
     const [products, setProducts] = useState<ProductCardData[]>([]);
@@ -144,7 +146,7 @@ export function CategoryListScreen({
                     activeTab="home"
                     onHomePress={() => console.log("Home pressed")}
                     onWishlistPress={() => console.log("Wishlist pressed")}
-                    onSellPress={() => console.log("Sell pressed")}
+                    onSellPress={onSellPress}
                     onMessagesPress={() => console.log("Messages pressed")}
                     onLoginPress={() => console.log("Login pressed")}
                 />

@@ -619,6 +619,22 @@ pnpm test:e2e
 1. Run `pnpm db:generate` to regenerate Prisma Client
 2. Check DATABASE_URL in `.env.local`
 3. Ensure queries only run in Server Components or API routes
+4. **CRITICAL**: Never import from `@prisma/client` directly - always use `@buttergolf/db`
+
+### Issue: "Cannot find module '.prisma/client/default'" error
+
+**Cause**: Direct imports from `@prisma/client` instead of `@buttergolf/db`
+
+**Solution**:
+```typescript
+// ❌ WRONG - Causes build failures in pnpm monorepos
+import { ProductCondition } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+// ✅ CORRECT - Always import from @buttergolf/db
+import { prisma, ProductCondition } from '@buttergolf/db'
+import type { Prisma } from '@buttergolf/db'
+```
 
 ## Build & Deployment
 

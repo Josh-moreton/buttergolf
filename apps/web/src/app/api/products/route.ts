@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@buttergolf/db';
-import { ProductCondition } from '@prisma/client';
+import { prisma, ProductCondition } from '@buttergolf/db';
 
 export async function POST(request: Request) {
     try {

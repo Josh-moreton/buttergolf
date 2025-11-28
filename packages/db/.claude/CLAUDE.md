@@ -9,18 +9,47 @@ This package provides the Prisma database client and schema for ButterGolf. It u
 - **ORM**: Prisma 6.x
 - **Database**: PostgreSQL
 - **Provider**: Neon (serverless PostgreSQL)
-- **Client**: @prisma/client
+- **Client**: Generated to `packages/db/generated/client` (custom output for pnpm compatibility)
+
+## 🚨 CRITICAL: Import Rules (pnpm Monorepo)
+
+**NEVER import directly from `@prisma/client`** - This causes "Cannot find module '.prisma/client/default'" build errors.
+
+```typescript
+// ❌ WRONG - NEVER DO THIS - Causes build failures
+import { PrismaClient } from '@prisma/client'
+import { ProductCondition } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+// ✅ CORRECT - ALWAYS import from @buttergolf/db
+import { prisma } from '@buttergolf/db'
+import { ProductCondition } from '@buttergolf/db'
+import type { Prisma } from '@buttergolf/db'
+```
+
+**Why This Matters:**
+- pnpm uses symlinks and strict module resolution
+- `@prisma/client` looks for `.prisma/client/default` which doesn't exist at expected paths
+- Our custom Prisma output (`packages/db/generated/client`) fixes this
+- Direct `@prisma/client` imports bypass this fix and cause build failures
+
+**Available exports from @buttergolf/db:**
+- `prisma` - The singleton PrismaClient instance
+- `Prisma` - The Prisma namespace for types
+- Enums: `ProductCondition`, `ClubKind`, `OrderStatus`, `OfferStatus`, `ShipmentStatus`
 
 ## Directory Structure
 
 ```
 packages/db/
 ├── prisma/
-│   ├── schema.prisma    # Database schema
+│   ├── schema.prisma    # Database schema (output = "../generated/client")
 │   ├── migrations/      # Migration files
-│   └── seed.ts          # Seed script
+│   └── seed.ts          # Seed script (imports from ../generated/client)
+├── generated/
+│   └── client/          # Generated Prisma Client (gitignored)
 ├── src/
-│   └── index.ts         # Prisma client export
+│   └── index.ts         # Prisma client export (imports from ../generated/client)
 └── package.json
 ```
 
@@ -35,6 +64,8 @@ packages/db/
 ```prisma
 generator client {
   provider = "prisma-client-js"
+  // Custom output for pnpm monorepo compatibility
+  output   = "../generated/client"
 }
 
 datasource db {
@@ -589,7 +620,8 @@ pnpm db:reset
 
 ```typescript
 // prisma/seed.ts
-import { PrismaClient } from "@prisma/client";
+// IMPORTANT: Import from generated client, NOT from @prisma/client
+import { PrismaClient } from "../generated/client";
 
 const prisma = new PrismaClient();
 

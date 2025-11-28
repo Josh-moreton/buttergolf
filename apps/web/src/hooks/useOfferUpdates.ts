@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@buttergolf/db";
 
 /**
  * Custom Hook: Poll for Offer Updates

@@ -56,6 +56,7 @@ export function ProductCard({
       animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
+      borderRadius={20}
       cursor="pointer"
       onPress={onPress}
       width={315}
@@ -74,7 +75,7 @@ export function ProductCard({
         width="100%"
         height="100%"
         overflow="hidden"
-        borderRadius="$lg"
+        borderRadius={20}
       >
         {/* Container - full height with image */}
         <Column
@@ -137,7 +138,6 @@ export function ProductCard({
           right={0}
           height={122}
           borderTopWidth={0}
-          borderRadius="$lg"
           zIndex={1}
           overflow="hidden"
           justifyContent="center"

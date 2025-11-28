@@ -3,6 +3,9 @@
 
 generator client {
     provider = "prisma-client-js"
+    // Output to a fixed location to fix pnpm monorepo module resolution issues
+    // This prevents "Cannot find module '.prisma/client/default'" errors in Next.js builds
+    output   = "../generated/client"
 }
 
 datasource db {

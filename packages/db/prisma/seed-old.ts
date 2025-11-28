@@ -1,4 +1,4 @@
-import { PrismaClient, ProductCondition } from '@prisma/client'
+import { PrismaClient, ProductCondition } from '../generated/client'
 import { CATEGORIES } from '../src/constants/categories'
 
 const prisma = new PrismaClient()

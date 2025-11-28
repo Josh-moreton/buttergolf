@@ -21,11 +21,13 @@ import { routes } from "../../navigation";
 interface LoggedOutHomeScreenProps {
   products?: ProductCardData[];
   onFetchProducts?: () => Promise<ProductCardData[]>;
+  onSellPress?: () => void;
 }
 
 export function LoggedOutHomeScreen({
   products: initialProducts = [],
   onFetchProducts,
+  onSellPress,
 }: Readonly<LoggedOutHomeScreenProps>) {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
@@ -298,7 +300,7 @@ export function LoggedOutHomeScreen({
           activeTab="home"
           onHomePress={() => console.log("Home pressed")}
           onWishlistPress={() => console.log("Wishlist pressed")}
-          onSellPress={() => console.log("Sell pressed")}
+          onSellPress={onSellPress}
           onMessagesPress={() => console.log("Messages pressed")}
           onLoginPress={() => console.log("Login pressed")}
         />

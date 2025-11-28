@@ -579,11 +579,23 @@ function Screen() {
 
 ### Database Access
 
-```tsx
-import { db } from "@buttergolf/db";
+**🚨 CRITICAL: NEVER import from `@prisma/client` directly**
 
+```tsx
+// ❌ WRONG - Causes "Cannot find module '.prisma/client/default'" errors
+import { ProductCondition } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+// ✅ CORRECT - Always import from @buttergolf/db
+import { prisma, ProductCondition } from "@buttergolf/db";
+import type { Prisma } from "@buttergolf/db";
+```
+
+**Why:** pnpm uses symlinks and strict module resolution. Our custom Prisma output (`packages/db/generated/client`) only works when importing via `@buttergolf/db`.
+
+```tsx
 // Create
-const course = await db.course.create({
+const course = await prisma.course.create({
   data: {
     name: "Pebble Beach",
     location: "California",
@@ -591,22 +603,53 @@ const course = await db.course.create({
 });
 
 // Read
-const courses = await db.course.findMany({
+const courses = await prisma.course.findMany({
   where: { active: true },
   include: { holes: true },
 });
 
 // Update
-await db.course.update({
+await prisma.course.update({
   where: { id: courseId },
   data: { name: "New Name" },
 });
 
 // Delete
-await db.course.delete({
+await prisma.course.delete({
   where: { id: courseId },
 });
 ```
+
+### Testing and Test Dependencies
+
+**🚨 CRITICAL: NEVER import web-only test libraries in mobile code**
+
+```tsx
+// ❌ WRONG - Causes "SharedArrayBuffer doesn't exist" crash in React Native
+import { JSDOM } from 'jsdom'
+import '@testing-library/jest-dom'
+import { configure } from 'happy-dom'
+
+// ✅ CORRECT - Use React Native Testing Library for mobile
+import { render } from '@testing-library/react-native'
+```
+
+**Why:** React Native uses Hermes/JSC engines which don't support `SharedArrayBuffer`. Web testing libraries (jsdom, happy-dom) use SharedArrayBuffer and will crash mobile apps.
+
+**Protection Layers:**
+
+1. **Package Management:** jsdom removed from workspace catalog, nohoist configured in `.npmrc`
+2. **Metro Bundler:** Comprehensive blocklist in `apps/mobile/metro.config.js`
+3. **ESLint:** Restricted imports in `packages/eslint-config/react-internal.js` and `apps/mobile/eslint.config.mjs`
+4. **Vitest Config:** All configs use `environment: 'node'`, never 'jsdom'
+
+**Testing Strategy:**
+
+- **Mobile:** Use `@testing-library/react-native` (tests in shared packages)
+- **Web:** Can use jsdom locally if needed (install in `apps/web/` only)
+- **Shared:** MUST use `environment: 'node'` and universal test patterns
+
+See [TESTING_SETUP.md](./.claude/TESTING_SETUP.md) for complete guide.
 
 ## Testing Approach
 

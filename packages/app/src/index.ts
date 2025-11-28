@@ -2,6 +2,8 @@ export * from './features/home'
 export * from './features/rounds'
 export * from './features/products'
 export * from './features/categories'
+export * from './features/sell'
+export * from './features/auth'
 // Note: onboarding is mobile-only and uses react-native-reanimated
 // Import directly from './features/onboarding' in mobile app only
 

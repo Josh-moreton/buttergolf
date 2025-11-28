@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Text } from "@buttergolf/ui";
+import { Button } from "@buttergolf/ui";
 
 export interface CategoryButtonProps {
   label: string;
@@ -20,6 +20,8 @@ export function CategoryButton({
       borderRadius="$10"
       backgroundColor={active ? "$primary" : "$backgroundPress"}
       borderColor={active ? "$primary" : "$border"}
+      color={active ? "$textInverse" : "$text"}
+      fontWeight={active ? "600" : "400"}
       hoverStyle={{
         backgroundColor: active ? "$primaryHover" : "$backgroundHover",
         borderColor: active ? "$primaryHover" : "$borderHover",
@@ -30,13 +32,7 @@ export function CategoryButton({
       }}
       onPress={onPress}
     >
-      {active ? (
-        <Text color="$textInverse" weight="semibold">
-          {label}
-        </Text>
-      ) : (
-        <Text weight="normal">{label}</Text>
-      )}
+      {label}
     </Button>
   );
 }

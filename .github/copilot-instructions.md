@@ -1635,11 +1635,43 @@ pnpm --filter @buttergolf/db prisma-postgres-create-database --name buttergolf
 
 ### Important Notes
 
-- The Prisma Client is generated to `node_modules/.prisma/client` (not committed)
+- The Prisma Client is generated to `packages/db/generated/client` (custom output for pnpm monorepo compatibility)
 - Always run `pnpm db:generate` after schema changes
 - Use `pnpm db:studio` to view/edit data in a GUI
-- The `.prisma` folder is in `.gitignore`
+- The `generated/` folder is in `.gitignore`
 - Each app/package that uses the database imports the singleton client from `@buttergolf/db`
+
+### 🚨 CRITICAL: Prisma Import Rules (pnpm Monorepo)
+
+**NEVER import directly from `@prisma/client`** - This causes "Cannot find module '.prisma/client/default'" build errors in pnpm monorepos.
+
+```typescript
+// ❌ WRONG - NEVER DO THIS - Causes build failures
+import { PrismaClient } from '@prisma/client'
+import { ProductCondition } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+
+// ✅ CORRECT - ALWAYS import from @buttergolf/db
+import { prisma } from '@buttergolf/db'
+import { ProductCondition } from '@buttergolf/db'
+import type { Prisma } from '@buttergolf/db'
+```
+
+**Why This Matters:**
+- pnpm uses symlinks and strict module resolution
+- `@prisma/client` looks for `.prisma/client/default` which doesn't exist at expected paths in monorepos
+- Our custom Prisma output (`packages/db/generated/client`) fixes this but ONLY when importing via `@buttergolf/db`
+- Direct `@prisma/client` imports bypass this fix and cause build failures
+
+**What to Export from @buttergolf/db:**
+- `prisma` - The singleton PrismaClient instance
+- `Prisma` - The Prisma namespace for types like `Prisma.ProductWhereInput`
+- All enums: `ProductCondition`, `ClubKind`, `OrderStatus`, `OfferStatus`, `ShipmentStatus`
+
+**If you see "Cannot find module '.prisma/client/default'":**
+1. Search codebase for `from '@prisma/client'` or `from "@prisma/client"`
+2. Change ALL imports to use `@buttergolf/db` instead
+3. If needed, add missing exports to `packages/db/src/index.ts`
 
 ## Authentication (Clerk)
 

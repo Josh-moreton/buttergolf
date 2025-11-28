@@ -48,6 +48,9 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
+    // Mark Prisma as external to fix pnpm monorepo module resolution
+    // Prisma generates client in a deeply nested path that Next.js bundler can't resolve
+    serverExternalPackages: ['@prisma/client'],
     // Disable caching in development to avoid stale CSS issues
     ...(process.env.NODE_ENV === "development" && {
       headers: async () => [

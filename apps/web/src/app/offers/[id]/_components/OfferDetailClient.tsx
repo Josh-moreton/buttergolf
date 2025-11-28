@@ -8,7 +8,7 @@ import { ProductSummaryCard } from "./ProductSummaryCard";
 import { MobileProductBar } from "./MobileProductBar";
 import { OffersSidebar } from "../../_components/OffersSidebar";
 import { useOfferUpdates } from "@/hooks/useOfferUpdates";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@buttergolf/db";
 
 /**
  * Client Component: Offer Detail Interactive UI

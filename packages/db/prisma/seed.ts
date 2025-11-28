@@ -1,4 +1,4 @@
-import { PrismaClient, ProductCondition, ClubKind } from '@prisma/client'
+import { PrismaClient, ProductCondition } from '../generated/client'
 import { CATEGORIES } from '../src/constants/categories'
 import { BRANDS } from '../src/constants/brands'
 

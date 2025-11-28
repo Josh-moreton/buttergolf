@@ -5,8 +5,8 @@ import { styled, View } from "tamagui";
  *
  * Features:
  * - Backdrop blur (frosted glass effect)
- * - Semi-transparent white background (50% opacity by default)
- * - Curved corners with liquid glass edge effect
+ * - Semi-transparent gray background (#D9D9D9 at 30% opacity per Figma)
+ * - 20px border radius (per Figma spec)
  * - Inner glow for dimensional "liquid" appearance
  * - Subtle border with transparency
  *
@@ -20,31 +20,34 @@ import { styled, View } from "tamagui";
 export const GlassmorphismCard = styled(View, {
   name: "GlassmorphismCard",
 
-  // Default styling - 50% opacity white background
-  borderRadius: "$2xl",
+  // Default styling - Figma spec: #D9D9D9 at 30% opacity, 20px radius
+  borderRadius: 20,
   borderWidth: 1.5,
-  borderColor: "rgba(255, 255, 255, 0.6)",
+  borderColor: "rgba(217, 217, 217, 0.4)",
 
-  // Default intensity - medium (50% white)
-  backgroundColor: "rgba(255, 255, 255, 0.5)",
+  // Default intensity - Figma spec: #D9D9D9 at 30%
+  backgroundColor: "rgba(217, 217, 217, 0.3)",
 
   variants: {
     intensity: {
       light: {
-        backgroundColor: "rgba(255, 255, 255, 0.35)",
-        borderColor: "rgba(255, 255, 255, 0.4)",
+        // #D9D9D9 at 20% opacity
+        backgroundColor: "rgba(217, 217, 217, 0.2)",
+        borderColor: "rgba(217, 217, 217, 0.3)",
       },
       medium: {
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-        borderColor: "rgba(255, 255, 255, 0.6)",
+        // #D9D9D9 at 30% opacity (Figma default)
+        backgroundColor: "rgba(217, 217, 217, 0.3)",
+        borderColor: "rgba(217, 217, 217, 0.4)",
       },
       strong: {
-        backgroundColor: "rgba(255, 255, 255, 0.7)",
-        borderColor: "rgba(255, 255, 255, 0.8)",
+        // #D9D9D9 at 45% opacity
+        backgroundColor: "rgba(217, 217, 217, 0.45)",
+        borderColor: "rgba(217, 217, 217, 0.55)",
       },
       dark: {
         backgroundColor: "rgba(0, 0, 0, 0.35)",
-        borderColor: "rgba(255, 255, 255, 0.15)",
+        borderColor: "rgba(217, 217, 217, 0.15)",
       },
     },
     blur: {
