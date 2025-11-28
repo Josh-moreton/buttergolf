@@ -6,12 +6,18 @@ import {
   Column,
   Row,
   Text,
-  Heading,
   View,
   Image,
   ScrollView,
 } from "@buttergolf/ui";
-import { Pencil } from "@tamagui/lucide-icons";
+import {
+  Pencil,
+  Camera,
+  Tag,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+} from "@tamagui/lucide-icons";
 
 import type { SellFormData, SellStep } from "../types";
 import { CONDITION_OPTIONS } from "../types";
@@ -24,46 +30,70 @@ interface ReviewStepProps {
 
 interface ReviewSectionProps {
   title: string;
+  icon: React.ReactNode;
   step: SellStep;
   onEdit: (step: SellStep) => void;
   children: React.ReactNode;
 }
 
-function ReviewSection({ title, step, onEdit, children }: Readonly<ReviewSectionProps>) {
+function ReviewSection({
+  title,
+  icon,
+  step,
+  onEdit,
+  children,
+}: Readonly<ReviewSectionProps>) {
   return (
     <Column
-      backgroundColor="$surface"
-      borderRadius="$lg"
-      borderWidth={1}
-      borderColor="$border"
+      backgroundColor="$pureWhite"
+      borderRadius="$xl"
+      borderWidth={2}
+      borderColor="$cloudMist"
       overflow="hidden"
     >
       <Row
-        paddingHorizontal="$3"
-        paddingVertical="$2"
+        paddingHorizontal="$4"
+        paddingVertical="$3"
         alignItems="center"
         justifyContent="space-between"
-        backgroundColor="$cloudMist"
+        backgroundColor="$gray100"
         borderBottomWidth={1}
-        borderBottomColor="$border"
+        borderBottomColor="$cloudMist"
       >
-        <Text fontSize={14} fontWeight="600" color="$text">
-          {title}
-        </Text>
+        <Row alignItems="center" gap="$2">
+          {icon}
+          <Text
+            fontFamily="$heading"
+            size="$5"
+            fontWeight="700"
+            color="$ironstone"
+          >
+            {title}
+          </Text>
+        </Row>
         <TouchableOpacity
           onPress={() => onEdit(step)}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           accessibilityLabel={`Edit ${title.toLowerCase()}`}
         >
-          <Row alignItems="center" gap="$1">
-            <Pencil size={14} color="$primary" />
-            <Text fontSize={13} color="$primary" fontWeight="500">
+          <Row
+            alignItems="center"
+            gap="$2"
+            backgroundColor="$pureWhite"
+            paddingHorizontal="$3"
+            paddingVertical="$2"
+            borderRadius="$full"
+            borderWidth={1}
+            borderColor="$spicedClementine"
+          >
+            <Pencil size={14} color="$spicedClementine" />
+            <Text size="$3" fontWeight="600" color="$spicedClementine">
               Edit
             </Text>
           </Row>
         </TouchableOpacity>
       </Row>
-      <Column padding="$3">{children}</Column>
+      <Column padding="$4">{children}</Column>
     </Column>
   );
 }
@@ -98,113 +128,178 @@ export function ReviewStep({
       <ScrollView
         flex={1}
         contentContainerStyle={{
-          padding: 16,
+          padding: 20,
         }}
       >
-        {/* Instructions */}
-        <Column gap="$2" marginBottom="$4">
-          <Heading level={4} fontSize={16} color="$text" fontWeight="600">
-            Review your listing
-          </Heading>
-          <Text fontSize={14} color="$textSecondary">
-            Make sure everything looks good before submitting
+        {/* Header Section */}
+        <Column gap="$2" marginBottom="$5">
+          <Row alignItems="center" gap="$2">
+            <CheckCircle size={28} color="$success" />
+            <Text
+              fontFamily="$heading"
+              size="$10"
+              fontWeight="800"
+              color="$ironstone"
+            >
+              Almost done!
+            </Text>
+          </Row>
+          <Text size="$5" fontWeight="400" color="$slateSmoke">
+            Review your listing before submitting
           </Text>
         </Column>
 
-        <Column gap="$3">
+        <Column gap="$4">
           {/* Photos Section */}
-          <ReviewSection title="Photos" step={1} onEdit={onEdit}>
-            <Row gap="$2" flexWrap="wrap">
-              {formData.images.map((image, index) => (
-                <View
-                  key={image.uri}
-                  width={70}
-                  height={70}
-                  borderRadius="$md"
-                  overflow="hidden"
-                  borderWidth={index === 0 ? 2 : 0}
-                  borderColor={index === 0 ? "$primary" : "transparent"}
-                >
-                  <Image
-                    source={{ uri: image.uri }}
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                  />
-                </View>
-              ))}
-            </Row>
-            <Text fontSize={12} color="$textSecondary" marginTop="$2">
-              {formData.images.length} photo{formData.images.length === 1 ? "" : "s"} added
+          <ReviewSection
+            title="Photos"
+            icon={<Camera size={18} color="$slateSmoke" />}
+            step={1}
+            onEdit={onEdit}
+          >
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Row gap="$3">
+                {formData.images.map((image, index) => (
+                  <View
+                    key={image.uri}
+                    width={80}
+                    height={80}
+                    borderRadius="$lg"
+                    overflow="hidden"
+                    position="relative"
+                  >
+                    <Image
+                      source={{ uri: image.uri }}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                    />
+                    {index === 0 && (
+                      <View
+                        position="absolute"
+                        bottom={4}
+                        left={4}
+                        backgroundColor="$spicedClementine"
+                        paddingHorizontal="$2"
+                        paddingVertical="$1"
+                        borderRadius="$sm"
+                      >
+                        <Text size="$1" fontWeight="700" color="$pureWhite">
+                          COVER
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </Row>
+            </ScrollView>
+            <Text size="$3" fontWeight="500" color="$slateSmoke" marginTop="$3">
+              {formData.images.length} photo
+              {formData.images.length === 1 ? "" : "s"} added
             </Text>
           </ReviewSection>
 
           {/* Details Section */}
-          <ReviewSection title="Item Details" step={2} onEdit={onEdit}>
-            <Column gap="$2">
-              <Row justifyContent="space-between">
-                <Text fontSize={14} color="$textSecondary">
+          <ReviewSection
+            title="Item Details"
+            icon={<Tag size={18} color="$slateSmoke" />}
+            step={2}
+            onEdit={onEdit}
+          >
+            <Column gap="$3">
+              <Row justifyContent="space-between" alignItems="center">
+                <Text size="$4" fontWeight="400" color="$slateSmoke">
                   Category
                 </Text>
-                <Text fontSize={14} color="$text" fontWeight="500">
+                <Text size="$4" fontWeight="600" color="$ironstone">
                   {formData.categoryName || "Not set"}
                 </Text>
               </Row>
-              <Row justifyContent="space-between">
-                <Text fontSize={14} color="$textSecondary">
+              <View height={1} backgroundColor="$cloudMist" />
+              <Row justifyContent="space-between" alignItems="center">
+                <Text size="$4" fontWeight="400" color="$slateSmoke">
                   Brand
                 </Text>
-                <Text fontSize={14} color="$text" fontWeight="500">
+                <Text size="$4" fontWeight="600" color="$ironstone">
                   {formData.brandName || "Not set"}
                 </Text>
               </Row>
-              <Row justifyContent="space-between">
-                <Text fontSize={14} color="$textSecondary">
+              <View height={1} backgroundColor="$cloudMist" />
+              <Row justifyContent="space-between" alignItems="center">
+                <Text size="$4" fontWeight="400" color="$slateSmoke">
                   Model
                 </Text>
-                <Text fontSize={14} color="$text" fontWeight="500">
-                  {formData.modelName || "Not set"}
+                <Text size="$4" fontWeight="600" color="$ironstone">
+                  {formData.modelName || "—"}
                 </Text>
               </Row>
-              <Row justifyContent="space-between">
-                <Text fontSize={14} color="$textSecondary">
+              <View height={1} backgroundColor="$cloudMist" />
+              <Row justifyContent="space-between" alignItems="center">
+                <Text size="$4" fontWeight="400" color="$slateSmoke">
                   Condition
                 </Text>
-                <Text fontSize={14} color="$text" fontWeight="500">
-                  {conditionLabel}
-                </Text>
+                <View
+                  backgroundColor="$lemonHaze"
+                  paddingHorizontal="$3"
+                  paddingVertical="$1"
+                  borderRadius="$full"
+                >
+                  <Text size="$3" fontWeight="600" color="$burntOlive">
+                    {conditionLabel}
+                  </Text>
+                </View>
               </Row>
             </Column>
           </ReviewSection>
 
           {/* Listing Info Section */}
-          <ReviewSection title="Listing Info" step={3} onEdit={onEdit}>
-            <Column gap="$3">
+          <ReviewSection
+            title="Listing Info"
+            icon={<FileText size={18} color="$slateSmoke" />}
+            step={3}
+            onEdit={onEdit}
+          >
+            <Column gap="$4">
               <Column gap="$1">
-                <Text fontSize={12} color="$textSecondary">
-                  Title
+                <Text size="$2" fontWeight="500" color="$slateSmoke">
+                  TITLE
                 </Text>
-                <Text fontSize={15} color="$text" fontWeight="500">
+                <Text
+                  size="$6"
+                  fontWeight="600"
+                  color="$ironstone"
+                  numberOfLines={2}
+                >
                   {formData.title || "No title"}
                 </Text>
               </Column>
 
               {Boolean(formData.description) && (
                 <Column gap="$1">
-                  <Text fontSize={12} color="$textSecondary">
-                    Description
+                  <Text size="$2" fontWeight="500" color="$slateSmoke">
+                    DESCRIPTION
                   </Text>
-                  <Text fontSize={14} color="$text" numberOfLines={3}>
+                  <Text
+                    size="$4"
+                    fontWeight="400"
+                    color="$ironstone"
+                    numberOfLines={3}
+                  >
                     {formData.description}
                   </Text>
                 </Column>
               )}
 
               <Column gap="$1">
-                <Text fontSize={12} color="$textSecondary">
-                  Price
+                <Text size="$2" fontWeight="500" color="$slateSmoke">
+                  PRICE
                 </Text>
-                <Text fontSize={20} color="$primary" fontWeight="700">
+                <Text
+                  fontFamily="$heading"
+                  size="$11"
+                  fontWeight="800"
+                  color="$spicedClementine"
+                >
                   {formatPrice(formData.price)}
                 </Text>
               </Column>
@@ -214,13 +309,25 @@ export function ReviewStep({
           {/* Terms Notice */}
           <Column
             backgroundColor="$lemonHaze"
-            borderRadius="$lg"
-            padding="$3"
-            marginTop="$2"
+            borderRadius="$xl"
+            padding="$4"
+            gap="$2"
           >
-            <Text fontSize={13} color="$secondary" lineHeight={20}>
+            <Row alignItems="center" gap="$2">
+              <AlertCircle size={18} color="$burntOlive" />
+              <Text
+                fontFamily="$heading"
+                size="$4"
+                fontWeight="700"
+                color="$burntOlive"
+              >
+                Before you submit
+              </Text>
+            </Row>
+            <Text size="$3" fontWeight="400" color="$burntOlive" lineHeight={20}>
               By submitting this listing, you confirm that you have the right to
-              sell this item and agree to our terms of service.
+              sell this item and that all details are accurate. You agree to our
+              terms of service and community guidelines.
             </Text>
           </Column>
         </Column>

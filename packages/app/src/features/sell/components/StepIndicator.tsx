@@ -8,18 +8,27 @@ interface StepIndicatorProps {
   totalSteps: number;
 }
 
-export function StepIndicator({ currentStep, totalSteps }: Readonly<StepIndicatorProps>) {
+export function StepIndicator({
+  currentStep,
+  totalSteps,
+}: Readonly<StepIndicatorProps>) {
+  // Helper to get opacity based on step state
+  const getOpacity = (stepNumber: number) => {
+    if (stepNumber === currentStep) return 1;
+    if (stepNumber < currentStep) return 0.7;
+    return 0.4;
+  };
+
   return (
     <Row
       paddingHorizontal="$4"
       paddingVertical="$3"
       gap="$2"
-      justifyContent="center"
+      backgroundColor="$pureWhite"
     >
       {Array.from({ length: totalSteps }, (_, i) => {
         const stepNumber = i + 1;
-        const isActive = stepNumber === currentStep;
-        const isCompleted = stepNumber < currentStep;
+        const isActiveOrCompleted = stepNumber <= currentStep;
 
         return (
           <View
@@ -27,10 +36,8 @@ export function StepIndicator({ currentStep, totalSteps }: Readonly<StepIndicato
             flex={1}
             height={4}
             borderRadius="$full"
-            backgroundColor={
-              isActive || isCompleted ? "$primary" : "$cloudMist"
-            }
-            opacity={isActive ? 1 : isCompleted ? 0.7 : 0.3}
+            backgroundColor={isActiveOrCompleted ? "$spicedClementine" : "$cloudMist"}
+            opacity={getOpacity(stepNumber)}
           />
         );
       })}

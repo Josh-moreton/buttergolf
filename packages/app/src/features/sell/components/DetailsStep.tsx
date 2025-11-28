@@ -1,20 +1,34 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Keyboard } from "react-native";
 import {
   Column,
   Row,
   Text,
-  Heading,
   View,
   Input,
   ScrollView,
   Spinner,
 } from "@buttergolf/ui";
-import { ChevronDown, Check, Search } from "@tamagui/lucide-icons";
+import {
+  ChevronDown,
+  Check,
+  Search,
+  X,
+  Tag,
+  Award,
+  Layers,
+  Star,
+} from "@tamagui/lucide-icons";
 
-import type { SellFormData, Category, Brand, Model, ProductCondition } from "../types";
+import type {
+  SellFormData,
+  Category,
+  Brand,
+  Model,
+  ProductCondition,
+} from "../types";
 import { CONDITION_OPTIONS } from "../types";
 
 interface DetailsStepProps {
@@ -82,15 +96,26 @@ export function DetailsStep({
     }
   }, [activePicker, formData.brandId, searchQuery, onSearchModels]);
 
+  const openPicker = useCallback((picker: ActivePicker) => {
+    Keyboard.dismiss();
+    setSearchQuery("");
+    setActivePicker(picker);
+  }, []);
+
+  const closePicker = useCallback(() => {
+    setActivePicker(null);
+    setSearchQuery("");
+  }, []);
+
   const selectCategory = useCallback(
     (category: Category) => {
       onUpdate({
         categoryId: category.id,
         categoryName: category.name,
       });
-      setActivePicker(null);
+      closePicker();
     },
-    [onUpdate]
+    [onUpdate, closePicker]
   );
 
   const selectBrand = useCallback(
@@ -98,14 +123,12 @@ export function DetailsStep({
       onUpdate({
         brandId: brand.id,
         brandName: brand.name,
-        // Reset model when brand changes
         modelId: "",
         modelName: "",
       });
-      setActivePicker(null);
-      setSearchQuery("");
+      closePicker();
     },
-    [onUpdate]
+    [onUpdate, closePicker]
   );
 
   const selectModel = useCallback(
@@ -114,19 +137,34 @@ export function DetailsStep({
         modelId: model.id,
         modelName: model.name,
       });
-      setActivePicker(null);
-      setSearchQuery("");
+      closePicker();
     },
-    [onUpdate]
+    [onUpdate, closePicker]
   );
 
   const selectCondition = useCallback(
     (condition: ProductCondition) => {
       onUpdate({ condition });
-      setActivePicker(null);
+      closePicker();
     },
-    [onUpdate]
+    [onUpdate, closePicker]
   );
+
+  // Get icon for field type
+  const getFieldIcon = (field: string, size: number = 20) => {
+    switch (field) {
+      case "category":
+        return <Tag size={size} color="$slateSmoke" />;
+      case "brand":
+        return <Award size={size} color="$slateSmoke" />;
+      case "model":
+        return <Layers size={size} color="$slateSmoke" />;
+      case "condition":
+        return <Star size={size} color="$slateSmoke" />;
+      default:
+        return null;
+    }
+  };
 
   const renderPickerButton = (
     label: string,
@@ -135,33 +173,41 @@ export function DetailsStep({
     pickerType: ActivePicker,
     disabled = false
   ) => (
-    <Column gap="$1">
-      <Text fontSize={14} fontWeight="500" color="$text">
-        {label} <Text color="$error">*</Text>
-      </Text>
+    <Column gap="$2">
+      <Row alignItems="center" gap="$1">
+        <Text size="$4" fontWeight="600" color="$ironstone">
+          {label}
+        </Text>
+        <Text size="$4" fontWeight="600" color="$error">
+          *
+        </Text>
+      </Row>
       <TouchableOpacity
-        onPress={() => !disabled && setActivePicker(pickerType)}
+        onPress={() => !disabled && openPicker(pickerType)}
         disabled={disabled}
         accessibilityLabel={`Select ${label.toLowerCase()}`}
+        style={{ opacity: disabled ? 0.5 : 1 }}
       >
         <Row
-          backgroundColor={disabled ? "$cloudMist" : "$surface"}
-          borderWidth={1}
-          borderColor={activePicker === pickerType ? "$primary" : "$border"}
-          borderRadius="$lg"
-          paddingHorizontal="$3"
-          paddingVertical="$3"
+          backgroundColor={disabled ? "$gray100" : "$pureWhite"}
+          borderWidth={2}
+          borderColor={value ? "$spicedClementine" : "$cloudMist"}
+          borderRadius="$xl"
+          paddingHorizontal="$4"
+          paddingVertical="$4"
           alignItems="center"
-          justifyContent="space-between"
-          opacity={disabled ? 0.6 : 1}
+          gap="$3"
         >
+          {getFieldIcon(pickerType || "")}
           <Text
-            color={value ? "$text" : "$textMuted"}
-            fontSize={15}
+            flex={1}
+            color={value ? "$ironstone" : "$slateSmoke"}
+            size="$6"
+            fontWeight={value ? "500" : "400"}
           >
             {value || placeholder}
           </Text>
-          <ChevronDown size={20} color="$textSecondary" />
+          <ChevronDown size={20} color="$slateSmoke" />
         </Row>
       </TouchableOpacity>
     </Column>
@@ -179,28 +225,31 @@ export function DetailsStep({
 
     switch (activePicker) {
       case "category":
-        title = "Select Category";
+        title = "Category";
         items = categories;
         onSelect = (item) => selectCategory(item as Category);
         selectedId = formData.categoryId;
         break;
       case "brand":
-        title = "Select Brand";
+        title = "Brand";
         items = brands;
         onSelect = (item) => selectBrand(item as Brand);
         showSearch = true;
         selectedId = formData.brandId;
         break;
       case "model":
-        title = "Select Model";
+        title = "Model";
         items = models;
         onSelect = (item) => selectModel(item as Model);
         showSearch = true;
         selectedId = formData.modelId;
         break;
       case "condition":
-        title = "Select Condition";
-        items = CONDITION_OPTIONS.map((c) => ({ id: c.value, name: c.label }));
+        title = "Condition";
+        items = CONDITION_OPTIONS.map((c) => ({
+          id: c.value,
+          name: c.label,
+        }));
         onSelect = (item) => selectCondition(item.id as ProductCondition);
         selectedId = formData.condition;
         break;
@@ -213,103 +262,150 @@ export function DetailsStep({
         left={0}
         right={0}
         bottom={0}
-        backgroundColor="$background"
+        backgroundColor="$pureWhite"
         zIndex={100}
       >
         {/* Picker Header */}
         <Row
           paddingHorizontal="$4"
-          paddingVertical="$3"
+          paddingVertical="$4"
           alignItems="center"
           justifyContent="space-between"
           borderBottomWidth={1}
-          borderBottomColor="$border"
+          borderBottomColor="$cloudMist"
         >
-          <TouchableOpacity onPress={() => setActivePicker(null)}>
-            <Text color="$primary" fontSize={16}>
-              Cancel
-            </Text>
+          <TouchableOpacity
+            onPress={closePicker}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "#F5F5F5",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <X size={20} color="$ironstone" />
           </TouchableOpacity>
-          <Heading level={4} fontSize={17} fontWeight="600" color="$text">
-            {title}
-          </Heading>
-          <View width={60} />
+          <Text
+            fontFamily="$heading"
+            size="$7"
+            fontWeight="700"
+            color="$ironstone"
+          >
+            Select {title}
+          </Text>
+          <View width={40} />
         </Row>
 
         {/* Search Input */}
         {showSearch && (
-          <Row
-            paddingHorizontal="$4"
-            paddingVertical="$3"
-            borderBottomWidth={1}
-            borderBottomColor="$border"
-          >
+          <Column paddingHorizontal="$4" paddingVertical="$3">
             <Row
-              flex={1}
-              backgroundColor="$cloudMist"
-              borderRadius="$lg"
-              paddingHorizontal="$3"
+              backgroundColor="$gray100"
+              borderRadius="$xl"
+              paddingHorizontal="$4"
+              paddingVertical="$3"
               alignItems="center"
-              gap="$2"
+              gap="$3"
             >
-              <Search size={18} color="$textSecondary" />
+              <Search size={20} color="$slateSmoke" />
               <Input
                 flex={1}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
-                placeholder={`Search ${title.toLowerCase().replace("select ", "")}...`}
-                placeholderTextColor="$textMuted"
+                placeholder={`Search ${title.toLowerCase()}...`}
+                placeholderTextColor="$slateSmoke"
                 borderWidth={0}
                 backgroundColor="transparent"
-                fontSize={15}
+                size="$6"
+                color="$ironstone"
+                autoFocus
               />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={() => setSearchQuery("")}>
+                  <X size={18} color="$slateSmoke" />
+                </TouchableOpacity>
+              )}
             </Row>
-          </Row>
+          </Column>
         )}
 
         {/* Loading State */}
         {isLoading && (
-          <Column padding="$4" alignItems="center">
-            <Spinner size="sm" color="$primary" />
+          <Column padding="$6" alignItems="center" gap="$3">
+            <Spinner size="sm" color="$spicedClementine" />
+            <Text size="$4" color="$slateSmoke">
+              Loading...
+            </Text>
           </Column>
         )}
 
         {/* Items List */}
-        <ScrollView flex={1}>
-          {items.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => onSelect(item)}
-              accessibilityLabel={`Select ${item.name}`}
-            >
-              <Row
-                paddingHorizontal="$4"
-                paddingVertical="$3"
-                alignItems="center"
-                justifyContent="space-between"
-                borderBottomWidth={1}
-                borderBottomColor="$cloudMist"
-                backgroundColor={selectedId === item.id ? "$lemonHaze" : "transparent"}
-              >
-                <Text fontSize={16} color="$text">
-                  {item.name}
-                </Text>
-                {selectedId === item.id && (
-                  <Check size={20} color="$primary" />
-                )}
-              </Row>
-            </TouchableOpacity>
-          ))}
+        <ScrollView flex={1} keyboardShouldPersistTaps="handled">
+          <Column paddingHorizontal="$4" paddingVertical="$2" gap="$2">
+            {items.map((item) => {
+              const isSelected = selectedId === item.id;
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  onPress={() => onSelect(item)}
+                  accessibilityLabel={`Select ${item.name}`}
+                >
+                  <Row
+                    paddingHorizontal="$4"
+                    paddingVertical="$4"
+                    alignItems="center"
+                    borderRadius="$xl"
+                    backgroundColor={isSelected ? "$lemonHaze" : "transparent"}
+                    borderWidth={isSelected ? 2 : 0}
+                    borderColor={isSelected ? "$spicedClementine" : "transparent"}
+                  >
+                    <Column flex={1} gap="$1">
+                      <Text
+                        size="$6"
+                        fontWeight={isSelected ? "600" : "500"}
+                        color="$ironstone"
+                      >
+                        {item.name}
+                      </Text>
+                    </Column>
+                    {isSelected && (
+                      <View
+                        width={28}
+                        height={28}
+                        borderRadius="$full"
+                        backgroundColor="$spicedClementine"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Check size={16} color="$pureWhite" />
+                      </View>
+                    )}
+                  </Row>
+                </TouchableOpacity>
+              );
+            })}
 
-          {!isLoading && items.length === 0 && (
-            <Column padding="$4" alignItems="center">
-              <Text color="$textSecondary">
-                {showSearch && searchQuery
-                  ? "No results found"
-                  : "Start typing to search"}
-              </Text>
-            </Column>
-          )}
+            {!isLoading && items.length === 0 && (
+              <Column padding="$6" alignItems="center" gap="$2">
+                <Text
+                  size="$5"
+                  fontWeight="500"
+                  color="$slateSmoke"
+                >
+                  {showSearch && searchQuery
+                    ? "No results found"
+                    : "Start typing to search"}
+                </Text>
+                {showSearch && !searchQuery && (
+                  <Text size="$3" color="$slateSmoke">
+                    Enter at least 2 characters
+                  </Text>
+                )}
+              </Column>
+            )}
+          </Column>
         </ScrollView>
       </Column>
     );
@@ -331,49 +427,71 @@ export function DetailsStep({
       <ScrollView
         flex={1}
         contentContainerStyle={{
-          padding: 16,
+          padding: 20,
         }}
+        keyboardShouldPersistTaps="handled"
       >
-        {/* Instructions */}
-        <Column gap="$2" marginBottom="$4">
-          <Heading level={4} fontSize={16} color="$text" fontWeight="600">
+        {/* Header Section */}
+        <Column gap="$2" marginBottom="$6">
+          <Text
+            fontFamily="$heading"
+            size="$10"
+            fontWeight="800"
+            color="$ironstone"
+          >
             Item details
-          </Heading>
-          <Text fontSize={14} color="$textSecondary">
-            Tell us about what you're selling
+          </Text>
+          <Text size="$5" fontWeight="400" color="$slateSmoke">
+            Help buyers find your item with accurate details
           </Text>
         </Column>
 
         {/* Form Fields */}
-        <Column gap="$4">
+        <Column gap="$5">
           {renderPickerButton(
             "Category",
             formData.categoryName,
-            "Select a category",
+            "What type of item is this?",
             "category"
           )}
 
           {renderPickerButton(
             "Brand",
             formData.brandName,
-            "Search for a brand",
+            "Who makes this item?",
             "brand"
           )}
 
           {renderPickerButton(
             "Model",
             formData.modelName,
-            "Search for a model",
+            "Which model is it?",
             "model",
-            !formData.brandId // Disabled if no brand selected
+            !formData.brandId
           )}
 
           {renderPickerButton(
             "Condition",
-            CONDITION_OPTIONS.find((c) => c.value === formData.condition)?.label || "",
-            "Select condition",
+            CONDITION_OPTIONS.find((c) => c.value === formData.condition)
+              ?.label || "",
+            "How would you describe its condition?",
             "condition"
           )}
+        </Column>
+
+        {/* Helper Text */}
+        <Column marginTop="$6" gap="$2">
+          <Row
+            backgroundColor="$gray100"
+            borderRadius="$lg"
+            padding="$3"
+            gap="$2"
+          >
+            <Text size="$3" color="$slateSmoke">
+              💡 Accurate details help your item get discovered by the right
+              buyers
+            </Text>
+          </Row>
         </Column>
       </ScrollView>
 

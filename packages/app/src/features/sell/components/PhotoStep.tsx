@@ -6,13 +6,11 @@ import {
   Column,
   Row,
   Text,
-  Heading,
   View,
   Image,
   ScrollView,
-  Button,
 } from "@buttergolf/ui";
-import { Camera, ImagePlus, X, Check } from "@tamagui/lucide-icons";
+import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
 import * as ImagePicker from "expo-image-picker";
 import type { ImagePickerAsset } from "expo-image-picker";
 
@@ -33,9 +31,6 @@ export function PhotoStep({
   onUploadImage: _onUploadImage,
   direction,
 }: Readonly<PhotoStepProps>) {
-  // Note: _onUploadImage is available for server-side image upload integration
-  // Currently images are stored locally until form submission
-
   const requestPermissions = useCallback(async () => {
     if (Platform.OS !== "web") {
       const { status: cameraStatus } =
@@ -67,11 +62,13 @@ export function PhotoStep({
     });
 
     if (!result.canceled && result.assets.length > 0) {
-      const newImages: ImageData[] = result.assets.map((asset: ImagePickerAsset) => ({
-        uri: asset.uri,
-        width: asset.width,
-        height: asset.height,
-      }));
+      const newImages: ImageData[] = result.assets.map(
+        (asset: ImagePickerAsset) => ({
+          uri: asset.uri,
+          width: asset.width,
+          height: asset.height,
+        })
+      );
 
       const updatedImages = [...images, ...newImages].slice(0, MAX_IMAGES);
       onImagesChange(updatedImages);
@@ -128,174 +125,279 @@ export function PhotoStep({
       <ScrollView
         flex={1}
         contentContainerStyle={{
-          padding: 16,
+          padding: 20,
         }}
+        keyboardShouldPersistTaps="handled"
       >
-        {/* Instructions */}
-        <Column gap="$2" marginBottom="$4">
-          <Heading level={4} fontSize={16} color="$text" fontWeight="600">
-            Add photos of your item
-          </Heading>
-          <Text fontSize={14} color="$textSecondary">
-            Add up to {MAX_IMAGES} photos. The first photo will be your listing
-            cover image.
+        {/* Header Section */}
+        <Column gap="$2" marginBottom="$5">
+          <Text
+            fontFamily="$heading"
+            size="$10"
+            fontWeight="800"
+            color="$ironstone"
+          >
+            Add your photos
+          </Text>
+          <Text size="$5" fontWeight="400" color="$slateSmoke">
+            Great photos help your item sell faster. Add up to {MAX_IMAGES}{" "}
+            photos.
           </Text>
         </Column>
 
-        {/* Photo Tips */}
+        {/* Photo Tips Card */}
         <Column
           backgroundColor="$lemonHaze"
-          borderRadius="$lg"
-          padding="$3"
-          marginBottom="$4"
-          gap="$2"
+          borderRadius="$xl"
+          padding="$4"
+          marginBottom="$5"
+          gap="$3"
         >
           <Row alignItems="center" gap="$2">
-            <Check size={16} color="$secondary" />
-            <Text fontSize={13} color="$secondary" fontWeight="500">
-              Use a clean, uncluttered background
+            <Sparkles size={18} color="$burntOlive" />
+            <Text
+              fontFamily="$heading"
+              size="$5"
+              fontWeight="700"
+              color="$burntOlive"
+            >
+              Tips for great photos
             </Text>
           </Row>
-          <Row alignItems="center" gap="$2">
-            <Check size={16} color="$secondary" />
-            <Text fontSize={13} color="$secondary" fontWeight="500">
-              Ensure good lighting - natural light works best
-            </Text>
-          </Row>
-          <Row alignItems="center" gap="$2">
-            <Check size={16} color="$secondary" />
-            <Text fontSize={13} color="$secondary" fontWeight="500">
-              Include multiple angles and close-ups
-            </Text>
-          </Row>
+          <Column gap="$2">
+            <Row alignItems="flex-start" gap="$3">
+              <View
+                width={20}
+                height={20}
+                borderRadius="$full"
+                backgroundColor="$burntOlive"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Check size={12} color="$pureWhite" />
+              </View>
+              <Text
+                size="$4"
+                fontWeight="500"
+                color="$burntOlive"
+                flex={1}
+              >
+                Use a clean, uncluttered background
+              </Text>
+            </Row>
+            <Row alignItems="flex-start" gap="$3">
+              <View
+                width={20}
+                height={20}
+                borderRadius="$full"
+                backgroundColor="$burntOlive"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Check size={12} color="$pureWhite" />
+              </View>
+              <Text
+                size="$4"
+                fontWeight="500"
+                color="$burntOlive"
+                flex={1}
+              >
+                Use natural lighting for best results
+              </Text>
+            </Row>
+            <Row alignItems="flex-start" gap="$3">
+              <View
+                width={20}
+                height={20}
+                borderRadius="$full"
+                backgroundColor="$burntOlive"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Check size={12} color="$pureWhite" />
+              </View>
+              <Text
+                size="$4"
+                fontWeight="500"
+                color="$burntOlive"
+                flex={1}
+              >
+                Include multiple angles and any imperfections
+              </Text>
+            </Row>
+          </Column>
         </Column>
 
         {/* Image Grid */}
-        <Row flexWrap="wrap" gap="$3" marginBottom="$4">
-          {/* Existing Images */}
-          {images.map((image, index) => (
-            <View
-              key={image.uri}
-              width="30%"
-              aspectRatio={1}
-              borderRadius="$lg"
-              overflow="hidden"
-              position="relative"
-            >
-              <Image
-                source={{ uri: image.uri }}
-                width="100%"
-                height="100%"
-                objectFit="cover"
-              />
-              {/* Cover badge for first image */}
-              {index === 0 && (
-                <View
-                  position="absolute"
-                  bottom={4}
-                  left={4}
-                  backgroundColor="$primary"
-                  paddingHorizontal="$2"
-                  paddingVertical="$1"
-                  borderRadius="$sm"
+        <Column marginBottom="$5">
+          <Row flexWrap="wrap" gap="$3">
+            {/* Existing Images */}
+            {images.map((image, index) => (
+              <View
+                key={image.uri}
+                width="30%"
+                aspectRatio={1}
+                borderRadius="$xl"
+                overflow="hidden"
+                position="relative"
+              >
+                <Image
+                  source={{ uri: image.uri }}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+                {/* Cover badge for first image */}
+                {index === 0 && (
+                  <View
+                    position="absolute"
+                    bottom={8}
+                    left={8}
+                    backgroundColor="$spicedClementine"
+                    paddingHorizontal="$2"
+                    paddingVertical="$1"
+                    borderRadius="$md"
+                  >
+                    <Text size="$1" fontWeight="700" color="$pureWhite">
+                      Cover
+                    </Text>
+                  </View>
+                )}
+                {/* Remove button */}
+                <TouchableOpacity
+                  onPress={() => removeImage(index)}
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    borderRadius: 14,
+                    width: 28,
+                    height: 28,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  accessibilityLabel={`Remove image ${index + 1}`}
                 >
-                  <Text fontSize={10} color="white" fontWeight="600">
-                    Cover
-                  </Text>
-                </View>
-              )}
-              {/* Remove button */}
-              <TouchableOpacity
-                onPress={() => removeImage(index)}
-                style={{
-                  position: "absolute",
-                  top: 4,
-                  right: 4,
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  borderRadius: 12,
-                  width: 24,
-                  height: 24,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                accessibilityLabel={`Remove image ${index + 1}`}
-              >
-                <X size={14} color="white" />
-              </TouchableOpacity>
-            </View>
-          ))}
+                  <X size={16} color="white" />
+                </TouchableOpacity>
+              </View>
+            ))}
 
-          {/* Add Image Button */}
-          {canAddMore && (
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                width: "30%",
-                aspectRatio: 1,
-              }}
-              accessibilityLabel="Add photo from library"
-            >
-              <Column
-                flex={1}
-                backgroundColor="$cloudMist"
-                borderRadius="$lg"
-                borderWidth={2}
-                borderColor="$border"
-                borderStyle="dashed"
-                alignItems="center"
-                justifyContent="center"
-                gap="$1"
+            {/* Add Image Placeholder */}
+            {canAddMore && (
+              <TouchableOpacity
+                onPress={pickImage}
+                style={{
+                  width: "30%",
+                  aspectRatio: 1,
+                }}
+                accessibilityLabel="Add photo from library"
               >
-                <ImagePlus size={28} color="$textSecondary" />
-                <Text fontSize={11} color="$textSecondary" fontWeight="500">
-                  Add Photo
-                </Text>
-              </Column>
-            </TouchableOpacity>
-          )}
-        </Row>
+                <Column
+                  flex={1}
+                  backgroundColor="$gray100"
+                  borderRadius="$xl"
+                  borderWidth={2}
+                  borderColor="$cloudMist"
+                  borderStyle="dashed"
+                  alignItems="center"
+                  justifyContent="center"
+                  gap="$2"
+                >
+                  <View
+                    width={44}
+                    height={44}
+                    borderRadius="$full"
+                    backgroundColor="$cloudMist"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <ImagePlus size={22} color="$slateSmoke" />
+                  </View>
+                  <Text
+                    size="$2"
+                    fontWeight="600"
+                    color="$slateSmoke"
+                  >
+                    Add Photo
+                  </Text>
+                </Column>
+              </TouchableOpacity>
+            )}
+          </Row>
+        </Column>
 
         {/* Action Buttons */}
-        <Row gap="$3">
-          <Button
-            flex={1}
-            size="$4"
-            backgroundColor="$surface"
-            borderWidth={1}
-            borderColor="$border"
-            color="$text"
-            borderRadius="$lg"
+        <Row gap="$3" marginBottom="$4">
+          <TouchableOpacity
             onPress={pickImage}
             disabled={!canAddMore}
-            icon={<ImagePlus size={18} />}
+            style={{
+              flex: 1,
+              opacity: canAddMore ? 1 : 0.5,
+            }}
+            accessibilityLabel="Choose from gallery"
           >
-            Gallery
-          </Button>
-          <Button
-            flex={1}
-            size="$4"
-            backgroundColor="$surface"
-            borderWidth={1}
-            borderColor="$border"
-            color="$text"
-            borderRadius="$lg"
+            <Row
+              backgroundColor="$pureWhite"
+              borderWidth={2}
+              borderColor="$cloudMist"
+              borderRadius="$xl"
+              paddingVertical="$3"
+              paddingHorizontal="$4"
+              alignItems="center"
+              justifyContent="center"
+              gap="$2"
+            >
+              <ImagePlus size={20} color="$ironstone" />
+              <Text size="$5" fontWeight="600" color="$ironstone">
+                Gallery
+              </Text>
+            </Row>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={takePhoto}
             disabled={!canAddMore}
-            icon={<Camera size={18} />}
+            style={{
+              flex: 1,
+              opacity: canAddMore ? 1 : 0.5,
+            }}
+            accessibilityLabel="Take a photo"
           >
-            Camera
-          </Button>
+            <Row
+              backgroundColor="$pureWhite"
+              borderWidth={2}
+              borderColor="$cloudMist"
+              borderRadius="$xl"
+              paddingVertical="$3"
+              paddingHorizontal="$4"
+              alignItems="center"
+              justifyContent="center"
+              gap="$2"
+            >
+              <Camera size={20} color="$ironstone" />
+              <Text size="$5" fontWeight="600" color="$ironstone">
+                Camera
+              </Text>
+            </Row>
+          </TouchableOpacity>
         </Row>
 
-        {/* Image count */}
-        <Text
-          fontSize={13}
-          color="$textSecondary"
-          textAlign="center"
-          marginTop="$3"
-        >
-          {images.length} of {MAX_IMAGES} photos added
-        </Text>
+        {/* Image count indicator */}
+        <Row justifyContent="center">
+          <View
+            backgroundColor="$gray100"
+            paddingHorizontal="$4"
+            paddingVertical="$2"
+            borderRadius="$full"
+          >
+            <Text size="$3" fontWeight="600" color="$slateSmoke">
+              {images.length} of {MAX_IMAGES} photos
+            </Text>
+          </View>
+        </Row>
       </ScrollView>
     </Column>
   );

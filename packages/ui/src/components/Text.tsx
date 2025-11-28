@@ -34,6 +34,7 @@
  * ```
  */
 
+import { Platform } from "react-native";
 import {
   styled,
   GetProps,
@@ -51,13 +52,19 @@ import {
  * The size prop controls fontSize and lineHeight from tokens.size.
  *
  * We use Paragraph as the base which already has the fontSize variant system.
+ *
+ * IMPORTANT: Always use size="$n" tokens, NOT fontSize prop directly.
+ * Using fontSize bypasses the size system and can cause lineHeight issues on React Native.
  */
 export const Text = styled(TamaguiParagraph, {
   name: "Text",
   color: "$text",
   fontFamily: "$body",
   letterSpacing: 0, // Prevent tight/condensed letter spacing
-  lineHeight: 1.5, // Ensure proper vertical spacing between lines
+  // On web, lineHeight: 1.5 works as a multiplier (e.g., 1.5x fontSize)
+  // On React Native, unitless values are interpreted as pixels, causing invisible text
+  // Only apply lineHeight on web where it works correctly as a multiplier
+  ...(Platform.OS === "web" ? { lineHeight: 1.5 } : {}),
 
   variants: {
     weight: {

@@ -5,7 +5,6 @@ import {
   Column,
   Row,
   Text,
-  Heading,
   Button,
   View,
 } from "@buttergolf/ui";
@@ -81,9 +80,6 @@ export function SellScreen({
   const [error, setError] = useState<string | null>(null);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
-  // Auth is checked at submission time, not on mount
-  // This allows signed-out users to browse and fill the form
-
   // Update form data helper
   const updateFormData = useCallback((updates: Partial<SellFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -106,7 +102,6 @@ export function SellScreen({
 
   // Submit handler - checks auth before submitting
   const handleSubmit = useCallback(async () => {
-    // If not authenticated, redirect to sign in
     if (!isAuthenticated) {
       onRequireAuth?.();
       return;
@@ -161,50 +156,71 @@ export function SellScreen({
   return (
     <Column
       flex={1}
-      backgroundColor="$background"
+      backgroundColor="$pureWhite"
       paddingTop={insets.top}
       paddingBottom={insets.bottom}
     >
-      {/* Header */}
+      {/* Header - Refined mobile design */}
       <Row
         paddingHorizontal="$4"
-        paddingVertical="$3"
+        paddingVertical="$4"
         alignItems="center"
         justifyContent="space-between"
         borderBottomWidth={1}
-        borderBottomColor="$border"
+        borderBottomColor="$cloudMist"
+        backgroundColor="$pureWhite"
       >
+        {/* Back/Close Button */}
         <Button
-          size="$3"
-          chromeless
+          size="$4"
+          circular
+          backgroundColor="transparent"
+          pressStyle={{ backgroundColor: "$gray100" }}
           onPress={currentStep === 1 ? onClose : goToPreviousStep}
-          icon={currentStep === 1 ? <X size={24} /> : <ArrowLeft size={24} />}
           aria-label={currentStep === 1 ? "Close" : "Go back"}
-        />
+        >
+          {currentStep === 1 ? (
+            <X size={24} color="$ironstone" />
+          ) : (
+            <ArrowLeft size={24} color="$ironstone" />
+          )}
+        </Button>
 
-        <Column alignItems="center">
-          <Heading level={3} fontSize={18} fontWeight="600" color="$text">
+        {/* Title & Step Counter */}
+        <Column alignItems="center" gap="$1">
+          <Text
+            fontFamily="$heading"
+            size="$7"
+            fontWeight="700"
+            color="$ironstone"
+          >
             {stepInfo.title}
-          </Heading>
-          <Text fontSize={12} color="$textSecondary">
+          </Text>
+          <Text size="$3" fontWeight="500" color="$slateSmoke">
             Step {currentStep} of 4
           </Text>
         </Column>
 
-        <View width={40} />
+        {/* Spacer to balance layout */}
+        <View width={44} height={44} />
       </Row>
 
-      {/* Step Indicator */}
+      {/* Step Indicator - Progress bar */}
       <StepIndicator currentStep={currentStep} totalSteps={4} />
 
       {/* Error Banner */}
       {error && (
         <Row
-          backgroundColor="$error"
+          backgroundColor="$vanillaCream"
           paddingHorizontal="$4"
-          paddingVertical="$2"
+          paddingVertical="$3"
+          marginHorizontal="$4"
+          marginTop="$3"
+          borderRadius="$lg"
+          borderWidth={1}
+          borderColor="$error"
         >
-          <Text color="white" fontSize={14}>
+          <Text color="$error" size="$4" fontWeight="500">
             {error}
           </Text>
         </Row>
@@ -212,7 +228,7 @@ export function SellScreen({
 
       {/* Step Content */}
       <Column flex={1}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {currentStep === 1 && (
             <PhotoStep
               key="photo"
@@ -255,43 +271,57 @@ export function SellScreen({
         </AnimatePresence>
       </Column>
 
-      {/* Bottom Navigation */}
-      <Row
+      {/* Bottom Action Bar */}
+      <Column
         paddingHorizontal="$4"
-        paddingVertical="$3"
-        gap="$3"
+        paddingVertical="$4"
+        paddingBottom={Math.max(insets.bottom, 16)}
         borderTopWidth={1}
-        borderTopColor="$border"
-        backgroundColor="$background"
+        borderTopColor="$cloudMist"
+        backgroundColor="$pureWhite"
       >
         {currentStep < 4 ? (
           <Button
-            flex={1}
             size="$5"
-            backgroundColor={canProceed() ? "$primary" : "$cloudMist"}
-            color={canProceed() ? "$textInverse" : "$textSecondary"}
+            height={56}
+            backgroundColor={canProceed() ? "$spicedClementine" : "$cloudMist"}
+            pressStyle={{
+              backgroundColor: canProceed() ? "$primary" : "$cloudMist",
+            }}
             borderRadius="$full"
-            fontWeight="600"
             onPress={goToNextStep}
             disabled={!canProceed()}
           >
-            Continue
+            <Text
+              fontFamily="$heading"
+              size="$6"
+              fontWeight="700"
+              color={canProceed() ? "$pureWhite" : "$slateSmoke"}
+            >
+              Continue
+            </Text>
           </Button>
         ) : (
           <Button
-            flex={1}
             size="$5"
-            backgroundColor={isSubmitting ? "$cloudMist" : "$primary"}
-            color="$textInverse"
+            height={56}
+            backgroundColor={isSubmitting ? "$cloudMist" : "$spicedClementine"}
+            pressStyle={{ backgroundColor: "$primary" }}
             borderRadius="$full"
-            fontWeight="600"
             onPress={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Submit Listing"}
+            <Text
+              fontFamily="$heading"
+              size="$6"
+              fontWeight="700"
+              color={isSubmitting ? "$slateSmoke" : "$pureWhite"}
+            >
+              {isSubmitting ? "Submitting..." : "List Item"}
+            </Text>
           </Button>
         )}
-      </Row>
+      </Column>
     </Column>
   );
 }
