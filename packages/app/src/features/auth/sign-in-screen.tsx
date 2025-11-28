@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -15,6 +16,7 @@ interface SignInScreenProps {
   onSuccess?: () => void;
   onNavigateToSignUp?: () => void;
   onNavigateToForgotPassword?: () => void;
+  onNavigateBack?: () => void;
 }
 
 /**
@@ -25,6 +27,7 @@ export function SignInScreen({
   onSuccess,
   onNavigateToSignUp,
   onNavigateToForgotPassword,
+  onNavigateBack,
 }: Readonly<SignInScreenProps>) {
   const insets = useSafeAreaInsets();
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -122,6 +125,19 @@ export function SignInScreen({
         }}
       >
         <Column gap="$6" flex={1}>
+          {/* Back Button */}
+          {onNavigateBack && (
+            <Button
+              chromeless
+              size="$4"
+              icon={<ArrowLeft size={20} />}
+              color="$text"
+              alignSelf="flex-start"
+              onPress={onNavigateBack}
+              paddingHorizontal={0}
+            />
+          )}
+
           {/* Header */}
           <Column gap="$2">
             <Heading level={1} size="$8" fontWeight="700" color="$text">
