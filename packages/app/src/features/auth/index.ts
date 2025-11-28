@@ -4,6 +4,7 @@ export { SignUpScreen } from "./sign-up-screen";
 export { VerifyEmailScreen } from "./verify-email-screen";
 export { ForgotPasswordScreen } from "./forgot-password-screen";
 export { ResetPasswordScreen } from "./reset-password-screen";
+export { TwoFactorScreen } from "./two-factor-screen";
 
 // Components
 export { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -17,6 +18,7 @@ export type {
   VerifyEmailFormData,
   ForgotPasswordFormData,
   ResetPasswordFormData,
+  TwoFactorFormData,
   FieldError,
   ValidationResult,
   ClerkError,

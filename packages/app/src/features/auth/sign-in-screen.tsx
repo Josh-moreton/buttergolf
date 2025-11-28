@@ -16,6 +16,7 @@ interface SignInScreenProps {
   onSuccess?: () => void;
   onNavigateToSignUp?: () => void;
   onNavigateToForgotPassword?: () => void;
+  onNavigateToTwoFactor?: () => void;
   onNavigateBack?: () => void;
 }
 
@@ -27,6 +28,7 @@ export function SignInScreen({
   onSuccess,
   onNavigateToSignUp,
   onNavigateToForgotPassword,
+  onNavigateToTwoFactor,
   onNavigateBack,
 }: Readonly<SignInScreenProps>) {
   const insets = useSafeAreaInsets();
@@ -83,18 +85,33 @@ export function SignInScreen({
     setIsSubmitting(true);
 
     try {
-      const { createdSessionId } = await signIn.create({
+      console.log('[SignIn] Attempting sign-in for:', formData.email);
+      const signInAttempt = await signIn.create({
         identifier: formData.email,
         password: formData.password,
       });
+      console.log('[SignIn] Status:', signInAttempt.status);
 
-      if (createdSessionId) {
-        await setActive({ session: createdSessionId });
+      // Check status first - createdSessionId only exists when status is 'complete'
+      if (signInAttempt.status === "complete") {
+        console.log('[SignIn] Session created:', signInAttempt.createdSessionId);
+        await setActive({ session: signInAttempt.createdSessionId });
         onSuccess?.();
+      } else if (signInAttempt.status === "needs_second_factor") {
+        // User has MFA enabled - navigate to two-factor screen
+        console.log('[SignIn] MFA required, navigating to two-factor screen');
+        onNavigateToTwoFactor?.();
+      } else if (signInAttempt.status === "needs_first_factor") {
+        // Need to provide first factor (shouldn't happen with password flow)
+        setError("Authentication requires additional verification.");
+      } else if (signInAttempt.status === "needs_new_password") {
+        setError("You need to set a new password. Please use the forgot password flow.");
       } else {
-        setError("Failed to create session. Please try again.");
+        console.log('[SignIn] Unhandled status:', signInAttempt.status);
+        setError(`Sign-in incomplete. Status: ${signInAttempt.status}`);
       }
     } catch (err) {
+      console.error('[SignIn] Error:', err);
       const errorMessage =
         err instanceof Error ? err.message : String(err);
 
@@ -112,7 +129,7 @@ export function SignInScreen({
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, isLoaded, signIn, setActive, onSuccess]);
+  }, [formData, isLoaded, signIn, setActive, onSuccess, onNavigateToTwoFactor]);
 
   return (
     <Column flex={1} backgroundColor="$background">

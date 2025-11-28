@@ -59,6 +59,13 @@ export interface ResetPasswordFormData {
 }
 
 /**
+ * Two-factor authentication form state
+ */
+export interface TwoFactorFormData {
+  code: string;
+}
+
+/**
  * Field-level validation error
  */
 export interface FieldError {

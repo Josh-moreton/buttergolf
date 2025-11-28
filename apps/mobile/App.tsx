@@ -12,6 +12,7 @@ import {
   VerifyEmailScreen,
   ForgotPasswordScreen,
   ResetPasswordScreen,
+  TwoFactorScreen,
 } from "@buttergolf/app";
 import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
@@ -100,6 +101,9 @@ const linking = {
       },
       ResetPassword: {
         path: routes.resetPassword.slice(1), // 'reset-password'
+      },
+      TwoFactor: {
+        path: "two-factor", // 'two-factor'
       },
     },
   },
@@ -377,11 +381,19 @@ export default function App() {
     );
   }
 
+  // Debug: Verify Clerk publishable key is loaded
+  const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  console.log('[Clerk] Publishable key:', clerkPublishableKey ? 'LOADED' : 'MISSING');
+
+  if (!clerkPublishableKey) {
+    console.error('[Clerk] EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.');
+  }
+
   return (
     <SafeAreaProvider>
       <ClerkProvider
         tokenCache={tokenCache}
-        publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        publishableKey={clerkPublishableKey}
       >
         {/* Wrap app content in Tamagui Provider so SignedOut onboarding can use UI components */}
         <Provider>
@@ -478,7 +490,7 @@ export default function App() {
 
 function OnboardingFlow() {
   const [flowState, setFlowState] = useState<
-    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "loggedOutHome"
+    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "twoFactor" | "loggedOutHome"
   >("onboarding");
   const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
 
@@ -559,6 +571,25 @@ function OnboardingFlow() {
               }}
               onNavigateToSignUp={() => setFlowState("signUp")}
               onNavigateToForgotPassword={() => setFlowState("forgotPassword")}
+              onNavigateToTwoFactor={() => setFlowState("twoFactor")}
+              onNavigateBack={() => setFlowState("onboarding")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "twoFactor") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="TwoFactor">
+          {() => (
+            <TwoFactorScreen
+              onSuccess={() => {
+                // Auth successful, ClerkProvider handles session
+              }}
+              onNavigateBack={() => setFlowState("signIn")}
             />
           )}
         </Stack.Screen>
@@ -574,6 +605,7 @@ function OnboardingFlow() {
             <SignUpScreen
               onSuccess={() => setFlowState("verifyEmail")}
               onNavigateToSignIn={() => setFlowState("signIn")}
+              onNavigateBack={() => setFlowState("onboarding")}
             />
           )}
         </Stack.Screen>
