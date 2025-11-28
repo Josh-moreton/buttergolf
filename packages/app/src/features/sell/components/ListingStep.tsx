@@ -189,7 +189,7 @@ export function ListingStep({
 
           {/* Description */}
           <Column gap="$2">
-            <Text fontSize={14} fontWeight="600" color="$ironstone">
+            <Text size="$4" fontWeight="600" color="$ironstone">
               Description
             </Text>
             <Column
@@ -235,7 +235,7 @@ export function ListingStep({
                 paddingBottom="$3"
               >
                 <Text
-                  fontSize={12}
+                  size="$2"
                   fontWeight="500"
                   color={descriptionLength > maxDescLength * 0.9 ? "$error" : "$slateSmoke"}
                 >
