@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Provider,
   RoundsScreen,
-  ProductsScreen,
   ProductDetailScreen,
   SellScreen,
   routes,
@@ -12,11 +11,10 @@ import {
   VerifyEmailScreen,
   ForgotPasswordScreen,
   ResetPasswordScreen,
-  TwoFactorScreen,
 } from "@buttergolf/app";
 import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
-import { LoggedOutHomeScreen } from "@buttergolf/app/src/features/home";
+import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
 import {
   View as RNView,
@@ -74,10 +72,6 @@ const linking = {
         path: routes.rounds.slice(1), // Remove leading '/' for React Navigation
         exact: true,
       },
-      Products: {
-        path: routes.products.slice(1), // 'products'
-        exact: true,
-      },
       ProductDetail: {
         path: "products/:id", // 'products/:id' for dynamic routing
       },
@@ -101,9 +95,6 @@ const linking = {
       },
       ResetPassword: {
         path: routes.resetPassword.slice(1), // 'reset-password'
-      },
-      TwoFactor: {
-        path: "two-factor", // 'two-factor'
       },
     },
   },
@@ -399,18 +390,20 @@ export default function App() {
         <Provider>
           <SignedIn>
             <NavigationContainer linking={linking}>
-              <Stack.Navigator>
-                <Stack.Screen name="Home" options={{ title: "ButterGolf", headerRight: HeaderRightComponent }}>
-                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Home">
+                  {({ navigation }: { navigation: any }) => (
+                    <HomeScreen
+                      onFetchProducts={fetchProducts}
+                      onSellPress={() => navigation.navigate("Sell")}
+                    />
+                  )}
                 </Stack.Screen>
                 <Stack.Screen
                   name="Rounds"
                   component={RoundsScreen}
                   options={{ title: "Your Rounds" }}
                 />
-                <Stack.Screen name="Products" options={{ title: "Products" }}>
-                  {() => <ProductsScreen onFetchProducts={fetchProducts} />}
-                </Stack.Screen>
                 <Stack.Screen
                   name="ProductDetail"
                   options={{ title: "Product Details" }}
@@ -490,9 +483,10 @@ export default function App() {
 
 function OnboardingFlow() {
   const [flowState, setFlowState] = useState<
-    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "twoFactor" | "loggedOutHome"
+    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "loggedOutHome"
   >("onboarding");
   const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
+  const [signUpEmail, setSignUpEmail] = useState<string>("");
 
   const Stack = createNativeStackNavigator();
 
@@ -501,7 +495,7 @@ function OnboardingFlow() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoggedOutHome">
           {({ navigation }: { navigation: any }) => (
-            <LoggedOutHomeScreen
+            <HomeScreen
               onFetchProducts={fetchProducts}
               onSellPress={() => navigation.navigate("Sell")}
             />
@@ -571,25 +565,7 @@ function OnboardingFlow() {
               }}
               onNavigateToSignUp={() => setFlowState("signUp")}
               onNavigateToForgotPassword={() => setFlowState("forgotPassword")}
-              onNavigateToTwoFactor={() => setFlowState("twoFactor")}
               onNavigateBack={() => setFlowState("onboarding")}
-            />
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    );
-  }
-
-  if (flowState === "twoFactor") {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TwoFactor">
-          {() => (
-            <TwoFactorScreen
-              onSuccess={() => {
-                // Auth successful, ClerkProvider handles session
-              }}
-              onNavigateBack={() => setFlowState("signIn")}
             />
           )}
         </Stack.Screen>
@@ -603,7 +579,10 @@ function OnboardingFlow() {
         <Stack.Screen name="SignUp">
           {() => (
             <SignUpScreen
-              onSuccess={() => setFlowState("verifyEmail")}
+              onSuccess={(email) => {
+                setSignUpEmail(email);
+                setFlowState("verifyEmail");
+              }}
               onNavigateToSignIn={() => setFlowState("signIn")}
               onNavigateBack={() => setFlowState("onboarding")}
             />
@@ -619,6 +598,7 @@ function OnboardingFlow() {
         <Stack.Screen name="VerifyEmail">
           {() => (
             <VerifyEmailScreen
+              email={signUpEmail}
               onSuccess={() => {
                 // Auth successful, ClerkProvider handles session
               }}

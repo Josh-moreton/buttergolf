@@ -18,17 +18,17 @@ import { MobileSearchBar, MobileBottomNav } from "../../components/mobile";
 import { useLink } from "solito/navigation";
 import { routes } from "../../navigation";
 
-interface LoggedOutHomeScreenProps {
+interface HomeScreenProps {
   products?: ProductCardData[];
   onFetchProducts?: () => Promise<ProductCardData[]>;
   onSellPress?: () => void;
 }
 
-export function LoggedOutHomeScreen({
+export function HomeScreen({
   products: initialProducts = [],
   onFetchProducts,
   onSellPress,
-}: Readonly<LoggedOutHomeScreenProps>) {
+}: Readonly<HomeScreenProps>) {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
   const [loading, setLoading] = useState(false);
