@@ -14,7 +14,7 @@ import {
 import { SignUpFormData, PasswordStrength } from "./types";
 
 interface SignUpScreenProps {
-  onSuccess?: () => void;
+  onSuccess?: (email: string) => void;
   onNavigateToSignIn?: () => void;
   onNavigateBack?: () => void;
 }
@@ -125,8 +125,8 @@ export function SignUpScreen({
       // Prepare email verification
       await signUp.prepareEmailAddressVerification();
 
-      // Call success to navigate to verify email screen
-      onSuccess?.();
+      // Call success to navigate to verify email screen with the email
+      onSuccess?.(formData.email);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : String(err);

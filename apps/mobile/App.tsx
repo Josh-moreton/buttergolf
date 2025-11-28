@@ -12,7 +12,6 @@ import {
   VerifyEmailScreen,
   ForgotPasswordScreen,
   ResetPasswordScreen,
-  TwoFactorScreen,
 } from "@buttergolf/app";
 import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
@@ -101,9 +100,6 @@ const linking = {
       },
       ResetPassword: {
         path: routes.resetPassword.slice(1), // 'reset-password'
-      },
-      TwoFactor: {
-        path: "two-factor", // 'two-factor'
       },
     },
   },
@@ -490,9 +486,10 @@ export default function App() {
 
 function OnboardingFlow() {
   const [flowState, setFlowState] = useState<
-    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "twoFactor" | "loggedOutHome"
+    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "loggedOutHome"
   >("onboarding");
   const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
+  const [signUpEmail, setSignUpEmail] = useState<string>("");
 
   const Stack = createNativeStackNavigator();
 
@@ -571,25 +568,7 @@ function OnboardingFlow() {
               }}
               onNavigateToSignUp={() => setFlowState("signUp")}
               onNavigateToForgotPassword={() => setFlowState("forgotPassword")}
-              onNavigateToTwoFactor={() => setFlowState("twoFactor")}
               onNavigateBack={() => setFlowState("onboarding")}
-            />
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    );
-  }
-
-  if (flowState === "twoFactor") {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TwoFactor">
-          {() => (
-            <TwoFactorScreen
-              onSuccess={() => {
-                // Auth successful, ClerkProvider handles session
-              }}
-              onNavigateBack={() => setFlowState("signIn")}
             />
           )}
         </Stack.Screen>
@@ -603,7 +582,10 @@ function OnboardingFlow() {
         <Stack.Screen name="SignUp">
           {() => (
             <SignUpScreen
-              onSuccess={() => setFlowState("verifyEmail")}
+              onSuccess={(email) => {
+                setSignUpEmail(email);
+                setFlowState("verifyEmail");
+              }}
               onNavigateToSignIn={() => setFlowState("signIn")}
               onNavigateBack={() => setFlowState("onboarding")}
             />
@@ -619,6 +601,7 @@ function OnboardingFlow() {
         <Stack.Screen name="VerifyEmail">
           {() => (
             <VerifyEmailScreen
+              email={signUpEmail}
               onSuccess={() => {
                 // Auth successful, ClerkProvider handles session
               }}
