@@ -35,6 +35,21 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+      // Prevent fontSize prop on Text components - use size="$token" instead
+      // Using fontSize bypasses Tamagui's variant system and causes lineHeight issues on React Native
+      "react/forbid-component-props": [
+        "error",
+        {
+          forbid: [
+            {
+              propName: "fontSize",
+              allowedFor: [],
+              message:
+                'Use size="$token" instead of fontSize prop on Text components. fontSize bypasses the Tamagui variant system and causes invisible text on React Native (lineHeight becomes 1.5px instead of proper pixel values).',
+            },
+          ],
+        },
+      ],
       // Prevent direct tamagui imports - use @buttergolf/ui instead
       // This ensures consistent component behavior and custom variants
       "no-restricted-imports": [
