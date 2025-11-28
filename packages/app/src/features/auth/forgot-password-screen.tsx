@@ -136,24 +136,22 @@ export function ForgotPasswordScreen({
             disabled={isSubmitting || !isLoaded}
             opacity={isSubmitting ? 0.7 : 1}
           >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              <Text>Send Reset Code</Text>
-            )}
+            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Send Reset Code"}
           </Button>
 
           {/* Back Button */}
           <Button
             chromeless
-            size="$5"
+            size="$4"
+            color="$primary"
+            fontWeight="600"
             onPress={onNavigateBack}
             disabled={isSubmitting}
-            marginTop="$6"
+            marginTop="$4"
+            paddingVertical={0}
+            paddingHorizontal="$2"
           >
-            <Text color="$primary" fontWeight="600">
-              Back to Sign In
-            </Text>
+            Back to Sign In
           </Button>
         </Column>
       </ScrollView>

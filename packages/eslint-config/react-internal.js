@@ -59,6 +59,26 @@ export const config = [
               message:
                 "Import UI components from '@buttergolf/ui' instead of 'tamagui' directly. Our UI package provides custom variants and consistent theming.",
             },
+            {
+              name: "jsdom",
+              message:
+                "jsdom is web-only and contains SharedArrayBuffer which React Native doesn't support. Use React Native Testing Library instead.",
+            },
+            {
+              name: "@testing-library/jest-dom",
+              message:
+                "@testing-library/jest-dom is web-only. Use @testing-library/react-native for mobile testing.",
+            },
+            {
+              name: "happy-dom",
+              message:
+                "happy-dom is web-only and contains SharedArrayBuffer which React Native doesn't support. Use React Native Testing Library instead.",
+            },
+            {
+              name: "@vitest/browser",
+              message:
+                "@vitest/browser is web-only. Use vitest with environment: 'node' for cross-platform testing.",
+            },
           ],
         },
       ],

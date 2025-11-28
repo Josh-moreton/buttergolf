@@ -184,36 +184,32 @@ export function VerifyEmailScreen({
             disabled={isSubmitting || code.length !== 6}
             opacity={isSubmitting || code.length !== 6 ? 0.7 : 1}
           >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              <Text>Verify Email</Text>
-            )}
+            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Verify Email"}
           </Button>
 
           {/* Resend Code */}
-          <Column alignItems="center" gap="$3" marginTop="$6">
+          <Column alignItems="center" gap="$3" marginTop="$4">
             <Text size="$4" color="$textSecondary">
-              Didn't receive a code?
+              {"Didn't receive a code?"}
             </Text>
 
             <Button
               chromeless
-              size="$5"
+              size="$4"
+              color={resendCountdown > 0 ? "$textMuted" : "$primary"}
+              fontWeight="600"
               onPress={handleResendCode}
               disabled={resendCountdown > 0 || isResending}
               opacity={resendCountdown > 0 || isResending ? 0.5 : 1}
+              paddingVertical={0}
+              paddingHorizontal="$2"
             >
               {isResending ? (
                 <Spinner size="sm" color="$primary" />
               ) : resendCountdown > 0 ? (
-                <Text color="$textMuted" fontWeight="600">
-                  Resend in {resendCountdown}s
-                </Text>
+                `Resend in ${resendCountdown}s`
               ) : (
-                <Text color="$primary" fontWeight="600">
-                  Resend Code
-                </Text>
+                "Resend Code"
               )}
             </Button>
 
@@ -227,14 +223,16 @@ export function VerifyEmailScreen({
           {/* Back Button */}
           <Button
             chromeless
-            size="$5"
+            size="$4"
+            color="$primary"
+            fontWeight="600"
             onPress={onNavigateBack}
             disabled={isSubmitting}
-            marginTop="$6"
+            marginTop="$4"
+            paddingVertical={0}
+            paddingHorizontal="$2"
           >
-            <Text color="$primary" fontWeight="600">
-              Back to Sign Up
-            </Text>
+            Back to Sign Up
           </Button>
         </Column>
       </ScrollView>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -166,14 +166,15 @@ export function SignInScreen({
             <Button
               chromeless
               size="$4"
+              color="$primary"
+              fontWeight="600"
               onPress={onNavigateToForgotPassword}
               disabled={isSubmitting}
               alignSelf="flex-start"
-              padding={0}
+              paddingVertical={0}
+              paddingHorizontal="$2"
             >
-              <Text color="$primary" fontWeight="600" size="$4">
-                Forgot password?
-              </Text>
+              Forgot password?
             </Button>
           </Column>
 
@@ -188,35 +189,27 @@ export function SignInScreen({
             disabled={isSubmitting || !isLoaded}
             opacity={isSubmitting ? 0.7 : 1}
           >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              <Text>Sign In</Text>
-            )}
+            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Sign In"}
           </Button>
 
-
           {/* Sign Up Link */}
-          <Column
-            alignItems="center"
-            gap="$2"
-            marginTop="$6"
-          >
+          <Row alignItems="center" justifyContent="center" gap="$2" marginTop="$4">
             <Text size="$4" color="$textSecondary">
-              Don't have an account?{" "}
-              <Button
-                chromeless
-                size="$4"
-                onPress={onNavigateToSignUp}
-                disabled={isSubmitting}
-                padding={0}
-              >
-                <Text color="$primary" fontWeight="600" size="$4">
-                  Sign Up
-                </Text>
-              </Button>
+              {"Don't have an account?"}
             </Text>
-          </Column>
+            <Button
+              chromeless
+              size="$4"
+              color="$primary"
+              fontWeight="600"
+              onPress={onNavigateToSignUp}
+              disabled={isSubmitting}
+              paddingVertical={0}
+              paddingHorizontal="$2"
+            >
+              Sign Up
+            </Button>
+          </Row>
         </Column>
       </ScrollView>
     </Column>

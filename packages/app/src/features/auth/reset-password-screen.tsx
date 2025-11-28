@@ -260,24 +260,22 @@ export function ResetPasswordScreen({
             disabled={isSubmitting || !isLoaded || code.length !== 6}
             opacity={isSubmitting || code.length !== 6 ? 0.7 : 1}
           >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              <Text>Reset Password</Text>
-            )}
+            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Reset Password"}
           </Button>
 
           {/* Back Button */}
           <Button
             chromeless
-            size="$5"
+            size="$4"
+            color="$primary"
+            fontWeight="600"
             onPress={onNavigateBack}
             disabled={isSubmitting}
-            marginTop="$6"
+            marginTop="$4"
+            paddingVertical={0}
+            paddingHorizontal="$2"
           >
-            <Text color="$primary" fontWeight="600">
-              Back
-            </Text>
+            Back
           </Button>
         </Column>
       </ScrollView>

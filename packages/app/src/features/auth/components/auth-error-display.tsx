@@ -43,7 +43,7 @@ export function AuthErrorDisplay({
         <Text size="$4" fontWeight="600" color="$error">
           Error
         </Text>
-        <Text size="$4" color="$error" lineHeight={1.5}>
+        <Text size="$4" color="$error">
           {error}
         </Text>
       </Column>

@@ -22,6 +22,7 @@ interface AuthFormInputProps {
   editable?: boolean;
   multiline?: boolean;
   numberOfLines?: number;
+  textContentType?: "emailAddress" | "password" | "newPassword" | "none";
 }
 
 /**
@@ -40,6 +41,7 @@ export function AuthFormInput({
   editable = true,
   multiline = false,
   numberOfLines,
+  textContentType,
 }: Readonly<AuthFormInputProps>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -67,6 +69,7 @@ export function AuthFormInput({
           numberOfLines={numberOfLines}
           error={!!error}
           paddingRight={isPassword ? "$10" : "$4"}
+          textContentType={textContentType}
         />
 
         {isPassword && (
