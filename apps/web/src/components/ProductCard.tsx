@@ -2,7 +2,7 @@
 
 import { ProductCard as SharedProductCard } from "@buttergolf/app";
 import type { ProductCardData } from "@buttergolf/app";
-import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
+import { useFavouriteToggle } from "@/hooks/useFavouriteToggle";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -14,13 +14,13 @@ export interface ProductCardProps {
 }
 
 /**
- * Web-specific ProductCard wrapper that adds favorite functionality
- * Uses useFavoriteToggle hook to persist favorites to database
+ * Web-specific ProductCard wrapper that adds favourite functionality
+ * Uses useFavouriteToggle hook to persist favourites to database
  */
 export function ProductCard({ product, onPress }: ProductCardProps) {
   const { isSignedIn } = useAuth();
   const router = useRouter();
-  const { isFavorited, toggleFavorite } = useFavoriteToggle(product.id);
+  const { isFavourited, toggleFavourite } = useFavouriteToggle(product.id);
   const [showAuthMessage, setShowAuthMessage] = useState(false);
 
   const handleFavorite = async () => {
@@ -34,12 +34,12 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
       return;
     }
 
-    // Toggle favorite with optimistic update
-    const result = await toggleFavorite();
+    // Toggle favourite with optimistic update
+    const result = await toggleFavourite();
 
     if (result && !result.success && result.error) {
       // Show error toast (could be enhanced with a toast library)
-      console.error("Failed to toggle favorite:", result.error);
+      console.error("Failed to toggle favourite:", result.error);
     }
   };
 
@@ -68,7 +68,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
             borderRadius="$md"
           >
             <Text fontSize="$4" color="$textInverse" fontWeight="500">
-              Please sign in to add favorites
+              Please sign in to add favourites
             </Text>
           </Card>
         </div>

@@ -1,35 +1,35 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavourites } from "@/hooks/useFavourites";
 
-type FavoritesContextType = ReturnType<typeof useFavorites>;
+type FavouritesContextType = ReturnType<typeof useFavourites>;
 
-const FavoritesContext = createContext<FavoritesContextType | null>(null);
+const FavouritesContext = createContext<FavouritesContextType | null>(null);
 
 /**
- * Provider that wraps the app and shares favorites state across all components
+ * Provider that wraps the app and shares favourites state across all components
  * Place this in the root layout after ClerkProvider
  */
-export function FavoritesProvider({ children }: { readonly children: ReactNode }) {
-  const favoritesState = useFavorites();
+export function FavouritesProvider({ children }: { readonly children: ReactNode }) {
+  const favouritesState = useFavourites();
 
   return (
-    <FavoritesContext.Provider value={favoritesState}>
+    <FavouritesContext.Provider value={favouritesState}>
       {children}
-    </FavoritesContext.Provider>
+    </FavouritesContext.Provider>
   );
 }
 
 /**
- * Hook to access favorites context from any component
- * Must be used within FavoritesProvider
+ * Hook to access favourites context from any component
+ * Must be used within FavouritesProvider
  */
-export function useFavoritesContext() {
-  const context = useContext(FavoritesContext);
+export function useFavouritesContext() {
+  const context = useContext(FavouritesContext);
 
   if (!context) {
-    throw new Error("useFavoritesContext must be used within FavoritesProvider");
+    throw new Error("useFavouritesContext must be used within FavouritesProvider");
   }
 
   return context;

@@ -172,7 +172,7 @@ See `docs/TESTING_SOLITO_PRODUCTS.md` for:
 - [ ] Add category filtering
 - [ ] Add sort options (price, date, etc.)
 - [ ] Add pagination for large product lists
-- [ ] Add favorites/saved products
+- [ ] Add favourites/saved products
 - [ ] Add product comparison
 - [ ] Add image zoom/carousel
 - [ ] Add reviews and ratings

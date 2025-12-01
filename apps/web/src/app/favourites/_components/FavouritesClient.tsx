@@ -8,8 +8,8 @@ import { FooterSection } from "../../_components/marketplace/FooterSection";
 import { HorizontalProductCard } from "./HorizontalProductCard";
 import { MakeOfferModal } from "../../products/[id]/_components/MakeOfferModal";
 
-interface FavoritesResponse {
-  products: Array<ProductCardData & { favoritedAt: string; description?: string }>;
+interface FavouritesResponse {
+  products: Array<ProductCardData & { favouritedAt: string; description?: string }>;
   pagination: {
     page: number;
     limit: number;
@@ -18,9 +18,9 @@ interface FavoritesResponse {
   };
 }
 
-export function FavoritesClient() {
+export function FavouritesClient() {
   const router = useRouter();
-  const [products, setProducts] = useState<FavoritesResponse["products"]>([]);
+  const [products, setProducts] = useState<FavouritesResponse["products"]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -28,33 +28,33 @@ export function FavoritesClient() {
   const [offerModalProduct, setOfferModalProduct] = useState<(ProductCardData & { description?: string; price: number }) | null>(null);
 
   useEffect(() => {
-    async function fetchFavorites() {
+    async function fetchFavourites() {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/favorites?page=${page}&limit=24`);
+        const response = await fetch(`/api/favourites?page=${page}&limit=24`);
 
         if (!response.ok) {
           if (response.status === 401) {
-            router.push("/sign-in?redirect_url=/favorites");
+            router.push("/sign-in?redirect_url=/favourites");
             return;
           }
-          throw new Error("Failed to fetch favorites");
+          throw new Error("Failed to fetch favourites");
         }
 
-        const data: FavoritesResponse = await response.json();
+        const data: FavouritesResponse = await response.json();
         setProducts(data.products);
         setTotalPages(data.pagination.totalPages);
       } catch (err) {
-        console.error("Error fetching favorites:", err);
-        setError(err instanceof Error ? err.message : "Failed to load favorites");
+        console.error("Error fetching favourites:", err);
+        setError(err instanceof Error ? err.message : "Failed to load favourites");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchFavorites();
+    fetchFavourites();
   }, [page, router]);
 
   // Make Offer Handler
@@ -90,22 +90,22 @@ export function FavoritesClient() {
     router.push(`/checkout?productId=${productId}`);
   };
 
-  // Remove from Favorites Handler
+  // Remove from favourites Handler
   const handleRemove = async (productId: string) => {
     try {
-      const response = await fetch(`/api/favorites/${productId}`, {
+      const response = await fetch(`/api/favourites/${productId}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to remove favorite");
+        throw new Error("Failed to remove favourite");
       }
 
       // Optimistically remove from UI
       setProducts((prev) => prev.filter((p) => p.id !== productId));
     } catch (err) {
-      console.error("Error removing favorite:", err);
-      setError("Failed to remove from favorites");
+      console.error("Error removing favourite:", err);
+      setError("Failed to remove from favourites");
     }
   };
 
@@ -126,7 +126,7 @@ export function FavoritesClient() {
       >
         <Column maxWidth={1400} marginHorizontal="auto" gap="$md" width="100%">
           <Heading level={1} color="$text">
-            My Favorites
+            My favourites
           </Heading>
           <Text size="$6" color="$textSecondary">
             Your saved golf equipment listings
@@ -147,7 +147,7 @@ export function FavoritesClient() {
           <Column alignItems="center" paddingVertical="$2xl">
             <Spinner size="lg" color="$primary" />
             <Text marginTop="$md" color="$textSecondary">
-              Loading your favorites...
+              Loading your favourites...
             </Text>
           </Column>
         )}

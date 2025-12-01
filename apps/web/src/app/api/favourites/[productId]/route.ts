@@ -3,8 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 
 /**
- * DELETE /api/favorites/[productId]
- * Remove a product from the authenticated user's favorites
+ * DELETE /api/favourites/[productId]
+ * Remove a product from the authenticated user's favourites
  */
 export async function DELETE(
   req: NextRequest,
@@ -39,7 +39,7 @@ export async function DELETE(
       );
     }
 
-    // Delete favorite using unique constraint
+    // Delete favourite using unique constraint
     try {
       await prisma.favorite.delete({
         where: {
@@ -58,19 +58,19 @@ export async function DELETE(
         { status: 200 }
       );
     } catch (error: unknown) {
-      // Handle case where favorite doesn't exist
+      // Handle case where favourite doesn't exist
       if (error && typeof error === "object" && "code" in error && error.code === "P2025") {
         return NextResponse.json(
-          { error: "Favorite not found" },
+          { error: "Favourite not found" },
           { status: 404 }
         );
       }
       throw error;
     }
   } catch (error) {
-    console.error("Error removing favorite:", error);
+    console.error("Error removing favourite:", error);
     return NextResponse.json(
-      { error: "Failed to remove favorite" },
+      { error: "Failed to remove favourite" },
       { status: 500 }
     );
   }

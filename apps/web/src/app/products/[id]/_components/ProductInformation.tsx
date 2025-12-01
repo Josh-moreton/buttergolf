@@ -60,7 +60,7 @@ export function ProductInformation({
                 flexShrink: 0,
             }}
         >
-            {/* Header: Title, Price, Favorite */}
+            {/* Header: Title, Price, Favourite */}
             <Row justifyContent="space-between" alignItems="flex-start" gap="$sm">
                 <Column gap="$xs" flex={1}>
                     <Heading level={2} size="$7" color="$ironstone">
@@ -111,7 +111,7 @@ export function ProductInformation({
                     onMouseLeave={(e) => {
                         e.currentTarget.style.transform = "scale(1)";
                     }}
-                    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                    aria-label={isFavorite ? "Remove from favourites" : "Add to favourites"}
                 >
                     <svg
                         width="20"

@@ -20,7 +20,7 @@ export interface SellerProduct {
     imageUrl: string;
     isSold: boolean;
     views: number;
-    favorites: number;
+    favourites: number;
     createdAt: string;
     updatedAt: string;
     images: string[];
@@ -169,7 +169,7 @@ export function SellerProductCard({
                         <Row gap="$xs" alignItems="center">
                             <Heart size={16} color="$slateSmoke" />
                             <Text size="$3" color="$textSecondary">
-                                {product.favorites}
+                                {product.favourites}
                             </Text>
                         </Row>
                         {product.offersCount > 0 && (

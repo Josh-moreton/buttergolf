@@ -2,27 +2,27 @@
 
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useFavoritesContext } from "../providers/FavoritesProvider";
+import { useFavouritesContext } from "../providers/FavouritesProvider";
 
 /**
- * Hook to toggle a single product's favorite status with optimistic updates
+ * Hook to toggle a single product's favourite status with optimistic updates
  * Handles API calls, rollback on error, and shows toast notifications
  */
-export function useFavoriteToggle(productId: string) {
+export function useFavouriteToggle(productId: string) {
   const { user } = useUser();
   const {
-    isFavorited: isGloballyFavorited,
-    addToFavorites,
-    removeFromFavorites,
-  } = useFavoritesContext();
+    isFavourited: isGloballyFavourited,
+    addToFavourites,
+    removeFromFavourites,
+  } = useFavouritesContext();
 
   const [isUpdating, setIsUpdating] = useState(false);
-  const isFavorited = isGloballyFavorited(productId);
+  const isFavourited = isGloballyFavourited(productId);
 
   /**
-   * Toggle favorite with optimistic update and rollback on error
+   * Toggle favourite with optimistic update and rollback on error
    */
-  const toggleFavorite = async () => {
+  const toggleFavourite = async () => {
     // Require authentication
     if (!user) {
       // Trigger sign-in modal (handled by parent component)
@@ -32,23 +32,23 @@ export function useFavoriteToggle(productId: string) {
     // Prevent concurrent updates
     if (isUpdating) return { success: false };
 
-    const wasOptimisticUpdate = !isFavorited;
+    const wasOptimisticUpdate = !isFavourited;
 
     try {
       setIsUpdating(true);
 
       // Optimistic update
       if (wasOptimisticUpdate) {
-        addToFavorites(productId);
+        addToFavourites(productId);
       } else {
-        removeFromFavorites(productId);
+        removeFromFavourites(productId);
       }
 
       // API call
       const response = await fetch(
         wasOptimisticUpdate
-          ? "/api/favorites"
-          : `/api/favorites/${productId}`,
+          ? "/api/favourites"
+          : `/api/favourites/${productId}`,
         {
           method: wasOptimisticUpdate ? "POST" : "DELETE",
           headers: wasOptimisticUpdate
@@ -62,19 +62,19 @@ export function useFavoriteToggle(productId: string) {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to update favorite");
+        throw new Error(error.error || "Failed to update favourite");
       }
 
       return { success: true, action: wasOptimisticUpdate ? "added" : "removed" };
     } catch (error) {
       // Rollback optimistic update
       if (wasOptimisticUpdate) {
-        removeFromFavorites(productId);
+        removeFromFavourites(productId);
       } else {
-        addToFavorites(productId);
+        addToFavourites(productId);
       }
 
-      console.error("Error toggling favorite:", error);
+      console.error("Error toggling favourite:", error);
       return {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
@@ -85,8 +85,8 @@ export function useFavoriteToggle(productId: string) {
   };
 
   return {
-    isFavorited,
-    toggleFavorite,
+    isFavourited,
+    toggleFavourite,
     isUpdating,
   };
 }

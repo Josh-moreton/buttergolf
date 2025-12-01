@@ -96,7 +96,7 @@ export function ProductCard({
           objectFit="cover"
         />
 
-        {/* Favorite Heart Button - Top Right with Glassmorphism */}
+        {/* Favourite Heart Button - Top Right with Glassmorphism */}
         <GlassmorphismCard
           intensity="medium"
           blur="medium"
@@ -117,7 +117,7 @@ export function ProductCard({
           hoverStyle={{ transform: "scale(1.1)" }}
           pressStyle={{ transform: "scale(0.85)", opacity: 0.8 }}
           animation="bouncy"
-          aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorited ? "Remove from favourites" : "Add to favourites"}
           style={isWeb ? {
             ...getGlassmorphismStyles("medium"),
             transition: "transform 0.15s ease-out, opacity 0.15s ease-out",

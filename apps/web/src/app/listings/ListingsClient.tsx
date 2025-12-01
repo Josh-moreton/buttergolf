@@ -49,7 +49,7 @@ export function ListingsClient({
             minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
             maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
             brands: searchParams.getAll("brand") || parsed.brands || [],
-            showFavoritesOnly: searchParams.get("favorites") === "true" || parsed.showFavoritesOnly || false,
+            showFavouritesOnly: searchParams.get("favourites") === "true" || parsed.showFavouritesOnly || false,
           };
         } catch {
           // Fall through to URL parsing
@@ -64,7 +64,7 @@ export function ListingsClient({
       minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
       maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
       brands: searchParams.getAll("brand") || [],
-      showFavoritesOnly: searchParams.get("favorites") === "true" || false,
+    showFavouritesOnly: searchParams.get("favourites") === "true" || false,
     };
   };
 
@@ -102,7 +102,7 @@ export function ListingsClient({
       for (const b of newFilters.brands) {
         params.append("brand", b);
       }
-      if (newFilters.showFavoritesOnly) params.set("favorites", "true");
+      if (newFilters.showFavouritesOnly) params.set("favourites", "true");
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
 
@@ -130,7 +130,7 @@ export function ListingsClient({
         for (const b of filters.brands) {
           params.append("brand", b);
         }
-        if (filters.showFavoritesOnly) params.set("favorites", "true");
+        if (filters.showFavouritesOnly) params.set("favourites", "true");
         params.set("sort", sort);
         params.set("page", newPage.toString());
         params.set("limit", "24");
@@ -188,7 +188,7 @@ export function ListingsClient({
       minPrice: initialFilters.priceRange.min,
       maxPrice: initialFilters.priceRange.max,
       brands: [],
-      showFavoritesOnly: false,
+      showFavouritesOnly: false,
     };
     setFilters(defaultFilters);
     if (globalThis.window !== undefined) {

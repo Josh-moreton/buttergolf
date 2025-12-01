@@ -148,7 +148,7 @@ export function MobileFilterSheet({
               />
             </FilterSection>
 
-            <FilterSection title="Favorites" defaultExpanded>
+            <FilterSection title="Favourites" defaultExpanded>
               <Row
                 alignItems="center"
                 gap="$2"

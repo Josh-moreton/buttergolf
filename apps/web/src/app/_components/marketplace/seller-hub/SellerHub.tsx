@@ -14,7 +14,7 @@ interface SellerHubStats {
     activeListings: number;
     soldListings: number;
     totalViews: number;
-    totalFavorites: number;
+    totalFavourites: number;
     pendingOffers: number;
 }
 
@@ -291,7 +291,7 @@ export function SellerHub() {
                             <Column gap="$sm">
                                 <Row alignItems="center" gap="$sm">
                                     <Heart size={20} color="$error" />
-                                    <Text color="$textSecondary">Total Favorites</Text>
+                                    <Text color="$textSecondary">Total Favourites</Text>
                                 </Row>
                                 <Text size="$9" weight="bold">
                                     {data.stats.totalFavorites}

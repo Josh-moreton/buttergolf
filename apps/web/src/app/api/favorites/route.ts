@@ -3,9 +3,10 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 
 /**
- * GET /api/favorites
- * Fetch all products favorited by the authenticated user
+ * GET /api/favorites (DEPRECATED - use /api/favourites)
+ * Fetch all products favourited by the authenticated user
  * Returns array of products with their details (images, category, seller info)
+ * This endpoint is kept for backwards compatibility; redirect to /api/favourites recommended
  */
 export async function GET(req: NextRequest) {
   try {
@@ -40,8 +41,8 @@ export async function GET(req: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "24");
     const skip = (page - 1) * limit;
 
-    // Fetch user's favorites with product details
-    const [favorites, totalCount] = await Promise.all([
+    // Fetch user's favourites with product details
+    const [favourites, totalCount] = await Promise.all([
       prisma.favorite.findMany({
         where: { userId: user.id },
         include: {
@@ -79,7 +80,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // Transform to product data format
-    const products = favorites.map((fav) => ({
+    const products = favourites.map((fav) => ({
       id: fav.product.id,
       title: fav.product.title,
       description: fav.product.description,
@@ -115,17 +116,17 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching favorites:", error);
+    console.error("Error fetching favourites:", error);
     return NextResponse.json(
-      { error: "Failed to fetch favorites" },
+      { error: "Failed to fetch favourites" },
       { status: 500 }
     );
   }
 }
 
 /**
- * POST /api/favorites
- * Add a product to the authenticated user's favorites
+ * POST /api/favorites (DEPRECATED - use /api/favourites)
+ * Add a product to the authenticated user's favourites
  * Body: { productId: string }
  */
 export async function POST(req: NextRequest) {
@@ -170,9 +171,9 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Create favorite (unique constraint prevents duplicates)
+    // Create favourite (unique constraint prevents duplicates)
     try {
-      const favorite = await prisma.favorite.create({
+      const favourite = await prisma.favorite.create({
         data: {
           userId: user.id, // Use database User ID, not Clerk ID
           productId,
@@ -182,28 +183,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          favorite: {
-            id: favorite.id,
-            productId: favorite.productId,
-            createdAt: favorite.createdAt,
+          favourite: {
+            id: favourite.id,
+            productId: favourite.productId,
+            createdAt: favourite.createdAt,
           },
         },
         { status: 201 }
       );
     } catch (error: unknown) {
-      // Handle duplicate favorite (unique constraint violation)
+      // Handle duplicate favourite (unique constraint violation)
       if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
         return NextResponse.json(
-          { error: "Product already in favorites" },
+          { error: "Product already in favourites" },
           { status: 409 }
         );
       }
       throw error;
     }
   } catch (error) {
-    console.error("Error adding favorite:", error);
+    console.error("Error adding favourite:", error);
     return NextResponse.json(
-      { error: "Failed to add favorite" },
+      { error: "Failed to add favourite" },
       { status: 500 }
     );
   }

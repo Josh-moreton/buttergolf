@@ -17,14 +17,14 @@ export async function GET(request: NextRequest) {
       isSold: false,
     };
 
-    // Favorites filter (requires authentication)
-    const showFavoritesOnly = searchParams.get("favorites") === "true";
-    if (showFavoritesOnly) {
+    // Favourites filter (requires authentication)
+    const showFavouritesOnly = searchParams.get("favourites") === "true";
+    if (showFavouritesOnly) {
       const { userId: clerkId } = await auth();
 
       if (!clerkId) {
         return NextResponse.json(
-          { error: "Authentication required to filter favorites" },
+          { error: "Authentication required to filter favourites" },
           { status: 401 }
         );
       }

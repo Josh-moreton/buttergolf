@@ -82,7 +82,7 @@ export function FilterSidebar({
         />
       </FilterSection>
 
-      <FilterSection title="Favorites">
+        <FilterSection title="Favourites">
         <Row
           alignItems="center"
           gap="$2"

@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
                             status: true,
                         },
                     },
-                    favorites: {
+                    favourites: {
                         select: {
                             id: true,
                         },
@@ -156,7 +156,7 @@ export async function GET(request: NextRequest) {
                 imageUrl: product.images[0]?.url || "/placeholder-product.jpg",
                 isSold: product.isSold,
                 views: product.views,
-                favorites: product.favorites.length,
+                favourites: product.favourites.length,
                 createdAt: product.createdAt,
                 updatedAt: product.updatedAt,
                 images: product.images.map((img) => img.url),
@@ -175,7 +175,7 @@ export async function GET(request: NextRequest) {
                 activeListings: activeCount,
                 soldListings: soldCount,
                 totalViews: stats._sum.views || 0,
-                totalFavorites: products.reduce((sum, product) => sum + product.favorites.length, 0),
+                totalFavourites: products.reduce((sum, product) => sum + product.favourites.length, 0),
                 pendingOffers: pendingOffersCount,
             },
         });
