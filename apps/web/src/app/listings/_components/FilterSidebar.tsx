@@ -13,7 +13,7 @@ export interface FilterState {
   minPrice: number;
   maxPrice: number;
   brands: string[];
-  showFavoritesOnly: boolean;
+  showFavouritesOnly: boolean;
 }
 
 interface FilterSidebarProps {
@@ -88,7 +88,7 @@ export function FilterSidebar({
           gap="$2"
           cursor="pointer"
           userSelect="none"
-          onPress={() => onChange({ showFavoritesOnly: !filters.showFavoritesOnly })}
+          onPress={() => onChange({ showFavouritesOnly: !filters.showFavouritesOnly })}
         >
           <input
             type="checkbox"
@@ -102,7 +102,7 @@ export function FilterSidebar({
             }}
           />
           <Text size="$4" color="$text">
-            Show favorites only
+            Show favourites only
           </Text>
         </Row>
       </FilterSection>

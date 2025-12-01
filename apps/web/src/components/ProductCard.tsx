@@ -23,7 +23,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
   const { isFavourited, toggleFavourite } = useFavouriteToggle(product.id);
   const [showAuthMessage, setShowAuthMessage] = useState(false);
 
-  const handleFavorite = async () => {
+  const handleFavourite = async () => {
     // Require authentication
     if (!isSignedIn) {
       setShowAuthMessage(true);
@@ -48,8 +48,8 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
       <SharedProductCard
         product={product}
         onPress={onPress}
-        onFavorite={handleFavorite}
-        isFavorited={isFavorited}
+        onFavourite={handleFavourite}
+        isFavourited={isFavourited}
       />
       {showAuthMessage && (
         <div

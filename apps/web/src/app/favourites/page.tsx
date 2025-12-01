@@ -9,7 +9,7 @@ export const metadata = {
   description: "View your saved golf equipment listings",
 };
 
-export default async function FavoritesPage() {
+export default async function FavouritesPage() {
   const { userId } = await auth();
 
   // Require authentication

@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
       // User not synced yet, return empty array
       return NextResponse.json({
-        favorites: [],
+        favourites: [],
         pagination: {
           page: 1,
           limit: 24,
@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
           }
         : null,
       createdAt: fav.product.createdAt,
-      favoritedAt: fav.createdAt,
+      favouritedAt: fav.createdAt,
     }));
 
     return NextResponse.json({

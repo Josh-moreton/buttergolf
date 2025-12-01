@@ -294,7 +294,7 @@ export function SellerHub() {
                                     <Text color="$textSecondary">Total Favourites</Text>
                                 </Row>
                                 <Text size="$9" weight="bold">
-                                    {data.stats.totalFavorites}
+                                    {data.stats.totalFavourites}
                                 </Text>
                                 <Text size="$3" color="$textSecondary">
                                     People interested

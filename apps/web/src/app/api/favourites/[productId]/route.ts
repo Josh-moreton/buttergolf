@@ -53,7 +53,7 @@ export async function DELETE(
       return NextResponse.json(
         {
           success: true,
-          message: "Product removed from favorites",
+          message: "Product removed from favourites",
         },
         { status: 200 }
       );

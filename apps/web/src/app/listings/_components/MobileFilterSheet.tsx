@@ -155,14 +155,14 @@ export function MobileFilterSheet({
                 cursor="pointer"
                 userSelect="none"
                 onPress={() =>
-                  onChange({ showFavoritesOnly: !filters.showFavoritesOnly })
+                  onChange({ showFavouritesOnly: !filters.showFavouritesOnly })
                 }
               >
                 <input
                   type="checkbox"
-                  checked={filters.showFavoritesOnly}
-                  onChange={(e) =>
-                    onChange({ showFavoritesOnly: e.target.checked })
+                  checked={filters.showFavouritesOnly}
+                  onChange={(e) => {
+                    onChange({ showFavouritesOnly: e.target.checked });
                   }
                   style={{
                     width: 20,
@@ -172,7 +172,7 @@ export function MobileFilterSheet({
                   }}
                 />
                 <Text size="$4" color="$text">
-                  Show favorites only
+                  Show favourites only
                 </Text>
               </Row>
             </FilterSection>

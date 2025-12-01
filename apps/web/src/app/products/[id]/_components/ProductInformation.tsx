@@ -39,7 +39,7 @@ export function ProductInformation({
     onMakeOffer,
     purchasing,
 }: ProductInformationProps) {
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavourite, setIsFavourite] = useState(false);
 
     const formatCondition = (condition: string) => {
         return condition.replace(/_/g, " ");
@@ -90,7 +90,7 @@ export function ProductInformation({
                     </Row>
                 </Column>
                 <button
-                    onClick={() => setIsFavorite(!isFavorite)}
+                    onClick={() => setIsFavourite(!isFavourite)}
                     style={{
                         width: 40,
                         height: 40,
@@ -117,8 +117,8 @@ export function ProductInformation({
                         width="20"
                         height="20"
                         viewBox="0 0 24 24"
-                        fill={isFavorite ? "#F45314" : "none"}
-                        stroke={isFavorite ? "#F45314" : "#323232"}
+                        fill={isFavourite ? "#F45314" : "none"}
+                        stroke={isFavourite ? "#F45314" : "#323232"}
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
