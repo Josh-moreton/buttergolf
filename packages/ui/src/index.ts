@@ -24,6 +24,20 @@ export type { TextProps, HeadingProps, LabelProps } from './components/Text'
 export { Row, Column, Container, Spacer, XStack, YStack, View } from './components/Layout'
 export type { RowProps, ColumnProps, ContainerProps, SpacerProps, XStackProps, YStackProps, ViewProps } from './components/Layout'
 
+// Brand Background Components
+export {
+  VanillaCreamBackground,
+  LemonHazeBackground,
+  LemonHazeCard,
+  VanillaCreamCard,
+} from './components/BrandBackgrounds'
+export type {
+  VanillaCreamBackgroundProps,
+  LemonHazeBackgroundProps,
+  LemonHazeCardProps,
+  VanillaCreamCardProps,
+} from './components/BrandBackgrounds'
+
 // Card Components
 export { Card, CardHeader, CardBody, CardFooter } from './components/Card'
 export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from './components/Card'
@@ -33,6 +47,12 @@ export type { GlassmorphismCardProps } from './components/GlassmorphismCard'
 // Form Components
 export { Input } from './components/Input'
 export type { InputProps } from './components/Input'
+export { Select } from './components/Select'
+export type { SelectProps } from './components/Select'
+export { TextArea } from './components/TextArea'
+export type { TextAreaProps } from './components/TextArea'
+export { Radio, RadioGroup, RadioIndicator } from './components/Radio'
+export type { RadioProps, RadioGroupProps } from './components/Radio'
 export { Autocomplete } from './components/Autocomplete'
 export type { AutocompleteProps, AutocompleteSuggestion } from './components/Autocomplete'
 export { Checkbox } from './components/Checkbox'

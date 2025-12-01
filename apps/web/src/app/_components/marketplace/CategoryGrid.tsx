@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Column, Text } from "@buttergolf/ui";
+import { Column, Row, Text, Heading, Card } from "@buttergolf/ui";
 import { imagePaths } from "@buttergolf/assets";
 
 interface Category {
@@ -63,66 +63,69 @@ export function CategoryGrid() {
         $lg={{ paddingHorizontal: "$8" }}
         gap="$8"
       >
-        <Text
-          weight="bold"
+        <Heading
+          level={2}
           color="$primary"
-          align="center"
-          {...{
-            style: {
-              fontFamily: "var(--font-urbanist)",
-              fontSize: "clamp(32px, 5vw, 48px)",
-              lineHeight: 1.2,
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-            },
-          }}
+          textAlign="center"
+          letterSpacing={2}
+          textTransform="uppercase"
+          size="$10"
+          $gtMd={{ size: "$11" }}
         >
           SHOP BY CATEGORY
-        </Text>
+        </Heading>
 
         {/* Category Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "24px",
-            width: "100%",
-          }}
-          className="category-grid"
+        <Row
+          flexWrap="wrap"
+          gap="$lg"
+          width="100%"
+          $gtSm={{ gap: "$lg" }}
         >
           {categories.map((category) => (
             <Link
               key={category.id}
               href={category.link}
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+              }}
+              className="category-link"
             >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
-                  aspectRatio: "1 / 1",
-                  backgroundColor: "var(--surface)",
-                  border: "3px solid var(--primary)",
-                  borderRadius: "4px",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.3)",
+              <Card
+                variant="outlined"
+                width="100%"
+                aspectRatio={1}
+                backgroundColor="$surface"
+                borderWidth={3}
+                borderColor="$primary"
+                borderRadius="$xs"
+                overflow="hidden"
+                cursor="pointer"
+                animation="medium"
+                shadowColor="$shadowColor"
+                shadowOffset={{ width: 0, height: 14 }}
+                shadowRadius={28}
+                shadowOpacity={0.4}
+                hoverStyle={{
+                  y: -4,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowRadius: 16,
+                  shadowColor: "$primaryHover",
+                  shadowOpacity: 0.2,
                 }}
-                className="category-card"
+                pressStyle={{
+                  y: -2,
+                }}
               >
-                {/* Image Container with Padding */}
-                <div
-                  style={{
-                    flex: 1,
-                    padding: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    position: "relative",
-                  }}
+                {/* Image Container */}
+                <Column
+                  flex={1}
+                  padding="$lg"
+                  alignItems="center"
+                  justifyContent="center"
+                  overflow="hidden"
+                  position="relative"
                 >
                   <Image
                     src={category.image}
@@ -131,68 +134,61 @@ export function CategoryGrid() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     style={{
                       objectFit: "contain",
-                      transition: "transform 0.3s ease",
                     }}
+                    className="category-image"
                   />
-                </div>
+                </Column>
 
-                {/* Orange Label at Bottom */}
-                <div
-                  style={{
-                    backgroundColor: "var(--primary)",
-                    padding: "20px",
-                    textAlign: "center",
-                  }}
+                {/* Label at Bottom */}
+                <Row
+                  backgroundColor="$primary"
+                  padding="$lg"
+                  justifyContent="center"
+                  alignItems="center"
                 >
                   <Text
                     weight="bold"
                     color="$textInverse"
-                    {...{
-                      style: {
-                        fontFamily: "var(--font-urbanist)",
-                        fontSize: "18px",
-                        lineHeight: 1.2,
-                        letterSpacing: "1.5px",
-                        textTransform: "uppercase",
-                      },
-                    }}
+                    size="$6"
+                    letterSpacing={1.5}
+                    textTransform="uppercase"
+                    textAlign="center"
                   >
                     {category.label}
                   </Text>
-                </div>
-              </div>
+                </Row>
+              </Card>
             </Link>
           ))}
-        </div>
+        </Row>
       </Column>
 
-      {/* Global styles for hover effects */}
+      {/* Responsive layout and hover effects */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
+          .category-link {
+            width: 100%;
+          }
+
           @media (min-width: 768px) {
-            .category-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
+            .category-link {
+              width: calc(50% - 12px);
             }
           }
 
           @media (min-width: 1024px) {
-            .category-grid {
-              grid-template-columns: repeat(4, 1fr) !important;
+            .category-link {
+              width: calc(25% - 18px);
             }
           }
 
-          .category-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px color-mix(in display-p3, var(--primary) 20%, transparent);
+          .category-image {
+            transition: transform 0.3s ease;
           }
 
-          .category-card:hover img {
+          .category-link:hover .category-image {
             transform: scale(1.05);
-          }
-
-          .category-card:active {
-            transform: translateY(-2px);
           }
         `,
         }}

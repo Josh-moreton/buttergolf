@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Row, Column, Text } from "@buttergolf/ui";
+import { Row, Column, Text, Heading } from "@buttergolf/ui";
 
 const TRUST_ITEMS = [
     {
@@ -39,16 +39,16 @@ export function TrustSection() {
                 width="100%"
             >
                 {/* Main Heading */}
-                <Text
-                    style={{ fontSize: "clamp(28px, 5vw, 40px)" }}
-                    fontWeight="700"
-                    lineHeight={1.2}
+                <Heading
+                    level={2}
+                    size="$9"
+                    $gtMd={{ size: "$10" }}
                     color="$text"
                     textAlign="center"
                     marginBottom="$16"
                 >
                     Fresh takes on second-hand reassurance
-                </Text>
+                </Heading>
 
                 {/* Trust Items Grid */}
                 <Column
@@ -85,32 +85,20 @@ export function TrustSection() {
 
                             {/* Text */}
                             <Column gap="$xs">
-                                <p
-                                    style={{
-                                        fontFamily: "var(--font-urbanist)",
-                                        fontSize: "18px",
-                                        fontWeight: 700,
-                                        lineHeight: 1.3,
-                                        color: "#323232",
-                                        margin: 0,
-                                        padding: 0,
-                                    }}
+                                <Text
+                                    size="$7"
+                                    weight="bold"
+                                    color="$text"
                                 >
                                     {item.title}
-                                </p>
-                                <p
-                                    style={{
-                                        fontFamily: "var(--font-urbanist)",
-                                        fontSize: "18px",
-                                        fontWeight: 500,
-                                        lineHeight: 1.3,
-                                        color: "#323232",
-                                        margin: 0,
-                                        padding: 0,
-                                    }}
+                                </Text>
+                                <Text
+                                    size="$7"
+                                    weight="medium"
+                                    color="$text"
                                 >
                                     {item.subtitle}
-                                </p>
+                                </Text>
                             </Column>
                         </Row>
                     ))}

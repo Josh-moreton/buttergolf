@@ -250,21 +250,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                   {/* Image Counter */}
                   {product.images.length > 1 && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 16,
-                        right: 16,
-                        background: "rgba(0, 0, 0, 0.7)",
-                        color: "white",
-                        padding: "6px 12px",
-                        borderRadius: "20px",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
+                    <Row
+                      position="absolute"
+                      bottom={16}
+                      right={16}
+                      backgroundColor="$overlayDark50"
+                      paddingVertical="$xs"
+                      paddingHorizontal="$md"
+                      borderRadius="$full"
+                      zIndex={10}
                     >
-                      {selectedImageIndex + 1} / {product.images.length}
-                    </div>
+                      <Text size="$4" weight="medium" color="$textInverse">
+                        {selectedImageIndex + 1} / {product.images.length}
+                      </Text>
+                    </Row>
                   )}
                 </Card>
               </Row>
@@ -283,20 +282,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       {/* Lightbox Modal */}
       {lightboxOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.95)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px",
-          }}
+        <Column
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          backgroundColor="$overlayDark50"
+          zIndex={9999}
+          alignItems="center"
+          justifyContent="center"
+          padding="$lg"
         >
           <Button
             chromeless
@@ -308,6 +304,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             cursor="pointer"
             padding={0}
           />
+
           {/* Close Button */}
           <Button
             chromeless
@@ -322,61 +319,60 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             borderRadius="$full"
             width={48}
             height={48}
-            display="flex"
             alignItems="center"
             justifyContent="center"
             cursor="pointer"
             zIndex={10000}
             padding={0}
           >
-            <Text size="$8" fontWeight="700" color="$text">✕</Text>
+            <Text size="$8" weight="bold" color="$text">✕</Text>
           </Button>
 
           {/* Navigation Arrows */}
           {selectedImageIndex > 0 && (
-            <button
-              onClick={(e) => {
+            <Button
+              chromeless
+              onPress={(e) => {
                 e.stopPropagation();
                 setSelectedImageIndex(selectedImageIndex - 1);
               }}
-              style={{
-                position: "absolute",
-                left: 20,
-                background: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 10000,
-              }}
+              position="absolute"
+              left={20}
+              backgroundColor="$surface"
+              borderRadius="$full"
+              width={48}
+              height={48}
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              zIndex={10000}
+              padding={0}
             >
-              ←
-            </button>
+              <Text size="$8" weight="bold" color="$text">←</Text>
+            </Button>
           )}
 
           {selectedImageIndex < product.images.length - 1 && (
-            <button
-              onClick={(e) => {
+            <Button
+              chromeless
+              onPress={(e) => {
                 e.stopPropagation();
                 setSelectedImageIndex(selectedImageIndex + 1);
               }}
-              style={{
-                position: "absolute",
-                right: 20,
-                background: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 10000,
-              }}
+              position="absolute"
+              right={20}
+              backgroundColor="$surface"
+              borderRadius="$full"
+              width={48}
+              height={48}
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              zIndex={10000}
+              padding={0}
             >
-              →
-            </button>
+              <Text size="$8" weight="bold" color="$text">→</Text>
+            </Button>
           )}
 
           {/* Main Image */}
@@ -398,40 +394,41 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           />
 
           {/* Image Counter */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 30,
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "white",
-              padding: "10px 20px",
-              borderRadius: "25px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              zIndex: 1,
-            }}
+          <Row
+            position="absolute"
+            bottom={30}
+            left="50%"
+            transform="translateX(-50%)"
+            backgroundColor="$surface"
+            paddingVertical="$sm"
+            paddingHorizontal="$lg"
+            borderRadius="$full"
+            zIndex={1}
           >
-            {selectedImageIndex + 1} / {product.images.length}
-          </div>
-        </div>
+            <Text size="$5" weight="bold" color="$text">
+              {selectedImageIndex + 1} / {product.images.length}
+            </Text>
+          </Row>
+        </Column>
       )}
 
       {/* Mobile Sticky Bottom Bar */}
       {showMobileBar && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background: "white",
-            borderTop: "2px solid #E25F2F",
-            padding: "16px",
-            zIndex: 1000,
-            boxShadow: "0 -4px 12px rgba(0,0,0,0.1)",
-            display: "none",
-          }}
+        <Row
+          position="fixed"
+          bottom={0}
+          left={0}
+          right={0}
+          backgroundColor="$surface"
+          borderTopWidth={2}
+          borderTopColor="$primary"
+          padding="$md"
+          zIndex={1000}
+          shadowColor="$shadowColor"
+          shadowOffset={{ width: 0, height: -4 }}
+          shadowRadius={12}
+          shadowOpacity={0.1}
+          display="none"
           className="mobile-sticky-bar"
         >
           <Row gap="$md" alignItems="center" justifyContent="space-between">
@@ -454,7 +451,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {product.isSold ? "Sold" : "Buy Now"}
             </Button>
           </Row>
-        </div>
+        </Row>
       )}
 
       {/* Responsive CSS */}

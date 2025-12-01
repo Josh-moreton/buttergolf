@@ -5,26 +5,22 @@ import { Text, Row, Column } from "@buttergolf/ui";
 
 export function FooterSection() {
   return (
-    <div
-      style={{
-        position: "relative",
-        backgroundColor: "#F45314",
-        paddingTop: "64px",
-        paddingBottom: "48px",
-        overflow: "hidden",
-      }}
+    <Column
+      position="relative"
+      backgroundColor="$primary"
+      paddingTop="$3xl"
+      paddingBottom="$2xl"
+      overflow="hidden"
     >
       {/* Background B.svg pattern */}
-      <div
-        style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: "50%",
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
+      <Column
+        position="absolute"
+        right={0}
+        top={0}
+        bottom={0}
+        width="50%"
+        zIndex={0}
+        pointerEvents="none"
       >
         <Image
           src="/_assets/logo/b.svg"
@@ -35,19 +31,16 @@ export function FooterSection() {
             objectFit: "contain",
           }}
         />
-      </div>
+      </Column>
 
       {/* Content Container */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: "1280px",
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: "48px",
-          paddingRight: "48px",
-        }}
+      <Column
+        position="relative"
+        zIndex={1}
+        maxWidth={1280}
+        marginHorizontal="auto"
+        paddingHorizontal="$2xl"
+        width="100%"
       >
         {/* Top Section: Logo + Navigation Links */}
         <Row
@@ -78,7 +71,7 @@ export function FooterSection() {
               <Text
                 color="$vanillaCream"
                 size="$4"
-                fontWeight="700"
+                weight="bold"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -87,7 +80,7 @@ export function FooterSection() {
               <Text
                 color="$vanillaCream"
                 size="$4"
-                fontWeight="700"
+                weight="bold"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -96,7 +89,7 @@ export function FooterSection() {
               <Text
                 color="$vanillaCream"
                 size="$4"
-                fontWeight="700"
+                weight="bold"
                 cursor="pointer"
                 hoverStyle={{ opacity: 0.8 }}
               >
@@ -150,29 +143,28 @@ export function FooterSection() {
           gap="$md"
         >
           {/* Copyright */}
-          {/* Copyright */}
           <Text color="$vanillaCream" size="$3" zIndex={1}>
             © 2025 Butter Golf. All rights reserved.
           </Text>
 
-          {/* TrustPilot Placeholder */}
-          <div
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: "8px",
-              padding: "12px 24px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
+          {/* TrustPilot Badge */}
+          <Row
+            backgroundColor="$pureWhite"
+            borderRadius="$md"
+            paddingVertical="$md"
+            paddingHorizontal="$lg"
+            alignItems="center"
+            gap="$sm"
           >
-            <span style={{ fontSize: "14px", fontWeight: 600, color: "#00B67A" }}>
+            <Text size="$4" weight="semibold" color="$success">
               ★ Trustpilot
-            </span>
-            <span style={{ fontSize: "12px", color: "#666" }}>TrustScore 4</span>
-          </div>
+            </Text>
+            <Text size="$3" color="$textSecondary">
+              TrustScore 4.5
+            </Text>
+          </Row>
         </Row>
-      </div>
-    </div>
+      </Column>
+    </Column>
   );
 }
