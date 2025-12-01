@@ -163,7 +163,7 @@ export function MobileFilterSheet({
                   checked={filters.showFavouritesOnly}
                   onChange={(e) => {
                     onChange({ showFavouritesOnly: e.target.checked });
-                  }
+                  }}
                   style={{
                     width: 20,
                     height: 20,
