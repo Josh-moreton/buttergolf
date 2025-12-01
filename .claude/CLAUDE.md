@@ -250,6 +250,30 @@ import { Button } from "@buttergolf/ui";
 <Button size="md">Wrong!</Button>  // Use numeric tokens like $4
 ```
 
+##### 🛡️ ESLint Enforcement
+
+**IMPORTANT: Using `fontSize` directly on Text components is now blocked by ESLint.**
+
+```tsx
+// ❌ BLOCKED BY LINTER - Will show error
+<Text fontSize={14}>This will fail linting</Text>
+
+// ✅ CORRECT - Use size tokens
+<Text size="$4">This passes linting</Text>
+```
+
+**Why this matters:** Using `fontSize` bypasses Tamagui's variant system and causes invisible text on React Native (lineHeight becomes 1.5px instead of proper pixel values from the font config). The ESLint rule `react/forbid-component-props` catches this mistake at development time.
+
+**Error message you'll see:**
+```
+Use size="$token" instead of fontSize prop on Text components.
+fontSize bypasses the Tamagui variant system and causes invisible
+text on React Native (lineHeight becomes 1.5px instead of proper
+pixel values).
+```
+
+**Rule location:** `packages/eslint-config/react-internal.js`
+
 #### ✅ Use Layout Components (Row/Column)
 
 **CRITICAL: Row and Column are minimal shims over Tamagui primitives. They expose the FULL Tamagui API.**

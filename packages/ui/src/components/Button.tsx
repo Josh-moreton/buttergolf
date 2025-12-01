@@ -1,18 +1,122 @@
 /**
  * Button Component
  *
- * Standard Tamagui Button with ButterGolf branding defaults.
- * Uses standard Tamagui numeric size tokens ($1-$16).
+ * Custom styled button with Figma-designed variants for consistent branding.
+ * Supports cross-platform shadows with graceful degradation on mobile.
+ *
+ * Variants (via butterVariant prop):
+ * - primary: Spiced Clementine (#F45314) with inner glow (web only)
+ * - secondary: Ironstone (#323232) with subtle inner shadow (web only)
+ *
+ * Both variants include drop shadows on all platforms.
+ *
+ * Note: Uses `butterVariant` prop instead of `variant` to avoid conflicts
+ * with Tamagui's built-in Button variants.
  *
  * @example
  * ```tsx
- * <Button size="$4">Medium button</Button>
- * <Button size="$6" backgroundColor="$primary" color="$textInverse">Primary CTA</Button>
- * <Button size="$3" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary">Outline</Button>
- * <Button chromeless>Ghost button</Button>
+ * <Button butterVariant="primary">Sell now</Button>
+ * <Button butterVariant="secondary">Shop now</Button>
+ * <Button butterVariant="primary" size="$4">Small primary button</Button>
  * ```
  */
 
-// Re-export standard Tamagui Button with no custom variants
-export { Button } from "tamagui";
-export type { ButtonProps } from "tamagui";
+import { Button as TamaguiButton, styled, GetProps } from "tamagui";
+import { Platform } from "react-native";
+
+/**
+ * Helper: Get platform-specific shadow styles
+ *
+ * Web: Combines drop shadow + inner shadow via boxShadow
+ * Mobile: Only drop shadow via shadowColor/shadowOffset/shadowRadius/elevation
+ */
+const getButtonShadow = (variant: 'primary' | 'secondary') => {
+  const baseShadow = {
+    shadowColor: 'rgba(0, 0, 0, 0.25)' as const,
+    shadowOffset: { width: 0, height: 1 } as const,
+    shadowRadius: 5 as const,
+    elevation: 3 as const, // Android shadow
+  };
+
+  if (Platform.OS === 'web') {
+    const innerShadow = variant === 'primary'
+      ? 'inset 0px 2px 2px #FF7E4C'     // Inner glow for primary
+      : 'inset 0px 2px 2px #323232';    // Subtle inner shadow for secondary
+
+    return {
+      ...baseShadow,
+      // @ts-ignore - boxShadow only exists on web
+      boxShadow: `0px 1px 5px rgba(0,0,0,0.25), ${innerShadow}`,
+    };
+  }
+
+  // Mobile: gracefully degrade to drop shadow only
+  return baseShadow;
+};
+
+const ButtonBase = styled(TamaguiButton, {
+  name: "Button",
+
+  // Base styles for all buttons
+  fontFamily: "$body",
+  fontWeight: "700",
+  cursor: "pointer",
+  borderRadius: "$full",
+
+  variants: {
+    butterVariant: {
+      primary: {
+        backgroundColor: "$primary",
+        borderWidth: 1,
+        borderColor: "$primaryBorder",
+        color: "$textInverse",
+        ...getButtonShadow('primary'),
+
+        hoverStyle: {
+          backgroundColor: "$primaryHover",
+        },
+
+        pressStyle: {
+          backgroundColor: "$primaryPress",
+          scale: 0.98,
+        },
+
+        focusStyle: {
+          borderColor: "$primaryFocus",
+          outlineColor: "$primaryFocus",
+          outlineWidth: 2,
+        },
+      },
+
+      secondary: {
+        backgroundColor: "$secondary",
+        borderWidth: 1,
+        borderColor: "$secondaryBorder",
+        color: "$textInverse",
+        ...getButtonShadow('secondary'),
+
+        hoverStyle: {
+          backgroundColor: "$secondaryHover",
+        },
+
+        pressStyle: {
+          backgroundColor: "$secondaryPress",
+          scale: 0.98,
+        },
+
+        focusStyle: {
+          borderColor: "$secondaryFocus",
+          outlineColor: "$secondaryFocus",
+          outlineWidth: 2,
+        },
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    butterVariant: "primary" as const,
+  },
+});
+
+export const Button = ButtonBase;
+export type ButtonProps = GetProps<typeof ButtonBase>;

@@ -356,12 +356,11 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
             {primaryCta && (
                 <Link href={primaryCta.href} style={{ textDecoration: 'none' }}>
                     <Button
+                        butterVariant="primary"
                         width={133}
                         height={41}
-                        backgroundColor="$primary"
-                        borderRadius="$full"
-                        color="$vanillaCream"
-                        fontWeight="700"
+                        paddingHorizontal={12}
+                        paddingVertical={5}
                         fontSize={14}
                     >
                         {primaryCta.label}
@@ -371,15 +370,12 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
             {secondaryCta && (
                 <Link href={secondaryCta.href} style={{ textDecoration: 'none' }}>
                     <Button
+                        butterVariant="secondary"
                         width={133}
                         height={41}
-                        backgroundColor="$secondary"
-                        color="$vanillaCream"
-                        borderRadius="$full"
-                        fontWeight="700"
+                        paddingHorizontal={12}
+                        paddingVertical={5}
                         fontSize={14}
-                        hoverStyle={{ backgroundColor: "$secondaryHover" }}
-                        pressStyle={{ backgroundColor: "$secondaryPress" }}
                     >
                         {secondaryCta.label}
                     </Button>
