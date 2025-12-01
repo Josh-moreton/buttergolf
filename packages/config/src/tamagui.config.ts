@@ -261,6 +261,10 @@ const brandColors = {
     infoBase: '#3c50e0',
     infoLight: '#eff6ff',
     infoDark: '#1d4ed8',
+
+    // Button-specific borders (for depth on filled buttons)
+    primaryBorder: '#F04300',     // Darker than spicedClementine
+    secondaryBorder: '#000000',   // Pure black for Ironstone buttons
 }
 
 // Create custom tokens with complete design system
@@ -359,6 +363,10 @@ const customTokens = createTokens({
         colorPress: brandColors.ironstonePress,
         colorFocus: brandColors.ironstone,
         colorTransparent: 'rgba(50, 50, 50, 0)',
+
+        // Button-specific borders
+        primaryBorder: brandColors.primaryBorder,
+        secondaryBorder: brandColors.secondaryBorder,
 
         // Backward compatibility (map old names to new colors)
         bg: brandColors.vanillaCream,
