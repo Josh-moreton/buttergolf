@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ProductCardData } from "@buttergolf/app";
-import { Button, Column } from "@buttergolf/ui";
+import { Button, Column, Row, Text, Heading, VanillaCreamBackground } from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 
 interface RecentlyListedSectionClientProps {
@@ -16,57 +16,34 @@ export function RecentlyListedSectionClient({
   const router = useRouter();
 
   return (
-    <div style={{ paddingTop: "64px", paddingBottom: "64px", backgroundColor: "#EDEDED", width: "100%" }}>
-      <div
-        style={{
-          maxWidth: "1440px",
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: "32px",
-          paddingRight: "32px",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "64px",
-        }}
+    <VanillaCreamBackground paddingVertical="$3xl">
+      <Column
+        maxWidth={1440}
+        marginHorizontal="auto"
+        paddingHorizontal="$xl"
+        width="100%"
+        gap="$3xl"
       >
         {/* Header - Centered */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "16px",
-            width: "100%",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-urbanist)",
-              fontSize: "clamp(28px, 5vw, 40px)",
-              fontWeight: 700,
-              lineHeight: 1.2,
-              color: "#323232",
-              margin: 0,
-              textAlign: "center",
-            }}
+        <Column alignItems="center" gap="$md" width="100%">
+          <Heading
+            level={2}
+            size="$9"
+            $gtMd={{ size: "$10" }}
+            color="$text"
+            textAlign="center"
           >
             Recently listed
-          </h2>
-          <p
-            style={{
-              fontFamily: "var(--font-urbanist)",
-              fontSize: "clamp(14px, 2.5vw, 18px)",
-              fontWeight: 400,
-              lineHeight: 1.5,
-              color: "#545454",
-              margin: 0,
-              textAlign: "center",
-            }}
+          </Heading>
+          <Text
+            size="$6"
+            $gtMd={{ size: "$7" }}
+            color="$textSecondary"
+            textAlign="center"
           >
             Latest drops, hottest deals - upgrade your game today.
-          </p>
-        </div>
+          </Text>
+        </Column>
 
         {/* 5-column Grid */}
         <Column
@@ -93,53 +70,8 @@ export function RecentlyListedSectionClient({
           ))}
         </Column>
 
-        <div style={{ display: "none" }}>
-          <button
-
-            onClick={() => { }}
-            style={{
-              pointerEvents: "auto",
-              border: "none",
-              background: "rgba(0,0,0,0.4)",
-              color: "#FFFFFF",
-              borderRadius: "9999px",
-              width: "32px",
-              height: "32px",
-              cursor: "pointer",
-            }}
-            aria-label="Previous"
-          >
-            
-          </button>
-          <button
-
-            onClick={() => { }}
-            style={{
-              pointerEvents: "auto",
-              border: "none",
-              background: "rgba(0,0,0,0.4)",
-              color: "#FFFFFF",
-              borderRadius: "9999px",
-              width: "32px",
-              height: "32px",
-              cursor: "pointer",
-            }}
-            aria-label="Next"
-          >
-
-          </button>
-        </div>
-
         {/* View All Button - Centered Below Carousel */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            paddingTop: "8px",
-          }}
-        >
+        <Row alignItems="center" justifyContent="center" width="100%" paddingTop="$sm">
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
             <Button
               size="$5"
@@ -152,8 +84,8 @@ export function RecentlyListedSectionClient({
               View all listings
             </Button>
           </Link>
-        </div>
-      </div>
-    </div>
+        </Row>
+      </Column>
+    </VanillaCreamBackground>
   );
 }

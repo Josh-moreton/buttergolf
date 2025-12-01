@@ -70,7 +70,7 @@ export default function SettingsPage() {
                             >
                                 <Row gap="$md" alignItems="center" justifyContent="space-between">
                                     <Row gap="$md" alignItems="center" flex={1}>
-                                        <Text fontSize={24}>{item.icon}</Text>
+                                        <Text size="$8">{item.icon}</Text>
                                         <Column gap="$xs" flex={1}>
                                             <Text size="$6" weight="semibold">
                                                 {item.title}

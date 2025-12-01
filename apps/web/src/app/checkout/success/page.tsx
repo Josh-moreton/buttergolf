@@ -120,7 +120,7 @@ export default function CheckoutSuccessPage() {
             width={80}
             height={80}
           >
-            <Text fontSize={40}>✓</Text>
+            <Text size="$9">✓</Text>
           </Column>
 
           {/* Success Message */}

@@ -50,6 +50,35 @@ export const config = [
           ],
         },
       ],
+      // Prevent raw HTML elements - use Tamagui components from @buttergolf/ui
+      // Start as warnings to allow gradual migration, can be promoted to errors later
+      "react/forbid-elements": [
+        "warn",
+        {
+          forbid: [
+            {
+              element: "button",
+              message:
+                "Use <Button> from @buttergolf/ui instead of raw <button>. Tamagui Button provides consistent styling, accessibility, and cross-platform support.",
+            },
+            {
+              element: "input",
+              message:
+                "Use <Input> from @buttergolf/ui instead of raw <input>. Tamagui Input provides size variants, semantic tokens, and consistent form styling.",
+            },
+            {
+              element: "select",
+              message:
+                "Use <Select> from @buttergolf/ui instead of raw <select>. Tamagui Select provides size variants and matches Input styling.",
+            },
+            {
+              element: "textarea",
+              message:
+                "Use <TextArea> from @buttergolf/ui instead of raw <textarea>. Tamagui TextArea provides auto-resize, size variants, and consistent styling.",
+            },
+          ],
+        },
+      ],
       // Prevent direct tamagui imports - use @buttergolf/ui instead
       // This ensures consistent component behavior and custom variants
       "no-restricted-imports": [

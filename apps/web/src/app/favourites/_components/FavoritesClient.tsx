@@ -33,14 +33,14 @@ export function FavoritesClient() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/favourites?page=${page}&limit=24`);
+        const response = await fetch(`/api/favorites?page=${page}&limit=24`);
 
         if (!response.ok) {
           if (response.status === 401) {
-            router.push("/sign-in?redirect_url=/favourites");
+            router.push("/sign-in?redirect_url=/favorites");
             return;
           }
-          throw new Error("Failed to fetch favourites");
+          throw new Error("Failed to fetch favorites");
         }
 
         const data: FavoritesResponse = await response.json();
@@ -48,7 +48,7 @@ export function FavoritesClient() {
         setTotalPages(data.pagination.totalPages);
       } catch (err) {
         console.error("Error fetching favorites:", err);
-        setError(err instanceof Error ? err.message : "Failed to load favourites");
+        setError(err instanceof Error ? err.message : "Failed to load favorites");
       } finally {
         setLoading(false);
       }
@@ -93,19 +93,19 @@ export function FavoritesClient() {
   // Remove from Favorites Handler
   const handleRemove = async (productId: string) => {
     try {
-      const response = await fetch(`/api/favourites/${productId}`, {
+      const response = await fetch(`/api/favorites/${productId}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to remove favourite");
+        throw new Error("Failed to remove favorite");
       }
 
       // Optimistically remove from UI
       setProducts((prev) => prev.filter((p) => p.id !== productId));
     } catch (err) {
-      console.error("Error removing favourite:", err);
-      setError("Failed to remove from favourites");
+      console.error("Error removing favorite:", err);
+      setError("Failed to remove from favorites");
     }
   };
 
@@ -128,7 +128,7 @@ export function FavoritesClient() {
           <Heading level={1} color="$text">
             My Favorites
           </Heading>
-          <Text fontSize="$6" color="$textSecondary">
+          <Text size="$6" color="$textSecondary">
             Your saved golf equipment listings
           </Text>
         </Column>
@@ -161,7 +161,7 @@ export function FavoritesClient() {
             borderRadius="$md"
             padding="$xl"
           >
-            <Text color="$error" weight="semibold" fontSize="$6">
+            <Text color="$error" weight="semibold" size="$6">
               Error
             </Text>
             <Text marginTop="$xs" color="$error">
@@ -258,7 +258,7 @@ export function FavoritesClient() {
                   Previous
                 </Button>
 
-                <Text fontSize="$4" color="$text">
+                <Text size="$4" color="$text">
                   Page {page} of {totalPages}
                 </Text>
 

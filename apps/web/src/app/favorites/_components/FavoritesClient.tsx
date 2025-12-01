@@ -128,7 +128,7 @@ export function FavoritesClient() {
           <Heading level={1} color="$text">
             My Favorites
           </Heading>
-          <Text fontSize="$6" color="$textSecondary">
+          <Text size="$6" color="$textSecondary">
             Your saved golf equipment listings
           </Text>
         </Column>
@@ -161,7 +161,7 @@ export function FavoritesClient() {
             borderRadius="$md"
             padding="$xl"
           >
-            <Text color="$error" weight="semibold" fontSize="$6">
+            <Text color="$error" weight="semibold" size="$6">
               Error
             </Text>
             <Text marginTop="$xs" color="$error">
@@ -258,7 +258,7 @@ export function FavoritesClient() {
                   Previous
                 </Button>
 
-                <Text fontSize="$4" color="$text">
+                <Text size="$4" color="$text">
                   Page {page} of {totalPages}
                 </Text>
 

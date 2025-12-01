@@ -101,7 +101,7 @@ export function HorizontalProductCard({
                 •
               </Text>
               <Row gap="$xs" alignItems="center">
-                <Text color="$primary" fontSize={12}>
+                <Text color="$primary" size="$2">
                   ★
                 </Text>
                 <Text size="$3" color="$textSecondary">

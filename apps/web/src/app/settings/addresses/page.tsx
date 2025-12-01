@@ -378,7 +378,7 @@ export default function AddressesPage() {
                         {addresses.length === 0 ? (
                             <Card variant="outlined" padding="$xl">
                                 <Column gap="$md" alignItems="center">
-                                    <Text fontSize={48}>📦</Text>
+                                    <Text size="$10">📦</Text>
                                     <Column gap="$sm" alignItems="center">
                                         <Heading level={4}>No shipping addresses yet</Heading>
                                         <Text color="$textSecondary" textAlign="center">

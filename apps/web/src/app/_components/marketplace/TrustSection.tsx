@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Row, Column, Text, Heading } from "@buttergolf/ui";
+import { Row, Column, Text, Heading, VanillaCreamBackground } from "@buttergolf/ui";
 
 const TRUST_ITEMS = [
     {
@@ -28,8 +28,7 @@ const TRUST_ITEMS = [
 
 export function TrustSection() {
     return (
-        <Column
-            backgroundColor="$background"
+        <VanillaCreamBackground
             paddingVertical="$10"
         >
             <Column
@@ -104,6 +103,6 @@ export function TrustSection() {
                     ))}
                 </Column>
             </Column>
-        </Column>
+        </VanillaCreamBackground>
     );
 }
