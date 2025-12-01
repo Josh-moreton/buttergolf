@@ -12,7 +12,7 @@ import {
   ForgotPasswordScreen,
   ResetPasswordScreen,
 } from "@buttergolf/app";
-import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
+import type { ProductCardData, Product, Category, Brand, Model, SellFormData, ImageData } from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
@@ -20,6 +20,8 @@ import {
   View as RNView,
   Text as RNText,
   Pressable as RNPressable,
+  Alert,
+  Platform,
 } from "react-native";
 import {
   ClerkProvider,
@@ -32,6 +34,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
 import { useFonts } from "expo-font";
+import * as ImagePicker from "expo-image-picker";
 import {
   Urbanist_400Regular,
   Urbanist_500Medium,
@@ -301,6 +304,82 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
   return await response.json();
 }
 
+// Function to pick images from gallery
+async function pickImages(): Promise<ImageData[]> {
+  try {
+    // Request permissions if not on web
+    if (Platform.OS !== "web") {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissions Required",
+          "Please grant photo library permissions to add photos."
+        );
+        return [];
+      }
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      selectionLimit: 5,
+      quality: 0.8,
+      base64: false,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      return result.assets.map((asset) => ({
+        uri: asset.uri,
+        width: asset.width,
+        height: asset.height,
+      }));
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Failed to pick images:", error);
+    return [];
+  }
+}
+
+// Function to take a photo with camera
+async function takePhoto(): Promise<ImageData | null> {
+  try {
+    // Request permissions if not on web
+    if (Platform.OS !== "web") {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissions Required",
+          "Please grant camera permissions to take photos."
+        );
+        return null;
+      }
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      quality: 0.8,
+      base64: false,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset) {
+        return {
+          uri: asset.uri,
+          width: asset.width,
+          height: asset.height,
+        };
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Failed to take photo:", error);
+    return null;
+  }
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -458,6 +537,8 @@ export default function App() {
                       onFetchCategories={fetchCategories}
                       onSearchBrands={searchBrands}
                       onSearchModels={searchModels}
+                      onPickImages={pickImages}
+                      onTakePhoto={takePhoto}
                       onSubmitListing={submitListing}
                       onClose={() => navigation.goBack()}
                       onSuccess={(productId) => {
@@ -546,6 +627,8 @@ function OnboardingFlow() {
                 navigation.goBack();
                 setFlowState("signIn");
               }}
+              onPickImages={pickImages}
+              onTakePhoto={takePhoto}
               onClose={() => navigation.goBack()}
             />
           )}
