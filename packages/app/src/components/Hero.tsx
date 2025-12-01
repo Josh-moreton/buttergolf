@@ -413,9 +413,9 @@ function HeroImage({ source }: HeroImageProps) {
                     alt="Premium golf club featured in hero section"
                     style={{
                         width: 'auto',
-                        height: '115%',
-                        maxWidth: '120%',
-                        objectFit: 'contain',
+                        height: '45vh',
+                        maxHeight: '630px',
+                        objectFit: 'none',
                         objectPosition: 'center bottom',
                         marginBottom: 0,
                     }}
