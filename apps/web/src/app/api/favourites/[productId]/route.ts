@@ -41,7 +41,7 @@ export async function DELETE(
 
     // Delete favourite using unique constraint
     try {
-      await prisma.favorite.delete({
+      await prisma.favourite.delete({
         where: {
           userId_productId: {
             userId: user.id,

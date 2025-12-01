@@ -92,8 +92,8 @@ export function FilterSidebar({
         >
           <input
             type="checkbox"
-            checked={filters.showFavoritesOnly}
-            onChange={(e) => onChange({ showFavoritesOnly: e.target.checked })}
+            checked={filters.showFavouritesOnly}
+            onChange={(e) => onChange({ showFavouritesOnly: e.target.checked })}
             style={{
               width: 20,
               height: 20,

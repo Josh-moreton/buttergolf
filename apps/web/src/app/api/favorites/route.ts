@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
       // User not synced yet, return empty array
       return NextResponse.json({
-        favorites: [],
+        favourites: []
         pagination: {
           page: 1,
           limit: 24,
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
     // Fetch user's favourites with product details
     const [favourites, totalCount] = await Promise.all([
-      prisma.favorite.findMany({
+      prisma.favourite.findMany({
         where: { userId: user.id },
         include: {
           product: {
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.favorite.count({
+      prisma.favourite.count({
         where: { userId: user.id },
       }),
     ]);
@@ -103,7 +103,7 @@ export async function GET(req: NextRequest) {
           }
         : null,
       createdAt: fav.product.createdAt,
-      favoritedAt: fav.createdAt,
+      favouritedAt: fav.createdAt,
     }));
 
     return NextResponse.json({
@@ -173,7 +173,7 @@ export async function POST(req: NextRequest) {
 
     // Create favourite (unique constraint prevents duplicates)
     try {
-      const favourite = await prisma.favorite.create({
+      const favourite = await prisma.favourite.create({
         data: {
           userId: user.id, // Use database User ID, not Clerk ID
           productId,

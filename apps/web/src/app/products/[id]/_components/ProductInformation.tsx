@@ -111,7 +111,7 @@ export function ProductInformation({
                     onMouseLeave={(e) => {
                         e.currentTarget.style.transform = "scale(1)";
                     }}
-                    aria-label={isFavorite ? "Remove from favourites" : "Add to favourites"}
+                    aria-label={isFavourite ? "Remove from favourites" : "Add to favourites"}
                 >
                     <svg
                         width="20"

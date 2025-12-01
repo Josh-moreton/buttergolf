@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      where.favorites = {
+      where.favourites = {
         some: {
           userId: user.id,
         },

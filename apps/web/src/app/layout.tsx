@@ -71,7 +71,7 @@ export default function RootLayout({
     >
       <body className={urbanist.className}>
         <NextTamaguiProvider>
-          <FavoritesProvider>
+          <FavouritesProvider>
             <CartProvider>
               <ServiceWorkerRegistration />
               <ButterHeader />
@@ -81,7 +81,7 @@ export default function RootLayout({
                 {children}
               </main>
             </CartProvider>
-          </FavoritesProvider>
+          </FavouritesProvider>
         </NextTamaguiProvider>
         <Analytics />
       </body>

@@ -7,8 +7,8 @@ import type { ProductCardData } from "../types/product";
 export interface ProductCardProps {
   product: ProductCardData;
   onPress?: () => void;
-  onFavorite?: (productId: string) => void;
-  isFavorited?: boolean;
+  onFavourite?: (productId: string) => void;
+  isFavourited?: boolean;
 }
 
 // Heart icon component that works on both platforms
@@ -40,11 +40,11 @@ function HeartIcon({ filled, color }: Readonly<{ filled: boolean; color: string 
 export function ProductCard({
   product,
   onPress,
-  onFavorite,
-  isFavorited = false
+  onFavourite,
+  isFavourited = false
 }: Readonly<ProductCardProps>) {
-  const handleFavoriteClick = () => {
-    onFavorite?.(product.id);
+  const handleFavouriteClick = () => {
+    onFavourite?.(product.id);
   };
 
   const isWeb = Platform.OS === "web";
@@ -112,18 +112,18 @@ export function ProductCard({
           cursor="pointer"
           onPress={(e) => {
             e?.stopPropagation?.();
-            handleFavoriteClick();
+            handleFavouriteClick();
           }}
           hoverStyle={{ transform: "scale(1.1)" }}
           pressStyle={{ transform: "scale(0.85)", opacity: 0.8 }}
           animation="bouncy"
-          aria-label={isFavorited ? "Remove from favourites" : "Add to favourites"}
+          aria-label={isFavourited ? "Remove from favourites" : "Add to favourites"}
           style={isWeb ? {
             ...getGlassmorphismStyles("medium"),
             transition: "transform 0.15s ease-out, opacity 0.15s ease-out",
           } : undefined}
         >
-          <HeartIcon filled={isFavorited} color="#F45314" />
+          <HeartIcon filled={isFavourited} color="#F45314" />
         </GlassmorphismCard>
 
         {/* iOS Liquid Glass Info Card - Bottom */}
