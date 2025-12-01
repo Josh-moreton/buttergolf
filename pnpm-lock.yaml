@@ -141,6 +141,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@types/react':
+        specifier: 19.1.0
+        version: 19.1.0
     devDependencies:
       '@tamagui/cli':
         specifier: 'catalog:'

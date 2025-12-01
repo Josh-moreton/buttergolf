@@ -1,96 +1,52 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
 
 catalog:
-  # =============================================================================
-  # TAMAGUI UI FRAMEWORK
-  # All Tamagui packages MUST be pinned to the exact same version
-  # =============================================================================
-  "tamagui": "1.135.7"
-  "@tamagui/animations-css": "1.135.7"
-  "@tamagui/animations-react-native": "1.135.7"
-  "@tamagui/babel-plugin": "1.135.7"
-  "@tamagui/card": "1.135.7"
-  "@tamagui/cli": "1.135.7"
-  "@tamagui/config": "1.135.7"
-  "@tamagui/core": "1.135.7"
-  "@tamagui/font-inter": "1.135.7"
-  "@tamagui/lucide-icons": "1.135.7"
-  "@tamagui/next-plugin": "1.135.7"
-  "@tamagui/next-theme": "1.135.7"
-  "@tamagui/polyfill-dev": "1.135.7"
-  "@tamagui/sheet": "1.135.7"
-  "@tamagui/shorthands": "1.135.7"
-  "@tamagui/themes": "1.135.7"
-  "@tamagui/toast": "1.135.7"
-
-  # =============================================================================
-  # REACT ECOSYSTEM
-  # React versions MUST match across web and mobile
-  # =============================================================================
-  "react": "19.1.0"
-  "react-dom": "19.1.0"
-  "react-native": "0.81.5"
-  "react-native-web": "0.21.2"
-  "react-native-safe-area-context": "5.6.2"
-  "react-native-screens": "4.16.0"
-  "react-native-svg": "15.12.1"
-
-  # =============================================================================
-  # CROSS-PLATFORM NAVIGATION
-  # =============================================================================
-  "solito": "5.0.0"
-
-  # =============================================================================
-  # NEXT.JS
-  # =============================================================================
-  "next": "16.0.1"
-
-  # =============================================================================
-  # TYPESCRIPT & TYPE DEFINITIONS
-  # Type packages should match the runtime package versions
-  # =============================================================================
-  "typescript": "5.9.3"
-  "@types/react": "19.1.10"
-  "@types/react-dom": "19.1.0"
-  "@types/node": "22.15.30"
-  "tsx": "4.20.6"
-
-  # =============================================================================
-  # ESLINT
-  # =============================================================================
-  "eslint": "9.28.0"
-  "eslint-config-expo": "10.0.0"
-  "eslint-config-next": "16.0.1"
-
-  # =============================================================================
-  # PRISMA (Database ORM)
-  # Client and CLI versions MUST match exactly
-  # =============================================================================
-  "prisma": "6.19.0"
-  "@prisma/client": "6.19.0"
-
-  # =============================================================================
-  # CLERK (Authentication)
-  # =============================================================================
-  "@clerk/nextjs": "6.34.1"
-  "@clerk/clerk-expo": "2.17.3"
-
-  # =============================================================================
-  # EXPO
-  # Expo packages are tied to SDK version - update together
-  # =============================================================================
-  "expo": "54.0.25"
-  "expo-auth-session": "7.0.9"
-  "expo-font": "14.0.9"
-  "expo-secure-store": "15.0.7"
-  "expo-splash-screen": "31.0.11"
-  "expo-status-bar": "3.0.8"
-
-  # =============================================================================
-  # TESTING
-  # =============================================================================
-  "vitest": "4.0.13"
-  "@testing-library/react": "16.3.0"
-  "@testing-library/jest-dom": "6.9.1"
+  '@clerk/clerk-expo': 2.17.3
+  '@clerk/nextjs': 6.34.1
+  '@prisma/client': 6.19.0
+  '@tamagui/animations-css': 1.135.7
+  '@tamagui/animations-react-native': 1.135.7
+  '@tamagui/babel-plugin': 1.135.7
+  '@tamagui/card': 1.135.7
+  '@tamagui/cli': 1.135.7
+  '@tamagui/config': 1.135.7
+  '@tamagui/core': 1.135.7
+  '@tamagui/font-inter': 1.135.7
+  '@tamagui/lucide-icons': 1.135.7
+  '@tamagui/next-plugin': 1.135.7
+  '@tamagui/next-theme': 1.135.7
+  '@tamagui/polyfill-dev': 1.135.7
+  '@tamagui/sheet': 1.135.7
+  '@tamagui/shorthands': 1.135.7
+  '@tamagui/themes': 1.135.7
+  '@tamagui/toast': 1.135.7
+  '@testing-library/jest-dom': 6.9.1
+  '@testing-library/react': 16.3.0
+  '@types/node': 22.15.30
+  '@types/react': 19.1.10
+  '@types/react-dom': 19.1.0
+  eslint: 9.28.0
+  eslint-config-expo: 10.0.0
+  eslint-config-next: 16.0.1
+  expo: 54.0.25
+  expo-auth-session: 7.0.9
+  expo-font: 14.0.9
+  expo-secure-store: 15.0.7
+  expo-splash-screen: 31.0.11
+  expo-status-bar: 3.0.8
+  next: 16.0.1
+  prisma: 6.19.0
+  react: 19.1.0
+  react-dom: 19.1.0
+  react-native: 0.81.5
+  react-native-safe-area-context: 5.6.2
+  react-native-screens: 4.16.0
+  react-native-svg: 15.12.1
+  react-native-web: 0.21.2
+  solito: 5.0.0
+  tamagui: 1.135.7
+  tsx: 4.20.6
+  typescript: 5.9.3
+  vitest: 4.0.13
