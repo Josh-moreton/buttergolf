@@ -9,7 +9,6 @@ import {
   Row,
   Text,
   Heading,
-  VanillaCreamBackground,
 } from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 
@@ -23,7 +22,7 @@ export function RecentlyListedSectionClient({
   const router = useRouter();
 
   return (
-    <VanillaCreamBackground paddingVertical="$3xl">
+    <Column backgroundColor="$surface" paddingVertical="$3xl" width="100%">
       <Column
         maxWidth={1440}
         marginHorizontal="auto"
@@ -98,6 +97,6 @@ export function RecentlyListedSectionClient({
           </Link>
         </Row>
       </Column>
-    </VanillaCreamBackground>
+    </Column>
   );
 }

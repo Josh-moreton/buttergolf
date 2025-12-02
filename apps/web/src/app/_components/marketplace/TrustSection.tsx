@@ -6,7 +6,6 @@ import {
   Column,
   Text,
   Heading,
-  VanillaCreamBackground,
 } from "@buttergolf/ui";
 
 const TRUST_ITEMS = [
@@ -34,7 +33,7 @@ const TRUST_ITEMS = [
 
 export function TrustSection() {
   return (
-    <VanillaCreamBackground paddingVertical="$10">
+    <Column backgroundColor="$surface" paddingVertical="$10" width="100%">
       <Column
         maxWidth={1280}
         marginHorizontal="auto"
@@ -99,6 +98,6 @@ export function TrustSection() {
           ))}
         </Column>
       </Column>
-    </VanillaCreamBackground>
+    </Column>
   );
 }
