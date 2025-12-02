@@ -89,11 +89,15 @@ export function AnimatedLogo() {
               d={d}
               fill="transparent"
               stroke={strokeColor}
-              strokeWidth={1}
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1, fill: strokeColor }}
+              initial={{ pathLength: 0, opacity: 0, strokeWidth: 0.5 }}
+              animate={{
+                pathLength: 1,
+                opacity: 1,
+                fill: strokeColor,
+                strokeWidth: 0,
+              }}
               transition={{
                 pathLength: { duration, delay, ease: "easeInOut" },
                 opacity: { duration: 0.3, delay },
@@ -101,6 +105,11 @@ export function AnimatedLogo() {
                   duration: 0.5,
                   delay: delay + duration * 0.7,
                   ease: "easeIn",
+                },
+                strokeWidth: {
+                  duration: 0.3,
+                  delay: delay + duration * 0.7,
+                  ease: "easeOut",
                 },
               }}
             />
