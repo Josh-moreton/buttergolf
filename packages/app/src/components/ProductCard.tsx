@@ -12,15 +12,15 @@ export interface ProductCardProps {
 }
 
 // Heart icon component that works on both platforms
-function HeartIcon({ filled, color }: Readonly<{ filled: boolean; color: string }>) {
+function HeartIcon({ filled }: Readonly<{ filled: boolean }>) {
   if (Platform.OS === "web") {
     return (
       <svg
         width="20"
         height="20"
         viewBox="0 0 24 24"
-        fill={filled ? color : "none"}
-        stroke={color}
+        fill={filled ? "#F45314" : "none"}
+        stroke="#F45314"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -31,7 +31,7 @@ function HeartIcon({ filled, color }: Readonly<{ filled: boolean; color: string 
   }
   // For native, use Text with heart character
   return (
-    <Text fontSize={18} color={color}>
+    <Text fontSize={18} color="$primary">
       {filled ? "♥" : "♡"}
     </Text>
   );
@@ -123,7 +123,7 @@ export function ProductCard({
             transition: "transform 0.15s ease-out, opacity 0.15s ease-out",
           } : undefined}
         >
-          <HeartIcon filled={isFavourited} color="#F45314" />
+          <HeartIcon filled={isFavourited} />
         </GlassmorphismCard>
 
         {/* iOS Liquid Glass Info Card - Bottom */}

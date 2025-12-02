@@ -166,7 +166,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </Text>
             </Link>
             <Text size="$3" color="$ironstone">&gt;</Text>
-            <Text size="$3" color="$ironstone" weight="bold">{product.title}</Text>
+            <Text size="$3" color="$ironstone" fontWeight="bold">{product.title}</Text>
           </Row>
 
           {/* Main Content Grid */}
@@ -260,7 +260,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       borderRadius="$full"
                       zIndex={10}
                     >
-                      <Text size="$4" weight="medium" color="$textInverse">
+                      <Text size="$4" fontWeight="500" color="$textInverse">
                         {selectedImageIndex + 1} / {product.images.length}
                       </Text>
                     </Row>
@@ -283,7 +283,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* Lightbox Modal */}
       {lightboxOpen && (
         <Column
-          position="fixed"
+          style={{ position: "fixed" } as any}
           top={0}
           left={0}
           right={0}
@@ -325,7 +325,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             zIndex={10000}
             padding={0}
           >
-            <Text size="$8" weight="bold" color="$text">✕</Text>
+            <Text size="$8" fontWeight="bold" color="$text">✕</Text>
           </Button>
 
           {/* Navigation Arrows */}
@@ -348,7 +348,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               zIndex={10000}
               padding={0}
             >
-              <Text size="$8" weight="bold" color="$text">←</Text>
+              <Text size="$8" fontWeight="bold" color="$text">←</Text>
             </Button>
           )}
 
@@ -371,7 +371,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               zIndex={10000}
               padding={0}
             >
-              <Text size="$8" weight="bold" color="$text">→</Text>
+              <Text size="$8" fontWeight="bold" color="$text">→</Text>
             </Button>
           )}
 
@@ -405,7 +405,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             borderRadius="$full"
             zIndex={1}
           >
-            <Text size="$5" weight="bold" color="$text">
+            <Text size="$5" fontWeight="bold" color="$text">
               {selectedImageIndex + 1} / {product.images.length}
             </Text>
           </Row>
@@ -415,7 +415,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* Mobile Sticky Bottom Bar */}
       {showMobileBar && (
         <Row
-          position="fixed"
+          style={{ position: "fixed" } as any}
           bottom={0}
           left={0}
           right={0}
@@ -436,7 +436,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <Text size="$2" color="$textMuted">
                 {product.title}
               </Text>
-              <Text size="$6" weight="bold" color="$primary">
+              <Text size="$6" fontWeight="bold" color="$primary">
                 £{product.price.toFixed(2)}
               </Text>
             </Column>

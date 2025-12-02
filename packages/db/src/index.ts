@@ -53,5 +53,7 @@ export { prisma }
 // Re-export Prisma types for type-safe database queries
 // Import from custom output location
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-export type { Prisma, ClubKind, ProductCondition, ShipmentStatus, OrderStatus, OfferStatus } from '../generated/client'
+export type { Prisma, ClubKind, ShipmentStatus, OrderStatus, OfferStatus } from '../generated/client'
+// Re-export enums as values (not type-only) so they can be used at runtime
+export { ProductCondition } from '../generated/client'
 export * from '@buttergolf/constants'
