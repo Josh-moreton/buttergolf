@@ -15,6 +15,9 @@ catalogs:
     '@prisma/client':
       specifier: 6.19.0
       version: 6.19.0
+    '@tamagui/animations-css':
+      specifier: 1.135.7
+      version: 1.135.7
     '@tamagui/animations-react-native':
       specifier: 1.135.7
       version: 1.135.7
@@ -514,6 +517,9 @@ importers:
 
   packages/config:
     dependencies:
+      '@tamagui/animations-css':
+        specifier: 'catalog:'
+        version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
       '@tamagui/animations-react-native':
         specifier: 'catalog:'
         version: 1.135.7(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)

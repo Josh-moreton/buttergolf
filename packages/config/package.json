@@ -8,6 +8,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@tamagui/animations-css": "catalog:",
     "@tamagui/animations-react-native": "catalog:",
     "@tamagui/config": "catalog:",
     "@tamagui/font-inter": "catalog:",
