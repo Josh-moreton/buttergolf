@@ -76,7 +76,6 @@ module.exports = () => {
       "@tamagui/core",
       "@tamagui/web",
       "@tamagui/animations-react-native",
-      "@tamagui/animations-css",
       "@tamagui/card",
       "@tamagui/toast",
       "@tamagui/next-theme",
