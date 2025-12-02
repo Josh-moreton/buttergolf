@@ -37,7 +37,7 @@ export function useFavourites() {
 
         const data = await response.json();
         const favouriteIds = new Set<string>(
-          data.products.map((p: { id: string }) => p.id),
+          (data.products ?? []).map((p: { id: string }) => p.id),
         );
 
         setFavourites(favouriteIds);
@@ -92,7 +92,7 @@ export function useFavourites() {
 
       const data = await response.json();
       const favouriteIds = new Set<string>(
-        data.products.map((p: { id: string }) => p.id),
+        (data.products ?? []).map((p: { id: string }) => p.id),
       );
 
       setFavourites(favouriteIds);

@@ -24,12 +24,12 @@ export async function GET(req: NextRequest) {
     if (!user) {
       // User not synced yet, return empty array
       return NextResponse.json({
-        favourites: [],
+        products: [],
         pagination: {
           page: 1,
           limit: 24,
+          total: 0,
           totalPages: 0,
-          totalCount: 0,
         },
       });
     }
