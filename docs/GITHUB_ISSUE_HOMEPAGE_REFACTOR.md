@@ -5,6 +5,7 @@
 All major components have been successfully implemented and integrated!
 
 ## Overview
+
 Refactor the web homepage to match the provided mockup design with butter orange header, hero carousel, and prominent category grid.
 
 **Reference:** Butter Golf mockup screenshot (orange header, carousel hero, 4-category grid)
@@ -14,6 +15,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ## 📋 Implementation Checklist
 
 ### 1. Unified Butter Header
+
 **Create:** `apps/web/src/app/_components/header/ButterHeader.tsx`
 
 - [x] Single header bar with butter orange background (#E25F2F)
@@ -27,11 +29,13 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - [x] TrustBar updated: Cream background, dismissible with close button
 
 **Layout:**
+
 ```
 [Logo]  HOME  FEATURES  ABOUT  CONTACT    [Search 🔍]  [❤️][🛒][👤]
 ```
 
 **Status:** ✅ COMPLETE
+
 - Created new ButterHeader component with butter orange background
 - Logo uses white version on orange background (50px height)
 - Center navigation with underline hover effect
@@ -42,6 +46,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - Replaced old MarketplaceHeader in layout.tsx
 
 ### 2. Hero Carousel Component
+
 **Create:** `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
 
 - [x] Install carousel library: `pnpm add embla-carousel-react --filter web`
@@ -58,12 +63,14 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - [x] Keyboard navigation (arrow keys)
 
 **Typography Hierarchy (Per Mockup):**
+
 - Title (e.g., "SUMMER GOLF"): 28-42px, medium weight
 - Subtitle (e.g., "SALE"): 64-120px, EXTRA BOLD - THIS IS THE STAR
 - Tagline: "DON'T MISS OUT!" - 16-22px
 - Button and dots on same horizontal line
 
 **Status:** ✅ COMPLETE - MATCHES MOCKUP
+
 - Split layout implemented: carousel left (50%), club image right (50%)
 - Background image (hero-background.avif) applied to entire section
 - Text hierarchy matches mockup:
@@ -79,6 +86,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - Responsive on mobile (hides club image, full-width carousel)
 
 ### 3. Category Grid Component
+
 **Create:** `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
 
 - [x] 4-column grid layout (CSS Grid)
@@ -96,6 +104,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - [x] Add/find images for bags, shoes, clothing
 
 **Grid Layout:**
+
 ```
 ┌─────────┬─────────┬─────────┬─────────┐
 │  CLUBS  │  BAGS   │  SHOES  │CLOTHING │
@@ -105,6 +114,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ```
 
 **Status:** ✅ COMPLETE - MATCHES MOCKUP
+
 - White cards with 3px solid orange (#E25F2F) borders
 - Images use objectFit: contain (not cover) to show white padding
 - Flexbox column layout: image container (flex:1, 20px padding) + orange label bar
@@ -112,7 +122,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - Hover effects: translateY(-4px) lift + shadow
 - Responsive breakpoints:
   - Mobile: 1 column
-  - Tablet (768px+): 2 columns  
+  - Tablet (768px+): 2 columns
   - Desktop (1024px+): 4 columns
 - Links to filtered category pages
 - Section title: "SHOP BY CATEGORY" in butter orange
@@ -120,6 +130,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - Visual design now matches mockup exactly
 
 ### 4. Update Page Layout
+
 **Modify:** `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
 
 - [x] Remove `marginTop={180}` (new header is shorter)
@@ -131,23 +142,26 @@ Refactor the web homepage to match the provided mockup design with butter orange
   - `<FooterSection />`
 
 **New Structure:**
+
 ```tsx
 <Column>
-  <HeroCarousel />         {/* NEW - 50vh carousel */}
-  <CategoryGrid />         {/* NEW - 4-col grid */}
+  <HeroCarousel /> {/* NEW - 50vh carousel */}
+  <CategoryGrid /> {/* NEW - 4-col grid */}
   <RecentlyListedSection /> {/* Keep existing */}
-  <NewsletterSection />     {/* Keep existing */}
-  <FooterSection />         {/* Keep existing */}
+  <NewsletterSection /> {/* Keep existing */}
+  <FooterSection /> {/* Keep existing */}
 </Column>
 ```
 
 **Status:** ✅ COMPLETE
+
 - Updated marginTop to 100px (matches new header height)
 - Replaced HeroSectionNew with HeroCarousel
 - Added CategoryGrid after carousel
 - All sections properly integrated
 
 ### 5. Update Layout Component
+
 **Modify:** `apps/web/src/app/layout.tsx`
 
 - [x] Replace `<MarketplaceHeader />` with `<ButterHeader />`
@@ -157,6 +171,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - [x] Update themeColor to butter orange: `#E25F2F`
 
 **Status:** ✅ COMPLETE
+
 - Replaced MarketplaceHeader with ButterHeader
 - Removed TrustBar from layout
 - Theme color updated to butter orange
@@ -168,6 +183,7 @@ Refactor the web homepage to match the provided mockup design with butter orange
 ## 🎨 Design Specifications
 
 ### Header
+
 - **Background**: #E25F2F (butter orange)
 - **Height**: 80px
 - **Logo**: Height 50px, white version on orange (use `logo-white.png`)
@@ -176,12 +192,14 @@ Refactor the web homepage to match the provided mockup design with butter orange
 - **Icons**: 24px, white, hover opacity 80%
 
 ### Carousel
+
 - **Height**: 50vh (400-600px range)
 - **Text**: Gotham Bold 72px title, Gotham Black 96px subtitle
 - **Colors**: Orange text (#E25F2F), cream bg (#FEFAD6)
 - **CTA**: Orange button, white text, 16px 48px padding
 
 ### Category Grid
+
 - **Container**: Max-width 1440px
 - **Grid**: 4 columns, 24px gap
 - **Cards**: Square (1:1), 12px radius, soft shadow
@@ -205,6 +223,7 @@ pnpm add embla-carousel-react --filter web
 ## 🚀 Implementation Order
 
 ### Day 1: Header
+
 1. Create `ButterHeader.tsx` with orange background
 2. Add logo image (white version)
 3. Center navigation links
@@ -212,7 +231,8 @@ pnpm add embla-carousel-react --filter web
 5. Add user/cart/wishlist icons
 6. Update `layout.tsx`
 
-### Day 2: Hero Carousel  
+### Day 2: Hero Carousel
+
 1. Install embla-carousel-react
 2. Create `HeroCarousel.tsx`
 3. Add 3 sample slides with existing images
@@ -221,6 +241,7 @@ pnpm add embla-carousel-react --filter web
 6. Make responsive
 
 ### Day 3: Category Grid
+
 1. Create `CategoryGrid.tsx`
 2. Build 4-column CSS Grid
 3. Style orange labels
@@ -229,6 +250,7 @@ pnpm add embla-carousel-react --filter web
 6. Make responsive
 
 ### Day 4: Integration
+
 1. Update `MarketplaceHomeClient.tsx`
 2. Replace old hero with carousel
 3. Add category grid
@@ -236,6 +258,7 @@ pnpm add embla-carousel-react --filter web
 5. Fix z-index/overflow issues
 
 ### Day 5: Polish
+
 1. Cross-browser testing
 2. Mobile device testing
 3. Performance optimization
@@ -247,6 +270,7 @@ pnpm add embla-carousel-react --filter web
 ## ✅ Acceptance Criteria
 
 ### Header
+
 - [x] Single orange header bar (~80px)
 - [x] Logo image visible on left (white version)
 - [x] Navigation centered (desktop only)
@@ -257,6 +281,7 @@ pnpm add embla-carousel-react --filter web
 - [x] TrustBar cream background and dismissible
 
 ### Carousel
+
 - [x] 50vh height, full width
 - [x] 3+ slides with autoplay (5s)
 - [x] Dot indicators
@@ -265,6 +290,7 @@ pnpm add embla-carousel-react --filter web
 - [x] CTA buttons functional
 
 ### Category Grid
+
 - [x] 4 columns desktop
 - [x] 2 cols tablet, 1 col mobile
 - [x] Orange labels on images
@@ -273,6 +299,7 @@ pnpm add embla-carousel-react --filter web
 - [x] Fast image loading
 
 ### Performance
+
 - [x] Page load < 3s
 - [x] Lighthouse score > 90
 - [x] CLS < 0.1
@@ -284,36 +311,45 @@ pnpm add embla-carousel-react --filter web
 ## 🎯 Comparison: Before → After
 
 ### Header
+
 **Before:**
+
 - 3 layers (TrustBar + Header + Nav) = 180px
 - Green theme (#13a063)
 - Text logo only
 - Search on left
 
 **After:**
+
 - Single layer = 80px
 - Butter orange (#E25F2F)
 - Image logo
 - Search on right
 
 ### Hero
+
 **Before:**
+
 - Static background image
 - Text overlay only
 - 70vh height
 
 **After:**
+
 - Carousel with 3-5 slides
 - Large text + CTA per slide
 - 50vh height
 
 ### Categories
+
 **Before:**
+
 - Hidden in nav menu
 - Small buttons
 - Horizontal scroll
 
 **After:**
+
 - Prominent grid below hero
 - Large images with labels
 - 4-column layout

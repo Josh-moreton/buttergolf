@@ -53,31 +53,31 @@ packages/ui/
 
 ```tsx
 // Text colors
-$text           // Primary text
-$textSecondary  // Secondary text
-$textTertiary   // Tertiary text
-$textMuted      // Muted/placeholder text
-$textInverse    // Text on dark backgrounds
+$text; // Primary text
+$textSecondary; // Secondary text
+$textTertiary; // Tertiary text
+$textMuted; // Muted/placeholder text
+$textInverse; // Text on dark backgrounds
 
 // Backgrounds
-$background     // Main app background
-$surface        // Surface/card backgrounds
-$card           // Card-specific background
+$background; // Main app background
+$surface; // Surface/card backgrounds
+$card; // Card-specific background
 
 // Borders
-$border         // Default borders
-$borderHover    // Hover state
-$borderFocus    // Focus state
+$border; // Default borders
+$borderHover; // Hover state
+$borderFocus; // Focus state
 
 // Brand
-$primary        // Primary brand color
-$secondary      // Secondary brand color
+$primary; // Primary brand color
+$secondary; // Secondary brand color
 
 // Status
-$success        // Positive actions
-$error          // Error states
-$warning        // Warning states
-$info           // Informational states
+$success; // Positive actions
+$error; // Error states
+$warning; // Warning states
+$info; // Informational states
 ```
 
 #### Brand Tokens (USE IN COMPONENT LIBRARY ONLY)
@@ -218,6 +218,7 @@ import { Text, Heading, Label, Paragraph } from "@buttergolf/ui";
 ```
 
 **Understanding `size` for Text:**
+
 - The `size` prop on Text/SizableText/Paragraph uses Tamagui's standard numbered scale
 - Each size maps to a specific font size and line height
 - This is the official Tamagui pattern for typography sizing
@@ -467,13 +468,13 @@ Card.Footer = CardFooter;
 
 ## Token Usage Guidelines
 
-| Context | Use This | Not This | Reason |
-|---------|----------|----------|--------|
-| **App code (99%)** | `$primary`, `$text`, `$background` | `$spicedClementine`, `#F45314` | Semantic tokens enable theme switching |
-| **Component defaults** | `$ironstone`, `$vanillaCream` | Direct hex values | Brand tokens are foundation |
-| **Font sizes** | `size="$5"` on Text | `fontSize="$5"` or `size="md"` | Standard Tamagui pattern |
-| **Component sizes** | `size="$4"` on Button | `size="medium"` | Numeric tokens are standard |
-| **Layout spacing** | `gap="$md"`, `padding="$lg"` | `gap="md"` (without $) | Direct token references |
+| Context                | Use This                           | Not This                       | Reason                                 |
+| ---------------------- | ---------------------------------- | ------------------------------ | -------------------------------------- |
+| **App code (99%)**     | `$primary`, `$text`, `$background` | `$spicedClementine`, `#F45314` | Semantic tokens enable theme switching |
+| **Component defaults** | `$ironstone`, `$vanillaCream`      | Direct hex values              | Brand tokens are foundation            |
+| **Font sizes**         | `size="$5"` on Text                | `fontSize="$5"` or `size="md"` | Standard Tamagui pattern               |
+| **Component sizes**    | `size="$4"` on Button              | `size="medium"`                | Numeric tokens are standard            |
+| **Layout spacing**     | `gap="$md"`, `padding="$lg"`       | `gap="md"` (without $)         | Direct token references                |
 
 ## Understanding Size - Two Different Meanings
 
@@ -504,6 +505,7 @@ Card.Footer = CardFooter;
 ```
 
 Both use the same `size` prop name, but control different aspects:
+
 - **Text**: Font size and line height
 - **Components**: Height, padding, and dimensions
 
@@ -575,7 +577,7 @@ describe("Button", () => {
     const { getByText } = render(
       <TamaguiProvider config={config}>
         <Button>Click me</Button>
-      </TamaguiProvider>
+      </TamaguiProvider>,
     );
 
     expect(getByText("Click me")).toBeTruthy();
@@ -594,8 +596,8 @@ All components in this package MUST work on both web and mobile:
 import { View, Text, Button } from "tamagui";
 
 // ❌ WRONG - Platform-specific
-import { Image } from "next/image";          // Web-only
-import { FlatList } from "react-native";     // Mobile-only (unless wrapped)
+import { Image } from "next/image"; // Web-only
+import { FlatList } from "react-native"; // Mobile-only (unless wrapped)
 ```
 
 ### Platform Checks (When Necessary)
@@ -667,6 +669,7 @@ import { GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 ```
 
 **Features:**
+
 - Backdrop blur (frosted glass effect)
 - Semi-transparent background
 - Curved corners (`$2xl` = 26px radius)
@@ -674,17 +677,20 @@ import { GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 - Subtle border with transparency
 
 **Intensity Variants:**
+
 - `light` - 20% opacity, subtle effect
 - `medium` - 40% opacity, balanced (default)
 - `strong` - 60% opacity, more opaque
 - `dark` - 30% black opacity with lighter border
 
 **Blur Variants:**
+
 - `light` - 10px blur
 - `medium` - 20px blur (default)
 - `strong` - 30px blur
 
 **When to Use:**
+
 - Navigation bars that need to float over content
 - Information overlays on images (product cards)
 - Modal dialogs with see-through backgrounds
@@ -692,6 +698,7 @@ import { GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 - Floating action buttons or panels
 
 **Example - Product Card Overlay:**
+
 ```tsx
 <div style={{ position: "relative" }}>
   <img src={product.image} />
@@ -715,11 +722,9 @@ import { GlassmorphismCard, getGlassmorphismStyles } from "@buttergolf/ui";
 ```
 
 **Example - Navigation Bar:**
+
 ```tsx
-<Row
-  backgroundColor="transparent"
-  paddingVertical="$3"
->
+<Row backgroundColor="transparent" paddingVertical="$3">
   <Row
     maxWidth={1280}
     backgroundColor="rgba(255, 255, 255, 0.4)"
@@ -754,7 +759,7 @@ const Row = styled(XStack, {
 });
 
 // ✅ CORRECT - Use native props directly
-<XStack gap="$md">Content</XStack>
+<XStack gap="$md">Content</XStack>;
 ```
 
 ### Issue: Components not rendering
@@ -764,6 +769,7 @@ const Row = styled(XStack, {
 ### Issue: Styles not applying
 
 **Solution**:
+
 1. Check token prefix ($) is included
 2. Verify token exists in theme config
 3. Check Tamagui babel plugin is configured

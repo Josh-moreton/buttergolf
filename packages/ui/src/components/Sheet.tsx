@@ -26,13 +26,7 @@
 // Re-export Sheet and its components
 // Note: Tamagui Sheet is a ForwardRefExoticComponent that comes with built-in compound components.
 // We re-export both the main Sheet component and individual subcomponents for flexibility.
-export {
-  Sheet,
-  Handle,
-  Overlay,
-  Frame,
-  SheetScrollView,
-} from '@tamagui/sheet';
+export { Sheet, Handle, Overlay, Frame, SheetScrollView } from "@tamagui/sheet";
 
 // Export types
-export type { SheetProps } from '@tamagui/sheet';
+export type { SheetProps } from "@tamagui/sheet";

@@ -6,7 +6,7 @@ import { useState } from "react";
 // Visible checkbox box
 const CheckboxBox = styled(Stack, {
   name: "CheckboxBox",
-  tag: "div" as 'div',
+  tag: "div" as const,
   width: 20,
   height: 20,
   borderWidth: 2,
@@ -92,7 +92,8 @@ export function Checkbox({
   name,
   value,
 }: CheckboxProps) {
-  const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
+  const [uncontrolledChecked, setUncontrolledChecked] =
+    useState(defaultChecked);
 
   const isControlled = controlledChecked !== undefined;
   const checked = isControlled ? controlledChecked : uncontrolledChecked;
@@ -125,14 +126,16 @@ export function Checkbox({
       aria-checked={checked}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
-      {...({ onKeyDown: handleKeyDown } as { onKeyDown: React.KeyboardEventHandler })}
+      {...({ onKeyDown: handleKeyDown } as {
+        onKeyDown: React.KeyboardEventHandler;
+      })}
     >
       {/* Hidden input for form integration */}
       <input
         type="checkbox"
         checked={checked}
         disabled={disabled}
-        onChange={() => { }}
+        onChange={() => {}}
         id={id}
         name={name}
         value={value}

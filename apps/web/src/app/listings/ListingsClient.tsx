@@ -45,11 +45,21 @@ export function ListingsClient({
           // Merge URL params (they take precedence)
           return {
             category: searchParams.get("category") || parsed.category || null,
-            conditions: searchParams.getAll("condition") || parsed.conditions || [],
-            minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
-            maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
+            conditions:
+              searchParams.getAll("condition") || parsed.conditions || [],
+            minPrice:
+              Number.parseFloat(searchParams.get("minPrice") || "") ||
+              parsed.minPrice ||
+              initialFilters.priceRange.min,
+            maxPrice:
+              Number.parseFloat(searchParams.get("maxPrice") || "") ||
+              parsed.maxPrice ||
+              initialFilters.priceRange.max,
             brands: searchParams.getAll("brand") || parsed.brands || [],
-            showFavoritesOnly: searchParams.get("favorites") === "true" || parsed.showFavoritesOnly || false,
+            showFavouritesOnly:
+              searchParams.get("favourites") === "true" ||
+              parsed.showFavouritesOnly ||
+              false,
           };
         } catch {
           // Fall through to URL parsing
@@ -61,10 +71,14 @@ export function ListingsClient({
     return {
       category: searchParams.get("category") || null,
       conditions: searchParams.getAll("condition") || [],
-      minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
-      maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
+      minPrice:
+        Number.parseFloat(searchParams.get("minPrice") || "") ||
+        initialFilters.priceRange.min,
+      maxPrice:
+        Number.parseFloat(searchParams.get("maxPrice") || "") ||
+        initialFilters.priceRange.max,
       brands: searchParams.getAll("brand") || [],
-      showFavoritesOnly: searchParams.get("favorites") === "true" || false,
+      showFavouritesOnly: searchParams.get("favourites") === "true" || false,
     };
   };
 
@@ -102,13 +116,13 @@ export function ListingsClient({
       for (const b of newFilters.brands) {
         params.append("brand", b);
       }
-      if (newFilters.showFavoritesOnly) params.set("favorites", "true");
+      if (newFilters.showFavouritesOnly) params.set("favourites", "true");
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
 
       return `/listings?${params.toString()}`;
     },
-    [initialFilters.priceRange]
+    [initialFilters.priceRange],
   );
 
   // Calculate total pages
@@ -125,12 +139,14 @@ export function ListingsClient({
         for (const c of filters.conditions) {
           params.append("condition", c);
         }
-        if (filters.minPrice) params.set("minPrice", filters.minPrice.toString());
-        if (filters.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
+        if (filters.minPrice)
+          params.set("minPrice", filters.minPrice.toString());
+        if (filters.maxPrice)
+          params.set("maxPrice", filters.maxPrice.toString());
         for (const b of filters.brands) {
           params.append("brand", b);
         }
-        if (filters.showFavoritesOnly) params.set("favorites", "true");
+        if (filters.showFavouritesOnly) params.set("favourites", "true");
         params.set("sort", sort);
         params.set("page", newPage.toString());
         params.set("limit", "24");
@@ -154,7 +170,7 @@ export function ListingsClient({
         setIsLoading(false);
       }
     },
-    [filters, sort, router, buildURL]
+    [filters, sort, router, buildURL],
   );
 
   // Debounced fetch on filter change
@@ -188,7 +204,7 @@ export function ListingsClient({
       minPrice: initialFilters.priceRange.min,
       maxPrice: initialFilters.priceRange.max,
       brands: [],
-      showFavoritesOnly: false,
+      showFavouritesOnly: false,
     };
     setFilters(defaultFilters);
     if (globalThis.window !== undefined) {
@@ -250,10 +266,7 @@ export function ListingsClient({
 
             <Row gap="$md" alignItems="center">
               {/* Mobile filter button */}
-              <Row
-                display="flex"
-                $gtLg={{ display: "none" }}
-              >
+              <Row display="flex" $gtLg={{ display: "none" }}>
                 <Button
                   size="$4"
                   chromeless
@@ -307,7 +320,9 @@ export function ListingsClient({
                       padding="$0"
                       onPress={() =>
                         handleFilterChange({
-                          conditions: filters.conditions.filter((c) => c !== condition),
+                          conditions: filters.conditions.filter(
+                            (c) => c !== condition,
+                          ),
                         })
                       }
                       aria-label={`Remove ${condition} filter`}
@@ -349,7 +364,9 @@ export function ListingsClient({
             <FilterSidebar
               filters={filters}
               availableBrands={availableFilters?.availableBrands || []}
-              priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
+              priceRange={
+                availableFilters?.priceRange || { min: 0, max: 10000 }
+              }
               onChange={handleFilterChange}
               onClearAll={handleClearAll}
             />

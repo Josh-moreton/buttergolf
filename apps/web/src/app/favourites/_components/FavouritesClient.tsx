@@ -8,8 +8,10 @@ import { FooterSection } from "../../_components/marketplace/FooterSection";
 import { HorizontalProductCard } from "./HorizontalProductCard";
 import { MakeOfferModal } from "../../products/[id]/_components/MakeOfferModal";
 
-interface FavoritesResponse {
-  products: Array<ProductCardData & { favoritedAt: string; description?: string }>;
+interface FavouritesResponse {
+  products: Array<
+    ProductCardData & { favouritedAt: string; description?: string }
+  >;
   pagination: {
     page: number;
     limit: number;
@@ -18,17 +20,19 @@ interface FavoritesResponse {
   };
 }
 
-export function FavoritesClient() {
+export function FavouritesClient() {
   const router = useRouter();
-  const [products, setProducts] = useState<FavoritesResponse["products"]>([]);
+  const [products, setProducts] = useState<FavouritesResponse["products"]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [offerModalProduct, setOfferModalProduct] = useState<(ProductCardData & { description?: string; price: number }) | null>(null);
+  const [offerModalProduct, setOfferModalProduct] = useState<
+    (ProductCardData & { description?: string; price: number }) | null
+  >(null);
 
   useEffect(() => {
-    async function fetchFavorites() {
+    async function fetchFavourites() {
       try {
         setLoading(true);
         setError(null);
@@ -43,18 +47,20 @@ export function FavoritesClient() {
           throw new Error("Failed to fetch favourites");
         }
 
-        const data: FavoritesResponse = await response.json();
+        const data: FavouritesResponse = await response.json();
         setProducts(data.products);
         setTotalPages(data.pagination.totalPages);
       } catch (err) {
-        console.error("Error fetching favorites:", err);
-        setError(err instanceof Error ? err.message : "Failed to load favourites");
+        console.error("Error fetching favourites:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to load favourites",
+        );
       } finally {
         setLoading(false);
       }
     }
 
-    fetchFavorites();
+    fetchFavourites();
   }, [page, router]);
 
   // Make Offer Handler
@@ -90,7 +96,7 @@ export function FavoritesClient() {
     router.push(`/checkout?productId=${productId}`);
   };
 
-  // Remove from Favorites Handler
+  // Remove from favourites Handler
   const handleRemove = async (productId: string) => {
     try {
       const response = await fetch(`/api/favourites/${productId}`, {
@@ -126,9 +132,9 @@ export function FavoritesClient() {
       >
         <Column maxWidth={1400} marginHorizontal="auto" gap="$md" width="100%">
           <Heading level={1} color="$text">
-            My Favorites
+            My favourites
           </Heading>
-          <Text fontSize="$6" color="$textSecondary">
+          <Text size="$6" color="$textSecondary">
             Your saved golf equipment listings
           </Text>
         </Column>
@@ -147,7 +153,7 @@ export function FavoritesClient() {
           <Column alignItems="center" paddingVertical="$2xl">
             <Spinner size="lg" color="$primary" />
             <Text marginTop="$md" color="$textSecondary">
-              Loading your favorites...
+              Loading your favourites...
             </Text>
           </Column>
         )}
@@ -161,7 +167,7 @@ export function FavoritesClient() {
             borderRadius="$md"
             padding="$xl"
           >
-            <Text color="$error" weight="semibold" fontSize="$6">
+            <Text color="$error" weight="semibold" size="$6">
               Error
             </Text>
             <Text marginTop="$xs" color="$error">
@@ -198,8 +204,14 @@ export function FavoritesClient() {
             <Heading level={2} color="$text" textAlign="center">
               No favourites yet
             </Heading>
-            <Text size="$5" color="$textSecondary" textAlign="center" maxWidth={500}>
-              Browse our marketplace to discover amazing golf equipment and save your favourites here for easy access.
+            <Text
+              size="$5"
+              color="$textSecondary"
+              textAlign="center"
+              maxWidth={500}
+            >
+              Browse our marketplace to discover amazing golf equipment and save
+              your favourites here for easy access.
             </Text>
             <Button
               size="$5"
@@ -242,7 +254,12 @@ export function FavoritesClient() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <Row gap="$md" alignItems="center" justifyContent="center" marginTop="$xl">
+              <Row
+                gap="$md"
+                alignItems="center"
+                justifyContent="center"
+                marginTop="$xl"
+              >
                 <Button
                   size="$4"
                   backgroundColor={page === 1 ? "$backgroundPress" : "$surface"}
@@ -258,13 +275,15 @@ export function FavoritesClient() {
                   Previous
                 </Button>
 
-                <Text fontSize="$4" color="$text">
+                <Text size="$4" color="$text">
                   Page {page} of {totalPages}
                 </Text>
 
                 <Button
                   size="$4"
-                  backgroundColor={page === totalPages ? "$backgroundPress" : "$surface"}
+                  backgroundColor={
+                    page === totalPages ? "$backgroundPress" : "$surface"
+                  }
                   color={page === totalPages ? "$textMuted" : "$text"}
                   borderWidth={1}
                   borderColor="$border"
@@ -285,12 +304,14 @@ export function FavoritesClient() {
       {/* Make Offer Modal */}
       {offerModalProduct && (
         <MakeOfferModal
-          product={{
-            id: offerModalProduct.id,
-            title: offerModalProduct.title,
-            price: offerModalProduct.price,
-            images: [{ url: offerModalProduct.imageUrl }],
-          } as any}
+          product={
+            {
+              id: offerModalProduct.id,
+              title: offerModalProduct.title,
+              price: offerModalProduct.price,
+              images: [{ url: offerModalProduct.imageUrl }],
+            } as any
+          }
           isOpen={!!offerModalProduct}
           onClose={() => setOfferModalProduct(null)}
           onSubmitOffer={handleSubmitOffer}

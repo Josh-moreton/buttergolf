@@ -126,7 +126,7 @@ Sitemap: https://buttergolf.com/server-sitemap.xml
     "@type": "Offer",
     "url": "https://buttergolf.com/products/123",
     "priceCurrency": "GBP",
-    "price": 250.00,
+    "price": 250.0,
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "seller": {
@@ -151,12 +151,7 @@ Sitemap: https://buttergolf.com/server-sitemap.xml
     "details": [
       {
         "appID": "YOUR_TEAM_ID.com.buttergolf.app",
-        "paths": [
-          "/products/*",
-          "/sell",
-          "/rounds",
-          "/"
-        ]
+        "paths": ["/products/*", "/sell", "/rounds", "/"]
       }
     ]
   },
@@ -167,6 +162,7 @@ Sitemap: https://buttergolf.com/server-sitemap.xml
 ```
 
 **Expo Config:** `apps/mobile/app.json`
+
 ```json
 {
   "ios": {
@@ -190,15 +186,14 @@ Sitemap: https://buttergolf.com/server-sitemap.xml
     "target": {
       "namespace": "android_app",
       "package_name": "com.buttergolf.app",
-      "sha256_cert_fingerprints": [
-        "REPLACE_WITH_YOUR_SHA256_FINGERPRINT"
-      ]
+      "sha256_cert_fingerprints": ["REPLACE_WITH_YOUR_SHA256_FINGERPRINT"]
     }
   }
 ]
 ```
 
 **Expo Config:** `apps/mobile/app.json`
+
 ```json
 {
   "android": {
@@ -245,31 +240,31 @@ Steps:
 
 ## 📊 Implementation Coverage
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| XML Sitemap (Static) | ✅ Complete | Auto-generated during build |
-| XML Sitemap (Dynamic) | ✅ Complete | Server route for products |
-| robots.txt | ✅ Complete | References both sitemaps |
-| JSON-LD: Organization | ✅ Complete | Home page |
-| JSON-LD: WebSite | ✅ Complete | Home page with SearchAction |
-| JSON-LD: Product | ✅ Complete | Product detail pages |
-| iOS Universal Links | ✅ Complete | Needs Team ID update |
-| Android App Links | ✅ Complete | Needs SHA256 fingerprint |
-| CI Validation | ✅ Complete | Automated checks |
-| Documentation | ✅ Complete | Full implementation guide |
+| Feature               | Status      | Notes                       |
+| --------------------- | ----------- | --------------------------- |
+| XML Sitemap (Static)  | ✅ Complete | Auto-generated during build |
+| XML Sitemap (Dynamic) | ✅ Complete | Server route for products   |
+| robots.txt            | ✅ Complete | References both sitemaps    |
+| JSON-LD: Organization | ✅ Complete | Home page                   |
+| JSON-LD: WebSite      | ✅ Complete | Home page with SearchAction |
+| JSON-LD: Product      | ✅ Complete | Product detail pages        |
+| iOS Universal Links   | ✅ Complete | Needs Team ID update        |
+| Android App Links     | ✅ Complete | Needs SHA256 fingerprint    |
+| CI Validation         | ✅ Complete | Automated checks            |
+| Documentation         | ✅ Complete | Full implementation guide   |
 
 ## 🎯 Usage Example
 
 ### Adding JSON-LD to a New Page
 
 ```tsx
-import { SeoJsonLd } from '@/components/seo';
+import { SeoJsonLd } from "@/components/seo";
 
 export default function MyPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "YourSchemaType",
-    "name": "Your Content",
+    name: "Your Content",
     // ... more properties
   };
 

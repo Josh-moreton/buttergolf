@@ -16,14 +16,14 @@ Your ButterGolf monorepo is now properly configured for Next.js (web) and Expo (
 
 ### 3. Package Updates ✅
 
- Updated `@my-scope/ui` to support both React and React Native
- Added `@my-scope/ui` to both web and mobile apps
+Updated `@my-scope/ui` to support both React and React Native
+Added `@my-scope/ui` to both web and mobile apps
 
 - Created central exports file for UI package
 
 - Updated `turbo.json` to handle Expo build outputs (`.expo/**`)
 - Added support for `start` task
- You can now import from `@my-scope/ui` in both apps:
+  You can now import from `@my-scope/ui` in both apps:
 - Configured proper caching for both platforms
 
 ### 5. Root Package Scripts ✅
@@ -33,7 +33,7 @@ import { Button } from '@my-scope/ui';
 - Added `dev:web` - run only web app
 - Added `dev:ios` - run only mobile app
 - Added `clean` and `clean-install` - clear caches and reinstall
-import { Button } from '@my-scope/ui';
+  import { Button } from '@my-scope/ui';
 
 ### 6. Documentation ✅
 
@@ -83,13 +83,13 @@ You can now import from `@repo/ui` in both apps:
 **In web app (`apps/web/src/app/page.tsx`):**
 
 ```tsx
-import { Button } from '@repo/ui';
+import { Button } from "@repo/ui";
 ```
 
 **In mobile app (`apps/mobile/App.tsx`):**
 
 ```tsx
-import { Button } from '@repo/ui';
+import { Button } from "@repo/ui";
 ```
 
 Note: The current Button component uses DOM elements (`<button>`) which won't work in React Native. You'll need to create platform-specific versions or use a cross-platform UI library.
@@ -105,12 +105,12 @@ For truly shared components, consider:
 
 ## Important Files Reference
 
-| File | Purpose |
-|------|---------|
-| `metro.config.js` | Metro bundler configuration for Expo monorepo |
-| `pnpm-workspace.yaml` | Defines workspace packages |
-| `turbo.json` | Turborepo task configuration |
-| `package.json` | Root scripts and dependencies |
+| File                  | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| `metro.config.js`     | Metro bundler configuration for Expo monorepo |
+| `pnpm-workspace.yaml` | Defines workspace packages                    |
+| `turbo.json`          | Turborepo task configuration                  |
+| `package.json`        | Root scripts and dependencies                 |
 
 ## Troubleshooting
 

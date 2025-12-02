@@ -8,34 +8,34 @@ export default async function Page() {
   const products = await getRecentProducts(12);
 
   // Structured data for the home page
-  const siteUrl = process.env.SITE_URL || 'https://buttergolf.com';
+  const siteUrl = process.env.SITE_URL || "https://buttergolf.com";
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "ButterGolf",
-    "url": siteUrl,
-    "logo": `${siteUrl}/_assets/logo.png`,
-    "description": "P2P Marketplace for Golf Equipment",
-    "sameAs": [
+    name: "ButterGolf",
+    url: siteUrl,
+    logo: `${siteUrl}/_assets/logo.png`,
+    description: "P2P Marketplace for Golf Equipment",
+    sameAs: [
       // Add social media profiles when available
-    ]
+    ],
   };
 
   const webSiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "ButterGolf",
-    "url": siteUrl,
-    "description": "Buy and sell golf equipment with fellow golfers",
-    "potentialAction": {
+    name: "ButterGolf",
+    url: siteUrl,
+    description: "Buy and sell golf equipment with fellow golfers",
+    potentialAction: {
       "@type": "SearchAction",
-      "target": {
+      target: {
         "@type": "EntryPoint",
-        "urlTemplate": `${siteUrl}/products?q={search_term_string}`
+        urlTemplate: `${siteUrl}/products?q={search_term_string}`,
       },
-      "query-input": "required name=search_term_string"
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (

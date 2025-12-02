@@ -63,7 +63,11 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
   };
 
   const renderContent = () => {
-    if (user.hasConnectAccount && user.onboardingComplete && user.accountStatus === "active") {
+    if (
+      user.hasConnectAccount &&
+      user.onboardingComplete &&
+      user.accountStatus === "active"
+    ) {
       return (
         <>
           <Text color="$textSecondary">
@@ -73,18 +77,13 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row gap="$md">
             <Button
               size="$4"
-
               onPress={() => {
                 /* View dashboard */
               }}
             >
               View Dashboard
             </Button>
-            <Button
-              size="$4"
-
-              onPress={() => setShowOnboarding(true)}
-            >
+            <Button size="$4" onPress={() => setShowOnboarding(true)}>
               Update Account
             </Button>
           </Row>
@@ -104,11 +103,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             account information to enable full functionality.
           </Text>
           <Row>
-            <Button
-              size="$4"
-
-              onPress={() => setShowOnboarding(true)}
-            >
+            <Button size="$4" onPress={() => setShowOnboarding(true)}>
               Resolve Issues
             </Button>
           </Row>
@@ -124,11 +119,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             business days.
           </Text>
           <Row>
-            <Button
-              size="$4"
-
-              onPress={() => setShowOnboarding(true)}
-            >
+            <Button size="$4" onPress={() => setShowOnboarding(true)}>
               View Status
             </Button>
           </Row>
@@ -144,11 +135,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             onboarding process to start selling.
           </Text>
           <Row gap="$md">
-            <Button
-              size="$4"
-
-              onPress={() => setShowOnboarding(true)}
-            >
+            <Button size="$4" onPress={() => setShowOnboarding(true)}>
               Continue Onboarding
             </Button>
           </Row>
@@ -164,11 +151,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           products.
         </Text>
         <Row>
-          <Button
-            size="$5"
-
-            onPress={() => setShowOnboarding(true)}
-          >
+          <Button size="$5" onPress={() => setShowOnboarding(true)}>
             Become a Seller
           </Button>
         </Row>

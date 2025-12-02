@@ -2,41 +2,41 @@
 
 import { useState, useEffect } from "react";
 import {
-    Column,
-    Row,
-    Heading,
-    Text,
-    Button,
-    Input,
-    Card,
+  Column,
+  Row,
+  Heading,
+  Text,
+  Button,
+  Input,
+  Card,
 } from "@buttergolf/ui";
 import type { SellerProduct } from "./SellerProductCard";
 
 interface EditProductModalProps {
-    product: SellerProduct;
-    onClose: () => void;
-    onSave: (productId: string, updates: Partial<SellerProduct>) => Promise<void>;
+  product: SellerProduct;
+  onClose: () => void;
+  onSave: (productId: string, updates: Partial<SellerProduct>) => Promise<void>;
 }
 
 interface Category {
-    id: string;
-    name: string;
-    slug: string;
+  id: string;
+  name: string;
+  slug: string;
 }
 
 interface Brand {
-    id: string;
-    name: string;
-    slug: string;
+  id: string;
+  name: string;
+  slug: string;
 }
 
 const CONDITIONS = [
-    { value: "NEW", label: "Brand New" },
-    { value: "LIKE_NEW", label: "Like New" },
-    { value: "EXCELLENT", label: "Excellent" },
-    { value: "GOOD", label: "Good" },
-    { value: "FAIR", label: "Fair" },
-    { value: "POOR", label: "Poor" },
+  { value: "NEW", label: "Brand New" },
+  { value: "LIKE_NEW", label: "Like New" },
+  { value: "EXCELLENT", label: "Excellent" },
+  { value: "GOOD", label: "Good" },
+  { value: "FAIR", label: "Fair" },
+  { value: "POOR", label: "Poor" },
 ];
 
 /**
@@ -44,311 +44,337 @@ const CONDITIONS = [
  *
  * Inline modal for editing product details
  */
-export function EditProductModal({ product, onClose, onSave }: EditProductModalProps) {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [brands, setBrands] = useState<Brand[]>([]);
+export function EditProductModal({
+  product,
+  onClose,
+  onSave,
+}: EditProductModalProps) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
 
-    const [formData, setFormData] = useState({
-        title: product.title,
-        description: product.description,
-        price: product.price.toString(),
-        condition: product.condition,
-        brandId: product.brandId || "",
-        model: product.model || "",
-        categoryId: product.categoryId,
-    });
+  const [formData, setFormData] = useState({
+    title: product.title,
+    description: product.description,
+    price: product.price.toString(),
+    condition: product.condition,
+    brandId: product.brandId || "",
+    model: product.model || "",
+    categoryId: product.categoryId,
+  });
 
-    // Load categories and brands on mount
-    useEffect(() => {
-        async function loadData() {
-            try {
-                const [categoriesRes, brandsRes] = await Promise.all([
-                    fetch("/api/categories"),
-                    fetch("/api/brands"),
-                ]);
+  // Load categories and brands on mount
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [categoriesRes, brandsRes] = await Promise.all([
+          fetch("/api/categories"),
+          fetch("/api/brands"),
+        ]);
 
-                if (!categoriesRes.ok) {
-                    throw new Error(`Failed to load categories: ${categoriesRes.status}`);
-                }
-                if (!brandsRes.ok) {
-                    throw new Error(`Failed to load brands: ${brandsRes.status}`);
-                }
-
-                const categoriesData = await categoriesRes.json();
-                const brandsData = await brandsRes.json();
-
-                if (!Array.isArray(categoriesData)) {
-                    throw new Error("Categories data is not an array");
-                }
-                if (!Array.isArray(brandsData)) {
-                    throw new Error("Brands data is not an array");
-                }
-
-                setCategories(categoriesData);
-                setBrands(brandsData);
-            } catch (err) {
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to load categories or brands"
-                );
-                setCategories([]);
-                setBrands([]);
-            }
+        if (!categoriesRes.ok) {
+          throw new Error(`Failed to load categories: ${categoriesRes.status}`);
         }
-        void loadData();
-    }, []);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
-
-        // Validate required fields
-        if (!formData.title || !formData.description || !formData.price || !formData.categoryId || !formData.brandId) {
-            setError("Please fill in all required fields");
-            setLoading(false);
-            return;
+        if (!brandsRes.ok) {
+          throw new Error(`Failed to load brands: ${brandsRes.status}`);
         }
 
-        try {
-            await onSave(product.id, {
-                ...formData,
-                price: Number.parseFloat(formData.price),
-            });
-            onClose();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to update product");
-            setLoading(false);
-        }
-    };
+        const categoriesData = await categoriesRes.json();
+        const brandsData = await brandsRes.json();
 
-    return (
-        <div
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 1000,
-                padding: "16px",
-            }}
-            onClick={onClose}
-        >
-            <Card
-                variant="elevated"
-                padding="$0"
-                maxWidth={600}
-                width="100%"
-                maxHeight="90vh"
-                style={{ overflow: "auto" }}
-                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        if (!Array.isArray(categoriesData)) {
+          throw new Error("Categories data is not an array");
+        }
+        if (!Array.isArray(brandsData)) {
+          throw new Error("Brands data is not an array");
+        }
+
+        setCategories(categoriesData);
+        setBrands(brandsData);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load categories or brands",
+        );
+        setCategories([]);
+        setBrands([]);
+      }
+    }
+    void loadData();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    // Validate required fields
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.price ||
+      !formData.categoryId ||
+      !formData.brandId
+    ) {
+      setError("Please fill in all required fields");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await onSave(product.id, {
+        ...formData,
+        price: Number.parseFloat(formData.price),
+      });
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update product");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 1000,
+        padding: "16px",
+      }}
+      onClick={onClose}
+    >
+      <Card
+        variant="elevated"
+        padding="$0"
+        maxWidth={600}
+        width="100%"
+        maxHeight="90vh"
+        style={{ overflow: "auto" }}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <Column gap="$0" width="100%">
+            {/* Header */}
+            <Column
+              gap="$sm"
+              padding="$lg"
+              borderBottomWidth={1}
+              borderBottomColor="$border"
             >
-                <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-                    <Column gap="$0" width="100%">
-                        {/* Header */}
-                        <Column
-                            gap="$sm"
-                            padding="$lg"
-                            borderBottomWidth={1}
-                            borderBottomColor="$border"
-                        >
-                            <Row alignItems="center" justifyContent="space-between">
-                                <Heading level={3}>Edit Listing</Heading>
-                                <Button size="$3" chromeless onPress={onClose}>
-                                    ✕
-                                </Button>
-                            </Row>
-                        </Column>
+              <Row alignItems="center" justifyContent="space-between">
+                <Heading level={3}>Edit Listing</Heading>
+                <Button size="$3" chromeless onPress={onClose}>
+                  ✕
+                </Button>
+              </Row>
+            </Column>
 
-                        {/* Form Fields */}
-                        <Column gap="$lg" padding="$lg">
-                            {/* Title */}
-                            <Column gap="$xs">
-                                <Text weight="medium">Title *</Text>
-                                <Input
-                                    value={formData.title}
-                                    onChangeText={(value) =>
-                                        setFormData({ ...formData, title: value })
-                                    }
-                                    placeholder="e.g., TaylorMade Stealth 2 Driver"
-                                    size="$4"
-                                    required
-                                />
-                            </Column>
+            {/* Form Fields */}
+            <Column gap="$lg" padding="$lg">
+              {/* Title */}
+              <Column gap="$xs">
+                <Text weight="medium">Title *</Text>
+                <Input
+                  value={formData.title}
+                  onChangeText={(value) =>
+                    setFormData({ ...formData, title: value })
+                  }
+                  placeholder="e.g., TaylorMade Stealth 2 Driver"
+                  size="$4"
+                  required
+                />
+              </Column>
 
-                            {/* Description */}
-                            <Column gap="$xs">
-                                <Text weight="medium">Description *</Text>
-                                <textarea
-                                    value={formData.description}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, description: e.target.value })
-                                    }
-                                    placeholder="Describe the condition, any wear, included accessories..."
-                                    required
-                                    rows={4}
-                                    style={{
-                                        padding: "12px 18px",
-                                        fontSize: "15px",
-                                        borderRadius: "24px",
-                                        border: "1px solid var(--color-ironstone)",
-                                        backgroundColor: "white",
-                                        width: "100%",
-                                        fontFamily: "inherit",
-                                        resize: "vertical",
-                                    }}
-                                />
-                            </Column>
+              {/* Description */}
+              <Column gap="$xs">
+                <Text weight="medium">Description *</Text>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  placeholder="Describe the condition, any wear, included accessories..."
+                  required
+                  rows={4}
+                  style={{
+                    padding: "12px 18px",
+                    fontSize: "15px",
+                    borderRadius: "24px",
+                    border: "1px solid var(--color-ironstone)",
+                    backgroundColor: "white",
+                    width: "100%",
+                    fontFamily: "inherit",
+                    resize: "vertical",
+                  }}
+                />
+              </Column>
 
-                            {/* Price & Condition */}
-                            <Row gap="$md" flexWrap="wrap">
-                                <Column gap="$xs" flex={1} minWidth={200}>
-                                    <Text weight="medium">Price (£) *</Text>
-                                    <Input
-                                        value={formData.price}
-                                        onChangeText={(value) =>
-                                            setFormData({ ...formData, price: value })
-                                        }
-                                        placeholder="0.00"
-                                        size="$4"
-                                        inputMode="decimal"
-                                        required
-                                    />
-                                </Column>
+              {/* Price & Condition */}
+              <Row gap="$md" flexWrap="wrap">
+                <Column gap="$xs" flex={1} minWidth={200}>
+                  <Text weight="medium">Price (£) *</Text>
+                  <Input
+                    value={formData.price}
+                    onChangeText={(value) =>
+                      setFormData({ ...formData, price: value })
+                    }
+                    placeholder="0.00"
+                    size="$4"
+                    inputMode="decimal"
+                    required
+                  />
+                </Column>
 
-                                <Column gap="$xs" flex={1} minWidth={200}>
-                                    <Text weight="medium">Condition *</Text>
-                                    <select
-                                        value={formData.condition}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, condition: e.target.value })
-                                        }
-                                        required
-                                        style={{
-                                            padding: "12px 18px",
-                                            fontSize: "15px",
-                                            borderRadius: "24px",
-                                            border: "1px solid var(--color-ironstone)",
-                                            backgroundColor: "white",
-                                            width: "100%",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        {CONDITIONS.map((cond) => (
-                                            <option key={cond.value} value={cond.value}>
-                                                {cond.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </Column>
-                            </Row>
+                <Column gap="$xs" flex={1} minWidth={200}>
+                  <Text weight="medium">Condition *</Text>
+                  <select
+                    value={formData.condition}
+                    onChange={(e) =>
+                      setFormData({ ...formData, condition: e.target.value })
+                    }
+                    required
+                    style={{
+                      padding: "12px 18px",
+                      fontSize: "15px",
+                      borderRadius: "24px",
+                      border: "1px solid var(--color-ironstone)",
+                      backgroundColor: "white",
+                      width: "100%",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {CONDITIONS.map((cond) => (
+                      <option key={cond.value} value={cond.value}>
+                        {cond.label}
+                      </option>
+                    ))}
+                  </select>
+                </Column>
+              </Row>
 
-                            {/* Brand */}
-                            <Column gap="$xs">
-                                <Text weight="medium">Brand *</Text>
-                                <select
-                                    value={formData.brandId}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, brandId: e.target.value })
-                                    }
-                                    required
-                                    style={{
-                                        padding: "12px 18px",
-                                        fontSize: "15px",
-                                        borderRadius: "24px",
-                                        border: "1px solid var(--color-ironstone)",
-                                        backgroundColor: "white",
-                                        width: "100%",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <option value="">Select a brand</option>
-                                    {brands.map((brand) => (
-                                        <option key={brand.id} value={brand.id}>
-                                            {brand.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </Column>
+              {/* Brand */}
+              <Column gap="$xs">
+                <Text weight="medium">Brand *</Text>
+                <select
+                  value={formData.brandId}
+                  onChange={(e) =>
+                    setFormData({ ...formData, brandId: e.target.value })
+                  }
+                  required
+                  style={{
+                    padding: "12px 18px",
+                    fontSize: "15px",
+                    borderRadius: "24px",
+                    border: "1px solid var(--color-ironstone)",
+                    backgroundColor: "white",
+                    width: "100%",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">Select a brand</option>
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </select>
+              </Column>
 
-                            {/* Model */}
-                            <Column gap="$xs">
-                                <Text weight="medium">Model</Text>
-                                <Input
-                                    value={formData.model}
-                                    onChangeText={(value) =>
-                                        setFormData({ ...formData, model: value })
-                                    }
-                                    placeholder="e.g., Stealth 2, Apex 21"
-                                    size="$4"
-                                />
-                            </Column>
+              {/* Model */}
+              <Column gap="$xs">
+                <Text weight="medium">Model</Text>
+                <Input
+                  value={formData.model}
+                  onChangeText={(value) =>
+                    setFormData({ ...formData, model: value })
+                  }
+                  placeholder="e.g., Stealth 2, Apex 21"
+                  size="$4"
+                />
+              </Column>
 
-                            {/* Category */}
-                            <Column gap="$xs">
-                                <Text weight="medium">Category *</Text>
-                                <select
-                                    value={formData.categoryId}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, categoryId: e.target.value })
-                                    }
-                                    required
-                                    style={{
-                                        padding: "12px 18px",
-                                        fontSize: "15px",
-                                        borderRadius: "24px",
-                                        border: "1px solid var(--color-ironstone)",
-                                        backgroundColor: "white",
-                                        width: "100%",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <option value="">Select a category</option>
-                                    {categories.map((category) => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </Column>
+              {/* Category */}
+              <Column gap="$xs">
+                <Text weight="medium">Category *</Text>
+                <select
+                  value={formData.categoryId}
+                  onChange={(e) =>
+                    setFormData({ ...formData, categoryId: e.target.value })
+                  }
+                  required
+                  style={{
+                    padding: "12px 18px",
+                    fontSize: "15px",
+                    borderRadius: "24px",
+                    border: "1px solid var(--color-ironstone)",
+                    backgroundColor: "white",
+                    width: "100%",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </Column>
 
-                            {/* Error Message */}
-                            {error && (
-                                <Card variant="filled" padding="$sm" backgroundColor="$errorLight">
-                                    <Text color="$error" size="$3">
-                                        {error}
-                                    </Text>
-                                </Card>
-                            )}
-                        </Column>
+              {/* Error Message */}
+              {error && (
+                <Card
+                  variant="filled"
+                  padding="$sm"
+                  backgroundColor="$errorLight"
+                >
+                  <Text color="$error" size="$3">
+                    {error}
+                  </Text>
+                </Card>
+              )}
+            </Column>
 
-                        {/* Footer Actions */}
-                        <Column
-                            gap="$sm"
-                            padding="$lg"
-                            borderTopWidth={1}
-                            borderTopColor="$border"
-                        >
-                            <Row gap="$sm" justifyContent="flex-end">
-                                <Button size="$4" chromeless onPress={onClose} disabled={loading}>
-                                    Cancel
-                                </Button>
-                                <Button size="$4" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$4" paddingVertical="$3" disabled={loading}>
-                                    {loading ? "Saving..." : "Save Changes"}
-                                </Button>
-                            </Row>
-                        </Column>
-                    </Column>
-                </form>
-            </Card>
-        </div>
-    );
+            {/* Footer Actions */}
+            <Column
+              gap="$sm"
+              padding="$lg"
+              borderTopWidth={1}
+              borderTopColor="$border"
+            >
+              <Row gap="$sm" justifyContent="flex-end">
+                <Button
+                  size="$4"
+                  chromeless
+                  onPress={onClose}
+                  disabled={loading}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="$4"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                  paddingHorizontal="$4"
+                  paddingVertical="$3"
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save Changes"}
+                </Button>
+              </Row>
+            </Column>
+          </Column>
+        </form>
+      </Card>
+    </div>
+  );
 }

@@ -46,6 +46,7 @@ buttergolf/
 ### Package Naming
 
 All internal packages use the `@buttergolf/` namespace:
+
 - `@buttergolf/ui`
 - `@buttergolf/app`
 - `@buttergolf/db`
@@ -55,6 +56,7 @@ All internal packages use the `@buttergolf/` namespace:
 ### Next.js 16+ Middleware Convention
 
 **CRITICAL**: Next.js 16+ uses `src/proxy.ts` NOT `src/middleware.ts`
+
 - The middleware file convention was renamed
 - Always use `proxy.ts` for route protection and middleware logic
 
@@ -63,11 +65,13 @@ All internal packages use the `@buttergolf/` namespace:
 **This is a Solito-based monorepo, NOT Expo Router**
 
 #### How Navigation Works:
+
 - **Web**: Next.js App Router (file-based routing in `app/` directory)
 - **Mobile**: Expo + React Navigation (manual route registration in `App.tsx`)
 - **Shared**: Solito translates between platforms automatically
 
 #### Package Structure:
+
 - `packages/app/` - Shared cross-platform screens and business logic
   - Uses `solito/link` and `solito/navigation` for platform-agnostic navigation
   - Example: `packages/app/src/features/categories/category-list-screen.tsx`
@@ -85,6 +89,7 @@ All internal packages use the `@buttergolf/` namespace:
 3. **Export** from `packages/app/src/index.ts`
 4. **Web (automatic)**: Create matching route in `apps/web/src/app/[route]/page.tsx`
 5. **Mobile (manual)**: Register in `apps/mobile/App.tsx`:
+
    ```typescript
    // Add to linking config
    const linking = {
@@ -158,27 +163,27 @@ $pureWhite: #FFFFFF         // Base white
 
 ```tsx
 // Text colors
-$text           // Primary text
-$textSecondary  // Secondary text
-$textTertiary   // Tertiary text
-$textMuted      // Muted/placeholder text
-$textInverse    // Text on dark backgrounds
+$text; // Primary text
+$textSecondary; // Secondary text
+$textTertiary; // Tertiary text
+$textMuted; // Muted/placeholder text
+$textInverse; // Text on dark backgrounds
 
 // Backgrounds
-$background     // Main app background
-$surface        // Surface/card backgrounds
-$card           // Card-specific background
+$background; // Main app background
+$surface; // Surface/card backgrounds
+$card; // Card-specific background
 
 // Borders
-$border         // Default borders
-$borderHover    // Hover state borders
-$borderFocus    // Focus state borders
+$border; // Default borders
+$borderHover; // Hover state borders
+$borderFocus; // Focus state borders
 
 // Status colors
-$success        // Positive actions/states
-$error          // Error states
-$warning        // Warning states
-$info           // Informational states
+$success; // Positive actions/states
+$error; // Error states
+$warning; // Warning states
+$info; // Informational states
 ```
 
 ### Component Usage Patterns
@@ -265,6 +270,7 @@ import { Button } from "@buttergolf/ui";
 **Why this matters:** Using `fontSize` bypasses Tamagui's variant system and causes invisible text on React Native (lineHeight becomes 1.5px instead of proper pixel values from the font config). The ESLint rule `react/forbid-component-props` catches this mistake at development time.
 
 **Error message you'll see:**
+
 ```
 Use size="$token" instead of fontSize prop on Text components.
 fontSize bypasses the Tamagui variant system and causes invisible
@@ -414,6 +420,259 @@ Row and Column components do NOT have custom variants. Always use native Tamagui
 <Text color={isActive ? "primary" : "default"}>Menu Item</Text>
 ```
 
+## Design System Compliance Guidelines
+
+### Overview
+
+ButterGolf has achieved **95%+ design system compliance** through systematic refactoring and enforcement of Tamagui best practices. All new code MUST follow these guidelines to maintain consistency and code quality.
+
+### ✅ DO: Required Patterns
+
+#### 1. Always Use Semantic Color Tokens
+
+```tsx
+// ✅ CORRECT - Semantic tokens (always preferred)
+<Button backgroundColor="$primary" color="$textInverse">Submit</Button>
+<Text color="$text">Primary text</Text>
+<Text color="$textSecondary">Secondary text</Text>
+<View borderColor="$border" backgroundColor="$surface">Content</View>
+
+// ⚠️ USE SPARINGLY - Brand tokens (only in component libraries)
+<Text color="$spicedClementine">Always orange (no theme support)</Text>
+
+// ❌ NEVER - Raw hex values
+<Button backgroundColor="#F45314">Submit</Button>
+<Text color="#323232">Wrong!</Text>
+```
+
+**Available Semantic Tokens:**
+
+- Text: `$text`, `$textSecondary`, `$textTertiary`, `$textMuted`, `$textInverse`
+- Backgrounds: `$background`, `$surface`, `$card`
+- Borders: `$border`, `$borderHover`, `$borderFocus`, `$fieldBorder`
+- Status: `$success`, `$error`, `$warning`, `$info`
+- Brand: `$primary`, `$primaryLight`, `$secondary`, `$secondaryLight`
+
+#### 2. Use Size Tokens on Text Components
+
+```tsx
+// ✅ CORRECT - Use size with numeric tokens
+<Text size="$4">Small (14px)</Text>
+<Text size="$5">Medium (15px) - DEFAULT</Text>
+<Text size="$6">Large (16px)</Text>
+<Heading level={2} size="$9">Page Title (40px)</Heading>
+
+// ❌ NEVER - fontSize prop is blocked by ESLint
+<Text fontSize="$5">Wrong!</Text>
+<Text fontSize={14}>Wrong!</Text>
+```
+
+#### 3. Use Spacing Tokens
+
+```tsx
+// ✅ CORRECT - Token-based spacing
+<Column gap="$md" padding="$lg">
+  <Text>Content</Text>
+</Column>
+
+<Row paddingHorizontal="$xl" paddingVertical="$md">
+  <Button>Action</Button>
+</Row>
+
+// ❌ NEVER - Raw pixel values
+<Column style={{ padding: "20px", gap: "16px" }}>Wrong!</Column>
+```
+
+**Available Spacing Tokens:**
+
+- `$xs` = 4px
+- `$sm` = 8px
+- `$md` = 16px
+- `$lg` = 24px
+- `$xl` = 32px
+- `$2xl` = 48px
+- `$3xl` = 64px
+
+#### 4. Use Tamagui Components (Never Raw HTML)
+
+```tsx
+// ✅ CORRECT - Tamagui components
+<Column gap="$md">
+  <Heading level={2}>Title</Heading>
+  <Text>Description</Text>
+  <Button onPress={handleClick}>Action</Button>
+</Column>
+
+// ❌ NEVER - Raw HTML elements
+<div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+  <h2>Title</h2>
+  <p>Description</p>
+  <button onClick={handleClick}>Action</button>
+</div>
+```
+
+#### 5. Use Brand Background Helpers
+
+```tsx
+// ✅ CORRECT - Brand color backgrounds for visual distinctiveness
+<VanillaCreamBackground padding="$2xl">
+  <Heading level={2}>Trust & Safety</Heading>
+  <Text>We verify all sellers...</Text>
+</VanillaCreamBackground>
+
+<LemonHazeCard size="md">
+  <Text weight="semibold">Pro Tip</Text>
+  <Text>Upload high-quality photos!</Text>
+</LemonHazeCard>
+
+// ❌ WRONG - Plain white everywhere
+<Column backgroundColor="$surface">
+  <Text>Generic section</Text>
+</Column>
+```
+
+**When to Use:**
+
+- VanillaCreamBackground: Section alternation, hero sections, empty states, trust sections
+- LemonHazeBackground: Sidebars, selected states, callout sections
+- LemonHazeCard: Tip cards, info callouts, highlighted content
+- VanillaCreamCard: Empty states, placeholder content, featured content
+
+### ❌ DON'T: Anti-Patterns to Avoid
+
+#### 1. Never Use Raw HTML in App Code
+
+```tsx
+// ❌ WRONG
+<div style={{ padding: "20px" }}>
+  <h2 style={{ fontSize: "24px", color: "#323232" }}>Title</h2>
+  <p style={{ color: "#545454" }}>Text</p>
+  <button style={{ background: "#F45314" }}>Click</button>
+</div>
+
+// ✅ CORRECT
+<Column padding="$lg">
+  <Heading level={2} color="$text">Title</Heading>
+  <Text color="$textSecondary">Text</Text>
+  <Button backgroundColor="$primary">Click</Button>
+</Column>
+```
+
+#### 2. Never Use fontSize Prop on Text
+
+```tsx
+// ❌ WRONG - ESLint will error
+<Text fontSize="$5">This fails linting</Text>
+<Text fontSize={16}>Also fails</Text>
+
+// ✅ CORRECT
+<Text size="$5">This passes linting</Text>
+```
+
+#### 3. Never Hardcode Colors
+
+```tsx
+// ❌ WRONG
+<Text color="#323232">Dark text</Text>
+<Button backgroundColor="#F45314">Orange button</Button>
+<View borderColor="#EDEDED">Content</View>
+
+// ✅ CORRECT
+<Text color="$text">Dark text</Text>
+<Button backgroundColor="$primary">Orange button</Button>
+<View borderColor="$border">Content</View>
+```
+
+#### 4. Never Use Raw Pixel Values for Spacing
+
+```tsx
+// ❌ WRONG
+<Column style={{ padding: "20px", gap: "16px", margin: "24px" }}>
+
+// ✅ CORRECT
+<Column padding="$lg" gap="$md" margin="$lg">
+```
+
+### Component-Specific Guidelines
+
+#### Form Components
+
+Always use design system form components:
+
+```tsx
+// ✅ CORRECT
+<Input size="md" placeholder="Email" />
+<Select size="md" value={value} onValueChange={setValue}>
+  <option value="option1">Option 1</option>
+</Select>
+<TextArea size="md" placeholder="Description" rows={4} />
+<RadioGroup value={selected} onValueChange={setSelected}>
+  <Radio value="option1" label="Option 1" />
+  <Radio value="option2" label="Option 2" />
+</RadioGroup>
+
+// ❌ NEVER use raw HTML
+<input type="text" placeholder="Email" />
+<select><option>Option 1</option></select>
+<textarea placeholder="Description" />
+```
+
+#### Buttons
+
+```tsx
+// ✅ CORRECT - Tamagui Button with tokens
+<Button
+  size="$5"
+  backgroundColor="$primary"
+  color="$textInverse"
+  onPress={handleClick}
+>
+  Submit
+</Button>
+
+// ❌ WRONG - Raw HTML button
+<button style={{ background: "#F45314" }} onClick={handleClick}>
+  Submit
+</button>
+```
+
+#### Headings
+
+```tsx
+// ✅ CORRECT - Heading component with size tokens
+<Heading level={2} size="$9" color="$text">
+  Page Title
+</Heading>
+
+// ❌ WRONG - Raw HTML with inline styles
+<h2 style={{ fontSize: "clamp(28px, 5vw, 40px)", color: "#323232" }}>
+  Page Title
+</h2>
+```
+
+### Pre-Commit Checklist
+
+Before committing code, verify:
+
+- [ ] No raw HTML elements (`<div>`, `<h1>-<h6>`, `<p>`, `<button>`, `<input>`, `<select>`, `<textarea>`)
+- [ ] No `fontSize` prop on Text components (use `size` instead)
+- [ ] No hardcoded hex colors (use semantic tokens like `$primary`, `$text`)
+- [ ] No raw pixel values for spacing (use `$xs`, `$sm`, `$md`, `$lg`, `$xl`, `$2xl`, `$3xl`)
+- [ ] All form inputs use design system components (Input, Select, TextArea, Radio)
+- [ ] Brand colors (Vanilla Cream, Lemon Haze) used where appropriate for visual interest
+
+### Enforcement
+
+**ESLint Rules:**
+
+- `react/forbid-component-props` - Blocks `fontSize` on Text components
+- Future: `react/forbid-elements` - Will block raw HTML elements
+
+**Type System:**
+
+- TypeScript strict mode catches token typos
+- Tamagui's type system prevents invalid prop combinations
+
 ## Development Workflow
 
 ### Commands
@@ -535,6 +794,7 @@ pnpm add @buttergolf/ui --filter mobile
 ### Data Fetching
 
 **Web (Server Components):**
+
 ```tsx
 // app/page.tsx
 import { db } from "@buttergolf/db";
@@ -546,18 +806,20 @@ export default async function Page() {
 ```
 
 **Mobile (Client-side):**
+
 ```tsx
 // App.tsx
 const [data, setData] = useState([]);
 
 useEffect(() => {
   fetch("/api/courses")
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(setData);
 }, []);
 ```
 
 **Shared Screen:**
+
 ```tsx
 // packages/app/src/features/courses/course-list-screen.tsx
 interface CourseListScreenProps {
@@ -568,7 +830,7 @@ interface CourseListScreenProps {
 export function CourseListScreen({ data, onFetchData }: CourseListScreenProps) {
   return (
     <Column gap="$md">
-      {data.map(course => (
+      {data.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}
     </Column>
@@ -579,6 +841,7 @@ export function CourseListScreen({ data, onFetchData }: CourseListScreenProps) {
 ### Authentication (Clerk)
 
 **Web:**
+
 ```tsx
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -590,6 +853,7 @@ export default async function Page() {
 ```
 
 **Mobile:**
+
 ```tsx
 import { useUser } from "@clerk/clerk-expo";
 
@@ -607,8 +871,8 @@ function Screen() {
 
 ```tsx
 // ❌ WRONG - Causes "Cannot find module '.prisma/client/default'" errors
-import { ProductCondition } from '@prisma/client'
-import type { Prisma } from '@prisma/client'
+import { ProductCondition } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 // ✅ CORRECT - Always import from @buttergolf/db
 import { prisma, ProductCondition } from "@buttergolf/db";
@@ -650,12 +914,12 @@ await prisma.course.delete({
 
 ```tsx
 // ❌ WRONG - Causes "SharedArrayBuffer doesn't exist" crash in React Native
-import { JSDOM } from 'jsdom'
-import '@testing-library/jest-dom'
-import { configure } from 'happy-dom'
+import { JSDOM } from "jsdom";
+import "@testing-library/jest-dom";
+import { configure } from "happy-dom";
 
 // ✅ CORRECT - Use React Native Testing Library for mobile
-import { render } from '@testing-library/react-native'
+import { render } from "@testing-library/react-native";
 ```
 
 **Why:** React Native uses Hermes/JSC engines which don't support `SharedArrayBuffer`. Web testing libraries (jsdom, happy-dom) use SharedArrayBuffer and will crash mobile apps.
@@ -751,12 +1015,14 @@ For detailed information about layout patterns and component architecture:
 ### Quick Reference: Layout Patterns
 
 **✅ DO:**
+
 - Use `alignItems` for cross-axis alignment
 - Use `justifyContent` for main-axis alignment
 - Use tokens with `$` prefix (e.g., `gap="$md"`)
 - Use Row/Column for semantic layout
 
 **❌ DON'T:**
+
 - Use removed `align` prop (use `alignItems` instead)
 - Use removed `justify` prop (use `justifyContent` instead)
 - Use gap without `$` prefix (always `gap="$md"`, never `gap="md"`)

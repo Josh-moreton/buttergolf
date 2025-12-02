@@ -1,3 +1,3 @@
-export { HomeScreen } from './home-screen'
+export { HomeScreen } from "./home-screen";
 // Legacy export for backwards compatibility
-export { HomeScreen as LoggedOutHomeScreen } from './home-screen'
+export { HomeScreen as LoggedOutHomeScreen } from "./home-screen";

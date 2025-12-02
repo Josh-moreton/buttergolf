@@ -40,6 +40,7 @@ This guide also documents our authentication setup using Clerk for both platform
 - **Image CDN**: Cloudinary (`cloudinary` + `next-cloudinary`) for image uploads, hosting, and transformations
 
 **CRITICAL: Next.js 16+ Middleware Convention**
+
 - Next.js 16.0.1+ uses `src/proxy.ts` NOT `src/middleware.ts`
 - The middleware file convention was renamed in Next.js 16
 - Always use `proxy.ts` for route protection and middleware logic
@@ -51,6 +52,7 @@ This guide also documents our authentication setup using Clerk for both platform
 The navigation architecture uses **Solito** to share routing logic between Next.js (web) and React Navigation (mobile):
 
 **Package Structure:**
+
 - `packages/app/` - **Shared cross-platform screens and business logic** (works on both web and mobile)
   - Contains: screens, components, hooks, types, navigation config
   - Uses: `solito/link` and `solito/navigation` for platform-agnostic navigation
@@ -64,14 +66,15 @@ The navigation architecture uses **Solito** to share routing logic between Next.
   - Example: Add `<Stack.Screen name="Category">` in `apps/mobile/App.tsx`
 
 **Route Definition (Single Source of Truth):**
+
 ```typescript
 // packages/app/src/navigation/routes.ts
 export const routes = {
-  home: '/',
-  category: '/category/[slug]',
-  productDetail: '/products/[id]',
+  home: "/",
+  category: "/category/[slug]",
+  productDetail: "/products/[id]",
   // ... other routes
-}
+};
 ```
 
 **How to Add a New Screen:**
@@ -85,6 +88,7 @@ export const routes = {
    - Import and render the shared screen component
    - Solito handles the rest automatically
 5. **Mobile (manual):** Register in `apps/mobile/App.tsx`:
+
    ```typescript
    import { MyNewScreen } from "@buttergolf/app/src/features/[feature]";
 
@@ -109,6 +113,7 @@ export const routes = {
    ```
 
 **Common Mistakes to Avoid:**
+
 - ❌ Don't expect Expo Router file-based routing in `apps/mobile/` - it uses React Navigation
 - ❌ Don't create separate screens for web and mobile - use shared `packages/app/` screens
 - ❌ Don't forget to register new routes in BOTH the linking config AND Stack Navigator in `App.tsx`
@@ -213,19 +218,19 @@ $pureWhite: #FFFFFF    // Base white
 **Semantic Status Colors**:
 
 ```tsx
-$success: $successBase;      // Teal (#02aaa4) - Positive actions/states
+$success: $successBase; // Teal (#02aaa4) - Positive actions/states
 $successLight: $successLight; // Light background
-$successDark: $successDark;   // Dark variant
+$successDark: $successDark; // Dark variant
 
-$error: $errorBase;      // Red (#dc2626) - Error states
+$error: $errorBase; // Red (#dc2626) - Error states
 $errorLight: $errorLight; // Error backgrounds
-$errorDark: $errorDark;   // Dark error
+$errorDark: $errorDark; // Dark error
 
-$warning: $warningBase;      // Spiced Clementine - Warning states
+$warning: $warningBase; // Spiced Clementine - Warning states
 $warningLight: $warningLight;
 $warningDark: $warningDark;
 
-$info: $infoBase;      // Blue (#3c50e0) - Informational states
+$info: $infoBase; // Blue (#3c50e0) - Informational states
 $infoLight: $infoLight;
 $infoDark: $infoDark;
 ```
@@ -234,18 +239,18 @@ $infoDark: $infoDark;
 
 ```tsx
 // Light overlays (for dark backgrounds like Burnt Olive)
-$overlayLight10: rgba(255, 255, 255, 0.1)
-$overlayLight20: rgba(255, 255, 255, 0.2)
-$overlayLight30: rgba(255, 255, 255, 0.3)
-$overlayLight40: rgba(255, 255, 255, 0.4)
-$overlayLight60: rgba(255, 255, 255, 0.6)
+$overlayLight10: rgba(255, 255, 255, 0.1);
+$overlayLight20: rgba(255, 255, 255, 0.2);
+$overlayLight30: rgba(255, 255, 255, 0.3);
+$overlayLight40: rgba(255, 255, 255, 0.4);
+$overlayLight60: rgba(255, 255, 255, 0.6);
 
 // Dark overlays (for light backgrounds like Vanilla Cream)
-$overlayDark5: rgba(0, 0, 0, 0.05)
-$overlayDark10: rgba(0, 0, 0, 0.1)
-$overlayDark20: rgba(0, 0, 0, 0.2)
-$overlayDark30: rgba(0, 0, 0, 0.3)
-$overlayDark50: rgba(0, 0, 0, 0.5)
+$overlayDark5: rgba(0, 0, 0, 0.05);
+$overlayDark10: rgba(0, 0, 0, 0.1);
+$overlayDark20: rgba(0, 0, 0, 0.2);
+$overlayDark30: rgba(0, 0, 0, 0.3);
+$overlayDark50: rgba(0, 0, 0, 0.5);
 ```
 
 **Text Colors (Semantic)**:
@@ -691,6 +696,7 @@ import { Button } from "@buttergolf/ui";
 ```
 
 **Why Standard Tamagui Button?**
+
 - Ensures cross-platform consistency (works on web and mobile)
 - Uses standard Tamagui numeric size tokens ($1-$16)
 - No abstraction layer - direct control over styling
@@ -726,26 +732,27 @@ Semantic tokens automatically adapt to theme changes and make intent clear. **Pr
 
 **Token Usage Guidelines:**
 
-| Context | Use This | Not This | Reason |
-|---------|----------|----------|--------|
-| **App code (99% of cases)** | `$primary`, `$text`, `$background`, `$border` | `$spicedClementine`, `$ironstone`, `#F45314` | Semantic tokens enable theme switching |
-| **Component library defaults** | `$ironstone`, `$vanillaCream` | Direct hex values | Brand tokens are the foundation |
-| **When you need a specific color** | `$spicedClementine` (sparingly) | `#F45314` | Token enables tooling & consistency |
+| Context                            | Use This                                      | Not This                                     | Reason                                 |
+| ---------------------------------- | --------------------------------------------- | -------------------------------------------- | -------------------------------------- |
+| **App code (99% of cases)**        | `$primary`, `$text`, `$background`, `$border` | `$spicedClementine`, `$ironstone`, `#F45314` | Semantic tokens enable theme switching |
+| **Component library defaults**     | `$ironstone`, `$vanillaCream`                 | Direct hex values                            | Brand tokens are the foundation        |
+| **When you need a specific color** | `$spicedClementine` (sparingly)               | `#F45314`                                    | Token enables tooling & consistency    |
 
 **Brand Color Token Reference (for component library use):**
 
-| Token | Hex | Use Case |
-|-------|-----|----------|
-| `$ironstone` | #323232 | Primary dark text, headings |
-| `$slateSmoke` | #545454 | Secondary text, muted content |
-| `$cloudMist` | #EDEDED | Borders, dividers, subtle lines |
-| `$vanillaCream` | #FFFAD2 | Light backgrounds, surfaces |
-| `$spicedClementine` | #F45314 | Primary brand color, CTAs |
-| `$burntOlive` | #3E3B2C | Dark accents, secondary brand |
-| `$lemonHaze` | #EDECC3 | Subtle accents, tertiary |
-| `$pureWhite` | #FFFFFF | Pure white for contrast |
+| Token               | Hex     | Use Case                        |
+| ------------------- | ------- | ------------------------------- |
+| `$ironstone`        | #323232 | Primary dark text, headings     |
+| `$slateSmoke`       | #545454 | Secondary text, muted content   |
+| `$cloudMist`        | #EDEDED | Borders, dividers, subtle lines |
+| `$vanillaCream`     | #FFFAD2 | Light backgrounds, surfaces     |
+| `$spicedClementine` | #F45314 | Primary brand color, CTAs       |
+| `$burntOlive`       | #3E3B2C | Dark accents, secondary brand   |
+| `$lemonHaze`        | #EDECC3 | Subtle accents, tertiary        |
+| `$pureWhite`        | #FFFFFF | Pure white for contrast         |
 
 **When to use which:**
+
 - **Semantic tokens** (`$text`, `$background`, `$primary`, etc.) - **USE IN 99% OF APP CODE** for automatic theme switching and maintainability
 - **Brand tokens** (`$ironstone`, `$vanillaCream`, `$spicedClementine`, etc.) - Use ONLY when defining component defaults in `packages/ui` or when you need a specific brand color that absolutely won't change with themes
 
@@ -826,6 +833,7 @@ The word "size" has **TWO COMPLETELY DIFFERENT meanings** in our design system:
 Tamagui's **official SizableText and Paragraph components** use a standard **numbered font size scale** (`$1` through `$16`). The `size` prop is the standard Tamagui pattern for typography sizing.
 
 - ✅ **CORRECT - Use `size` with numbered tokens on Text/SizableText/Paragraph**:
+
   ```tsx
   <Text size="$4">Small (14px)</Text>
   <Text size="$5">Medium (15px) - DEFAULT</Text>
@@ -849,6 +857,7 @@ Tamagui's **official SizableText and Paragraph components** use a standard **num
 These components also use numeric `size` tokens that control **geometric dimensions** (height, padding, width).
 
 - ✅ **CORRECT - Use numeric size tokens on UI components**:
+
   ```tsx
   <Button size="$4">Click me</Button>     // Controls height and padding
   <Input size="$5" />                     // Controls height and padding
@@ -864,10 +873,10 @@ These components also use numeric `size` tokens that control **geometric dimensi
 
 **Summary Table:**
 
-| Component Type | Prop to Use | Valid Values | Controls | Example |
-|----------------|-------------|--------------|----------|---------|
-| **Text, SizableText, Paragraph** | `size` | `$1` - `$16` | Font size & line height | `<Text size="$5">` |
-| **Button, Input, Badge, Spinner** | `size` | `$1` - `$16` | Height, padding, dimensions | `<Button size="$4">` |
+| Component Type                    | Prop to Use | Valid Values | Controls                    | Example              |
+| --------------------------------- | ----------- | ------------ | --------------------------- | -------------------- |
+| **Text, SizableText, Paragraph**  | `size`      | `$1` - `$16` | Font size & line height     | `<Text size="$5">`   |
+| **Button, Input, Badge, Spinner** | `size`      | `$1` - `$16` | Height, padding, dimensions | `<Button size="$4">` |
 
 **Why This Works:**
 
@@ -875,23 +884,24 @@ Tamagui's design system uses numeric tokens for all sizing. Our config defines f
 
 **Font Size Token Reference:**
 
-| Token    | Size (px) | Use Case                 |
-|----------|-----------|--------------------------|
-| `$1`     | 11        | Legal text, tiny labels  |
-| `$2`     | 12        | Captions, metadata       |
-| `$3`     | 13        | Small labels             |
-| `$4`     | 14        | Body small, helper text  |
-| **`$5`** | **15**    | **DEFAULT - Body text**  |
-| `$6`     | 16        | Large body text          |
-| `$7`     | 18        | Subheadings              |
-| `$8`     | 20        | Large subheadings        |
-| `$9`     | 22        | Small headings           |
-| `$10`    | 24        | Medium headings          |
-| `$11`    | 28        | Large headings           |
-| `$12`    | 32        | XL headings              |
-| `$13`+   | 40+       | Hero text                |
+| Token    | Size (px) | Use Case                |
+| -------- | --------- | ----------------------- |
+| `$1`     | 11        | Legal text, tiny labels |
+| `$2`     | 12        | Captions, metadata      |
+| `$3`     | 13        | Small labels            |
+| `$4`     | 14        | Body small, helper text |
+| **`$5`** | **15**    | **DEFAULT - Body text** |
+| `$6`     | 16        | Large body text         |
+| `$7`     | 18        | Subheadings             |
+| `$8`     | 20        | Large subheadings       |
+| `$9`     | 22        | Small headings          |
+| `$10`    | 24        | Medium headings         |
+| `$11`    | 28        | Large headings          |
+| `$12`    | 32        | XL headings             |
+| `$13`+   | 40+       | Hero text               |
 
 **Common Patterns:**
+
 ```tsx
 // Body text (most common)
 <Text size="$5">Regular paragraph text</Text>
@@ -1133,18 +1143,21 @@ export type { MyComponentProps } from "./components/MyComponent";
 **CRITICAL: ALL components now use standard Tamagui numeric size tokens**
 
 1. **Button** - `size` uses **numeric tokens** ($1-$16):
+
    ```tsx
    <Button size="$4">Standard button</Button>  // ✅ Numeric tokens control font size
    <Button size="$5" paddingHorizontal="$5" paddingVertical="$3">Larger</Button>
    ```
 
 2. **Text, Paragraph** - `size` uses **numeric tokens** ($1-$16):
+
    ```tsx
    <Text size="$5">Body text</Text>  // ✅ Use numeric tokens ($1-$16)
    <Paragraph size="$5">Paragraph with theme colors</Paragraph>
    ```
 
 3. **Input, Badge, Spinner** - `size` variant controls **HEIGHT and padding** (custom sizing):
+
    ```tsx
    <Input size="sm" />   // ✅ Custom variants for these components
    <Badge size="md" />   // ✅ sm/md/lg controls height
@@ -1178,6 +1191,7 @@ export type { MyComponentProps } from "./components/MyComponent";
 ```
 
 **Standard Tamagui Button Patterns:**
+
 ```tsx
 // Primary button (pill-shaped)
 <Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$5" paddingVertical="$3" borderRadius="$full">
@@ -1587,6 +1601,7 @@ const round = await prisma.round.create({
 If you see "Drift detected: Your database schema is not in sync with your migration history":
 
 **SOLUTION: Reset and reseed (this is the CORRECT approach)**
+
 ```bash
 cd packages/db
 pnpm prisma migrate reset --force  # Drops DB, reapplies all migrations
@@ -1597,6 +1612,7 @@ pnpm db:seed  # Reseeds all data
 This is the ONLY proper way to resolve drift. It ensures migration history is clean and the database can be deployed to production safely.
 
 **Why This Matters:**
+
 - `db:push` applies changes directly without creating migration files
 - This causes "drift" where your database has columns/tables that aren't in migrations
 - When you try to create a new migration later, Prisma detects drift and you MUST reset
@@ -1606,6 +1622,7 @@ This is the ONLY proper way to resolve drift. It ensures migration history is cl
 **NO EXCEPTIONS:** There is no "quick fix" scenario where db:push is acceptable. Always use migrations.
 
 **Understanding Prisma Commands:**
+
 - `prisma migrate dev` - ✅ THE ONLY COMMAND YOU SHOULD USE - Creates migration files, version-controlled, production-safe
 - `prisma migrate reset --force` - ✅ CORRECT way to resolve drift - Drops database, reapplies all migrations, reseeds data
 - `prisma db push` - ❌ FORBIDDEN - Never use this, it causes drift
@@ -1647,28 +1664,31 @@ pnpm --filter @buttergolf/db prisma-postgres-create-database --name buttergolf
 
 ```typescript
 // ❌ WRONG - NEVER DO THIS - Causes build failures
-import { PrismaClient } from '@prisma/client'
-import { ProductCondition } from '@prisma/client'
-import type { Prisma } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
+import { ProductCondition } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 // ✅ CORRECT - ALWAYS import from @buttergolf/db
-import { prisma } from '@buttergolf/db'
-import { ProductCondition } from '@buttergolf/db'
-import type { Prisma } from '@buttergolf/db'
+import { prisma } from "@buttergolf/db";
+import { ProductCondition } from "@buttergolf/db";
+import type { Prisma } from "@buttergolf/db";
 ```
 
 **Why This Matters:**
+
 - pnpm uses symlinks and strict module resolution
 - `@prisma/client` looks for `.prisma/client/default` which doesn't exist at expected paths in monorepos
 - Our custom Prisma output (`packages/db/generated/client`) fixes this but ONLY when importing via `@buttergolf/db`
 - Direct `@prisma/client` imports bypass this fix and cause build failures
 
 **What to Export from @buttergolf/db:**
+
 - `prisma` - The singleton PrismaClient instance
 - `Prisma` - The Prisma namespace for types like `Prisma.ProductWhereInput`
 - All enums: `ProductCondition`, `ClubKind`, `OrderStatus`, `OfferStatus`, `ShipmentStatus`
 
 **If you see "Cannot find module '.prisma/client/default'":**
+
 1. Search codebase for `from '@prisma/client'` or `from "@prisma/client"`
 2. Change ALL imports to use `@buttergolf/db` instead
 3. If needed, add missing exports to `packages/db/src/index.ts`
@@ -1988,7 +2008,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
 export default function CheckoutPage() {
@@ -2212,14 +2232,17 @@ CLOUDINARY_API_SECRET=your_api_secret_here
 
 ```typescript
 // Pass isFirstImage flag for background removal
-const upload = async (file: File, isFirstImage = false): Promise<UploadResult> => {
+const upload = async (
+  file: File,
+  isFirstImage = false,
+): Promise<UploadResult> => {
   const response = await fetch(
     `/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': file.type },
+      method: "POST",
+      headers: { "Content-Type": file.type },
       body: file,
-    }
+    },
   );
   // Returns Cloudinary CDN URL
 };
@@ -2228,7 +2251,7 @@ const upload = async (file: File, isFirstImage = false): Promise<UploadResult> =
 **Server-Side API** (`apps/web/src/app/api/upload/route.ts`):
 
 ```typescript
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
 
 // Configure once at module load
 cloudinary.config({
@@ -2239,15 +2262,15 @@ cloudinary.config({
 
 // Upload with conditional transformations
 const uploadOptions = {
-  folder: 'products',
-  format: 'auto',
-  quality: 'auto',
+  folder: "products",
+  format: "auto",
+  quality: "auto",
 };
 
 if (isFirstImage) {
   uploadOptions.transformation = [
-    { effect: 'background_removal' },
-    { background: 'rgb:FFFAD2' },
+    { effect: "background_removal" },
+    { background: "rgb:FFFAD2" },
   ];
 }
 
@@ -2347,7 +2370,7 @@ Always start by resolving the library name to get the Context7-compatible librar
 
 ```typescript
 // Use mcp_upstash_conte_resolve-library-id
-libraryName: "react-router" // or "@stripe/stripe-react-native", "tamagui", etc.
+libraryName: "react-router"; // or "@stripe/stripe-react-native", "tamagui", etc.
 ```
 
 **Step 2: Get Library Documentation**
@@ -2356,9 +2379,9 @@ Once you have the library ID, fetch focused documentation:
 
 ```typescript
 // Use mcp_upstash_conte_get-library-docs
-context7CompatibleLibraryID: "/remix-run/react-router" // from step 1
-tokens: 3000 // Adjust based on need (default: 5000)
-topic: "hooks" // Optional: focus on specific area like "routing", "authentication", etc.
+context7CompatibleLibraryID: "/remix-run/react-router"; // from step 1
+tokens: 3000; // Adjust based on need (default: 5000)
+topic: "hooks"; // Optional: focus on specific area like "routing", "authentication", etc.
 ```
 
 ### Selection Guidelines
@@ -2377,13 +2400,17 @@ When `resolve-library-id` returns multiple matches:
 ```typescript
 // ✅ CORRECT - Use Context7 automatically
 // Step 1: Resolve Stripe library
-await mcp_upstash_conte_resolve-library-id({ libraryName: "@stripe/stripe-react-native" })
+(await mcp_upstash_conte_resolve) -
+  library -
+  id({ libraryName: "@stripe/stripe-react-native" });
 // Step 2: Get payment integration docs
-await mcp_upstash_conte_get-library-docs({
-  context7CompatibleLibraryID: "/stripe/stripe-react-native",
-  tokens: 3000,
-  topic: "payment sheet"
-})
+(await mcp_upstash_conte_get) -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/stripe/stripe-react-native",
+    tokens: 3000,
+    topic: "payment sheet",
+  });
 // Step 3: Generate code using the examples from Context7
 
 // ❌ WRONG - Don't rely on static knowledge or outdated documentation
@@ -2394,12 +2421,16 @@ await mcp_upstash_conte_get-library-docs({
 
 ```typescript
 // ✅ CORRECT - Check latest React Router patterns
-await mcp_upstash_conte_resolve-library-id({ libraryName: "react-router" })
-await mcp_upstash_conte_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  tokens: 2000,
-  topic: "navigation hooks"
-})
+(await mcp_upstash_conte_resolve) -
+  library -
+  id({ libraryName: "react-router" });
+(await mcp_upstash_conte_get) -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    tokens: 2000,
+    topic: "navigation hooks",
+  });
 
 // ❌ WRONG - Using potentially outdated patterns from training data
 ```
@@ -2408,12 +2439,14 @@ await mcp_upstash_conte_get-library-docs({
 
 ```typescript
 // ✅ CORRECT - Get current Tamagui best practices
-await mcp_upstash_conte_resolve-library-id({ libraryName: "tamagui" })
-await mcp_upstash_conte_get-library-docs({
-  context7CompatibleLibraryID: "/tamagui/tamagui",
-  tokens: 2000,
-  topic: "styled components"
-})
+(await mcp_upstash_conte_resolve) - library - id({ libraryName: "tamagui" });
+(await mcp_upstash_conte_get) -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/tamagui/tamagui",
+    tokens: 2000,
+    topic: "styled components",
+  });
 ```
 
 ### Integration with Existing Workflow
@@ -2475,17 +2508,19 @@ await mcp_upstash_conte_get-library-docs({
 ### Common React/Tamagui Errors to Avoid
 
 10. **ALWAYS use props on their correct component type** - Text/typography props belong on Text components, not layout containers
-   - ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
-   - ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
-   - ❌ WRONG: Wrapping text props in style object on wrong component types
-   - ✅ CORRECT: Apply text styling props (textAlign, whiteSpace, etc.) directly to Text/Button components
 
-   **Tamagui Component Inheritance**:
-   - Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor, etc.
-   - Text extends SizableText → inherits text props like textAlign, whiteSpace, etc.
-   - ❌ **NEVER use `{...{ prop: value as any }}` escape hatches** - This bypasses type safety
-   - ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
-   - ✅ **Use direct props** for standard React/Tamagui properties the component already supports
+- ❌ WRONG: `<Column textAlign="center">` → textAlign is a text property, not a layout property
+- ✅ CORRECT: `<Text textAlign="center">` → Use on Text components
+- ❌ WRONG: Wrapping text props in style object on wrong component types
+- ✅ CORRECT: Apply text styling props (textAlign, whiteSpace, etc.) directly to Text/Button components
+
+**Tamagui Component Inheritance**:
+
+- Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor, etc.
+- Text extends SizableText → inherits text props like textAlign, whiteSpace, etc.
+- ❌ **NEVER use `{...{ prop: value as any }}` escape hatches** - This bypasses type safety
+- ✅ **Use `style` prop for web-only CSS** that React Native doesn't support (position: sticky, overflow: auto)
+- ✅ **Use direct props** for standard React/Tamagui properties the component already supports
 
 11. **ALWAYS use optional chaining for potentially undefined props** - Especially when passing data from server components
     - ❌ WRONG: `availableBrands={availableFilters.availableBrands}` → Runtime error if undefined
@@ -2657,15 +2692,15 @@ Direct props accept token values **WITH `$`** for ad-hoc styling on any Tamagui 
 
 Use this matrix when creating or updating components:
 
-| Property Type              | Use Variant                      | Use Direct Token           | Example                                            |
-| -------------------------- | -------------------------------- | -------------------------- | -------------------------------------------------- |
-| **Spacing (gap, padding)** | ❌ DON'T (native props)          | ✅ Always use tokens       | `<Row gap="$md">` (gap is native to XStack)        |
-| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Input size="md">` vs `<View width={200}>`       |
-| **Colors**                 | ✅ For semantic tokens           | ⚠️ For brand tokens in UI  | `<Text color="$text">` or `color="$primary"`      |
-| **Typography (size)**      | ❌ No variants on Text           | ✅ Use numeric tokens      | `<Text size="$5">` (standard Tamagui pattern) |
-| **Border radius**          | ⚠️ Rare (use defaults)           | ✅ For geometric control   | Usually inherit, or `borderRadius="$md"`           |
-| **Alignment**              | ❌ No custom variants           | ✅ Use native flexbox      | `<Row alignItems="center">` native React Native prop |
-| **Component state**        | ✅ Always (tone, variant)        | ❌ Never                   | `<Button tone="primary">` never manual colors      |
+| Property Type              | Use Variant                      | Use Direct Token           | Example                                              |
+| -------------------------- | -------------------------------- | -------------------------- | ---------------------------------------------------- |
+| **Spacing (gap, padding)** | ❌ DON'T (native props)          | ✅ Always use tokens       | `<Row gap="$md">` (gap is native to XStack)          |
+| **Sizing (width, height)** | ✅ For semantic sizes (sm/md/lg) | ⚠️ For specific dimensions | `<Input size="md">` vs `<View width={200}>`          |
+| **Colors**                 | ✅ For semantic tokens           | ⚠️ For brand tokens in UI  | `<Text color="$text">` or `color="$primary"`         |
+| **Typography (size)**      | ❌ No variants on Text           | ✅ Use numeric tokens      | `<Text size="$5">` (standard Tamagui pattern)        |
+| **Border radius**          | ⚠️ Rare (use defaults)           | ✅ For geometric control   | Usually inherit, or `borderRadius="$md"`             |
+| **Alignment**              | ❌ No custom variants            | ✅ Use native flexbox      | `<Row alignItems="center">` native React Native prop |
+| **Component state**        | ✅ Always (tone, variant)        | ❌ Never                   | `<Button tone="primary">` never manual colors        |
 
 **Legend:**
 
@@ -2713,57 +2748,66 @@ When creating a new component, add variants for:
 25. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
 26. **Use Tamagui Text with fontSize tokens** - In shared cross-platform code, use `<Text fontSize="$5">` with numeric tokens. For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes. Trust the lineHeight values defined in `packages/config/src/tamagui.config.ts` - avoid manual overrides unless absolutely necessary.
 
+### British Spelling Convention
+
+**This project uses British English spelling throughout the codebase.** ESLint rules enforce this automatically.
+
+27. **CRITICAL: Always use British spellings** - Use `favourite` not `favorite`, `favourites` not `favorites`. ESLint will flag American spellings as warnings.
+28. **Exceptions for APIs/CSS** - You cannot change JavaScript APIs (`behavior` in `scrollIntoView`) or CSS properties (`color`, `center`). These are hardcoded in the language/frameworks.
+29. **Database uses British spelling** - The Prisma schema uses `Favourite` model and `favourites` relations. The generated client follows this.
+30. **ESLint enforcement** - The `no-restricted-syntax` rule in `packages/eslint-config/base.js` flags identifiers containing `favorite` or `favorites`.
+
 ### Animation Patterns (Tamagui-Based)
 
 **We use Tamagui's built-in animation system, not GSAP.** All animations use `@tamagui/animations-react-native` with spring-based presets.
 
 27. **Use `AnimatedView` for page-load animations:**
-   ```tsx
-   // apps/web/src/app/_components/animations/AnimatedView.tsx
-   import { AnimatedView } from "./animations/AnimatedView";
 
-   // Staggered entrance with millisecond delays
-   <AnimatedView delay={0}><Hero /></AnimatedView>
-   <AnimatedView delay={200}><Toggle /></AnimatedView>
-   <AnimatedView delay={400}><Categories /></AnimatedView>
-   ```
+```tsx
+// apps/web/src/app/_components/animations/AnimatedView.tsx
+import { AnimatedView } from "./animations/AnimatedView";
+
+// Staggered entrance with millisecond delays
+<AnimatedView delay={0}><Hero /></AnimatedView>
+<AnimatedView delay={200}><Toggle /></AnimatedView>
+<AnimatedView delay={400}><Categories /></AnimatedView>
+```
 
 28. **Use Tamagui's enterStyle for inline animations:**
-   ```tsx
-   <View
-     animation="medium"
-     enterStyle={{ opacity: 0, y: 30 }}
-     opacity={1}
-     y={0}
-   >
-     {children}
-   </View>
-   ```
+
+```tsx
+<View animation="medium" enterStyle={{ opacity: 0, y: 30 }} opacity={1} y={0}>
+  {children}
+</View>
+```
 
 29. **Use CSS @keyframes for infinite/loop animations:**
-   - For carousels or infinite scroll, use pure CSS animations
-   - Example: `CategoriesSection.tsx` uses CSS `@keyframes scroll-infinite`
-   - No JavaScript animation libraries needed
+
+- For carousels or infinite scroll, use pure CSS animations
+- Example: `CategoriesSection.tsx` uses CSS `@keyframes scroll-infinite`
+- No JavaScript animation libraries needed
 
 30. **Animation preset reference (from tamagui.config.ts):**
-   - `animation="fast"` - Quick response (0.3 damping)
-   - `animation="medium"` - Default, balanced (0.5 damping)
-   - `animation="slow"` - Smooth, deliberate (0.7 damping)
-   - `animation="bouncy"` - Playful spring (0.5 damping, 2 stiffness)
-   - `animation="lazy"` - Slow reveal (0.9 damping)
-   - `animation="quick"` - Snappy (0.4 damping)
+
+- `animation="fast"` - Quick response (0.3 damping)
+- `animation="medium"` - Default, balanced (0.5 damping)
+- `animation="slow"` - Smooth, deliberate (0.7 damping)
+- `animation="bouncy"` - Playful spring (0.5 damping, 2 stiffness)
+- `animation="lazy"` - Slow reveal (0.9 damping)
+- `animation="quick"` - Snappy (0.4 damping)
 
 31. **Respect prefers-reduced-motion:**
-   ```tsx
-   const prefersReducedMotion = useMemo(() => {
-     if (globalThis.window === undefined) return false;
-     return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
-   }, []);
 
-   if (prefersReducedMotion) {
-     return <View>{children}</View>; // No animation
-   }
-   ```
+```tsx
+const prefersReducedMotion = useMemo(() => {
+  if (globalThis.window === undefined) return false;
+  return globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}, []);
+
+if (prefersReducedMotion) {
+  return <View>{children}</View>; // No animation
+}
+```
 
 ## Known Issues & Gotchas
 
@@ -2811,7 +2855,12 @@ When generating new code:
     )}
   </Column>
 
-  <Button size="$5" backgroundColor="$primary" color="$textInverse" width="100%">
+  <Button
+    size="$5"
+    backgroundColor="$primary"
+    color="$textInverse"
+    width="100%"
+  >
     Submit
   </Button>
 </Column>
@@ -2845,7 +2894,13 @@ When generating new code:
   </Card.Body>
 
   <Card.Footer align="right">
-    <Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary">
+    <Button
+      size="$4"
+      backgroundColor="transparent"
+      color="$primary"
+      borderWidth={2}
+      borderColor="$primary"
+    >
       Add to Cart
     </Button>
   </Card.Footer>
@@ -2903,7 +2958,9 @@ When generating new code:
     <Badge variant="error" size="sm" />
     <Column gap="$xs" flex={1}>
       <Text fontWeight="600">Error</Text>
-      <Text color="$textSecondary">Something went wrong. Please try again.</Text>
+      <Text color="$textSecondary">
+        Something went wrong. Please try again.
+      </Text>
     </Column>
     <Button size="$3" chromeless>
       Dismiss

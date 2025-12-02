@@ -55,7 +55,9 @@ interface ProductDetailClientProps {
   product: Product;
 }
 
-export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+export default function ProductDetailClient({
+  product,
+}: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [purchasing, setPurchasing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -88,9 +90,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const handleMakeOffer = () => {
     if (!isSignedIn) {
       // Redirect to sign-in page with return URL
-      const redirectUrl = typeof globalThis !== "undefined" && globalThis.location
-        ? globalThis.location.href
-        : `/products/${product.id}`;
+      const redirectUrl =
+        typeof globalThis !== "undefined" && globalThis.location
+          ? globalThis.location.href
+          : `/products/${product.id}`;
       router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
       return;
     }
@@ -128,17 +131,25 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }
   };
 
-  const handleKeyboardNav = useCallback((e: KeyboardEvent) => {
-    if (!lightboxOpen) return;
+  const handleKeyboardNav = useCallback(
+    (e: KeyboardEvent) => {
+      if (!lightboxOpen) return;
 
-    if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
-      setSelectedImageIndex((prev) => Math.max(0, prev - 1));
-    } else if (e.key === "ArrowRight" && selectedImageIndex < product.images.length - 1) {
-      setSelectedImageIndex((prev) => Math.min(product.images.length - 1, prev + 1));
-    } else if (e.key === "Escape") {
-      setLightboxOpen(false);
-    }
-  }, [lightboxOpen, product.images.length, selectedImageIndex]);
+      if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
+        setSelectedImageIndex((prev) => Math.max(0, prev - 1));
+      } else if (
+        e.key === "ArrowRight" &&
+        selectedImageIndex < product.images.length - 1
+      ) {
+        setSelectedImageIndex((prev) =>
+          Math.min(product.images.length - 1, prev + 1),
+        );
+      } else if (e.key === "Escape") {
+        setLightboxOpen(false);
+      }
+    },
+    [lightboxOpen, product.images.length, selectedImageIndex],
+  );
 
   useEffect(() => {
     globalThis.addEventListener?.("keydown", handleKeyboardNav);
@@ -152,21 +163,35 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text
+                size="$3"
+                color="$ironstone"
+                hoverStyle={{ color: "$primary" }}
+              >
                 Listings
               </Text>
             </Link>
-            <Text size="$3" color="$ironstone">&gt;</Text>
+            <Text size="$3" color="$ironstone">
+              &gt;
+            </Text>
             <Link
               href={`/category/${product.category.slug}`}
               style={{ textDecoration: "none" }}
             >
-              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text
+                size="$3"
+                color="$ironstone"
+                hoverStyle={{ color: "$primary" }}
+              >
                 {product.category.name}
               </Text>
             </Link>
-            <Text size="$3" color="$ironstone">&gt;</Text>
-            <Text size="$3" color="$ironstone" weight="bold">{product.title}</Text>
+            <Text size="$3" color="$ironstone">
+              &gt;
+            </Text>
+            <Text size="$3" color="$ironstone" fontWeight="bold">
+              {product.title}
+            </Text>
           </Row>
 
           {/* Main Content Grid */}
@@ -185,7 +210,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               width="100%"
               $gtMd={{
                 width: "auto",
-                maxWidth: "calc(100% - 420px - 32px)"
+                maxWidth: "calc(100% - 420px - 32px)",
               }}
             >
               {/* Gallery Row: Thumbnails + Main Image */}
@@ -200,7 +225,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         padding="$0"
                         cursor="pointer"
                         onPress={() => setSelectedImageIndex(index)}
-                        borderColor={index === selectedImageIndex ? "$primary" : "$border"}
+                        borderColor={
+                          index === selectedImageIndex ? "$primary" : "$border"
+                        }
                         borderWidth={index === selectedImageIndex ? 3 : 1}
                         backgroundColor="$surface"
                         hoverStyle={{
@@ -250,21 +277,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                   {/* Image Counter */}
                   {product.images.length > 1 && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 16,
-                        right: 16,
-                        background: "rgba(0, 0, 0, 0.7)",
-                        color: "white",
-                        padding: "6px 12px",
-                        borderRadius: "20px",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
+                    <Row
+                      position="absolute"
+                      bottom={16}
+                      right={16}
+                      backgroundColor="$overlayDark50"
+                      paddingVertical="$xs"
+                      paddingHorizontal="$md"
+                      borderRadius="$full"
+                      zIndex={10}
                     >
-                      {selectedImageIndex + 1} / {product.images.length}
-                    </div>
+                      <Text size="$4" fontWeight="500" color="$textInverse">
+                        {selectedImageIndex + 1} / {product.images.length}
+                      </Text>
+                    </Row>
                   )}
                 </Card>
               </Row>
@@ -283,20 +309,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       {/* Lightbox Modal */}
       {lightboxOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.95)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px",
-          }}
+        <Column
+          style={{ position: "fixed" } as any}
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          backgroundColor="$overlayDark50"
+          zIndex={9999}
+          alignItems="center"
+          justifyContent="center"
+          padding="$lg"
         >
           <Button
             chromeless
@@ -308,6 +331,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             cursor="pointer"
             padding={0}
           />
+
           {/* Close Button */}
           <Button
             chromeless
@@ -322,61 +346,66 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             borderRadius="$full"
             width={48}
             height={48}
-            display="flex"
             alignItems="center"
             justifyContent="center"
             cursor="pointer"
             zIndex={10000}
             padding={0}
           >
-            <Text size="$8" fontWeight="700" color="$text">✕</Text>
+            <Text size="$8" fontWeight="bold" color="$text">
+              ✕
+            </Text>
           </Button>
 
           {/* Navigation Arrows */}
           {selectedImageIndex > 0 && (
-            <button
-              onClick={(e) => {
+            <Button
+              chromeless
+              onPress={(e) => {
                 e.stopPropagation();
                 setSelectedImageIndex(selectedImageIndex - 1);
               }}
-              style={{
-                position: "absolute",
-                left: 20,
-                background: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 10000,
-              }}
+              position="absolute"
+              left={20}
+              backgroundColor="$surface"
+              borderRadius="$full"
+              width={48}
+              height={48}
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              zIndex={10000}
+              padding={0}
             >
-              ←
-            </button>
+              <Text size="$8" fontWeight="bold" color="$text">
+                ←
+              </Text>
+            </Button>
           )}
 
           {selectedImageIndex < product.images.length - 1 && (
-            <button
-              onClick={(e) => {
+            <Button
+              chromeless
+              onPress={(e) => {
                 e.stopPropagation();
                 setSelectedImageIndex(selectedImageIndex + 1);
               }}
-              style={{
-                position: "absolute",
-                right: 20,
-                background: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 10000,
-              }}
+              position="absolute"
+              right={20}
+              backgroundColor="$surface"
+              borderRadius="$full"
+              width={48}
+              height={48}
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              zIndex={10000}
+              padding={0}
             >
-              →
-            </button>
+              <Text size="$8" fontWeight="bold" color="$text">
+                →
+              </Text>
+            </Button>
           )}
 
           {/* Main Image */}
@@ -398,40 +427,41 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           />
 
           {/* Image Counter */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 30,
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "white",
-              padding: "10px 20px",
-              borderRadius: "25px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              zIndex: 1,
-            }}
+          <Row
+            position="absolute"
+            bottom={30}
+            left="50%"
+            transform="translateX(-50%)"
+            backgroundColor="$surface"
+            paddingVertical="$sm"
+            paddingHorizontal="$lg"
+            borderRadius="$full"
+            zIndex={1}
           >
-            {selectedImageIndex + 1} / {product.images.length}
-          </div>
-        </div>
+            <Text size="$5" fontWeight="bold" color="$text">
+              {selectedImageIndex + 1} / {product.images.length}
+            </Text>
+          </Row>
+        </Column>
       )}
 
       {/* Mobile Sticky Bottom Bar */}
       {showMobileBar && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background: "white",
-            borderTop: "2px solid #E25F2F",
-            padding: "16px",
-            zIndex: 1000,
-            boxShadow: "0 -4px 12px rgba(0,0,0,0.1)",
-            display: "none",
-          }}
+        <Row
+          style={{ position: "fixed" } as any}
+          bottom={0}
+          left={0}
+          right={0}
+          backgroundColor="$surface"
+          borderTopWidth={2}
+          borderTopColor="$primary"
+          padding="$md"
+          zIndex={1000}
+          shadowColor="$shadowColor"
+          shadowOffset={{ width: 0, height: -4 }}
+          shadowRadius={12}
+          shadowOpacity={0.1}
+          display="none"
           className="mobile-sticky-bar"
         >
           <Row gap="$md" alignItems="center" justifyContent="space-between">
@@ -439,7 +469,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <Text size="$2" color="$textMuted">
                 {product.title}
               </Text>
-              <Text size="$6" weight="bold" color="$primary">
+              <Text size="$6" fontWeight="bold" color="$primary">
                 £{product.price.toFixed(2)}
               </Text>
             </Column>
@@ -454,12 +484,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {product.isSold ? "Sold" : "Buy Now"}
             </Button>
           </Row>
-        </div>
+        </Row>
       )}
 
       {/* Responsive CSS */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           @media (min-width: 1024px) {
             .product-sidebar {
               position: sticky;
@@ -472,8 +503,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               display: flex !important;
             }
           }
-        `
-      }} />
+        `,
+        }}
+      />
 
       {/* Make Offer Modal */}
       <MakeOfferModal

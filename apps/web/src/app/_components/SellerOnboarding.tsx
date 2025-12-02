@@ -38,7 +38,9 @@ export function SellerOnboarding({
 }: SellerOnboardingProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [stripeConnectInstance, setStripeConnectInstance] = useState<ReturnType<typeof loadConnectAndInitialize> | null>(null);
+  const [stripeConnectInstance, setStripeConnectInstance] = useState<ReturnType<
+    typeof loadConnectAndInitialize
+  > | null>(null);
   const hasReachedSummaryRef = useRef(false);
 
   useEffect(() => {
@@ -91,7 +93,7 @@ export function SellerOnboarding({
     } catch (err) {
       console.error("Error initializing Stripe Connect:", err);
       setError(
-        err instanceof Error ? err.message : "Failed to initialize onboarding"
+        err instanceof Error ? err.message : "Failed to initialize onboarding",
       );
     } finally {
       setLoading(false);
@@ -103,9 +105,7 @@ export function SellerOnboarding({
       <Card variant="elevated" padding="$xl">
         <Column gap="$md" alignItems="center">
           <Spinner size="lg" color="$primary" />
-          <Text color="$textSecondary">
-            Initializing seller onboarding...
-          </Text>
+          <Text color="$textSecondary">Initializing seller onboarding...</Text>
         </Column>
       </Card>
     );
@@ -144,9 +144,7 @@ export function SellerOnboarding({
   if (!stripeConnectInstance) {
     return (
       <Card variant="elevated" padding="$xl">
-        <Text color="$error">
-          Failed to load Stripe Connect
-        </Text>
+        <Text color="$error">Failed to load Stripe Connect</Text>
       </Card>
     );
   }
@@ -178,11 +176,11 @@ export function SellerOnboarding({
         <ConnectAccountOnboarding
           onExit={handleExit}
           onStepChange={handleStepChange}
-        // CollectionOptions determine what information to collect
-        // collectionOptions={{
-        //   fields: 'eventually_due', // Collect all eventually_due requirements
-        //   futureRequirements: 'include', // Include future requirements
-        // }}
+          // CollectionOptions determine what information to collect
+          // collectionOptions={{
+          //   fields: 'eventually_due', // Collect all eventually_due requirements
+          //   futureRequirements: 'include', // Include future requirements
+          // }}
         />
       </ConnectComponentsProvider>
 

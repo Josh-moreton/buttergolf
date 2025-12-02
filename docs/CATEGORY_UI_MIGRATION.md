@@ -46,16 +46,18 @@ const CATEGORIES = [
   // ... 9 items total
 ];
 
-{CATEGORIES.map((c) => (
-  <Button key={c.key}>{c.label}</Button>
-))}
+{
+  CATEGORIES.map((c) => <Button key={c.key}>{c.label}</Button>);
+}
 
 // ✅ AFTER
 import { CATEGORIES } from "@buttergolf/db";
 
-{CATEGORIES.map((category) => (
-  <Button key={category.slug}>{category.name}</Button>
-))}
+{
+  CATEGORIES.map((category) => (
+    <Button key={category.slug}>{category.name}</Button>
+  ));
+}
 ```
 
 ### Mobile CategoriesSection (Before → After)
@@ -63,22 +65,34 @@ import { CATEGORIES } from "@buttergolf/db";
 ```tsx
 // ❌ BEFORE
 const categories = [
-  "All", "Drivers", "Irons", "Wedges", 
-  "Putters", "Woods", "Hybrids", "Bags",
-  "Balls", "Apparel", "Accessories",
+  "All",
+  "Drivers",
+  "Irons",
+  "Wedges",
+  "Putters",
+  "Woods",
+  "Hybrids",
+  "Bags",
+  "Balls",
+  "Apparel",
+  "Accessories",
 ];
 
-{categories.map((category, index) => (
-  <CategoryButton label={category} active={index === 0} />
-))}
+{
+  categories.map((category, index) => (
+    <CategoryButton label={category} active={index === 0} />
+  ));
+}
 
 // ✅ AFTER
 import { CATEGORIES } from "@buttergolf/db";
 
-<CategoryButton key="all" label="All" active={true} />
-{CATEGORIES.map((category) => (
-  <CategoryButton key={category.slug} label={category.name} active={false} />
-))}
+<CategoryButton key="all" label="All" active={true} />;
+{
+  CATEGORIES.map((category) => (
+    <CategoryButton key={category.slug} label={category.name} active={false} />
+  ));
+}
 ```
 
 ### Header Menu (Before → After)
@@ -94,18 +108,20 @@ export const menuData = [
 // ✅ AFTER
 import { CATEGORIES } from "@buttergolf/db";
 
-const TOP_LEVEL_CATEGORIES = new Set(['drivers', 'irons', 'wedges', 'putters']);
+const TOP_LEVEL_CATEGORIES = new Set(["drivers", "irons", "wedges", "putters"]);
 
 export const menuData = [
   { title: "Shop All", path: "/listings" },
   // Featured categories
-  ...CATEGORIES.filter(cat => TOP_LEVEL_CATEGORIES.has(cat.slug))
-    .map(cat => ({ title: cat.name, path: `/category/${cat.slug}` })),
+  ...CATEGORIES.filter((cat) => TOP_LEVEL_CATEGORIES.has(cat.slug)).map(
+    (cat) => ({ title: cat.name, path: `/category/${cat.slug}` }),
+  ),
   // Remaining categories in submenu
   {
     title: "More Categories",
-    submenu: CATEGORIES.filter(cat => !TOP_LEVEL_CATEGORIES.has(cat.slug))
-      .map(cat => ({ title: cat.name, path: `/category/${cat.slug}` })),
+    submenu: CATEGORIES.filter(
+      (cat) => !TOP_LEVEL_CATEGORIES.has(cat.slug),
+    ).map((cat) => ({ title: cat.name, path: `/category/${cat.slug}` })),
   },
 ];
 ```
@@ -115,54 +131,71 @@ export const menuData = [
 ```tsx
 // ❌ BEFORE
 const CATEGORIES = [
-  "All", "Drivers", "Fairway Woods", "Hybrids",
-  "Irons", "Wedges", "Putters", "Bags",
-  "Balls", "Accessories",
+  "All",
+  "Drivers",
+  "Fairway Woods",
+  "Hybrids",
+  "Irons",
+  "Wedges",
+  "Putters",
+  "Bags",
+  "Balls",
+  "Accessories",
 ];
 
-{CATEGORIES.map((category) => (
-  <Button
-    key={category}
-    backgroundColor={selectedCategory === category ? "$primary" : "$white"}
-    onPress={() => setSelectedCategory(category)}
-  >
-    {category}
-  </Button>
-))}
+{
+  CATEGORIES.map((category) => (
+    <Button
+      key={category}
+      backgroundColor={selectedCategory === category ? "$primary" : "$white"}
+      onPress={() => setSelectedCategory(category)}
+    >
+      {category}
+    </Button>
+  ));
+}
 
 // ✅ AFTER
 import { CATEGORIES } from "@buttergolf/db";
 
-<Button key="all" /* ... */>All</Button>
-{CATEGORIES.map((category) => (
-  <Button
-    key={category.slug}
-    backgroundColor={selectedCategory === category.name ? "$primary" : "$white"}
-    onPress={() => setSelectedCategory(category.name)}
-  >
-    {category.name}
-  </Button>
-))}
+<Button key="all" /* ... */>All</Button>;
+{
+  CATEGORIES.map((category) => (
+    <Button
+      key={category.slug}
+      backgroundColor={
+        selectedCategory === category.name ? "$primary" : "$white"
+      }
+      onPress={() => setSelectedCategory(category.name)}
+    >
+      {category.name}
+    </Button>
+  ));
+}
 ```
 
 ## Benefits
 
 ### 1. Single Source of Truth
+
 - **Before**: Categories defined in 5+ different places
 - **After**: One constant file (`packages/db/src/constants/categories.ts`)
 - **Result**: Zero discrepancies between platforms
 
 ### 2. Automatic Sync
+
 - **Before**: Adding a category required updating 5+ files manually
 - **After**: Add to constants → Run seed → Appears everywhere
 - **Result**: 90% less work when managing categories
 
 ### 3. Type Safety
+
 - **Before**: String literals with no validation
 - **After**: Full TypeScript interfaces with autocomplete
 - **Result**: Compile-time errors catch mistakes
 
 ### 4. Consistency
+
 - **Before**: Web showed 9 categories, mobile showed 11, database had 6
 - **After**: All platforms show the same 10 categories
 - **Result**: Unified user experience
@@ -171,11 +204,11 @@ import { CATEGORIES } from "@buttergolf/db";
 
 ```typescript
 interface CategoryDefinition {
-  name: string;        // "Drivers"
-  slug: string;        // "drivers"
+  name: string; // "Drivers"
+  slug: string; // "drivers"
   description: string; // "Golf drivers and woods"
-  imageUrl: string;    // "/_assets/images/clubs-1.jpg"
-  sortOrder: number;   // 1
+  imageUrl: string; // "/_assets/images/clubs-1.jpg"
+  sortOrder: number; // 1
 }
 ```
 
@@ -195,12 +228,14 @@ interface CategoryDefinition {
 ## Testing
 
 ### ✅ Type Checks
+
 ```bash
 pnpm check-types --filter web --filter @buttergolf/app
 # All checks passed
 ```
 
 ### ✅ Database Seeding
+
 ```bash
 pnpm db:seed
 # ✅ Created 10 categories
@@ -209,12 +244,14 @@ pnpm db:seed
 ### ✅ Manual Testing Checklist
 
 **Web**:
+
 - [ ] Navigate to homepage - category buttons show all 10 categories
 - [ ] Check header menu - featured categories + "More Categories" submenu
 - [ ] Navigate to `/sell` - category dropdown shows all 10 categories
 - [ ] Click category buttons - routing works correctly
 
 **Mobile**:
+
 - [ ] Open app - category section shows "All" + 10 categories
 - [ ] Scroll category pills - all categories visible
 - [ ] Tap category - filter applies correctly
@@ -229,8 +266,9 @@ When adding a new category:
 3. **Done!** ✅
 
 No need to touch:
+
 - ✅ Web category filters
-- ✅ Mobile category filters  
+- ✅ Mobile category filters
 - ✅ Header navigation
 - ✅ Sell page dropdown
 - ✅ API endpoints
@@ -248,6 +286,7 @@ No need to touch:
 ### None! ✅
 
 The migration was designed to be backwards-compatible:
+
 - API endpoints still work the same way
 - Database schema unchanged
 - Existing links and slugs still valid
@@ -278,6 +317,7 @@ The migration was designed to be backwards-compatible:
 All UI components (web and mobile) now use the centralized category system. Categories are managed in one place, automatically synchronized across all platforms, and fully type-safe.
 
 **Impact**:
+
 - 🎯 **Consistency**: 100% - All platforms show the same categories
 - 🚀 **Maintainability**: 90% easier to add/modify categories
 - 🔒 **Type Safety**: Full TypeScript support

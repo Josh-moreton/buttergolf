@@ -20,12 +20,14 @@ This is a polished MVP theme designed for the ButterGolf marketplace. It uses a 
 ## Theme Design
 
 ### Light Theme
+
 - **Background**: Cream/off-white (`#fbfbf9`) - warm, inviting
 - **Primary**: Golf green (`#13a063`) - represents courses and nature
 - **Text**: Deep forest green (`#042918`) - excellent contrast
 - **Shadows**: Subtle, professional depth
 
 ### Dark Theme
+
 - **Background**: Deep forest (`#0a1410`) - rich, sophisticated
 - **Primary**: Bright green (`#13a063` → `#1bc77f`) - pops on dark
 - **Text**: Light cream (`#e5f0e0`) - easy on the eyes
@@ -51,7 +53,7 @@ import { View, Text, Button } from '@buttergolf/ui'
 
 function ProductCard() {
   return (
-    <View 
+    <View
       backgroundColor="$background"    // Uses theme background
       borderColor="$borderColor"       // Theme border
       padding="$4"
@@ -60,7 +62,7 @@ function ProductCard() {
       <Text color="$color">          {/* Theme text color */}
         Premium Golf Club Set
       </Text>
-      <Button 
+      <Button
         backgroundColor="$color9"      {/* Primary green */}
         color="$background"
       >
@@ -76,62 +78,60 @@ function ProductCard() {
 Switch between theme variants for different components:
 
 ```tsx
-import { Theme, Button } from '@buttergolf/ui'
+import { Theme, Button } from "@buttergolf/ui";
 
 function PricingSection() {
   return (
     <>
       {/* Standard products use green theme */}
       <Button theme="green">View Product</Button>
-      
+
       {/* Premium products use amber theme */}
       <Theme name="amber">
         <Button>Premium Access</Button>
       </Theme>
     </>
-  )
+  );
 }
 ```
 
 ### Dark Mode Toggle
 
 ```tsx
-import { useState } from 'react'
-import { Button, Theme, View } from '@buttergolf/ui'
+import { useState } from "react";
+import { Button, Theme, View } from "@buttergolf/ui";
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
   return (
     <Theme name={theme}>
       <View backgroundColor="$background" flex={1}>
-        <Button 
-          onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-        >
-          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+        <Button onPress={() => setTheme(theme === "light" ? "dark" : "light")}>
+          Toggle {theme === "light" ? "Dark" : "Light"} Mode
         </Button>
         {/* Your app content */}
       </View>
     </Theme>
-  )
+  );
 }
 ```
 
 ### Accessing Theme Values
 
 ```tsx
-import { useTheme } from 'tamagui'
+import { useTheme } from "tamagui";
 
 function CustomComponent() {
-  const theme = useTheme()
-  
+  const theme = useTheme();
+
   return (
     <View style={{ backgroundColor: theme.background.val }}>
       <Text style={{ color: theme.color.val }}>
         Using theme values directly
       </Text>
     </View>
-  )
+  );
 }
 ```
 
@@ -155,9 +155,9 @@ Theme automatically handles interactive states:
 
 ```tsx
 <Button
-  backgroundColor="$color9"           // Brand green
-  hoverStyle={{ backgroundColor: '$color10' }}  // Darker on hover
-  pressStyle={{ backgroundColor: '$color11' }}  // Even darker on press
+  backgroundColor="$color9" // Brand green
+  hoverStyle={{ backgroundColor: "$color10" }} // Darker on hover
+  pressStyle={{ backgroundColor: "$color11" }} // Even darker on press
 >
   Interactive Button
 </Button>
@@ -180,7 +180,7 @@ These are useful when you need specific brand colors outside the semantic theme 
 ### Product Card
 
 ```tsx
-import { Card, H3, Text, Button, YStack, XStack } from '@buttergolf/ui'
+import { Card, H3, Text, Button, YStack, XStack } from "@buttergolf/ui";
 
 function ProductCard({ product }) {
   return (
@@ -189,8 +189,8 @@ function ProductCard({ product }) {
       borderColor="$borderColor"
       padding="$4"
       hoverStyle={{
-        borderColor: '$borderColorHover',
-        shadowColor: '$shadowColorHover',
+        borderColor: "$borderColorHover",
+        shadowColor: "$shadowColorHover",
         shadowRadius: 8,
       }}
     >
@@ -204,26 +204,24 @@ function ProductCard({ product }) {
             View Details
           </Button>
           <Theme name="amber">
-            <Button flex={1}>
-              Buy Now
-            </Button>
+            <Button flex={1}>Buy Now</Button>
           </Theme>
         </XStack>
       </YStack>
     </Card>
-  )
+  );
 }
 ```
 
 ### Hero Section
 
 ```tsx
-import { YStack, H1, Text, Button } from '@buttergolf/ui'
+import { YStack, H1, Text, Button } from "@buttergolf/ui";
 
 function HeroSection() {
   return (
-    <YStack 
-      backgroundColor="$color1"      // Lightest green tint
+    <YStack
+      backgroundColor="$color1" // Lightest green tint
       padding="$8"
       space="$4"
       alignItems="center"
@@ -234,15 +232,15 @@ function HeroSection() {
       <Text color="$color11" textAlign="center" maxWidth={600}>
         Discover the finest golf clubs, apparel, and accessories
       </Text>
-      <Button 
-        size="$6" 
+      <Button
+        size="$6"
         backgroundColor="$color9"
-        hoverStyle={{ backgroundColor: '$color10' }}
+        hoverStyle={{ backgroundColor: "$color10" }}
       >
         Shop Now
       </Button>
     </YStack>
-  )
+  );
 }
 ```
 
@@ -268,6 +266,7 @@ The beauty of using Tamagui themes is that all your components will automaticall
 ## Testing Your Theme
 
 1. Start the dev server:
+
    ```bash
    pnpm dev:web    # or pnpm dev:mobile
    ```

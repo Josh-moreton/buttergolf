@@ -19,7 +19,9 @@ export function CategoryFilter({
         paddingHorizontal="$sm"
         borderRadius="$sm"
         cursor="pointer"
-        backgroundColor={selectedCategory === null ? "$primaryLight" : "$surface"}
+        backgroundColor={
+          selectedCategory === null ? "$primaryLight" : "$surface"
+        }
         hoverStyle={{ backgroundColor: "$backgroundHover" }}
         onClick={() => onChange(null)}
       >
@@ -46,9 +48,7 @@ export function CategoryFilter({
         >
           <Text
             size="$3"
-            color={
-              selectedCategory === category.slug ? "$primary" : "$text"
-            }
+            color={selectedCategory === category.slug ? "$primary" : "$text"}
             weight={selectedCategory === category.slug ? "semibold" : "normal"}
           >
             {category.name}

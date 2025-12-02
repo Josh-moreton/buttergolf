@@ -194,15 +194,15 @@ export function ProductsGrid({
       >
         {isLoading
           ? Array.from({ length: 24 }, (_, i) => (
-            <LoadingSkeleton key={`loading-skeleton-${i}`} />
-          ))
+              <LoadingSkeleton key={`loading-skeleton-${i}`} />
+            ))
           : products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onPress={() => router.push(`/products/${product.id}`)}
-            />
-          ))}
+              <ProductCard
+                key={product.id}
+                product={product}
+                onPress={() => router.push(`/products/${product.id}`)}
+              />
+            ))}
       </Column>
 
       {/* Pagination */}

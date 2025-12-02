@@ -75,12 +75,12 @@ This tells TypeScript to use bundler-style module resolution, which properly han
 
 ```typescript
 // Button.tsx
-export { Button } from 'tamagui'
-export type { ButtonProps } from 'tamagui'
+export { Button } from "tamagui";
+export type { ButtonProps } from "tamagui";
 
 // Text.tsx
-export { Paragraph as Text } from 'tamagui'
-export type { ParagraphProps as TextProps } from 'tamagui'
+export { Paragraph as Text } from "tamagui";
+export type { ParagraphProps as TextProps } from "tamagui";
 ```
 
 **Why**: Import from the main `tamagui` package (not individual `@tamagui/*` packages) for proper re-export resolution.
@@ -94,12 +94,12 @@ export type { ParagraphProps as TextProps } from 'tamagui'
 **Changes**:
 
 ```typescript
-import { createTamagui } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v4'
+import { createTamagui } from "tamagui";
+import { defaultConfig } from "@tamagui/config/v4";
 
 // ... config setup ...
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends AppConfig {}
 }
 ```
@@ -115,7 +115,7 @@ declare module 'tamagui' {
 **Added**:
 
 ```typescript
-export { TamaguiProvider } from 'tamagui'
+export { TamaguiProvider } from "tamagui";
 ```
 
 **Why**: Centralizes Tamagui exports so apps import from `@buttergolf/ui` instead of directly from `tamagui`.
@@ -260,17 +260,17 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
 
 ### Key Dependencies Aligned
 
-| Package | Version |
-|---------|---------|
-| React | `19.2.0` (all apps) |
-| React Native | `0.81.5` (all apps) |
-| TypeScript | `5.9.2` (all packages) |
-| Tamagui | `^1.135.6` (all packages) |
-| Next.js | `16.0.1` (web app) |
-| Expo | `~54.0.20` (mobile app) |
-| Solito | `^5.0.0` (all apps) |
-| Turborepo | `2.5.8` (root) |
-| pnpm | `9.0.0` (root) |
+| Package      | Version                   |
+| ------------ | ------------------------- |
+| React        | `19.2.0` (all apps)       |
+| React Native | `0.81.5` (all apps)       |
+| TypeScript   | `5.9.2` (all packages)    |
+| Tamagui      | `^1.135.6` (all packages) |
+| Next.js      | `16.0.1` (web app)        |
+| Expo         | `~54.0.20` (mobile app)   |
+| Solito       | `^5.0.0` (all apps)       |
+| Turborepo    | `2.5.8` (root)            |
+| pnpm         | `9.0.0` (root)            |
 
 ---
 
@@ -282,15 +282,15 @@ All packages (`@buttergolf/ui`, `@buttergolf/app`, `web`, `mobile`) pass TypeScr
 
 ```typescript
 // Import from main 'tamagui' package
-import { Button, Text, styled, createTamagui } from 'tamagui'
+import { Button, Text, styled, createTamagui } from "tamagui";
 ```
 
 **❌ Don't do this**:
 
 ```typescript
 // Don't import from individual @tamagui/* packages
-import { Button } from '@tamagui/button'
-import { styled } from '@tamagui/core'
+import { Button } from "@tamagui/button";
+import { styled } from "@tamagui/core";
 ```
 
 ### Why?

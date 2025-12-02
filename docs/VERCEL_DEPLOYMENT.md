@@ -28,15 +28,18 @@ Vercel should auto-configure, but verify these settings:
 
 **Root Directory**: `apps/web`
 
-**Build Command**: 
+**Build Command**:
+
 ```bash
 pnpm run build --filter=web
 ```
+
 (or leave empty to use the command from `vercel.json`)
 
 **Output Directory**: `.next`
 
-**Install Command**: 
+**Install Command**:
+
 ```bash
 pnpm install
 ```
@@ -59,6 +62,7 @@ After your first deployment (it might fail - that's okay!):
 6. Click **"Create"**
 
 Vercel will automatically create these environment variables:
+
 - `POSTGRES_URL` - Direct connection URL
 - `POSTGRES_PRISMA_URL` - **Use this one for Prisma** (connection pooled)
 - `POSTGRES_URL_NON_POOLING` - Direct without pooling
@@ -83,6 +87,7 @@ You need to map Vercel's variable to what Prisma expects:
 **Option B: Use Vercel's variable directly**
 
 Update `packages/db/prisma/schema.prisma`:
+
 ```prisma
 datasource db {
   provider = "postgresql"
@@ -96,6 +101,7 @@ datasource db {
 After adding the database, you need to apply your schema:
 
 **Option A: Via Vercel CLI (Recommended)**
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -146,6 +152,7 @@ npx turbo link
 ```
 
 Update `turbo.json`:
+
 ```json
 {
   "remoteCache": {
@@ -160,20 +167,21 @@ This caches build outputs across your team and CI/CD.
 
 ### Required Variables
 
-| Variable | Value | Environments |
-|----------|-------|--------------|
-| `DATABASE_URL` | `POSTGRES_PRISMA_URL` value | All |
+| Variable       | Value                       | Environments |
+| -------------- | --------------------------- | ------------ |
+| `DATABASE_URL` | `POSTGRES_PRISMA_URL` value | All          |
 
 ### Optional Variables
 
-| Variable | Purpose |
-|----------|---------|
-| `NODE_ENV` | Set to `production` (auto-set by Vercel) |
-| `NEXT_PUBLIC_APP_URL` | Your app's URL for client-side use |
+| Variable              | Purpose                                  |
+| --------------------- | ---------------------------------------- |
+| `NODE_ENV`            | Set to `production` (auto-set by Vercel) |
+| `NEXT_PUBLIC_APP_URL` | Your app's URL for client-side use       |
 
 ## Vercel Configuration Files
 
 ### `/vercel.json`
+
 ```json
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
@@ -185,11 +193,13 @@ This caches build outputs across your team and CI/CD.
 ```
 
 This tells Vercel:
+
 - Use Turborepo's filter to build only the web app
 - Use pnpm for installation
 - Look for Next.js output in `apps/web/.next`
 
 ### `turbo.json` (Updated)
+
 ```json
 {
   "tasks": {
@@ -207,6 +217,7 @@ This ensures Prisma Client is generated before building the app.
 ### Build fails with "Cannot find module '@buttergolf/db'"
 
 **Solution**: Ensure `postinstall` script runs in `packages/db/package.json`:
+
 ```json
 {
   "scripts": {
@@ -218,6 +229,7 @@ This ensures Prisma Client is generated before building the app.
 ### Build fails with "Prisma Client not generated"
 
 **Solution**: Add `db:generate` to the build dependencies in `turbo.json`:
+
 ```json
 {
   "tasks": {
@@ -231,6 +243,7 @@ This ensures Prisma Client is generated before building the app.
 ### Database connection errors
 
 **Solutions**:
+
 1. Verify `DATABASE_URL` is set in all environments
 2. Check that you're using `POSTGRES_PRISMA_URL` (with connection pooling)
 3. Ensure the database schema is pushed: `pnpm db:push`
@@ -242,17 +255,20 @@ This ensures Prisma Client is generated before building the app.
 ## Monitoring & Maintenance
 
 ### View Logs
+
 1. Go to your project dashboard
 2. Click on a deployment
 3. View **"Build Logs"** and **"Function Logs"**
 
 ### Database Management
+
 1. Go to **Storage** → Your Postgres database
 2. Click **"Data"** to view tables
 3. Click **"Query"** to run SQL directly
 4. Click **"Insights"** for performance metrics
 
 ### Prisma Studio (Local with Vercel DB)
+
 ```bash
 # Pull Vercel environment variables
 vercel env pull

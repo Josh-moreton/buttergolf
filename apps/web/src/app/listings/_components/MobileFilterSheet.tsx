@@ -136,7 +136,9 @@ export function MobileFilterSheet({
                 maxPrice={priceRange.max}
                 selectedMin={filters.minPrice}
                 selectedMax={filters.maxPrice}
-                onChange={(minPrice, maxPrice) => onChange({ minPrice, maxPrice })}
+                onChange={(minPrice, maxPrice) =>
+                  onChange({ minPrice, maxPrice })
+                }
               />
             </FilterSection>
 
@@ -148,22 +150,22 @@ export function MobileFilterSheet({
               />
             </FilterSection>
 
-            <FilterSection title="Favorites" defaultExpanded>
+            <FilterSection title="Favourites" defaultExpanded>
               <Row
                 alignItems="center"
                 gap="$2"
                 cursor="pointer"
                 userSelect="none"
                 onPress={() =>
-                  onChange({ showFavoritesOnly: !filters.showFavoritesOnly })
+                  onChange({ showFavouritesOnly: !filters.showFavouritesOnly })
                 }
               >
                 <input
                   type="checkbox"
-                  checked={filters.showFavoritesOnly}
-                  onChange={(e) =>
-                    onChange({ showFavoritesOnly: e.target.checked })
-                  }
+                  checked={filters.showFavouritesOnly}
+                  onChange={(e) => {
+                    onChange({ showFavouritesOnly: e.target.checked });
+                  }}
                   style={{
                     width: 20,
                     height: 20,
@@ -172,7 +174,7 @@ export function MobileFilterSheet({
                   }}
                 />
                 <Text size="$4" color="$text">
-                  Show favorites only
+                  Show favourites only
                 </Text>
               </Row>
             </FilterSection>

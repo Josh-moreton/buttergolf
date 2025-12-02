@@ -7,40 +7,51 @@ This document summarizes the complete Platform-Ships model implementation for Bu
 ## 📊 What Was Built
 
 ### Database Layer (Prisma)
+
 ✅ **3 New Models**
+
 - `Order` - Complete order tracking with 20+ fields
 - `Address` - Shipping address management
 - `Product` - Extended with shipping dimensions
 
 ✅ **2 New Enums**
+
 - `ShipmentStatus` - 8 states from PENDING to DELIVERED
 - `OrderStatus` - 6 states for order lifecycle
 
 ✅ **Complete Relational Mapping**
+
 - User ↔ Order (as buyer and seller)
 - Order ↔ Product
 - Order ↔ Address (from and to)
 - User ↔ Address
 
 ### Backend API Layer
+
 ✅ **Integration Utilities (2 files)**
+
 - `lib/easypost.ts` - EasyPost SDK wrapper (160 lines)
 - `lib/stripe.ts` - Stripe SDK wrapper (80 lines)
 
 ✅ **Webhook Handlers (2 routes)**
+
 - `/api/stripe/webhook` - Stripe payment processing (250 lines)
 - `/api/easypost/webhook` - EasyPost tracking updates (200 lines)
 
 ✅ **Order API (2 routes)**
+
 - `/api/orders` - List orders with filtering
 - `/api/orders/[id]` - Get order details
 
 ### Frontend UI Layer
+
 ✅ **2 Complete Pages**
+
 - `/orders` - Orders list with tabs (250 lines)
 - `/orders/[id]` - Order detail view (440 lines)
 
 ✅ **Features**
+
 - Filter tabs (All/Purchases/Sales)
 - Status badges with semantic colors
 - Download label button (sellers)
@@ -50,7 +61,9 @@ This document summarizes the complete Platform-Ships model implementation for Bu
 - Responsive design
 
 ### Documentation
+
 ✅ **3 Comprehensive Guides**
+
 - `SHIPPING_INTEGRATION.md` - Architecture & API docs (330 lines)
 - `TESTING_GUIDE.md` - Testing procedures (465 lines)
 - `README.md` - This summary
@@ -68,7 +81,9 @@ This document summarizes the complete Platform-Ships model implementation for Bu
 ## 🔑 Key Features
 
 ### Automatic Label Generation
+
 When a buyer completes checkout:
+
 1. Stripe webhook fires → Payment confirmed
 2. Server retrieves product + addresses
 3. EasyPost creates shipment with dimensions
@@ -77,7 +92,9 @@ When a buyer completes checkout:
 6. Product marked as sold
 
 ### Real-Time Tracking
+
 When carrier updates tracking:
+
 1. EasyPost webhook fires → Status updated
 2. Server verifies signature
 3. Order status updated in database
@@ -85,6 +102,7 @@ When carrier updates tracking:
 5. Ready for buyer/seller notifications
 
 ### Secure Operations
+
 - ✅ Webhook signature verification (Stripe via svix, EasyPost via HMAC)
 - ✅ Authentication required (Clerk)
 - ✅ Authorization checks (users can only see their orders)
@@ -94,19 +112,20 @@ When carrier updates tracking:
 
 ## 🎯 Acceptance Criteria
 
-| Requirement | Status | Notes |
-|------------|--------|-------|
-| Shipping label auto-generated after payment | ✅ | Implemented in Stripe webhook |
-| Label URL + tracking visible to seller | ✅ | Available in orders UI |
-| EasyPost webhooks update shipment status | ✅ | Implemented with signature verification |
-| All keys/secrets in environment variables | ✅ | Documented in .env.example |
-| Flow tested end-to-end in sandbox | ⏳ | Ready for testing |
+| Requirement                                 | Status | Notes                                   |
+| ------------------------------------------- | ------ | --------------------------------------- |
+| Shipping label auto-generated after payment | ✅     | Implemented in Stripe webhook           |
+| Label URL + tracking visible to seller      | ✅     | Available in orders UI                  |
+| EasyPost webhooks update shipment status    | ✅     | Implemented with signature verification |
+| All keys/secrets in environment variables   | ✅     | Documented in .env.example              |
+| Flow tested end-to-end in sandbox           | ⏳     | Ready for testing                       |
 
 ## ⚠️ Production Checklist
 
 Before deploying to production:
 
 ### Critical (Must Complete)
+
 - [ ] **Implement seller address collection**
   - Currently using hardcoded test address
   - Add address form to seller profile
@@ -114,6 +133,7 @@ Before deploying to production:
   - Fetch real addresses in webhook
 
 - [ ] **Run database migration**
+
   ```bash
   pnpm db:migrate:dev --name add_shipping_models
   ```
@@ -128,6 +148,7 @@ Before deploying to production:
   - Use real production keys
 
 ### Important (Should Complete)
+
 - [ ] **Email notifications**
   - Order confirmation (buyer)
   - Label ready (seller)
@@ -147,6 +168,7 @@ Before deploying to production:
   - Performance testing
 
 ### Nice to Have
+
 - [ ] **Analytics**
   - Track successful vs failed label generation
   - Monitor shipping costs
@@ -161,15 +183,19 @@ Before deploying to production:
 ## 🧪 Testing Status
 
 ### Unit Tests
+
 ❌ Not implemented (focus was on integration)
 
 ### Integration Tests
+
 ⏳ Ready for testing with:
+
 - EasyPost sandbox account
 - Stripe test account
 - ngrok for webhooks
 
 ### Manual Testing
+
 ✅ Code reviewed and approved
 ✅ TypeScript compilation passes
 ✅ All linting passes
@@ -188,6 +214,7 @@ All documentation is comprehensive and includes:
 ## 🚀 Deployment Steps
 
 ### 1. Database Setup
+
 ```bash
 # Apply migration
 pnpm db:migrate:dev --name add_shipping_models
@@ -197,6 +224,7 @@ pnpm db:studio
 ```
 
 ### 2. Environment Variables
+
 ```bash
 # Copy from .env.example
 cp .env.example .env
@@ -209,15 +237,18 @@ EASYPOST_WEBHOOK_SECRET=...
 ```
 
 ### 3. Start Application
+
 ```bash
 pnpm dev:web
 ```
 
 ### 4. Configure Webhooks
+
 - Stripe Dashboard → Add webhook
 - EasyPost Dashboard → Add webhook
 
 ### 5. Test Flow
+
 - Create product with dimensions
 - Complete checkout
 - Verify order created

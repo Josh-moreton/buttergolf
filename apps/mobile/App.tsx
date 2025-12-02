@@ -12,7 +12,15 @@ import {
   ForgotPasswordScreen,
   ResetPasswordScreen,
 } from "@buttergolf/app";
-import type { ProductCardData, Product, Category, Brand, Model, SellFormData } from "@buttergolf/app";
+import type {
+  ProductCardData,
+  Product,
+  Category,
+  Brand,
+  Model,
+  SellFormData,
+  ImageData,
+} from "@buttergolf/app";
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
@@ -20,18 +28,16 @@ import {
   View as RNView,
   Text as RNText,
   Pressable as RNPressable,
+  Alert,
+  Platform,
 } from "react-native";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  useAuth,
-} from "@clerk/clerk-expo";
+import { ClerkProvider, SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
 import { useFonts } from "expo-font";
+import * as ImagePicker from "expo-image-picker";
 import {
   Urbanist_400Regular,
   Urbanist_500Medium,
@@ -130,7 +136,7 @@ async function fetchProducts(): Promise<ProductCardData[]> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000",
       );
     }
 
@@ -153,23 +159,33 @@ async function fetchProducts(): Promise<ProductCardData[]> {
 }
 
 // Function to fetch products by category
-async function fetchProductsByCategory(categorySlug: string): Promise<ProductCardData[]> {
+async function fetchProductsByCategory(
+  categorySlug: string,
+): Promise<ProductCardData[]> {
   try {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000",
       );
     }
 
-    console.log("Fetching products for category:", categorySlug, "from:", apiUrl);
-    const response = await fetch(`${apiUrl}/api/products?category=${categorySlug}`, {
-      headers: {
-        Accept: "application/json",
+    console.log(
+      "Fetching products for category:",
+      categorySlug,
+      "from:",
+      apiUrl,
+    );
+    const response = await fetch(
+      `${apiUrl}/api/products?category=${categorySlug}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
       },
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -190,7 +206,7 @@ async function fetchProduct(id: string): Promise<Product | null> {
     if (!apiUrl) {
       throw new Error(
         "EXPO_PUBLIC_API_URL environment variable is not set. " +
-        "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000"
+          "Please create apps/mobile/.env file with: EXPO_PUBLIC_API_URL=http://localhost:3000",
       );
     }
 
@@ -237,9 +253,12 @@ async function searchBrands(query: string): Promise<Brand[]> {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     if (!apiUrl || !query) return [];
 
-    const response = await fetch(`${apiUrl}/api/brands?query=${encodeURIComponent(query)}`, {
-      headers: { Accept: "application/json" },
-    });
+    const response = await fetch(
+      `${apiUrl}/api/brands?query=${encodeURIComponent(query)}`,
+      {
+        headers: { Accept: "application/json" },
+      },
+    );
 
     if (!response.ok) return [];
     return await response.json();
@@ -301,6 +320,83 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
   return await response.json();
 }
 
+// Function to pick images from gallery
+async function pickImages(): Promise<ImageData[]> {
+  try {
+    // Request permissions if not on web
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissions Required",
+          "Please grant photo library permissions to add photos.",
+        );
+        return [];
+      }
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      selectionLimit: 5,
+      quality: 0.8,
+      base64: false,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      return result.assets.map((asset) => ({
+        uri: asset.uri,
+        width: asset.width,
+        height: asset.height,
+      }));
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Failed to pick images:", error);
+    return [];
+  }
+}
+
+// Function to take a photo with camera
+async function takePhoto(): Promise<ImageData | null> {
+  try {
+    // Request permissions if not on web
+    if (Platform.OS !== "web") {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissions Required",
+          "Please grant camera permissions to take photos.",
+        );
+        return null;
+      }
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      quality: 0.8,
+      base64: false,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset) {
+        return {
+          uri: asset.uri,
+          width: asset.width,
+          height: asset.height,
+        };
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Failed to take photo:", error);
+    return null;
+  }
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -358,7 +454,7 @@ export default function App() {
           Minimal RN screen
         </RNText>
         <RNPressable
-          onPress={() => { }}
+          onPress={() => {}}
           style={{
             paddingHorizontal: 16,
             paddingVertical: 10,
@@ -374,10 +470,15 @@ export default function App() {
 
   // Debug: Verify Clerk publishable key is loaded
   const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  console.log('[Clerk] Publishable key:', clerkPublishableKey ? 'LOADED' : 'MISSING');
+  console.log(
+    "[Clerk] Publishable key:",
+    clerkPublishableKey ? "LOADED" : "MISSING",
+  );
 
   if (!clerkPublishableKey) {
-    console.error('[Clerk] EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.');
+    console.error(
+      "[Clerk] EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.",
+    );
   }
 
   return (
@@ -427,21 +528,27 @@ export default function App() {
                     };
                   }}
                 >
-                  {({ route, navigation }: { route: RouteParams<"Category">; navigation: any }) => {
+                  {({
+                    route,
+                    navigation,
+                  }: {
+                    route: RouteParams<"Category">;
+                    navigation: any;
+                  }) => {
                     const slug = route.params?.slug;
                     return (
-                    <CategoryListScreen
-                      categorySlug={slug || ""}
-                      categoryName={
-                        slug
-                          ? slug.charAt(0).toUpperCase() + slug.slice(1)
-                          : "Category"
-                      }
-                      onFetchProducts={fetchProductsByCategory}
-                      onBack={() => navigation.goBack()}
-                      onFilter={() => console.log("Filter pressed")}
-                      onSellPress={() => navigation.navigate("Sell")}
-                    />
+                      <CategoryListScreen
+                        categorySlug={slug || ""}
+                        categoryName={
+                          slug
+                            ? slug.charAt(0).toUpperCase() + slug.slice(1)
+                            : "Category"
+                        }
+                        onFetchProducts={fetchProductsByCategory}
+                        onBack={() => navigation.goBack()}
+                        onFilter={() => console.log("Filter pressed")}
+                        onSellPress={() => navigation.navigate("Sell")}
+                      />
                     );
                   }}
                 </Stack.Screen>
@@ -458,6 +565,8 @@ export default function App() {
                       onFetchCategories={fetchCategories}
                       onSearchBrands={searchBrands}
                       onSearchModels={searchModels}
+                      onPickImages={pickImages}
+                      onTakePhoto={takePhoto}
                       onSubmitListing={submitListing}
                       onClose={() => navigation.goBack()}
                       onSuccess={(productId) => {
@@ -483,7 +592,13 @@ export default function App() {
 
 function OnboardingFlow() {
   const [flowState, setFlowState] = useState<
-    "onboarding" | "signIn" | "signUp" | "verifyEmail" | "forgotPassword" | "resetPassword" | "loggedOutHome"
+    | "onboarding"
+    | "signIn"
+    | "signUp"
+    | "verifyEmail"
+    | "forgotPassword"
+    | "resetPassword"
+    | "loggedOutHome"
   >("onboarding");
   const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
   const [signUpEmail, setSignUpEmail] = useState<string>("");
@@ -516,18 +631,18 @@ function OnboardingFlow() {
           {({ route, navigation }) => {
             const slug = (route.params as { slug?: string })?.slug;
             return (
-            <CategoryListScreen
-              categorySlug={slug || ""}
-              categoryName={
-                slug
-                  ? slug.charAt(0).toUpperCase() + slug.slice(1)
-                  : "Category"
-              }
-              onFetchProducts={fetchProductsByCategory}
-              onBack={() => navigation.goBack()}
-              onFilter={() => console.log("Filter pressed")}
-              onSellPress={() => navigation.navigate("Sell")}
-            />
+              <CategoryListScreen
+                categorySlug={slug || ""}
+                categoryName={
+                  slug
+                    ? slug.charAt(0).toUpperCase() + slug.slice(1)
+                    : "Category"
+                }
+                onFetchProducts={fetchProductsByCategory}
+                onBack={() => navigation.goBack()}
+                onFilter={() => console.log("Filter pressed")}
+                onSellPress={() => navigation.navigate("Sell")}
+              />
             );
           }}
         </Stack.Screen>
@@ -546,6 +661,8 @@ function OnboardingFlow() {
                 navigation.goBack();
                 setFlowState("signIn");
               }}
+              onPickImages={pickImages}
+              onTakePhoto={takePhoto}
               onClose={() => navigation.goBack()}
             />
           )}

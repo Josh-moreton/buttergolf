@@ -12,9 +12,11 @@
  * @see https://github.com/testing-library/jest-dom/issues/546
  * @see https://github.com/vitest-dev/vitest/discussions/8063
  */
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
+import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";
 
-declare module '@vitest/expect' {
-  interface Assertion<T = any> extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
-  interface AsymmetricMatchersContaining extends TestingLibraryMatchers<any, any> {}
+declare module "@vitest/expect" {
+  interface Assertion<T = any>
+    extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+  interface AsymmetricMatchersContaining
+    extends TestingLibraryMatchers<any, any> {}
 }

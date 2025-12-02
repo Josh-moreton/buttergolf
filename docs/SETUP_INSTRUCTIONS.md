@@ -49,7 +49,7 @@ Then press `i` for iOS simulator or `a` for Android emulator.
 - [ ] Create `apps/web/public/tamagui.css` directory (for production builds)
 - [ ] Test both web and mobile apps work correctly
 
-#### Medium Priority  
+#### Medium Priority
 
 - [ ] Customize Tamagui themes in `packages/ui/tamagui.config.ts`
 - [ ] Add more optimized components following the Button pattern

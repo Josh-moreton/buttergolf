@@ -25,7 +25,6 @@ export function ProductsScreen({
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = useCallback(async () => {
-
     if (!onFetchProducts) {
       setLoading(false);
       return;
@@ -41,7 +40,6 @@ export function ProductsScreen({
     } finally {
       setLoading(false);
     }
-
   }, [onFetchProducts]);
 
   useEffect(() => {

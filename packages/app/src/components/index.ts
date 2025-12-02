@@ -1,12 +1,12 @@
-export { ProductCard } from './ProductCard'
-export type { ProductCardProps } from './ProductCard'
-export { SearchBar } from './SearchBar'
-export type { SearchBarProps } from './SearchBar'
-export { CategoryButton } from './CategoryButton'
-export type { CategoryButtonProps } from './CategoryButton'
-export { HeroSection } from './HeroSection'
-export { Hero } from './Hero'
-export type { HeroProps } from './Hero'
-export { CategoriesSection } from './CategoriesSection'
-export { ProductGrid } from './ProductGrid'
-export { FadeUpText } from './FadeUpText'
+export { ProductCard } from "./ProductCard";
+export type { ProductCardProps } from "./ProductCard";
+export { SearchBar } from "./SearchBar";
+export type { SearchBarProps } from "./SearchBar";
+export { CategoryButton } from "./CategoryButton";
+export type { CategoryButtonProps } from "./CategoryButton";
+export { HeroSection } from "./HeroSection";
+export { Hero } from "./Hero";
+export type { HeroProps } from "./Hero";
+export { CategoriesSection } from "./CategoriesSection";
+export { ProductGrid } from "./ProductGrid";
+export { FadeUpText } from "./FadeUpText";

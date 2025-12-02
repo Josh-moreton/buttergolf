@@ -32,12 +32,7 @@ export function AuthErrorDisplay({
       alignItems="flex-start"
       testID={testID}
     >
-      <AlertCircle
-        size={20}
-        color="$error"
-        marginTop="$1"
-        flexShrink={0}
-      />
+      <AlertCircle size={20} color="$error" marginTop="$1" flexShrink={0} />
 
       <Column flex={1} gap="$1">
         <Text size="$4" fontWeight="600" color="$error">

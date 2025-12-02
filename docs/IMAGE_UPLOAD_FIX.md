@@ -29,11 +29,13 @@ The `BLOB_READ_WRITE_TOKEN` environment variable is not configured. When the API
 
 3. **Add to Local Environment**:
    Create/edit `apps/web/.env.local`:
+
    ```bash
    BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxxxxxxxxxx
    ```
 
 4. **Restart Dev Server**:
+
    ```bash
    pnpm dev:web
    ```
@@ -50,23 +52,23 @@ If you just want to test the sell page without setting up Vercel Blob, you can t
 **Create**: `apps/web/src/app/api/upload/route.ts` (replace existing content):
 
 ```typescript
-import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const { userId } = await auth();
-  
+
   if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   // MOCK: Return a placeholder image URL
   return NextResponse.json({
-    url: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400',
-    pathname: 'mock-image.jpg',
-    contentType: 'image/jpeg',
+    url: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400",
+    pathname: "mock-image.jpg",
+    contentType: "image/jpeg",
   });
 }
 ```
@@ -76,12 +78,14 @@ export async function POST(request: Request): Promise<NextResponse> {
 ## Improved Error Handling
 
 I've updated the API route to:
+
 - ✅ Check for `BLOB_READ_WRITE_TOKEN` before attempting upload
 - ✅ Return helpful JSON error messages (not HTML)
 - ✅ Provide setup instructions in error response
 - ✅ Include detailed error information
 
 Now when the token is missing, you'll see:
+
 ```json
 {
   "error": "Image upload is not configured. Please add BLOB_READ_WRITE_TOKEN to your environment variables.",
@@ -92,12 +96,14 @@ Now when the token is missing, you'll see:
 ## Vercel Blob Pricing
 
 **Free Tier** (Hobby):
+
 - ✅ 100GB bandwidth/month
 - ✅ Unlimited storage
 - ✅ Unlimited reads
 - ✅ Perfect for development and MVP
 
 **Pro Plan** (if needed):
+
 - $0.15/GB bandwidth
 - Still very affordable for growing apps
 

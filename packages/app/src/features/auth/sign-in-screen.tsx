@@ -1,15 +1,20 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import {
+  Column,
+  Row,
+  ScrollView,
+  Text,
+  Button,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
-import {
-  validateSignInForm,
-  mapClerkErrorToMessage,
-} from "./utils";
+import { validateSignInForm, mapClerkErrorToMessage } from "./utils";
 import { SignInFormData } from "./types";
 
 interface SignInScreenProps {
@@ -41,29 +46,35 @@ export function SignInScreen({
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const handleEmailChange = useCallback((email: string) => {
-    setFormData((prev) => ({ ...prev, email }));
-    // Clear email error when user starts typing
-    if (fieldErrors.email) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.email;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+  const handleEmailChange = useCallback(
+    (email: string) => {
+      setFormData((prev) => ({ ...prev, email }));
+      // Clear email error when user starts typing
+      if (fieldErrors.email) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
-  const handlePasswordChange = useCallback((password: string) => {
-    setFormData((prev) => ({ ...prev, password }));
-    // Clear password error when user starts typing
-    if (fieldErrors.password) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.password;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+  const handlePasswordChange = useCallback(
+    (password: string) => {
+      setFormData((prev) => ({ ...prev, password }));
+      // Clear password error when user starts typing
+      if (fieldErrors.password) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.password;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
   const handleSubmit = useCallback(async () => {
     setError(null);
@@ -83,46 +94,58 @@ export function SignInScreen({
     setIsSubmitting(true);
 
     try {
-      console.log('[SignIn] Attempting sign-in for:', formData.email);
+      console.log("[SignIn] Attempting sign-in for:", formData.email);
       const signInAttempt = await signIn.create({
         identifier: formData.email,
         password: formData.password,
       });
-      console.log('[SignIn] Status:', signInAttempt.status);
-      console.log('[SignIn] Full response:', JSON.stringify(signInAttempt, null, 2));
+      console.log("[SignIn] Status:", signInAttempt.status);
+      console.log(
+        "[SignIn] Full response:",
+        JSON.stringify(signInAttempt, null, 2),
+      );
 
       // Check status first - createdSessionId only exists when status is 'complete'
       if (signInAttempt.status === "complete") {
-        console.log('[SignIn] Session created:', signInAttempt.createdSessionId);
+        console.log(
+          "[SignIn] Session created:",
+          signInAttempt.createdSessionId,
+        );
         await setActive({ session: signInAttempt.createdSessionId });
         onSuccess?.();
       } else if (signInAttempt.status === "needs_second_factor") {
         // 2FA is enabled on this account but we don't support it
-        console.log('[SignIn] 2FA detected');
-        console.log('[SignIn] Available second factors:', signInAttempt.supportedSecondFactors);
-        console.log('[SignIn] User data:', signInAttempt.userData);
+        console.log("[SignIn] 2FA detected");
+        console.log(
+          "[SignIn] Available second factors:",
+          signInAttempt.supportedSecondFactors,
+        );
+        console.log("[SignIn] User data:", signInAttempt.userData);
 
         // Log all available information to help debug
         if (signInAttempt.supportedSecondFactors) {
           signInAttempt.supportedSecondFactors.forEach((factor: any) => {
-            console.log('[SignIn] Second factor strategy:', factor.strategy);
+            console.log("[SignIn] Second factor strategy:", factor.strategy);
           });
         }
 
-        setError("Two-factor authentication is currently not supported. Please disable 2FA on your account or contact support.");
+        setError(
+          "Two-factor authentication is currently not supported. Please disable 2FA on your account or contact support.",
+        );
       } else if (signInAttempt.status === "needs_first_factor") {
         // Need to provide first factor (shouldn't happen with password flow)
         setError("Authentication requires additional verification.");
       } else if (signInAttempt.status === "needs_new_password") {
-        setError("You need to set a new password. Please use the forgot password flow.");
+        setError(
+          "You need to set a new password. Please use the forgot password flow.",
+        );
       } else {
-        console.log('[SignIn] Unhandled status:', signInAttempt.status);
+        console.log("[SignIn] Unhandled status:", signInAttempt.status);
         setError(`Sign-in incomplete. Status: ${signInAttempt.status}`);
       }
     } catch (err) {
-      console.error('[SignIn] Error:', err);
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
+      console.error("[SignIn] Error:", err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
 
       // Check for Clerk-specific error codes
       if (errorMessage.includes("identifier_not_found")) {
@@ -132,7 +155,7 @@ export function SignInScreen({
       } else {
         setError(
           errorMessage ||
-          "Sign-in failed. Please check your credentials and try again."
+            "Sign-in failed. Please check your credentials and try again.",
         );
       }
     } finally {
@@ -176,10 +199,7 @@ export function SignInScreen({
 
           {/* Error Display */}
           {error && (
-            <AuthErrorDisplay
-              error={error}
-              onDismiss={() => setError(null)}
-            />
+            <AuthErrorDisplay error={error} onDismiss={() => setError(null)} />
           )}
 
           {/* Email/Password Form */}
@@ -231,11 +251,20 @@ export function SignInScreen({
             disabled={isSubmitting || !isLoaded}
             opacity={isSubmitting ? 0.7 : 1}
           >
-            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Sign In"}
+            {isSubmitting ? (
+              <Spinner size="sm" color="$textInverse" />
+            ) : (
+              "Sign In"
+            )}
           </Button>
 
           {/* Sign Up Link */}
-          <Row alignItems="center" justifyContent="center" gap="$2" marginTop="$4">
+          <Row
+            alignItems="center"
+            justifyContent="center"
+            gap="$2"
+            marginTop="$4"
+          >
             <Text size="$4" color="$textSecondary">
               {"Don't have an account?"}
             </Text>

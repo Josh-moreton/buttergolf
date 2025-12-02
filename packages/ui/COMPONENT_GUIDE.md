@@ -5,6 +5,7 @@ Quick reference guide for all ButterGolf UI components with visual examples.
 ## 🎨 Color Palette
 
 ### Brand Colors
+
 ```
 Primary (Green)
 ■ $green50   #e6f7f0  ■ $green100  #b3e5d1  ■ $green200  #80d3b2
@@ -20,6 +21,7 @@ Secondary (Amber/Gold)
 ```
 
 ### Semantic Colors
+
 ```
 Success (Teal)        Info (Blue)           Error (Red)
 ■ $teal500  #02aaa4   ■ $blue500  #3c50e0   ■ $red600  #dc2626
@@ -30,6 +32,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 🔘 Buttons
 
 ### Sizes
+
 ```tsx
 <Button size="sm">Small</Button>    // height: 32px
 <Button size="md">Medium</Button>   // height: 40px
@@ -37,6 +40,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Tones
+
 ```tsx
 // Primary (Green background, white text)
 <Button tone="primary">Primary</Button>
@@ -58,6 +62,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### States
+
 ```tsx
 <Button disabled>Disabled</Button>
 <Button loading>Loading...</Button>
@@ -69,6 +74,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 📝 Typography
 
 ### Text Sizes
+
 ```tsx
 <Text size="xs">Extra Small (12px)</Text>
 <Text size="sm">Small (14px)</Text>
@@ -78,6 +84,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Text Colors
+
 ```tsx
 <Text color="default">Default Text</Text>
 <Text color="secondary">Secondary Text</Text>
@@ -90,6 +97,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Text Weights
+
 ```tsx
 <Text weight="normal">Normal (400)</Text>
 <Text weight="medium">Medium (500)</Text>
@@ -98,6 +106,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Headings
+
 ```tsx
 <Heading level={1}>Heading 1</Heading>  // 48px
 <Heading level={2}>Heading 2</Heading>  // 36px
@@ -112,6 +121,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 📦 Cards
 
 ### Variants
+
 ```tsx
 // Elevated (with shadow)
 <Card variant="elevated">
@@ -131,6 +141,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Padding Options
+
 ```tsx
 <Card padding="none">No padding</Card>
 <Card padding="sm">Small padding</Card>
@@ -143,6 +154,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 📥 Inputs
 
 ### Sizes
+
 ```tsx
 <Input size="sm" placeholder="Small" />    // height: 32px
 <Input size="md" placeholder="Medium" />   // height: 40px
@@ -150,6 +162,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### States
+
 ```tsx
 // Normal
 <Input placeholder="Enter text" />
@@ -172,6 +185,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 🏷️ Badges
 
 ### Variants (3 sizes each)
+
 ```tsx
 // Status badges
 <Badge variant="primary">Primary</Badge>
@@ -212,6 +226,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 **Note**: We use Tamagui's base XStack/YStack components directly. They have all the features we need built-in.
 
 ### XStack (Horizontal - flexDirection: row)
+
 ```tsx
 <XStack gap="$4" alignItems="center" justifyContent="space-between">
   <Text>Left</Text>
@@ -225,6 +240,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### YStack (Vertical - flexDirection: column)
+
 ```tsx
 <YStack gap="$6" alignItems="stretch">
   <Heading level={2}>Title</Heading>
@@ -238,8 +254,14 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Container Pattern
+
 ```tsx
-<YStack maxWidth={1024} width="100%" marginHorizontal="auto" paddingHorizontal="$4">
+<YStack
+  maxWidth={1024}
+  width="100%"
+  marginHorizontal="auto"
+  paddingHorizontal="$4"
+>
   {/* Constrained width content */}
 </YStack>
 
@@ -248,6 +270,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Spacer Pattern
+
 ```tsx
 <XStack>
   <Text>Left</Text>
@@ -269,6 +292,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 🎭 Complete Examples
 
 ### Form Example
+
 ```tsx
 <YStack gap="$6" fullWidth>
   {/* Email field */}
@@ -286,7 +310,9 @@ Success (Teal)        Info (Blue)           Error (Red)
       fullWidth
     />
     {emailError && (
-      <Text size="sm" color="error">{emailError}</Text>
+      <Text size="sm" color="error">
+        {emailError}
+      </Text>
     )}
   </YStack>
 
@@ -310,6 +336,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Product Card Example
+
 ```tsx
 <Card variant="elevated" padding="none" fullWidth>
   <Card.Header padding="none">
@@ -321,7 +348,7 @@ Success (Teal)        Info (Blue)           Error (Red)
       borderTopRightRadius="$lg"
     />
   </Card.Header>
-  
+
   <Card.Body padding="lg">
     <YStack gap="$3">
       <Heading level={4}>{product.name}</Heading>
@@ -334,7 +361,7 @@ Success (Teal)        Info (Blue)           Error (Red)
       </XStack>
     </YStack>
   </Card.Body>
-  
+
   <Card.Footer align="right">
     <Button tone="outline" size="md">
       Add to Cart
@@ -344,6 +371,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Dashboard Stats Example
+
 ```tsx
 <XStack gap="$6" wrap>
   {/* Stat card 1 */}
@@ -354,7 +382,9 @@ Success (Teal)        Info (Blue)           Error (Red)
         <Text color="secondary">Active Users</Text>
       </XStack>
       <Heading level={2}>1,234</Heading>
-      <Text size="sm" color="success">+12% from last month</Text>
+      <Text size="sm" color="success">
+        +12% from last month
+      </Text>
     </YStack>
   </Card>
 
@@ -366,7 +396,9 @@ Success (Teal)        Info (Blue)           Error (Red)
         <Text color="secondary">Revenue</Text>
       </XStack>
       <Heading level={2}>$45.2K</Heading>
-      <Text size="sm" color="info">+8% from last month</Text>
+      <Text size="sm" color="info">
+        +8% from last month
+      </Text>
     </YStack>
   </Card>
 
@@ -378,13 +410,16 @@ Success (Teal)        Info (Blue)           Error (Red)
         <Text color="secondary">Pending</Text>
       </XStack>
       <Heading level={2}>23</Heading>
-      <Text size="sm" color="warning">Needs attention</Text>
+      <Text size="sm" color="warning">
+        Needs attention
+      </Text>
     </YStack>
   </Card>
 </XStack>
 ```
 
 ### Loading State Example
+
 ```tsx
 <Card variant="elevated" padding="lg">
   <YStack gap="$4" alignItems="center">
@@ -395,15 +430,14 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Alert Example
+
 ```tsx
 <Card variant="outlined" padding="md">
   <XStack gap="$4" alignItems="flex-start">
     <Badge variant="error" size="sm" />
     <YStack gap="$2" flex={1}>
       <Text weight="semibold">Error</Text>
-      <Text color="secondary">
-        Something went wrong. Please try again.
-      </Text>
+      <Text color="secondary">Something went wrong. Please try again.</Text>
     </YStack>
     <Button tone="ghost" size="sm">
       Dismiss
@@ -417,15 +451,16 @@ Success (Teal)        Info (Blue)           Error (Red)
 ## 📱 Responsive Design
 
 ### Mobile First
+
 ```tsx
 <Container size="lg">
   <YStack
     gap="$4"
-    $gtMd={{ gap: "lg" }}  // Larger gap on desktop
+    $gtMd={{ gap: "lg" }} // Larger gap on desktop
   >
     <XStack
       flexDirection="column"
-      $gtSm={{ flexDirection: "row" }}  // Horizontal on tablet+
+      $gtSm={{ flexDirection: "row" }} // Horizontal on tablet+
       gap="$4"
     >
       <YStack flex={1}>Content 1</YStack>
@@ -436,6 +471,7 @@ Success (Teal)        Info (Blue)           Error (Red)
 ```
 
 ### Breakpoints
+
 ```
 $xs:     max-width 660px
 $gtXs:   min-width 661px
@@ -452,8 +488,9 @@ $gtLg:   min-width 1281px
 ## 🎨 Theme Usage
 
 ### Light/Dark Theme
+
 ```tsx
-import { Theme } from '@buttergolf/ui'
+import { Theme } from "@buttergolf/ui";
 
 function App() {
   return (
@@ -472,7 +509,7 @@ function App() {
         </View>
       </Theme>
     </>
-  )
+  );
 }
 ```
 
@@ -481,6 +518,7 @@ function App() {
 ## 🔍 Quick Reference
 
 ### Component Sizes
+
 ```
 Buttons:  sm=32px, md=40px, lg=48px
 Inputs:   sm=32px, md=40px, lg=48px
@@ -490,6 +528,7 @@ Spinners: sm=16px, md=20px, lg=24px
 ```
 
 ### Common Patterns
+
 ```tsx
 // Full-width form field
 <YStack gap="$2" fullWidth>
@@ -521,6 +560,7 @@ Spinners: sm=16px, md=20px, lg=24px
 ---
 
 For complete documentation, see:
+
 - `packages/ui/README.md` - Full component API reference
 - `packages/config/README.md` - Token system guide
 - `DESIGN_SYSTEM_SUMMARY.md` - Implementation overview

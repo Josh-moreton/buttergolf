@@ -84,7 +84,7 @@ This document describes how product data flows through the application across we
 1. **Request**: User navigates to home page
 2. **Server Component**: `RecentlyListedSection` executes on server
 3. **Server Action**: Calls `getRecentProducts(12)`
-4. **Prisma Query**: 
+4. **Prisma Query**:
    - Fetches products where `isSold = false`
    - Orders by `createdAt DESC`
    - Includes first image and category
@@ -94,6 +94,7 @@ This document describes how product data flows through the application across we
 8. **Hydration**: React hydrates on client with same data
 
 **Benefits**:
+
 - ✅ Fast initial page load (no API round-trip)
 - ✅ SEO-friendly (products in HTML)
 - ✅ No loading state needed
@@ -112,6 +113,7 @@ This document describes how product data flows through the application across we
 10. **Render**: ProductCard components display products
 
 **Benefits**:
+
 - ✅ Works with any backend
 - ✅ Can be cached/refreshed independently
 - ✅ Supports pull-to-refresh
@@ -138,16 +140,16 @@ App Root
 ```typescript
 // Shared across platforms
 interface ProductCardData {
-  id: string;              // For routing/keys
-  title: string;           // Product name
-  price: number;           // Numeric price
-  condition: ProductCondition | null;  // Enum value
-  imageUrl: string;        // First image URL
-  category: string;        // Category name
+  id: string; // For routing/keys
+  title: string; // Product name
+  price: number; // Numeric price
+  condition: ProductCondition | null; // Enum value
+  imageUrl: string; // First image URL
+  category: string; // Category name
 }
 
 // Ensures consistency
-type ProductCondition = 
+type ProductCondition =
   | "NEW"
   | "LIKE_NEW"
   | "EXCELLENT"
@@ -161,12 +163,14 @@ type ProductCondition =
 ### Endpoint: `GET /api/products/recent`
 
 **Request**:
+
 ```http
 GET /api/products/recent?limit=12 HTTP/1.1
 Host: localhost:3000
 ```
 
 **Response**:
+
 ```json
 [
   {
@@ -181,6 +185,7 @@ Host: localhost:3000
 ```
 
 **Error Response**:
+
 ```json
 {
   "error": "Failed to fetch products"
@@ -200,21 +205,25 @@ Host: localhost:3000
 ### Future Improvements
 
 1. **Pagination**: Add cursor-based pagination
+
    ```typescript
    getRecentProducts(limit: 12, cursor?: string)
    ```
 
 2. **Caching**: Implement Redis cache for frequently accessed products
+
    ```typescript
-   const cached = await redis.get('products:recent:12')
+   const cached = await redis.get("products:recent:12");
    ```
 
 3. **Image CDN**: Use image optimization service
+
    ```typescript
-   imageUrl: optimizeImage(product.images[0].url, { width: 400 })
+   imageUrl: optimizeImage(product.images[0].url, { width: 400 });
    ```
 
 4. **Query Optimization**: Add database indexes
+
    ```sql
    CREATE INDEX idx_products_created_sold ON products(createdAt DESC, isSold);
    ```
@@ -229,16 +238,16 @@ Host: localhost:3000
 ### Unit Tests
 
 ```typescript
-describe('getRecentProducts', () => {
-  it('returns products ordered by creation date', async () => {
+describe("getRecentProducts", () => {
+  it("returns products ordered by creation date", async () => {
     const products = await getRecentProducts(5);
     expect(products).toHaveLength(5);
     expect(products[0].createdAt >= products[1].createdAt).toBe(true);
   });
-  
-  it('filters out sold products', async () => {
+
+  it("filters out sold products", async () => {
     const products = await getRecentProducts(10);
-    expect(products.every(p => !p.isSold)).toBe(true);
+    expect(products.every((p) => !p.isSold)).toBe(true);
   });
 });
 ```
@@ -246,13 +255,13 @@ describe('getRecentProducts', () => {
 ### Integration Tests
 
 ```typescript
-describe('API /api/products/recent', () => {
-  it('returns valid ProductCardData array', async () => {
-    const response = await fetch('/api/products/recent');
+describe("API /api/products/recent", () => {
+  it("returns valid ProductCardData array", async () => {
+    const response = await fetch("/api/products/recent");
     const products = await response.json();
-    
+
     expect(Array.isArray(products)).toBe(true);
-    products.forEach(product => {
+    products.forEach((product) => {
       expect(product).toMatchObject({
         id: expect.any(String),
         title: expect.any(String),
@@ -267,9 +276,9 @@ describe('API /api/products/recent', () => {
 ### E2E Tests
 
 ```typescript
-describe('Web Product Display', () => {
-  it('shows products on home page', async () => {
-    await page.goto('/');
+describe("Web Product Display", () => {
+  it("shows products on home page", async () => {
+    await page.goto("/");
     await page.waitForSelector('[data-testid="product-card"]');
     const products = await page.$$('[data-testid="product-card"]');
     expect(products.length).toBeGreaterThan(0);
@@ -291,7 +300,7 @@ describe('Web Product Display', () => {
 
 ```typescript
 // In server action
-console.log('Fetched products', {
+console.log("Fetched products", {
   count: products.length,
   duration: Date.now() - startTime,
   filters: { isSold: false },

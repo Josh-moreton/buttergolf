@@ -7,11 +7,14 @@ Addressed all review comments for PR #127 "fixing splash screen", with primary f
 ## Critical Issue Resolved: Category Duplication
 
 ### Problem
+
 Categories were duplicated in two locations:
+
 - `packages/db/src/constants/categories.ts` (original)
 - `packages/app/src/constants/categories.ts` (duplicate for mobile)
 
 This created a **maintenance nightmare** where:
+
 - Updates had to be manually synced between two files
 - Risk of data inconsistency between web and mobile
 - Violated DRY (Don't Repeat Yourself) principle
@@ -19,6 +22,7 @@ This created a **maintenance nightmare** where:
 ### Solution: Dedicated Constants Package
 
 Created a new **`@buttergolf/constants`** package that:
+
 - ✅ Contains zero dependencies (including no Prisma)
 - ✅ Safe to import in React Native without bundler issues
 - ✅ Single source of truth for domain constants
@@ -71,54 +75,75 @@ packages/
 ## Additional Lint Issues Fixed
 
 ### 1. Deprecated `resizeMode` Prop
+
 **File**: `packages/app/src/features/onboarding/screen.tsx`
+
 - **Issue**: `resizeMode` prop deprecated on Tamagui Image component
 - **Fix**: Replaced with `style={{ objectFit: "cover" }}`
 - **Instances**: 2 (both animation rows)
 
 ### 2. Nested Ternary Operations
-**Files**: 
+
+**Files**:
+
 - `packages/app/src/features/home/logged-out-screen.tsx`
 - `packages/app/src/features/products/list-screen.tsx`
 
 **Issue**: Complex nested ternaries reduced code readability
 
 **Before**:
+
 ```tsx
-{loading ? (
-  <LoadingView />
-) : products.length === 0 ? (
-  <EmptyView />
-) : (
-  <ProductsView />
-)}
+{
+  loading ? (
+    <LoadingView />
+  ) : products.length === 0 ? (
+    <EmptyView />
+  ) : (
+    <ProductsView />
+  );
+}
 ```
 
 **After**:
+
 ```tsx
-{loading && <LoadingView />}
-{!loading && products.length === 0 && <EmptyView />}
-{!loading && products.length > 0 && <ProductsView />}
+{
+  loading && <LoadingView />;
+}
+{
+  !loading && products.length === 0 && <EmptyView />;
+}
+{
+  !loading && products.length > 0 && <ProductsView />;
+}
 ```
 
 ### 3. Redundant Conditional
+
 **File**: `packages/app/src/features/home/logged-out-screen.tsx`
+
 - **Issue**: Category "All" button had identical background for both true/false conditions
 - **Fix**: Simplified to single `backgroundColor="$background"` value
 
 ### 4. Array Index as Key
+
 **File**: `packages/app/src/features/products/detail-screen.tsx`
+
 - **Issue**: Using array index as React key in map
 - **Fix**: Changed from `key={index}` to `key={image.url}` (stable identifier)
 
 ### 5. Readonly Props Typing
+
 **File**: `packages/app/src/features/products/list-screen.tsx`
+
 - **Issue**: Component props not marked as readonly
 - **Fix**: Changed `{ product: ProductCardData }` to `Readonly<{ product: ProductCardData }>`
 
 ## Verification
 
 All changes verified:
+
 - ✅ TypeScript compilation passes (no errors)
 - ✅ ESLint passes (all lint issues resolved)
 - ✅ Mobile build succeeds with Expo Metro
@@ -146,12 +171,14 @@ All changes verified:
 ## Files Changed
 
 ### New Files
+
 - `packages/constants/package.json`
 - `packages/constants/tsconfig.json`
 - `packages/constants/src/categories.ts`
 - `packages/constants/src/index.ts`
 
 ### Modified Files
+
 - `packages/db/package.json` (added constants dependency)
 - `packages/db/src/index.ts` (re-export from constants)
 - `packages/app/package.json` (added constants dependency)
@@ -162,6 +189,7 @@ All changes verified:
 - `packages/app/src/features/onboarding/screen.tsx` (fix deprecated resizeMode)
 
 ### Deleted Files
+
 - `packages/app/src/constants/categories.ts` (duplicate removed)
 
 ## Conclusion

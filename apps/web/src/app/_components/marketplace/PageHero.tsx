@@ -51,7 +51,11 @@ export function PageHero() {
         />
         <TamaguiText
           fontWeight="700"
-          style={{ fontSize: "clamp(24px, 4vw, 40px)", position: "relative", zIndex: 1 }}
+          style={{
+            fontSize: "clamp(24px, 4vw, 40px)",
+            position: "relative",
+            zIndex: 1,
+          }}
           lineHeight={1.2}
           color="$primary"
           textAlign="center"

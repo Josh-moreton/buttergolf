@@ -19,6 +19,7 @@ Successfully refactored the web application header from a complex three-layer st
 **File**: `apps/web/src/app/_components/marketplace/TrustBar.tsx`
 
 **Changes**:
+
 - Changed background from `$primaryLight` to `$background` (cream #FEFAD6)
 - Added dismissible functionality with close button
 - Added local state management (`useState`)
@@ -26,11 +27,13 @@ Successfully refactored the web application header from a complex three-layer st
 - Added `CloseIcon` import from header icons
 
 **Before**:
+
 ```tsx
-backgroundColor="$primaryLight"
+backgroundColor = "$primaryLight";
 ```
 
 **After**:
+
 ```tsx
 backgroundColor="$background"  // Cream
 + Close button with state management
@@ -44,6 +47,7 @@ backgroundColor="$background"  // Cream
 **File**: `apps/web/src/app/_components/header/ButterHeader.tsx` (NEW)
 
 **Features**:
+
 - **Single unified header bar** with butter orange background (#E25F2F)
 - **Height**: ~80px (reduced from 180px three-layer structure)
 - **Logo**: White version (`logo-white.png`) at 50px height
@@ -55,6 +59,7 @@ backgroundColor="$background"  // Cream
 - **Touch targets**: All interactive elements 44x44px minimum
 
 **Layout Structure**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [Logo]  HOME  FEATURES  ABOUT  CONTACT    [Search 🔍]  [❤️][🛒][👤] │
@@ -62,16 +67,19 @@ backgroundColor="$background"  // Cream
 ```
 
 **Responsive Breakpoints**:
+
 - **Desktop** (`$lg`+): Full navigation, inline search, all icons visible
 - **Tablet/Mobile** (`< $lg`): Hamburger menu, search icon only (expands in menu)
 
 **Color Scheme**:
+
 - Background: `$primary` (#E25F2F - Butter Orange)
 - Text/Icons: `$textInverse` (White)
 - Search bar: `rgba(255, 255, 255, 0.2)` with backdrop blur
 - Badge counts: `$navy500` background
 
 **Interactive States**:
+
 - Hover opacity: 0.8 for all clickable elements
 - Navigation hover: Underline effect
 - Search hover: Increased opacity to 0.3
@@ -84,10 +92,12 @@ backgroundColor="$background"  // Cream
 **File**: `apps/web/src/app/layout.tsx`
 
 **Changes**:
+
 - Replaced import: `MarketplaceHeader` → `ButterHeader`
 - Updated component usage in JSX
 
 **Header Stack**:
+
 ```tsx
 <TrustBar />           {/* Top: 0px, 40px tall */}
 <ButterHeader />       {/* Top: 40px, 80px tall */}
@@ -95,6 +105,7 @@ backgroundColor="$background"  // Cream
 ```
 
 **Total Height**:
+
 - With TrustBar: 120px (40 + 80)
 - Without TrustBar (dismissed): 80px
 
@@ -103,6 +114,7 @@ backgroundColor="$background"  // Cream
 ## Visual Comparison
 
 ### Before (MarketplaceHeader)
+
 - **Layers**: 3 (TrustBar + Main + Nav)
 - **Height**: 180px total
 - **Theme**: Green (#13a063)
@@ -112,6 +124,7 @@ backgroundColor="$background"  // Cream
 - **Categories**: Hidden in navigation
 
 ### After (ButterHeader)
+
 - **Layers**: 1 unified header (+ optional dismissible TrustBar)
 - **Height**: 80px (120px with TrustBar)
 - **Theme**: Butter orange (#E25F2F)
@@ -184,6 +197,7 @@ export function ButterHeader() {
 **File**: `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`
 
 Updated checklist for Phase 1 (Header):
+
 - Marked all header tasks as complete
 - Added status section with implementation details
 - Updated acceptance criteria
@@ -193,6 +207,7 @@ Updated checklist for Phase 1 (Header):
 **File**: `.github/copilot-instructions.md`
 
 Added new section: **"Web Application Header Structure"** including:
+
 - ButterHeader component details
 - TrustBar component details
 - Layout structure and height calculations
@@ -206,12 +221,14 @@ Added new section: **"Web Application Header Structure"** including:
 ## Testing Results
 
 ### Type Check
+
 ```bash
 pnpm check-types
 ✅ All packages pass (4 successful, 3 cached)
 ```
 
 ### Build Status
+
 - Web build: ✅ Compiles successfully
 - TypeScript: ✅ No errors
 - Linting: ✅ Passes (markdown link warnings only)
@@ -226,6 +243,7 @@ pnpm check-types
 **New**: Pages should use `marginTop={120}` (or `marginTop={80}` if TrustBar dismissed)
 
 **Migration**:
+
 ```tsx
 // Before
 <Column marginTop={180}>
@@ -240,6 +258,7 @@ pnpm check-types
 **New**: Uses `logo-white.png` (white logo on orange background)
 
 **Asset Requirements**:
+
 - ✅ `logo-white.png` exists in `apps/web/public/`
 - ✅ `logo-orange.png` exists (kept for other use cases)
 
@@ -250,6 +269,7 @@ pnpm check-types
 From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 
 ### 2. Hero Carousel Component
+
 - [ ] Install embla-carousel-react
 - [ ] Create HeroCarousel component
 - [ ] Add 3-5 slides with autoplay
@@ -258,6 +278,7 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 - [ ] Make responsive (50vh height)
 
 ### 3. Category Grid Component
+
 - [ ] Create CategoryGrid component
 - [ ] Build 4-column CSS Grid
 - [ ] Style orange labels
@@ -266,6 +287,7 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 - [ ] Make responsive (2 cols tablet, 1 col mobile)
 
 ### 4. Page Layout Updates
+
 - [ ] Update MarketplaceHomeClient.tsx
 - [ ] Replace HeroSectionNew with HeroCarousel
 - [ ] Add CategoryGrid below carousel
@@ -276,16 +298,19 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 ## Files Modified
 
 ### Created
+
 - ✅ `apps/web/src/app/_components/header/ButterHeader.tsx`
 - ✅ `docs/HEADER_REFACTOR_COMPLETE.md` (this file)
 
 ### Modified
+
 - ✅ `apps/web/src/app/_components/marketplace/TrustBar.tsx`
 - ✅ `apps/web/src/app/layout.tsx`
 - ✅ `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`
 - ✅ `.github/copilot-instructions.md`
 
 ### Archived (for reference)
+
 - ⏳ `apps/web/src/app/_components/header/MarketplaceHeader.tsx` (still exists, not deleted yet)
 
 ---
@@ -293,12 +318,14 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 ## Performance Impact
 
 ### Improvements
+
 - ✅ Reduced header height: 180px → 120px (33% reduction)
 - ✅ Simplified component tree: 3 layers → 1 layer
 - ✅ Fewer DOM nodes in header structure
 - ✅ Dismissible TrustBar further reduces to 80px
 
 ### Metrics to Monitor
+
 - First Contentful Paint (FCP)
 - Cumulative Layout Shift (CLS) - should improve with fixed header
 - Mobile navigation responsiveness
@@ -310,22 +337,26 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 ### Pure Butter Brand Identity ✅
 
 **Colors**:
+
 - ✅ Butter orange (#E25F2F) - Header background
 - ✅ Cream (#FEFAD6) - TrustBar background
 - ✅ Navy (#1A2E44) - Badge backgrounds
 - ✅ White - Text and icons on orange
 
 **Typography**:
+
 - ✅ Urbanist Medium - Navigation links (500 weight)
 - ✅ Urbanist Bold - Mobile menu links (700 weight)
 - ✅ Font size: 14px (desktop nav), 40px (mobile nav headings)
 
 **Spacing**:
+
 - ✅ Consistent padding: `$md` / `$lg`
 - ✅ Gap between elements: `$2` to `$8`
 - ✅ Touch targets: Minimum 44x44px
 
 **Interactions**:
+
 - ✅ Hover opacity: 0.8
 - ✅ Smooth transitions: `animation="quick"`
 - ✅ Underline on navigation hover
@@ -379,6 +410,7 @@ From `GITHUB_ISSUE_HOMEPAGE_REFACTOR.md`:
 If issues are discovered:
 
 1. **Quick Rollback**:
+
    ```typescript
    // In apps/web/src/app/layout.tsx
    - import { ButterHeader } from "./_components/header/ButterHeader";
@@ -389,6 +421,7 @@ If issues are discovered:
    ```
 
 2. **Revert TrustBar**:
+
    ```bash
    git checkout HEAD~1 -- apps/web/src/app/_components/marketplace/TrustBar.tsx
    ```
@@ -407,6 +440,7 @@ Old `MarketplaceHeader.tsx` is preserved for reference if needed.
 ✅ **Phase 1 (Header Refactor) - COMPLETE**
 
 **Validated**:
+
 - [x] Type checking passes
 - [x] Web build succeeds
 - [x] Visual design matches Pure Butter brand
@@ -416,6 +450,7 @@ Old `MarketplaceHeader.tsx` is preserved for reference if needed.
 - [x] Git issue tracking updated
 
 **Ready for**:
+
 - Phase 2: Hero Carousel Component
 - Phase 3: Category Grid Component
 - Phase 4: Page Layout Integration
@@ -423,6 +458,7 @@ Old `MarketplaceHeader.tsx` is preserved for reference if needed.
 ---
 
 **Next Command**:
+
 ```bash
 # Start dev server to visually test new header
 pnpm dev:web

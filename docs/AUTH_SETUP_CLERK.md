@@ -18,14 +18,17 @@ Follow these steps to get up and running locally:
 Create a `.env` at the project root or export in your shell. The following variables are used:
 
 Web (Next.js app):
+
 - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 - CLERK_SECRET_KEY
 - CLERK_WEBHOOK_SECRET (for user sync via webhook)
 
 Mobile (Expo app):
+
 - EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
 
 Database:
+
 - DATABASE_URL (already used by Prisma in `packages/db`)
 
 You can copy from `.env.example` and fill in the values.
@@ -33,6 +36,7 @@ You can copy from `.env.example` and fill in the values.
 ## 3) Set up Clerk webhook (optional but recommended)
 
 To sync Clerk users to the local database, add a webhook in the Clerk dashboard:
+
 - URL: https://your-domain.com/api/clerk/webhook (or http://localhost:3000/api/clerk/webhook for local)
 - Events: `user.created`, `user.updated`
 - Copy the generated signing secret into `CLERK_WEBHOOK_SECRET`
@@ -44,10 +48,12 @@ The webhook handler will upsert a `User` record keyed by `clerkId`.
 The mobile app is configured with the scheme `buttergolf` in `apps/mobile/app.json`.
 
 In your Clerk instance, add redirect URLs for OAuth (use Expo proxy in dev):
+
 - iOS/Android development: `exp://localhost:8081` is handled by Expo; Clerk's Expo SDK uses Auth Session proxy under the hood.
 - You typically don't need to add explicit redirect URLs for dev with the proxy.
 
 If you disable the proxy, configure redirect URLs like:
+
 - `buttergolf://callback` (match the scheme configured in app.json)
 
 ## 5) Run it

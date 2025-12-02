@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import {
+  Column,
+  Row,
+  ScrollView,
+  Text,
+  Button,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
@@ -41,55 +49,68 @@ export function SignUpScreen({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>("weak");
+  const [passwordStrength, setPasswordStrength] =
+    useState<PasswordStrength>("weak");
 
   // Update password strength when password changes
-  const handlePasswordChange = useCallback((password: string) => {
-    setFormData((prev) => ({ ...prev, password }));
-    setPasswordStrength(getPasswordStrength(password));
+  const handlePasswordChange = useCallback(
+    (password: string) => {
+      setFormData((prev) => ({ ...prev, password }));
+      setPasswordStrength(getPasswordStrength(password));
 
-    // Clear password error when user starts typing
-    if (fieldErrors.password) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.password;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+      // Clear password error when user starts typing
+      if (fieldErrors.password) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.password;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
-  const handleFirstNameChange = useCallback((firstName: string) => {
-    setFormData((prev) => ({ ...prev, firstName }));
-    if (fieldErrors.firstName) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.firstName;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+  const handleFirstNameChange = useCallback(
+    (firstName: string) => {
+      setFormData((prev) => ({ ...prev, firstName }));
+      if (fieldErrors.firstName) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.firstName;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
-  const handleEmailChange = useCallback((email: string) => {
-    setFormData((prev) => ({ ...prev, email }));
-    if (fieldErrors.email) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.email;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+  const handleEmailChange = useCallback(
+    (email: string) => {
+      setFormData((prev) => ({ ...prev, email }));
+      if (fieldErrors.email) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
-  const handleConfirmPasswordChange = useCallback((confirmPassword: string) => {
-    setFormData((prev) => ({ ...prev, confirmPassword }));
-    if (fieldErrors.confirmPassword) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next.confirmPassword;
-        return next;
-      });
-    }
-  }, [fieldErrors]);
+  const handleConfirmPasswordChange = useCallback(
+    (confirmPassword: string) => {
+      setFormData((prev) => ({ ...prev, confirmPassword }));
+      if (fieldErrors.confirmPassword) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.confirmPassword;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
 
   const handleSubmit = useCallback(async () => {
     setError(null);
@@ -99,7 +120,7 @@ export function SignUpScreen({
       formData.firstName,
       formData.email,
       formData.password,
-      formData.confirmPassword
+      formData.confirmPassword,
     );
 
     if (!validation.isValid) {
@@ -128,8 +149,7 @@ export function SignUpScreen({
       // Call success to navigate to verify email screen with the email
       onSuccess?.(formData.email);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
 
       // Check for Clerk-specific error codes
       if (errorMessage.includes("duplicate_identifier")) {
@@ -137,9 +157,7 @@ export function SignUpScreen({
       } else if (errorMessage.includes("password_not_strong_enough")) {
         setError(mapClerkErrorToMessage("password_not_strong_enough"));
       } else {
-        setError(
-          errorMessage || "Sign-up failed. Please try again."
-        );
+        setError(errorMessage || "Sign-up failed. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -208,10 +226,7 @@ export function SignUpScreen({
 
           {/* Error Display */}
           {error && (
-            <AuthErrorDisplay
-              error={error}
-              onDismiss={() => setError(null)}
-            />
+            <AuthErrorDisplay error={error} onDismiss={() => setError(null)} />
           )}
 
           {/* Form Fields */}
@@ -251,10 +266,18 @@ export function SignUpScreen({
               {/* Password Strength Indicator */}
               {formData.password && (
                 <Row gap="$2" alignItems="center">
-                  <Row flex={1} height={4} backgroundColor="$border" borderRadius="$full" overflow="hidden">
+                  <Row
+                    flex={1}
+                    height={4}
+                    backgroundColor="$border"
+                    borderRadius="$full"
+                    overflow="hidden"
+                  >
                     <Column
                       height="100%"
-                      backgroundColor={getPasswordStrengthColor(passwordStrength)}
+                      backgroundColor={getPasswordStrengthColor(
+                        passwordStrength,
+                      )}
                       width={
                         passwordStrength === "weak"
                           ? "25%"
@@ -303,11 +326,20 @@ export function SignUpScreen({
             disabled={isSubmitting || !isLoaded}
             opacity={isSubmitting ? 0.7 : 1}
           >
-            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Create Account"}
+            {isSubmitting ? (
+              <Spinner size="sm" color="$textInverse" />
+            ) : (
+              "Create Account"
+            )}
           </Button>
 
           {/* Sign In Link */}
-          <Row alignItems="center" justifyContent="center" gap="$2" marginTop="$4">
+          <Row
+            alignItems="center"
+            justifyContent="center"
+            gap="$2"
+            marginTop="$4"
+          >
             <Text size="$4" color="$textSecondary">
               Already have an account?
             </Text>

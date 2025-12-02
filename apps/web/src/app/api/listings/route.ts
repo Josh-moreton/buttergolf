@@ -17,15 +17,15 @@ export async function GET(request: NextRequest) {
       isSold: false,
     };
 
-    // Favorites filter (requires authentication)
-    const showFavoritesOnly = searchParams.get("favorites") === "true";
-    if (showFavoritesOnly) {
+    // Favourites filter (requires authentication)
+    const showFavouritesOnly = searchParams.get("favourites") === "true";
+    if (showFavouritesOnly) {
       const { userId: clerkId } = await auth();
 
       if (!clerkId) {
         return NextResponse.json(
-          { error: "Authentication required to filter favorites" },
-          { status: 401 }
+          { error: "Authentication required to filter favourites" },
+          { status: 401 },
         );
       }
 
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      where.favorites = {
+      where.favourites = {
         some: {
           userId: user.id,
         },
@@ -203,7 +203,7 @@ export async function GET(request: NextRequest) {
     console.error("Listings API error:", error);
     return NextResponse.json(
       { error: "Failed to fetch listings" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

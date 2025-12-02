@@ -100,7 +100,7 @@ The existing components (`Button`, `Card`, `Code`) use web-specific DOM elements
 Create `packages/ui/src/text.tsx`:
 
 ```tsx
-import React from 'react';
+import React from "react";
 
 interface TextProps {
   children: React.ReactNode;
@@ -116,19 +116,19 @@ export function Text({ children }: TextProps) {
 Then use it in both apps:
 
 ```tsx
-import { Text } from '@my-scope/ui';
+import { Text } from "@my-scope/ui";
 ```
 
 ## 🛠️ Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Run all apps in development |
-| `pnpm dev:web` | Run web app only |
-| `pnpm dev:mobile` | Run mobile app only |
-| `pnpm build` | Build all apps |
-| `pnpm lint` | Lint all packages |
-| `pnpm check-types` | Type check all packages |
+| Command              | Description                        |
+| -------------------- | ---------------------------------- |
+| `pnpm dev`           | Run all apps in development        |
+| `pnpm dev:web`       | Run web app only                   |
+| `pnpm dev:mobile`    | Run mobile app only                |
+| `pnpm build`         | Build all apps                     |
+| `pnpm lint`          | Lint all packages                  |
+| `pnpm check-types`   | Type check all packages            |
 | `pnpm clean-install` | Clean & reinstall all dependencies |
 
 ## 🐛 Troubleshooting
@@ -159,8 +159,8 @@ pnpm clean-install
 The default Expo app in `apps/mobile/App.tsx` is a basic template. Customize it:
 
 ```tsx
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function App() {
   return (
@@ -174,9 +174,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 ```

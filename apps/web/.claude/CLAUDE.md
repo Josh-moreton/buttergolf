@@ -76,7 +76,7 @@ export default async function CoursesPage() {
   return (
     <div>
       <h1>Golf Courses</h1>
-      {courses.map(course => (
+      {courses.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}
     </div>
@@ -102,9 +102,7 @@ export function BookingForm() {
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
-      <Button onPress={() => console.log(date)}>
-        Book Tee Time
-      </Button>
+      <Button onPress={() => console.log(date)}>Book Tee Time</Button>
     </form>
   );
 }
@@ -113,6 +111,7 @@ export function BookingForm() {
 ### When to Use Client Components
 
 Add `"use client"` when you need:
+
 - React hooks (useState, useEffect, etc.)
 - Event handlers (onClick, onChange, etc.)
 - Browser APIs (window, document, etc.)
@@ -289,11 +288,7 @@ export function Component() {
       <Text color="$text" size="$5">
         Hello World
       </Text>
-      <Button
-        size="$5"
-        backgroundColor="$primary"
-        color="$textInverse"
-      >
+      <Button size="$5" backgroundColor="$primary" color="$textInverse">
         Click Me
       </Button>
     </View>
@@ -307,9 +302,7 @@ export function Component() {
 export function Component() {
   return (
     <div className="bg-vanillaCream p-4">
-      <h1 className="text-ironstone text-2xl font-bold">
-        Golf Courses
-      </h1>
+      <h1 className="text-ironstone text-2xl font-bold">Golf Courses</h1>
     </div>
   );
 }
@@ -598,6 +591,7 @@ pnpm test:e2e
 ### Issue: "Module not found" for @buttergolf packages
 
 **Solution**:
+
 1. Check `next.config.ts` has correct `transpilePackages`
 2. Run `pnpm install` at root
 3. Restart dev server
@@ -609,6 +603,7 @@ pnpm test:e2e
 ### Issue: Styles not loading
 
 **Solution**:
+
 1. Check `TamaguiProvider` is in root layout
 2. Verify `next.config.ts` webpack aliases for react-native
 3. Ensure Tailwind config is correct
@@ -616,6 +611,7 @@ pnpm test:e2e
 ### Issue: Database queries failing
 
 **Solution**:
+
 1. Run `pnpm db:generate` to regenerate Prisma Client
 2. Check DATABASE_URL in `.env.local`
 3. Ensure queries only run in Server Components or API routes
@@ -626,14 +622,15 @@ pnpm test:e2e
 **Cause**: Direct imports from `@prisma/client` instead of `@buttergolf/db`
 
 **Solution**:
+
 ```typescript
 // ❌ WRONG - Causes build failures in pnpm monorepos
-import { ProductCondition } from '@prisma/client'
-import type { Prisma } from '@prisma/client'
+import { ProductCondition } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 // ✅ CORRECT - Always import from @buttergolf/db
-import { prisma, ProductCondition } from '@buttergolf/db'
-import type { Prisma } from '@buttergolf/db'
+import { prisma, ProductCondition } from "@buttergolf/db";
+import type { Prisma } from "@buttergolf/db";
 ```
 
 ## Build & Deployment
@@ -659,6 +656,7 @@ pnpm start
 ### Environment Variables (Vercel)
 
 Add all variables from `.env.local` to Vercel:
+
 - Production, Preview, and Development environments
 - Mark secrets as sensitive
 - Use different keys for different environments

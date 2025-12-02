@@ -13,6 +13,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ### 1. Text Component Color API ❌→✅
 
 **BEFORE (Incorrect)**:
+
 ```tsx
 // Claimed Text had color variants:
 <Text color="secondary">Secondary text</Text>
@@ -21,6 +22,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ```
 
 **AFTER (Correct)**:
+
 ```tsx
 // Text uses direct token references:
 <Text color="$textSecondary">Secondary text</Text>
@@ -29,6 +31,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ```
 
 **Reality Check**:
+
 - Examined `packages/ui/src/components/Text.tsx` - NO color variants defined
 - Only has variants for: `size`, `weight`, `align`, `truncate`
 - Base color set to `"$text"` in base styles
@@ -37,6 +40,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ### 2. Layout Component Alignment API ❌→✅
 
 **BEFORE (Incorrect)**:
+
 ```tsx
 // Claimed Row/Column had custom alignment variants:
 <Row align="center" justify="between">
@@ -49,6 +53,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ```
 
 **AFTER (Correct)**:
+
 ```tsx
 // Row/Column use native React Native flexbox props:
 <Row alignItems="center" justifyContent="space-between">
@@ -61,6 +66,7 @@ The `.github/copilot-instructions.md` file contained incorrect documentation for
 ```
 
 **Reality Check**:
+
 - Examined `packages/ui/src/components/Layout.tsx` - minimal shims with NO variants
 - Row: `styled(TamaguiXStack, { name: "Row" })`
 - Column: `styled(TamaguiYStack, { name: "Column" })`
@@ -73,12 +79,14 @@ Added comprehensive new documentation section explaining:
 #### Two Ways to Use Tamagui Tokens:
 
 **1. Custom Variants** (for component-specific semantics):
+
 - Use plain strings WITHOUT `$` prefix
 - Example: `<Button size="lg">` where "lg" is a variant option
 - Defined in `styled()` component definitions
 - Use for: Button size/tone, Card variant, Input size
 
 **2. Direct Token Props** (for layout & styling):
+
 - Use token values WITH `$` prefix
 - Example: `<Row gap="$md">` where "$md" is a direct token
 - Use for: gap, padding, margin, colors, borderRadius
@@ -87,20 +95,24 @@ Added comprehensive new documentation section explaining:
 #### Critical Rules:
 
 ⚠️ **NEVER create variants for native props** (gap, padding, alignItems, justifyContent)
+
 - Causes TypeScript intersection type errors
 - These props already exist on base components
 
 ✅ **Use direct tokens for layout components**
+
 - Row and Column are thin wrappers - use native props
 - Example: `<Row gap="$md" alignItems="center">`
 
 ❌ **Don't create alignment variants**
+
 - Row/Column DON'T have `align`/`justify` variants
 - Use native `alignItems`/`justifyContent` props
 
 ### 4. Updated Component API Reference
 
 **Text Component**:
+
 ```tsx
 <Text
   size="xs | sm | md | lg | xl"     // Variant - exists ✅
@@ -114,6 +126,7 @@ Added comprehensive new documentation section explaining:
 Added note: "Text does NOT have color variants. Always use direct token references."
 
 **Heading Component**:
+
 ```tsx
 <Heading
   level={1 | 2 | 3 | 4 | 5 | 6}     // Variant - exists ✅
@@ -125,6 +138,7 @@ Added note: "Text does NOT have color variants. Always use direct token referenc
 Added note: "Heading does NOT have color variants. Use direct token references."
 
 **Row Component**:
+
 ```tsx
 <Row
   gap="$xs | $sm | $md | $lg | $xl"  // Direct token (native prop)
@@ -138,6 +152,7 @@ Added note: "Heading does NOT have color variants. Use direct token references."
 Added note: "Row is a thin wrapper over XStack - use native React Native flexbox props, not custom variants."
 
 **Column Component**:
+
 ```tsx
 <Column
   gap="$xs | $sm | $md | $lg | $xl"  // Direct token (native prop)
@@ -153,11 +168,13 @@ Added note: "Column is a thin wrapper over YStack - use native React Native flex
 ## Validation Process
 
 ### 1. Component Source Code Review
+
 - ✅ `packages/ui/src/components/Text.tsx` - Confirmed NO color variants
 - ✅ `packages/ui/src/components/Layout.tsx` - Confirmed NO align/justify variants
 - ✅ Only variants that exist: size, weight, align, truncate (Text), level (Heading), size (Container)
 
 ### 2. Canonical Tamagui Documentation Search
+
 - ✅ Searched 25,588-line `TAMAGUI_DOCUMENTATION.md` for variant patterns
 - ✅ Pattern: `<Text color=` - Found 6 matches, ALL use `color="$color"` or `color="red"`
 - ✅ Pattern: `Text.*variant|color variant` - 0 matches for color variants
@@ -165,6 +182,7 @@ Added note: "Column is a thin wrapper over YStack - use native React Native flex
 - ✅ Tamagui's spread variants are for TOKEN MAPPING (size to fontSize/lineHeight), NOT semantic options
 
 ### 3. TypeScript Compilation
+
 - ✅ Current PR code compiles without errors
 - ✅ Uses correct APIs: `color="$textSecondary"`, `alignItems="center"`
 - ✅ Type checking passes: `pnpm check-types` ✓
@@ -172,23 +190,28 @@ Added note: "Column is a thin wrapper over YStack - use native React Native flex
 ## Impact on PR #113
 
 ### PR Review Comments (12 total)
+
 All 12 comments from Copilot coding agent were **based on incorrect instructions**:
 
 **Comment Type**: "Use Text color="secondary" instead of color="$textSecondary""
+
 - **Status**: ❌ INCORRECT - Text has NO color variants
 - **Action**: Keep current code (`color="$textSecondary"`)
 - **Count**: 5 instances
 
 **Comment Type**: "Use Column align="center" instead of alignItems="center""
+
 - **Status**: ❌ INCORRECT - Column has NO align variant
 - **Action**: Keep current code (`alignItems="center"`)
 - **Count**: 6 instances
 
 **Comment Type**: "Consider using alignSelf variant"
+
 - **Status**: ⚠️ SUBJECTIVE - Not necessarily wrong, but current code is fine
 - **Count**: 1 instance
 
 ### Recommendation
+
 ✅ **Current PR code is 100% correct** - No changes needed to the implementation  
 ✅ **Merge PR as-is** - All type errors fixed, code follows proper Tamagui patterns  
 ✅ **Dismiss review comments** - They're based on outdated/incorrect documentation
@@ -197,7 +220,7 @@ All 12 comments from Copilot coding agent were **based on incorrect instructions
 
 1. **`.github/copilot-instructions.md`**:
    - Line ~567: Updated "ALWAYS Use Component Variants" section
-   - Line ~600: Updated "ALWAYS Use Layout Components" section  
+   - Line ~600: Updated "ALWAYS Use Layout Components" section
    - Line ~627: Removed "Text Color Variants" section, replaced with "Using Colors in Text Components"
    - Line ~645: Added comprehensive "Understanding Variants vs Direct Token Props" section (~120 lines)
    - Line ~750: Updated Text API reference

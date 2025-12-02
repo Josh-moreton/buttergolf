@@ -19,24 +19,30 @@ The base URL for the Next.js backend API. This variable is required for the app 
 When developing locally, you need to point the mobile app to your local Next.js server:
 
 #### iOS Simulator
+
 ```bash
 # apps/mobile/.env.local
 EXPO_PUBLIC_API_URL=http://localhost:3000
 ```
 
 #### Android Emulator
+
 ```bash
 # apps/mobile/.env.local
 EXPO_PUBLIC_API_URL=http://10.0.2.2:3000
 ```
+
 Android emulator uses `10.0.2.2` to access the host machine's `localhost`.
 
 #### Physical Device (same WiFi network)
+
 ```bash
 # apps/mobile/.env.local
 EXPO_PUBLIC_API_URL=http://192.168.1.XXX:3000
 ```
+
 Replace `XXX` with your computer's local IP address. Find it with:
+
 - macOS: `ifconfig | grep "inet " | grep -v 127.0.0.1`
 - Windows: `ipconfig`
 - Linux: `ip addr show`
@@ -68,6 +74,7 @@ EXPO_PUBLIC_API_URL=https://buttergolf.com
 First, deploy your Next.js app to a hosting provider:
 
 **Vercel (Recommended)**:
+
 ```bash
 cd apps/web
 vercel --prod
@@ -76,6 +83,7 @@ vercel --prod
 You'll get a URL like: `https://buttergolf.vercel.app` or your custom domain.
 
 **Other options**:
+
 - Netlify
 - AWS Amplify
 - Railway
@@ -149,7 +157,7 @@ Expo loads environment variables in this order (later overrides earlier):
 
 ```typescript
 // Add this temporarily to App.tsx
-console.log('API URL:', process.env.EXPO_PUBLIC_API_URL);
+console.log("API URL:", process.env.EXPO_PUBLIC_API_URL);
 ```
 
 ### Test API endpoint manually:
@@ -162,17 +170,20 @@ curl https://buttergolf.com/api/products/recent
 ### Common Issues:
 
 **"Network request failed"**:
+
 - Web server not running (start with `pnpm dev:web`)
 - Wrong API URL (check .env.local)
 - Firewall blocking connection
 - Device not on same network (physical device)
 
 **"EXPO_PUBLIC_API_URL is not set"**:
+
 - Create `apps/mobile/.env.local` file
 - Add `EXPO_PUBLIC_API_URL=http://localhost:3000`
 - Restart Expo dev server
 
 **"403 Forbidden" or CORS errors**:
+
 - Next.js API routes should allow all origins by default
 - Check Next.js middleware if you added custom CORS rules
 
@@ -190,7 +201,7 @@ const token = await getToken();
 
 fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/products/recent`, {
   headers: {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   },
 });
 ```
@@ -218,13 +229,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-      
+
       - name: Build App
         run: |
           cd apps/mobile
@@ -256,6 +267,7 @@ eas build:view --platform ios
 ### Analytics:
 
 Consider adding monitoring:
+
 - Sentry for error tracking
 - Mixpanel/Amplitude for user analytics
 - Custom logging for API request failures

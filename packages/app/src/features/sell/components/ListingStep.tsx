@@ -2,20 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { TextInput, Keyboard } from "react-native";
-import {
-  Column,
-  Row,
-  Text,
-  View,
-  Input,
-  ScrollView,
-} from "@buttergolf/ui";
-import {
-  Sparkles,
-  Type,
-  FileText,
-  PoundSterling,
-} from "@tamagui/lucide-icons";
+import { Column, Row, Text, View, Input, ScrollView } from "@buttergolf/ui";
+import { Sparkles, Type, FileText, PoundSterling } from "@tamagui/lucide-icons";
 
 import type { SellFormData } from "../types";
 import { CONDITION_OPTIONS } from "../types";
@@ -61,7 +49,7 @@ export function ListingStep({
     }
     if (formData.condition) {
       const conditionLabel = CONDITION_OPTIONS.find(
-        (c) => c.value === formData.condition
+        (c) => c.value === formData.condition,
       )?.label;
       if (conditionLabel && conditionLabel !== "New") {
         parts.push(`(${conditionLabel})`);
@@ -237,7 +225,11 @@ export function ListingStep({
                 <Text
                   size="$2"
                   fontWeight="500"
-                  color={descriptionLength > maxDescLength * 0.9 ? "$error" : "$slateSmoke"}
+                  color={
+                    descriptionLength > maxDescLength * 0.9
+                      ? "$error"
+                      : "$slateSmoke"
+                  }
                 >
                   {descriptionLength}/{maxDescLength}
                 </Text>

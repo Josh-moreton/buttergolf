@@ -5,7 +5,9 @@ This directory contains the cross-platform product screens for the ButterGolf mo
 ## Components
 
 ### ProductsScreen (`list-screen.tsx`)
+
 Displays a grid of product cards with:
+
 - Product images
 - Titles
 - Prices
@@ -13,6 +15,7 @@ Displays a grid of product cards with:
 - Condition badges
 
 **Features**:
+
 - Loading state with spinner
 - Error handling
 - Empty state
@@ -20,10 +23,11 @@ Displays a grid of product cards with:
 - Responsive grid layout
 
 **Usage**:
+
 ```typescript
 import { ProductsScreen } from '@buttergolf/app'
 
-<ProductsScreen 
+<ProductsScreen
   onFetchProducts={async () => {
     // Fetch products from API
     return products
@@ -32,7 +36,9 @@ import { ProductsScreen } from '@buttergolf/app'
 ```
 
 ### ProductDetailScreen (`detail-screen.tsx`)
+
 Shows full product information including:
+
 - Primary product image
 - Product gallery
 - Title and category
@@ -43,6 +49,7 @@ Shows full product information including:
 - "Contact Seller" button
 
 **Features**:
+
 - Loading state
 - Error handling
 - "Product not found" handling
@@ -51,10 +58,11 @@ Shows full product information including:
 - Solito integration
 
 **Usage**:
+
 ```typescript
 import { ProductDetailScreen } from '@buttergolf/app'
 
-<ProductDetailScreen 
+<ProductDetailScreen
   productId="abc123"
   onFetchProduct={async (id) => {
     // Fetch product by ID
@@ -66,6 +74,7 @@ import { ProductDetailScreen } from '@buttergolf/app'
 ## Integration
 
 ### Mobile (Expo)
+
 ```typescript
 // apps/mobile/App.tsx
 import { ProductsScreen, ProductDetailScreen } from '@buttergolf/app'
@@ -85,23 +94,28 @@ import { ProductsScreen, ProductDetailScreen } from '@buttergolf/app'
 ```
 
 ### Web (Next.js)
+
 Web uses page-based routing:
+
 - `/products/[id]` → `apps/web/src/app/products/[id]/page.tsx`
 - Uses `ProductDetailClient` component (web-specific wrapper)
 
 ## Navigation
 
 ### Solito Routes
+
 ```typescript
 // packages/app/src/navigation/routes.ts
 export const routes = {
-  products: '/products',
-  productDetail: '/products/[id]',
-}
+  products: "/products",
+  productDetail: "/products/[id]",
+};
 ```
 
 ### Deep Linking
+
 Both iOS and Android deep links work:
+
 - `https://buttergolf.com/products/123` → Opens app to product detail
 - Configured via `.well-known` files in web app
 
@@ -124,6 +138,7 @@ Component renders with data or error message
 ## Types
 
 All product types are defined in `packages/app/src/types/product.ts`:
+
 - `Product`: Full product object
 - `ProductCardData`: Minimal data for list view
 - `ProductCondition`: Enum of condition values
@@ -134,6 +149,7 @@ All product types are defined in `packages/app/src/types/product.ts`:
 ## Styling
 
 Uses components from `@buttergolf/ui`:
+
 - `Card` for product containers
 - `Image` for product photos
 - `Text` for typography
@@ -146,6 +162,7 @@ Uses components from `@buttergolf/ui`:
 ## Error Handling
 
 Both screens handle:
+
 - Loading states (spinner + text)
 - Network errors (error message + back button)
 - Empty states (no products message)
@@ -161,6 +178,7 @@ Both screens handle:
 ## Testing
 
 See `docs/TESTING_SOLITO_PRODUCTS.md` for:
+
 - Manual testing procedures
 - Deep linking testing (iOS/Android)
 - API endpoint testing
@@ -172,7 +190,7 @@ See `docs/TESTING_SOLITO_PRODUCTS.md` for:
 - [ ] Add category filtering
 - [ ] Add sort options (price, date, etc.)
 - [ ] Add pagination for large product lists
-- [ ] Add favorites/saved products
+- [ ] Add favourites/saved products
 - [ ] Add product comparison
 - [ ] Add image zoom/carousel
 - [ ] Add reviews and ratings

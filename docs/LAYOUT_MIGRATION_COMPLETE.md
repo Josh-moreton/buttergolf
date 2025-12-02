@@ -13,6 +13,7 @@
 After fixing the `/listings` route and establishing best practices, we conducted a comprehensive search across the entire `apps/web/src/app` directory to find any remaining old layout patterns. The automated detection found and fixed **3 instances** across **2 files**.
 
 ### Final Results:
+
 - ✅ **0** instances of `gap` without `$` prefix
 - ✅ **0** instances of `align` prop on Row/Column
 - ✅ **0** instances of `justify` prop on Row/Column
@@ -26,11 +27,11 @@ After fixing the `/listings` route and establishing best practices, we conducted
 
 ### Total Issues Found: 3
 
-| File | Line | Issue | Fix |
-|------|------|-------|-----|
-| `AccountSettingsClient.tsx` | 222 | `<Row align="center">` | Changed to `alignItems="center"` |
-| `SellerOnboarding.tsx` | 104 | `<Column align="center">` | Changed to `alignItems="center"` |
-| `SellerOnboarding.tsx` | 190 | `<Row justify="center">` | Changed to `justifyContent="center"` |
+| File                        | Line | Issue                     | Fix                                  |
+| --------------------------- | ---- | ------------------------- | ------------------------------------ |
+| `AccountSettingsClient.tsx` | 222  | `<Row align="center">`    | Changed to `alignItems="center"`     |
+| `SellerOnboarding.tsx`      | 104  | `<Column align="center">` | Changed to `alignItems="center"`     |
+| `SellerOnboarding.tsx`      | 190  | `<Row justify="center">`  | Changed to `justifyContent="center"` |
 
 ---
 
@@ -60,14 +61,14 @@ grep -r '<YStack' apps/web/src/app --include="*.tsx"
 
 ### Search Results
 
-| Pattern | Instances Found | Status |
-|---------|----------------|--------|
-| Gap without `$` | 0 | ✅ Clean |
-| `align` prop on Row/Column | 2 | ✅ Fixed |
-| `justify` prop on Row/Column | 1 | ✅ Fixed |
-| `as any` assertions | 0 | ✅ Clean |
-| XStack usage | 0 | ✅ Clean |
-| YStack usage | 0 | ✅ Clean |
+| Pattern                      | Instances Found | Status   |
+| ---------------------------- | --------------- | -------- |
+| Gap without `$`              | 0               | ✅ Clean |
+| `align` prop on Row/Column   | 2               | ✅ Fixed |
+| `justify` prop on Row/Column | 1               | ✅ Fixed |
+| `as any` assertions          | 0               | ✅ Clean |
+| XStack usage                 | 0               | ✅ Clean |
+| YStack usage                 | 0               | ✅ Clean |
 
 ---
 
@@ -78,6 +79,7 @@ grep -r '<YStack' apps/web/src/app --include="*.tsx"
 **Location**: `apps/web/src/app/account/_components/AccountSettingsClient.tsx`
 
 **Change**:
+
 ```tsx
 // BEFORE
 <Row align="center" justifyContent="space-between">
@@ -103,6 +105,7 @@ grep -r '<YStack' apps/web/src/app --include="*.tsx"
 **Changes** (2 instances):
 
 #### Change 1 (Line 104):
+
 ```tsx
 // BEFORE
 <Column gap="$md" align="center">
@@ -122,6 +125,7 @@ grep -r '<YStack' apps/web/src/app --include="*.tsx"
 ```
 
 #### Change 2 (Line 190):
+
 ```tsx
 // BEFORE
 <Row justify="center">
@@ -152,7 +156,7 @@ pnpm check-types
 
 **Result**: ✅ No new TypeScript errors introduced. The layout changes compile cleanly.
 
-*Note: Existing TypeScript errors in other files (related to `display="grid"`) are unrelated to this migration.*
+_Note: Existing TypeScript errors in other files (related to `display="grid"`) are unrelated to this migration._
 
 ### Post-Migration Verification
 
@@ -179,22 +183,27 @@ grep -r '<Row.*justify="' apps/web/src/app --include="*.tsx"
 All routes in `apps/web/src/app` were automatically scanned:
 
 ### Account Routes ✅
+
 - `/account` - AccountSettingsClient.tsx **FIXED**
 
 ### Checkout Routes ✅
+
 - `/checkout/cancel` - Uses Text `align` (valid CSS prop)
 - `/checkout/success` - Uses Text `align` (valid CSS prop)
 
 ### Listings Routes ✅
+
 - `/listings` - Previously fixed (template for migration)
 - `/category/[slug]` - Uses ListingsClient (clean)
 
 ### Component Routes ✅
+
 - `/_components/SellerOnboarding.tsx` **FIXED**
 - `/_components/marketplace/*` - All clean
 - `/_components/header/*` - All clean
 
 ### Other Routes ✅
+
 - All other routes scanned and found clean
 
 ---
@@ -212,6 +221,7 @@ All routes in `apps/web/src/app` were automatically scanned:
 ### Time Saved
 
 By using automated detection instead of manual review:
+
 - **Estimated Manual Review Time**: 4-6 hours
 - **Actual Automated Time**: ~15 minutes
 - **Time Saved**: ~4-5 hours

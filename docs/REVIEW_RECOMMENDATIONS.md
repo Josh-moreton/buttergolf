@@ -41,7 +41,7 @@
 
 ### 7. UI Package Missing Tamagui Dependencies
 
-**Issue**: `packages/ui/package.json` doesn't list tamagui or @tamagui/* packages
+**Issue**: `packages/ui/package.json` doesn't list tamagui or @tamagui/\* packages
 **Impact**: Unclear dependencies, potential resolution issues
 **Fix**: Add `tamagui` and related packages to UI package dependencies
 

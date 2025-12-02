@@ -3,18 +3,18 @@
  * These routes are shared between Next.js and Expo.
  */
 export const routes = {
-    home: '/',
-    rounds: '/rounds',
-    roundDetail: '/rounds/[id]',
-    products: '/products',
-    productDetail: '/products/[id]',
-    category: '/category/[slug]',
-    sell: '/sell',
-    signIn: '/sign-in',
-    signUp: '/sign-up',
-    verifyEmail: '/verify-email',
-    forgotPassword: '/forgot-password',
-    resetPassword: '/reset-password',
-} as const
+  home: "/",
+  rounds: "/rounds",
+  roundDetail: "/rounds/[id]",
+  products: "/products",
+  productDetail: "/products/[id]",
+  category: "/category/[slug]",
+  sell: "/sell",
+  signIn: "/sign-in",
+  signUp: "/sign-up",
+  verifyEmail: "/verify-email",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
+} as const;
 
-export type AppRoutes = typeof routes
+export type AppRoutes = typeof routes;

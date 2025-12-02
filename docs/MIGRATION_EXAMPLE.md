@@ -10,8 +10,8 @@ This document shows a real example of migrating a component from hardcoded color
 
 ```tsx
 // apps/web/src/app/products/[slug]/page.tsx
-import { YStack, XStack, Text } from "@buttergolf/ui"
-import Link from "next/link"
+import { YStack, XStack, Text } from "@buttergolf/ui";
+import Link from "next/link";
 
 export default function ProductPage() {
   return (
@@ -31,11 +31,12 @@ export default function ProductPage() {
         {/* Rest of content */}
       </YStack>
     </YStack>
-  )
+  );
 }
 ```
 
 **Issues Identified**:
+
 1. ❌ `backgroundColor="#F7F7F7"` - Hardcoded background color
 2. ❌ `color="#3C50E0"` (2x) - Hardcoded link color
 3. ❌ `paddingTop={140}` - Raw pixel value (could use token)
@@ -46,8 +47,8 @@ export default function ProductPage() {
 
 ```tsx
 // apps/web/src/app/products/[slug]/page.tsx
-import { YStack, XStack, Text } from "@buttergolf/ui"
-import Link from "next/link"
+import { YStack, XStack, Text } from "@buttergolf/ui";
+import Link from "next/link";
 
 export default function ProductPage() {
   return (
@@ -71,11 +72,12 @@ export default function ProductPage() {
         {/* Rest of content */}
       </YStack>
     </YStack>
-  )
+  );
 }
 ```
 
 **Improvements**:
+
 1. ✅ `backgroundColor="$bgGray"` - Uses semantic token
 2. ✅ `color="$blue"` - Uses semantic token for links
 3. ✅ Added `hoverStyle` for better UX
@@ -90,11 +92,13 @@ export default function ProductPage() {
 ### Step 1: Identify Hardcoded Values
 
 Run the audit script:
+
 ```bash
 node scripts/audit-tamagui-usage.js
 ```
 
 Or manually search:
+
 ```bash
 grep -rn "#[0-9A-Fa-f]\{6\}" apps/web/src/app/products/
 ```
@@ -103,13 +107,13 @@ grep -rn "#[0-9A-Fa-f]\{6\}" apps/web/src/app/products/
 
 For each hardcoded value, find the appropriate token:
 
-| Hardcoded Value | Token | Purpose |
-|----------------|-------|---------|
-| `#F7F7F7` | `$bgGray` | Light gray background |
-| `#3C50E0` | `$blue` | Primary link color |
-| `#93C5FD` | `$blueLight` | Hover state for links |
-| `#1C274C` | `$textDark` | Dark text emphasis |
-| `140` (px) | `$16` | Large top padding |
+| Hardcoded Value | Token        | Purpose               |
+| --------------- | ------------ | --------------------- |
+| `#F7F7F7`       | `$bgGray`    | Light gray background |
+| `#3C50E0`       | `$blue`      | Primary link color    |
+| `#93C5FD`       | `$blueLight` | Hover state for links |
+| `#1C274C`       | `$textDark`  | Dark text emphasis    |
+| `140` (px)      | `$16`        | Large top padding     |
 
 **Reference**: Check `packages/config/src/tamagui.config.ts` for all available tokens.
 
@@ -157,16 +161,15 @@ pnpm check-types
 ### Example 2: Button with Hardcoded Background
 
 **Before**:
+
 ```tsx
-<Button
-  backgroundColor="#1C274C"
-  hoverStyle={{ backgroundColor: "#3C50E0" }}
->
+<Button backgroundColor="#1C274C" hoverStyle={{ backgroundColor: "#3C50E0" }}>
   Shop Now
 </Button>
 ```
 
 **After**:
+
 ```tsx
 <Button
   backgroundColor="$textDark"
@@ -178,6 +181,7 @@ pnpm check-types
 ```
 
 **Benefits**:
+
 - Theme-aware (will work with light/dark mode)
 - Semantic naming is self-documenting
 - Added press style for better UX
@@ -187,24 +191,27 @@ pnpm check-types
 ### Example 3: Placeholder Cards
 
 **Before**:
+
 ```tsx
 const images = [
-  { id: 'club', color: '#2d3436', label: 'Golf Club' },
-  { id: 'ball', color: '#dfe6e9', label: 'Golf Ball' },
-  { id: 'bag', color: '#636e72', label: 'Golf Bag' },
-]
+  { id: "club", color: "#2d3436", label: "Golf Club" },
+  { id: "ball", color: "#dfe6e9", label: "Golf Ball" },
+  { id: "bag", color: "#636e72", label: "Golf Bag" },
+];
 ```
 
 **After**:
+
 ```tsx
 const images = [
-  { id: 'club', color: '$gray700', label: 'Golf Club' },
-  { id: 'ball', color: '$gray100', label: 'Golf Ball' },
-  { id: 'bag', color: '$gray500', label: 'Golf Bag' },
-]
+  { id: "club", color: "$gray700", label: "Golf Club" },
+  { id: "ball", color: "$gray100", label: "Golf Ball" },
+  { id: "bag", color: "$gray500", label: "Golf Bag" },
+];
 ```
 
 **Usage**:
+
 ```tsx
 <View
   backgroundColor={item.color} // Now uses token
@@ -218,6 +225,7 @@ const images = [
 ### Example 4: Badge Component
 
 **Before**:
+
 ```tsx
 <XStack
   backgroundColor="#DC2626"
@@ -230,6 +238,7 @@ const images = [
 ```
 
 **After**:
+
 ```tsx
 <XStack
   backgroundColor="$red"
@@ -244,6 +253,7 @@ const images = [
 ```
 
 **Improvements**:
+
 - Uses `$red` token
 - Added font size and weight tokens
 - Maintains visual appearance while being theme-aware
@@ -299,22 +309,22 @@ const images = [
 
 ## Quick Conversion Table
 
-| Hardcoded | Token | Use Case |
-|-----------|-------|----------|
-| `#fbfbf9` | `$bg` | Main background |
-| `#F7F7F7` | `$bgGray` | Section background |
-| `#F6F7FB` | `$bgCard` | Card background |
-| `#ffffff` | `$cardBg` | White card |
-| `#0f1720` | `$text` | Primary text |
-| `#1C274C` | `$textDark` | Dark text |
-| `#6b7280` | `$muted` | Muted text |
-| `#3C50E0` | `$blue` | Links, CTAs |
-| `#93C5FD` | `$blueLight` | Hover states |
-| `#13a063` | `$green500` | Primary brand |
-| `#0b6b3f` | `$green700` | Brand hover |
-| `#02AAA4` | `$teal` | Accent teal |
-| `#DC2626` | `$red` | Alerts, badges |
-| `#D1D5DB` | `$gray400` | Borders, dividers |
+| Hardcoded | Token        | Use Case           |
+| --------- | ------------ | ------------------ |
+| `#fbfbf9` | `$bg`        | Main background    |
+| `#F7F7F7` | `$bgGray`    | Section background |
+| `#F6F7FB` | `$bgCard`    | Card background    |
+| `#ffffff` | `$cardBg`    | White card         |
+| `#0f1720` | `$text`      | Primary text       |
+| `#1C274C` | `$textDark`  | Dark text          |
+| `#6b7280` | `$muted`     | Muted text         |
+| `#3C50E0` | `$blue`      | Links, CTAs        |
+| `#93C5FD` | `$blueLight` | Hover states       |
+| `#13a063` | `$green500`  | Primary brand      |
+| `#0b6b3f` | `$green700`  | Brand hover        |
+| `#02AAA4` | `$teal`      | Accent teal        |
+| `#DC2626` | `$red`       | Alerts, badges     |
+| `#D1D5DB` | `$gray400`   | Borders, dividers  |
 
 ---
 
@@ -332,6 +342,7 @@ Replace: backgroundColor="$bgGray"
 ### Tip 2: Check Before Committing
 
 Always run before committing:
+
 ```bash
 node scripts/audit-tamagui-usage.js
 pnpm check-types
@@ -341,6 +352,7 @@ pnpm lint
 ### Tip 3: Add Hover States
 
 When migrating, add hover/press states for better UX:
+
 ```tsx
 hoverStyle={{ backgroundColor: "$green700", scale: 1.02 }}
 pressStyle={{ scale: 0.98 }}
@@ -349,6 +361,7 @@ pressStyle={{ scale: 0.98 }}
 ### Tip 4: Document New Tokens
 
 If you need a color not in the theme, add it to:
+
 1. `packages/config/src/tamagui.config.ts`
 2. `docs/TAMAGUI_BEST_PRACTICES.md`
 

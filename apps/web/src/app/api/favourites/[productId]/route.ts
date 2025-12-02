@@ -3,12 +3,12 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 
 /**
- * DELETE /api/favorites/[productId]
- * Remove a product from the authenticated user's favorites
+ * DELETE /api/favourites/[productId]
+ * Remove a product from the authenticated user's favourites
  */
 export async function DELETE(
   req: NextRequest,
-  context: { params: Promise<{ productId: string }> }
+  context: { params: Promise<{ productId: string }> },
 ) {
   try {
     const { userId: clerkId } = await auth();
@@ -22,7 +22,7 @@ export async function DELETE(
     if (!productId) {
       return NextResponse.json(
         { error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -33,15 +33,12 @@ export async function DELETE(
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Delete favorite using unique constraint
+    // Delete favourite using unique constraint
     try {
-      await prisma.favorite.delete({
+      await prisma.favourite.delete({
         where: {
           userId_productId: {
             userId: user.id,
@@ -53,25 +50,30 @@ export async function DELETE(
       return NextResponse.json(
         {
           success: true,
-          message: "Product removed from favorites",
+          message: "Product removed from favourites",
         },
-        { status: 200 }
+        { status: 200 },
       );
     } catch (error: unknown) {
-      // Handle case where favorite doesn't exist
-      if (error && typeof error === "object" && "code" in error && error.code === "P2025") {
+      // Handle case where favourite doesn't exist
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "P2025"
+      ) {
         return NextResponse.json(
-          { error: "Favorite not found" },
-          { status: 404 }
+          { error: "Favourite not found" },
+          { status: 404 },
         );
       }
       throw error;
     }
   } catch (error) {
-    console.error("Error removing favorite:", error);
+    console.error("Error removing favourite:", error);
     return NextResponse.json(
-      { error: "Failed to remove favorite" },
-      { status: 500 }
+      { error: "Failed to remove favourite" },
+      { status: 500 },
     );
   }
 }

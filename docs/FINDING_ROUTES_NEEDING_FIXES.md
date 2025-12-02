@@ -13,6 +13,7 @@
 After fixing `/listings`, we need to find other routes that may still be using:
 
 ### ❌ Old Patterns (Need Fixing)
+
 1. **Custom variant props on Row/Column** that were removed
    - `gap="md"` (without `$` prefix)
    - `align="center"` (instead of `alignItems`)
@@ -27,10 +28,10 @@ After fixing `/listings`, we need to find other routes that may still be using:
    - Usage of removed variant names
 
 ### ✅ New Patterns (Already Fixed)
+
 1. **Direct token props**
    - `gap="$md"`
    - `padding="$lg"`
-   
 2. **Native React Native flexbox props**
    - `alignItems="center"`
    - `justifyContent="space-between"`
@@ -128,6 +129,7 @@ cat apps/web/src/app/products/page.tsx
 ```
 
 Look for:
+
 - [ ] Uses Row/Column (not XStack/YStack)
 - [ ] Uses `gap="$md"` (not `gap="md"`)
 - [ ] Uses `alignItems` (not `align`)
@@ -157,6 +159,7 @@ find apps/web/src/app/products/_components -name "*.tsx"
 Based on complexity and usage, check these in order:
 
 ### High Priority (Complex Layouts)
+
 1. ✅ `/listings` - **FIXED** (template for others)
 2. 🔍 `/category/[slug]` - Uses ListingsClient (likely fixed)
 3. 🔍 `/products/[id]` - Product detail page
@@ -165,12 +168,14 @@ Based on complexity and usage, check these in order:
 6. 🔍 `/favorites` - Grid layout
 
 ### Medium Priority (Standard Pages)
+
 7. 🔍 `/` - Homepage
 8. 🔍 `/cart` - Cart page
 9. 🔍 `/seller-hub` - Seller dashboard
 10. 🔍 `/profile` - User profile
 
 ### Low Priority (Simple Pages)
+
 11. 🔍 `/about` - Static content
 12. 🔍 `/contact` - Simple form
 13. 🔍 `/sign-in` - Auth page
@@ -197,7 +202,7 @@ search_pattern() {
   local pattern=$1
   local description=$2
   local results=$(grep -r "$pattern" "$APPS_DIR" --include="*.tsx" --include="*.ts" 2>/dev/null | wc -l | tr -d ' ')
-  
+
   if [ "$results" -gt 0 ]; then
     echo "❌ Found $results instances: $description"
     ISSUES_FOUND=$((ISSUES_FOUND + results))
@@ -223,6 +228,7 @@ fi
 ```
 
 Make executable and run:
+
 ```bash
 chmod +x scripts/find-old-layout-patterns.sh
 ./scripts/find-old-layout-patterns.sh
@@ -247,12 +253,14 @@ find apps/web/src/app/ROUTE_NAME -name "*.tsx" -o -name "*.ts"
 ## Route: /ROUTE_NAME
 
 ### Files to Update:
+
 - [ ] `page.tsx` - Main page component
 - [ ] `ClientComponent.tsx` - Client component
 - [ ] `_components/Component1.tsx`
 - [ ] `_components/Component2.tsx`
 
 ### Changes Needed:
+
 - [ ] Replace `gap="md"` with `gap="$md"`
 - [ ] Replace `align="center"` with `alignItems="center"`
 - [ ] Replace `justify="between"` with `justifyContent="space-between"`
@@ -261,6 +269,7 @@ find apps/web/src/app/ROUTE_NAME -name "*.tsx" -o -name "*.ts"
 - [ ] Replace `YStack` with `Column`
 
 ### Testing:
+
 - [ ] TypeScript compiles without errors
 - [ ] No `as any` type assertions
 - [ ] Layout renders correctly on desktop
@@ -277,10 +286,10 @@ find apps/web/src/app/ROUTE_NAME -name "*.tsx" -o -name "*.ts"
     filePath: "apps/web/src/app/ROUTE/component.tsx",
     oldString: `<Row {...{ gap: "md" as any }} align="center">`,
     newString: `<Row gap="$md" alignItems="center">`,
-    explanation: "Remove type assertion, use native props"
+    explanation: "Remove type assertion, use native props",
   },
   // ... more replacements
-]
+];
 ```
 
 ### 4. Verify Changes
@@ -302,6 +311,7 @@ pnpm dev:web
 ## Common Migration Patterns
 
 ### Pattern 1: Gap Prop
+
 ```tsx
 // BEFORE
 <Row {...{ gap: "md" as any }}>
@@ -315,6 +325,7 @@ pnpm dev:web
 ```
 
 ### Pattern 2: Alignment Props
+
 ```tsx
 // BEFORE
 <Row align="center" justify="between">
@@ -330,9 +341,10 @@ pnpm dev:web
 ```
 
 ### Pattern 3: Combined Props
+
 ```tsx
 // BEFORE
-<Column 
+<Column
   {...{ gap: "lg" as any }}
   align="stretch"
   fullWidth
@@ -341,7 +353,7 @@ pnpm dev:web
 </Column>
 
 // AFTER
-<Column 
+<Column
   gap="$lg"
   alignItems="stretch"
   width="100%"
@@ -351,9 +363,10 @@ pnpm dev:web
 ```
 
 ### Pattern 4: Media Queries
+
 ```tsx
 // BEFORE
-<Row 
+<Row
   {...{ gap: "sm" as any }}
   $gtMd={{ gap: "lg" as any }}
 >
@@ -361,7 +374,7 @@ pnpm dev:web
 </Row>
 
 // AFTER
-<Row 
+<Row
   gap="$sm"
   $gtMd={{ gap: "$lg" }}
 >
@@ -370,24 +383,25 @@ pnpm dev:web
 ```
 
 ### Pattern 5: XStack/YStack → Row/Column
+
 ```tsx
 // BEFORE
-import { XStack, YStack } from '@buttergolf/ui'
+import { XStack, YStack } from "@buttergolf/ui";
 
 <XStack gap="$4" alignItems="center">
   <YStack gap="$2">
     <Text>Title</Text>
   </YStack>
-</XStack>
+</XStack>;
 
 // AFTER
-import { Row, Column } from '@buttergolf/ui'
+import { Row, Column } from "@buttergolf/ui";
 
 <Row gap="$4" alignItems="center">
   <Column gap="$2">
     <Text>Title</Text>
   </Column>
-</Row>
+</Row>;
 ```
 
 ---
@@ -397,6 +411,7 @@ import { Row, Column } from '@buttergolf/ui'
 A route is considered **fully migrated** when:
 
 ### Code Quality
+
 - ✅ No TypeScript errors
 - ✅ No `as any` type assertions
 - ✅ Uses Row/Column (not XStack/YStack)
@@ -404,12 +419,14 @@ A route is considered **fully migrated** when:
 - ✅ Uses native React Native flexbox props
 
 ### Functionality
+
 - ✅ Layout renders correctly
 - ✅ Responsive breakpoints work
 - ✅ Interactive elements functional
 - ✅ No console warnings/errors
 
 ### Performance
+
 - ✅ Build completes successfully
 - ✅ No bundle size increase
 - ✅ No render performance regression
@@ -424,6 +441,7 @@ Create a tracking document for each route found:
 # Layout Migration Progress
 
 ## Status Legend
+
 - ✅ Migrated and verified
 - 🔄 In progress
 - 🔍 Needs investigation
@@ -431,15 +449,16 @@ Create a tracking document for each route found:
 
 ## Routes
 
-| Route | Status | Files | Issues | Assignee | Date |
-|-------|--------|-------|--------|----------|------|
-| /listings | ✅ | 8 | 0 | - | 2025-11-21 |
-| /category/[slug] | ✅ | 1 | 0 | - | 2025-11-21 |
-| /products/[id] | 🔍 | ? | ? | - | - |
-| /sell | 🔍 | ? | ? | - | - |
-| ... | | | | | |
+| Route            | Status | Files | Issues | Assignee | Date       |
+| ---------------- | ------ | ----- | ------ | -------- | ---------- |
+| /listings        | ✅     | 8     | 0      | -        | 2025-11-21 |
+| /category/[slug] | ✅     | 1     | 0      | -        | 2025-11-21 |
+| /products/[id]   | 🔍     | ?     | ?      | -        | -          |
+| /sell            | 🔍     | ?     | ?      | -        | -          |
+| ...              |        |       |        |          |            |
 
 ## Total Progress
+
 - Routes Checked: 2 / 14
 - Routes Migrated: 2 / 14
 - Completion: 14%
@@ -484,18 +503,21 @@ Create a tracking document for each route found:
 ### Future Enhancements
 
 1. **ESLint Rule**
+
    ```javascript
    // Warn on old patterns
    "buttergolf/no-variant-props": "error"
    ```
 
 2. **Codemod Script**
+
    ```bash
    # Automated migration
    npx jscodeshift -t scripts/migrate-layout-props.ts apps/web/src/app
    ```
 
 3. **Pre-commit Hook**
+
    ```bash
    # Block commits with old patterns
    ./scripts/find-old-layout-patterns.sh

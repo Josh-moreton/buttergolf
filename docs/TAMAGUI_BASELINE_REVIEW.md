@@ -19,10 +19,12 @@ The ButterGolf monorepo has a **well-structured and properly configured Tamagui 
 ### Status: ✅ PASSED
 
 #### Package Structure
+
 - **Location**: `packages/ui` (UI components) + `packages/config` (Tamagui config)
 - **Architecture**: Proper separation of concerns with dedicated config package
 
 #### `packages/config` (Tamagui Configuration Package)
+
 ```json
 {
   "name": "@buttergolf/config",
@@ -39,36 +41,39 @@ The ButterGolf monorepo has a **well-structured and properly configured Tamagui 
 ```
 
 **✅ Contains**:
+
 - `src/tamagui.config.ts` - Main Tamagui configuration
 - Custom Butter Golf color tokens (green700, green500, amber400, etc.)
 - Extends `@tamagui/config/v4` (using latest v4 config)
 - Proper TypeScript module augmentation
 
 **Configuration Details**:
+
 ```typescript
-import { defaultConfig, tokens as defaultTokens } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig, tokens as defaultTokens } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
 export const config = createTamagui({
-    ...defaultConfig,
-    tokens: {
-        ...defaultTokens,
-        color: {
-            ...butterGolfColors,
-        },
+  ...defaultConfig,
+  tokens: {
+    ...defaultTokens,
+    color: {
+      ...butterGolfColors,
     },
-    settings: {
-        ...defaultConfig.settings,
-        onlyAllowShorthands: false,
-    },
-})
+  },
+  settings: {
+    ...defaultConfig.settings,
+    onlyAllowShorthands: false,
+  },
+});
 
-declare module 'tamagui' {
-    interface TamaguiCustomConfig extends AppConfig { }
+declare module "tamagui" {
+  interface TamaguiCustomConfig extends AppConfig {}
 }
 ```
 
 #### `packages/ui` (Component Library)
+
 ```json
 {
   "name": "@buttergolf/ui",
@@ -83,23 +88,26 @@ declare module 'tamagui' {
 ```
 
 **✅ Exports**:
+
 - All core Tamagui components (`export * from 'tamagui'`)
 - Tamagui Toast components (`export * from '@tamagui/toast'`)
 - Config reference (`export { config } from '@buttergolf/config'`)
 - Custom components (Button, Text, Card, Input, Image, ScrollView)
 
 **Component Pattern** (✅ Correct Re-export Pattern):
+
 ```typescript
 // packages/ui/src/components/Button.tsx
-export { Button } from 'tamagui'
-export type { ButtonProps } from 'tamagui'
+export { Button } from "tamagui";
+export type { ButtonProps } from "tamagui";
 
 // packages/ui/src/components/Text.tsx
-export { Paragraph as Text } from 'tamagui'
-export type { ParagraphProps as TextProps } from 'tamagui'
+export { Paragraph as Text } from "tamagui";
+export type { ParagraphProps as TextProps } from "tamagui";
 ```
 
 **Build Status**: ✅ TypeScript compilation passes
+
 ```bash
 pnpm check-types
 # Tasks: 4 successful, 4 total
@@ -114,36 +122,38 @@ pnpm check-types
 #### Mobile App (Expo) - `apps/mobile/babel.config.js`
 
 **✅ Includes `@tamagui/babel-plugin`**:
+
 ```javascript
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
       [
-        'module-resolver',
+        "module-resolver",
         {
-          root: ['./'],
+          root: ["./"],
           alias: {
-            '@buttergolf/ui': '../../packages/ui/src',
+            "@buttergolf/ui": "../../packages/ui/src",
           },
         },
       ],
       [
-        '@tamagui/babel-plugin',
+        "@tamagui/babel-plugin",
         {
-          components: ['tamagui'],
-          config: '../../packages/config/src/tamagui.config.ts',
+          components: ["tamagui"],
+          config: "../../packages/config/src/tamagui.config.ts",
           logTimings: true,
-          disableExtraction: process.env.NODE_ENV === 'development',
+          disableExtraction: process.env.NODE_ENV === "development",
         },
       ],
     ],
-  }
-}
+  };
+};
 ```
 
 **✅ Configuration Highlights**:
+
 - Correct config path pointing to shared config package
 - Extraction disabled in development for faster builds
 - Log timings enabled for performance monitoring
@@ -152,28 +162,37 @@ module.exports = function (api) {
 #### Web App (Next.js) - `apps/web/next.config.js`
 
 **✅ Uses `withTamagui()` wrapper**:
+
 ```javascript
-const { withTamagui } = require('@tamagui/next-plugin')
+const { withTamagui } = require("@tamagui/next-plugin");
 
 const plugins = [
   withTamagui({
-    config: '../../packages/config/src/tamagui.config.ts',
-    components: ['tamagui', '@buttergolf/ui'],
+    config: "../../packages/config/src/tamagui.config.ts",
+    components: ["tamagui", "@buttergolf/ui"],
     appDir: true,
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+    outputCSS:
+      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
     logTimings: true,
-    disableExtraction: process.env.NODE_ENV === 'development',
+    disableExtraction: process.env.NODE_ENV === "development",
     shouldExtract: (path) => {
-      if (path.includes(join('packages', 'app'))) {
-        return true
+      if (path.includes(join("packages", "app"))) {
+        return true;
       }
     },
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
+    excludeReactNativeWebExports: [
+      "Switch",
+      "ProgressBar",
+      "Picker",
+      "CheckBox",
+      "Touchable",
+    ],
   }),
-]
+];
 ```
 
 **✅ Configuration Highlights**:
+
 - Correct config path to shared config
 - CSS extraction enabled for production builds
 - App Router support enabled (`appDir: true`)
@@ -182,31 +201,33 @@ const plugins = [
 - Extraction disabled in development for HMR speed
 
 **✅ Transpilation**:
+
 ```javascript
 transpilePackages: [
-  '@buttergolf/app',
-  '@buttergolf/config',
-  '@buttergolf/ui',
-  'react-native-web',
-  'solito',
-  'expo-linking',
-  'expo-constants',
-  'expo-modules-core',
-]
+  "@buttergolf/app",
+  "@buttergolf/config",
+  "@buttergolf/ui",
+  "react-native-web",
+  "solito",
+  "expo-linking",
+  "expo-constants",
+  "expo-modules-core",
+];
 ```
 
 #### Root Babel Config - `babel.config.js`
 
 **✅ Properly Configured**:
+
 ```javascript
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
     presets: [],
-    plugins: ['tamagui/babel', ['module-resolver', { root: ['./'] }]],
-    ignore: ['apps/web/**/*'], // Next.js uses SWC, not Babel
-  }
-}
+    plugins: ["tamagui/babel", ["module-resolver", { root: ["./"] }]],
+    ignore: ["apps/web/**/*"], // Next.js uses SWC, not Babel
+  };
+};
 ```
 
 **Note**: Web app intentionally ignored - Next.js uses its own SWC compiler via the Tamagui plugin.
@@ -214,6 +235,7 @@ module.exports = function (api) {
 #### Dependency Check
 
 **✅ All Required Dependencies Present**:
+
 - `apps/mobile/package.json`: `"@tamagui/babel-plugin": "^1.135.6"`
 - `apps/web/package.json`: `"@tamagui/next-plugin": "^1.135.6"`
 
@@ -226,17 +248,19 @@ module.exports = function (api) {
 #### Next.js App (Web)
 
 **✅ Webpack Configuration**:
+
 ```javascript
 webpack: (webpackConfig, { isServer }) => {
   webpackConfig.resolve.alias = {
     ...webpackConfig.resolve.alias,
-    'react-native$': 'react-native-web',
-  }
-  return webpackConfig
-}
+    "react-native$": "react-native-web",
+  };
+  return webpackConfig;
+};
 ```
 
 **✅ Key Features**:
+
 - React Native to React Native Web aliasing
 - Proper module resolution for cross-platform code
 - Tamagui plugin integrated into build pipeline
@@ -245,12 +269,13 @@ webpack: (webpackConfig, { isServer }) => {
 #### Metro (Expo/Native)
 
 **✅ Metro Configuration** - `apps/mobile/metro.config.js`:
+
 ```javascript
-const { getDefaultConfig } = require('expo/metro-config');
-const path = require('path');
+const { getDefaultConfig } = require("expo/metro-config");
+const path = require("path");
 
 const projectRoot = __dirname;
-const workspaceRoot = path.resolve(projectRoot, '../..');
+const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const config = getDefaultConfig(projectRoot);
 
@@ -259,8 +284,8 @@ config.watchFolders = [workspaceRoot];
 
 // Resolve with project modules first, then workspace modules
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
+  path.resolve(projectRoot, "node_modules"),
+  path.resolve(workspaceRoot, "node_modules"),
 ];
 
 // Force Metro to resolve dependencies only from nodeModulesPaths
@@ -269,12 +294,13 @@ config.resolver.disableHierarchicalLookup = true;
 // Turborepo cache integration
 config.cacheStores = [
   new FileStore({
-    root: path.join(projectRoot, 'node_modules', '.cache', 'metro'),
+    root: path.join(projectRoot, "node_modules", ".cache", "metro"),
   }),
 ];
 ```
 
 **✅ Monorepo Support**:
+
 - Workspace-aware file watching
 - Proper node_modules resolution order
 - Hierarchical lookup disabled for deterministic builds
@@ -288,34 +314,35 @@ config.cacheStores = [
 
 #### Tamagui Versions (All at `^1.135.6`)
 
-| Package | Tamagui Dependencies |
-|---------|---------------------|
+| Package           | Tamagui Dependencies                                                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `packages/config` | `@tamagui/animations-react-native`, `@tamagui/config`, `@tamagui/font-inter`, `@tamagui/shorthands`, `@tamagui/themes`, `tamagui` |
-| `packages/ui` | `@tamagui/card`, `@tamagui/toast`, `tamagui` |
-| `packages/app` | `@tamagui/font-inter`, `@tamagui/lucide-icons`, `@tamagui/next-theme`, `@tamagui/polyfill-dev`, `tamagui` |
-| `apps/web` | `@tamagui/core`, `@tamagui/next-plugin`, `tamagui` |
-| `apps/mobile` | `@tamagui/babel-plugin` |
+| `packages/ui`     | `@tamagui/card`, `@tamagui/toast`, `tamagui`                                                                                      |
+| `packages/app`    | `@tamagui/font-inter`, `@tamagui/lucide-icons`, `@tamagui/next-theme`, `@tamagui/polyfill-dev`, `tamagui`                         |
+| `apps/web`        | `@tamagui/core`, `@tamagui/next-plugin`, `tamagui`                                                                                |
+| `apps/mobile`     | `@tamagui/babel-plugin`                                                                                                           |
 
 **✅ All versions**: `^1.135.6` - Fully consistent across workspace
 
 #### Core Dependencies Alignment
 
-| Dependency | Version | Consistency |
-|------------|---------|-------------|
-| React | `19.2.0` (web), `19.1.0` (mobile, root) | ⚠️ Minor mismatch |
-| React Native | `0.81.5` | ✅ Consistent |
-| TypeScript | `5.9.2` | ✅ Consistent |
-| Next.js | `16.0.1` | ✅ Latest stable |
-| Expo | `~54.0.20` | ✅ Latest stable |
-| Solito | `^5.0.0` | ✅ Consistent |
-| Turborepo | `2.5.8` | ✅ Latest |
-| pnpm | `10.20.0` | ✅ Consistent |
+| Dependency   | Version                                 | Consistency       |
+| ------------ | --------------------------------------- | ----------------- |
+| React        | `19.2.0` (web), `19.1.0` (mobile, root) | ⚠️ Minor mismatch |
+| React Native | `0.81.5`                                | ✅ Consistent     |
+| TypeScript   | `5.9.2`                                 | ✅ Consistent     |
+| Next.js      | `16.0.1`                                | ✅ Latest stable  |
+| Expo         | `~54.0.20`                              | ✅ Latest stable  |
+| Solito       | `^5.0.0`                                | ✅ Consistent     |
+| Turborepo    | `2.5.8`                                 | ✅ Latest         |
+| pnpm         | `10.20.0`                               | ✅ Consistent     |
 
 **Note**: React version mismatch (19.2.0 vs 19.1.0) is minor and won't cause issues. Root package.json includes overrides to ensure 19.1.0 is used consistently.
 
 #### Peer Dependencies
 
 **✅ Properly Declared** in `packages/ui/package.json`:
+
 ```json
 "peerDependencies": {
   "react": "*",
@@ -338,6 +365,7 @@ config.cacheStores = [
 #### Base Configuration - `tsconfig.base.json`
 
 **✅ Path Aliases Defined**:
+
 ```json
 {
   "compilerOptions": {
@@ -361,6 +389,7 @@ config.cacheStores = [
 #### App-Specific Configurations
 
 **✅ Web App** (`apps/web/tsconfig.json`):
+
 ```json
 {
   "compilerOptions": {
@@ -375,6 +404,7 @@ config.cacheStores = [
 ```
 
 **✅ Mobile App** (`apps/mobile/tsconfig.json`):
+
 ```json
 {
   "extends": "expo/tsconfig.base",
@@ -393,11 +423,13 @@ config.cacheStores = [
 #### UI Package Configuration
 
 **✅ Special Consideration** (`packages/ui/tsconfig.json`):
+
 - Uses `"moduleResolution": "Bundler"` for proper ESM re-export resolution
 - Required for Tamagui's complex re-export patterns
 - Includes `skipLibCheck: true` to bypass third-party type issues
 
 **Type Resolution Status**: ✅ All packages pass type checking
+
 ```bash
 pnpm check-types
 # Tasks: 4 successful, 4 total
@@ -449,29 +481,33 @@ pnpm check-types
 **Status**: ⚠️ Informational only - current setup is valid
 
 **Analysis**:
+
 - The Copilot instructions mention a root-level config file
 - Current architecture with dedicated `@buttergolf/config` package is actually **better practice**
 - Allows for proper package versioning and reusability
 - Matches Tamagui monorepo examples
 
-**Recommendation**: 
+**Recommendation**:
+
 - ✅ Keep current structure (dedicated config package)
 - Update Copilot instructions to reflect actual structure
 - Optional: Create root-level re-export for convenience:
   ```typescript
   // tamagui.config.ts (root)
-  export { config, type AppConfig } from '@buttergolf/config'
-  export { config as default } from '@buttergolf/config'
+  export { config, type AppConfig } from "@buttergolf/config";
+  export { config as default } from "@buttergolf/config";
   ```
 
 #### 2. Documentation Consolidation (Enhancement)
 
 **Current**: Multiple documentation files with overlapping content
+
 - `REPOSITORY_CONFIGURATION_REVIEW.md`
 - `SOLITO_TAMAGUI_SETUP_REVIEW.md`
 - Copilot instructions in `.github/copilot-instructions.md`
 
 **Recommendation**:
+
 - ✅ This review document serves as the definitive baseline
 - Consider creating a `docs/TAMAGUI_SETUP.md` as canonical reference
 - Archive historical review documents to `docs/archive/`
@@ -479,22 +515,24 @@ pnpm check-types
 #### 3. Tamagui Compiler Optimization (Performance)
 
 **Current Settings**:
+
 - Development: Extraction disabled (correct for HMR)
 - Production: Extraction enabled (correct for performance)
 
 **Potential Enhancement**:
+
 ```javascript
 // apps/web/next.config.js
 shouldExtract: (path) => {
   // Also extract from ui package
-  if (path.includes(join('packages', 'ui'))) {
-    return true
+  if (path.includes(join("packages", "ui"))) {
+    return true;
   }
-  if (path.includes(join('packages', 'app'))) {
-    return true
+  if (path.includes(join("packages", "app"))) {
+    return true;
   }
-  return false
-}
+  return false;
+};
 ```
 
 **Benefit**: Ensures all package components get optimized
@@ -564,16 +602,19 @@ shouldExtract: (path) => {
 When updating Tamagui versions:
 
 1. **Update all packages simultaneously**:
+
    ```bash
    pnpm up '@tamagui/*@latest' tamagui@latest -r
    ```
 
 2. **Verify version consistency**:
+
    ```bash
    grep -r "tamagui\|@tamagui" --include="package.json" | grep -v node_modules
    ```
 
 3. **Test both platforms**:
+
    ```bash
    pnpm check-types
    pnpm build
@@ -585,25 +626,27 @@ When updating Tamagui versions:
 ### Adding New Components
 
 1. **Create in `packages/ui/src/components/`**:
+
    ```typescript
    // MyComponent.tsx
-   import { styled, YStack } from 'tamagui'
-   
+   import { styled, YStack } from "tamagui";
+
    export const MyComponent = styled(YStack, {
-     name: 'MyComponent',
+     name: "MyComponent",
      // ... styles
-   })
+   });
    ```
 
 2. **Export from `packages/ui/src/index.ts`**:
+
    ```typescript
-   export { MyComponent } from './components/MyComponent'
-   export type { MyComponentProps } from './components/MyComponent'
+   export { MyComponent } from "./components/MyComponent";
+   export type { MyComponentProps } from "./components/MyComponent";
    ```
 
 3. **Use in apps**:
    ```typescript
-   import { MyComponent } from '@buttergolf/ui'
+   import { MyComponent } from "@buttergolf/ui";
    ```
 
 ### Modifying Tamagui Config
@@ -646,6 +689,7 @@ When updating Tamagui versions:
 **Symptom**: Metro doesn't pick up package changes
 
 **Solution**: Clear Metro cache
+
 ```bash
 pnpm dev:mobile --clear
 ```

@@ -34,7 +34,7 @@ If you specify the account’s country or request any capabilities for it, then 
 - **No Stripe Dashboard**: If Stripe is responsible for collecting requirements, then the onboarding flow lets the account owner select any acquiring country. Otherwise, your custom onboarding flow must set the country and request capabilities.
 
 > #### Use include to populate objects in the response
-> 
+>
 > When you create, retrieve, or update an `Account` in API v2, certain properties are only populated in the response if you specify them [in the include parameter](https://docs.stripe.com/connect/accounts-v2/api.md#include-pattern). For any of those properties that you don’t specify, the response includes them as null, regardless of their actual value.
 
 ```curl
@@ -108,14 +108,15 @@ For details about using these collection options, see the documentation for the 
 
 ## Determine whether to collect all information up front
 
-As the platform, you must decide if you want to collect the required information from your connected accounts *up front* (Upfront onboarding is a type of onboarding where you collect all required verification information from your users at sign-up) or *incrementally* (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements.
+As the platform, you must decide if you want to collect the required information from your connected accounts _up front_ (Upfront onboarding is a type of onboarding where you collect all required verification information from your users at sign-up) or _incrementally_ (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements.
 
-| Onboarding type | Advantages                                                                                                                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Up-front**    | - Normally requires only one request for all information
-  - Avoids the possibility of payout and processing issues due to missed deadlines
-  - Exposes potential risk early when accounts refuse to provide information |
-| **Incremental** | - Accounts can onboard quickly because they don’t have to provide as much information                                                                                                                                    |
+| Onboarding type | Advantages                                               |
+| --------------- | -------------------------------------------------------- |
+| **Up-front**    | - Normally requires only one request for all information |
+
+- Avoids the possibility of payout and processing issues due to missed deadlines
+- Exposes potential risk early when accounts refuse to provide information |
+  | **Incremental** | - Accounts can onboard quickly because they don’t have to provide as much information |
 
 To determine whether to use up-front or incremental onboarding, review the [requirements](https://docs.stripe.com/connect/required-verification-information.md) for your connected accounts’ locations and capabilities. While Stripe tries to minimize any impact to connected accounts, requirements might change over time.
 
@@ -133,7 +134,7 @@ If you’re a platform onboarding connected accounts where you’re responsible 
 
 Embedded onboarding still has links to the terms of service (for example, in the footer) that you can replace by [linking to your own agreements and privacy policy](https://docs.stripe.com/connect/embedded-onboarding.md#link-to-your-own-agreements-and-privacy-policy).
 
-### Link to your agreements and privacy policy 
+### Link to your agreements and privacy policy
 
 Connected accounts see the Stripe service agreement and [Privacy Policy](https://stripe.com/privacy) throughout embedded onboarding. For the connected accounts where you’re responsible for requirement collection, you can replace the links with your own agreements and policy. Follow the instructions to [incorporate the Stripe services agreement](https://docs.stripe.com/connect/updating-service-agreements.md#adding-stripes-service-agreement-to-your-terms-of-service) and [link to the Stripe Privacy Policy](https://docs.stripe.com/connect/updating-service-agreements.md#disclosing-how-stripe-processes-user-data).
 
@@ -218,10 +219,10 @@ AccountSession accountSession = client.v1().accountSessions().create(params);
 ```node
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
-const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
+const stripe = require("stripe")("<<YOUR_SECRET_KEY>>");
 
 const accountSession = await stripe.accountSessions.create({
-  account: '{{CONNECTEDACCOUNT_ID}}',
+  account: "{{CONNECTEDACCOUNT_ID}}",
   components: {
     account_onboarding: {
       enabled: true,
@@ -270,9 +271,9 @@ After creating the Account Session and [initializing ConnectJS](https://docs.str
 
 ```js
 // Include this element in your HTML
-const accountOnboarding = stripeConnectInstance.create('account-onboarding');
+const accountOnboarding = stripeConnectInstance.create("account-onboarding");
 accountOnboarding.setOnExit(() => {
-  console.log('User exited the onboarding flow');
+  console.log("User exited the onboarding flow");
 });
 container.appendChild(accountOnboarding);
 
@@ -293,43 +294,46 @@ container.appendChild(accountOnboarding);
 
 ```jsx
 import * as React from "react";
-import { ConnectAccountOnboarding, ConnectComponentsProvider } from "@stripe/react-connect-js";
+import {
+  ConnectAccountOnboarding,
+  ConnectComponentsProvider,
+} from "@stripe/react-connect-js";
 
 const AccountOnboardingUI = () => {
   return (
     <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
       <ConnectAccountOnboarding
-          onExit={() => {
-            console.log("The account has exited onboarding");
-          }}
-          // Optional: make sure to follow our policy instructions above
-          // fullTermsOfServiceUrl="{{URL}}"
-          // recipientTermsOfServiceUrl="{{URL}}"
-          // privacyPolicyUrl="{{URL}}"
-          // collectionOptions={{
-          //   fields: 'eventually_due',
-          //   futureRequirements: 'include',
-          // }}
-          // onStepChange={(stepChange) => {
-          //   console.log(`User entered: ${stepChange.step}`);
-          // }}
-        />
+        onExit={() => {
+          console.log("The account has exited onboarding");
+        }}
+        // Optional: make sure to follow our policy instructions above
+        // fullTermsOfServiceUrl="{{URL}}"
+        // recipientTermsOfServiceUrl="{{URL}}"
+        // privacyPolicyUrl="{{URL}}"
+        // collectionOptions={{
+        //   fields: 'eventually_due',
+        //   futureRequirements: 'include',
+        // }}
+        // onStepChange={(stepChange) => {
+        //   console.log(`User entered: ${stepChange.step}`);
+        // }}
+      />
     </ConnectComponentsProvider>
   );
-}
+};
 ```
 
 #### HTML + JS
 
-| Method                            | Type                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                                                | Default                                                                                    |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `setFullTermsOfServiceUrl`        | `string`                                                                                                                                          | Absolute URL to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement.                                                                                                                                                                                                                                   | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           |
-| `setRecipientTermsOfServiceUrl`   | `string`                                                                                                                                          | Absolute URL to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement.                                                                                                                                                                                                                         | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) |
-| `setPrivacyPolicyUrl`             | `string`                                                                                                                                          | Absolute URL to your privacy policy.                                                                                                                                                                                                                                                                                                                       | [Stripe’s privacy policy](https://stripe.com/privacy)                                      |
-| `setSkipTermsOfServiceCollection` | `string`                                                                                                                                          | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance).                                                              | false                                                                                      |
-| `setCollectionOptions`            | `{fields: 'currently_due' | 'eventually_due', future_requirements: 'omit' | 'include', requirements: { exclude: string[] } | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. | `{fields: 'currently_due', futureRequirements: 'omit'}`                                    |
-| `setOnExit`                       | `() => void`                                                                                                                                      | The connected account has exited the onboarding process                                                                                                                                                                                                                                                                                                    |                                                                                            |
-| `setOnStepChange`                 | `({step}: StepChange) => void`                                                                                                                    | The connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                                                                                                                                             |                                                                                            |
+| Method                            | Type                           | Description                                                                                                                                                                                                                                                                                   | Default                                                                                    |
+| --------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `setFullTermsOfServiceUrl`        | `string`                       | Absolute URL to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement.                                                                                                                                                                      | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           |
+| `setRecipientTermsOfServiceUrl`   | `string`                       | Absolute URL to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement.                                                                                                                                                            | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) |
+| `setPrivacyPolicyUrl`             | `string`                       | Absolute URL to your privacy policy.                                                                                                                                                                                                                                                          | [Stripe’s privacy policy](https://stripe.com/privacy)                                      |
+| `setSkipTermsOfServiceCollection` | `string`                       | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance). | false                                                                                      |
+| `setCollectionOptions`            | `{fields: 'currently_due'      | 'eventually_due', future_requirements: 'omit'                                                                                                                                                                                                                                                 | 'include', requirements: { exclude: string[] }                                             | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. | `{fields: 'currently_due', futureRequirements: 'omit'}` |
+| `setOnExit`                       | `() => void`                   | The connected account has exited the onboarding process                                                                                                                                                                                                                                       |                                                                                            |
+| `setOnStepChange`                 | `({step}: StepChange) => void` | The connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                                                                                |                                                                                            |
 
 To use this component to set up new accounts:
 
@@ -337,22 +341,22 @@ To use this component to set up new accounts:
 1. [Initialize Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions) using the ID of the connected account.
 1. Include the `account-onboarding` element to show the onboarding flow to the connected account.
 1. Listen for the `exit` event emitted from this component. Stripe sends this event when the connected account exits the onboarding process.
-1. When `exit` triggers,  retrieve the `Account` details to check the status of:
+1. When `exit` triggers, retrieve the `Account` details to check the status of:
    - Requested `merchant` configuration capabilities, such as [card_payments.status](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=2025-03-31.preview#v2_retrieve_accounts-response-configuration-merchant-capabilities-card_payments-status)
    - Requested `recipient` configuration capabilities, such as [stripe_balance.stripe_transfers.status](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=2025-03-31.preview#v2_retrieve_accounts-response-configuration-recipient-capabilities-stripe_balance-stripe_transfers-status)
-If all required capabilities are enabled, you can take the connected account to the next step of your flow.
+     If all required capabilities are enabled, you can take the connected account to the next step of your flow.
 
 #### React
 
-| React prop                     | Type                                                                                                                                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                            | Default                                                                                    | Required or Optional |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- |
-| `onExit`                       | `() => void`                                                                                                                                       | The component executes this callback function when the connected account exits the onboarding process                                                                                                                                                                                                                                                                                                                                  |                                                                                            | required             |
-| `fullTermsOfServiceUrl`        | `string`                                                                                                                                           | Link to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement                                                                                                                                                                                                                                                                                                                        | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           | optional             |
-| `recipientTermsOfServiceUrl`   | `string`                                                                                                                                           | Link to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement                                                                                                                                                                                                                                                                                                              | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) | optional             |
-| `privacyPolicyUrl`             | `string`                                                                                                                                           | Link to your privacy policy                                                                                                                                                                                                                                                                                                                                                                                                            | [Stripe’s privacy policy](https://stripe.com/privacy)                                      | optional             |
-| `skipTermsOfServiceCollection` | `boolean`                                                                                                                                          | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance).                                                                                                                                          | false                                                                                      | optional             |
-| `collectionOptions`            | `{fields: 'currently_due' | 'eventually_due', futureRequirements?: 'omit' | 'include', requirements?: { exclude: string[] } | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. You can’t update this parameter after the component has initially rendered. | `{fields: 'currently_due', futureRequirements: 'omit'}`                                    | optional             |
-| `onStepChange`                 | `({step}: StepChange) => void`                                                                                                                     | The component executes this callback function when the connected account has navigated from one step to another within the onboarding process.  Use `StepChange` to identify the current step, as described below.                                                                                                                                                                                                                     |                                                                                            | optional             |
+| React prop                     | Type                           | Description                                                                                                                                                                                                                                                                                   | Default                                                                                    | Required or Optional |
+| ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------- |
+| `onExit`                       | `() => void`                   | The component executes this callback function when the connected account exits the onboarding process                                                                                                                                                                                         |                                                                                            | required             |
+| `fullTermsOfServiceUrl`        | `string`                       | Link to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement                                                                                                                                                                               | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           | optional             |
+| `recipientTermsOfServiceUrl`   | `string`                       | Link to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement                                                                                                                                                                     | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) | optional             |
+| `privacyPolicyUrl`             | `string`                       | Link to your privacy policy                                                                                                                                                                                                                                                                   | [Stripe’s privacy policy](https://stripe.com/privacy)                                      | optional             |
+| `skipTermsOfServiceCollection` | `boolean`                      | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance). | false                                                                                      | optional             |
+| `collectionOptions`            | `{fields: 'currently_due'      | 'eventually_due', futureRequirements?: 'omit'                                                                                                                                                                                                                                                 | 'include', requirements?: { exclude: string[] }                                            | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. You can’t update this parameter after the component has initially rendered. | `{fields: 'currently_due', futureRequirements: 'omit'}` | optional |
+| `onStepChange`                 | `({step}: StepChange) => void` | The component executes this callback function when the connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                             |                                                                                            | optional             |
 
 1. Create a [connected account](https://docs.stripe.com/api/v2/core/accounts/create.md?api-version=2025-03-31.preview). You can prefill information on the `Account` object in this API call.
 1. [Initialize Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions) using the ID of the connected account.
@@ -361,14 +365,14 @@ If all required capabilities are enabled, you can take the connected account to 
 1. When `onExit` triggers, retrieve the `Account` details to check the status of:
    - Requested `merchant` configuration capabilities, such as [card_payments.status](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=2025-03-31.preview#v2_retrieve_accounts-response-configuration-merchant-capabilities-card_payments-status)
    - Requested `recipient` configuration capabilities, such as [stripe_balance.stripe_transfers.status](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=2025-03-31.preview#v2_retrieve_accounts-response-configuration-recipient-capabilities-stripe_balance-stripe_transfers-status)
-If all required capabilities are enabled, you can take the connected account to the next step of your flow.
+     If all required capabilities are enabled, you can take the connected account to the next step of your flow.
 
 ### The StepChange object
 
 The `StepChange` type is defined in `connect.js`. Every time the connected account navigates from one step to another in the onboarding process, the step change handler receives a `StepChange` object with the following property:
 
 | Name   | Type                                 | Example value   |
-| ------ | ------------------------------------ | --------------- |
+| ------ | ------------------------------------ | --------------- | ------------------------------------------- |
 | `step` | `string` (must be a valid step name) | `business_type` | The unique reference to an onboarding step. |
 
 ##### Step Restrictions
@@ -431,18 +435,18 @@ For connected accounts where Stripe is responsible for collecting requirements, 
 
 Accounts store identity information in the `identity` hash.
 
-### Handle verification errors 
+### Handle verification errors
 
 Listen to the [v2.core.account[requirements].updated](https://docs.stripe.com/api/v2/core/events/event-types.md?api-version=preview) event. If the account contains any requirements with a [minimum_deadline.status](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=preview#v2_retrieve_accounts-response-requirements-entries-minimum_deadline-status) of `currently_due` when the deadline arrives, the corresponding functionality is disabled and those statuses become `past_due`.
 
 Let your accounts remediate their verification requirements by directing them to the [Account onboarding component](https://docs.stripe.com/connect/supported-embedded-components/account-onboarding.md).
- (See full diagram at https://docs.stripe.com/connect/embedded-onboarding)
-### Disable Stripe user authentication 
+(See full diagram at https://docs.stripe.com/connect/embedded-onboarding)
+
+### Disable Stripe user authentication
 
 When using embedded onboarding, [Stripe user authentication](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#user-authentication-in-connect-embedded-components) is enabled by default. You can use [`disable_stripe_user_authentication`](https://docs.stripe.com/api/account_sessions/create.md#create_account_session-components-account_onboarding-features-disable_stripe_user_authentication) to remove this behavior.
 
 We recommend implementing two-factor authentication or equivalent security measures as a [best practice](https://docs.stripe.com/connect/risk-management/best-practices.md#prevent-account-take-overs). For account configurations that support this feature, such as Custom, you assume liability for connected accounts if they can’t pay back [negative balances](https://docs.stripe.com/connect/risk-management/best-practices.md#decide-your-approach-to-negative-balance-liability).
-
 
 # Accounts v1
 
@@ -568,18 +572,18 @@ Account account = client.v1().accounts().create(params);
 ```node
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
-const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
+const stripe = require("stripe")("<<YOUR_SECRET_KEY>>");
 
 const account = await stripe.accounts.create({
   controller: {
     fees: {
-      payer: 'application',
+      payer: "application",
     },
     losses: {
-      payments: 'application',
+      payments: "application",
     },
     stripe_dashboard: {
-      type: 'express',
+      type: "express",
     },
   },
 });
@@ -678,10 +682,10 @@ Account account = client.v1().accounts().create(params);
 ```node
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
-const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
+const stripe = require("stripe")("<<YOUR_SECRET_KEY>>");
 
 const account = await stripe.accounts.create({
-  type: 'standard',
+  type: "standard",
 });
 ```
 
@@ -729,14 +733,15 @@ For details about using these collection options, see the documentation for the 
 
 ## Determine whether to collect all information up front
 
-As the platform, you must decide if you want to collect the required information from your connected accounts *up front* (Upfront onboarding is a type of onboarding where you collect all required verification information from your users at sign-up) or *incrementally* (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements.
+As the platform, you must decide if you want to collect the required information from your connected accounts _up front_ (Upfront onboarding is a type of onboarding where you collect all required verification information from your users at sign-up) or _incrementally_ (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements.
 
-| Onboarding type | Advantages                                                                                                                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Up-front**    | - Normally requires only one request for all information
-  - Avoids the possibility of payout and processing issues due to missed deadlines
-  - Exposes potential risk early when accounts refuse to provide information |
-| **Incremental** | - Accounts can onboard quickly because they don’t have to provide as much information                                                                                                                                    |
+| Onboarding type | Advantages                                               |
+| --------------- | -------------------------------------------------------- |
+| **Up-front**    | - Normally requires only one request for all information |
+
+- Avoids the possibility of payout and processing issues due to missed deadlines
+- Exposes potential risk early when accounts refuse to provide information |
+  | **Incremental** | - Accounts can onboard quickly because they don’t have to provide as much information |
 
 To determine whether to use up-front or incremental onboarding, review the [requirements](https://docs.stripe.com/connect/required-verification-information.md) for your connected accounts’ locations and capabilities. While Stripe tries to minimize any impact to connected accounts, requirements might change over time.
 
@@ -754,7 +759,7 @@ If you’re a platform onboarding connected accounts where you’re responsible 
 
 Embedded onboarding still has links to the terms of service (for example, in the footer) that you can replace by [linking to your own agreements and privacy policy](https://docs.stripe.com/connect/embedded-onboarding.md#link-to-your-own-agreements-and-privacy-policy).
 
-### Link to your agreements and privacy policy 
+### Link to your agreements and privacy policy
 
 Connected accounts see the Stripe service agreement and [Privacy Policy](https://stripe.com/privacy) throughout embedded onboarding. For the connected accounts where you’re responsible for requirement collection, you can replace the links with your own agreements and policy. Follow the instructions to [incorporate the Stripe services agreement](https://docs.stripe.com/connect/updating-service-agreements.md#adding-stripes-service-agreement-to-your-terms-of-service) and [link to the Stripe Privacy Policy](https://docs.stripe.com/connect/updating-service-agreements.md#disclosing-how-stripe-processes-user-data).
 
@@ -839,10 +844,10 @@ AccountSession accountSession = client.v1().accountSessions().create(params);
 ```node
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
-const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
+const stripe = require("stripe")("<<YOUR_SECRET_KEY>>");
 
 const accountSession = await stripe.accountSessions.create({
-  account: '{{CONNECTEDACCOUNT_ID}}',
+  account: "{{CONNECTEDACCOUNT_ID}}",
   components: {
     account_onboarding: {
       enabled: true,
@@ -891,9 +896,9 @@ After creating the Account Session and [initializing ConnectJS](https://docs.str
 
 ```js
 // Include this element in your HTML
-const accountOnboarding = stripeConnectInstance.create('account-onboarding');
+const accountOnboarding = stripeConnectInstance.create("account-onboarding");
 accountOnboarding.setOnExit(() => {
-  console.log('User exited the onboarding flow');
+  console.log("User exited the onboarding flow");
 });
 container.appendChild(accountOnboarding);
 
@@ -914,43 +919,46 @@ container.appendChild(accountOnboarding);
 
 ```jsx
 import * as React from "react";
-import { ConnectAccountOnboarding, ConnectComponentsProvider } from "@stripe/react-connect-js";
+import {
+  ConnectAccountOnboarding,
+  ConnectComponentsProvider,
+} from "@stripe/react-connect-js";
 
 const AccountOnboardingUI = () => {
   return (
     <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
       <ConnectAccountOnboarding
-          onExit={() => {
-            console.log("The account has exited onboarding");
-          }}
-          // Optional: make sure to follow our policy instructions above
-          // fullTermsOfServiceUrl="{{URL}}"
-          // recipientTermsOfServiceUrl="{{URL}}"
-          // privacyPolicyUrl="{{URL}}"
-          // collectionOptions={{
-          //   fields: 'eventually_due',
-          //   futureRequirements: 'include',
-          // }}
-          // onStepChange={(stepChange) => {
-          //   console.log(`User entered: ${stepChange.step}`);
-          // }}
-        />
+        onExit={() => {
+          console.log("The account has exited onboarding");
+        }}
+        // Optional: make sure to follow our policy instructions above
+        // fullTermsOfServiceUrl="{{URL}}"
+        // recipientTermsOfServiceUrl="{{URL}}"
+        // privacyPolicyUrl="{{URL}}"
+        // collectionOptions={{
+        //   fields: 'eventually_due',
+        //   futureRequirements: 'include',
+        // }}
+        // onStepChange={(stepChange) => {
+        //   console.log(`User entered: ${stepChange.step}`);
+        // }}
+      />
     </ConnectComponentsProvider>
   );
-}
+};
 ```
 
 #### HTML + JS
 
-| Method                            | Type                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                                                | Default                                                                                    |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `setFullTermsOfServiceUrl`        | `string`                                                                                                                                          | Absolute URL to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement.                                                                                                                                                                                                                                   | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           |
-| `setRecipientTermsOfServiceUrl`   | `string`                                                                                                                                          | Absolute URL to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement.                                                                                                                                                                                                                         | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) |
-| `setPrivacyPolicyUrl`             | `string`                                                                                                                                          | Absolute URL to your privacy policy.                                                                                                                                                                                                                                                                                                                       | [Stripe’s privacy policy](https://stripe.com/privacy)                                      |
-| `setSkipTermsOfServiceCollection` | `string`                                                                                                                                          | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance).                                                              | false                                                                                      |
-| `setCollectionOptions`            | `{fields: 'currently_due' | 'eventually_due', future_requirements: 'omit' | 'include', requirements: { exclude: string[] } | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. | `{fields: 'currently_due', futureRequirements: 'omit'}`                                    |
-| `setOnExit`                       | `() => void`                                                                                                                                      | The connected account has exited the onboarding process                                                                                                                                                                                                                                                                                                    |                                                                                            |
-| `setOnStepChange`                 | `({step}: StepChange) => void`                                                                                                                    | The connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                                                                                                                                             |                                                                                            |
+| Method                            | Type                           | Description                                                                                                                                                                                                                                                                                   | Default                                                                                    |
+| --------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `setFullTermsOfServiceUrl`        | `string`                       | Absolute URL to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement.                                                                                                                                                                      | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           |
+| `setRecipientTermsOfServiceUrl`   | `string`                       | Absolute URL to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement.                                                                                                                                                            | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) |
+| `setPrivacyPolicyUrl`             | `string`                       | Absolute URL to your privacy policy.                                                                                                                                                                                                                                                          | [Stripe’s privacy policy](https://stripe.com/privacy)                                      |
+| `setSkipTermsOfServiceCollection` | `string`                       | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance). | false                                                                                      |
+| `setCollectionOptions`            | `{fields: 'currently_due'      | 'eventually_due', future_requirements: 'omit'                                                                                                                                                                                                                                                 | 'include', requirements: { exclude: string[] }                                             | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. | `{fields: 'currently_due', futureRequirements: 'omit'}` |
+| `setOnExit`                       | `() => void`                   | The connected account has exited the onboarding process                                                                                                                                                                                                                                       |                                                                                            |
+| `setOnStepChange`                 | `({step}: StepChange) => void` | The connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                                                                                |                                                                                            |
 
 To use this component to set up new accounts:
 
@@ -958,24 +966,24 @@ To use this component to set up new accounts:
 1. [Initialize Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions) using the ID of the connected account.
 1. Include the `account-onboarding` element to show the onboarding flow to the connected account.
 1. Listen for the `exit` event emitted from this component. Stripe sends this event when the connected account exits the onboarding process.
-1. When `exit` triggers,  retrieve the `Account` details to check the status of:
+1. When `exit` triggers, retrieve the `Account` details to check the status of:
    - [details_submitted](https://docs.stripe.com/api/accounts/object.md#account_object-details_submitted)
    - [charges_enabled](https://docs.stripe.com/api/accounts/object.md#account_object-charges_enabled)
    - [payouts_enabled](https://docs.stripe.com/api/accounts/object.md#account_object-payouts_enabled)
    - Any other requested capabilities
-If all required capabilities are enabled, you can take the connected account to the next step of your flow.
+     If all required capabilities are enabled, you can take the connected account to the next step of your flow.
 
 #### React
 
-| React prop                     | Type                                                                                                                                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                            | Default                                                                                    | Required or Optional |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- |
-| `onExit`                       | `() => void`                                                                                                                                       | The component executes this callback function when the connected account exits the onboarding process                                                                                                                                                                                                                                                                                                                                  |                                                                                            | required             |
-| `fullTermsOfServiceUrl`        | `string`                                                                                                                                           | Link to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement                                                                                                                                                                                                                                                                                                                        | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           | optional             |
-| `recipientTermsOfServiceUrl`   | `string`                                                                                                                                           | Link to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement                                                                                                                                                                                                                                                                                                              | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) | optional             |
-| `privacyPolicyUrl`             | `string`                                                                                                                                           | Link to your privacy policy                                                                                                                                                                                                                                                                                                                                                                                                            | [Stripe’s privacy policy](https://stripe.com/privacy)                                      | optional             |
-| `skipTermsOfServiceCollection` | `boolean`                                                                                                                                          | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance).                                                                                                                                          | false                                                                                      | optional             |
-| `collectionOptions`            | `{fields: 'currently_due' | 'eventually_due', futureRequirements?: 'omit' | 'include', requirements?: { exclude: string[] } | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. You can’t update this parameter after the component has initially rendered. | `{fields: 'currently_due', futureRequirements: 'omit'}`                                    | optional             |
-| `onStepChange`                 | `({step}: StepChange) => void`                                                                                                                     | The component executes this callback function when the connected account has navigated from one step to another within the onboarding process.  Use `StepChange` to identify the current step, as described below.                                                                                                                                                                                                                     |                                                                                            | optional             |
+| React prop                     | Type                           | Description                                                                                                                                                                                                                                                                                   | Default                                                                                    | Required or Optional |
+| ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------- |
+| `onExit`                       | `() => void`                   | The component executes this callback function when the connected account exits the onboarding process                                                                                                                                                                                         |                                                                                            | required             |
+| `fullTermsOfServiceUrl`        | `string`                       | Link to your [full terms of service](https://docs.stripe.com/connect/service-agreement-types.md#full) agreement                                                                                                                                                                               | [Stripe’s full service agreement](https://stripe.com/connect-account/legal/full)           | optional             |
+| `recipientTermsOfServiceUrl`   | `string`                       | Link to your [recipient terms of service](https://docs.stripe.com/connect/service-agreement-types.md#recipient) agreement                                                                                                                                                                     | [Stripe’s recipient service agreement](https://stripe.com/connect-account/legal/recipient) | optional             |
+| `privacyPolicyUrl`             | `string`                       | Link to your privacy policy                                                                                                                                                                                                                                                                   | [Stripe’s privacy policy](https://stripe.com/privacy)                                      | optional             |
+| `skipTermsOfServiceCollection` | `boolean`                      | [DEPRECATED] Leverage requirement restriction `exclude: ["tos_acceptance.*"]` instead. If true, embedded onboarding skips terms of service collection and you must [collect terms acceptance yourself](https://docs.stripe.com/connect/updating-service-agreements.md#indicating-acceptance). | false                                                                                      | optional             |
+| `collectionOptions`            | `{fields: 'currently_due'      | 'eventually_due', futureRequirements?: 'omit'                                                                                                                                                                                                                                                 | 'include', requirements?: { exclude: string[] }                                            | { only: string[] }}` | Customizes collecting `currently_due` or `eventually_due` requirements, controls whether to include [future requirements](https://docs.stripe.com/api/accounts/object.md#account_object-future_requirements), and allows restricting requirements collection. Specifying `eventually_due` collects both `eventually_due` and `currently_due` requirements. You can’t update this parameter after the component has initially rendered. | `{fields: 'currently_due', futureRequirements: 'omit'}` | optional |
+| `onStepChange`                 | `({step}: StepChange) => void` | The component executes this callback function when the connected account has navigated from one step to another within the onboarding process. Use `StepChange` to identify the current step, as described below.                                                                             |                                                                                            | optional             |
 
 1. Create a [connected account](https://docs.stripe.com/api/accounts/create.md). You can prefill information on the `Account` object in this API call.
 1. [Initialize Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions) using the ID of the connected account.
@@ -986,14 +994,14 @@ If all required capabilities are enabled, you can take the connected account to 
    - [charges_enabled](https://docs.stripe.com/api/accounts/object.md#account_object-charges_enabled)
    - [payouts_enabled](https://docs.stripe.com/api/accounts/object.md#account_object-payouts_enabled)
    - Any other requested capabilities
-If all required capabilities are enabled, you can take the connected account to the next step of your flow.
+     If all required capabilities are enabled, you can take the connected account to the next step of your flow.
 
 ### The StepChange object
 
 The `StepChange` type is defined in `connect.js`. Every time the connected account navigates from one step to another in the onboarding process, the step change handler receives a `StepChange` object with the following property:
 
 | Name   | Type                                 | Example value   |
-| ------ | ------------------------------------ | --------------- |
+| ------ | ------------------------------------ | --------------- | ------------------------------------------- |
 | `step` | `string` (must be a valid step name) | `business_type` | The unique reference to an onboarding step. |
 
 ##### Step Restrictions
@@ -1056,18 +1064,18 @@ For connected accounts where [controller.requirement_collection](https://docs.st
 
 Accounts store identity information in the `company` and `individual` hashes.
 
-### Handle verification errors 
+### Handle verification errors
 
 Listen to the [account.updated](https://docs.stripe.com/api/events/types.md#event_types-account.updated) event. If the account contains any `currently_due` fields when the `current_deadline` arrives, the corresponding functionality is disabled and those fields are added to `past_due`.
 
 Let your accounts remediate their verification requirements by directing them to the [Account onboarding component](https://docs.stripe.com/connect/supported-embedded-components/account-onboarding.md).
- (See full diagram at https://docs.stripe.com/connect/embedded-onboarding)
-### Disable Stripe user authentication 
+(See full diagram at https://docs.stripe.com/connect/embedded-onboarding)
+
+### Disable Stripe user authentication
 
 When using embedded onboarding, [Stripe user authentication](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#user-authentication-in-connect-embedded-components) is enabled by default. You can use [`disable_stripe_user_authentication`](https://docs.stripe.com/api/account_sessions/create.md#create_account_session-components-account_onboarding-features-disable_stripe_user_authentication) to remove this behavior.
 
 We recommend implementing two-factor authentication or equivalent security measures as a [best practice](https://docs.stripe.com/connect/risk-management/best-practices.md#prevent-account-take-overs). For account configurations that support this feature, such as Custom, you assume liability for connected accounts if they can’t pay back [negative balances](https://docs.stripe.com/connect/risk-management/best-practices.md#decide-your-approach-to-negative-balance-liability).
-
 
 ## See also
 

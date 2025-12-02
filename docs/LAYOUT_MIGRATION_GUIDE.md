@@ -6,40 +6,40 @@ Quick reference for migrating from raw Tamagui primitives to semantic layout com
 
 ### Layout Components
 
-| Old (XStack/YStack) | New (Row/Column) | Notes |
-|---------------------|------------------|-------|
-| `<XStack>` | `<Row>` | Horizontal layout |
-| `<YStack>` | `<Column>` | Vertical layout |
+| Old (XStack/YStack)            | New (Row/Column)            | Notes             |
+| ------------------------------ | --------------------------- | ----------------- |
+| `<XStack>`                     | `<Row>`                     | Horizontal layout |
+| `<YStack>`                     | `<Column>`                  | Vertical layout   |
 | `maxWidth={1024} width="100%"` | `<Container maxWidth="lg">` | Max-width wrapper |
-| `<View flex={1} />` | `<Spacer />` | Flexible space |
+| `<View flex={1} />`            | `<Spacer />`                | Flexible space    |
 
 ### Gap Sizes
 
-| Old | New | Pixels |
-|-----|-----|--------|
-| `gap="$2"` | `gap="xs"` | 4px |
-| `gap="$3"` | `gap="sm"` | 8px |
-| `gap="$4"` | `gap="md"` | 16px |
-| `gap="$5"` | `gap="lg"` | 24px |
-| `gap="$6"` | `gap="xl"` | 32px |
+| Old        | New        | Pixels |
+| ---------- | ---------- | ------ |
+| `gap="$2"` | `gap="xs"` | 4px    |
+| `gap="$3"` | `gap="sm"` | 8px    |
+| `gap="$4"` | `gap="md"` | 16px   |
+| `gap="$5"` | `gap="lg"` | 24px   |
+| `gap="$6"` | `gap="xl"` | 32px   |
 
 ### Alignment
 
-| Old | New |
-|-----|-----|
-| `alignItems="center"` | `align="center"` |
-| `alignItems="flex-start"` | `align="start"` |
+| Old                              | New                 |
+| -------------------------------- | ------------------- |
+| `alignItems="center"`            | `align="center"`    |
+| `alignItems="flex-start"`        | `align="start"`     |
 | `justifyContent="space-between"` | `justify="between"` |
-| `flexWrap="wrap"` | `wrap` |
+| `flexWrap="wrap"`                | `wrap`              |
 
 ### Text Colors
 
-| Old | New |
-|-----|-----|
-| `color="$text"` | `color="default"` |
+| Old                      | New                 |
+| ------------------------ | ------------------- |
+| `color="$text"`          | `color="default"`   |
 | `color="$textSecondary"` | `color="secondary"` |
-| `color="$textMuted"` | `color="muted"` |
-| `color="$textInverse"` | `color="inverse"` |
+| `color="$textMuted"`     | `color="muted"`     |
+| `color="$textInverse"`   | `color="inverse"`   |
 
 ## Migration Examples
 
@@ -247,6 +247,7 @@ import { Heading } from '@buttergolf/ui'
 ## Alignment Reference
 
 ### Horizontal (Row)
+
 ```typescript
 <Row align="start">     {/* top */}
 <Row align="center">    {/* middle */}
@@ -256,6 +257,7 @@ import { Heading } from '@buttergolf/ui'
 ```
 
 ### Vertical (Column)
+
 ```typescript
 <Column align="start">   {/* left */}
 <Column align="center">  {/* center */}

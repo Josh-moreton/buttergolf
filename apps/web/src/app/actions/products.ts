@@ -4,7 +4,7 @@ import { prisma } from "@buttergolf/db";
 import type { ProductCardData } from "@buttergolf/app";
 
 export async function getRecentProducts(
-  limit: number = 12
+  limit: number = 12,
 ): Promise<ProductCardData[]> {
   try {
     const products = await prisma.product.findMany({
@@ -49,8 +49,7 @@ export async function getRecentProducts(
         // In production, all images should be stored in Vercel Blob with full HTTPS URLs
         if (imageUrl.startsWith("/")) {
           const baseUrl =
-            process.env.NEXT_PUBLIC_BASE_URL ||
-              process.env.VERCEL_URL
+            process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
               ? `https://${process.env.VERCEL_URL}`
               : "http://localhost:3000";
 

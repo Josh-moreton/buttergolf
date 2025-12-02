@@ -6,9 +6,7 @@ The `NewsletterSection.tsx` component was using an "escape hatch" pattern to app
 
 ```tsx
 // ❌ WRONG - Using escape hatch for standard CSS property
-<Button {...{ style: { whiteSpace: 'nowrap' } }}>
-  Subscribe
-</Button>
+<Button {...{ style: { whiteSpace: "nowrap" } }}>Subscribe</Button>
 ```
 
 This pattern was unnecessary because Button **already inherits** the `whiteSpace` prop from its base Stack component.
@@ -29,6 +27,7 @@ The issue was **TypeScript type definitions**, not runtime behavior:
 **File**: `packages/ui/src/components/Button.tsx`
 
 **Before**:
+
 ```tsx
 import { Button as TamaguiButton, GetProps, styled } from "tamagui";
 
@@ -40,8 +39,14 @@ export type ButtonProps = GetProps<typeof Button>;
 ```
 
 **After**:
+
 ```tsx
-import { Button as TamaguiButton, GetProps, styled, type ButtonProps as TamaguiButtonProps } from "tamagui";
+import {
+  Button as TamaguiButton,
+  GetProps,
+  styled,
+  type ButtonProps as TamaguiButtonProps,
+} from "tamagui";
 
 export const Button = styled(TamaguiButton, {
   // ... variants
@@ -49,10 +54,12 @@ export const Button = styled(TamaguiButton, {
 
 // Export type that includes BOTH our custom variants AND all base Tamagui Button props
 // This ensures TypeScript knows about inherited props like whiteSpace, flexShrink, etc.
-export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, keyof GetProps<typeof Button>>;
+export type ButtonProps = GetProps<typeof Button> &
+  Omit<TamaguiButtonProps, keyof GetProps<typeof Button>>;
 ```
 
 **Key Change**: The new type merges:
+
 - `GetProps<typeof Button>` - Our custom variants (size, tone, fullWidth)
 - `Omit<TamaguiButtonProps, keyof GetProps<typeof Button>>` - All base Button props that we didn't override
 
@@ -61,19 +68,21 @@ export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, key
 **File**: `apps/web/src/app/_components/marketplace/NewsletterSection.tsx`
 
 **Before**:
+
 ```tsx
 <Button
   size="lg"
   tone="primary"
   borderRadius="$full"
   paddingHorizontal="$6"
-  {...{ style: { whiteSpace: 'nowrap' } }}
+  {...{ style: { whiteSpace: "nowrap" } }}
 >
   Subscribe
 </Button>
 ```
 
 **After**:
+
 ```tsx
 <Button
   size="lg"
@@ -91,6 +100,7 @@ export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, key
 **File**: `.github/copilot-instructions.md`
 
 Updated guideline #9 to clarify:
+
 - Button extends Stack → inherits ALL Stack props including whiteSpace, flexShrink, cursor
 - The escape hatch `{...{ style: {...} }}` should ONLY be used for non-React properties or edge cases
 - Standard CSS properties the component already supports should be used directly
@@ -104,6 +114,7 @@ Added `"rootDir": "src"` to resolve TypeScript export map ambiguity error.
 ## Verification
 
 Ran type checking:
+
 ```bash
 cd apps/web && pnpm tsc --noEmit
 ```
@@ -111,6 +122,7 @@ cd apps/web && pnpm tsc --noEmit
 **Result**: ✅ No errors related to Button's whiteSpace prop in NewsletterSection.tsx
 
 The file previously showed:
+
 ```
 ❌ error TS2322: Property 'whiteSpace' does not exist on type ...
 ```
@@ -156,6 +168,7 @@ React Native Web View supports `whiteSpace` as a style property, therefore Butto
 ## Related Components
 
 This pattern should be applied to ALL custom styled components in `packages/ui`:
+
 - Text (extends SizableText)
 - Row/Column (extend XStack/YStack)
 - Card (extends TamaguiCard)

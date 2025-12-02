@@ -66,7 +66,7 @@ pnpm dev:mobile
 Both apps should now correctly import from `@buttergolf/ui`:
 
 ```tsx
-import { Button, Text, config } from '@buttergolf/ui'
+import { Button, Text, config } from "@buttergolf/ui";
 ```
 
 ## What Was Changed

@@ -65,19 +65,19 @@ packages/
 **Current `packages/ui/src/index.ts`**:
 
 ```tsx
-export { Button } from './components/Button'
-export { Text } from './components/Text'
-export { TamaguiProvider } from 'tamagui'
-export { config } from '../tamagui.config'
+export { Button } from "./components/Button";
+export { Text } from "./components/Text";
+export { TamaguiProvider } from "tamagui";
+export { config } from "../tamagui.config";
 ```
 
 **Should Be (Like Starter)**:
 
 ```tsx
-export * from 'tamagui'              // ← Re-export ALL Tamagui
-export * from '@tamagui/toast'       // ← Export additional packages
-export { config } from '@buttergolf/config'  // ← Import from config package
-export * from './MyCustomComponent'  // ← Only your custom components
+export * from "tamagui"; // ← Re-export ALL Tamagui
+export * from "@tamagui/toast"; // ← Export additional packages
+export { config } from "@buttergolf/config"; // ← Import from config package
+export * from "./MyCustomComponent"; // ← Only your custom components
 ```
 
 **Why**: The UI package should provide a single import point for ALL Tamagui components, not just Button and Text.
@@ -98,17 +98,17 @@ export * from './MyCustomComponent'  // ← Only your custom components
 
 ```tsx
 // packages/app/provider/index.tsx
-import { TamaguiProvider, config } from '@my/ui'
+import { TamaguiProvider, config } from "@my/ui";
 
 export function Provider({ children, defaultTheme }) {
-  const colorScheme = useColorScheme()
-  const theme = defaultTheme || (colorScheme === 'dark' ? 'dark' : 'light')
-  
+  const colorScheme = useColorScheme();
+  const theme = defaultTheme || (colorScheme === "dark" ? "dark" : "light");
+
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       {children}
     </TamaguiProvider>
-  )
+  );
 }
 
 // packages/app/provider/NextTamaguiProvider.tsx
@@ -116,12 +116,10 @@ export const NextTamaguiProvider = ({ children }) => {
   // Next.js-specific SSR logic
   return (
     <NextThemeProvider>
-      <Provider>
-        {children}
-      </Provider>
+      <Provider>{children}</Provider>
     </NextThemeProvider>
-  )
-}
+  );
+};
 ```
 
 ---
@@ -131,8 +129,8 @@ export const NextTamaguiProvider = ({ children }) => {
 **Current HomeScreen**:
 
 ```tsx
-import { Link } from 'solito/link'
-import { View, Text } from 'react-native'
+import { Link } from "solito/link";
+import { View, Text } from "react-native";
 
 export function HomeScreen() {
   return (
@@ -140,26 +138,26 @@ export function HomeScreen() {
       <Text>Welcome</Text>
       <Link href="/user/1">Go to user</Link>
     </View>
-  )
+  );
 }
 ```
 
 **Should Be**:
 
 ```tsx
-import { YStack, H1, Paragraph, Button } from '@buttergolf/ui'
-import { useLink } from 'solito/navigation'  // ← Use navigation, not link
+import { YStack, H1, Paragraph, Button } from "@buttergolf/ui";
+import { useLink } from "solito/navigation"; // ← Use navigation, not link
 
 export function HomeScreen() {
-  const linkProps = useLink({ href: '/user/1' })
-  
+  const linkProps = useLink({ href: "/user/1" });
+
   return (
     <YStack flex={1} justify="center" items="center" gap="$4" padding="$4">
       <H1>Welcome to ButterGolf</H1>
       <Paragraph>Track your golf rounds</Paragraph>
       <Button {...linkProps}>View Rounds</Button>
     </YStack>
-  )
+  );
 }
 ```
 
@@ -176,32 +174,32 @@ export function HomeScreen() {
 **Current `apps/web/next.config.js`**:
 
 ```javascript
-const { withTamagui } = require('@tamagui/next-plugin')
+const { withTamagui } = require("@tamagui/next-plugin");
 
 module.exports = withTamagui({
-  config: './tamagui.config.ts',  // ← Wrong path
-  components: ['tamagui'],
+  config: "./tamagui.config.ts", // ← Wrong path
+  components: ["tamagui"],
   // ...
-})
+});
 ```
 
 **Should Be**:
 
 ```javascript
-const { withTamagui } = require('@tamagui/next-plugin')
+const { withTamagui } = require("@tamagui/next-plugin");
 
 module.exports = withTamagui({
-  config: '../../packages/config/src/tamagui.config.ts',  // ← Correct path
-  components: ['tamagui', '@buttergolf/ui'],  // ← Include UI package
+  config: "../../packages/config/src/tamagui.config.ts", // ← Correct path
+  components: ["tamagui", "@buttergolf/ui"], // ← Include UI package
   appDir: true,
   shouldExtract: (path) => {
     // Extract styles from app package
-    if (path.includes(join('packages', 'app'))) {
-      return true
+    if (path.includes(join("packages", "app"))) {
+      return true;
     }
   },
   // ...
-})
+});
 ```
 
 ---
@@ -216,15 +214,15 @@ module.exports = withTamagui({
 **Should Be**:
 
 ```tsx
-import { Provider } from 'app/provider'
-import { Stack } from 'expo-router'
+import { Provider } from "app/provider";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
     <Provider>
       <Stack />
     </Provider>
-  )
+  );
 }
 ```
 
@@ -325,20 +323,20 @@ Expo Router handles navigation automatically with file-based routing.
 ### `packages/config/src/tamagui.config.ts`
 
 ```tsx
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
 export const config = createTamagui({
   ...defaultConfig,
   settings: {
     ...defaultConfig.settings,
-    onlyAllowShorthands: false // ← Important!
-  }
-})
+    onlyAllowShorthands: false, // ← Important!
+  },
+});
 
-export type AppConfig = typeof config
+export type AppConfig = typeof config;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends AppConfig {}
 }
 ```
@@ -347,49 +345,55 @@ declare module 'tamagui' {
 
 ```tsx
 // Re-export ALL of Tamagui
-export * from 'tamagui'
+export * from "tamagui";
 
 // Export config from config package
-export { config } from '@buttergolf/config'
+export { config } from "@buttergolf/config";
 
 // Export your custom components
-export * from './MyCustomComponent'
+export * from "./MyCustomComponent";
 ```
 
 ### `packages/app/provider/index.tsx`
 
 ```tsx
-import { useColorScheme } from 'react-native'
-import { TamaguiProvider, config } from '@buttergolf/ui'
+import { useColorScheme } from "react-native";
+import { TamaguiProvider, config } from "@buttergolf/ui";
 
-export function Provider({ children, defaultTheme = 'light' }) {
-  const colorScheme = useColorScheme()
-  const theme = defaultTheme || (colorScheme === 'dark' ? 'dark' : 'light')
+export function Provider({ children, defaultTheme = "light" }) {
+  const colorScheme = useColorScheme();
+  const theme = defaultTheme || (colorScheme === "dark" ? "dark" : "light");
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
       {children}
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
 ### `packages/app/features/home/screen.tsx`
 
 ```tsx
-import { YStack, H1, Paragraph, Button } from '@buttergolf/ui'
-import { useLink } from 'solito/navigation'
+import { YStack, H1, Paragraph, Button } from "@buttergolf/ui";
+import { useLink } from "solito/navigation";
 
 export function HomeScreen() {
-  const linkProps = useLink({ href: '/rounds' })
+  const linkProps = useLink({ href: "/rounds" });
 
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$4">
+    <YStack
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      gap="$4"
+      padding="$4"
+    >
       <H1>Welcome to ButterGolf</H1>
       <Paragraph>Track your golf game</Paragraph>
       <Button {...linkProps}>View Rounds</Button>
     </YStack>
-  )
+  );
 }
 ```
 
@@ -463,8 +467,8 @@ import { H1, H2, H3, Paragraph, SizableText } from '@buttergolf/ui'
 ```tsx
 <YStack
   width="100%"
-  $sm={{ width: 300 }}   // Small screens
-  $md={{ width: 500 }}   // Medium screens
+  $sm={{ width: 300 }} // Small screens
+  $md={{ width: 500 }} // Medium screens
   $gtMd={{ width: 700 }} // Greater than medium
 >
   <Text>Responsive content</Text>

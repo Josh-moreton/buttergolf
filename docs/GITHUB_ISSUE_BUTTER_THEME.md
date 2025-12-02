@@ -1,6 +1,7 @@
 # 🧈 Implement "Pure Butter" Brand Identity
 
 ## Overview
+
 Migrate ButterGolf from the current golf-course green theme to the "Pure Butter" brand identity (Concept 2) - a tongue-in-cheek, heritage butter aesthetic with warm butter orange, cream, and navy colors, plus Urbanist typography.
 
 **Reference:** Brand identity presentation, Concept 2 "Pure Butter" (pages 15-24)
@@ -10,6 +11,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 ## 📋 Checklist
 
 ### 1. Typography System (Gotham Font Family)
+
 - [ ] Add Gotham font files to `packages/assets/fonts/Gotham/` (8 weights)
   - Thin (200), Extra Light (300), Light (300), Book (400), Medium (500), Bold (700), Black (800), Ultra (900)
 - [ ] Configure web font loading in `apps/web/src/app/layout.tsx` (next/font/local)
@@ -25,7 +27,9 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 - [ ] **Alternative:** If no Gotham license, use Montserrat (Google Fonts) as substitute
 
 ### 2. Color Palette Migration
+
 - [ ] Update `packages/config/src/tamagui.config.ts` with new color scales:
+
   ```typescript
   // Primary: Butter Orange (replaces green)
   butter50: '#FFF9ED',
@@ -64,6 +68,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   ```
 
 - [ ] Update semantic token mappings:
+
   ```typescript
   primary: '$butter400',
   primaryDark: '$butter700',
@@ -80,7 +85,9 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   - [ ] `apps/web/src/app/_components/AppPromoBanner.tsx` (backgroundColor x2: `$primary`)
 
 ### 3. Design Token Adjustments
+
 - [ ] Update `packages/config/src/tamagui.config.ts`:
+
   ```typescript
   // Border Radius: Softer, more playful
   radius: {
@@ -101,6 +108,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   ```
 
 ### 4. Brand Assets
+
 - [ ] Extract logos from PDF page 17:
   - [ ] Stacked "Butter Golf" logo
   - [ ] Inline "Butter Golf" logo
@@ -123,6 +131,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
   - [ ] `apps/web/public/apple-touch-icon.png` (180x180)
 
 ### 5. Component Updates
+
 - [ ] Audit UI components in `packages/ui/src/components/`:
   - [ ] Button - verify theme usage with new primary
   - [ ] Card - update shadows to softer values
@@ -131,6 +140,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 - [ ] Ensure all components use semantic tokens (no hardcoded colors)
 
 ### 6. Documentation
+
 - [ ] Update `.github/copilot-instructions.md`:
   - Color palette section with new hex values
   - Typography section with Gotham weights
@@ -139,6 +149,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 - [ ] Create/update `docs/DESIGN_SYSTEM_SUMMARY.md` with comprehensive theme docs
 
 ### 7. Testing
+
 - [ ] Visual testing:
   - [ ] Web dev server (`pnpm dev:web`) - check all pages
   - [ ] iOS simulator (`pnpm dev:mobile`) - check all screens
@@ -157,7 +168,7 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 ## 🎨 New Brand Colors
 
 | Role          | Color Name    | Hex       | Usage                        |
-|---------------|---------------|-----------|------------------------------|
+| ------------- | ------------- | --------- | ---------------------------- |
 | `primary`     | Butter Orange | `#E25F2F` | Dominant brand tone, CTAs    |
 | `primaryDark` | Deep Gold     | `#C47A00` | Text on light backgrounds    |
 | `background`  | Cream         | `#FEFAD6` | Site/app background          |
@@ -180,11 +191,13 @@ Migrate ButterGolf from the current golf-course green theme to the "Pure Butter"
 ## ⚠️ Breaking Changes
 
 **Token Renames:**
+
 - `$green500` → `$butter400` (semantic `$primary` still works ✅)
 - `$amber400` → not used (replaced by `$navy500`)
 - `$offWhite` → `#FEFAD6` (cream)
 
 **Backward Compatibility:**
+
 - All semantic tokens (`$primary`, `$secondary`, `$background`, etc.) remain stable ✅
 - Component APIs unchanged ✅
 

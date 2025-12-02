@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@buttergolf/db';
-import type { ProductCardData } from '@buttergolf/app';
+import { NextResponse } from "next/server";
+import { prisma } from "@buttergolf/db";
+import type { ProductCardData } from "@buttergolf/app";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -22,10 +22,7 @@ export async function GET(
     });
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     // Find similar products:
@@ -49,7 +46,7 @@ export async function GET(
       },
       include: {
         images: {
-          orderBy: { sortOrder: 'asc' },
+          orderBy: { sortOrder: "asc" },
           take: 1,
         },
         category: {
@@ -76,7 +73,7 @@ export async function GET(
       },
       orderBy: [
         // Then by most recent
-        { createdAt: 'desc' },
+        { createdAt: "desc" },
       ],
       take: 8, // Get 8 to have variety
     });
@@ -87,11 +84,11 @@ export async function GET(
       title: prod.title,
       price: prod.price,
       condition: prod.condition,
-      imageUrl: prod.images[0]?.url || '/placeholder-product.jpg',
+      imageUrl: prod.images[0]?.url || "/placeholder-product.jpg",
       category: prod.category.name,
       seller: {
         id: prod.user.id,
-        name: prod.user.name || 'Unknown Seller',
+        name: prod.user.name || "Unknown Seller",
         averageRating: null, // TODO: Calculate from ratings
         ratingCount: 0, // TODO: Get from ratings count
       },
@@ -102,10 +99,10 @@ export async function GET(
       total: productCards.length,
     });
   } catch (error) {
-    console.error('Error fetching similar products:', error);
+    console.error("Error fetching similar products:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch similar products' },
-      { status: 500 }
+      { error: "Failed to fetch similar products" },
+      { status: 500 },
     );
   }
 }

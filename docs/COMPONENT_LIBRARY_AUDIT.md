@@ -11,12 +11,14 @@
 Based on the successful listings layout fix, we're evaluating components against these principles:
 
 ### ✅ Good Variant Usage
+
 - **Component-specific behavior** (not in base component)
 - **Design system boundaries** (enforcing approved values)
 - **No type conflicts** with base component props
 - **Adds semantic value** beyond direct prop usage
 
 ### ❌ Bad Variant Usage (Remove/Refactor)
+
 - **Reimplements base component props** (gap, alignItems, padding)
 - **Causes TypeScript conflicts** (needs `as any` workarounds)
 - **Simple value mapping** (better as direct token usage)
@@ -28,12 +30,12 @@ Based on the successful listings layout fix, we're evaluating components against
 
 ### Layout Components ✅ FIXED
 
-| Component | Status | Notes |
-|-----------|--------|-------|
-| **Row** | ✅ Fixed | Minimal shim, no custom variants |
-| **Column** | ✅ Fixed | Minimal shim, no custom variants |
-| **Container** | ✅ Good | Size variants are component-specific and valuable |
-| **Spacer** | ✅ Good | Simple utility, no problematic variants |
+| Component     | Status   | Notes                                             |
+| ------------- | -------- | ------------------------------------------------- |
+| **Row**       | ✅ Fixed | Minimal shim, no custom variants                  |
+| **Column**    | ✅ Fixed | Minimal shim, no custom variants                  |
+| **Container** | ✅ Good  | Size variants are component-specific and valuable |
+| **Spacer**    | ✅ Good  | Simple utility, no problematic variants           |
 
 **Pattern Established**: Thin wrappers with semantic naming, expose full Tamagui API.
 
@@ -42,12 +44,13 @@ Based on the successful listings layout fix, we're evaluating components against
 ### Typography Components 🟡 NEEDS REVIEW
 
 #### Text Component
+
 **File**: `packages/ui/src/components/Text.tsx`
 
 ```tsx
 export const Text = styled(TamaguiParagraph, {
   name: "Text",
-  
+
   // Default styles
   color: "$text",
   fontFamily: "$body",
@@ -57,16 +60,18 @@ export const Text = styled(TamaguiParagraph, {
 
   variants: {
     // No custom variants currently - uses direct props
-  }
-})
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - No conflicting variants
 - Uses direct Tamagui props (`size="$5"`, `color="$text"`)
 - Follows standard Tamagui pattern
 
 **Usage Pattern**:
+
 ```tsx
 <Text size="$5" color="$text" weight="600">
   Body text
@@ -74,12 +79,13 @@ export const Text = styled(TamaguiParagraph, {
 ```
 
 #### Heading Component
+
 **File**: `packages/ui/src/components/Text.tsx`
 
 ```tsx
 export const Heading = styled(TamaguiParagraph, {
   name: "Heading",
-  
+
   color: "$text",
   fontFamily: "$heading",
   fontWeight: "700",
@@ -92,29 +98,32 @@ export const Heading = styled(TamaguiParagraph, {
       4: { tag: "h4", fontSize: "$6", lineHeight: "$6" },
       5: { tag: "h5", fontSize: "$5", lineHeight: "$5" },
       6: { tag: "h6", fontSize: "$4", lineHeight: "$4" },
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: `level` prop maps to semantic HTML tags (h1-h6)
 - **Design system boundary**: Enforces heading hierarchy
 - **No conflicts**: level doesn't exist on base component
 - **Adds semantic value**: Better than manual tag + fontSize
 
 **Usage Pattern**:
+
 ```tsx
 <Heading level={2}>Section Title</Heading>
 ```
 
 #### Label Component
+
 **File**: `packages/ui/src/components/Text.tsx`
 
 ```tsx
 export const Label = styled(TamaguiLabel, {
   name: "Label",
-  
+
   color: "$text",
   fontSize: "$3",
   fontWeight: "500",
@@ -123,11 +132,12 @@ export const Label = styled(TamaguiLabel, {
 
   variants: {
     // No custom variants - simple wrapper
-  }
-})
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - Thin wrapper with sensible defaults
 - No problematic variants
 
@@ -136,25 +146,29 @@ export const Label = styled(TamaguiLabel, {
 ### Button Components 🟡 NEEDS REVIEW
 
 #### Button Component
+
 **File**: `packages/ui/src/components/Button.tsx`
 
 **Status**: ✅ GOOD (Re-export)
+
 ```tsx
 export { Button } from "@tamagui/button";
 export type { ButtonProps } from "@tamagui/button";
 ```
 
-**Notes**: 
+**Notes**:
+
 - Direct re-export of Tamagui Button
 - Uses standard Tamagui numeric size tokens (`size="$4"`, `size="$5"`)
 - All styling via direct props (backgroundColor, color, padding)
 - No custom variants that conflict with base props
 
 **Usage Pattern**:
+
 ```tsx
-<Button 
-  size="$5" 
-  backgroundColor="$primary" 
+<Button
+  size="$5"
+  backgroundColor="$primary"
   color="$textInverse"
   paddingHorizontal="$6"
   paddingVertical="$3"
@@ -165,30 +179,32 @@ export type { ButtonProps } from "@tamagui/button";
 ```
 
 #### AuthButton Component
+
 **File**: `packages/ui/src/components/AuthButton.tsx`
 
 ```tsx
 export const AuthButton = styled(Button, {
   name: "AuthButton",
-  
+
   // Preset styles for auth flows
   width: "100%",
   size: "$4",
   backgroundColor: "$primary",
   color: "$textInverse",
   borderRadius: "$full",
-  
+
   pressStyle: {
     backgroundColor: "$primaryPress",
   },
-  
+
   hoverStyle: {
     backgroundColor: "$primaryHover",
   },
-})
+});
 ```
 
 **Status**: ✅ GOOD
+
 - Preset styles for specific use case (auth flows)
 - No custom variants that conflict
 - Inherits Button's native props
@@ -198,6 +214,7 @@ export const AuthButton = styled(Button, {
 ### Card Components ✅ GOOD
 
 #### Card Component
+
 **File**: `packages/ui/src/components/Card.tsx`
 
 ```tsx
@@ -238,18 +255,20 @@ const CardBase = styled(TamaguiCard, {
       md: { padding: "$md" },
       lg: { padding: "$lg" },
       xl: { padding: "$xl" },
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: `variant` for visual styles (elevated, outlined, etc.)
 - **Design system boundary**: `padding` variants enforce approved spacing
 - **No conflicts**: These variants don't exist on base Card component
 - **Adds semantic value**: "elevated" clearer than manual shadow props
 
 **Note**: The `padding` variant is acceptable here because:
+
 1. It's **enforcing design system** (only approved values)
 2. Card is a **high-level component** where preset padding makes sense
 3. Users can still override with direct `padding="$4"` if needed
@@ -259,6 +278,7 @@ const CardBase = styled(TamaguiCard, {
 ### Form Components 🔴 NEEDS INVESTIGATION
 
 #### Input Component
+
 **File**: `packages/ui/src/components/Input.tsx`
 
 ```tsx
@@ -303,11 +323,12 @@ export const Input = styled(TamaguiInput, {
         width: "100%",
       },
     },
-  }
-})
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: Input sizing affects height + padding + fontSize together
 - **Validation states**: error/success/disabled are input-specific behaviors
 - **No conflicts**: These variants don't conflict with base Input props
@@ -316,6 +337,7 @@ export const Input = styled(TamaguiInput, {
 ---
 
 #### Badge Component
+
 **File**: `packages/ui/src/components/Badge.tsx`
 
 ```tsx
@@ -379,11 +401,12 @@ export const Badge = styled(View, {
         borderRadius: 4,
       },
     },
-  }
-})
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: Badge variants define visual meaning (primary, error, etc.)
 - **Design system enforcement**: Only approved badge styles
 - **No conflicts**: These are Badge-specific behaviors
@@ -392,6 +415,7 @@ export const Badge = styled(View, {
 ---
 
 #### Spinner Component
+
 **File**: `packages/ui/src/components/Spinner.tsx`
 
 ```tsx
@@ -409,10 +433,11 @@ export const Spinner = styled(TamaguiSpinner, {
   defaultVariants: {
     size: "md",
   },
-})
+});
 ```
 
 **Status**: ✅ GOOD
+
 - Simple wrapper over Tamagui Spinner
 - Size variants map to base component's size prop
 - No conflicts
@@ -420,6 +445,7 @@ export const Spinner = styled(TamaguiSpinner, {
 ---
 
 #### Checkbox Component
+
 **File**: `packages/ui/src/components/Checkbox.tsx`
 
 ```tsx
@@ -444,11 +470,12 @@ const CheckboxBox = styled(Stack, {
       md: { width: 20, height: 20 },
       lg: { width: 24, height: 24 },
     },
-  }
-})
+  },
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: `checked` and `disabled` are checkbox-specific states
 - **Design system boundary**: `size` variant enforces approved checkbox sizes
 - **No conflicts**: These variants don't exist on base Stack component
@@ -457,6 +484,7 @@ const CheckboxBox = styled(Stack, {
 - No TypeScript workarounds needed
 
 **Usage Pattern**:
+
 ```tsx
 <Checkbox
   checked={isChecked}
@@ -469,6 +497,7 @@ const CheckboxBox = styled(Stack, {
 ---
 
 #### Slider Component
+
 **File**: `packages/ui/src/components/Slider.tsx`
 
 ```tsx
@@ -476,12 +505,12 @@ const CheckboxBox = styled(Stack, {
 const SliderContainer = styled(Stack, {
   name: "SliderContainer",
   // Preset styles only
-})
+});
 
 const SliderTrack = styled(Stack, {
   name: "SliderTrack",
   // Preset styles only
-})
+});
 
 const SliderThumb = styled(Stack, {
   name: "SliderThumb",
@@ -489,10 +518,11 @@ const SliderThumb = styled(Stack, {
   hoverStyle: { scale: 1.1 },
   pressStyle: { cursor: "grabbing", scale: 1.15 },
   focusStyle: { borderColor: "$primary", scale: 1.15 },
-})
+});
 ```
 
 **Status**: ✅ GOOD
+
 - **No custom variants**: All styled components use preset styles only
 - **No conflicts**: No variants that conflict with base Stack props
 - **Proper interaction styles**: Uses Tamagui's built-in `hoverStyle`, `pressStyle`, `focusStyle`
@@ -501,6 +531,7 @@ const SliderThumb = styled(Stack, {
 - No TypeScript workarounds needed
 
 **Usage Pattern**:
+
 ```tsx
 <Slider
   min={0}
@@ -516,6 +547,7 @@ const SliderThumb = styled(Stack, {
 ### Overlay Components ✅ GOOD
 
 #### Sheet Component
+
 **File**: `packages/ui/src/components/Sheet.tsx`
 
 ```tsx
@@ -528,8 +560,8 @@ const SheetOverlay = styled(Stack, {
     open: {
       true: { opacity: 1 },
     },
-  }
-})
+  },
+});
 
 const SheetContent = styled(Stack, {
   name: "SheetContent",
@@ -540,14 +572,15 @@ const SheetContent = styled(Stack, {
     open: {
       true: { transform: "translateY(0)" },
     },
-  }
-})
+  },
+});
 
 // Also includes: SheetHandle, SheetHeader, SheetBody, SheetFooter
 // (All with preset styles only, no custom variants)
 ```
 
 **Status**: ✅ GOOD
+
 - **Component-specific**: `open` variant controls animation state
 - **No conflicts**: `open` doesn't exist on base Stack component
 - **Adds semantic value**: Better than manual opacity/transform props
@@ -556,6 +589,7 @@ const SheetContent = styled(Stack, {
 - No TypeScript workarounds needed
 
 **Usage Pattern**:
+
 ```tsx
 <Sheet open={isOpen} onOpenChange={setIsOpen}>
   <Sheet.Handle />
@@ -576,18 +610,22 @@ const SheetContent = styled(Stack, {
 ### Media Components ✅ GOOD
 
 #### Image Component
+
 **File**: `packages/ui/src/components/Image.tsx`
 
 **Status**: ✅ GOOD (Re-export)
+
 ```tsx
 export { Image } from "tamagui";
 export type { ImageProps } from "tamagui";
 ```
 
 #### ScrollView Component
+
 **File**: `packages/ui/src/components/ScrollView.tsx`
 
 **Status**: ✅ GOOD (Re-export)
+
 ```tsx
 export { ScrollView } from "tamagui";
 export type { ScrollViewProps } from "tamagui";
@@ -598,12 +636,14 @@ export type { ScrollViewProps } from "tamagui";
 ## Summary by Category
 
 ### ✅ Following Best Practices (11 components)
+
 - Row, Column, Container, Spacer (Layout)
 - Text, Heading, Label (Typography)
 - Button, AuthButton (Buttons)
 - Image, ScrollView (Media)
 
 ### ✅ Good Variant Usage (8 components)
+
 - Card (visual variants)
 - Input (size + validation states)
 - Badge (semantic variants)
@@ -614,9 +654,11 @@ export type { ScrollViewProps } from "tamagui";
 - **Sheet (animation state variant)** ✅ REVIEWED
 
 ### 🟡 Needs Review (0 components)
+
 - All components reviewed ✅
 
 ### 🔴 Potential Issues (0 components)
+
 - None identified
 
 ---
@@ -624,16 +666,19 @@ export type { ScrollViewProps } from "tamagui";
 ## Action Items
 
 ### Immediate (Priority 1) ✅ COMPLETED
+
 - [x] Review Checkbox implementation for prop conflicts ✅ **GOOD - No conflicts found**
 - [x] Review Slider implementation for prop conflicts ✅ **GOOD - No conflicts found**
 - [x] Review Sheet implementation for prop conflicts ✅ **GOOD - No conflicts found**
 
 ### Short-term (Priority 2)
+
 - [ ] Document variant usage guidelines in component README
 - [ ] Create VSCode snippets for common patterns
 - [ ] Add ESLint rules to prevent conflicting variants (see `docs/ESLINT_TYPESCRIPT_IMPROVEMENTS.md`)
 
 ### Long-term (Priority 3)
+
 - [ ] Migrate remaining routes to new Layout pattern (if any)
 - [ ] Consider creating custom ESLint plugin for variant validation
 - [ ] Set up automated component API documentation
@@ -645,6 +690,7 @@ export type { ScrollViewProps } from "tamagui";
 When creating new components, follow this decision tree:
 
 ### 1. **Is it a simple wrapper?**
+
 ```tsx
 // YES - Re-export directly
 export { ComponentName } from "tamagui";
@@ -654,12 +700,13 @@ export type { ComponentNameProps } from "tamagui";
 export const ComponentName = styled(TamaguiBase, {
   name: "ComponentName",
   // Preset styles only
-})
+});
 ```
 
 ### 2. **Does it need variants?**
 
 Ask:
+
 - ❓ Does this variant **already exist** on the base component?
   - **YES** → ❌ DON'T create variant, use direct props
   - **NO** → Continue...
@@ -675,6 +722,7 @@ Ask:
 ### 3. **Variant Creation Checklist**
 
 Before adding a variant, verify:
+
 - [ ] Does NOT conflict with base component props
 - [ ] Enforces design system boundaries
 - [ ] Adds semantic value over direct props
@@ -686,6 +734,7 @@ Before adding a variant, verify:
 ## Examples of Good vs Bad Variants
 
 ### ✅ GOOD: Container Size Variant
+
 ```tsx
 // Component-specific, enforces design system, adds semantic value
 <Container size="lg">  // Clear intent
@@ -699,6 +748,7 @@ Before adding a variant, verify:
 ```
 
 ### ✅ GOOD: Card Visual Variants
+
 ```tsx
 // Component-specific, semantic visual meaning
 <Card variant="elevated">
@@ -712,6 +762,7 @@ Before adding a variant, verify:
 ```
 
 ### ✅ GOOD: Input Size Variant
+
 ```tsx
 // Coordinates multiple related props
 <Input size="md" />  // Sets height + padding + fontSize together
@@ -721,6 +772,7 @@ Before adding a variant, verify:
 ```
 
 ### ❌ BAD: Gap Variant (REMOVED)
+
 ```tsx
 // DON'T DO THIS - gap already exists on base component
 <Row gap="md">  // ❌ Conflicts with base gap prop
@@ -730,6 +782,7 @@ Before adding a variant, verify:
 ```
 
 ### ❌ BAD: Align Variant (REMOVED)
+
 ```tsx
 // DON'T DO THIS - alignItems already exists
 <Row align="center">  // ❌ Reinvents existing prop
@@ -745,6 +798,7 @@ Before adding a variant, verify:
 For components under review, verify:
 
 1. **TypeScript Compilation**
+
    ```bash
    pnpm check-types
    # Should have zero errors, no `as any` workarounds needed
@@ -783,16 +837,19 @@ For components under review, verify:
 The component library is in excellent shape. **All Priority 1 reviews have been completed** with positive results:
 
 ### Review Results:
+
 - ✅ **Checkbox**: No prop conflicts, good variant usage
 - ✅ **Slider**: No conflicting variants, clean implementation
 - ✅ **Sheet**: Component-specific variants, compound pattern done right
 
 **Total Component Count**: 19 components audited
+
 - ✅ **19 GOOD**: Following best practices
 - 🟡 **0 NEEDS REVIEW**: All reviews complete
 - 🔴 **0 ISSUES**: No problematic patterns found
 
 ### Key Findings:
+
 1. All custom variants are **component-specific** and don't conflict with base props
 2. No TypeScript workarounds (`as any`) needed anywhere
 3. Variants add **semantic value** over direct prop usage

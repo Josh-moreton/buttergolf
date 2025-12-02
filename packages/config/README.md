@@ -55,14 +55,14 @@ $red50 to $red900        // Error colors
 #### Background Colors
 
 ```tsx
-$background              // Main app background
-$backgroundHover         // Hover state
-$backgroundPress         // Press state
-$surface                 // Surface/card background
-$card                    // Card background
+$background; // Main app background
+$backgroundHover; // Hover state
+$backgroundPress; // Press state
+$surface; // Surface/card background
+$card; // Card background
 
 // Backward compatibility
-$bg, $bgGray, $bgCard, $text, $textDark, $muted
+($bg, $bgGray, $bgCard, $text, $textDark, $muted);
 ```
 
 ### Spacing Tokens
@@ -110,13 +110,13 @@ $full: 9999px    // Perfect circle
 ### Z-Index Tokens
 
 ```tsx
-$dropdown: 1000
-$sticky: 1020
-$fixed: 1030
-$modalBackdrop: 1040
-$modal: 1050
-$popover: 1060
-$tooltip: 1070
+$dropdown: 1000;
+$sticky: 1020;
+$fixed: 1030;
+$modalBackdrop: 1040;
+$modal: 1050;
+$popover: 1060;
+$tooltip: 1070;
 ```
 
 ## 🌓 Themes
@@ -151,20 +151,48 @@ $tooltip: 1070
 
 ```tsx
 // Breakpoints
-xs: { maxWidth: 660 }
-gtXs: { minWidth: 661 }
-sm: { maxWidth: 860 }
-gtSm: { minWidth: 861 }
-md: { maxWidth: 1020 }
-gtMd: { minWidth: 1021 }
-lg: { maxWidth: 1280 }
-gtLg: { minWidth: 1281 }
-xl: { maxWidth: 1420 }
-gtXl: { minWidth: 1421 }
-short: { maxHeight: 700 }
-tall: { minHeight: 701 }
-hoverNone: { hover: 'none' }
-pointerCoarse: { pointer: 'coarse' }
+xs: {
+  maxWidth: 660;
+}
+gtXs: {
+  minWidth: 661;
+}
+sm: {
+  maxWidth: 860;
+}
+gtSm: {
+  minWidth: 861;
+}
+md: {
+  maxWidth: 1020;
+}
+gtMd: {
+  minWidth: 1021;
+}
+lg: {
+  maxWidth: 1280;
+}
+gtLg: {
+  minWidth: 1281;
+}
+xl: {
+  maxWidth: 1420;
+}
+gtXl: {
+  minWidth: 1421;
+}
+short: {
+  maxHeight: 700;
+}
+tall: {
+  minHeight: 701;
+}
+hoverNone: {
+  hover: "none";
+}
+pointerCoarse: {
+  pointer: "coarse";
+}
 ```
 
 ## 🚀 Usage
@@ -172,7 +200,7 @@ pointerCoarse: { pointer: 'coarse' }
 ### In Components
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
 function MyButton() {
   return (
@@ -182,39 +210,39 @@ function MyButton() {
       borderRadius="$md"
       padding="$md"
       hoverStyle={{
-        backgroundColor: '$primaryHover'
+        backgroundColor: "$primaryHover",
       }}
       $gtMd={{
-        padding: '$lg'
+        padding: "$lg",
       }}
     >
       Click me
     </Button>
-  )
+  );
 }
 ```
 
 ### In Styled Components
 
 ```tsx
-import { styled, View } from 'tamagui'
+import { styled, View } from "tamagui";
 
 export const Card = styled(View, {
-  backgroundColor: '$surface',
-  padding: '$md',
-  borderRadius: '$lg',
+  backgroundColor: "$surface",
+  padding: "$md",
+  borderRadius: "$lg",
   borderWidth: 1,
-  borderColor: '$border',
-  
+  borderColor: "$border",
+
   variants: {
     elevated: {
       true: {
-        shadowColor: '$shadowColor',
+        shadowColor: "$shadowColor",
         shadowRadius: 8,
       },
     },
   },
-})
+});
 ```
 
 ## 🎨 Adding Custom Tokens
@@ -226,10 +254,10 @@ To extend the token system, modify `packages/config/src/tamagui.config.ts`:
 ```tsx
 const brandColors = {
   // Add new colors
-  purple500: '#a855f7',
-  purple600: '#9333ea',
+  purple500: "#a855f7",
+  purple600: "#9333ea",
   // ...existing colors
-}
+};
 
 const customTokens = createTokens({
   color: {
@@ -238,7 +266,7 @@ const customTokens = createTokens({
     accent: brandColors.purple500,
     accentHover: brandColors.purple600,
   },
-})
+});
 ```
 
 ### Adding Spacing
@@ -247,10 +275,10 @@ const customTokens = createTokens({
 const customTokens = createTokens({
   space: {
     ...defaultTokens.space,
-    '4xl': 96,
-    '5xl': 128,
+    "4xl": 96,
+    "5xl": 128,
   },
-})
+});
 ```
 
 ### Adding Sizes
@@ -263,7 +291,7 @@ const customTokens = createTokens({
     avatarMd: 48,
     avatarLg: 64,
   },
-})
+});
 ```
 
 ## 🎭 Customizing Themes
@@ -274,41 +302,41 @@ const customTokens = createTokens({
 const lightTheme = {
   ...defaultLightTheme,
   // Override specific values
-  background: '#ffffff',
-  primary: '#10b981',  // Different shade
-}
+  background: "#ffffff",
+  primary: "#10b981", // Different shade
+};
 
 export const config = createTamagui({
   themes: {
     light: lightTheme,
     dark: darkTheme,
   },
-})
+});
 ```
 
 ### Adding New Theme Variants
 
 ```tsx
 const blueTheme = {
-  background: '#eff6ff',
-  color: '#1e40af',
-  primary: '#3b82f6',
+  background: "#eff6ff",
+  color: "#1e40af",
+  primary: "#3b82f6",
   // ... complete theme definition
-}
+};
 
 export const config = createTamagui({
   themes: {
     light: lightTheme,
     dark: darkTheme,
-    blue: blueTheme,  // New theme
+    blue: blueTheme, // New theme
   },
-})
+});
 ```
 
 ### Using Custom Themes
 
 ```tsx
-import { Theme } from 'tamagui'
+import { Theme } from "tamagui";
 
 function App() {
   return (
@@ -317,7 +345,7 @@ function App() {
         <Text color="$color">Blue theme content</Text>
       </View>
     </Theme>
-  )
+  );
 }
 ```
 
@@ -330,15 +358,15 @@ export const config = createTamagui({
   settings: {
     // Allow both shorthand and longhand props
     onlyAllowShorthands: false,
-    
+
     // Enable automatic theme classes
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
-    
+
     // Dev optimizations
-    fastSchemeChange: process.env.NODE_ENV === 'development',
+    fastSchemeChange: process.env.NODE_ENV === "development",
   },
-})
+});
 ```
 
 ## 📐 Design Decisions
@@ -346,6 +374,7 @@ export const config = createTamagui({
 ### Color Scales
 
 Each color family includes 10 shades (50-900):
+
 - **50-300**: Light tones for backgrounds and subtle accents
 - **400-600**: Mid-tones for primary usage
 - **700-900**: Dark tones for text and strong accents
@@ -353,6 +382,7 @@ Each color family includes 10 shades (50-900):
 ### Semantic Mappings
 
 Colors are mapped semantically for consistent usage:
+
 - `$primary`: Main brand color (green in our case)
 - `$secondary`: Accent brand color (amber)
 - `$success`: Positive feedback (teal)
@@ -363,6 +393,7 @@ Colors are mapped semantically for consistent usage:
 ### State Variants
 
 Each interactive color includes state variants:
+
 - Base: Default state
 - Hover: Mouse hover state
 - Press: Active/pressed state
@@ -376,19 +407,20 @@ If migrating from older token names:
 
 ```tsx
 // Old
-backgroundColor: '$bg'
-color: '$text'
-borderColor: '$gray300'
+backgroundColor: "$bg";
+color: "$text";
+borderColor: "$gray300";
 
 // New (semantic)
-backgroundColor: '$background'
-color: '$text'
-borderColor: '$border'
+backgroundColor: "$background";
+color: "$text";
+borderColor: "$border";
 ```
 
 ### Backward Compatibility
 
 The config maintains backward compatibility with older token names:
+
 - `$bg` → `$background`
 - `$blue10` → `$blue500`
 - `$muted` → `$textMuted`
@@ -398,6 +430,7 @@ The config maintains backward compatibility with older token names:
 ### Config Changes Not Reflected
 
 Config changes require server restart:
+
 ```bash
 # Stop dev server, then restart
 pnpm dev:web
@@ -408,6 +441,7 @@ pnpm dev:mobile --clear
 ### Type Errors
 
 If you get type errors about missing tokens:
+
 1. Restart TypeScript server in your IDE
 2. Run `pnpm check-types` to verify
 3. Ensure config is properly exported
@@ -415,6 +449,7 @@ If you get type errors about missing tokens:
 ### Missing Tokens
 
 Check that custom tokens are:
+
 1. Added to `customTokens`
 2. Exported in the config
 3. Properly typed in the Tamagui declaration

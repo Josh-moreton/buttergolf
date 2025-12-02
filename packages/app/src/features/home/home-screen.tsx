@@ -58,7 +58,7 @@ export function HomeScreen({
           if (fetchedProducts.length > 0) {
             console.log(
               "First product image URL:",
-              fetchedProducts[0]?.imageUrl
+              fetchedProducts[0]?.imageUrl,
             );
           }
           setProducts(fetchedProducts);
@@ -73,13 +73,7 @@ export function HomeScreen({
   return (
     <Column flex={1} backgroundColor="$background">
       {/* Sticky Search Bar - Fixed at top, extends into safe area */}
-      <Column
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        zIndex={100}
-      >
+      <Column position="absolute" top={0} left={0} right={0} zIndex={100}>
         <Column
           backgroundColor="$background"
           borderBottomLeftRadius="$2xl"
@@ -127,7 +121,12 @@ export function HomeScreen({
         </Row>
 
         {/* Shop by Category Section */}
-        <Column paddingHorizontal="$4" paddingTop="$4" paddingBottom="$6" gap="$3">
+        <Column
+          paddingHorizontal="$4"
+          paddingTop="$4"
+          paddingBottom="$6"
+          gap="$3"
+        >
           <Text
             size="$8"
             fontWeight="700"
@@ -289,13 +288,7 @@ export function HomeScreen({
       </ScrollView>
 
       {/* Bottom Navigation - Fixed at bottom, extends into safe area */}
-      <Column
-        position="absolute"
-        bottom={0}
-        left={0}
-        right={0}
-        zIndex={100}
-      >
+      <Column position="absolute" bottom={0} left={0} right={0} zIndex={100}>
         <MobileBottomNav
           activeTab="home"
           onHomePress={() => console.log("Home pressed")}

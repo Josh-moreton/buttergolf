@@ -56,61 +56,21 @@ export function BuySellToggle({
 
   // Active button base props (Spiced Clementine)
   const activeButtonProps = {
-    backgroundColor: "#F45314",
+    backgroundColor: "$primary" as const,
     borderWidth: 1,
-    borderColor: "#F04300",
-    color: "#FFFAD2", // Vanilla Cream text
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 3,
-    hoverStyle: {
-      backgroundColor: "#FF6B3D", // Lighter Spiced Clementine
-      borderColor: "#F45314",
-    },
+    borderColor: "$primary" as const,
+    color: "$textInverse" as const,
   };
 
   // Inactive button base props (Cream/White)
   const inactiveButtonProps = {
-    backgroundColor: "#FFFEF9",
+    backgroundColor: "$background" as const,
     borderWidth: 1,
-    borderColor: "#FAFAFA",
-    color: "#323232", // Ironstone text
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 2,
-    hoverStyle: {
-      backgroundColor: "#FFFFFF",
-      borderColor: "#EDEDED",
-    },
+    borderColor: "$border" as const,
+    color: "$text" as const,
   };
 
-  // Web-specific styles for gradient and inner shadow
-  const webActiveStyle = isWebPlatform
-    ? {
-        style: {
-          boxShadow:
-            "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
-        },
-      }
-    : {};
-
-  const webInactiveStyle = isWebPlatform
-    ? {
-        style: {
-          background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
-        },
-      }
-    : {};
-
-  // Button sizing based on variant
-  const buttonSizeProps = isDesktop
-    ? { width: "25%", minWidth: 280 }
-    : { flex: 1 };
-
+  // Web-specific shadow styles for active button
   return (
     <Row
       gap={isDesktop ? "$lg" : "$4"}
@@ -123,9 +83,23 @@ export function BuySellToggle({
         size="$5"
         fontWeight={isDesktop ? "500" : "600"}
         borderRadius="$full"
-        {...buttonSizeProps}
+        flex={isDesktop ? undefined : 1}
+        {...(isDesktop && { style: { width: "25%", minWidth: 280 } })}
         {...(activeMode === "buying" ? activeButtonProps : inactiveButtonProps)}
-        {...(activeMode === "buying" ? webActiveStyle : webInactiveStyle)}
+        {...(activeMode === "buying" &&
+          isWebPlatform && {
+            style: {
+              boxShadow:
+                "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
+            },
+          })}
+        {...(activeMode !== "buying" &&
+          isWebPlatform && {
+            style: {
+              boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
+            },
+          })}
         pressStyle={{
           scale: 0.98,
           opacity: 0.9,
@@ -142,9 +116,25 @@ export function BuySellToggle({
         size="$5"
         fontWeight={isDesktop ? "500" : "600"}
         borderRadius="$full"
-        {...buttonSizeProps}
-        {...(activeMode === "selling" ? activeButtonProps : inactiveButtonProps)}
-        {...(activeMode === "selling" ? webActiveStyle : webInactiveStyle)}
+        flex={isDesktop ? undefined : 1}
+        {...(isDesktop && { style: { width: "25%", minWidth: 280 } })}
+        {...(activeMode === "selling"
+          ? activeButtonProps
+          : inactiveButtonProps)}
+        {...(activeMode === "selling" &&
+          isWebPlatform && {
+            style: {
+              boxShadow:
+                "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
+            },
+          })}
+        {...(activeMode !== "selling" &&
+          isWebPlatform && {
+            style: {
+              boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
+            },
+          })}
         pressStyle={{
           scale: 0.98,
           opacity: 0.9,

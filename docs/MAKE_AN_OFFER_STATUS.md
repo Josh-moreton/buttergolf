@@ -3,12 +3,14 @@
 ## Completed ✅
 
 ### 1. Database Schema
+
 - ✅ Added `expiresAt DateTime?` field to Offer model
 - ✅ Created migration: `20251124135100_add_offer_expiration`
 - ✅ Updated POST /api/offers to set 7-day expiration
 - ✅ Indexed expiresAt for performance
 
 ### 2. API Routes
+
 - ✅ GET /api/offers/[id] - Fetch single offer with conversation
 - ✅ PATCH /api/offers/[id] - Accept/reject offers
 - ✅ POST /api/offers/[id]/counter - Submit counter-offers
@@ -17,12 +19,14 @@
 - ✅ Counter-offer extends expiration by 7 days
 
 ### 3. Real-Time Updates
+
 - ✅ Polling strategy documented (5-second intervals)
 - ✅ WebSocket upgrade path documented
 - ✅ Socket.io and socket.io-client packages installed
 - 📝 TODO: Create useOfferUpdates hook for client-side polling
 
 ### 4. UI Components Created
+
 - ✅ OfferMessage.tsx - Message bubble component
 - ✅ ConversationThread.tsx - Scrollable conversation with auto-scroll
 - ✅ CounterOfferForm.tsx - Form to submit counter-offers
@@ -32,9 +36,11 @@
 ## In Progress 🚧
 
 ### 5. Product Summary Sidebar
+
 **File**: `apps/web/src/app/offers/[id]/_components/ProductSummaryCard.tsx`
 
 **Required Features**:
+
 - Product image (first from images array)
 - Title, price, condition
 - Brand, model, specifications
@@ -46,6 +52,7 @@
 - Disabled states when offer is EXPIRED/REJECTED
 
 **Code Pattern** (adapt from ProductInformation.tsx):
+
 ```typescript
 <Column
   gap="$md"
@@ -69,9 +76,11 @@
 ## Not Started 🔲
 
 ### 6. Offers Navigation Sidebar
+
 **File**: `apps/web/src/app/offers/_components/OffersSidebar.tsx`
 
 **Features**:
+
 - Buying / Selling toggle (tabs or buttons)
 - Filter offers by buyerId (Buying) or sellerId (Selling)
 - Compact list view:
@@ -86,9 +95,11 @@
 **API**: Use existing GET /api/offers (returns all user offers)
 
 ### 7. Mobile Layout
+
 **File**: `apps/web/src/app/offers/[id]/_components/MobileProductBar.tsx`
 
 **Design**:
+
 - Sticky bar at top (below header)
 - Shows: product thumbnail, title, current amount
 - Tap to expand (modal or slide-up sheet)
@@ -98,14 +109,16 @@
 **Breakpoint**: Hide desktop sidebars below $gtLg (1281px)
 
 ### 8. Main Offers Page
+
 **File**: `apps/web/src/app/offers/[id]/page.tsx`
 
 **Structure**:
+
 ```typescript
 export default async function OfferDetailPage({ params }) {
   const { userId } = await auth();
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
-  
+
   const { id } = await params;
   const offer = await prisma.offer.findUnique({
     where: { id },
@@ -116,17 +129,18 @@ export default async function OfferDetailPage({ params }) {
       counterOffers: { orderBy: { createdAt: 'asc' } }
     }
   });
-  
+
   // Authorization check
   if (offer.buyerId !== user.id && offer.sellerId !== user.id) {
     redirect('/offers');
   }
-  
+
   return <OfferDetailClient offer={offer} currentUserId={user.id} />;
 }
 ```
 
 **Client Component** (`OfferDetailClient.tsx`):
+
 - Three-column layout (Desktop):
   - Left: OffersSidebar (20%)
   - Center: ConversationThread + CounterOfferForm (45%)
@@ -135,9 +149,11 @@ export default async function OfferDetailPage({ params }) {
 - Polling: useOfferUpdates hook (refetch every 5s)
 
 ### 9. Offers List Page
+
 **File**: `apps/web/src/app/offers/page.tsx`
 
 **Features**:
+
 - Server-side auth
 - Fetch all offers (GET /api/offers)
 - Empty state: "No offers yet. Make an offer on a product to get started."
@@ -146,9 +162,11 @@ export default async function OfferDetailPage({ params }) {
 - Click → navigate to /offers/[id]
 
 ### 10. Email Notifications
+
 **File**: `apps/web/src/lib/email/offer-notifications.ts`
 
 **Functions Needed**:
+
 ```typescript
 - sendOfferCreatedEmail(offer) → Notify seller
 - sendCounterOfferEmail(offer, counterOffer) → Notify other party
@@ -158,6 +176,7 @@ export default async function OfferDetailPage({ params }) {
 ```
 
 **Integration Points**:
+
 - Uncomment line 88 in POST /api/offers
 - Add to POST /api/offers/[id]/counter (line 146)
 - Add to PATCH /api/offers/[id] (line 179)
@@ -192,20 +211,23 @@ export default async function OfferDetailPage({ params }) {
 ## Architecture Notes
 
 ### Why Polling Over WebSocket Initially?
+
 - Simpler to implement and deploy
 - No custom server needed (works with Vercel/Netlify)
 - 5-second polling is acceptable UX for MVP
 - Easy upgrade path to WebSocket later
 
 ### Mobile Design Philosophy
+
 - **Problem**: Three columns don't fit on mobile
-- **Solution**: 
+- **Solution**:
   - Full-screen conversation (primary focus)
   - Sticky product bar at top (collapsed by default)
   - Tap to expand product details
   - Offers sidebar accessible via hamburger menu or separate page
 
 ### Data Flow
+
 ```
 User Action → API Route → Database → Response
                            ↓

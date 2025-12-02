@@ -27,7 +27,7 @@ export default function CheckoutCancelPage() {
             width={80}
             height={80}
           >
-            <Text fontSize={40}>⚠️</Text>
+            <Text size="$9">⚠️</Text>
           </Column>
 
           {/* Cancel Message */}
@@ -86,7 +86,13 @@ export default function CheckoutCancelPage() {
               Try Again
             </Button>
             <Link href="/" style={{ textDecoration: "none", flex: 1 }}>
-              <Button size="$5" width="100%" borderWidth={1} borderColor="$border" backgroundColor="transparent">
+              <Button
+                size="$5"
+                width="100%"
+                borderWidth={1}
+                borderColor="$border"
+                backgroundColor="transparent"
+              >
                 Browse Products
               </Button>
             </Link>

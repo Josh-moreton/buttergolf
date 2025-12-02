@@ -1,21 +1,21 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { FavoritesClient } from "./_components/FavoritesClient";
+import { FavouritesClient } from "./_components/FavouritesClient";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "My Favorites | ButterGolf",
+  title: "My Favourites | ButterGolf",
   description: "View your saved golf equipment listings",
 };
 
-export default async function FavoritesPage() {
+export default async function FavouritesPage() {
   const { userId } = await auth();
 
   // Require authentication
   if (!userId) {
-    redirect("/sign-in?redirect_url=/favorites");
+    redirect("/sign-in?redirect_url=/favourites");
   }
 
-  return <FavoritesClient />;
+  return <FavouritesClient />;
 }

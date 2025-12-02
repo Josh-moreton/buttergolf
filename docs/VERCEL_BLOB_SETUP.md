@@ -27,18 +27,20 @@ BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxxxxxxxxxx
 ### 3. Add to Your Project
 
 **Local Development** (.env.local):
+
 ```bash
 BLOB_READ_WRITE_TOKEN=your_token_here
 ```
 
 **Production** (Vercel Dashboard):
+
 - The token should be automatically added when you create the blob store
 - If not, add it manually in: Settings → Environment Variables
 
 ## How It Works
 
 1. **User uploads image** → Frontend component (`ImageUpload`)
-2. **Image sent to API route** → `/api/upload` 
+2. **Image sent to API route** → `/api/upload`
 3. **API route uploads to Vercel Blob** → Returns public URL
 4. **URL saved to database** → Prisma `ProductImage` model
 5. **Image displayed** → Using the public URL from Blob
@@ -46,17 +48,20 @@ BLOB_READ_WRITE_TOKEN=your_token_here
 ## Pricing
 
 **Free Tier:**
+
 - 100GB bandwidth/month
 - Unlimited storage
 - Unlimited reads
 
 **Pro Plan** (if needed):
+
 - $0.15/GB bandwidth
 - Perfect for growing marketplaces
 
 ## File Limits
 
 Our current setup:
+
 - **Max file size:** 10MB per image
 - **Max images per product:** 5
 - **Allowed formats:** JPEG, PNG, WebP, GIF
@@ -65,14 +70,14 @@ Our current setup:
 ## Usage in Code
 
 ```tsx
-import { ImageUpload } from '@/components/ImageUpload'
+import { ImageUpload } from "@/components/ImageUpload";
 
 function CreateListingForm() {
-  const [imageUrls, setImageUrls] = useState<string[]>([])
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const handleUploadComplete = (url: string) => {
-    setImageUrls([...imageUrls, url])
-  }
+    setImageUrls([...imageUrls, url]);
+  };
 
   return (
     <ImageUpload
@@ -80,7 +85,7 @@ function CreateListingForm() {
       currentImages={imageUrls}
       maxImages={5}
     />
-  )
+  );
 }
 ```
 

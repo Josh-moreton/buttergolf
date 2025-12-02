@@ -115,7 +115,7 @@ export function DetailsStep({
       });
       closePicker();
     },
-    [onUpdate, closePicker]
+    [onUpdate, closePicker],
   );
 
   const selectBrand = useCallback(
@@ -128,7 +128,7 @@ export function DetailsStep({
       });
       closePicker();
     },
-    [onUpdate, closePicker]
+    [onUpdate, closePicker],
   );
 
   const selectModel = useCallback(
@@ -139,7 +139,7 @@ export function DetailsStep({
       });
       closePicker();
     },
-    [onUpdate, closePicker]
+    [onUpdate, closePicker],
   );
 
   const selectCondition = useCallback(
@@ -147,7 +147,7 @@ export function DetailsStep({
       onUpdate({ condition });
       closePicker();
     },
-    [onUpdate, closePicker]
+    [onUpdate, closePicker],
   );
 
   // Get icon for field type
@@ -171,7 +171,7 @@ export function DetailsStep({
     value: string,
     placeholder: string,
     pickerType: ActivePicker,
-    disabled = false
+    disabled = false,
   ) => (
     <Column gap="$2">
       <Row alignItems="center" gap="$1">
@@ -359,7 +359,9 @@ export function DetailsStep({
                     borderRadius="$xl"
                     backgroundColor={isSelected ? "$lemonHaze" : "transparent"}
                     borderWidth={isSelected ? 2 : 0}
-                    borderColor={isSelected ? "$spicedClementine" : "transparent"}
+                    borderColor={
+                      isSelected ? "$spicedClementine" : "transparent"
+                    }
                   >
                     <Column flex={1} gap="$1">
                       <Text
@@ -389,11 +391,7 @@ export function DetailsStep({
 
             {!isLoading && items.length === 0 && (
               <Column padding="$6" alignItems="center" gap="$2">
-                <Text
-                  size="$5"
-                  fontWeight="500"
-                  color="$slateSmoke"
-                >
+                <Text size="$5" fontWeight="500" color="$slateSmoke">
                   {showSearch && searchQuery
                     ? "No results found"
                     : "Start typing to search"}
@@ -452,14 +450,14 @@ export function DetailsStep({
             "Category",
             formData.categoryName,
             "What type of item is this?",
-            "category"
+            "category",
           )}
 
           {renderPickerButton(
             "Brand",
             formData.brandName,
             "Who makes this item?",
-            "brand"
+            "brand",
           )}
 
           {renderPickerButton(
@@ -467,7 +465,7 @@ export function DetailsStep({
             formData.modelName,
             "Which model is it?",
             "model",
-            !formData.brandId
+            !formData.brandId,
           )}
 
           {renderPickerButton(
@@ -475,7 +473,7 @@ export function DetailsStep({
             CONDITION_OPTIONS.find((c) => c.value === formData.condition)
               ?.label || "",
             "How would you describe its condition?",
-            "condition"
+            "condition",
           )}
         </Column>
 

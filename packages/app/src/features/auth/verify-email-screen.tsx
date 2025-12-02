@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import {
+  Column,
+  Row,
+  ScrollView,
+  Text,
+  Button,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
 import { Mail, ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
@@ -49,36 +57,45 @@ export function VerifyEmailScreen({
     return () => clearTimeout(timer);
   }, [resendCountdown]);
 
-  const handleDigitChange = useCallback((index: number, value: string) => {
-    // Only allow single digit
-    const digit = value.replace(/[^0-9]/g, "").slice(-1);
+  const handleDigitChange = useCallback(
+    (index: number, value: string) => {
+      // Only allow single digit
+      const digit = value.replace(/[^0-9]/g, "").slice(-1);
 
-    setCode(prev => {
-      const newCode = [...prev];
-      newCode[index] = digit;
-      return newCode;
-    });
+      setCode((prev) => {
+        const newCode = [...prev];
+        newCode[index] = digit;
+        return newCode;
+      });
 
-    // Auto-advance to next input
-    if (digit && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
+      // Auto-advance to next input
+      if (digit && index < 5) {
+        inputRefs.current[index + 1]?.focus();
+      }
 
-    // Clear error when typing
-    if (error) {
-      setError(null);
-    }
-  }, [error]);
+      // Clear error when typing
+      if (error) {
+        setError(null);
+      }
+    },
+    [error],
+  );
 
-  const handleKeyPress = useCallback((index: number, key: string) => {
-    // Handle backspace - go to previous input
-    if (key === "Backspace" && !code[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  }, [code]);
+  const handleKeyPress = useCallback(
+    (index: number, key: string) => {
+      // Handle backspace - go to previous input
+      if (key === "Backspace" && !code[index] && index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    },
+    [code],
+  );
 
   const handlePaste = useCallback((pastedText: string) => {
-    const digits = pastedText.replace(/[^0-9]/g, "").slice(0, 6).split("");
+    const digits = pastedText
+      .replace(/[^0-9]/g, "")
+      .slice(0, 6)
+      .split("");
     if (digits.length > 0) {
       const newCode = ["", "", "", "", "", ""];
       digits.forEach((digit, i) => {
@@ -121,8 +138,7 @@ export function VerifyEmailScreen({
         setError("Verification incomplete. Please try again.");
       }
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
 
       if (errorMessage.includes("verification_code_invalid")) {
         setError(mapClerkErrorToMessage("verification_code_invalid"));
@@ -130,7 +146,8 @@ export function VerifyEmailScreen({
         setError(mapClerkErrorToMessage("verification_code_expired"));
       } else {
         setError(
-          errorMessage || "Verification failed. Please check your code and try again."
+          errorMessage ||
+            "Verification failed. Please check your code and try again.",
         );
       }
 
@@ -157,8 +174,7 @@ export function VerifyEmailScreen({
       setResendCountdown(60);
       setResendAttempts((prev) => prev + 1);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage || "Failed to resend code. Please try again.");
     } finally {
       setIsResending(false);
@@ -202,7 +218,13 @@ export function VerifyEmailScreen({
 
           {/* Header */}
           <Column gap="$2" alignItems="center">
-            <Heading level={1} size="$8" fontWeight="700" color="$text" textAlign="center">
+            <Heading
+              level={1}
+              size="$8"
+              fontWeight="700"
+              color="$text"
+              textAlign="center"
+            >
               Check Your Email
             </Heading>
             <Text size="$5" color="$textSecondary" textAlign="center">
@@ -214,10 +236,7 @@ export function VerifyEmailScreen({
 
           {/* Error Display */}
           {error && (
-            <AuthErrorDisplay
-              error={error}
-              onDismiss={() => setError(null)}
-            />
+            <AuthErrorDisplay error={error} onDismiss={() => setError(null)} />
           )}
 
           {/* Code Input Grid */}
@@ -242,7 +261,9 @@ export function VerifyEmailScreen({
                     }}
                     value={digit}
                     onChangeText={(text) => handleDigitChange(index, text)}
-                    onKeyPress={({ nativeEvent }) => handleKeyPress(index, nativeEvent.key)}
+                    onKeyPress={({ nativeEvent }) =>
+                      handleKeyPress(index, nativeEvent.key)
+                    }
                     keyboardType="number-pad"
                     maxLength={1}
                     editable={!isSubmitting}
@@ -287,7 +308,11 @@ export function VerifyEmailScreen({
             disabled={isSubmitting || fullCode.length !== 6}
             opacity={isSubmitting || fullCode.length !== 6 ? 0.7 : 1}
           >
-            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Verify Email"}
+            {isSubmitting ? (
+              <Spinner size="sm" color="$textInverse" />
+            ) : (
+              "Verify Email"
+            )}
           </Button>
 
           {/* Resend Code */}
@@ -325,8 +350,15 @@ export function VerifyEmailScreen({
 
           {/* Help Text */}
           <Column alignItems="center" gap="$3" marginTop="$4">
-            <Text size="$3" color="$textMuted" textAlign="center" paddingHorizontal="$4">
-              {"Having trouble? Make sure to check your spam folder or try resending the code"}
+            <Text
+              size="$3"
+              color="$textMuted"
+              textAlign="center"
+              paddingHorizontal="$4"
+            >
+              {
+                "Having trouble? Make sure to check your spam folder or try resending the code"
+              }
             </Text>
           </Column>
         </Column>

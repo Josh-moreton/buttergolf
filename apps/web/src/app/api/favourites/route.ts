@@ -3,8 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 
 /**
- * GET /api/favorites
- * Fetch all products favorited by the authenticated user
+ * GET /api/favourites
+ * Fetch all products favourited by the authenticated user
  * Returns array of products with their details (images, category, seller info)
  */
 export async function GET(req: NextRequest) {
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
       // User not synced yet, return empty array
       return NextResponse.json({
-        favorites: [],
+        favourites: [],
         pagination: {
           page: 1,
           limit: 24,
@@ -40,9 +40,9 @@ export async function GET(req: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "24");
     const skip = (page - 1) * limit;
 
-    // Fetch user's favorites with product details
-    const [favorites, totalCount] = await Promise.all([
-      prisma.favorite.findMany({
+    // Fetch user's favourites with product details
+    const [favourites, totalCount] = await Promise.all([
+      prisma.favourite.findMany({
         where: { userId: user.id },
         include: {
           product: {
@@ -73,13 +73,13 @@ export async function GET(req: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.favorite.count({
+      prisma.favourite.count({
         where: { userId: user.id },
       }),
     ]);
 
     // Transform to product data format
-    const products = favorites.map((fav) => ({
+    const products = favourites.map((fav) => ({
       id: fav.product.id,
       title: fav.product.title,
       description: fav.product.description,
@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
           }
         : null,
       createdAt: fav.product.createdAt,
-      favoritedAt: fav.createdAt,
+      favouritedAt: fav.createdAt,
     }));
 
     return NextResponse.json({
@@ -115,17 +115,17 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching favorites:", error);
+    console.error("Error fetching favourites:", error);
     return NextResponse.json(
-      { error: "Failed to fetch favorites" },
-      { status: 500 }
+      { error: "Failed to fetch favourites" },
+      { status: 500 },
     );
   }
 }
 
 /**
- * POST /api/favorites
- * Add a product to the authenticated user's favorites
+ * POST /api/favourites
+ * Add a product to the authenticated user's favourites
  * Body: { productId: string }
  */
 export async function POST(req: NextRequest) {
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     if (!productId || typeof productId !== "string") {
       return NextResponse.json(
         { error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -153,10 +153,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!product) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     // Ensure user exists in database (create if webhook hasn't synced yet)
@@ -170,9 +167,9 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Create favorite (unique constraint prevents duplicates)
+    // Create favourite (unique constraint prevents duplicates)
     try {
-      const favorite = await prisma.favorite.create({
+      const favourite = await prisma.favourite.create({
         data: {
           userId: user.id, // Use database User ID, not Clerk ID
           productId,
@@ -182,29 +179,34 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          favorite: {
-            id: favorite.id,
-            productId: favorite.productId,
-            createdAt: favorite.createdAt,
+          favourite: {
+            id: favourite.id,
+            productId: favourite.productId,
+            createdAt: favourite.createdAt,
           },
         },
-        { status: 201 }
+        { status: 201 },
       );
     } catch (error: unknown) {
-      // Handle duplicate favorite (unique constraint violation)
-      if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
+      // Handle duplicate favourite (unique constraint violation)
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "P2002"
+      ) {
         return NextResponse.json(
-          { error: "Product already in favorites" },
-          { status: 409 }
+          { error: "Product already in favourites" },
+          { status: 409 },
         );
       }
       throw error;
     }
   } catch (error) {
-    console.error("Error adding favorite:", error);
+    console.error("Error adding favourite:", error);
     return NextResponse.json(
-      { error: "Failed to add favorite" },
-      { status: 500 }
+      { error: "Failed to add favourite" },
+      { status: 500 },
     );
   }
 }

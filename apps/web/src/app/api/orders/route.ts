@@ -1,47 +1,44 @@
-import { auth } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
-import { prisma, Prisma, OrderStatus } from '@buttergolf/db'
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { prisma, Prisma, OrderStatus } from "@buttergolf/db";
 
 // GET /api/orders - List user's orders (as buyer or seller)
 export async function GET(req: Request) {
   try {
-    const { userId: clerkId } = await auth()
+    const { userId: clerkId } = await auth();
 
     if (!clerkId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from database
     const user = await prisma.user.findUnique({
       where: { clerkId },
-    })
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Parse query parameters
-    const { searchParams } = new URL(req.url)
-    const role = searchParams.get('role') // 'buyer' | 'seller' | 'all'
-    const status = searchParams.get('status') as OrderStatus | null // Filter by status
+    const { searchParams } = new URL(req.url);
+    const role = searchParams.get("role"); // 'buyer' | 'seller' | 'all'
+    const status = searchParams.get("status") as OrderStatus | null; // Filter by status
 
     // Build where clause based on query parameters
     const whereClause: Prisma.OrderWhereInput = {};
 
-    if (role === 'buyer') {
-      whereClause.buyerId = user.id
-    } else if (role === 'seller') {
-      whereClause.sellerId = user.id
+    if (role === "buyer") {
+      whereClause.buyerId = user.id;
+    } else if (role === "seller") {
+      whereClause.sellerId = user.id;
     } else {
       // Both buyer and seller orders
-      whereClause.OR = [
-        { buyerId: user.id },
-        { sellerId: user.id },
-      ]
+      whereClause.OR = [{ buyerId: user.id }, { sellerId: user.id }];
     }
 
     if (status) {
-      whereClause.status = status
+      whereClause.status = status;
     }
 
     // Fetch orders
@@ -51,7 +48,7 @@ export async function GET(req: Request) {
         product: {
           include: {
             images: {
-              orderBy: { sortOrder: 'asc' },
+              orderBy: { sortOrder: "asc" },
               take: 1,
             },
           },
@@ -75,21 +72,21 @@ export async function GET(req: Request) {
         fromAddress: true,
         toAddress: true,
       },
-      orderBy: { createdAt: 'desc' },
-    })
+      orderBy: { createdAt: "desc" },
+    });
 
     // Add role information to each order
-    const ordersWithRole = orders.map(order => ({
+    const ordersWithRole = orders.map((order) => ({
       ...order,
-      userRole: order.buyerId === user.id ? 'buyer' : 'seller',
-    }))
+      userRole: order.buyerId === user.id ? "buyer" : "seller",
+    }));
 
-    return NextResponse.json(ordersWithRole)
+    return NextResponse.json(ordersWithRole);
   } catch (error) {
-    console.error('Error fetching orders:', error)
+    console.error("Error fetching orders:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch orders' },
-      { status: 500 }
-    )
+      { error: "Failed to fetch orders" },
+      { status: 500 },
+    );
   }
 }

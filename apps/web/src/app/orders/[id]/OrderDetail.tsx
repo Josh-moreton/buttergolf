@@ -1,99 +1,113 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from "next/link";
+import Image from "next/image";
 
-type OrderStatus = 'PAYMENT_CONFIRMED' | 'LABEL_GENERATED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'REFUNDED'
-type ShipmentStatus = 'PENDING' | 'PRE_TRANSIT' | 'IN_TRANSIT' | 'OUT_FOR_DELIVERY' | 'DELIVERED' | 'RETURNED' | 'FAILED' | 'CANCELLED'
+type OrderStatus =
+  | "PAYMENT_CONFIRMED"
+  | "LABEL_GENERATED"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED"
+  | "REFUNDED";
+type ShipmentStatus =
+  | "PENDING"
+  | "PRE_TRANSIT"
+  | "IN_TRANSIT"
+  | "OUT_FOR_DELIVERY"
+  | "DELIVERED"
+  | "RETURNED"
+  | "FAILED"
+  | "CANCELLED";
 
 interface Order {
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  status: OrderStatus
-  shipmentStatus: ShipmentStatus
-  amountTotal: number
-  shippingCost: number
-  trackingCode: string | null
-  trackingUrl: string | null
-  labelUrl: string | null
-  carrier: string | null
-  service: string | null
-  estimatedDelivery: Date | null
-  deliveredAt: Date | null
-  shippedAt: Date | null
-  labelGeneratedAt: Date | null
-  userRole: 'buyer' | 'seller'
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: OrderStatus;
+  shipmentStatus: ShipmentStatus;
+  amountTotal: number;
+  shippingCost: number;
+  trackingCode: string | null;
+  trackingUrl: string | null;
+  labelUrl: string | null;
+  carrier: string | null;
+  service: string | null;
+  estimatedDelivery: Date | null;
+  deliveredAt: Date | null;
+  shippedAt: Date | null;
+  labelGeneratedAt: Date | null;
+  userRole: "buyer" | "seller";
   product: {
-    id: string
-    title: string
-    description: string
-    price: number
-    condition: string
-    brand: string | null
-    model: string | null
-    images: Array<{ url: string }>
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    condition: string;
+    brand: string | null;
+    model: string | null;
+    images: Array<{ url: string }>;
     category: {
-      name: string
-    }
-  }
+      name: string;
+    };
+  };
   seller: {
-    name: string | null
-    email: string
-    imageUrl: string | null
-  }
+    name: string | null;
+    email: string;
+    imageUrl: string | null;
+  };
   buyer: {
-    name: string | null
-    email: string
-    imageUrl: string | null
-  }
+    name: string | null;
+    email: string;
+    imageUrl: string | null;
+  };
   fromAddress: {
-    name: string
-    street1: string
-    street2: string | null
-    city: string
-    state: string
-    zip: string
-    country: string
-    phone: string | null
-  }
+    name: string;
+    street1: string;
+    street2: string | null;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+    phone: string | null;
+  };
   toAddress: {
-    name: string
-    street1: string
-    street2: string | null
-    city: string
-    state: string
-    zip: string
-    country: string
-    phone: string | null
-  }
+    name: string;
+    street1: string;
+    street2: string | null;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+    phone: string | null;
+  };
 }
 
 interface OrderDetailProps {
-  order: Order
+  order: Order;
 }
 
 const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  PENDING: 'bg-gray-200 text-gray-700',
-  PRE_TRANSIT: 'bg-blue-100 text-blue-700',
-  IN_TRANSIT: 'bg-yellow-100 text-yellow-700',
-  OUT_FOR_DELIVERY: 'bg-orange-100 text-orange-700',
-  DELIVERED: 'bg-green-100 text-green-700',
-  RETURNED: 'bg-red-100 text-red-700',
-  FAILED: 'bg-red-100 text-red-700',
-  CANCELLED: 'bg-gray-100 text-gray-600',
-}
+  PENDING: "bg-gray-200 text-gray-700",
+  PRE_TRANSIT: "bg-blue-100 text-blue-700",
+  IN_TRANSIT: "bg-yellow-100 text-yellow-700",
+  OUT_FOR_DELIVERY: "bg-orange-100 text-orange-700",
+  DELIVERED: "bg-green-100 text-green-700",
+  RETURNED: "bg-red-100 text-red-700",
+  FAILED: "bg-red-100 text-red-700",
+  CANCELLED: "bg-gray-100 text-gray-600",
+};
 
 const STATUS_LABELS: Record<ShipmentStatus, string> = {
-  PENDING: 'Pending Label',
-  PRE_TRANSIT: 'Label Created',
-  IN_TRANSIT: 'In Transit',
-  OUT_FOR_DELIVERY: 'Out for Delivery',
-  DELIVERED: 'Delivered',
-  RETURNED: 'Returned',
-  FAILED: 'Failed',
-  CANCELLED: 'Cancelled',
-}
+  PENDING: "Pending Label",
+  PRE_TRANSIT: "Label Created",
+  IN_TRANSIT: "In Transit",
+  OUT_FOR_DELIVERY: "Out for Delivery",
+  DELIVERED: "Delivered",
+  RETURNED: "Returned",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+};
 
 export function OrderDetail({ order }: OrderDetailProps) {
   return (
@@ -152,22 +166,22 @@ export function OrderDetail({ order }: OrderDetailProps) {
             <p className="text-gray-600 mt-1">{order.product.description}</p>
             <div className="mt-2 space-y-1 text-sm">
               <p>
-                <span className="font-medium">Category:</span>{' '}
+                <span className="font-medium">Category:</span>{" "}
                 {order.product.category.name}
               </p>
               <p>
-                <span className="font-medium">Condition:</span>{' '}
-                {order.product.condition.replace(/_/g, ' ')}
+                <span className="font-medium">Condition:</span>{" "}
+                {order.product.condition.replace(/_/g, " ")}
               </p>
               {order.product.brand && (
                 <p>
-                  <span className="font-medium">Brand:</span>{' '}
+                  <span className="font-medium">Brand:</span>{" "}
                   {order.product.brand}
                 </p>
               )}
               {order.product.model && (
                 <p>
-                  <span className="font-medium">Model:</span>{' '}
+                  <span className="font-medium">Model:</span>{" "}
                   {order.product.model}
                 </p>
               )}
@@ -179,7 +193,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
       {/* Shipping Info */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
-        
+
         {order.carrier && (
           <div className="mb-4 p-4 bg-blue-50 rounded-lg">
             <p className="font-medium text-blue-900">
@@ -187,7 +201,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
             </p>
             {order.trackingCode && (
               <p className="text-sm text-blue-700 mt-1">
-                Tracking:{' '}
+                Tracking:{" "}
                 {order.trackingUrl ? (
                   <a
                     href={order.trackingUrl}
@@ -204,7 +218,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
             )}
             {order.estimatedDelivery && (
               <p className="text-sm text-blue-700 mt-1">
-                Estimated Delivery:{' '}
+                Estimated Delivery:{" "}
                 {new Date(order.estimatedDelivery).toLocaleDateString()}
               </p>
             )}
@@ -257,7 +271,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <p>{order.fromAddress.street1}</p>
               {order.fromAddress.street2 && <p>{order.fromAddress.street2}</p>}
               <p>
-                {order.fromAddress.city}, {order.fromAddress.state}{' '}
+                {order.fromAddress.city}, {order.fromAddress.state}{" "}
                 {order.fromAddress.zip}
               </p>
               <p>{order.fromAddress.country}</p>
@@ -271,7 +285,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <p>{order.toAddress.street1}</p>
               {order.toAddress.street2 && <p>{order.toAddress.street2}</p>}
               <p>
-                {order.toAddress.city}, {order.toAddress.state}{' '}
+                {order.toAddress.city}, {order.toAddress.state}{" "}
                 {order.toAddress.zip}
               </p>
               <p>{order.toAddress.country}</p>
@@ -300,7 +314,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
         </div>
 
         {/* Seller Actions */}
-        {order.userRole === 'seller' && order.labelUrl && (
+        {order.userRole === "seller" && order.labelUrl && (
           <div className="mt-6">
             <a
               href={order.labelUrl}
@@ -311,14 +325,14 @@ export function OrderDetail({ order }: OrderDetailProps) {
               Download Shipping Label
             </a>
             <p className="text-sm text-gray-600 mt-2 text-center">
-              Print this label and attach it to your package. Drop it off at any{' '}
+              Print this label and attach it to your package. Drop it off at any{" "}
               {order.carrier} location.
             </p>
           </div>
         )}
 
         {/* Buyer Tracking */}
-        {order.userRole === 'buyer' && order.trackingUrl && (
+        {order.userRole === "buyer" && order.trackingUrl && (
           <div className="mt-6">
             <a
               href={order.trackingUrl}
@@ -342,7 +356,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               {order.seller.imageUrl && (
                 <Image
                   src={order.seller.imageUrl}
-                  alt={order.seller.name || 'Seller'}
+                  alt={order.seller.name || "Seller"}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -362,7 +376,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               {order.buyer.imageUrl && (
                 <Image
                   src={order.buyer.imageUrl}
-                  alt={order.buyer.name || 'Buyer'}
+                  alt={order.buyer.name || "Buyer"}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -379,5 +393,5 @@ export function OrderDetail({ order }: OrderDetailProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

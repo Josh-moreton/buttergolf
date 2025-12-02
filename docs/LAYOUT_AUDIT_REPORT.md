@@ -12,6 +12,7 @@
 A comprehensive audit of the ButterGolf design system revealed that the documented layout component system was never fully implemented. The codebase was using raw Tamagui primitives (`XStack`, `YStack`) with extensive type assertion workarounds (`as any`) throughout, causing rendering issues, type safety problems, and preventing the Tamagui compiler from properly optimizing styles.
 
 **Key Findings:**
+
 - Missing semantic layout components (Row, Column, Container, Spacer)
 - Broken Card compound component pattern
 - Extensive type assertion workarounds masking underlying type issues
@@ -31,6 +32,7 @@ All core issues have been resolved. The design system now has proper layout comp
 The documented design system in `.github/copilot-instructions.md` specified semantic layout components (`Row`, `Column`, `Container`, `Spacer`) with variants, but only raw primitives (`XStack`, `YStack`, `View`) were exported from `@buttergolf/ui`.
 
 **Evidence:**
+
 ```typescript
 // packages/ui/src/components/Layout.tsx (BEFORE)
 export { XStack, YStack, View } from "tamagui";
@@ -38,6 +40,7 @@ export type { XStackProps, YStackProps, ViewProps } from "tamagui";
 ```
 
 **Impact:**
+
 - Developers forced to use raw primitives with manual styling
 - No variant system for gap, alignment, padding
 - Type assertions required everywhere
@@ -49,39 +52,39 @@ Created full-featured layout components with semantic variants:
 ```typescript
 // Row Component with variants
 export const Row = styled(TamaguiXStack, {
-  name: 'Row',
+  name: "Row",
   variants: {
     gap: {
-      xs: { gap: '$xs' },
-      sm: { gap: '$sm' },
-      md: { gap: '$md' },
-      lg: { gap: '$lg' },
-      xl: { gap: '$xl' },
+      xs: { gap: "$xs" },
+      sm: { gap: "$sm" },
+      md: { gap: "$md" },
+      lg: { gap: "$lg" },
+      xl: { gap: "$xl" },
     },
     align: {
-      start: { alignItems: 'flex-start' },
-      center: { alignItems: 'center' },
-      end: { alignItems: 'flex-end' },
-      stretch: { alignItems: 'stretch' },
-      baseline: { alignItems: 'baseline' },
+      start: { alignItems: "flex-start" },
+      center: { alignItems: "center" },
+      end: { alignItems: "flex-end" },
+      stretch: { alignItems: "stretch" },
+      baseline: { alignItems: "baseline" },
     },
     justify: {
-      start: { justifyContent: 'flex-start' },
-      center: { justifyContent: 'center' },
-      end: { justifyContent: 'flex-end' },
-      between: { justifyContent: 'space-between' },
-      around: { justifyContent: 'space-around' },
-      evenly: { justifyContent: 'space-evenly' },
+      start: { justifyContent: "flex-start" },
+      center: { justifyContent: "center" },
+      end: { justifyContent: "flex-end" },
+      between: { justifyContent: "space-between" },
+      around: { justifyContent: "space-around" },
+      evenly: { justifyContent: "space-evenly" },
     },
     wrap: {
-      true: { flexWrap: 'wrap' },
-      false: { flexWrap: 'nowrap' },
+      true: { flexWrap: "wrap" },
+      false: { flexWrap: "nowrap" },
     },
     fullWidth: {
-      true: { width: '100%' },
+      true: { width: "100%" },
     },
   },
-})
+});
 ```
 
 ---
@@ -92,6 +95,7 @@ export const Row = styled(TamaguiXStack, {
 Every component using gap, justify, or semantic colors required `as any` type assertions to bypass TypeScript errors.
 
 **Evidence:**
+
 ```typescript
 // BEFORE - Type assertions everywhere
 <XStack {...{ gap: "sm" as any }} {...{ justify: "between" as any }}>
@@ -102,12 +106,14 @@ const CardHeader = (Card as any).Header // Type casting for compound components
 ```
 
 **Impact:**
+
 - Lost type safety and IntelliSense
 - Hidden bugs and incompatibilities
 - Poor developer experience
 - Maintenance burden
 
 **Resolution:**
+
 ```typescript
 // AFTER - Proper types, no workarounds
 <Row gap="sm" justify="between">
@@ -125,6 +131,7 @@ const CardHeader = (Card as any).Header // Type casting for compound components
 Card compound components required type casting to access subcomponents.
 
 **Evidence:**
+
 ```typescript
 // BEFORE
 const CardHeader = (Card as any).Header
@@ -137,6 +144,7 @@ const CardFooter = (Card as any).Footer
 TypeScript couldn't infer the attached subcomponents from `Object.assign()` pattern.
 
 **Resolution:**
+
 ```typescript
 // AFTER - Proper TypeScript typing
 const CardWithSubcomponents = CardBase as typeof CardBase & {
@@ -165,6 +173,7 @@ export const Card = CardWithSubcomponents
 Next.js `transpilePackages` was missing critical Tamagui packages, potentially causing module resolution issues and duplicate instances.
 
 **Evidence:**
+
 ```javascript
 // apps/web/next.config.js (BEFORE)
 transpilePackages: [
@@ -178,12 +187,14 @@ transpilePackages: [
 ```
 
 **Impact:**
+
 - Potential duplicate Tamagui instances
 - Context loss causing variants/tokens to be ignored
 - Hydration mismatches
 - Performance issues
 
 **Resolution:**
+
 ```javascript
 // apps/web/next.config.js (AFTER)
 transpilePackages: [
@@ -207,6 +218,7 @@ transpilePackages: [
 ```
 
 Similar fix applied to `apps/mobile/babel.config.js`:
+
 ```javascript
 // BEFORE
 components: ['tamagui'],
@@ -223,6 +235,7 @@ components: ['tamagui', '@buttergolf/ui'], // Added @buttergolf/ui
 Mix of semantic tokens (`$primary`, `$text`) and numbered tokens (`$4`, `$8`, `$10`) throughout components.
 
 **Evidence:**
+
 ```typescript
 // BEFORE - Inconsistent token usage
 <H1 size="$8" color="$text">Title</H1>
@@ -232,6 +245,7 @@ Mix of semantic tokens (`$primary`, `$text`) and numbered tokens (`$4`, `$8`, `$
 
 **Resolution:**
 All components now use consistent semantic patterns:
+
 ```typescript
 // AFTER - Semantic variants
 <Heading level={1} size="$8">Title</Heading>  // Heading uses size token directly
@@ -246,9 +260,11 @@ All components now use consistent semantic patterns:
 ### New Components Created
 
 #### 1. Row Component
+
 **File:** `packages/ui/src/components/Layout.tsx`
 
 **Variants:**
+
 - `gap`: xs, sm, md, lg, xl, 2xl
 - `align`: start, center, end, stretch, baseline
 - `justify`: start, center, end, between, around, evenly
@@ -256,6 +272,7 @@ All components now use consistent semantic patterns:
 - `fullWidth`: true
 
 **Usage:**
+
 ```typescript
 <Row gap="md" align="center" justify="between">
   <Text>Left</Text>
@@ -264,9 +281,11 @@ All components now use consistent semantic patterns:
 ```
 
 #### 2. Column Component
+
 **File:** `packages/ui/src/components/Layout.tsx`
 
 **Variants:**
+
 - `gap`: xs, sm, md, lg, xl, 2xl
 - `align`: start, center, end, stretch
 - `justify`: start, center, end, between, around, evenly
@@ -274,6 +293,7 @@ All components now use consistent semantic patterns:
 - `fullHeight`: true
 
 **Usage:**
+
 ```typescript
 <Column gap="lg" align="stretch" fullWidth>
   <Heading level={2}>Title</Heading>
@@ -282,14 +302,17 @@ All components now use consistent semantic patterns:
 ```
 
 #### 3. Container Component
+
 **File:** `packages/ui/src/components/Layout.tsx`
 
 **Variants:**
+
 - `maxWidth`: sm (640), md (768), lg (1024), xl (1280), 2xl (1536), full
 - `padding`: none, xs, sm, md, lg, xl
 - `center`: true
 
 **Usage:**
+
 ```typescript
 <Container maxWidth="lg" padding="md">
   <Text>Constrained content</Text>
@@ -297,13 +320,16 @@ All components now use consistent semantic patterns:
 ```
 
 #### 4. Spacer Component
+
 **File:** `packages/ui/src/components/Layout.tsx`
 
 **Variants:**
+
 - `size`: xs, sm, md, lg, xl (fixed sizes)
 - `flex`: true (flexible, default), false (fixed)
 
 **Usage:**
+
 ```typescript
 // Flexible spacer - pushes content apart
 <Row>
@@ -325,6 +351,7 @@ All components now use consistent semantic patterns:
 ### Components Updated
 
 **Files Modified:**
+
 1. `packages/app/src/components/ProductCard.tsx`
 2. `packages/app/src/components/ProductGrid.tsx`
 3. `packages/app/src/components/HeroSection.tsx`
@@ -335,33 +362,37 @@ All components now use consistent semantic patterns:
 
 **Pattern Changes:**
 
-| Before | After |
-|--------|-------|
-| `<XStack {...{ gap: "sm" as any }}>` | `<Row gap="sm">` |
-| `<YStack {...{ gap: "lg" as any }}>` | `<Column gap="lg">` |
-| `{...{ justify: "between" as any }}` | `justify="between"` |
-| `{...{ padding: 0 as any }}` | `padding="none"` |
-| `{...{ color: "muted" as any }}` | `color="muted"` |
-| `const CardHeader = (Card as any).Header` | `<Card.Header>` |
-| `<H1 color="$text">` | `<Heading level={1}>` |
-| `<H3 color="$textSecondary">` | `<Heading level={3} color="secondary">` |
+| Before                                    | After                                   |
+| ----------------------------------------- | --------------------------------------- |
+| `<XStack {...{ gap: "sm" as any }}>`      | `<Row gap="sm">`                        |
+| `<YStack {...{ gap: "lg" as any }}>`      | `<Column gap="lg">`                     |
+| `{...{ justify: "between" as any }}`      | `justify="between"`                     |
+| `{...{ padding: 0 as any }}`              | `padding="none"`                        |
+| `{...{ color: "muted" as any }}`          | `color="muted"`                         |
+| `const CardHeader = (Card as any).Header` | `<Card.Header>`                         |
+| `<H1 color="$text">`                      | `<Heading level={1}>`                   |
+| `<H3 color="$textSecondary">`             | `<Heading level={3} color="secondary">` |
 
 ---
 
 ### Configuration Updates
 
 #### Next.js Configuration
+
 **File:** `apps/web/next.config.js`
 
 **Changes:**
+
 - Added 8 missing Tamagui packages to `transpilePackages`
 - Added `react-native` to ensure proper aliasing
 - Ensures single Tamagui instance across the app
 
 #### Babel Configuration
+
 **File:** `apps/mobile/babel.config.js`
 
 **Changes:**
+
 - Added `@buttergolf/ui` to `components` array
 - Enables Tamagui compiler to optimize custom components
 - Improves mobile performance
@@ -422,7 +453,8 @@ A comprehensive test page demonstrating all layout features:
 
 ### Build Status
 
-✅ **Web App:** Builds successfully  
+✅ **Web App:** Builds successfully
+
 ```bash
 pnpm --filter web build
 # ✓ Compiled successfully in 21.3s
@@ -543,12 +575,14 @@ const CardHeader = (Card as any).Header
 ## Known Limitations
 
 ### Addressed
+
 - ✅ Type safety issues resolved
 - ✅ Compound components work properly
 - ✅ Build configuration complete
 - ✅ Layout components created
 
 ### Remaining
+
 - ⏳ Media query testing needed
 - ⏳ SSR/Hydration verification pending
 - ⏳ Mobile app build and testing pending
@@ -559,6 +593,7 @@ const CardHeader = (Card as any).Header
 ## Recommendations
 
 ### Immediate Actions
+
 1. ✅ Create layout components with variants - **DONE**
 2. ✅ Fix Card compound components - **DONE**
 3. ✅ Update build configuration - **DONE**
@@ -568,6 +603,7 @@ const CardHeader = (Card as any).Header
 7. ⏳ Verify SSR/hydration
 
 ### Future Enhancements
+
 1. Add ESLint rules to prevent XStack/YStack usage
 2. Create codemod for automated migration
 3. Add Storybook for component documentation
@@ -576,6 +612,7 @@ const CardHeader = (Card as any).Header
 6. Create responsive layout examples
 
 ### Prevention
+
 1. Keep `.github/copilot-instructions.md` in sync with actual implementation
 2. Add component tests for layout primitives
 3. Enforce type safety (no `as any` allowed)
@@ -592,7 +629,7 @@ The layout system audit revealed a significant gap between documented patterns a
 ✅ **Type Safety:** No more workarounds, full TypeScript support  
 ✅ **Build Config:** Complete transpilePackages and Babel setup  
 ✅ **Components:** All updated to use new primitives  
-✅ **Documentation:** Layout harness page demonstrating all features  
+✅ **Documentation:** Layout harness page demonstrating all features
 
 The design system is now production-ready with proper semantic components, type safety, and compiler optimization. Remaining work involves testing in browser, mobile, and verifying SSR/hydration behavior.
 
@@ -601,11 +638,13 @@ The design system is now production-ready with proper semantic components, type 
 ## Appendix: Files Changed
 
 ### Created
+
 - `packages/ui/src/components/Layout.tsx` - New semantic layout components
 - `apps/web/src/app/layout-harness/page.tsx` - Comprehensive test page
 - `docs/LAYOUT_AUDIT_REPORT.md` - This report
 
 ### Modified
+
 - `packages/ui/src/components/Card.tsx` - Fixed compound component types
 - `packages/ui/src/index.ts` - Export new layout components
 - `apps/web/next.config.js` - Added missing transpilePackages

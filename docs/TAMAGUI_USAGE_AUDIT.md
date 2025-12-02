@@ -27,6 +27,7 @@ This audit assessed how Tamagui is being used across the ButterGolf monorepo to 
 ### 1. Component Inventory
 
 #### Total Files Analyzed
+
 - **55 TypeScript/TSX files** across:
   - `apps/web/src` (27 files)
   - `apps/mobile` (3 files)
@@ -35,14 +36,14 @@ This audit assessed how Tamagui is being used across the ButterGolf monorepo to 
 
 #### Component Import Distribution
 
-| Package | Import Count | Usage Pattern |
-|---------|--------------|---------------|
-| `@buttergolf/ui` | 24 | ✅ Primary usage - Good! |
-| `tamagui` | 13 | ⚠️ Direct imports - Should use @buttergolf/ui |
-| `@tamagui/card` | 2 | ✅ OK - Specialized component |
-| `@tamagui/lucide-icons` | 1 | ✅ OK - Icon library |
-| `@tamagui/next-theme` | 1 | ✅ OK - Web-specific |
-| `@tamagui/toast` | 1 | ✅ OK - Through @buttergolf/ui |
+| Package                 | Import Count | Usage Pattern                                 |
+| ----------------------- | ------------ | --------------------------------------------- |
+| `@buttergolf/ui`        | 24           | ✅ Primary usage - Good!                      |
+| `tamagui`               | 13           | ⚠️ Direct imports - Should use @buttergolf/ui |
+| `@tamagui/card`         | 2            | ✅ OK - Specialized component                 |
+| `@tamagui/lucide-icons` | 1            | ✅ OK - Icon library                          |
+| `@tamagui/next-theme`   | 1            | ✅ OK - Web-specific                          |
+| `@tamagui/toast`        | 1            | ✅ OK - Through @buttergolf/ui                |
 
 **Recommendation**: Consolidate direct `tamagui` imports to use `@buttergolf/ui` instead.
 
@@ -53,6 +54,7 @@ This audit assessed how Tamagui is being used across the ButterGolf monorepo to 
 #### Color Token Usage
 
 **Current Token Usage** (Top 10):
+
 ```
 $color        - 18 uses  ✅
 $background   - 12 uses  ✅
@@ -66,7 +68,7 @@ $muted        - 3 uses   ✅
 
 **Most Problematic Files**:
 
-1. **apps/web/src/app/_components/marketplace/HeroSectionNew.tsx** (17 issues)
+1. **apps/web/src/app/\_components/marketplace/HeroSectionNew.tsx** (17 issues)
    - `#3C50E0` (blue accent) - 4 occurrences
    - `#1C274C` (dark text) - 8 occurrences
    - `#F7F7F7`, `#F6F7FB` (backgrounds) - 3 occurrences
@@ -76,7 +78,7 @@ $muted        - 3 uses   ✅
    - Placeholder card colors: `#2d3436`, `#dfe6e9`, `#636e72`, etc.
    - Should use theme tokens for consistency
 
-3. **apps/web/src/app/_components/header/MarketplaceHeader.tsx** (6 issues)
+3. **apps/web/src/app/\_components/header/MarketplaceHeader.tsx** (6 issues)
    - `#1C274C` (header background)
    - `#93C5FD`, `#02AAA4`, `#DC2626` (accent colors)
 
@@ -86,6 +88,7 @@ $muted        - 3 uses   ✅
 #### Hardcoded Sizes Found: 31 instances
 
 **Common Patterns**:
+
 - Raw pixel widths/heights for icons: `width={25}`, `height={25}`
 - Image dimensions: `height={200}`, `height={520}`
 - Fixed layout sizes that should be responsive
@@ -99,6 +102,7 @@ $muted        - 3 uses   ✅
 #### Shared UI Package (`packages/ui`)
 
 **Current Components**:
+
 - ✅ `Button` - Re-export from Tamagui
 - ✅ `Text` - Re-export from Tamagui (as Paragraph)
 - ✅ `Card` - Re-export from @tamagui/card
@@ -107,11 +111,13 @@ $muted        - 3 uses   ✅
 - ✅ `ScrollView` - Re-export from Tamagui
 
 **Strengths**:
+
 - Clean re-export pattern
 - Proper TypeScript types exported
 - All core primitives available
 
 **Opportunities**:
+
 - Create custom styled variants for common patterns
 - Add composite components (e.g., ProductCard, CategoryButton)
 - Document component APIs
@@ -119,6 +125,7 @@ $muted        - 3 uses   ✅
 #### App Package (`packages/app`)
 
 **Custom Components Found**:
+
 - `ProductCard` - ✅ Well-structured, uses tokens mostly
 - `CategoryButton` - ✅ Good use of variants
 - `HeroSection` - ✅ Responsive design
@@ -131,6 +138,7 @@ $muted        - 3 uses   ✅
 #### Web App Components (`apps/web/src`)
 
 **Duplicate Concerns**:
+
 - `HeroSection` exists in both `apps/web` and `packages/app`
 - `HeroSectionNew` in `apps/web` has extensive hardcoded styling
 - Multiple header components with similar patterns
@@ -147,19 +155,19 @@ $muted        - 3 uses   ✅
 
 ```typescript
 const butterGolfColors = {
-    // Brand colors
-    green700: '#0b6b3f',
-    green500: '#13a063',
-    amber400: '#f2b705',
-    
-    // Backgrounds
-    bg: '#fbfbf9',
-    cardBg: '#ffffff',
-    
-    // Text
-    text: '#0f1720',
-    muted: '#6b7280',
-}
+  // Brand colors
+  green700: "#0b6b3f",
+  green500: "#13a063",
+  amber400: "#f2b705",
+
+  // Backgrounds
+  bg: "#fbfbf9",
+  cardBg: "#ffffff",
+
+  // Text
+  text: "#0f1720",
+  muted: "#6b7280",
+};
 ```
 
 #### Enhanced Theme (Added)
@@ -168,44 +176,45 @@ We've **enhanced** the theme configuration with semantic tokens covering all har
 
 ```typescript
 const butterGolfColors = {
-    // Primary brand colors
-    green700: '#0b6b3f',
-    green500: '#13a063',
-    amber400: '#f2b705',
-    
-    // Background colors
-    bg: '#fbfbf9',
-    bgGray: '#F7F7F7',
-    bgCard: '#F6F7FB',
-    cardBg: '#ffffff',
-    
-    // Text colors
-    text: '#0f1720',
-    textDark: '#1C274C',
-    muted: '#6b7280',
-    
-    // Accent colors
-    blue: '#3C50E0',
-    blueLight: '#93C5FD',
-    teal: '#02AAA4',
-    red: '#DC2626',
-    
-    // Neutral colors
-    gray100: '#dfe6e9',
-    gray300: '#b2bec3',
-    gray400: '#D1D5DB',
-    gray500: '#636e72',
-    gray700: '#2d3436',
-    
-    // Utility colors
-    accentBlue: '#74b9ff',
-    accentPurple: '#a29bfe',
-}
+  // Primary brand colors
+  green700: "#0b6b3f",
+  green500: "#13a063",
+  amber400: "#f2b705",
+
+  // Background colors
+  bg: "#fbfbf9",
+  bgGray: "#F7F7F7",
+  bgCard: "#F6F7FB",
+  cardBg: "#ffffff",
+
+  // Text colors
+  text: "#0f1720",
+  textDark: "#1C274C",
+  muted: "#6b7280",
+
+  // Accent colors
+  blue: "#3C50E0",
+  blueLight: "#93C5FD",
+  teal: "#02AAA4",
+  red: "#DC2626",
+
+  // Neutral colors
+  gray100: "#dfe6e9",
+  gray300: "#b2bec3",
+  gray400: "#D1D5DB",
+  gray500: "#636e72",
+  gray700: "#2d3436",
+
+  // Utility colors
+  accentBlue: "#74b9ff",
+  accentPurple: "#a29bfe",
+};
 ```
 
 #### Theme Switching
 
 **Status**: Not currently implemented
+
 - No light/dark theme toggle found
 - Theme structure supports it (uses Tamagui v4 config)
 - **Recommendation**: Implement theme provider with persistence
@@ -213,6 +222,7 @@ const butterGolfColors = {
 #### Responsive Breakpoints
 
 **Status**: ✅ Properly configured
+
 - Using Tamagui's built-in media queries (`$sm`, `$md`, `$lg`, `$xl`)
 - Responsive props used correctly in most components
 - Examples: `HeroSection`, `HeroSectionNew`, `RecentlyListedSection`
@@ -224,16 +234,19 @@ const butterGolfColors = {
 #### Cross-Platform Parity
 
 **Web** (`apps/web`):
+
 - Next.js 16.0.1 with App Router
 - Proper `TamaguiProvider` setup
 - `transpilePackages` configured correctly
 
 **Mobile** (`apps/mobile`):
+
 - Expo ~54.0.20
 - Metro configured for monorepo
 - Babel with Tamagui plugin
 
 **Assessment**: ✅ No major parity issues
+
 - Both platforms use same components from `@buttergolf/ui`
 - Tamagui provider properly configured on both
 - No platform-specific workarounds needed
@@ -296,10 +309,10 @@ Convert direct `tamagui` imports to use `@buttergolf/ui`:
 
 ```tsx
 // Before
-import { YStack, Text, Button } from 'tamagui'
+import { YStack, Text, Button } from "tamagui";
 
 // After
-import { YStack, Text, Button } from '@buttergolf/ui'
+import { YStack, Text, Button } from "@buttergolf/ui";
 ```
 
 **Estimated Effort**: 30 minutes  
@@ -316,17 +329,25 @@ Extract common patterns into variants:
 export const Button = styled(BaseButton, {
   variants: {
     variant: {
-      primary: { backgroundColor: '$green500' },
-      secondary: { backgroundColor: '$blue' },
-      outlined: { /* ... */ },
+      primary: { backgroundColor: "$green500" },
+      secondary: { backgroundColor: "$blue" },
+      outlined: {
+        /* ... */
+      },
     },
     size: {
-      small: { /* ... */ },
-      medium: { /* ... */ },
-      large: { /* ... */ },
+      small: {
+        /* ... */
+      },
+      medium: {
+        /* ... */
+      },
+      large: {
+        /* ... */
+      },
     },
   },
-})
+});
 ```
 
 **Estimated Effort**: 4-6 hours  
@@ -400,12 +421,14 @@ Set up screenshot tests for key components:
 ## Metrics
 
 ### Before Audit
+
 - Hardcoded colors: 41
 - Hardcoded sizes: 31
 - Token usage: 28 unique tokens
 - Component consistency: ~70%
 
 ### After Full Migration (Target)
+
 - Hardcoded colors: 0
 - Hardcoded sizes: < 10 (only where appropriate)
 - Token usage: 30+ unique tokens

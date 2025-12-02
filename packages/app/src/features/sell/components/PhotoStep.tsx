@@ -1,18 +1,9 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { Platform, TouchableOpacity, Alert } from "react-native";
-import {
-  Column,
-  Row,
-  Text,
-  View,
-  Image,
-  ScrollView,
-} from "@buttergolf/ui";
+import { TouchableOpacity } from "react-native";
+import { Column, Row, Text, View, Image, ScrollView } from "@buttergolf/ui";
 import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
-import * as ImagePicker from "expo-image-picker";
-import type { ImagePickerAsset } from "expo-image-picker";
 
 import type { ImageData } from "../types";
 
@@ -23,6 +14,10 @@ interface PhotoStepProps {
   onImagesChange: (images: ImageData[]) => void;
   onUploadImage?: (image: ImageData) => Promise<string>;
   direction: "forward" | "backward";
+  /** Platform-specific function to pick images from gallery */
+  onPickImages?: () => Promise<ImageData[]>;
+  /** Platform-specific function to take a photo with camera */
+  onTakePhoto?: () => Promise<ImageData | null>;
 }
 
 export function PhotoStep({
@@ -30,81 +25,41 @@ export function PhotoStep({
   onImagesChange,
   onUploadImage: _onUploadImage,
   direction,
+  onPickImages,
+  onTakePhoto,
 }: Readonly<PhotoStepProps>) {
-  const requestPermissions = useCallback(async () => {
-    if (Platform.OS !== "web") {
-      const { status: cameraStatus } =
-        await ImagePicker.requestCameraPermissionsAsync();
-      const { status: libraryStatus } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (cameraStatus !== "granted" || libraryStatus !== "granted") {
-        Alert.alert(
-          "Permissions Required",
-          "Please grant camera and photo library permissions to add photos."
-        );
-        return false;
-      }
-    }
-    return true;
-  }, []);
-
   const pickImage = useCallback(async () => {
-    const hasPermission = await requestPermissions();
-    if (!hasPermission) return;
+    if (!onPickImages) {
+      console.warn("onPickImages not provided to PhotoStep");
+      return;
+    }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
-      selectionLimit: MAX_IMAGES - images.length,
-      quality: 0.8,
-      base64: false,
-    });
-
-    if (!result.canceled && result.assets.length > 0) {
-      const newImages: ImageData[] = result.assets.map(
-        (asset: ImagePickerAsset) => ({
-          uri: asset.uri,
-          width: asset.width,
-          height: asset.height,
-        })
-      );
-
+    const newImages = await onPickImages();
+    if (newImages.length > 0) {
       const updatedImages = [...images, ...newImages].slice(0, MAX_IMAGES);
       onImagesChange(updatedImages);
     }
-  }, [images, onImagesChange, requestPermissions]);
+  }, [images, onImagesChange, onPickImages]);
 
   const takePhoto = useCallback(async () => {
-    const hasPermission = await requestPermissions();
-    if (!hasPermission) return;
-
-    const result = await ImagePicker.launchCameraAsync({
-      quality: 0.8,
-      base64: false,
-    });
-
-    if (!result.canceled && result.assets.length > 0) {
-      const asset = result.assets[0];
-      if (asset) {
-        const newImage: ImageData = {
-          uri: asset.uri,
-          width: asset.width,
-          height: asset.height,
-        };
-
-        const updatedImages = [...images, newImage].slice(0, MAX_IMAGES);
-        onImagesChange(updatedImages);
-      }
+    if (!onTakePhoto) {
+      console.warn("onTakePhoto not provided to PhotoStep");
+      return;
     }
-  }, [images, onImagesChange, requestPermissions]);
+
+    const newImage = await onTakePhoto();
+    if (newImage) {
+      const updatedImages = [...images, newImage].slice(0, MAX_IMAGES);
+      onImagesChange(updatedImages);
+    }
+  }, [images, onImagesChange, onTakePhoto]);
 
   const removeImage = useCallback(
     (index: number) => {
       const updatedImages = images.filter((_, i) => i !== index);
       onImagesChange(updatedImages);
     },
-    [images, onImagesChange]
+    [images, onImagesChange],
   );
 
   const canAddMore = images.length < MAX_IMAGES;
@@ -176,12 +131,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Use a clean, uncluttered background
               </Text>
             </Row>
@@ -196,12 +146,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Use natural lighting for best results
               </Text>
             </Row>
@@ -216,12 +161,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Include multiple angles and any imperfections
               </Text>
             </Row>
@@ -315,11 +255,7 @@ export function PhotoStep({
                   >
                     <ImagePlus size={22} color="$slateSmoke" />
                   </View>
-                  <Text
-                    size="$2"
-                    fontWeight="600"
-                    color="$slateSmoke"
-                  >
+                  <Text size="$2" fontWeight="600" color="$slateSmoke">
                     Add Photo
                   </Text>
                 </Column>

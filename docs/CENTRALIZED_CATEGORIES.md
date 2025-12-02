@@ -43,10 +43,10 @@ This file defines:
 4. **Putters** - Putters of all styles
 5. **Bags** - Golf bags and travel covers
 6. **Balls** - Golf balls
-7. **Apparel** - Golf clothing and shoes *(NEW)*
-8. **Accessories** - Golf accessories, gloves, tees, and more *(NEW)*
-9. **Training Aids** - Training aids and practice equipment *(NEW)*
-10. **GPS & Tech** - GPS devices, rangefinders, and tech *(NEW)*
+7. **Apparel** - Golf clothing and shoes _(NEW)_
+8. **Accessories** - Golf accessories, gloves, tees, and more _(NEW)_
+9. **Training Aids** - Training aids and practice equipment _(NEW)_
+10. **GPS & Tech** - GPS devices, rangefinders, and tech _(NEW)_
 
 ### Integration Points
 
@@ -55,23 +55,23 @@ This file defines:
 The seed file now imports and uses `CATEGORIES`:
 
 ```typescript
-import { CATEGORIES } from '../src/constants/categories'
+import { CATEGORIES } from "../src/constants/categories";
 
 // Automatically creates/updates all categories from constants
 const categories = await Promise.all(
-    CATEGORIES.map((categoryDef) =>
-        prisma.category.upsert({
-            where: { slug: categoryDef.slug },
-            update: {
-                name: categoryDef.name,
-                description: categoryDef.description,
-                imageUrl: categoryDef.imageUrl,
-                sortOrder: categoryDef.sortOrder,
-            },
-            create: categoryDef,
-        })
-    )
-)
+  CATEGORIES.map((categoryDef) =>
+    prisma.category.upsert({
+      where: { slug: categoryDef.slug },
+      update: {
+        name: categoryDef.name,
+        description: categoryDef.description,
+        imageUrl: categoryDef.imageUrl,
+        sortOrder: categoryDef.sortOrder,
+      },
+      create: categoryDef,
+    }),
+  ),
+);
 ```
 
 #### Frontend Usage
@@ -79,13 +79,13 @@ const categories = await Promise.all(
 Import categories from `@buttergolf/db`:
 
 ```typescript
-import { CATEGORIES, getCategoryNames } from '@buttergolf/db'
+import { CATEGORIES, getCategoryNames } from "@buttergolf/db";
 
 // Use in components
-const categoryOptions = CATEGORIES.map(cat => ({
+const categoryOptions = CATEGORIES.map((cat) => ({
   value: cat.slug,
-  label: cat.name
-}))
+  label: cat.name,
+}));
 ```
 
 #### API Endpoint (`apps/web/src/app/api/categories/route.ts`)
@@ -100,13 +100,13 @@ The existing API endpoint fetches categories from the database (which are kept i
 export const CATEGORIES: readonly CategoryDefinition[] = [
   // ... existing categories
   {
-    name: 'New Category',
-    slug: 'new-category',
-    description: 'Description of the new category',
-    imageUrl: '/_assets/images/category-image.jpg',
+    name: "New Category",
+    slug: "new-category",
+    description: "Description of the new category",
+    imageUrl: "/_assets/images/category-image.jpg",
     sortOrder: 11, // Next available order
   },
-]
+];
 ```
 
 2. **Run database seed** to sync with database:
@@ -136,6 +136,7 @@ pnpm db:seed
 After implementing this solution:
 
 1. **Verify database has categories**:
+
 ```bash
 pnpm db:studio
 # Check that categories table has 10 entries
@@ -147,6 +148,7 @@ pnpm db:studio
    - Select a category and verify form submission works
 
 3. **Test API endpoint**:
+
 ```bash
 curl http://localhost:3000/api/categories | jq
 ```

@@ -1,4 +1,5 @@
 # Component Library Audit Report
+
 **Date**: November 2, 2025  
 **Project**: ButterGolf  
 **Branch**: copilot/harden-ui-and-config-packages
@@ -12,12 +13,14 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 ### Key Findings
 
 ✅ **Strengths**:
+
 - Strong foundation with 8 hardened component families
 - Comprehensive semantic token system (40+ tokens)
 - Good token usage in newer components (CategoryButton, OnboardingScreen)
 - Excellent mobile implementation with proper semantic tokens
 
 ⚠️ **Opportunities for Improvement**:
+
 - **72% of components still use primitive layout** (XStack/YStack instead of Row/Column)
 - **85% of Card usages don't use compound components** (CardHeader/CardFooter instead of Card.Header/Card.Footer)
 - **Mixed usage patterns** across the codebase (some files follow best practices, others don't)
@@ -29,16 +32,16 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 
 ### Available Components (8 Families)
 
-| Component | Status | Lines | Variants | Features |
-|-----------|--------|-------|----------|----------|
-| **Button** | ✅ Production | 195 | 6 tones, 3 sizes | hover/press/focus states, loading, disabled |
-| **Text** | ✅ Production | 200 | 9 colors, 5 sizes, 4 weights | truncate, alignment |
-| **Heading** | ✅ Production | ~50 | 6 levels (h1-h6), 3 colors | semantic HTML tags |
-| **Layout** | ✅ Production | 195 | Row, Column, Container, Spacer | responsive, gap variants |
-| **Card** | ✅ Production | 195 | 4 variants, compound components | interactive, padding variants |
-| **Input** | ✅ Production | 90 | 3 sizes, validation states | error, success, disabled, fullWidth |
-| **Badge** | ✅ Production | 90 | 8 variants, 3 sizes | primary, success, error, warning, info, neutral, outline, dot |
-| **Spinner** | ✅ Production | 35 | 3 sizes, customizable | cross-platform loading indicator |
+| Component   | Status        | Lines | Variants                        | Features                                                      |
+| ----------- | ------------- | ----- | ------------------------------- | ------------------------------------------------------------- |
+| **Button**  | ✅ Production | 195   | 6 tones, 3 sizes                | hover/press/focus states, loading, disabled                   |
+| **Text**    | ✅ Production | 200   | 9 colors, 5 sizes, 4 weights    | truncate, alignment                                           |
+| **Heading** | ✅ Production | ~50   | 6 levels (h1-h6), 3 colors      | semantic HTML tags                                            |
+| **Layout**  | ✅ Production | 195   | Row, Column, Container, Spacer  | responsive, gap variants                                      |
+| **Card**    | ✅ Production | 195   | 4 variants, compound components | interactive, padding variants                                 |
+| **Input**   | ✅ Production | 90    | 3 sizes, validation states      | error, success, disabled, fullWidth                           |
+| **Badge**   | ✅ Production | 90    | 8 variants, 3 sizes             | primary, success, error, warning, info, neutral, outline, dot |
+| **Spinner** | ✅ Production | 35    | 3 sizes, customizable           | cross-platform loading indicator                              |
 
 **Total Production Code**: ~1,350 lines of battle-tested components
 
@@ -51,19 +54,23 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 **Status**: ✅ **Excellent** - 95% adherence to best practices
 
 #### Files Audited
+
 - `App.tsx` (133 lines)
 - `MinimalRoot.tsx` (minimal fallback)
 
 #### Strengths
+
 ✅ Uses semantic tokens exclusively (`$background`, `$primary`, `$text`, `$textInverse`)  
 ✅ Proper button variants (`size="$2"`, `chromeless`)  
 ✅ Imports from `@buttergolf/ui` correctly  
 ✅ OnboardingScreen component is a **best practice example**:
-  - Semantic tokens: `$gray700`, `$gray100`, `$textSecondary`, `$primary`, `$textInverse`
-  - Proper state handling: `$primaryPress`, `$backgroundHover`
-  - Design tokens for spacing, sizing, typography
+
+- Semantic tokens: `$gray700`, `$gray100`, `$textSecondary`, `$primary`, `$textInverse`
+- Proper state handling: `$primaryPress`, `$backgroundHover`
+- Design tokens for spacing, sizing, typography
 
 #### Minor Opportunities
+
 - Could use `<Row>` instead of inline `flexDirection: 'row'` in carousel
 - Could extract sign-in buttons into reusable components
 
@@ -78,6 +85,7 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 #### Files Audited (48 total)
 
 ##### Core Pages (5)
+
 - `page.tsx` - Homepage
 - `layout.tsx` - Root layout
 - `rounds/page.tsx` - Rounds list
@@ -85,6 +93,7 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 - `theme-test/page.tsx` - Theme testing page
 
 ##### Components (43)
+
 - Marketplace sections (5): HeroSection, CategoriesSection, RecentlyListedSection, NewsletterSection, FooterSection
 - Header components (3): MarketplaceHeader, DesktopMenu, AuthHeader
 - Client components (4): MarketplaceHomeClient, HomeClient, RoundsClient, ProductPageClient
@@ -92,9 +101,11 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 #### Critical Issues
 
 ##### 1. **Layout Components Not Used** (Priority: HIGH)
+
 **Impact**: Missing out on semantic clarity and gap variants
 
 ❌ **Current Pattern** (72% of files):
+
 ```tsx
 // Primitives used directly
 <YStack gap="$4" alignItems="center">
@@ -108,6 +119,7 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 ```
 
 ✅ **Should Use**:
+
 ```tsx
 // Semantic layout components
 <Column gap="md" align="center">
@@ -127,9 +139,11 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 ---
 
 ##### 2. **Card Compound Components Not Used** (Priority: HIGH)
+
 **Impact**: Verbose code, inconsistent padding/borders
 
 ❌ **Current Pattern** (found in ProductCard.tsx, marketplace sections):
+
 ```tsx
 <Card variant="elevated" padding={0}>
   <CardHeader padding={0} noBorder>
@@ -142,6 +156,7 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 ```
 
 ✅ **Should Use**:
+
 ```tsx
 <Card variant="elevated" padding="none">
   <Card.Header padding="none" noBorder>
@@ -163,11 +178,13 @@ This audit evaluates how well the ButterGolf application leverages the newly bui
 ---
 
 ##### 3. **Mixed Token Usage** (Priority: MEDIUM)
+
 **Impact**: Some components don't benefit from theme switching
 
 **Examples Found**:
 
 ✅ **Good Usage** (CategoryButton, OnboardingScreen):
+
 ```tsx
 backgroundColor={active ? '$primary' : '$backgroundPress'}
 color="$textInverse"
@@ -175,6 +192,7 @@ hoverStyle={{ backgroundColor: '$primaryHover' }}
 ```
 
 ⚠️ **Needs Update** (Some marketplace sections):
+
 ```tsx
 // Still using numbered spacing
 padding={16}  // Should be: padding="md" or padding="$md"
@@ -188,20 +206,19 @@ color="$color"  // Should be: color="default" or explicit
 ---
 
 ##### 4. **Button Variants Underutilized** (Priority: MEDIUM)
+
 **Impact**: Manual styling instead of using built-in variants
 
 ❌ **Current Pattern** (found in some components):
+
 ```tsx
-<Button
-  backgroundColor="$primary"
-  color="$textInverse"
-  paddingHorizontal="$4"
->
+<Button backgroundColor="$primary" color="$textInverse" paddingHorizontal="$4">
   Click me
 </Button>
 ```
 
 ✅ **Should Use**:
+
 ```tsx
 <Button size="lg" tone="primary">
   Click me
@@ -215,15 +232,18 @@ color="$color"  // Should be: color="default" or explicit
 ---
 
 ##### 5. **Text Color Variants Not Used** (Priority: LOW)
+
 **Impact**: Verbose type assertions instead of semantic variants
 
 ❌ **Current Pattern** (theme-test/page.tsx, ProductCard.tsx):
+
 ```tsx
 <Text {...{ color: "muted" as any }}>Muted text</Text>
 <Text {...{ color: "$textSecondary" as any }}>Secondary</Text>
 ```
 
 ✅ **Should Use**:
+
 ```tsx
 <Text color="muted">Muted text</Text>
 <Text color="secondary">Secondary</Text>
@@ -238,6 +258,7 @@ color="$color"  // Should be: color="default" or explicit
 **Status**: ⚠️ **Mixed** - 60% adherence to best practices
 
 #### Files Audited
+
 - `components/ProductCard.tsx` - Uses CardHeader/CardFooter (old pattern)
 - `components/CategoryButton.tsx` - ✅ Excellent token usage
 - `components/SearchBar.tsx` - Uses XStack (should use Row)
@@ -247,11 +268,13 @@ color="$color"  // Should be: color="default" or explicit
 - `features/onboarding/screen.tsx` - ✅ **Best practice example**
 
 #### Strengths
+
 ✅ OnboardingScreen is exemplary (semantic tokens, proper variants)  
 ✅ CategoryButton shows excellent token usage  
 ✅ ProductCard has good interactive states
 
 #### Issues
+
 ❌ XStack/YStack used instead of Row/Column (5/7 files)  
 ❌ CardHeader/CardFooter instead of Card.Header/Card.Footer  
 ❌ Some components use old size token pattern (`size="$4"` instead of `size="md"`)
@@ -265,11 +288,14 @@ color="$color"  // Should be: color="default" or explicit
 ### Priority 1: High Impact, Quick Wins (1-2 days)
 
 #### 1.1 Layout Component Migration
+
 **Impact**: Improves code readability, semantic clarity, and consistency  
 **Effort**: Low (search & replace with verification)
 
 **Action Plan**:
+
 1. Create migration script:
+
 ```bash
 # Replace XStack with Row
 find apps/web packages/app -name "*.tsx" -exec sed -i '' 's/<XStack/<Row/g' {} \;
@@ -296,30 +322,33 @@ find apps/web packages/app -name "*.tsx" -exec sed -i '' 's/XStack, YStack/Row, 
 ---
 
 #### 1.2 Card Compound Component Migration
+
 **Impact**: Cleaner API, consistent borders/padding  
 **Effort**: Low (manual updates with patterns)
 
 **Pattern Migration**:
+
 ```tsx
 // Before
-import { Card, CardHeader, CardFooter } from '@buttergolf/ui'
+import { Card, CardHeader, CardFooter } from "@buttergolf/ui";
 
 <Card>
   <CardHeader>Header</CardHeader>
   <CardFooter>Footer</CardFooter>
-</Card>
+</Card>;
 
 // After
-import { Card } from '@buttergolf/ui'
+import { Card } from "@buttergolf/ui";
 
 <Card variant="elevated">
   <Card.Header>Header</Card.Header>
   <Card.Body>Content</Card.Body>
   <Card.Footer align="right">Footer</Card.Footer>
-</Card>
+</Card>;
 ```
 
 **Files to Update**:
+
 - `packages/app/src/components/ProductCard.tsx`
 - `apps/web/src/app/_components/marketplace/HeroSection.tsx`
 - Any other Card usages (search for `<CardHeader` or `<CardFooter`)
@@ -329,10 +358,12 @@ import { Card } from '@buttergolf/ui'
 ### Priority 2: Medium Impact, Medium Effort (2-3 days)
 
 #### 2.1 Button Variant Standardization
+
 **Impact**: Consistent button styling, less manual styling  
 **Effort**: Medium (requires understanding button contexts)
 
 **Migration Pattern**:
+
 ```tsx
 // Before
 <Button
@@ -354,6 +385,7 @@ import { Card } from '@buttergolf/ui'
 **Available Sizes**: sm, md, lg
 
 **Files to Audit**: All components using `<Button>` (use grep):
+
 ```bash
 grep -r "<Button" apps/web packages/app --include="*.tsx" | wc -l
 ```
@@ -361,28 +393,30 @@ grep -r "<Button" apps/web packages/app --include="*.tsx" | wc -l
 ---
 
 #### 2.2 Token Migration
+
 **Impact**: Future-proof theming, better dark mode support  
 **Effort**: Medium (requires understanding color contexts)
 
 **Migration Patterns**:
 
-| Old Token | New Token | Usage |
-|-----------|-----------|-------|
-| `padding={16}` | `padding="md"` | Spacing |
-| `gap="$4"` | `gap="md"` | Gap between children |
-| `color="$color"` | `color="default"` | Text color |
-| `backgroundColor="$bg"` | `backgroundColor="$background"` | Backgrounds |
-| `borderColor="$borderColor"` | `borderColor="$border"` | Borders |
+| Old Token                    | New Token                       | Usage                |
+| ---------------------------- | ------------------------------- | -------------------- |
+| `padding={16}`               | `padding="md"`                  | Spacing              |
+| `gap="$4"`                   | `gap="md"`                      | Gap between children |
+| `color="$color"`             | `color="default"`               | Text color           |
+| `backgroundColor="$bg"`      | `backgroundColor="$background"` | Backgrounds          |
+| `borderColor="$borderColor"` | `borderColor="$border"`         | Borders              |
 
 **Create Token Migration Script**:
+
 ```typescript
 // scripts/migrate-tokens.ts
 const tokenMap = {
-  'padding={16}': 'padding="md"',
+  "padding={16}": 'padding="md"',
   'gap="$4"': 'gap="md"',
   'color="$color"': 'color="default"',
   // ... add more mappings
-}
+};
 ```
 
 ---
@@ -390,16 +424,19 @@ const tokenMap = {
 ### Priority 3: Low Impact, Documentation (1 day)
 
 #### 3.1 Create Component Usage Examples
+
 **Impact**: Helps developers use components correctly  
 **Effort**: Low (documentation)
 
 **Action Items**:
+
 1. Add real-world examples to `packages/ui/README.md`
 2. Create VS Code snippets for common patterns
 3. Update Copilot instructions with more component examples
 4. Create video walkthrough of component library
 
 **Example Snippets** (`/.vscode/buttergolf.code-snippets`):
+
 ```json
 {
   "Card with Compound Components": {
@@ -424,10 +461,12 @@ const tokenMap = {
 ---
 
 #### 3.2 Add Component Library Storybook/Showcase
+
 **Impact**: Visual reference for developers  
 **Effort**: Medium
 
 **Options**:
+
 1. Enhance `theme-test` page to showcase all components
 2. Create dedicated component showcase app
 3. Add Storybook for web (overkill for current scale)
@@ -440,30 +479,31 @@ const tokenMap = {
 
 ### Current State
 
-| Metric | Web App | Mobile App | Shared Package | Target |
-|--------|---------|------------|----------------|--------|
-| **Semantic Tokens** | 60% | 95% | 70% | 95% |
-| **Layout Components** | 28% | 50% | 30% | 90% |
-| **Compound Cards** | 15% | N/A | 20% | 90% |
-| **Button Variants** | 40% | 80% | 50% | 90% |
-| **Text Variants** | 30% | 70% | 50% | 80% |
-| **Overall Score** | 45% | 95% | 60% | 90% |
+| Metric                | Web App | Mobile App | Shared Package | Target |
+| --------------------- | ------- | ---------- | -------------- | ------ |
+| **Semantic Tokens**   | 60%     | 95%        | 70%            | 95%    |
+| **Layout Components** | 28%     | 50%        | 30%            | 90%    |
+| **Compound Cards**    | 15%     | N/A        | 20%            | 90%    |
+| **Button Variants**   | 40%     | 80%        | 50%            | 90%    |
+| **Text Variants**     | 30%     | 70%        | 50%            | 80%    |
+| **Overall Score**     | 45%     | 95%        | 60%            | 90%    |
 
 ### Target State (After Migration)
 
-| Metric | Current | Target | Improvement |
-|--------|---------|--------|-------------|
-| **Semantic Tokens** | 65% | 95% | +30% |
-| **Layout Components** | 30% | 90% | +60% |
-| **Compound Cards** | 15% | 90% | +75% |
-| **Button Variants** | 45% | 90% | +45% |
-| **Overall Consistency** | 50% | 90% | +40% |
+| Metric                  | Current | Target | Improvement |
+| ----------------------- | ------- | ------ | ----------- |
+| **Semantic Tokens**     | 65%     | 95%    | +30%        |
+| **Layout Components**   | 30%     | 90%    | +60%        |
+| **Compound Cards**      | 15%     | 90%    | +75%        |
+| **Button Variants**     | 45%     | 90%    | +45%        |
+| **Overall Consistency** | 50%     | 90%    | +40%        |
 
 ---
 
 ## Implementation Roadmap
 
 ### Week 1: Foundation (Priority 1)
+
 - [ ] Day 1-2: Layout component migration (XStack/YStack → Row/Column)
 - [ ] Day 3-4: Card compound component migration
 - [ ] Day 5: Testing and verification
@@ -471,6 +511,7 @@ const tokenMap = {
 **Estimated Impact**: +25% overall consistency
 
 ### Week 2: Refinement (Priority 2)
+
 - [ ] Day 1-2: Button variant standardization
 - [ ] Day 3-4: Token migration (padding, gap, colors)
 - [ ] Day 5: Type checking and build verification
@@ -478,6 +519,7 @@ const tokenMap = {
 **Estimated Impact**: +15% overall consistency
 
 ### Week 3: Polish (Priority 3)
+
 - [ ] Day 1-2: Documentation and examples
 - [ ] Day 3-4: VS Code snippets and developer tools
 - [ ] Day 5: Component showcase enhancement
@@ -489,6 +531,7 @@ const tokenMap = {
 ## Success Metrics
 
 ### Quantitative Metrics
+
 - **90%+ component library usage** (vs 50% current)
 - **Zero hardcoded colors** in components (token usage only)
 - **Zero XStack/YStack** in new components (Row/Column only)
@@ -496,6 +539,7 @@ const tokenMap = {
 - **Build time unchanged** (Tamagui optimization should maintain speed)
 
 ### Qualitative Metrics
+
 - **Faster development** (less manual styling)
 - **Consistent UI** across pages
 - **Easier theming** (all components respect tokens)
@@ -509,6 +553,7 @@ const tokenMap = {
 ### ✅ Excellent: OnboardingScreen (packages/app)
 
 **Why It's Great**:
+
 - Uses semantic tokens: `$primary`, `$textInverse`, `$backgroundHover`, `$primaryPress`
 - Proper state handling: hover, press, focus
 - Design tokens for spacing: `gap="$6"`, `padding="$6"`
@@ -516,6 +561,7 @@ const tokenMap = {
 - Cross-platform considerations: Platform checks for iOS
 
 **Code Sample**:
+
 ```tsx
 <Button
   size="$5"
@@ -523,7 +569,7 @@ const tokenMap = {
   backgroundColor="$primary"
   borderRadius={16}
   pressStyle={{
-    backgroundColor: '$primaryPress',
+    backgroundColor: "$primaryPress",
     scale: 0.97,
     opacity: 0.9,
   }}
@@ -543,30 +589,34 @@ const tokenMap = {
 ### ✅ Excellent: CategoryButton (packages/app)
 
 **Why It's Great**:
+
 - Semantic tokens for all states
 - Proper hover/press styling
 - Type-safe props
 - Clean variant handling
 
 **Code Sample**:
+
 ```tsx
 <Button
   size="$3"
   paddingHorizontal="$4"
   borderRadius="$10"
-  backgroundColor={active ? '$primary' : '$backgroundPress'}
-  borderColor={active ? '$primary' : '$border'}
+  backgroundColor={active ? "$primary" : "$backgroundPress"}
+  borderColor={active ? "$primary" : "$border"}
   hoverStyle={{
-    backgroundColor: active ? '$primaryHover' : '$backgroundHover',
-    borderColor: active ? '$primaryHover' : '$borderHover',
+    backgroundColor: active ? "$primaryHover" : "$backgroundHover",
+    borderColor: active ? "$primaryHover" : "$borderHover",
   }}
-  pressStyle={{ 
+  pressStyle={{
     scale: 0.97,
-    backgroundColor: active ? '$primaryPress' : '$backgroundPress',
+    backgroundColor: active ? "$primaryPress" : "$backgroundPress",
   }}
 >
   {active ? (
-    <Text color="$textInverse" weight="semibold">{label}</Text>
+    <Text color="$textInverse" weight="semibold">
+      {label}
+    </Text>
   ) : (
     <Text weight="normal">{label}</Text>
   )}
@@ -580,14 +630,24 @@ const tokenMap = {
 ### ⚠️ Needs Improvement: ProductCard (packages/app)
 
 **Current Issues**:
+
 - Uses old Card component pattern (CardHeader/CardFooter imports)
 - XStack/YStack instead of Row/Column
 - Type assertions for colors (`as any`)
 
 **Recommended Refactor**:
+
 ```tsx
 // Before
-import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@buttergolf/ui'
+import {
+  Card,
+  CardHeader,
+  CardFooter,
+  Image,
+  Text,
+  YStack,
+  XStack,
+} from "@buttergolf/ui";
 
 <Card variant="elevated" padding={0}>
   <CardHeader padding={0} noBorder>
@@ -601,10 +661,10 @@ import { Card, CardHeader, CardFooter, Image, Text, YStack, XStack } from '@butt
       </XStack>
     </YStack>
   </CardFooter>
-</Card>
+</Card>;
 
 // After
-import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
+import { Card, Image, Text, Column, Row } from "@buttergolf/ui";
 
 <Card variant="elevated" padding="none" interactive>
   <Card.Header padding="none" noBorder>
@@ -612,7 +672,9 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
   </Card.Header>
   <Card.Footer padding="md" noBorder>
     <Column gap="sm">
-      <Text size="md" weight="semibold">{title}</Text>
+      <Text size="md" weight="semibold">
+        {title}
+      </Text>
       <Row justify="between" align="center">
         <Text size="lg" weight="bold" color="primary">
           ${price.toFixed(2)}
@@ -620,7 +682,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
       </Row>
     </Column>
   </Card.Footer>
-</Card>
+</Card>;
 ```
 
 ---
@@ -628,6 +690,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ## Quick Reference: Component Library Patterns
 
 ### Buttons
+
 ```tsx
 // Primary CTA
 <Button size="lg" tone="primary" fullWidth>Sign Up</Button>
@@ -643,6 +706,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ```
 
 ### Cards
+
 ```tsx
 // Elevated card with compound components
 <Card variant="elevated" padding="md">
@@ -664,6 +728,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ```
 
 ### Layouts
+
 ```tsx
 // Horizontal layout
 <Row gap="md" align="center" justify="between">
@@ -688,6 +753,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ```
 
 ### Typography
+
 ```tsx
 // Headings
 <Heading level={1}>Page Title</Heading>
@@ -701,6 +767,7 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ```
 
 ### Forms
+
 ```tsx
 // Input with validation
 <Column gap="xs" fullWidth>
@@ -714,12 +781,15 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
     placeholder="Enter your email"
   />
   {emailError && (
-    <Text size="sm" color="error">{emailError}</Text>
+    <Text size="sm" color="error">
+      {emailError}
+    </Text>
   )}
 </Column>
 ```
 
 ### Badges
+
 ```tsx
 // Status badges
 <Badge variant="success">Active</Badge>
@@ -737,12 +807,14 @@ import { Card, Image, Text, Column, Row } from '@buttergolf/ui'
 ### Summary
 
 The ButterGolf project has built a **world-class component library** with:
+
 - 8 production-ready component families
 - 40+ semantic tokens for theming
 - Comprehensive documentation
 - Cross-platform support (web + mobile)
 
 However, **adoption is inconsistent**:
+
 - **Mobile app**: 95% adherence ✅ (excellent)
 - **Web app**: 45% adherence ⚠️ (needs improvement)
 - **Shared package**: 60% adherence ⚠️ (mixed)
@@ -790,37 +862,37 @@ However, **adoption is inconsistent**:
 
 ### Web App Components
 
-| File | Size | Issues | Priority |
-|------|------|--------|----------|
-| `MarketplaceHomeClient.tsx` | 18 | Uses YStack instead of Column | Medium |
-| `HeroSectionNew.tsx` | 150 | Multiple XStack/YStack, old tokens | High |
-| `CategoriesSection.tsx` | 45 | XStack instead of Row | Medium |
-| `RecentlyListedSection.tsx` | 80 | YStack/XStack, old Card pattern | Medium |
-| `NewsletterSection.tsx` | 60 | YStack instead of Column | Medium |
-| `FooterSection.tsx` | 90 | XStack/YStack, old tokens | Medium |
-| `MarketplaceHeader.tsx` | 120 | XStack, old tokens | High |
-| `DesktopMenu.tsx` | 75 | XStack instead of Row | Medium |
-| `AuthHeader.tsx` | 50 | XStack instead of Row | Low |
-| `ProductPageClient.tsx` | 200 | Old tokens, XStack/YStack | High |
+| File                        | Size | Issues                             | Priority |
+| --------------------------- | ---- | ---------------------------------- | -------- |
+| `MarketplaceHomeClient.tsx` | 18   | Uses YStack instead of Column      | Medium   |
+| `HeroSectionNew.tsx`        | 150  | Multiple XStack/YStack, old tokens | High     |
+| `CategoriesSection.tsx`     | 45   | XStack instead of Row              | Medium   |
+| `RecentlyListedSection.tsx` | 80   | YStack/XStack, old Card pattern    | Medium   |
+| `NewsletterSection.tsx`     | 60   | YStack instead of Column           | Medium   |
+| `FooterSection.tsx`         | 90   | XStack/YStack, old tokens          | Medium   |
+| `MarketplaceHeader.tsx`     | 120  | XStack, old tokens                 | High     |
+| `DesktopMenu.tsx`           | 75   | XStack instead of Row              | Medium   |
+| `AuthHeader.tsx`            | 50   | XStack instead of Row              | Low      |
+| `ProductPageClient.tsx`     | 200  | Old tokens, XStack/YStack          | High     |
 
 ### Packages/App Components
 
-| File | Size | Issues | Priority |
-|------|------|--------|----------|
-| `ProductCard.tsx` | 75 | Old Card pattern, XStack/YStack | High |
-| `SearchBar.tsx` | 55 | XStack instead of Row | Medium |
-| `HeroSection.tsx` | 52 | YStack/XStack, old Button pattern | Medium |
-| `CategoriesSection.tsx` | 40 | XStack instead of Row | Medium |
-| `ProductGrid.tsx` | 30 | YStack/XStack | Low |
-| `CategoryButton.tsx` | 35 | ✅ Excellent example | N/A |
-| `OnboardingScreen.tsx` | 210 | ✅ Excellent example | N/A |
+| File                    | Size | Issues                            | Priority |
+| ----------------------- | ---- | --------------------------------- | -------- |
+| `ProductCard.tsx`       | 75   | Old Card pattern, XStack/YStack   | High     |
+| `SearchBar.tsx`         | 55   | XStack instead of Row             | Medium   |
+| `HeroSection.tsx`       | 52   | YStack/XStack, old Button pattern | Medium   |
+| `CategoriesSection.tsx` | 40   | XStack instead of Row             | Medium   |
+| `ProductGrid.tsx`       | 30   | YStack/XStack                     | Low      |
+| `CategoryButton.tsx`    | 35   | ✅ Excellent example              | N/A      |
+| `OnboardingScreen.tsx`  | 210  | ✅ Excellent example              | N/A      |
 
 ### Mobile App
 
-| File | Size | Issues | Priority |
-|------|------|--------|----------|
-| `App.tsx` | 133 | Minor: could use Row | Low |
-| `MinimalRoot.tsx` | 20 | N/A (fallback) | N/A |
+| File              | Size | Issues               | Priority |
+| ----------------- | ---- | -------------------- | -------- |
+| `App.tsx`         | 133  | Minor: could use Row | Low      |
+| `MinimalRoot.tsx` | 20   | N/A (fallback)       | N/A      |
 
 ---
 
@@ -828,34 +900,34 @@ However, **adoption is inconsistent**:
 
 ### Spacing Tokens
 
-| Old | New | Value |
-|-----|-----|-------|
-| `padding={4}` | `padding="xs"` | 4px |
-| `padding={8}` | `padding="sm"` | 8px |
-| `padding={16}` | `padding="md"` | 16px |
-| `padding={24}` | `padding="lg"` | 24px |
-| `padding={32}` | `padding="xl"` | 32px |
-| `gap="$4"` | `gap="md"` | 16px |
-| `gap="$6"` | `gap="lg"` | 24px |
+| Old            | New            | Value |
+| -------------- | -------------- | ----- |
+| `padding={4}`  | `padding="xs"` | 4px   |
+| `padding={8}`  | `padding="sm"` | 8px   |
+| `padding={16}` | `padding="md"` | 16px  |
+| `padding={24}` | `padding="lg"` | 24px  |
+| `padding={32}` | `padding="xl"` | 32px  |
+| `gap="$4"`     | `gap="md"`     | 16px  |
+| `gap="$6"`     | `gap="lg"`     | 24px  |
 
 ### Color Tokens
 
-| Old | New | Usage |
-|-----|-----|-------|
-| `color="$color"` | `color="default"` | Primary text |
-| `color="$textDark"` | `color="$text"` | Primary text (semantic) |
-| `color="$muted"` | `color="muted"` | Secondary text (variant) |
-| `backgroundColor="$bg"` | `backgroundColor="$background"` | Page background |
-| `borderColor="$borderColor"` | `borderColor="$border"` | Default border |
+| Old                          | New                             | Usage                    |
+| ---------------------------- | ------------------------------- | ------------------------ |
+| `color="$color"`             | `color="default"`               | Primary text             |
+| `color="$textDark"`          | `color="$text"`                 | Primary text (semantic)  |
+| `color="$muted"`             | `color="muted"`                 | Secondary text (variant) |
+| `backgroundColor="$bg"`      | `backgroundColor="$background"` | Page background          |
+| `borderColor="$borderColor"` | `borderColor="$border"`         | Default border           |
 
 ### Size Tokens
 
-| Old | New | Component |
-|-----|-----|-----------|
-| `size="$4"` | `size="md"` | Button |
-| `size="$5"` | `size="lg"` | Button |
-| `fontSize="$5"` | `size="lg"` | Text |
-| `fontSize="$3"` | `size="sm"` | Text |
+| Old             | New         | Component |
+| --------------- | ----------- | --------- |
+| `size="$4"`     | `size="md"` | Button    |
+| `size="$5"`     | `size="lg"` | Button    |
+| `fontSize="$5"` | `size="lg"` | Text      |
+| `fontSize="$3"` | `size="sm"` | Text      |
 
 ---
 

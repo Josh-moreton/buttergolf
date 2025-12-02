@@ -1,1 +1,1 @@
-export { SeoJsonLd } from './SeoJsonLd';
+export { SeoJsonLd } from "./SeoJsonLd";

@@ -1,13 +1,20 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Dimensions, Animated, Easing, Text as RNText, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Animated,
+  Easing,
+  Text as RNText,
+  TouchableOpacity,
+} from "react-native";
 import { Text, YStack, View, Image, Button } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Logo - Using SVG
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const LogoSvg = require("../../../../../apps/mobile/assets/logo-orange-on-white.svg").default;
+const LogoSvg =
+  require("../../../../../apps/mobile/assets/logo-orange-on-white.svg").default;
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
@@ -81,7 +88,7 @@ export function OnboardingScreen({
 
   // Duplicate images for seamless loop
   const loopedImages = [...carouselImages, ...carouselImages];
-  
+
   // Calculate total width of one set of images
   const singleWidth = carouselImages.length * (CARD_WIDTH + GAP);
 
@@ -96,7 +103,7 @@ export function OnboardingScreen({
         duration,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     );
 
     // Bottom row scrolls right (starts offset for stagger effect)
@@ -106,7 +113,7 @@ export function OnboardingScreen({
         duration,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     );
 
     topAnimation.start();
@@ -134,7 +141,10 @@ export function OnboardingScreen({
         gap={20}
       >
         {/* Logo - Scaled to ~50% screen width */}
-        <View width={SCREEN_W * 0.5} height={Math.round((SCREEN_W * 0.5) * (79 / 209))}>
+        <View
+          width={SCREEN_W * 0.5}
+          height={Math.round(SCREEN_W * 0.5 * (79 / 209))}
+        >
           <LogoSvg
             width="100%"
             height="100%"
@@ -142,7 +152,7 @@ export function OnboardingScreen({
             accessibilityLabel="Butter Golf Logo"
           />
         </View>
-        
+
         {/* Tagline */}
         <YStack gap={4} alignItems="center">
           <Text
@@ -167,8 +177,8 @@ export function OnboardingScreen({
       </YStack>
 
       {/* Scrolling Carousel - Two Rows Staggered */}
-      <View 
-        height={CAROUSEL_HEIGHT} 
+      <View
+        height={CAROUSEL_HEIGHT}
         overflow="hidden"
         marginTop={12}
         marginBottom={32}
@@ -304,7 +314,14 @@ export function OnboardingScreen({
           onPress={onSkip}
           style={{ paddingVertical: 12, paddingHorizontal: 24 }}
         >
-          <RNText style={{ color: '#545454', fontSize: 16, textAlign: 'center', textDecorationLine: 'underline' }}>
+          <RNText
+            style={{
+              color: "#545454",
+              fontSize: 16,
+              textAlign: "center",
+              textDecorationLine: "underline",
+            }}
+          >
             Skip for now
           </RNText>
         </TouchableOpacity>

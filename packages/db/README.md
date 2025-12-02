@@ -65,19 +65,19 @@ Add the package to your app's dependencies:
 Then import and use:
 
 ```typescript
-import { prisma } from '@buttergolf/db'
+import { prisma } from "@buttergolf/db";
 
 // Query users
-const users = await prisma.user.findMany()
+const users = await prisma.user.findMany();
 
 // Create a round
 const round = await prisma.round.create({
   data: {
-    userId: 'user-id',
-    courseName: 'Augusta National',
+    userId: "user-id",
+    courseName: "Augusta National",
     score: 72,
   },
-})
+});
 ```
 
 ## Available Scripts
@@ -126,5 +126,5 @@ Just update your `DATABASE_URL` in `.env`.
 The generated Prisma Client is fully typed. Import types as needed:
 
 ```typescript
-import { type User, type Round, type Hole } from '@buttergolf/db'
+import { type User, type Round, type Hole } from "@buttergolf/db";
 ```

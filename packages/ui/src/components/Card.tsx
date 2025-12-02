@@ -169,7 +169,11 @@ Card.Body = CardBody;
 Card.Footer = CardFooter;
 
 // Export types that include BOTH our custom variants AND all base Tamagui Card props
-export type CardProps = GetProps<typeof CardBase> & Omit<TamaguiCardProps, keyof GetProps<typeof CardBase>>;
-export type CardHeaderProps = GetProps<typeof CardHeader> & Omit<TamaguiCardHeaderProps, keyof GetProps<typeof CardHeader>>;
-export type CardBodyProps = GetProps<typeof CardBody> & Omit<YStackProps, keyof GetProps<typeof CardBody>>;
-export type CardFooterProps = GetProps<typeof CardFooter> & Omit<TamaguiCardFooterProps, keyof GetProps<typeof CardFooter>>;
+export type CardProps = GetProps<typeof CardBase> &
+  Omit<TamaguiCardProps, keyof GetProps<typeof CardBase>>;
+export type CardHeaderProps = GetProps<typeof CardHeader> &
+  Omit<TamaguiCardHeaderProps, keyof GetProps<typeof CardHeader>>;
+export type CardBodyProps = GetProps<typeof CardBody> &
+  Omit<YStackProps, keyof GetProps<typeof CardBody>>;
+export type CardFooterProps = GetProps<typeof CardFooter> &
+  Omit<TamaguiCardFooterProps, keyof GetProps<typeof CardFooter>>;

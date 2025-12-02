@@ -29,11 +29,13 @@ const linkProps = useLink({ href: routes.home })
 ### What Solito Does Behind the Scenes
 
 **On Web (Next.js)**:
+
 - `useLink()` returns Next.js Link props
 - `useRouter()` returns Next.js router
 - URLs work normally: `/products/123`
 
 **On Mobile (React Native)**:
+
 - `useLink()` returns React Navigation linking props
 - `useRouter()` returns React Navigation router
 - Translates routes to React Navigation: `products/123`
@@ -74,7 +76,7 @@ import { routes } from '../../navigation'
 
 export function RoundsScreen() {
   const homeLink = useLink({ href: routes.home })
-  
+
   return (
     <Button {...homeLink}>Back to Home</Button>
   )
@@ -82,6 +84,7 @@ export function RoundsScreen() {
 ```
 
 This same `RoundsScreen` works on:
+
 - **Web**: Next.js at `/rounds`
 - **Mobile**: React Navigation screen
 
@@ -89,13 +92,13 @@ This same `RoundsScreen` works on:
 
 ```typescript
 // packages/app/src/navigation/params.ts
-import { createParam } from 'solito'
+import { createParam } from "solito";
 
-export const { useParam } = createParam<{ id: string }>()
+export const { useParam } = createParam<{ id: string }>();
 
 // Use in a screen
 function ProductScreen() {
-  const [id] = useParam('id')  // TypeScript knows this is a string
+  const [id] = useParam("id"); // TypeScript knows this is a string
   // Fetch product with id
 }
 ```
@@ -129,8 +132,8 @@ function ProductScreen() {
 
 ```tsx
 // apps/mobile/App.tsx
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export default function App() {
   return (
@@ -140,13 +143,14 @@ export default function App() {
         <Stack.Screen name="Rounds" component={RoundsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 ```
 
 **This is React Navigation without Solito integration!**
 
 The `useLink({ href: '/rounds' })` in `RoundsScreen` won't work on mobile because:
+
 1. React Navigation doesn't know about the `/rounds` route
 2. No linking configuration to map Solito routes to React Navigation screens
 3. The navigation is manually configured with `Stack.Navigator`
@@ -169,27 +173,27 @@ apps/mobile/
 
 ```tsx
 // apps/mobile/app/_layout.tsx
-import { Provider } from '@buttergolf/app'
-import { Stack } from 'expo-router'
+import { Provider } from "@buttergolf/app";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
     <Provider>
       <Stack>
-        <Stack.Screen name="index" options={{ title: 'Home' }} />
-        <Stack.Screen name="rounds/index" options={{ title: 'Rounds' }} />
+        <Stack.Screen name="index" options={{ title: "Home" }} />
+        <Stack.Screen name="rounds/index" options={{ title: "Rounds" }} />
       </Stack>
     </Provider>
-  )
+  );
 }
 
 // apps/mobile/app/index.tsx
-import { HomeScreen } from '@buttergolf/app'
-export default HomeScreen
+import { HomeScreen } from "@buttergolf/app";
+export default HomeScreen;
 
 // apps/mobile/app/rounds/index.tsx
-import { RoundsScreen } from '@buttergolf/app'
-export default RoundsScreen
+import { RoundsScreen } from "@buttergolf/app";
+export default RoundsScreen;
 ```
 
 **Option 2: Manual React Navigation with Linking Config**
@@ -197,19 +201,19 @@ export default RoundsScreen
 If we want to keep React Navigation (not Expo Router), we need linking configuration:
 
 ```tsx
-import { NavigationContainer } from '@react-navigation/native'
-import { useLinking } from 'solito/navigation'
+import { NavigationContainer } from "@react-navigation/native";
+import { useLinking } from "solito/navigation";
 
 const linking = {
-  prefixes: ['buttergolf://'],
+  prefixes: ["buttergolf://"],
   config: {
     screens: {
-      Home: '',                    // Maps to '/'
-      Rounds: 'rounds',           // Maps to '/rounds'
-      RoundDetail: 'rounds/:id',  // Maps to '/rounds/[id]'
+      Home: "", // Maps to '/'
+      Rounds: "rounds", // Maps to '/rounds'
+      RoundDetail: "rounds/:id", // Maps to '/rounds/[id]'
     },
   },
-}
+};
 
 export default function App() {
   return (
@@ -219,18 +223,20 @@ export default function App() {
         <Stack.Screen name="Rounds" component={RoundsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 ```
 
 ### 🚨 Current Status: Partially Broken
 
 **On Web**: ✅ **Works perfectly**
+
 - Next.js handles all routing
 - Solito's `useLink` returns Next.js Link props
 - Navigation works as expected
 
 **On Mobile**: ⚠️ **NOT using Solito**
+
 - React Navigation is manually configured
 - Solito's navigation hooks won't work properly
 - The `useLink({ href: '/rounds' })` in `RoundsScreen` won't navigate correctly
@@ -255,12 +261,12 @@ export default function App() {
 
 ```tsx
 // This screen is in packages/app/src/features/rounds/screen.tsx
-import { useLink } from 'solito/navigation'
+import { useLink } from "solito/navigation";
 
 export function RoundsScreen() {
-  const homeLink = useLink({ href: '/' })  // ← This won't work on mobile!
-  
-  return <Button {...homeLink}>Back to Home</Button>
+  const homeLink = useLink({ href: "/" }); // ← This won't work on mobile!
+
+  return <Button {...homeLink}>Back to Home</Button>;
 }
 ```
 
@@ -275,18 +281,21 @@ export function RoundsScreen() {
 **Benefit**: Full Solito integration, file-based routing, better alignment with modern Expo
 
 **Steps**:
+
 1. Install Expo Router: `pnpm add expo-router --filter mobile`
 2. Restructure `apps/mobile` to use file-based routing
 3. Move React Navigation config to Expo Router
 4. Test all navigation flows
 
 **Pros**:
+
 - ✅ Proper Solito integration
 - ✅ File-based routing (like Next.js)
 - ✅ Automatic deep linking
 - ✅ Better developer experience
 
 **Cons**:
+
 - ⚠️ Requires restructuring mobile app
 - ⚠️ Need to migrate existing navigation setup
 
@@ -296,16 +305,19 @@ export function RoundsScreen() {
 **Benefit**: Minimal changes, keeps current structure
 
 **Steps**:
+
 1. Add linking config to `NavigationContainer`
 2. Map Solito routes to React Navigation screens
 3. Test navigation
 
 **Pros**:
+
 - ✅ Quick fix
 - ✅ Keeps current structure
 - ✅ Minimal code changes
 
 **Cons**:
+
 - ⚠️ Manual route mapping required
 - ⚠️ Not leveraging Solito v5 features
 - ⚠️ More maintenance overhead
@@ -318,10 +330,12 @@ export function RoundsScreen() {
 **Steps**: None
 
 **Pros**:
+
 - ✅ No work required
 - ✅ Web works perfectly
 
 **Cons**:
+
 - ❌ Mobile navigation not using Solito
 - ❌ Can't share navigation code
 - ❌ Not getting value from Solito
@@ -341,23 +355,23 @@ export function RoundsScreen() {
 
 ```tsx
 // apps/mobile/App.tsx
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HomeScreen, RoundsScreen } from '@buttergolf/app'
-import { routes } from '@buttergolf/app/src/navigation'
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HomeScreen, RoundsScreen } from "@buttergolf/app";
+import { routes } from "@buttergolf/app/src/navigation";
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
 const linking = {
-  prefixes: ['buttergolf://', 'https://buttergolf.com'],
+  prefixes: ["buttergolf://", "https://buttergolf.com"],
   config: {
     screens: {
-      Home: routes.home,           // '/'
-      Rounds: routes.rounds,       // '/rounds'
-      RoundDetail: routes.roundDetail.replace('[id]', ':id'), // '/rounds/:id'
+      Home: routes.home, // '/'
+      Rounds: routes.rounds, // '/rounds'
+      RoundDetail: routes.roundDetail.replace("[id]", ":id"), // '/rounds/:id'
     },
   },
-}
+};
 
 export default function App() {
   return (
@@ -369,24 +383,28 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-  )
+  );
 }
 ```
 
 ## 📝 Summary
 
 ### What is Solito?
+
 Cross-platform navigation library that unifies routing between React Native and Next.js.
 
 ### What do we use it for?
+
 Sharing screen components and navigation code between web and mobile apps.
 
 ### Are we using it properly?
+
 - ✅ **Web**: Yes, perfectly
 - ❌ **Mobile**: No, not integrated with navigation
 - ⚠️ **Overall**: Partially - getting some benefits but not full value
 
 ### Next Steps
+
 1. Add React Navigation linking configuration (1 hour)
 2. Test navigation on mobile
 3. Consider Expo Router migration post-MVP

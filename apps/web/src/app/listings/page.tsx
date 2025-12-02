@@ -41,8 +41,12 @@ async function getListings(searchParams: SearchParams) {
     where.condition = { in: conditions };
   }
 
-  const minPrice = searchParams.minPrice ? Number.parseFloat(searchParams.minPrice) : undefined;
-  const maxPrice = searchParams.maxPrice ? Number.parseFloat(searchParams.maxPrice) : undefined;
+  const minPrice = searchParams.minPrice
+    ? Number.parseFloat(searchParams.minPrice)
+    : undefined;
+  const maxPrice = searchParams.maxPrice
+    ? Number.parseFloat(searchParams.maxPrice)
+    : undefined;
   if (minPrice || maxPrice) {
     where.price = {
       ...(minPrice && { gte: minPrice }),
@@ -187,5 +191,6 @@ export default async function ListingsPage({ searchParams }: Readonly<Props>) {
 
 export const metadata = {
   title: "Shop All Products | ButterGolf",
-  description: "Browse our complete collection of golf equipment and accessories",
+  description:
+    "Browse our complete collection of golf equipment and accessories",
 };

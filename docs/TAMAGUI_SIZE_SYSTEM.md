@@ -9,15 +9,18 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 ### 1. Font Size Tokens (Numeric: `$1` - `$16`)
 
 **What they are:**
+
 - Numeric tokens defined in the Tamagui font configuration
 - Used to control `fontSize` and `lineHeight` on text components
 - Standard scale inherited from `@tamagui/config/v4`
 
 **Where they're defined:**
+
 - `packages/config/src/tamagui.config.ts`
 - `bodyFont.size` and `headingFont.size` objects
 
 **How to use them:**
+
 ```tsx
 // ✅ CORRECT - Use fontSize prop with numeric tokens
 <Text fontSize="$4">Body text (14px)</Text>
@@ -35,37 +38,40 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 
 **Font Size Scale:**
 
-| Token | Body Font | Heading Font | Typical Use |
-|-------|-----------|--------------|-------------|
-| `$1`  | 11px      | 12px         | Legal text, tiny labels |
-| `$2`  | 12px      | 14px         | Captions, metadata |
+| Token | Body Font | Heading Font | Typical Use               |
+| ----- | --------- | ------------ | ------------------------- |
+| `$1`  | 11px      | 12px         | Legal text, tiny labels   |
+| `$2`  | 12px      | 14px         | Captions, metadata        |
 | `$3`  | 13px      | 16px         | Small labels, helper text |
-| `$4`  | 14px      | 18px         | Body small |
-| `$5`  | **15px**  | **20px**     | **Default body text** |
-| `$6`  | 16px      | 24px         | Large body text |
-| `$7`  | 18px      | 28px         | Subheadings |
-| `$8`  | 20px      | 32px         | Large subheadings |
-| `$9`  | 22px      | 40px         | Small headings (h3) |
-| `$10` | 24px      | 48px         | Medium headings (h2) |
-| `$11` | 28px      | 56px         | Large headings (h1) |
-| `$12` | 32px      | 64px         | XL headings |
-| `$13` | 40px      | 72px         | Hero text |
-| `$14` | 48px      | 80px         | Display text |
-| `$15` | 56px      | 96px         | Display XL |
-| `$16` | 64px      | 112px        | Display XXL |
+| `$4`  | 14px      | 18px         | Body small                |
+| `$5`  | **15px**  | **20px**     | **Default body text**     |
+| `$6`  | 16px      | 24px         | Large body text           |
+| `$7`  | 18px      | 28px         | Subheadings               |
+| `$8`  | 20px      | 32px         | Large subheadings         |
+| `$9`  | 22px      | 40px         | Small headings (h3)       |
+| `$10` | 24px      | 48px         | Medium headings (h2)      |
+| `$11` | 28px      | 56px         | Large headings (h1)       |
+| `$12` | 32px      | 64px         | XL headings               |
+| `$13` | 40px      | 72px         | Hero text                 |
+| `$14` | 48px      | 80px         | Display text              |
+| `$15` | 56px      | 96px         | Display XL                |
+| `$16` | 64px      | 112px        | Display XXL               |
 
 ### 2. Component Size Variants (Named: `sm` | `md` | `lg`)
 
 **What they are:**
+
 - Named variants defined per-component in styled definitions
 - Used to control geometric dimensions (height, padding, width)
 - Custom to each component - not universal tokens
 
 **Where they're defined:**
+
 - Individual component files in `packages/ui/src/components/`
 - Example: `Button.tsx`, `Input.tsx`, `Badge.tsx`, `Spinner.tsx`
 
 **How to use them:**
+
 ```tsx
 // ✅ CORRECT - Use size variant on UI components
 <Button size="md" tone="primary">Click me</Button>
@@ -82,20 +88,20 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 
 **Component Size Mappings:**
 
-| Component | Size Variant | Height | Font Size (internal) |
-|-----------|--------------|--------|---------------------|
-| **Button** | `sm` | 32px (`$buttonSm`) | `$3` (13px) |
-|            | `md` | 40px (`$buttonMd`) | `$4` (14px) |
-|            | `lg` | 48px (`$buttonLg`) | `$5` (15px) |
-| **Input**  | `sm` | 32px (`$inputSm`) | `$3` (13px) |
-|            | `md` | 40px (`$inputMd`) | `$4` (14px) |
-|            | `lg` | 48px (`$inputLg`) | `$5` (15px) |
-| **Badge**  | `sm` | 20px min | Text within uses fontSize |
-|            | `md` | 24px min | Text within uses fontSize |
-|            | `lg` | 28px min | Text within uses fontSize |
-| **Spinner** | `sm` | 16px (`$4` space token) | N/A |
-|             | `md` | 20px (`$5` space token) | N/A |
-|             | `lg` | 24px (`$6` space token) | N/A |
+| Component   | Size Variant | Height                  | Font Size (internal)      |
+| ----------- | ------------ | ----------------------- | ------------------------- |
+| **Button**  | `sm`         | 32px (`$buttonSm`)      | `$3` (13px)               |
+|             | `md`         | 40px (`$buttonMd`)      | `$4` (14px)               |
+|             | `lg`         | 48px (`$buttonLg`)      | `$5` (15px)               |
+| **Input**   | `sm`         | 32px (`$inputSm`)       | `$3` (13px)               |
+|             | `md`         | 40px (`$inputMd`)       | `$4` (14px)               |
+|             | `lg`         | 48px (`$inputLg`)       | `$5` (15px)               |
+| **Badge**   | `sm`         | 20px min                | Text within uses fontSize |
+|             | `md`         | 24px min                | Text within uses fontSize |
+|             | `lg`         | 28px min                | Text within uses fontSize |
+| **Spinner** | `sm`         | 16px (`$4` space token) | N/A                       |
+|             | `md`         | 20px (`$5` space token) | N/A                       |
+|             | `lg`         | 24px (`$6` space token) | N/A                       |
 
 ## Why This Design?
 
@@ -226,6 +232,7 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 **Problem:** Using named size (`"md"`, `"lg"`) on a Text component
 
 **Solution:** Use numeric token with fontSize prop instead
+
 ```tsx
 // ❌ WRONG
 <Text size="md">Text</Text>
@@ -239,6 +246,7 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 **Problem:** Using numeric token with size prop on Text component
 
 **Solution:** Use fontSize prop instead of size prop
+
 ```tsx
 // ❌ WRONG
 <Text size="$4">Text</Text>
@@ -252,6 +260,7 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 **Problem:** Trying to override button font size with component size
 
 **Solution:** Use the correct size variant or wrap text in Text component
+
 ```tsx
 // ❌ WRONG
 <Button fontSize="$6">Text</Button>
@@ -267,14 +276,14 @@ This document explains how sizing works in our Tamagui-based design system. Unde
 
 ## Quick Reference
 
-| Context | Prop to Use | Values | Example |
-|---------|-------------|--------|---------|
-| **Text/Heading/Label font size** | `fontSize` | `$1` - `$16` | `<Text fontSize="$5">` |
-| **Button geometric size** | `size` | `sm \| md \| lg` | `<Button size="md">` |
-| **Input geometric size** | `size` | `sm \| md \| lg` | `<Input size="lg">` |
-| **Badge geometric size** | `size` | `sm \| md \| lg` | `<Badge size="sm">` |
-| **Spinner geometric size** | `size` | `sm \| md \| lg` | `<Spinner size="md">` |
-| **Spacing** | `padding`, `margin`, `gap` | `$xs`, `$sm`, `$md`, etc. | `<View padding="$md">` |
+| Context                          | Prop to Use                | Values                    | Example                |
+| -------------------------------- | -------------------------- | ------------------------- | ---------------------- |
+| **Text/Heading/Label font size** | `fontSize`                 | `$1` - `$16`              | `<Text fontSize="$5">` |
+| **Button geometric size**        | `size`                     | `sm \| md \| lg`          | `<Button size="md">`   |
+| **Input geometric size**         | `size`                     | `sm \| md \| lg`          | `<Input size="lg">`    |
+| **Badge geometric size**         | `size`                     | `sm \| md \| lg`          | `<Badge size="sm">`    |
+| **Spinner geometric size**       | `size`                     | `sm \| md \| lg`          | `<Spinner size="md">`  |
+| **Spacing**                      | `padding`, `margin`, `gap` | `$xs`, `$sm`, `$md`, etc. | `<View padding="$md">` |
 
 ## Best Practices
 

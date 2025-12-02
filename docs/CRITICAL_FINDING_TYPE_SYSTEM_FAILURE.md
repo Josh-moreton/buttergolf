@@ -24,6 +24,7 @@ After reviewing 25,588 lines of official Tamagui documentation, I can confirm:
 > **"You can pass any prop that is supported by the component you are wrapping in styled."**
 
 This means our `Row` and `Column` components should accept:
+
 - ✅ ALL XStack/YStack base props (fontSize, backgroundColor, padding, etc.)
 - ✅ PLUS our custom variants (align, justify, gap)
 - ✅ NO WORKAROUNDS NEEDED
@@ -41,7 +42,7 @@ export const Circle = styled(View, {
 })
 
 // Usage: Mix variants and base props freely
-<Circle 
+<Circle
   centered          // variant prop
   backgroundColor="$blue10"  // base prop
   padding="$4"      // base prop
@@ -78,6 +79,7 @@ Our components are showing errors like:
 Look at that type: `Omit<never, "unset">`
 
 The `never` type means **TypeScript failed to resolve the proper types**. It should be:
+
 - `React.ReactNode` for children
 - `number` for numberOfLines
 - `string | number` for fontSize
@@ -93,7 +95,7 @@ But instead, everything resolves to `never`, which means "this type doesn't exis
 
 **NOT broken**: Our component definitions  
 **NOT broken**: Our usage patterns  
-**NOT broken**: Tamagui itself  
+**NOT broken**: Tamagui itself
 
 **BROKEN**: The TypeScript type resolution pipeline
 
@@ -103,8 +105,8 @@ But instead, everything resolves to `never`, which means "this type doesn't exis
 
 ```yaml
 # Current versions:
-react: "19.2.0"           # Very new (Dec 2024)
-tamagui: "^1.135.7"       # Released Oct 2024
+react: "19.2.0" # Very new (Dec 2024)
+tamagui: "^1.135.7" # Released Oct 2024
 
 # The problem:
 # Tamagui 1.135.7 was released BEFORE React 19 stable
@@ -112,6 +114,7 @@ tamagui: "^1.135.7"       # Released Oct 2024
 ```
 
 **Evidence**:
+
 - React 19 changed type definitions significantly
 - Tamagui uses complex generic types that depend on React types
 - `@types/react` 19.2.0 may have breaking changes
@@ -129,9 +132,9 @@ tamagui: "^1.135.7"       # Released Oct 2024
 // apps/web/tsconfig.json
 {
   "compilerOptions": {
-    "strict": false,  // ⚠️ Might hide actual issues
+    "strict": false, // ⚠️ Might hide actual issues
     // Possibly missing options for proper type resolution
-  }
+  },
 }
 ```
 
@@ -157,12 +160,12 @@ tamagui: "^1.135.7"       # Released Oct 2024
 
 ```tsx
 // Should work (per Tamagui docs):
-<Column 
+<Column
   gap="md"
   $gtMd={{
     gap: "$lg",
     flexDirection: "row",
-    alignItems: "stretch"
+    alignItems: "stretch",
   }}
 >
   <Text $gtMd={{ fontSize: 20 }}>Responsive</Text>
@@ -179,10 +182,10 @@ tamagui: "^1.135.7"       # Released Oct 2024
 <Card
   hoverStyle={{
     scale: 1.05,
-    backgroundColor: "$surface"
+    backgroundColor: "$surface",
   }}
   pressStyle={{
-    scale: 0.98
+    scale: 0.98,
   }}
 >
   Content
@@ -216,11 +219,13 @@ pnpm install
 ```
 
 **Pros**:
+
 - React 18 is proven stable with Tamagui 1.135.7
 - Likely fixes all type errors immediately
 - No code changes needed
 
 **Cons**:
+
 - Lose React 19 features (but we're not using them yet)
 - Eventually need to upgrade again
 
@@ -241,10 +246,12 @@ pnpm install
 ```
 
 **Pros**:
+
 - Gets latest fixes
 - May have React 19 support
 
 **Cons**:
+
 - Latest may have different breaking changes
 - Requires updating ALL Tamagui packages
 
@@ -254,29 +261,32 @@ pnpm install
 
 ```tsx
 // packages/ui/src/components/Text.tsx
-import { GetProps as TamaguiGetProps, Text as TamaguiText } from 'tamagui'
-import { ReactNode } from 'react'
+import { GetProps as TamaguiGetProps, Text as TamaguiText } from "tamagui";
+import { ReactNode } from "react";
 
 export const Text = styled(TamaguiText, {
   // ... existing code
-})
+});
 
 // Manual type fix:
 export type TextProps = Omit<
   React.ComponentProps<typeof TamaguiText>,
   keyof TamaguiGetProps<typeof Text>
-> & TamaguiGetProps<typeof Text> & {
-  children?: ReactNode
-  numberOfLines?: number
-  // Add other commonly used props
-}
+> &
+  TamaguiGetProps<typeof Text> & {
+    children?: ReactNode;
+    numberOfLines?: number;
+    // Add other commonly used props
+  };
 ```
 
 **Pros**:
+
 - Can fix types without version changes
 - Surgical fix for specific components
 
 **Cons**:
+
 - Manual maintenance
 - Still a workaround, not root fix
 - Need to fix EVERY component
@@ -290,21 +300,23 @@ export type TextProps = Omit<
 // import { Row, Column, Text } from '@buttergolf/ui'
 
 // Use Tamagui directly:
-import { XStack, YStack, Text } from 'tamagui'
+import { XStack, YStack, Text } from "tamagui";
 
 <XStack alignItems="center" gap="$md" paddingHorizontal="$4">
   <Text fontSize={18} fontWeight="700">
     Hello World
   </Text>
-</XStack>
+</XStack>;
 ```
 
 **Pros**:
+
 - No type issues
 - Official Tamagui patterns
 - More flexible
 
 **Cons**:
+
 - More verbose (alignItems vs align)
 - Lose our semantic variant names
 - Harder to enforce design system consistency
@@ -347,21 +359,23 @@ cat package.json | grep -E "(react|tamagui|typescript)"
 ```
 
 ```tsx
-import { Text } from '@buttergolf/ui'
+import { Text } from "@buttergolf/ui";
 
 export default function TypeTest() {
   return (
     <>
       {/* Test 1: Children */}
       <Text>Hello World</Text>
-      
+
       {/* Test 2: Number prop */}
       <Text numberOfLines={2}>Truncated</Text>
-      
+
       {/* Test 3: fontSize override */}
-      <Text size="md" fontSize={18}>Custom size</Text>
+      <Text size="md" fontSize={18}>
+        Custom size
+      </Text>
     </>
-  )
+  );
 }
 ```
 
@@ -418,11 +432,11 @@ Check this file's type errors - if they persist after React 18 downgrade, we hav
 ```yaml
 catalog:
   # Change these:
-  "react": "^18.3.1"                  # Was: 19.2.0
-  "react-dom": "^18.3.1"              # Was: 19.2.0
-  "@types/react": "^18.3.12"          # Was: ^19.2.0
-  "@types/react-dom": "^18.3.1"       # Was: ^19.2.0
-  
+  "react": "^18.3.1" # Was: 19.2.0
+  "react-dom": "^18.3.1" # Was: 19.2.0
+  "@types/react": "^18.3.12" # Was: ^19.2.0
+  "@types/react-dom": "^18.3.1" # Was: ^19.2.0
+
   # Keep everything else the same
   "react-native": "0.82.1"
   "tamagui": "^1.135.7"

@@ -61,7 +61,15 @@ export type SellStep = 1 | 2 | 3 | 4;
 
 export const SELL_STEPS = [
   { step: 1 as const, title: "Photos", description: "Add up to 5 photos" },
-  { step: 2 as const, title: "Details", description: "Category, brand & condition" },
-  { step: 3 as const, title: "Listing", description: "Title, description & price" },
+  {
+    step: 2 as const,
+    title: "Details",
+    description: "Category, brand & condition",
+  },
+  {
+    step: 3 as const,
+    title: "Listing",
+    description: "Title, description & price",
+  },
   { step: 4 as const, title: "Review", description: "Review and submit" },
 ];

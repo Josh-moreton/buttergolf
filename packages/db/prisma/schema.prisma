@@ -39,7 +39,7 @@ model User {
     ratingsGiven             SellerRating[] @relation("RatingsGiven")
     buyerOffers              Offer[]        @relation("BuyerOffers")
     sellerOffers             Offer[]        @relation("SellerOffers")
-    favorites                Favorite[]
+    favourites               Favourite[]
 
     @@map("users")
 }
@@ -131,7 +131,7 @@ model Product {
     updatedAt   DateTime         @updatedAt
     orders      Order[]
     offers      Offer[]
-    favorites   Favorite[]
+    favourites  Favourite[]
 
     @@index([categoryId])
     @@index([userId])
@@ -153,7 +153,7 @@ model ProductImage {
     @@map("product_images")
 }
 
-model Favorite {
+model Favourite {
     id        String   @id @default(cuid())
     userId    String
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -164,7 +164,7 @@ model Favorite {
     @@unique([userId, productId])
     @@index([userId])
     @@index([productId])
-    @@map("favorites")
+    @@map("favourites")
 }
 
 enum ProductCondition {

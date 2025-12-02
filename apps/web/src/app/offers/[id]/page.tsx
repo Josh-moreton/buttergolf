@@ -5,11 +5,11 @@ import { OfferDetailClient } from "./_components/OfferDetailClient";
 
 /**
  * Server Component: Offer Detail Page
- * 
+ *
  * Fetches offer data with full conversation history and product details.
  * Performs authorization checks (user must be buyer or seller).
  * Passes data to client component for interactive UI.
- * 
+ *
  * Route: /offers/[id]
  */
 
@@ -73,10 +73,5 @@ export default async function OfferDetailPage({ params }: PageProps) {
   // Note: Expiration check is handled in the API route (GET /api/offers/[id])
   // This ensures real-time expiration updates via polling
 
-  return (
-    <OfferDetailClient
-      offer={offer}
-      currentUserId={user.id}
-    />
-  );
+  return <OfferDetailClient offer={offer} currentUserId={user.id} />;
 }

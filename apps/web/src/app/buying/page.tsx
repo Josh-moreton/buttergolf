@@ -7,5 +7,5 @@ import { redirect } from "next/navigation";
  * This route exists to match the header navigation design.
  */
 export default function BuyingPage() {
-    redirect("/listings");
+  redirect("/listings");
 }

@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import {
-  Column,
-  Row,
-  Text,
-  Button,
-  View,
-} from "@buttergolf/ui";
+import { Column, Row, Text, Button, View } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ArrowLeft, X } from "@tamagui/lucide-icons";
 import { AnimatePresence } from "tamagui";
@@ -40,6 +34,10 @@ export interface SellScreenProps {
   onSearchModels?: (brandId: string, query: string) => Promise<Model[]>;
   /** Called to upload an image, returns the URL */
   onUploadImage?: (image: ImageData) => Promise<string>;
+  /** Platform-specific function to pick images from gallery */
+  onPickImages?: () => Promise<ImageData[]>;
+  /** Platform-specific function to take a photo with camera */
+  onTakePhoto?: () => Promise<ImageData | null>;
   /** Called to submit the listing */
   onSubmitListing?: (data: SellFormData) => Promise<{ id: string }>;
   /** Called when user wants to go back/cancel */
@@ -69,6 +67,8 @@ export function SellScreen({
   onSearchBrands,
   onSearchModels,
   onUploadImage,
+  onPickImages,
+  onTakePhoto,
   onSubmitListing,
   onClose,
   onSuccess,
@@ -235,6 +235,8 @@ export function SellScreen({
               images={formData.images}
               onImagesChange={(images) => updateFormData({ images })}
               onUploadImage={onUploadImage}
+              onPickImages={onPickImages}
+              onTakePhoto={onTakePhoto}
               direction={direction}
             />
           )}
