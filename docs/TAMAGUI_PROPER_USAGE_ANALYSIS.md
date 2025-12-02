@@ -20,10 +20,11 @@ After reviewing the official Tamagui documentation (25,588 lines), I've identifi
 ### On styled() Props
 
 > **From `docs/TAMAGUI_DOCUMENTATION.md` line 19012:**
-> 
+>
 > "You can pass any prop that is supported by the component you are wrapping in styled."
 
 **This means:**
+
 ```tsx
 // ✅ CORRECT - All of these are valid:
 <Row fontSize={14} backgroundColor="$surface" padding="$4">
@@ -43,10 +44,11 @@ After reviewing the official Tamagui documentation (25,588 lines), I've identifi
 ### On Variants
 
 > **From `docs/TAMAGUI_DOCUMENTATION.md` lines 19019-19078:**
-> 
+>
 > Variants provide "a nice balance between simplicity and power" and work **alongside** base props, not as replacements.
 
 **Example from docs:**
+
 ```tsx
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -102,6 +104,7 @@ The `GetProps` type is somehow resolving to `never` for children and many props.
 ### Evidence
 
 From error messages:
+
 ```typescript
 // The type system is breaking down:
 type 'children' is '"unset" | Omit<never, "unset">'
@@ -145,19 +148,19 @@ type 'children' is '"unset" | Omit<never, "unset">'
 
 ```tsx
 // Variants for common patterns + raw props for specific needs
-<Row 
-  align="center" 
-  justify="between" 
+<Row
+  align="center"
+  justify="between"
   gap="md"
   paddingHorizontal="$6"
   backgroundColor="$surface"
   marginTop="$4"
 >
-  <Text 
-    size="lg" 
+  <Text
+    size="lg"
     color="primary"
-    fontSize={18}  // Override variant size
-    letterSpacing={-0.5}  // Additional customization
+    fontSize={18} // Override variant size
+    letterSpacing={-0.5} // Additional customization
   >
     Hello World
   </Text>
@@ -175,7 +178,7 @@ type 'children' is '"unset" | Omit<never, "unset">'
     gap: "$lg",
     padding: "$6",
     flexDirection: "row",
-    alignItems: "stretch"
+    alignItems: "stretch",
   }}
 >
   <Text size="md" $gtMd={{ size: "lg" }}>
@@ -185,6 +188,7 @@ type 'children' is '"unset" | Omit<never, "unset">'
 ```
 
 **Note**: Currently getting type errors like:
+
 ```
 Type '{ flexDirection: "row"; alignItems: "stretch"; }' is not assignable...
 Type '{ size: "lg" }' is not assignable...
@@ -207,6 +211,7 @@ This confirms the type system is broken, not our usage.
 ### ✅ Should Work (Per Tamagui Docs)
 
 ALL of the above should work! The documentation shows examples of:
+
 - String children in Text components
 - Number props everywhere
 - Media queries with variants AND raw props
@@ -234,13 +239,14 @@ ALL of the above should work! The documentation shows examples of:
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "strict": false,  // ⚠️ This might be masking errors
+    "strict": false, // ⚠️ This might be masking errors
     // ... other options
-  }
+  },
 }
 ```
 
 Need to check:
+
 - `moduleResolution` strategy
 - `skipLibCheck` setting
 - Path mappings
@@ -253,13 +259,14 @@ Need to check:
 {
   "pnpm": {
     "catalog": {
-      "tamagui": "1.135.7"
-    }
-  }
+      "tamagui": "1.135.7",
+    },
+  },
 }
 ```
 
 Potential issues:
+
 - This version may have type bugs
 - React 19.2.0 might be too new
 - May need to use `@tamagui/core` directly
@@ -281,15 +288,15 @@ Before changing code, try fixing types:
 
 ```tsx
 // Option A: Use type assertion at usage site
-<Text {...{} as any}>Hello</Text>
+<Text {...({} as any)}>Hello</Text>;
 
 // Option B: Widen the type definition
-import { GetProps as TamaguiGetProps } from 'tamagui'
+import { GetProps as TamaguiGetProps } from "tamagui";
 
 export type TextProps = TamaguiGetProps<typeof Text> & {
-  children?: React.ReactNode
-  numberOfLines?: number
-}
+  children?: React.ReactNode;
+  numberOfLines?: number;
+};
 ```
 
 ### 6. Check Official Tamagui Starter
@@ -332,18 +339,18 @@ pnpm install
 Add explicit type definitions to our components:
 
 ```tsx
-import { GetProps, XStack, XStackProps } from 'tamagui'
-import { ReactNode } from 'react'
+import { GetProps, XStack, XStackProps } from "tamagui";
+import { ReactNode } from "react";
 
 export const Row = styled(XStack, {
   // ... variants
-})
+});
 
 // Manually fix the type
-export type RowProps = Omit<XStackProps, 'children'> & 
+export type RowProps = Omit<XStackProps, "children"> &
   GetProps<typeof Row> & {
-    children?: ReactNode
-  }
+    children?: ReactNode;
+  };
 ```
 
 ### Option 2: Use Tamagui Components Directly
@@ -361,11 +368,13 @@ import { XStack } from 'tamagui'
 ```
 
 **Pros:**
+
 - No type issues
 - More flexible
 - Official Tamagui patterns
 
 **Cons:**
+
 - Lose semantic variant names
 - More verbose props (alignItems vs align)
 - Harder to enforce design system
@@ -376,11 +385,15 @@ Use styled() only for truly custom components, base components for layouts:
 
 ```tsx
 // Custom components with styled()
-const Card = styled(View, { /* variants */ })
-const Badge = styled(View, { /* variants */ })
+const Card = styled(View, {
+  /* variants */
+});
+const Badge = styled(View, {
+  /* variants */
+});
 
 // Base components for layouts
-import { XStack, YStack } from 'tamagui'
+import { XStack, YStack } from "tamagui";
 
 <YStack gap="$4">
   <XStack alignItems="center">
@@ -388,7 +401,7 @@ import { XStack, YStack } from 'tamagui'
       <Badge tone="success">New</Badge>
     </Card>
   </XStack>
-</YStack>
+</YStack>;
 ```
 
 ### Option 4: Update Tamagui Version
@@ -445,31 +458,34 @@ Once we identify the root cause, we can apply the appropriate fix rather than wo
 ## Appendix: Example Type Errors
 
 ### Error 1: Children Type
+
 ```typescript
 // Source:
 <Text>Hello</Text>
 
 // Error:
-'Text' components don't accept text as child elements. 
-Text in JSX has the type 'string', but the expected type 
+'Text' components don't accept text as child elements.
+Text in JSX has the type 'string', but the expected type
 of 'children' is '"unset" | Omit<never, "unset">'.
 ```
 
 **Analysis**: `Omit<never, "unset">` indicates type resolution failure. Should be `React.ReactNode`.
 
 ### Error 2: Number Props
+
 ```typescript
 // Source:
 <Text numberOfLines={2}>Text</Text>
 
 // Error:
-Type 'number' is not assignable to type 
+Type 'number' is not assignable to type
 '"unset" | Omit<never, "unset">'.
 ```
 
 **Analysis**: Same issue - `never` type breaking prop types.
 
 ### Error 3: Media Query Variants
+
 ```typescript
 // Source:
 <Column $gtMd={{ flexDirection: "row" }}>
@@ -482,13 +498,14 @@ Type '{ flexDirection: "row"; }' is not assignable to type
 **Analysis**: Media query type expecting `never`, should accept all base props.
 
 ### Error 4: Animation Props
+
 ```typescript
 // Source:
 <Card hoverStyle={{ scale: 1.05 }}>
 
 // Error:
 Property 'scale' is incompatible with index signature.
-Type 'number' is not assignable to type 
+Type 'number' is not assignable to type
 '"unset" | Omit<never, "unset">'.
 ```
 

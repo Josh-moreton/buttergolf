@@ -104,14 +104,14 @@ pnpm add @tamagui/shorthands --filter @buttergolf/ui
 Then update `packages/ui/tamagui.config.ts`:
 
 ```typescript
-import { createTamagui } from 'tamagui'
-import { shorthands } from '@tamagui/shorthands'
-import { defaultConfig } from '@tamagui/config/v4'
+import { createTamagui } from "tamagui";
+import { shorthands } from "@tamagui/shorthands";
+import { defaultConfig } from "@tamagui/config/v4";
 
 export const config = createTamagui({
   ...defaultConfig,
   shorthands,
-})
+});
 ```
 
 ### Option 3: Copy Tamagui Starter-Free Exact Config
@@ -127,7 +127,7 @@ The starter-free template has a working Tamagui setup. We could:
 The v4 config might have issues. Try v3:
 
 ```typescript
-import { defaultConfig } from '@tamagui/config/v3'
+import { defaultConfig } from "@tamagui/config/v3";
 ```
 
 ## 📋 Next Steps (Recommended)
@@ -138,7 +138,7 @@ Update the screen components to use full property names so we can continue:
 
 ```tsx
 // packages/app/src/features/home/screen.tsx
-<YStack 
+<YStack
   flex={1}
   style={{
     justifyContent: 'center',
@@ -162,14 +162,14 @@ pnpm build
 Once web works, update `apps/mobile/App.tsx` to use the same screens:
 
 ```tsx
-import { HomeScreen } from '@buttergolf/app'
+import { HomeScreen } from "@buttergolf/app";
 
 export default function App() {
   return (
     <TamaguiProvider config={config}>
       <HomeScreen />
     </TamaguiProvider>
-  )
+  );
 }
 ```
 

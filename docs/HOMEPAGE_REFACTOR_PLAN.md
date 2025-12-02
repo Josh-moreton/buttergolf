@@ -1,6 +1,7 @@
 # 🏠 Homepage Refactor - "Pure Butter" Design Implementation
 
 ## Overview
+
 Refactor the web homepage to match the provided mockup design, incorporating the new "Pure Butter" brand identity with butter orange header, improved layout, and enhanced visual hierarchy.
 
 **Reference:** Screenshot showing Butter Golf homepage with orange header, carousel hero, and category grid
@@ -10,6 +11,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 ## 📸 Mockup Analysis
 
 ### Key Elements from Screenshot:
+
 1. **Header Bar**: Solid orange/butter background, single streamlined header
 2. **Logo**: "Butter Golf" logo with script font on left side
 3. **Navigation**: HOME, FEATURES, ABOUT US, CONTACT US centered
@@ -32,7 +34,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 
 ### Issues to Address:
 
-1. **Header Complexity**: 
+1. **Header Complexity**:
    - Currently 3 separate layers: TrustBar (60px) + Main Header + Nav Bar
    - Total height: ~180px (too much vertical space)
    - Logo is text-only "ButterGolf"
@@ -64,6 +66,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 **Create:** `apps/web/src/app/_components/header/ButterHeader.tsx`
 
 **Features:**
+
 - Single header bar with butter orange background (#FDBA40 or similar)
 - Logo image on left (use `logo-orange.png` or `logo-white.png`)
 - Center navigation: HOME | FEATURES | ABOUT US | CONTACT US
@@ -73,6 +76,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 - Sticky on scroll
 
 **Layout:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [Logo]  HOME  FEATURES  ABOUT  CONTACT    [Search] [🔍] [❤️][🛒][👤] │
@@ -80,6 +84,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 ```
 
 **Tasks:**
+
 - [ ] Create new `ButterHeader.tsx` component
 - [ ] Add logo image loading from `packages/assets/images/logo-*.png`
 - [ ] Implement center navigation links
@@ -92,6 +97,7 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 **Create:** `apps/web/src/app/_components/marketplace/HeroCarousel.tsx`
 
 **Features:**
+
 - Full-width carousel container
 - Height: 50vh (min: 400px, max: 600px)
 - 3-5 slides with images + text overlays
@@ -101,26 +107,29 @@ Refactor the web homepage to match the provided mockup design, incorporating the
 - Touch/swipe support on mobile
 
 **Slide Content Structure:**
+
 ```tsx
 interface HeroSlide {
   id: string;
   imageUrl: string;
-  title: string;          // e.g., "SUMMER GOLF"
-  subtitle: string;       // e.g., "SALE"
-  description?: string;   // e.g., "DON'T MISS OUT!"
-  ctaText: string;        // e.g., "SEE THE RANGE"
-  ctaLink: string;        // e.g., "/products?category=sale"
+  title: string; // e.g., "SUMMER GOLF"
+  subtitle: string; // e.g., "SALE"
+  description?: string; // e.g., "DON'T MISS OUT!"
+  ctaText: string; // e.g., "SEE THE RANGE"
+  ctaLink: string; // e.g., "/products?category=sale"
   backgroundColor: string; // e.g., "#FEFAD6" (cream)
 }
 ```
 
 **Sample Slides:**
-1. **Sale Slide**: Clubs on cream background, "SUMMER GOLF SALE" 
+
+1. **Sale Slide**: Clubs on cream background, "SUMMER GOLF SALE"
 2. **New Arrivals**: Latest products, "JUST LANDED"
 3. **Featured Brand**: Partner brands, "SHOP CALLAWAY"
 4. **Membership**: Benefits, "JOIN THE CLUB"
 
 **Tasks:**
+
 - [ ] Install carousel library (embla-carousel-react or swiper)
 - [ ] Create `HeroCarousel.tsx` with slide data
 - [ ] Add carousel controls (arrows + dots)
@@ -133,6 +142,7 @@ interface HeroSlide {
 **Create:** `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
 
 **Features:**
+
 - 4-column grid on desktop (2 columns on tablet, 1 on mobile)
 - Large square images (300x300px min)
 - Bold category labels with colored backgrounds
@@ -140,17 +150,19 @@ interface HeroSlide {
 - Direct links to category pages
 
 **Categories:**
+
 ```tsx
 interface CategoryCard {
   id: string;
-  name: string;           // e.g., "CLUBS ON SALE"
-  imageUrl: string;       // Large product image
+  name: string; // e.g., "CLUBS ON SALE"
+  imageUrl: string; // Large product image
   backgroundColor: string; // Orange label background
-  link: string;           // e.g., "/products?category=clubs&sale=true"
+  link: string; // e.g., "/products?category=clubs&sale=true"
 }
 ```
 
 **Grid Layout:**
+
 ```
 ┌──────────────┬──────────────┬──────────────┬──────────────┐
 │   CLUBS      │    BAGS      │   SHOES      │  CLOTHING    │
@@ -160,6 +172,7 @@ interface CategoryCard {
 ```
 
 **Tasks:**
+
 - [ ] Create `CategoryGrid.tsx` component
 - [ ] Use golf club images from `packages/assets/images/clubs-*.jpg`
 - [ ] Add additional category images (bags, shoes, clothing)
@@ -173,18 +186,20 @@ interface CategoryCard {
 **Modify:** `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
 
 **New Structure:**
+
 ```tsx
 <Column>
   {/* No marginTop needed - header is fixed */}
-  <HeroCarousel />              {/* 50vh carousel */}
-  <CategoryGrid />              {/* Below hero, full width */}
-  <RecentlyListedSection />     {/* Keep existing */}
-  <NewsletterSection />         {/* Keep existing */}
-  <FooterSection />             {/* Keep existing */}
+  <HeroCarousel /> {/* 50vh carousel */}
+  <CategoryGrid /> {/* Below hero, full width */}
+  <RecentlyListedSection /> {/* Keep existing */}
+  <NewsletterSection /> {/* Keep existing */}
+  <FooterSection /> {/* Keep existing */}
 </Column>
 ```
 
 **Tasks:**
+
 - [ ] Remove `marginTop={180}` (new header is shorter + fixed)
 - [ ] Replace `<HeroSectionNew />` with `<HeroCarousel />`
 - [ ] Add `<CategoryGrid />` after hero
@@ -196,6 +211,7 @@ interface CategoryCard {
 **Modify:** `apps/web/src/app/layout.tsx`
 
 **Changes:**
+
 ```tsx
 // Remove TrustBar (or make dismissible)
 // Replace MarketplaceHeader with ButterHeader
@@ -206,7 +222,7 @@ return (
       <NextTamaguiProvider>
         <ServiceWorkerRegistration />
         {/* <TrustBar /> - Remove or make dismissible */}
-        <ButterHeader />  {/* New simplified header */}
+        <ButterHeader /> {/* New simplified header */}
         <AppPromoBanner />
         {children}
       </NextTamaguiProvider>
@@ -216,6 +232,7 @@ return (
 ```
 
 **Tasks:**
+
 - [ ] Import new `ButterHeader` component
 - [ ] Remove or conditionally render `TrustBar`
 - [ ] Test sticky header behavior
@@ -226,9 +243,10 @@ return (
 ## 🎨 Design Specifications
 
 ### Header
+
 - **Background**: `$primary` (#FDBA40 - butter orange)
 - **Height**: 80px
-- **Logo**: 
+- **Logo**:
   - Image: `/packages/assets/images/logo-white.png` (on orange background)
   - Height: 50px
   - Position: Left, 20px padding
@@ -249,6 +267,7 @@ return (
   - Hover: 80% opacity
 
 ### Hero Carousel
+
 - **Height**: 50vh (min: 400px, max: 600px)
 - **Background**: Cream (#FEFAD6) or per-slide background
 - **Text Overlay**:
@@ -268,6 +287,7 @@ return (
   - Position: Bottom center, 24px margin
 
 ### Category Grid
+
 - **Container**: Max-width 1440px, centered
 - **Grid**: 4 columns (gap: 24px)
 - **Card**:
@@ -290,6 +310,7 @@ return (
 ## 📦 Dependencies
 
 ### New Libraries Needed:
+
 ```bash
 # Carousel library (choose one)
 pnpm add embla-carousel-react --filter web
@@ -301,6 +322,7 @@ pnpm add next/image --filter web
 ```
 
 ### Asset Requirements:
+
 - [ ] Logo files: `logo-white.png` and `logo-orange.png` (already exist)
 - [ ] Hero slide images (3-5 images):
   - Golf clubs on sale
@@ -319,6 +341,7 @@ pnpm add next/image --filter web
 ## 🚀 Implementation Order
 
 ### Day 1: Header & Structure
+
 1. Create `ButterHeader.tsx` with orange background
 2. Add logo image loading
 3. Implement center navigation
@@ -327,6 +350,7 @@ pnpm add next/image --filter web
 6. Remove `TrustBar` (or make dismissible)
 
 ### Day 2: Hero Carousel
+
 1. Install carousel library (embla-carousel-react recommended)
 2. Create `HeroCarousel.tsx` component
 3. Add sample slides with existing images
@@ -335,6 +359,7 @@ pnpm add next/image --filter web
 6. Test touch gestures on mobile
 
 ### Day 3: Category Grid
+
 1. Create `CategoryGrid.tsx` component
 2. Add category data with images
 3. Implement 4-column CSS Grid
@@ -343,6 +368,7 @@ pnpm add next/image --filter web
 6. Link to category pages
 
 ### Day 4: Integration & Polish
+
 1. Update `MarketplaceHomeClient.tsx` layout
 2. Replace old hero with carousel
 3. Add category grid below carousel
@@ -351,6 +377,7 @@ pnpm add next/image --filter web
 6. Fix any z-index or overflow issues
 
 ### Day 5: Testing & Refinement
+
 1. Cross-browser testing (Chrome, Safari, Firefox)
 2. Mobile device testing (iOS, Android)
 3. Performance audit (Lighthouse)
@@ -363,6 +390,7 @@ pnpm add next/image --filter web
 ## ✅ Acceptance Criteria
 
 ### Header
+
 - [x] Single header bar with butter orange background
 - [x] Logo image visible and properly sized
 - [x] Navigation links centered and functional
@@ -373,6 +401,7 @@ pnpm add next/image --filter web
 - [x] Responsive on mobile (hamburger menu if needed)
 
 ### Hero Carousel
+
 - [x] Full-width carousel with 50vh height
 - [x] 3-5 slides with autoplay (5s interval)
 - [x] Dot navigation indicators
@@ -383,6 +412,7 @@ pnpm add next/image --filter web
 - [x] Accessibility (pause on hover, keyboard nav)
 
 ### Category Grid
+
 - [x] 4-column grid on desktop
 - [x] 2-column on tablet, 1-column on mobile
 - [x] Large images with orange labels
@@ -392,6 +422,7 @@ pnpm add next/image --filter web
 - [x] Fast load times (optimized images)
 
 ### Overall
+
 - [x] Page loads in < 3 seconds
 - [x] No layout shift (CLS < 0.1)
 - [x] Lighthouse score > 90
@@ -428,14 +459,15 @@ apps/web/src/app/
 
 ```typescript
 const breakpoints = {
-  mobile: '0px',       // < 768px - Single column, hamburger menu
-  tablet: '768px',     // 768-1024px - 2 column grid, simplified nav
-  desktop: '1024px',   // 1024-1440px - 4 column grid, full nav
-  wide: '1440px',      // > 1440px - Max-width container
+  mobile: "0px", // < 768px - Single column, hamburger menu
+  tablet: "768px", // 768-1024px - 2 column grid, simplified nav
+  desktop: "1024px", // 1024-1440px - 4 column grid, full nav
+  wide: "1440px", // > 1440px - Max-width container
 };
 ```
 
 ### Mobile (< 768px)
+
 - Hamburger menu for navigation
 - Search bar full width below header
 - Hero carousel: 40vh height
@@ -443,6 +475,7 @@ const breakpoints = {
 - Text sizes reduced 30%
 
 ### Tablet (768-1024px)
+
 - Condensed navigation (icons + text)
 - Search bar inline with header
 - Hero carousel: 45vh height
@@ -450,6 +483,7 @@ const breakpoints = {
 - Text sizes reduced 15%
 
 ### Desktop (1024px+)
+
 - Full navigation with all links
 - Search bar on right side
 - Hero carousel: 50vh height
@@ -461,18 +495,21 @@ const breakpoints = {
 ## 🔍 SEO & Performance
 
 ### Image Optimization
+
 - Use Next.js `<Image>` component for all images
 - Lazy load below-fold images
 - Serve WebP with JPEG fallback
 - Responsive srcset for different screen sizes
 
 ### Carousel Performance
+
 - Preload first slide only
 - Lazy load subsequent slides
 - Use CSS transform for smooth animations
 - Debounce resize events
 
 ### Accessibility
+
 - Keyboard navigation for carousel (arrow keys)
 - ARIA labels for all interactive elements
 - Focus management (trap focus in mobile menu)
@@ -483,12 +520,14 @@ const breakpoints = {
 ## 📊 Metrics to Track
 
 ### Performance
+
 - First Contentful Paint (FCP): < 1.8s
 - Largest Contentful Paint (LCP): < 2.5s
 - Cumulative Layout Shift (CLS): < 0.1
 - Time to Interactive (TTI): < 3.8s
 
 ### User Engagement
+
 - Carousel interaction rate
 - Category click-through rate
 - Search usage rate
@@ -499,26 +538,33 @@ const breakpoints = {
 ## 🚨 Potential Issues & Solutions
 
 ### Issue 1: Carousel Library Choice
+
 **Problem**: Different libraries have different APIs
 **Solution**: Start with embla-carousel-react (lightweight, TypeScript-first)
 
 ### Issue 2: Image Assets Missing
+
 **Problem**: Need high-quality images for hero and categories
-**Solution**: 
+**Solution**:
+
 - Use existing club images from assets
 - Generate placeholder images with similar golf equipment
 - Or use free stock photos from Unsplash
 
 ### Issue 3: Header Sticky Behavior
+
 **Problem**: Fixed header can cause jump on scroll
-**Solution**: 
+**Solution**:
+
 - Use transform instead of position change
 - Add smooth transition
 - Test on iOS Safari (notoriously buggy)
 
 ### Issue 4: Mobile Menu Complexity
+
 **Problem**: Current desktop nav won't fit on mobile
-**Solution**: 
+**Solution**:
+
 - Implement slide-out drawer menu
 - Use hamburger icon
 - Keep search and user actions visible
@@ -528,6 +574,7 @@ const breakpoints = {
 ## 🎯 Priority Order
 
 ### Must Have (MVP)
+
 1. ✅ Butter orange header with logo
 2. ✅ Search bar on right side
 3. ✅ Basic hero carousel (3 slides)
@@ -535,6 +582,7 @@ const breakpoints = {
 5. ✅ Mobile responsive layout
 
 ### Should Have
+
 1. Carousel autoplay
 2. Touch/swipe gestures
 3. Hover animations on categories
@@ -542,6 +590,7 @@ const breakpoints = {
 5. Sticky header with shadow
 
 ### Nice to Have
+
 1. Carousel parallax effects
 2. Category card flip animations
 3. Search autocomplete
@@ -553,6 +602,7 @@ const breakpoints = {
 ## 📝 File Checklist
 
 ### New Files to Create
+
 - [ ] `apps/web/src/app/_components/header/ButterHeader.tsx`
 - [ ] `apps/web/src/app/_components/header/MobileMenu.tsx`
 - [ ] `apps/web/src/app/_components/header/SearchBar.tsx`
@@ -560,10 +610,12 @@ const breakpoints = {
 - [ ] `apps/web/src/app/_components/marketplace/CategoryGrid.tsx`
 
 ### Files to Modify
+
 - [ ] `apps/web/src/app/layout.tsx`
 - [ ] `apps/web/src/app/_components/MarketplaceHomeClient.tsx`
 
 ### Files to Remove/Archive
+
 - [ ] `apps/web/src/app/_components/marketplace/HeroSectionNew.tsx` (replace with carousel)
 - [ ] `apps/web/src/app/_components/marketplace/TrustBar.tsx` (remove or make dismissible)
 - [ ] `apps/web/src/app/_components/header/MarketplaceHeader.tsx` (replace with ButterHeader)

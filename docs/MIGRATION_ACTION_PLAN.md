@@ -1,4 +1,5 @@
 # Component Library Migration - Action Plan
+
 **Date**: November 2, 2025  
 **Estimated Total Time**: 2-3 weeks  
 **Expected Impact**: +40% consistency, significantly improved maintainability
@@ -8,6 +9,7 @@
 ## 🎯 Executive Summary
 
 Your component library is **production-ready and excellent**, but adoption is inconsistent:
+
 - ✅ **Mobile**: 95% adherence (follow mobile patterns!)
 - ⚠️ **Web**: 45% adherence (needs systematic migration)
 - ⚠️ **Shared**: 60% adherence (mixed patterns)
@@ -19,6 +21,7 @@ Your component library is **production-ready and excellent**, but adoption is in
 ## 📊 Quick Metrics
 
 ### Current State
+
 ```
 Component Library Usage:     50% → Target: 90%
 Semantic Tokens:            65% → Target: 95%
@@ -28,6 +31,7 @@ Button Variants:            45% → Target: 90%
 ```
 
 ### Impact of Full Migration
+
 - **+25% code readability** (semantic components)
 - **+40% consistency** (standardized patterns)
 - **-30% manual styling** (use variants)
@@ -40,9 +44,11 @@ Button Variants:            45% → Target: 90%
 ### Week 1: Foundation (High Impact, Low Effort)
 
 #### Day 1-2: Layout Component Migration
+
 **Goal**: Replace all XStack/YStack with Row/Column
 
 **Automated Script**:
+
 ```bash
 #!/bin/bash
 # File: scripts/migrate-layout-components.sh
@@ -56,7 +62,7 @@ git checkout -b migration/layout-components
 find apps/web packages/app -name "*.tsx" -type f -exec sed -i '' 's/<XStack/<Row/g' {} \;
 find apps/web packages/app -name "*.tsx" -type f -exec sed -i '' 's/<\/XStack>/<\/Row>/g' {} \;
 
-# Replace YStack with Column  
+# Replace YStack with Column
 find apps/web packages/app -name "*.tsx" -type f -exec sed -i '' 's/<YStack/<Column/g' {} \;
 find apps/web packages/app -name "*.tsx" -type f -exec sed -i '' 's/<\/YStack>/<\/Column>/g' {} \;
 
@@ -73,6 +79,7 @@ echo "   - Gap values (gap=\"\$4\" → gap=\"md\")"
 ```
 
 **Manual Verification Steps**:
+
 1. Run type checking: `pnpm check-types`
 2. Search for prop inconsistencies:
    ```bash
@@ -92,12 +99,14 @@ echo "   - Gap values (gap=\"\$4\" → gap=\"md\")"
 ---
 
 #### Day 3-4: Card Compound Component Migration
+
 **Goal**: Replace CardHeader/CardFooter with Card.Header/Card.Footer
 
 **Manual Migration Pattern**:
+
 ```tsx
 // BEFORE (search for this pattern)
-import { Card, CardHeader, CardFooter } from '@buttergolf/ui'
+import { Card, CardHeader, CardFooter } from "@buttergolf/ui";
 
 <Card variant="elevated" padding={0}>
   <CardHeader padding={0}>
@@ -106,10 +115,10 @@ import { Card, CardHeader, CardFooter } from '@buttergolf/ui'
   <CardFooter padding="$md">
     <Text>Footer</Text>
   </CardFooter>
-</Card>
+</Card>;
 
 // AFTER (replace with this)
-import { Card } from '@buttergolf/ui'
+import { Card } from "@buttergolf/ui";
 
 <Card variant="elevated" padding="none">
   <Card.Header padding="none" noBorder>
@@ -121,16 +130,18 @@ import { Card } from '@buttergolf/ui'
   <Card.Footer padding="md" align="right" noBorder>
     <Text>Footer</Text>
   </Card.Footer>
-</Card>
+</Card>;
 ```
 
 **Files to Update**:
+
 ```bash
 # Find all Card usages
 grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
 ```
 
 **Key Files**:
+
 - `packages/app/src/components/ProductCard.tsx` ⭐ High priority
 - `apps/web/src/app/_components/marketplace/HeroSection.tsx`
 - Any other Card implementations
@@ -142,6 +153,7 @@ grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
 #### Day 5: Testing & Verification
 
 **Checklist**:
+
 - [ ] Run `pnpm check-types` - No errors
 - [ ] Run `pnpm lint` - No new issues
 - [ ] Run `pnpm build` - Successful
@@ -160,6 +172,7 @@ grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
   - [ ] Verify dark mode (if enabled)
 
 **If Issues Found**:
+
 1. Check prop mappings
 2. Verify imports are correct
 3. Look for TypeScript errors
@@ -170,9 +183,11 @@ grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
 ### Week 2: Refinement (Medium Impact, Medium Effort)
 
 #### Day 1-2: Button Variant Standardization
+
 **Goal**: Use tone/size variants instead of manual styling
 
 **Pattern Migration**:
+
 ```tsx
 // BEFORE
 <Button
@@ -192,6 +207,7 @@ grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
 ```
 
 **Available Button API**:
+
 ```tsx
 // Sizes: sm (32px), md (40px), lg (48px)
 // Tones: primary, secondary, outline, ghost, success, error
@@ -203,6 +219,7 @@ grep -r "CardHeader\|CardFooter" apps/web packages/app --include="*.tsx"
 ```
 
 **Search & Replace Strategy**:
+
 ```bash
 # Find all Button usages with manual styling
 grep -r "<Button" apps/web packages/app --include="*.tsx" -A 5 | grep "backgroundColor"
@@ -215,9 +232,11 @@ grep -r "<Button" apps/web packages/app --include="*.tsx" -A 5 | grep "backgroun
 ---
 
 #### Day 3-4: Token Migration
+
 **Goal**: Replace hardcoded values and old token names
 
 **Common Migrations**:
+
 ```tsx
 // Spacing
 padding={16}         → padding="md"
@@ -238,6 +257,7 @@ fontSize="$3"        → size="sm" (for Text component)
 ```
 
 **Create Migration Script**:
+
 ```typescript
 // scripts/migrate-tokens.ts
 import fs from 'fs'
@@ -267,6 +287,7 @@ console.log('✅ Token migration complete!')
 ```
 
 **Run Migration**:
+
 ```bash
 npm install -D glob
 ts-node scripts/migrate-tokens.ts
@@ -280,6 +301,7 @@ pnpm check-types
 #### Day 5: Build Verification
 
 **Checklist**:
+
 - [ ] Type checking passes
 - [ ] Build succeeds
 - [ ] No runtime errors
@@ -291,15 +313,18 @@ pnpm check-types
 ### Week 3: Polish (Low Impact, High Value)
 
 #### Day 1-2: Documentation
+
 **Goal**: Create clear examples and best practices
 
 **Action Items**:
+
 1. **Update README.md** with real-world examples
 2. **Create VS Code snippets** for common patterns
 3. **Add video walkthrough** (optional, Loom recording)
 4. **Update Copilot instructions** with migration notes
 
 **VS Code Snippets** (`.vscode/buttergolf.code-snippets`):
+
 ```json
 {
   "Button with variant": {
@@ -352,9 +377,11 @@ pnpm check-types
 ---
 
 #### Day 3-4: Component Showcase
+
 **Goal**: Visual reference for developers
 
 **Enhance `theme-test` page**:
+
 ```tsx
 // Add sections for each component family
 export default function ComponentShowcasePage() {
@@ -362,14 +389,20 @@ export default function ComponentShowcasePage() {
     <Container maxWidth="lg">
       <Column gap="xl" padding="lg">
         <Heading level={1}>Component Library Showcase</Heading>
-        
+
         {/* Buttons Section */}
         <Column gap="md">
           <Heading level={2}>Buttons</Heading>
           <Row gap="md" wrap>
-            <Button size="sm" tone="primary">Small Primary</Button>
-            <Button size="md" tone="secondary">Medium Secondary</Button>
-            <Button size="lg" tone="outline">Large Outline</Button>
+            <Button size="sm" tone="primary">
+              Small Primary
+            </Button>
+            <Button size="md" tone="secondary">
+              Medium Secondary
+            </Button>
+            <Button size="lg" tone="outline">
+              Large Outline
+            </Button>
             <Button tone="ghost">Ghost</Button>
             <Button tone="success">Success</Button>
             <Button tone="error">Error</Button>
@@ -404,15 +437,19 @@ export default function ComponentShowcasePage() {
             <Heading level={3}>Heading 3</Heading>
             <Text size="lg">Large text</Text>
             <Text size="md">Medium text (default)</Text>
-            <Text size="sm" color="secondary">Small secondary text</Text>
-            <Text size="xs" color="muted">Extra small muted text</Text>
+            <Text size="sm" color="secondary">
+              Small secondary text
+            </Text>
+            <Text size="xs" color="muted">
+              Extra small muted text
+            </Text>
           </Column>
         </Column>
 
         {/* Add more sections... */}
       </Column>
     </Container>
-  )
+  );
 }
 ```
 
@@ -421,6 +458,7 @@ export default function ComponentShowcasePage() {
 #### Day 5: Final Review & Celebration
 
 **Final Checklist**:
+
 - [ ] All migrations complete
 - [ ] Documentation updated
 - [ ] VS Code snippets working
@@ -433,6 +471,7 @@ export default function ComponentShowcasePage() {
   - [ ] Zero hardcoded values
 
 **Success Metrics**:
+
 ```
 ✅ 90%+ components use Row/Column (vs 30%)
 ✅ 90%+ Cards use compound pattern (vs 15%)
@@ -449,6 +488,7 @@ export default function ComponentShowcasePage() {
 ### Essential Scripts
 
 **1. Layout Migration Script** (`scripts/migrate-layouts.sh`):
+
 ```bash
 #!/bin/bash
 git checkout -b migration/layout-components
@@ -460,6 +500,7 @@ echo "✅ Layout components migrated! Run 'pnpm check-types' next."
 ```
 
 **2. Find Problem Patterns** (`scripts/audit-patterns.sh`):
+
 ```bash
 #!/bin/bash
 echo "🔍 Auditing component patterns..."
@@ -478,6 +519,7 @@ grep -r "<Button" apps/web packages/app --include="*.tsx" -A 3 | grep "backgroun
 ```
 
 **3. Prop Mapping Helper** (`scripts/map-props.sh`):
+
 ```bash
 #!/bin/bash
 # Fix common prop name inconsistencies
@@ -572,6 +614,7 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 # Migration Progress Tracker
 
 ## Week 1
+
 - [x] Layout component migration script created
 - [x] 35 files migrated to Row/Column
 - [x] Type checking passes
@@ -581,6 +624,7 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 **Consistency Score**: 50% → 65%
 
 ## Week 2
+
 - [ ] Button variant standardization (20 files)
 - [ ] Token migration script run
 - [ ] Manual token verification
@@ -589,6 +633,7 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 **Consistency Score**: 65% → 80%
 
 ## Week 3
+
 - [ ] Documentation updated
 - [ ] VS Code snippets added
 - [ ] Component showcase created
@@ -604,12 +649,14 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 ### Definition of Done
 
 **Technical**:
+
 - ✅ `pnpm check-types` passes with zero errors
 - ✅ `pnpm build` succeeds on first try
 - ✅ `pnpm lint` shows no new issues
 - ✅ All tests pass (if applicable)
 
 **Code Quality**:
+
 - ✅ Zero XStack/YStack in new code
 - ✅ Zero CardHeader/CardFooter imports
 - ✅ Zero hardcoded spacing (padding={16})
@@ -617,12 +664,14 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 - ✅ 90%+ Button variant usage
 
 **Developer Experience**:
+
 - ✅ VS Code snippets working
 - ✅ Documentation clear and complete
 - ✅ Component showcase accessible
 - ✅ Team understands patterns
 
 **User Experience**:
+
 - ✅ No visual regressions
 - ✅ All features working
 - ✅ Performance unchanged
@@ -633,18 +682,21 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 ## 💡 Pro Tips
 
 ### Before Starting
+
 1. **Create a migration branch**: `git checkout -b migration/component-library`
 2. **Commit frequently**: After each file or group of files
 3. **Test incrementally**: Don't migrate everything at once
 4. **Use type checking**: `pnpm check-types` after each change
 
 ### During Migration
+
 1. **Keep a changelog**: Track what you've changed
 2. **Screenshot before/after**: Visual regression testing
 3. **Ask for help**: If stuck, check existing examples (OnboardingScreen, CategoryButton)
 4. **Use search/replace carefully**: Always verify changes
 
 ### After Migration
+
 1. **Update team**: Share learnings and new patterns
 2. **Create linting rules**: Prevent old patterns from returning
 3. **Monitor metrics**: Track consistency improvements
@@ -673,6 +725,7 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 ## 📞 Need Help?
 
 ### Resources
+
 - **Full Audit Report**: `COMPONENT_LIBRARY_AUDIT_REPORT.md`
 - **Component Documentation**: `packages/ui/README.md`
 - **Token Guide**: `packages/config/README.md`
@@ -680,6 +733,7 @@ Create a simple tracking file (`MIGRATION_PROGRESS.md`):
 - **Copilot Instructions**: `.github/copilot-instructions.md`
 
 ### Best Practice Examples
+
 - **Mobile**: `apps/mobile/App.tsx` (95% score)
 - **Onboarding**: `packages/app/src/features/onboarding/screen.tsx` (perfect example)
 - **CategoryButton**: `packages/app/src/components/CategoryButton.tsx` (excellent tokens)

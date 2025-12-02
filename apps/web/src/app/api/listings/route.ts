@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       if (!clerkId) {
         return NextResponse.json(
           { error: "Authentication required to filter favourites" },
-          { status: 401 }
+          { status: 401 },
         );
       }
 
@@ -203,7 +203,7 @@ export async function GET(request: NextRequest) {
     console.error("Listings API error:", error);
     return NextResponse.json(
       { error: "Failed to fetch listings" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

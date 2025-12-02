@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ProductCardData } from "@buttergolf/app";
-import { Button, Column, Row, Text, Heading, VanillaCreamBackground } from "@buttergolf/ui";
+import {
+  Button,
+  Column,
+  Row,
+  Text,
+  Heading,
+  VanillaCreamBackground,
+} from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 
 interface RecentlyListedSectionClientProps {
@@ -71,7 +78,12 @@ export function RecentlyListedSectionClient({
         </Column>
 
         {/* View All Button - Centered Below Carousel */}
-        <Row alignItems="center" justifyContent="center" width="100%" paddingTop="$sm">
+        <Row
+          alignItems="center"
+          justifyContent="center"
+          width="100%"
+          paddingTop="$sm"
+        >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
             <Button
               size="$5"

@@ -3,6 +3,7 @@
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ installed
 - pnpm 10.20.0+ installed
 - iOS Simulator (Mac) or Android Emulator
@@ -11,12 +12,14 @@
 ### Setup
 
 1. **Install dependencies**:
+
 ```bash
 cd /path/to/buttergolf
 pnpm install
 ```
 
 2. **Set up environment variables**:
+
 ```bash
 # Copy example env file
 cp .env.example .env
@@ -26,11 +29,13 @@ echo "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_key_here" >> apps/mobile/.e
 ```
 
 3. **Start the development server**:
+
 ```bash
 pnpm dev:mobile
 ```
 
 4. **Launch on device**:
+
 - Press `i` for iOS Simulator
 - Press `a` for Android Emulator
 - Scan QR code with Expo Go app for physical device
@@ -201,6 +206,7 @@ pnpm dev:mobile
 ## Automated Testing
 
 ### Type Checking
+
 ```bash
 pnpm check-types --filter=mobile
 ```
@@ -208,11 +214,13 @@ pnpm check-types --filter=mobile
 Expected: ✅ No errors
 
 ### Component Tests (If Added)
+
 ```bash
 pnpm test --filter=mobile
 ```
 
 Sample test structure:
+
 ```typescript
 import { render, fireEvent } from '@testing-library/react-native'
 import { OnboardingScreen } from '@buttergolf/app'
@@ -244,6 +252,7 @@ describe('OnboardingScreen', () => {
 ## Screenshot Testing
 
 ### iOS Screenshots
+
 ```bash
 # Run simulator
 open -a Simulator
@@ -254,6 +263,7 @@ open -a Simulator
 ```
 
 Capture:
+
 1. Initial view (carousel at start)
 2. Carousel mid-scroll
 3. Skip button pressed state
@@ -261,6 +271,7 @@ Capture:
 5. Sign in button pressed state
 
 ### Android Screenshots
+
 ```bash
 # Run emulator
 emulator -avd Pixel_7_Pro_API_34
@@ -272,27 +283,32 @@ emulator -avd Pixel_7_Pro_API_34
 ## Common Issues & Solutions
 
 ### Carousel Not Animating
+
 - **Check**: Reduce motion is disabled
 - **Check**: Animation started in useEffect
 - **Check**: Reanimated plugin in babel.config.js
 - **Solution**: Clear Metro cache: `expo start --clear`
 
 ### Type Errors
+
 - **Check**: Dependencies installed correctly
 - **Check**: Tamagui config exports properly
 - **Solution**: Run `pnpm install` and `pnpm db:generate`
 
 ### Safe Area Not Working
+
 - **Check**: useSafeAreaInsets imported
 - **Check**: Provider wraps component
 - **Solution**: Ensure react-native-safe-area-context installed
 
 ### Button Press Not Working
+
 - **Check**: Callbacks passed to component
 - **Check**: No z-index issues blocking touches
 - **Solution**: Add console.log to verify callbacks
 
 ### OAuth Fails
+
 - **Check**: EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY set
 - **Check**: Clerk dashboard configured
 - **Solution**: Verify environment variables loaded
@@ -325,6 +341,7 @@ Expected performance metrics:
 This comprehensive testing checklist ensures the onboarding screen works perfectly across all devices, accessibility settings, and edge cases. Complete each section before considering the feature production-ready.
 
 For questions or issues, refer to:
+
 - `/docs/ONBOARDING_SCREEN.md` - Implementation guide
 - `/docs/ONBOARDING_SCREEN_VISUAL.md` - Visual reference
 - `/packages/app/src/features/onboarding/README.md` - Component docs

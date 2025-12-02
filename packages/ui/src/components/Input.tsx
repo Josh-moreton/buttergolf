@@ -17,79 +17,84 @@
  * ```
  */
 
-import { styled, GetProps, Input as TamaguiInput, type InputProps as TamaguiInputProps } from 'tamagui'
+import {
+  styled,
+  GetProps,
+  Input as TamaguiInput,
+  type InputProps as TamaguiInputProps,
+} from "tamagui";
 
 export const Input = styled(TamaguiInput, {
-  name: 'Input',
+  name: "Input",
 
   // Base styles
-  backgroundColor: '$surface',
+  backgroundColor: "$surface",
   borderWidth: 1,
-  borderColor: '$fieldBorder',
+  borderColor: "$fieldBorder",
   borderRadius: 24,
-  color: '$text',
-  fontFamily: '$body',
+  color: "$text",
+  fontFamily: "$body",
   outlineWidth: 0,
 
   // Focus styles (using border for better cross-platform support)
   focusStyle: {
-    borderColor: '$fieldBorderFocus',
+    borderColor: "$fieldBorderFocus",
     borderWidth: 2,
   },
 
   // Hover styles
   hoverStyle: {
-    borderColor: '$fieldBorderHover',
+    borderColor: "$fieldBorderHover",
   },
 
   // Disabled styles
   disabledStyle: {
     opacity: 0.5,
-    cursor: 'not-allowed',
-    backgroundColor: '$backgroundPress',
-    borderColor: '$fieldBorderDisabled',
+    cursor: "not-allowed",
+    backgroundColor: "$backgroundPress",
+    borderColor: "$fieldBorderDisabled",
   },
 
   variants: {
     size: {
       sm: {
-        height: '$inputSm',
-        paddingHorizontal: '$2.5',
-        fontSize: '$3',
+        height: "$inputSm",
+        paddingHorizontal: "$2.5",
+        fontSize: "$3",
       },
       md: {
-        height: '$inputMd',
-        paddingHorizontal: '$3',
-        fontSize: '$4',
+        height: "$inputMd",
+        paddingHorizontal: "$3",
+        fontSize: "$4",
       },
       lg: {
-        height: '$inputLg',
-        paddingHorizontal: '$4',
-        fontSize: '$5',
+        height: "$inputLg",
+        paddingHorizontal: "$4",
+        fontSize: "$5",
       },
     },
 
     error: {
       true: {
-        borderColor: '$error',
+        borderColor: "$error",
 
         focusStyle: {
-          borderColor: '$error',
+          borderColor: "$error",
           borderWidth: 2,
         },
 
         hoverStyle: {
-          borderColor: '$errorDark',
+          borderColor: "$errorDark",
         },
       },
     },
 
     success: {
       true: {
-        borderColor: '$success',
+        borderColor: "$success",
 
         focusStyle: {
-          borderColor: '$success',
+          borderColor: "$success",
           borderWidth: 2,
         },
       },
@@ -97,15 +102,16 @@ export const Input = styled(TamaguiInput, {
 
     fullWidth: {
       true: {
-        width: '100%',
+        width: "100%",
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 // Export type that includes BOTH our custom variants AND all base Tamagui Input props
-export type InputProps = GetProps<typeof Input> & Omit<TamaguiInputProps, keyof GetProps<typeof Input>>
+export type InputProps = GetProps<typeof Input> &
+  Omit<TamaguiInputProps, keyof GetProps<typeof Input>>;

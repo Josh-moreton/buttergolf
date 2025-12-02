@@ -15,11 +15,11 @@ Edit `/pnpm-workspace.yaml`:
 ```yaml
 catalog:
   # React Ecosystem - CHANGE THESE LINES:
-  "react": "^18.3.1"                  # Was: 19.2.0
-  "react-dom": "^18.3.1"              # Was: 19.2.0
-  "@types/react": "^18.3.12"          # Was: ^19.2.0
-  "@types/react-dom": "^18.3.1"       # Was: ^19.2.0
-  
+  "react": "^18.3.1" # Was: 19.2.0
+  "react-dom": "^18.3.1" # Was: 19.2.0
+  "@types/react": "^18.3.12" # Was: ^19.2.0
+  "@types/react-dom": "^18.3.1" # Was: ^19.2.0
+
   # Everything else stays the same:
   "react-native": "0.82.1"
   "react-native-web": "^0.21.2"
@@ -50,6 +50,7 @@ pnpm check-types
 ### Remove ALL `{...{ as any }}` Patterns
 
 Files to clean:
+
 1. `apps/web/src/app/_components/header/MarketplaceHeader.tsx`
 2. `apps/web/src/app/_components/header/DesktopMenu.tsx`
 3. `apps/web/src/app/_components/AuthHeader.tsx`
@@ -87,7 +88,9 @@ Do this for ALL instances of `{...{ ... as any }}`.
 ```tsx
 // Should just work:
 <Row gap="md" align="center" paddingHorizontal="$4">
-  <Text color="primary" fontSize={18}>Hello</Text>
+  <Text color="primary" fontSize={18}>
+    Hello
+  </Text>
 </Row>
 
 // No errors, no workarounds, pure Tamagui
@@ -126,6 +129,7 @@ From official Tamagui documentation:
 > "You can pass any prop that is supported by the component you are wrapping in styled."
 
 This means:
+
 - ✅ Variants work (gap, align, color)
 - ✅ Raw props work (fontSize, padding, backgroundColor)
 - ✅ Media queries work ($gtMd={{ ... }})

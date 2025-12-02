@@ -36,7 +36,9 @@ export function StepIndicator({
             flex={1}
             height={4}
             borderRadius="$full"
-            backgroundColor={isActiveOrCompleted ? "$spicedClementine" : "$cloudMist"}
+            backgroundColor={
+              isActiveOrCompleted ? "$spicedClementine" : "$cloudMist"
+            }
             opacity={getOpacity(stepNumber)}
           />
         );

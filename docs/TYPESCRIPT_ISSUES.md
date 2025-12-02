@@ -3,6 +3,7 @@
 ## Current Status: ✅ UI Package Fully Type-Safe
 
 The `@buttergolf/ui` package passes all type checks:
+
 - Main code: `tsc --noEmit` ✅
 - Test code: `tsc --noEmit -p tsconfig.test.json` ✅
 - All 28 tests pass ✅
@@ -12,7 +13,7 @@ The `@buttergolf/ui` package passes all type checks:
 The web app has 4 type errors that **predate this PR** and are unrelated to the testing infrastructure:
 
 1. `FavoritesClient.tsx` - Missing `HorizontalProductCard` import
-2. `HorizontalProductCard.tsx` - Property access on `never` type  
+2. `HorizontalProductCard.tsx` - Property access on `never` type
 3. `OfferDetailClient.tsx` (x2) - Missing `brand` property
 
 These should be fixed in a separate PR focused on the offers/favorites feature.
@@ -27,6 +28,7 @@ The web app has `typescript.ignoreBuildErrors: true` in `next.config.js` due to:
 2. **React 19 + Tamagui edge cases** - Some Tamagui components have minor type mismatches with React 19's stricter types
 
 **This is safe because:**
+
 - ESLint catches logic errors
 - Vitest tests catch runtime issues
 - Build output is correct (types don't affect runtime)
@@ -54,8 +56,9 @@ Key insight: We augment `@vitest/expect` module (not `vitest`) because Vitest v4
 
 ```typescript
 // packages/ui/vitest.d.ts
-declare module '@vitest/expect' {
-  interface Assertion<T = any> extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+declare module "@vitest/expect" {
+  interface Assertion<T = any>
+    extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
 }
 ```
 

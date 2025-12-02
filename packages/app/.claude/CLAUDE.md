@@ -58,7 +58,7 @@ export const routes = {
 } as const;
 
 export type RouteKey = keyof typeof routes;
-export type Route = typeof routes[RouteKey];
+export type Route = (typeof routes)[RouteKey];
 ```
 
 ### Using Solito Links
@@ -99,11 +99,7 @@ export function Component() {
 
   // useLink returns { href, onPress, accessibilityRole }
   // Spread onto Pressable/Button or use onPress directly
-  return (
-    <Button onPress={linkProps.onPress}>
-      View Courses
-    </Button>
-  );
+  return <Button onPress={linkProps.onPress}>View Courses</Button>;
 }
 
 // With parameters
@@ -201,9 +197,7 @@ export function CourseListScreen({
         </Link>
       ))}
 
-      {onRefresh && (
-        <Button onPress={onRefresh}>Refresh</Button>
-      )}
+      {onRefresh && <Button onPress={onRefresh}>Refresh</Button>}
     </Column>
   );
 }
@@ -239,9 +233,7 @@ export function CourseDetailScreen({
 }: CourseDetailScreenProps) {
   const [courseId] = useParam("id"); // Type-safe parameter reading
 
-  const [course, setCourse] = useState<Course | null>(
-    initialCourse || null
-  );
+  const [course, setCourse] = useState<Course | null>(initialCourse || null);
   const [loading, setLoading] = useState(!initialCourse);
 
   useEffect(() => {
@@ -320,7 +312,7 @@ function CourseDetailWrapper({ route }) {
 
   useEffect(() => {
     fetch(`https://api.buttergolf.com/courses/${route.params.id}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setCourse);
   }, [route.params.id]);
 
@@ -330,7 +322,7 @@ function CourseDetailWrapper({ route }) {
 // In Stack Navigator
 <Stack.Screen name="CourseDetail">
   {({ route }) => <CourseDetailWrapper route={route} />}
-</Stack.Screen>
+</Stack.Screen>;
 ```
 
 ## Component Patterns
@@ -360,10 +352,7 @@ export function Component() {
         </Text>
       </Card>
 
-      <Input
-        size="$5"
-        placeholder="Enter text"
-      />
+      <Input size="$5" placeholder="Enter text" />
 
       <Row gap="$sm">
         <Button size="$5" backgroundColor="$primary">
@@ -395,27 +384,15 @@ export function BookingFormScreen() {
 
   return (
     <Column gap="$md" padding="$lg">
-      <Input
-        size="$5"
-        placeholder="Date"
-        value={date}
-        onChangeText={setDate}
-      />
-      <Input
-        size="$5"
-        placeholder="Time"
-        value={time}
-        onChangeText={setTime}
-      />
+      <Input size="$5" placeholder="Date" value={date} onChangeText={setDate} />
+      <Input size="$5" placeholder="Time" value={time} onChangeText={setTime} />
       <Input
         size="$5"
         placeholder="Players"
         value={String(players)}
         onChangeText={(text) => setPlayers(Number(text))}
       />
-      <Button onPress={handleSubmit}>
-        Book Tee Time
-      </Button>
+      <Button onPress={handleSubmit}>Book Tee Time</Button>
     </Column>
   );
 }
@@ -565,17 +542,12 @@ import { Platform } from "react-native";
 import { Text } from "@buttergolf/ui";
 
 export function Component() {
-  return (
-    <Text>
-      Platform: {Platform.OS === "web" ? "Web" : "Mobile"}
-    </Text>
-  );
+  return <Text>Platform: {Platform.OS === "web" ? "Web" : "Mobile"}</Text>;
 }
 
 // Conditional imports
-const ImagePicker = Platform.OS !== "web"
-  ? require("expo-image-picker").ImagePicker
-  : null;
+const ImagePicker =
+  Platform.OS !== "web" ? require("expo-image-picker").ImagePicker : null;
 ```
 
 ## Testing
@@ -596,7 +568,7 @@ describe("CourseListScreen", () => {
     const { getByText } = render(
       <TamaguiProvider config={config}>
         <CourseListScreen courses={mockCourses} />
-      </TamaguiProvider>
+      </TamaguiProvider>,
     );
 
     expect(getByText("Pebble Beach")).toBeTruthy();
@@ -653,9 +625,7 @@ export function FormScreen({ onSubmit }) {
       <Input
         size="$5"
         value={formData.name}
-        onChangeText={(text) =>
-          setFormData({ ...formData, name: text })
-        }
+        onChangeText={(text) => setFormData({ ...formData, name: text })}
       />
       <Button onPress={handleSubmit}>Submit</Button>
     </Column>
@@ -685,9 +655,7 @@ export function Screen({ error }) {
         <Text color="$error" size="$6">
           Error: {error.message}
         </Text>
-        <Button onPress={() => window.location.reload()}>
-          Retry
-        </Button>
+        <Button onPress={() => window.location.reload()}>Retry</Button>
       </Column>
     );
   }

@@ -11,6 +11,7 @@ This document outlines strategies to enforce proper usage of variant-based style
 ### Strategy
 
 Create custom ESLint rules that detect and warn/error when:
+
 1. Raw Tamagui props are used on styled components from `@buttergolf/ui`
 2. Type casts like `as any` are used to bypass type checking
 3. Non-variant props are used (e.g., `fontSize={14}` instead of `size="sm"`)
@@ -39,20 +40,25 @@ Create a custom ESLint plugin specifically for ButterGolf component usage.
 
 module.exports = {
   meta: {
-    type: 'problem',
+    type: "problem",
     docs: {
-      description: 'Disallow raw Tamagui props on styled components',
-      category: 'Best Practices',
+      description: "Disallow raw Tamagui props on styled components",
+      category: "Best Practices",
       recommended: true,
     },
-    fixable: 'code',
+    fixable: "code",
     messages: {
-      rawPropOnStyledComponent: 'Use variant prop "{{variant}}" instead of raw prop "{{prop}}" on {{component}}',
-      rawFontSize: 'Use size variant (xs/sm/md/lg/xl) instead of fontSize on Text component',
-      rawFontWeight: 'Use weight variant (normal/medium/semibold/bold) instead of fontWeight on Text component',
-      rawJustifyContent: 'Use justify variant instead of justifyContent on Row/Column',
-      rawAlignItems: 'Use align variant instead of alignItems on Row/Column',
-      rawGap: 'Use gap variant (xs/sm/md/lg/xl) instead of gap="$N" on Row/Column',
+      rawPropOnStyledComponent:
+        'Use variant prop "{{variant}}" instead of raw prop "{{prop}}" on {{component}}',
+      rawFontSize:
+        "Use size variant (xs/sm/md/lg/xl) instead of fontSize on Text component",
+      rawFontWeight:
+        "Use weight variant (normal/medium/semibold/bold) instead of fontWeight on Text component",
+      rawJustifyContent:
+        "Use justify variant instead of justifyContent on Row/Column",
+      rawAlignItems: "Use align variant instead of alignItems on Row/Column",
+      rawGap:
+        'Use gap variant (xs/sm/md/lg/xl) instead of gap="$N" on Row/Column',
     },
     schema: [],
   },
@@ -60,15 +66,24 @@ module.exports = {
   create(context) {
     // Track imports from @buttergolf/ui
     const styledComponents = new Set();
-    
+
     return {
       ImportDeclaration(node) {
-        if (node.source.value === '@buttergolf/ui') {
-          node.specifiers.forEach(spec => {
+        if (node.source.value === "@buttergolf/ui") {
+          node.specifiers.forEach((spec) => {
             if (spec.imported) {
               const name = spec.imported.name;
               // Track known styled components
-              if (['Row', 'Column', 'Text', 'Heading', 'Label', 'Container'].includes(name)) {
+              if (
+                [
+                  "Row",
+                  "Column",
+                  "Text",
+                  "Heading",
+                  "Label",
+                  "Container",
+                ].includes(name)
+              ) {
                 styledComponents.add(name);
               }
             }
@@ -78,21 +93,21 @@ module.exports = {
 
       JSXOpeningElement(node) {
         const componentName = node.name.name;
-        
+
         // Only check if this is a styled component we're tracking
         if (!styledComponents.has(componentName)) return;
 
-        node.attributes.forEach(attr => {
-          if (attr.type !== 'JSXAttribute') return;
-          
+        node.attributes.forEach((attr) => {
+          if (attr.type !== "JSXAttribute") return;
+
           const propName = attr.name.name;
-          
+
           // Check for raw props on Text components
-          if (componentName === 'Text' || componentName === 'Heading') {
-            if (propName === 'fontSize') {
+          if (componentName === "Text" || componentName === "Heading") {
+            if (propName === "fontSize") {
               context.report({
                 node: attr,
-                messageId: 'rawFontSize',
+                messageId: "rawFontSize",
                 fix(fixer) {
                   // Suggest size variant based on fontSize value
                   const value = attr.value?.expression?.value;
@@ -101,13 +116,14 @@ module.exports = {
                 },
               });
             }
-            
-            if (propName === 'fontWeight') {
+
+            if (propName === "fontWeight") {
               context.report({
                 node: attr,
-                messageId: 'rawFontWeight',
+                messageId: "rawFontWeight",
                 fix(fixer) {
-                  const value = attr.value?.expression?.value || attr.value?.value;
+                  const value =
+                    attr.value?.expression?.value || attr.value?.value;
                   const weightVariant = mapFontWeightToVariant(value);
                   return fixer.replaceText(attr, `weight="${weightVariant}"`);
                 },
@@ -115,15 +131,18 @@ module.exports = {
             }
 
             // Check for token colors instead of variants
-            if (propName === 'color' && attr.value?.expression?.value?.startsWith('$')) {
+            if (
+              propName === "color" &&
+              attr.value?.expression?.value?.startsWith("$")
+            ) {
               const tokenColor = attr.value.expression.value;
               const colorVariant = mapTokenToColorVariant(tokenColor);
               if (colorVariant) {
                 context.report({
                   node: attr,
-                  messageId: 'rawPropOnStyledComponent',
+                  messageId: "rawPropOnStyledComponent",
                   data: {
-                    prop: 'color',
+                    prop: "color",
                     variant: colorVariant,
                     component: componentName,
                   },
@@ -136,35 +155,40 @@ module.exports = {
           }
 
           // Check for raw props on layout components
-          if (componentName === 'Row' || componentName === 'Column') {
-            if (propName === 'justifyContent') {
+          if (componentName === "Row" || componentName === "Column") {
+            if (propName === "justifyContent") {
               context.report({
                 node: attr,
-                messageId: 'rawJustifyContent',
+                messageId: "rawJustifyContent",
                 fix(fixer) {
-                  const value = attr.value?.expression?.value || attr.value?.value;
+                  const value =
+                    attr.value?.expression?.value || attr.value?.value;
                   const justifyVariant = mapJustifyContentToVariant(value);
                   return fixer.replaceText(attr, `justify="${justifyVariant}"`);
                 },
               });
             }
 
-            if (propName === 'alignItems') {
+            if (propName === "alignItems") {
               context.report({
                 node: attr,
-                messageId: 'rawAlignItems',
+                messageId: "rawAlignItems",
                 fix(fixer) {
-                  const value = attr.value?.expression?.value || attr.value?.value;
+                  const value =
+                    attr.value?.expression?.value || attr.value?.value;
                   const alignVariant = mapAlignItemsToVariant(value);
                   return fixer.replaceText(attr, `align="${alignVariant}"`);
                 },
               });
             }
 
-            if (propName === 'gap' && attr.value?.expression?.value?.startsWith('$')) {
+            if (
+              propName === "gap" &&
+              attr.value?.expression?.value?.startsWith("$")
+            ) {
               context.report({
                 node: attr,
-                messageId: 'rawGap',
+                messageId: "rawGap",
                 fix(fixer) {
                   const tokenGap = attr.value.expression.value;
                   const gapVariant = mapTokenToGapVariant(tokenGap);
@@ -182,74 +206,85 @@ module.exports = {
 // Helper functions for mapping
 function mapFontSizeToVariant(fontSize) {
   const map = {
-    10: 'xs', 12: 'xs', 13: 'xs',
-    14: 'sm', 15: 'sm',
-    16: 'md', 18: 'md',
-    20: 'lg', 22: 'lg',
-    24: 'xl', 28: 'xl',
+    10: "xs",
+    12: "xs",
+    13: "xs",
+    14: "sm",
+    15: "sm",
+    16: "md",
+    18: "md",
+    20: "lg",
+    22: "lg",
+    24: "xl",
+    28: "xl",
   };
-  return map[fontSize] || 'md';
+  return map[fontSize] || "md";
 }
 
 function mapFontWeightToVariant(weight) {
   const map = {
-    '400': 'normal',
-    '500': 'medium',
-    '600': 'semibold',
-    '700': 'bold',
-    '800': 'bold', // bold is closest
+    400: "normal",
+    500: "medium",
+    600: "semibold",
+    700: "bold",
+    800: "bold", // bold is closest
   };
-  return map[weight] || 'normal';
+  return map[weight] || "normal";
 }
 
 function mapTokenToColorVariant(token) {
   const map = {
-    '$text': 'default',
-    '$textSecondary': 'secondary',
-    '$textTertiary': 'tertiary',
-    '$textMuted': 'muted',
-    '$textInverse': 'inverse',
-    '$primary': 'primary',
-    '$error': 'error',
-    '$success': 'success',
-    '$warning': 'warning',
-    '$info': 'primary', // closest match
+    $text: "default",
+    $textSecondary: "secondary",
+    $textTertiary: "tertiary",
+    $textMuted: "muted",
+    $textInverse: "inverse",
+    $primary: "primary",
+    $error: "error",
+    $success: "success",
+    $warning: "warning",
+    $info: "primary", // closest match
   };
   return map[token];
 }
 
 function mapJustifyContentToVariant(value) {
   const map = {
-    'flex-start': 'start',
-    'center': 'center',
-    'flex-end': 'end',
-    'space-between': 'between',
-    'space-around': 'around',
-    'space-evenly': 'evenly',
+    "flex-start": "start",
+    center: "center",
+    "flex-end": "end",
+    "space-between": "between",
+    "space-around": "around",
+    "space-evenly": "evenly",
   };
-  return map[value] || 'start';
+  return map[value] || "start";
 }
 
 function mapAlignItemsToVariant(value) {
   const map = {
-    'flex-start': 'start',
-    'center': 'center',
-    'flex-end': 'end',
-    'stretch': 'stretch',
-    'baseline': 'baseline',
+    "flex-start": "start",
+    center: "center",
+    "flex-end": "end",
+    stretch: "stretch",
+    baseline: "baseline",
   };
-  return map[value] || 'start';
+  return map[value] || "start";
 }
 
 function mapTokenToGapVariant(token) {
   const map = {
-    '$2': 'xs', '$xs': 'xs',
-    '$3': 'sm', '$sm': 'sm',
-    '$4': 'md', '$md': 'md',
-    '$5': 'lg', '$lg': 'lg',
-    '$6': 'xl', '$xl': 'xl',
+    $2: "xs",
+    $xs: "xs",
+    $3: "sm",
+    $sm: "sm",
+    $4: "md",
+    $md: "md",
+    $5: "lg",
+    $lg: "lg",
+    $6: "xl",
+    $xl: "xl",
   };
-  return map[token] || 'md';
+  return map[token] || "md";
 }
 ```
 
@@ -262,15 +297,17 @@ function mapTokenToGapVariant(token) {
 
 module.exports = {
   meta: {
-    type: 'problem',
+    type: "problem",
     docs: {
-      description: 'Disallow type cast workarounds on component props',
-      category: 'Best Practices',
+      description: "Disallow type cast workarounds on component props",
+      category: "Best Practices",
       recommended: true,
     },
     messages: {
-      noTypeCast: 'Do not use "as any" type cast. Use proper variant props instead.',
-      noSpreadWithTypeCast: 'Do not use spread operator with type cast {...{ prop: value as any }}. Use direct prop assignment.',
+      noTypeCast:
+        'Do not use "as any" type cast. Use proper variant props instead.',
+      noSpreadWithTypeCast:
+        "Do not use spread operator with type cast {...{ prop: value as any }}. Use direct prop assignment.",
     },
     schema: [],
   },
@@ -279,25 +316,25 @@ module.exports = {
     return {
       JSXAttribute(node) {
         // Check for {...{ prop: value as any }} pattern
-        if (node.type === 'JSXSpreadAttribute') {
+        if (node.type === "JSXSpreadAttribute") {
           const sourceCode = context.getSourceCode();
           const text = sourceCode.getText(node);
-          
-          if (text.includes('as any')) {
+
+          if (text.includes("as any")) {
             context.report({
               node,
-              messageId: 'noSpreadWithTypeCast',
+              messageId: "noSpreadWithTypeCast",
             });
           }
         }
 
         // Check for prop={value as any} pattern
-        if (node.value?.expression?.type === 'TSAsExpression') {
+        if (node.value?.expression?.type === "TSAsExpression") {
           const asExpression = node.value.expression;
-          if (asExpression.typeAnnotation?.type === 'TSAnyKeyword') {
+          if (asExpression.typeAnnotation?.type === "TSAnyKeyword") {
             context.report({
               node,
-              messageId: 'noTypeCast',
+              messageId: "noTypeCast",
             });
           }
         }
@@ -314,15 +351,15 @@ module.exports = {
 
 module.exports = {
   rules: {
-    'no-raw-props-on-styled-components': require('./rules/no-raw-props-on-styled-components'),
-    'no-type-cast-workarounds': require('./rules/no-type-cast-workarounds'),
+    "no-raw-props-on-styled-components": require("./rules/no-raw-props-on-styled-components"),
+    "no-type-cast-workarounds": require("./rules/no-type-cast-workarounds"),
   },
   configs: {
     recommended: {
-      plugins: ['buttergolf'],
+      plugins: ["buttergolf"],
       rules: {
-        'buttergolf/no-raw-props-on-styled-components': 'error',
-        'buttergolf/no-type-cast-workarounds': 'error',
+        "buttergolf/no-raw-props-on-styled-components": "error",
+        "buttergolf/no-type-cast-workarounds": "error",
       },
     },
   },
@@ -348,7 +385,7 @@ module.exports = {
 
 ```javascript
 // packages/eslint-config/base.js
-import buttergolfPlugin from 'eslint-plugin-buttergolf';
+import buttergolfPlugin from "eslint-plugin-buttergolf";
 
 export const config = [
   // ... existing config
@@ -357,8 +394,8 @@ export const config = [
       buttergolf: buttergolfPlugin,
     },
     rules: {
-      'buttergolf/no-raw-props-on-styled-components': 'error',
-      'buttergolf/no-type-cast-workarounds': 'error',
+      "buttergolf/no-raw-props-on-styled-components": "error",
+      "buttergolf/no-type-cast-workarounds": "error",
     },
   },
 ];
@@ -377,19 +414,22 @@ export const config = [
   {
     rules: {
       // Disallow @ts-ignore and @ts-expect-error
-      '@typescript-eslint/ban-ts-comment': ['error', {
-        'ts-ignore': true,
-        'ts-expect-error': 'allow-with-description',
-      }],
-      
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        {
+          "ts-ignore": true,
+          "ts-expect-error": "allow-with-description",
+        },
+      ],
+
       // Disallow explicit any
-      '@typescript-eslint/no-explicit-any': 'error',
-      
+      "@typescript-eslint/no-explicit-any": "error",
+
       // Enforce consistent type definitions
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-      
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+
       // Disallow unnecessary type assertions
-      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
     },
   },
 ];
@@ -402,6 +442,7 @@ export const config = [
 ### Strategy
 
 Improve TypeScript types to:
+
 1. Make variant props required when styled components are used
 2. Provide better intellisense/autocomplete for variant options
 3. Create strict types that reject raw props
@@ -418,112 +459,124 @@ Create wrapper types that only allow variant props:
 ```typescript
 // packages/ui/src/types/variants.ts
 
-import type { GetProps } from 'tamagui'
-import type { Row, Column, Text, Heading } from '../components'
+import type { GetProps } from "tamagui";
+import type { Row, Column, Text, Heading } from "../components";
 
 /**
  * Extract only variant props from a styled component
  */
-type VariantProps<T> = Pick<T, {
-  [K in keyof T]: K extends 'variants' ? never : K
-}[keyof T]>
+type VariantProps<T> = Pick<
+  T,
+  {
+    [K in keyof T]: K extends "variants" ? never : K;
+  }[keyof T]
+>;
 
 /**
  * Strict Row props - only variants allowed
  */
 export type StrictRowProps = {
-  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline'
-  justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
-  wrap?: boolean
-  fullWidth?: boolean
+  gap?: "xs" | "sm" | "md" | "lg" | "xl";
+  align?: "start" | "center" | "end" | "stretch" | "baseline";
+  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+  wrap?: boolean;
+  fullWidth?: boolean;
 } & {
   // Allow base layout props that aren't covered by variants
-  flex?: number
-  width?: string | number
-  height?: string | number
-  padding?: string | number
-  margin?: string | number
-  backgroundColor?: string
-  borderRadius?: string | number
-  position?: 'absolute' | 'relative' | 'fixed' | 'sticky'
-  zIndex?: number
-  opacity?: number
+  flex?: number;
+  width?: string | number;
+  height?: string | number;
+  padding?: string | number;
+  margin?: string | number;
+  backgroundColor?: string;
+  borderRadius?: string | number;
+  position?: "absolute" | "relative" | "fixed" | "sticky";
+  zIndex?: number;
+  opacity?: number;
   // Media queries
-  $gtXs?: Partial<StrictRowProps>
-  $gtSm?: Partial<StrictRowProps>
-  $gtMd?: Partial<StrictRowProps>
-  $gtLg?: Partial<StrictRowProps>
+  $gtXs?: Partial<StrictRowProps>;
+  $gtSm?: Partial<StrictRowProps>;
+  $gtMd?: Partial<StrictRowProps>;
+  $gtLg?: Partial<StrictRowProps>;
   // Add children
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 /**
  * Strict Column props - only variants allowed
  */
 export type StrictColumnProps = {
-  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  align?: 'start' | 'center' | 'end' | 'stretch'
-  justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
-  fullWidth?: boolean
-  fullHeight?: boolean
+  gap?: "xs" | "sm" | "md" | "lg" | "xl";
+  align?: "start" | "center" | "end" | "stretch";
+  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+  fullWidth?: boolean;
+  fullHeight?: boolean;
 } & {
   // Allow base layout props
-  flex?: number
-  width?: string | number
-  height?: string | number
-  padding?: string | number
-  margin?: string | number
-  backgroundColor?: string
-  borderRadius?: string | number
-  position?: 'absolute' | 'relative' | 'fixed' | 'sticky'
-  zIndex?: number
-  opacity?: number
+  flex?: number;
+  width?: string | number;
+  height?: string | number;
+  padding?: string | number;
+  margin?: string | number;
+  backgroundColor?: string;
+  borderRadius?: string | number;
+  position?: "absolute" | "relative" | "fixed" | "sticky";
+  zIndex?: number;
+  opacity?: number;
   // Media queries
-  $gtXs?: Partial<StrictColumnProps>
-  $gtSm?: Partial<StrictColumnProps>
-  $gtMd?: Partial<StrictColumnProps>
-  $gtLg?: Partial<StrictColumnProps>
+  $gtXs?: Partial<StrictColumnProps>;
+  $gtSm?: Partial<StrictColumnProps>;
+  $gtMd?: Partial<StrictColumnProps>;
+  $gtLg?: Partial<StrictColumnProps>;
   // Add children
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 /**
  * Strict Text props - only variants allowed
  */
 export type StrictTextProps = {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  color?: 'default' | 'secondary' | 'tertiary' | 'muted' | 'inverse' | 'primary' | 'error' | 'success' | 'warning'
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold'
-  align?: 'left' | 'center' | 'right'
-  truncate?: boolean
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  color?:
+    | "default"
+    | "secondary"
+    | "tertiary"
+    | "muted"
+    | "inverse"
+    | "primary"
+    | "error"
+    | "success"
+    | "warning";
+  weight?: "normal" | "medium" | "semibold" | "bold";
+  align?: "left" | "center" | "right";
+  truncate?: boolean;
 } & {
   // Allow specific non-variant props
-  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
-  textDecoration?: 'none' | 'underline' | 'line-through'
-  lineHeight?: string | number
-  numberOfLines?: number
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
+  lineHeight?: string | number;
+  numberOfLines?: number;
   // For edge cases where variant sizes don't suffice
-  fontSize?: number // Use sparingly, prefer size variants
-  fontWeight?: string // Use sparingly, prefer weight variants
+  fontSize?: number; // Use sparingly, prefer size variants
+  fontWeight?: string; // Use sparingly, prefer weight variants
   // Media queries
-  $gtXs?: Partial<StrictTextProps>
-  $gtSm?: Partial<StrictTextProps>
-  $gtMd?: Partial<StrictTextProps>
-  $gtLg?: Partial<StrictTextProps>
+  $gtXs?: Partial<StrictTextProps>;
+  $gtSm?: Partial<StrictTextProps>;
+  $gtMd?: Partial<StrictTextProps>;
+  $gtLg?: Partial<StrictTextProps>;
   // Add children
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 /**
  * Strict Heading props
  */
 export type StrictHeadingProps = {
-  level: 1 | 2 | 3 | 4 | 5 | 6
-  color?: 'default' | 'primary' | 'secondary'
-  align?: 'left' | 'center' | 'right'
-  children?: React.ReactNode
-}
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  color?: "default" | "primary" | "secondary";
+  align?: "left" | "center" | "right";
+  children?: React.ReactNode;
+};
 ```
 
 ##### 2. Type Guards for Runtime Validation
@@ -536,7 +589,7 @@ export type StrictHeadingProps = {
  */
 export function isVariantProp<T extends string>(
   prop: string,
-  validVariants: readonly T[]
+  validVariants: readonly T[],
 ): prop is T {
   return (validVariants as readonly string[]).includes(prop);
 }
@@ -544,28 +597,35 @@ export function isVariantProp<T extends string>(
 /**
  * Validate Row/Column props at runtime
  */
-export function validateLayoutProps(props: Record<string, any>, componentName: 'Row' | 'Column') {
+export function validateLayoutProps(
+  props: Record<string, any>,
+  componentName: "Row" | "Column",
+) {
   const invalidProps: string[] = [];
-  
+
   // Check for raw props that should be variants
-  if ('justifyContent' in props) {
-    invalidProps.push('justifyContent (use justify variant instead)');
+  if ("justifyContent" in props) {
+    invalidProps.push("justifyContent (use justify variant instead)");
   }
-  if ('alignItems' in props) {
-    invalidProps.push('alignItems (use align variant instead)');
+  if ("alignItems" in props) {
+    invalidProps.push("alignItems (use align variant instead)");
   }
-  if ('gap' in props && typeof props.gap === 'string' && props.gap.startsWith('$')) {
-    invalidProps.push('gap with token value (use gap variant: xs/sm/md/lg/xl)');
+  if (
+    "gap" in props &&
+    typeof props.gap === "string" &&
+    props.gap.startsWith("$")
+  ) {
+    invalidProps.push("gap with token value (use gap variant: xs/sm/md/lg/xl)");
   }
-  
+
   if (invalidProps.length > 0) {
     console.warn(
       `[${componentName}] Invalid props detected:\n` +
-      invalidProps.map(p => `  - ${p}`).join('\n') +
-      '\nPlease use variant props instead of raw Tamagui props.'
+        invalidProps.map((p) => `  - ${p}`).join("\n") +
+        "\nPlease use variant props instead of raw Tamagui props.",
     );
   }
-  
+
   return invalidProps.length === 0;
 }
 
@@ -574,25 +634,33 @@ export function validateLayoutProps(props: Record<string, any>, componentName: '
  */
 export function validateTextProps(props: Record<string, any>) {
   const invalidProps: string[] = [];
-  
-  if ('fontSize' in props && typeof props.fontSize === 'number') {
+
+  if ("fontSize" in props && typeof props.fontSize === "number") {
     // Allow fontSize for edge cases, but warn
-    console.info('[Text] Using fontSize directly. Consider using size variant if possible.');
-  }
-  if ('fontWeight' in props && typeof props.fontWeight === 'string') {
-    invalidProps.push('fontWeight (use weight variant instead)');
-  }
-  if ('color' in props && typeof props.color === 'string' && props.color.startsWith('$')) {
-    invalidProps.push('color with token (use color variant: default/secondary/primary/etc)');
-  }
-  
-  if (invalidProps.length > 0) {
-    console.warn(
-      '[Text] Invalid props detected:\n' +
-      invalidProps.map(p => `  - ${p}`).join('\n')
+    console.info(
+      "[Text] Using fontSize directly. Consider using size variant if possible.",
     );
   }
-  
+  if ("fontWeight" in props && typeof props.fontWeight === "string") {
+    invalidProps.push("fontWeight (use weight variant instead)");
+  }
+  if (
+    "color" in props &&
+    typeof props.color === "string" &&
+    props.color.startsWith("$")
+  ) {
+    invalidProps.push(
+      "color with token (use color variant: default/secondary/primary/etc)",
+    );
+  }
+
+  if (invalidProps.length > 0) {
+    console.warn(
+      "[Text] Invalid props detected:\n" +
+        invalidProps.map((p) => `  - ${p}`).join("\n"),
+    );
+  }
+
   return invalidProps.length === 0;
 }
 ```
@@ -650,42 +718,43 @@ export type ColumnProps = StrictColumnProps
  */
 export type WithVariants<
   TVariants extends Record<string, any>,
-  TBase extends Record<string, any> = {}
-> = TVariants & TBase & {
-  children?: React.ReactNode
-}
+  TBase extends Record<string, any> = {},
+> = TVariants &
+  TBase & {
+    children?: React.ReactNode;
+  };
 
 /**
  * Media query props for responsive variants
  */
 export type ResponsiveVariantProps<T> = T & {
-  $gtXs?: Partial<T>
-  $gtSm?: Partial<T>
-  $gtMd?: Partial<T>
-  $gtLg?: Partial<T>
-  $gtXl?: Partial<T>
-}
+  $gtXs?: Partial<T>;
+  $gtSm?: Partial<T>;
+  $gtMd?: Partial<T>;
+  $gtLg?: Partial<T>;
+  $gtXl?: Partial<T>;
+};
 
 /**
  * Example usage in component definition
  */
 type CardVariants = {
-  variant?: 'elevated' | 'outlined' | 'filled' | 'ghost'
-  padding?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  interactive?: boolean
-  fullWidth?: boolean
-}
+  variant?: "elevated" | "outlined" | "filled" | "ghost";
+  padding?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  interactive?: boolean;
+  fullWidth?: boolean;
+};
 
 type CardBaseProps = {
-  backgroundColor?: string
-  borderRadius?: number | string
-  onPress?: () => void
-}
+  backgroundColor?: string;
+  borderRadius?: number | string;
+  onPress?: () => void;
+};
 
 export type CardProps = WithVariants<
   ResponsiveVariantProps<CardVariants>,
   CardBaseProps
->
+>;
 ```
 
 ---
@@ -771,96 +840,96 @@ Create JSON schemas for better autocomplete:
 ```typescript
 // packages/ui/src/types/__tests__/guards.test.ts
 
-import { validateLayoutProps, validateTextProps } from '../guards'
+import { validateLayoutProps, validateTextProps } from "../guards";
 
-describe('validateLayoutProps', () => {
+describe("validateLayoutProps", () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation()
-  })
+    jest.spyOn(console, "warn").mockImplementation();
+  });
 
   afterEach(() => {
-    jest.restoreAllMocks()
-  })
+    jest.restoreAllMocks();
+  });
 
-  it('should warn on justifyContent usage', () => {
-    const props = { justifyContent: 'center' }
-    validateLayoutProps(props, 'Row')
-    
+  it("should warn on justifyContent usage", () => {
+    const props = { justifyContent: "center" };
+    validateLayoutProps(props, "Row");
+
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('justifyContent')
-    )
-  })
+      expect.stringContaining("justifyContent"),
+    );
+  });
 
-  it('should warn on alignItems usage', () => {
-    const props = { alignItems: 'center' }
-    validateLayoutProps(props, 'Column')
-    
+  it("should warn on alignItems usage", () => {
+    const props = { alignItems: "center" };
+    validateLayoutProps(props, "Column");
+
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('alignItems')
-    )
-  })
+      expect.stringContaining("alignItems"),
+    );
+  });
 
-  it('should warn on token gap usage', () => {
-    const props = { gap: '$3' }
-    validateLayoutProps(props, 'Row')
-    
+  it("should warn on token gap usage", () => {
+    const props = { gap: "$3" };
+    validateLayoutProps(props, "Row");
+
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('gap with token')
-    )
-  })
+      expect.stringContaining("gap with token"),
+    );
+  });
 
-  it('should not warn on valid variant props', () => {
-    const props = { gap: 'md', align: 'center', justify: 'between' }
-    validateLayoutProps(props, 'Row')
-    
-    expect(console.warn).not.toHaveBeenCalled()
-  })
-})
+  it("should not warn on valid variant props", () => {
+    const props = { gap: "md", align: "center", justify: "between" };
+    validateLayoutProps(props, "Row");
 
-describe('validateTextProps', () => {
+    expect(console.warn).not.toHaveBeenCalled();
+  });
+});
+
+describe("validateTextProps", () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation()
-    jest.spyOn(console, 'info').mockImplementation()
-  })
+    jest.spyOn(console, "warn").mockImplementation();
+    jest.spyOn(console, "info").mockImplementation();
+  });
 
   afterEach(() => {
-    jest.restoreAllMocks()
-  })
+    jest.restoreAllMocks();
+  });
 
-  it('should info on fontSize usage', () => {
-    const props = { fontSize: 64 }
-    validateTextProps(props)
-    
+  it("should info on fontSize usage", () => {
+    const props = { fontSize: 64 };
+    validateTextProps(props);
+
     expect(console.info).toHaveBeenCalledWith(
-      expect.stringContaining('fontSize directly')
-    )
-  })
+      expect.stringContaining("fontSize directly"),
+    );
+  });
 
-  it('should warn on fontWeight usage', () => {
-    const props = { fontWeight: '700' }
-    validateTextProps(props)
-    
+  it("should warn on fontWeight usage", () => {
+    const props = { fontWeight: "700" };
+    validateTextProps(props);
+
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('fontWeight')
-    )
-  })
+      expect.stringContaining("fontWeight"),
+    );
+  });
 
-  it('should warn on token color usage', () => {
-    const props = { color: '$textMuted' }
-    validateTextProps(props)
-    
+  it("should warn on token color usage", () => {
+    const props = { color: "$textMuted" };
+    validateTextProps(props);
+
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('color with token')
-    )
-  })
+      expect.stringContaining("color with token"),
+    );
+  });
 
-  it('should not warn on valid variant props', () => {
-    const props = { size: 'md', color: 'primary', weight: 'bold' }
-    validateTextProps(props)
-    
-    expect(console.warn).not.toHaveBeenCalled()
-  })
-})
+  it("should not warn on valid variant props", () => {
+    const props = { size: "md", color: "primary", weight: "bold" };
+    validateTextProps(props);
+
+    expect(console.warn).not.toHaveBeenCalled();
+  });
+});
 ```
 
 ---
@@ -871,7 +940,7 @@ describe('validateTextProps', () => {
 
 Create a guide for developers on using variant props:
 
-```markdown
+````markdown
 // packages/ui/DEVELOPER_GUIDE.md
 
 # ButterGolf UI Component Developer Guide
@@ -883,7 +952,7 @@ All styled components in `@buttergolf/ui` use **variant props** instead of raw T
 ### ✅ Correct Usage
 
 ```tsx
-import { Row, Column, Text } from '@buttergolf/ui'
+import { Row, Column, Text } from "@buttergolf/ui";
 
 function MyComponent() {
   return (
@@ -897,9 +966,10 @@ function MyComponent() {
         </Text>
       </Column>
     </Row>
-  )
+  );
 }
 ```
+````
 
 ### ❌ Incorrect Usage (Will Error)
 
@@ -918,6 +988,7 @@ function MyComponent() {
 ### Variant Reference
 
 #### Layout (Row, Column)
+
 - `gap`: xs | sm | md | lg | xl
 - `align`: start | center | end | stretch | baseline
 - `justify`: start | center | end | between | around | evenly
@@ -925,6 +996,7 @@ function MyComponent() {
 - `fullWidth`: boolean
 
 #### Text
+
 - `size`: xs | sm | md | lg | xl
 - `color`: default | secondary | tertiary | muted | inverse | primary | error | success | warning
 - `weight`: normal | medium | semibold | bold
@@ -937,12 +1009,16 @@ For sizes beyond variant ranges:
 
 ```tsx
 // Option 1: Use variant + override (preferred for one-offs)
-<Text size="xl" fontSize={64}>Hero Text</Text>
+<Text size="xl" fontSize={64}>
+  Hero Text
+</Text>;
 
 // Option 2: Import raw Text for specific cases
-import { Text as TamaguiText } from 'tamagui'
+import { Text as TamaguiText } from "tamagui";
 
-<TamaguiText fontSize={64} fontWeight="800">Hero Text</TamaguiText>
+<TamaguiText fontSize={64} fontWeight="800">
+  Hero Text
+</TamaguiText>;
 ```
 
 ### ESLint Integration
@@ -956,6 +1032,7 @@ pnpm lint --fix
 # Check for errors
 pnpm lint
 ```
+
 ```
 
 ---
@@ -991,22 +1068,22 @@ pnpm lint
 ## Benefits
 
 ### For Developers
-✅ Clear error messages when using wrong props  
-✅ Auto-fix capabilities for common issues  
-✅ Better IntelliSense and autocomplete  
-✅ Consistent patterns across codebase  
+✅ Clear error messages when using wrong props
+✅ Auto-fix capabilities for common issues
+✅ Better IntelliSense and autocomplete
+✅ Consistent patterns across codebase
 
 ### For Code Quality
-✅ Enforces design system usage  
-✅ Prevents type casting workarounds  
-✅ Catches issues at lint time, not runtime  
-✅ Reduces TypeScript errors in IDE  
+✅ Enforces design system usage
+✅ Prevents type casting workarounds
+✅ Catches issues at lint time, not runtime
+✅ Reduces TypeScript errors in IDE
 
 ### For Maintenance
-✅ Easier refactoring with strict types  
-✅ Clear upgrade path for new variants  
-✅ Self-documenting component APIs  
-✅ Reduces cognitive load for new developers  
+✅ Easier refactoring with strict types
+✅ Clear upgrade path for new variants
+✅ Self-documenting component APIs
+✅ Reduces cognitive load for new developers
 
 ---
 
@@ -1057,3 +1134,4 @@ By combining custom ESLint rules with improved TypeScript types, we can:
 4. **Enforce** our design system patterns
 
 This creates a robust, maintainable component library that's hard to use incorrectly and easy to use correctly.
+```

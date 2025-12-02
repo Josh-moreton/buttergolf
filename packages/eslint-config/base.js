@@ -49,6 +49,24 @@ export const config = [
           ],
         },
       ],
+      // ========================================================================
+      // BRITISH SPELLING ENFORCEMENT
+      // Use British spellings in identifiers. Note: CSS properties (color, center)
+      // and JavaScript APIs (behavior in scrollIntoView) cannot be changed.
+      // ========================================================================
+      "no-restricted-syntax": [
+        "warn",
+        {
+          // Flag 'favorite' in identifiers (variables, functions, properties)
+          selector: "Identifier[name=/favorite/i]",
+          message: "Use British spelling 'favourite' instead of 'favorite'.",
+        },
+        {
+          // Flag 'favorites' in identifiers
+          selector: "Identifier[name=/favorites/i]",
+          message: "Use British spelling 'favourites' instead of 'favorites'.",
+        },
+      ],
     },
   },
   {

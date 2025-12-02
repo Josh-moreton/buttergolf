@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useCallback, useRef } from "react";
-import { Column, Row, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import {
+  Column,
+  Row,
+  ScrollView,
+  Text,
+  Button,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
 import { ArrowLeft, ShieldCheck, Smartphone } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -32,36 +40,45 @@ export function TwoFactorScreen({
   // Refs for each input to handle focus
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
-  const handleDigitChange = useCallback((index: number, value: string) => {
-    // Only allow single digit
-    const digit = value.replace(/[^0-9]/g, "").slice(-1);
+  const handleDigitChange = useCallback(
+    (index: number, value: string) => {
+      // Only allow single digit
+      const digit = value.replace(/[^0-9]/g, "").slice(-1);
 
-    setCode(prev => {
-      const newCode = [...prev];
-      newCode[index] = digit;
-      return newCode;
-    });
+      setCode((prev) => {
+        const newCode = [...prev];
+        newCode[index] = digit;
+        return newCode;
+      });
 
-    // Auto-advance to next input
-    if (digit && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
+      // Auto-advance to next input
+      if (digit && index < 5) {
+        inputRefs.current[index + 1]?.focus();
+      }
 
-    // Clear error when typing
-    if (error) {
-      setError(null);
-    }
-  }, [error]);
+      // Clear error when typing
+      if (error) {
+        setError(null);
+      }
+    },
+    [error],
+  );
 
-  const handleKeyPress = useCallback((index: number, key: string) => {
-    // Handle backspace - go to previous input
-    if (key === "Backspace" && !code[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  }, [code]);
+  const handleKeyPress = useCallback(
+    (index: number, key: string) => {
+      // Handle backspace - go to previous input
+      if (key === "Backspace" && !code[index] && index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    },
+    [code],
+  );
 
   const handlePaste = useCallback((pastedText: string) => {
-    const digits = pastedText.replace(/[^0-9]/g, "").slice(0, 6).split("");
+    const digits = pastedText
+      .replace(/[^0-9]/g, "")
+      .slice(0, 6)
+      .split("");
     if (digits.length > 0) {
       const newCode = ["", "", "", "", "", ""];
       digits.forEach((digit, i) => {
@@ -111,8 +128,10 @@ export function TwoFactorScreen({
       console.error("[TwoFactor] Error:", err);
       const errorMessage = err instanceof Error ? err.message : String(err);
 
-      if (errorMessage.includes("verification_code_invalid") ||
-          errorMessage.includes("incorrect_code")) {
+      if (
+        errorMessage.includes("verification_code_invalid") ||
+        errorMessage.includes("incorrect_code")
+      ) {
         setError(mapClerkErrorToMessage("verification_code_invalid"));
       } else if (errorMessage.includes("verification_code_expired")) {
         setError(mapClerkErrorToMessage("verification_code_expired"));
@@ -165,7 +184,13 @@ export function TwoFactorScreen({
 
           {/* Header */}
           <Column gap="$2" alignItems="center">
-            <Heading level={1} size="$8" fontWeight="700" color="$text" textAlign="center">
+            <Heading
+              level={1}
+              size="$8"
+              fontWeight="700"
+              color="$text"
+              textAlign="center"
+            >
               Two-Factor Authentication
             </Heading>
             <Text size="$5" color="$textSecondary" textAlign="center">
@@ -175,10 +200,7 @@ export function TwoFactorScreen({
 
           {/* Error Display */}
           {error && (
-            <AuthErrorDisplay
-              error={error}
-              onDismiss={() => setError(null)}
-            />
+            <AuthErrorDisplay error={error} onDismiss={() => setError(null)} />
           )}
 
           {/* Code Input Grid */}
@@ -203,7 +225,9 @@ export function TwoFactorScreen({
                     }}
                     value={digit}
                     onChangeText={(text) => handleDigitChange(index, text)}
-                    onKeyPress={({ nativeEvent }) => handleKeyPress(index, nativeEvent.key)}
+                    onKeyPress={({ nativeEvent }) =>
+                      handleKeyPress(index, nativeEvent.key)
+                    }
                     keyboardType="number-pad"
                     maxLength={1}
                     editable={!isSubmitting}
@@ -251,7 +275,11 @@ export function TwoFactorScreen({
             disabled={isSubmitting || fullCode.length !== 6}
             opacity={isSubmitting || fullCode.length !== 6 ? 0.7 : 1}
           >
-            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Verify Code"}
+            {isSubmitting ? (
+              <Spinner size="sm" color="$textInverse" />
+            ) : (
+              "Verify Code"
+            )}
           </Button>
 
           {/* Help Text */}
@@ -259,8 +287,14 @@ export function TwoFactorScreen({
             <Text size="$4" color="$textSecondary" textAlign="center">
               {"Can't access your authenticator?"}
             </Text>
-            <Text size="$3" color="$textMuted" textAlign="center" paddingHorizontal="$4">
-              Contact support if you've lost access to your two-factor authentication device
+            <Text
+              size="$3"
+              color="$textMuted"
+              textAlign="center"
+              paddingHorizontal="$4"
+            >
+              Contact support if you've lost access to your two-factor
+              authentication device
             </Text>
           </Column>
         </Column>

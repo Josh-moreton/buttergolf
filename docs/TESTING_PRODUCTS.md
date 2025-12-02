@@ -15,16 +15,19 @@ The application has been updated to replace mock product data with real data fro
 Before testing, ensure you have:
 
 1. **Database Setup**: PostgreSQL database with connection string in `packages/db/.env`
+
    ```bash
    DATABASE_URL="postgresql://user:password@localhost:5432/buttergolf"
    ```
 
 2. **Prisma Client Generated**:
+
    ```bash
    pnpm db:generate
    ```
 
 3. **Database Schema Applied**:
+
    ```bash
    pnpm db:push
    # or for production migrations
@@ -39,6 +42,7 @@ Before testing, ensure you have:
 ## Testing Web Implementation
 
 1. **Start the web app**:
+
    ```bash
    pnpm dev:web
    ```
@@ -58,16 +62,19 @@ Before testing, ensure you have:
 ## Testing Mobile Implementation
 
 1. **Configure API URL** in `apps/mobile/.env`:
+
    ```bash
    EXPO_PUBLIC_API_URL=http://localhost:3000
    ```
-   
+
    Or for physical device testing:
+
    ```bash
    EXPO_PUBLIC_API_URL=http://YOUR_COMPUTER_IP:3000
    ```
 
 2. **Start the mobile app**:
+
    ```bash
    pnpm dev:mobile
    ```
@@ -95,9 +102,11 @@ Before testing, ensure you have:
 Fetches recent products for mobile clients.
 
 **Query Parameters**:
+
 - `limit` (optional): Number of products to return (default: 12)
 
 **Response**:
+
 ```json
 [
   {
@@ -112,6 +121,7 @@ Fetches recent products for mobile clients.
 ```
 
 **Example**:
+
 ```bash
 curl http://localhost:3000/api/products/recent?limit=5
 ```
@@ -123,6 +133,7 @@ curl http://localhost:3000/api/products/recent?limit=5
 Server-side function to fetch products for Next.js pages.
 
 **Usage**:
+
 ```typescript
 import { getRecentProducts } from "@/app/actions/products";
 
@@ -137,7 +148,7 @@ export default async function Page() {
 All product types are defined in `packages/app/src/types/product.ts`:
 
 ```typescript
-export type ProductCondition = 
+export type ProductCondition =
   | "NEW"
   | "LIKE_NEW"
   | "EXCELLENT"
@@ -162,6 +173,7 @@ export interface ProductCardData {
 **Symptom**: Empty state shows even though products exist in database
 
 **Solutions**:
+
 1. Check database connection: `pnpm db:studio`
 2. Verify products have `isSold: false`
 3. Check server logs for Prisma errors
@@ -172,6 +184,7 @@ export interface ProductCardData {
 **Symptom**: Loading state persists or "No products available yet" shows
 
 **Solutions**:
+
 1. Check `EXPO_PUBLIC_API_URL` is set correctly
 2. Verify web server is running on the configured URL
 3. Check mobile console for fetch errors
@@ -183,6 +196,7 @@ export interface ProductCardData {
 **Symptom**: TypeScript errors about ProductCondition
 
 **Solutions**:
+
 1. Use uppercase enum values: `"EXCELLENT"` not `"Excellent"`
 2. Run type check: `pnpm check-types`
 3. Ensure all packages use the shared type from `@buttergolf/app`

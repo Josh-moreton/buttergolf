@@ -77,9 +77,7 @@ export default function RootLayout({
               <ButterHeader />
               <AppPromoBanner />
               {/* Main content wrapper */}
-              <main className="bg-white">
-                {children}
-              </main>
+              <main className="bg-white">{children}</main>
             </CartProvider>
           </FavouritesProvider>
         </NextTamaguiProvider>

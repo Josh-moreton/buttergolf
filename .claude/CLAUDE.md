@@ -46,6 +46,7 @@ buttergolf/
 ### Package Naming
 
 All internal packages use the `@buttergolf/` namespace:
+
 - `@buttergolf/ui`
 - `@buttergolf/app`
 - `@buttergolf/db`
@@ -55,6 +56,7 @@ All internal packages use the `@buttergolf/` namespace:
 ### Next.js 16+ Middleware Convention
 
 **CRITICAL**: Next.js 16+ uses `src/proxy.ts` NOT `src/middleware.ts`
+
 - The middleware file convention was renamed
 - Always use `proxy.ts` for route protection and middleware logic
 
@@ -63,11 +65,13 @@ All internal packages use the `@buttergolf/` namespace:
 **This is a Solito-based monorepo, NOT Expo Router**
 
 #### How Navigation Works:
+
 - **Web**: Next.js App Router (file-based routing in `app/` directory)
 - **Mobile**: Expo + React Navigation (manual route registration in `App.tsx`)
 - **Shared**: Solito translates between platforms automatically
 
 #### Package Structure:
+
 - `packages/app/` - Shared cross-platform screens and business logic
   - Uses `solito/link` and `solito/navigation` for platform-agnostic navigation
   - Example: `packages/app/src/features/categories/category-list-screen.tsx`
@@ -85,6 +89,7 @@ All internal packages use the `@buttergolf/` namespace:
 3. **Export** from `packages/app/src/index.ts`
 4. **Web (automatic)**: Create matching route in `apps/web/src/app/[route]/page.tsx`
 5. **Mobile (manual)**: Register in `apps/mobile/App.tsx`:
+
    ```typescript
    // Add to linking config
    const linking = {
@@ -158,27 +163,27 @@ $pureWhite: #FFFFFF         // Base white
 
 ```tsx
 // Text colors
-$text           // Primary text
-$textSecondary  // Secondary text
-$textTertiary   // Tertiary text
-$textMuted      // Muted/placeholder text
-$textInverse    // Text on dark backgrounds
+$text; // Primary text
+$textSecondary; // Secondary text
+$textTertiary; // Tertiary text
+$textMuted; // Muted/placeholder text
+$textInverse; // Text on dark backgrounds
 
 // Backgrounds
-$background     // Main app background
-$surface        // Surface/card backgrounds
-$card           // Card-specific background
+$background; // Main app background
+$surface; // Surface/card backgrounds
+$card; // Card-specific background
 
 // Borders
-$border         // Default borders
-$borderHover    // Hover state borders
-$borderFocus    // Focus state borders
+$border; // Default borders
+$borderHover; // Hover state borders
+$borderFocus; // Focus state borders
 
 // Status colors
-$success        // Positive actions/states
-$error          // Error states
-$warning        // Warning states
-$info           // Informational states
+$success; // Positive actions/states
+$error; // Error states
+$warning; // Warning states
+$info; // Informational states
 ```
 
 ### Component Usage Patterns
@@ -265,6 +270,7 @@ import { Button } from "@buttergolf/ui";
 **Why this matters:** Using `fontSize` bypasses Tamagui's variant system and causes invisible text on React Native (lineHeight becomes 1.5px instead of proper pixel values from the font config). The ESLint rule `react/forbid-component-props` catches this mistake at development time.
 
 **Error message you'll see:**
+
 ```
 Use size="$token" instead of fontSize prop on Text components.
 fontSize bypasses the Tamagui variant system and causes invisible
@@ -440,6 +446,7 @@ ButterGolf has achieved **95%+ design system compliance** through systematic ref
 ```
 
 **Available Semantic Tokens:**
+
 - Text: `$text`, `$textSecondary`, `$textTertiary`, `$textMuted`, `$textInverse`
 - Backgrounds: `$background`, `$surface`, `$card`
 - Borders: `$border`, `$borderHover`, `$borderFocus`, `$fieldBorder`
@@ -477,6 +484,7 @@ ButterGolf has achieved **95%+ design system compliance** through systematic ref
 ```
 
 **Available Spacing Tokens:**
+
 - `$xs` = 4px
 - `$sm` = 8px
 - `$md` = 16px
@@ -524,6 +532,7 @@ ButterGolf has achieved **95%+ design system compliance** through systematic ref
 ```
 
 **When to Use:**
+
 - VanillaCreamBackground: Section alternation, hero sections, empty states, trust sections
 - LemonHazeBackground: Sidebars, selected states, callout sections
 - LemonHazeCard: Tip cards, info callouts, highlighted content
@@ -655,10 +664,12 @@ Before committing code, verify:
 ### Enforcement
 
 **ESLint Rules:**
+
 - `react/forbid-component-props` - Blocks `fontSize` on Text components
 - Future: `react/forbid-elements` - Will block raw HTML elements
 
 **Type System:**
+
 - TypeScript strict mode catches token typos
 - Tamagui's type system prevents invalid prop combinations
 
@@ -783,6 +794,7 @@ pnpm add @buttergolf/ui --filter mobile
 ### Data Fetching
 
 **Web (Server Components):**
+
 ```tsx
 // app/page.tsx
 import { db } from "@buttergolf/db";
@@ -794,18 +806,20 @@ export default async function Page() {
 ```
 
 **Mobile (Client-side):**
+
 ```tsx
 // App.tsx
 const [data, setData] = useState([]);
 
 useEffect(() => {
   fetch("/api/courses")
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(setData);
 }, []);
 ```
 
 **Shared Screen:**
+
 ```tsx
 // packages/app/src/features/courses/course-list-screen.tsx
 interface CourseListScreenProps {
@@ -816,7 +830,7 @@ interface CourseListScreenProps {
 export function CourseListScreen({ data, onFetchData }: CourseListScreenProps) {
   return (
     <Column gap="$md">
-      {data.map(course => (
+      {data.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}
     </Column>
@@ -827,6 +841,7 @@ export function CourseListScreen({ data, onFetchData }: CourseListScreenProps) {
 ### Authentication (Clerk)
 
 **Web:**
+
 ```tsx
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -838,6 +853,7 @@ export default async function Page() {
 ```
 
 **Mobile:**
+
 ```tsx
 import { useUser } from "@clerk/clerk-expo";
 
@@ -855,8 +871,8 @@ function Screen() {
 
 ```tsx
 // ❌ WRONG - Causes "Cannot find module '.prisma/client/default'" errors
-import { ProductCondition } from '@prisma/client'
-import type { Prisma } from '@prisma/client'
+import { ProductCondition } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 // ✅ CORRECT - Always import from @buttergolf/db
 import { prisma, ProductCondition } from "@buttergolf/db";
@@ -898,12 +914,12 @@ await prisma.course.delete({
 
 ```tsx
 // ❌ WRONG - Causes "SharedArrayBuffer doesn't exist" crash in React Native
-import { JSDOM } from 'jsdom'
-import '@testing-library/jest-dom'
-import { configure } from 'happy-dom'
+import { JSDOM } from "jsdom";
+import "@testing-library/jest-dom";
+import { configure } from "happy-dom";
 
 // ✅ CORRECT - Use React Native Testing Library for mobile
-import { render } from '@testing-library/react-native'
+import { render } from "@testing-library/react-native";
 ```
 
 **Why:** React Native uses Hermes/JSC engines which don't support `SharedArrayBuffer`. Web testing libraries (jsdom, happy-dom) use SharedArrayBuffer and will crash mobile apps.
@@ -999,12 +1015,14 @@ For detailed information about layout patterns and component architecture:
 ### Quick Reference: Layout Patterns
 
 **✅ DO:**
+
 - Use `alignItems` for cross-axis alignment
 - Use `justifyContent` for main-axis alignment
 - Use tokens with `$` prefix (e.g., `gap="$md"`)
 - Use Row/Column for semantic layout
 
 **❌ DON'T:**
+
 - Use removed `align` prop (use `alignItems` instead)
 - Use removed `justify` prop (use `justifyContent` instead)
 - Use gap without `$` prefix (always `gap="$md"`, never `gap="md"`)

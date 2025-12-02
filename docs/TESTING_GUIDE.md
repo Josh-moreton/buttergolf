@@ -50,6 +50,7 @@ pnpm --filter @buttergolf/db prisma migrate status
 ### Migration Details
 
 The migration adds:
+
 - `addresses` table with user shipping addresses
 - `orders` table with payment and shipping info
 - `ShipmentStatus` enum (PENDING, PRE_TRANSIT, IN_TRANSIT, etc.)
@@ -73,11 +74,13 @@ ngrok http 3000
 ### 2. Configure Webhooks
 
 **Stripe Dashboard** (https://dashboard.stripe.com/test/webhooks):
+
 1. Create webhook endpoint: `https://xxxx.ngrok.io/api/stripe/webhook`
 2. Select events: `checkout.session.completed`
 3. Copy webhook signing secret to `STRIPE_WEBHOOK_SECRET`
 
 **EasyPost Dashboard** (https://www.easypost.com/account/webhooks):
+
 1. Create webhook endpoint: `https://xxxx.ngrok.io/api/easypost/webhook`
 2. Select events: `tracker.created`, `tracker.updated`
 3. Copy webhook secret to `EASYPOST_WEBHOOK_SECRET` (optional)
@@ -121,8 +124,8 @@ const sellerAddress = {
   state: "CA",
   zip: "94102",
   country: "US",
-  phone: "415-555-0100"
-}
+  phone: "415-555-0100",
+};
 
 // Buyer address (collected during checkout)
 const buyerAddress = {
@@ -132,11 +135,12 @@ const buyerAddress = {
   state: "CA",
   zip: "90001",
   country: "US",
-  phone: "310-555-0200"
-}
+  phone: "310-555-0200",
+};
 ```
 
 **Test Addresses** (EasyPost sandbox accepts these):
+
 ```typescript
 // Valid test address
 {
@@ -164,17 +168,17 @@ You'll need to implement a checkout button in your product page. For testing:
 
 ```typescript
 // In your product page, add a checkout button that calls:
-const response = await fetch('/api/checkout', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/checkout", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    productId: 'your-product-id',
+    productId: "your-product-id",
     // Shipping address will be collected by Stripe Checkout
-  })
-})
+  }),
+});
 
-const { url } = await response.json()
-window.location.href = url // Redirect to Stripe Checkout
+const { url } = await response.json();
+window.location.href = url; // Redirect to Stripe Checkout
 ```
 
 #### Step 4: Complete Payment
@@ -190,6 +194,7 @@ window.location.href = url // Redirect to Stripe Checkout
 After payment, check:
 
 1. **Stripe Webhook Log** (in your terminal):
+
    ```
    Stripe webhook event received: checkout.session.completed
    Creating EasyPost shipment
@@ -199,9 +204,11 @@ After payment, check:
    ```
 
 2. **Database** (Prisma Studio):
+
    ```bash
    pnpm db:studio
    ```
+
    - Check `orders` table for new order
    - Verify `labelUrl`, `trackingCode`, `carrier` are populated
    - Check `addresses` table for buyer/seller addresses
@@ -233,6 +240,7 @@ EasyPost webhooks are triggered when carrier updates tracking:
 ```
 
 Verify:
+
 - [ ] Orders display correctly
 - [ ] Filter tabs work (All/Purchases/Sales)
 - [ ] Status badges show correct colors
@@ -247,6 +255,7 @@ Verify:
 ```
 
 Verify:
+
 - [ ] Full order details display
 - [ ] Product information correct
 - [ ] Shipping timeline shows timestamps
@@ -267,11 +276,12 @@ const badAddress = {
   street1: "",
   city: "",
   state: "XX",
-  zip: "00000"
-}
+  zip: "00000",
+};
 ```
 
 Expected behavior:
+
 - Order still created with status "PAYMENT_CONFIRMED"
 - Label fields are null
 - Error logged in console
@@ -294,6 +304,7 @@ Expected: `400 Invalid signature`
 Test checkout without product metadata:
 
 Expected:
+
 - Webhook should return `400 Missing metadata`
 - Order not created
 
@@ -311,6 +322,7 @@ Expected: `403 Forbidden` or redirect
 ## Manual Testing Checklist
 
 ### Seller Flow
+
 - [ ] Create product with shipping dimensions
 - [ ] Product appears on marketplace
 - [ ] Buyer completes purchase
@@ -322,6 +334,7 @@ Expected: `403 Forbidden` or redirect
 - [ ] Can view full order details
 
 ### Buyer Flow
+
 - [ ] Browse products
 - [ ] Complete Stripe checkout with shipping address
 - [ ] Redirected to success page
@@ -332,6 +345,7 @@ Expected: `403 Forbidden` or redirect
 - [ ] Receives updates when package ships/delivers
 
 ### Admin/Platform
+
 - [ ] All orders tracked in database
 - [ ] Failed label generation logged
 - [ ] Webhook events processed correctly
@@ -373,6 +387,7 @@ artillery run webhook-test.yml
 ```
 
 Expected:
+
 - All requests return 200 or appropriate error codes
 - No 500 errors
 - Response time < 1s
@@ -384,7 +399,7 @@ Expected:
 Add to your webhook handlers:
 
 ```typescript
-console.log('Full webhook payload:', JSON.stringify(payload, null, 2))
+console.log("Full webhook payload:", JSON.stringify(payload, null, 2));
 ```
 
 ### Check EasyPost Logs
@@ -420,22 +435,27 @@ SELECT id, title, length, width, height, weight FROM products WHERE length IS NO
 ## Common Issues
 
 ### Issue: "Missing EasyPost API key"
+
 - **Fix**: Set `EASYPOST_API_KEY` in environment
 
 ### Issue: "No shipping rates available"
+
 - **Fix**: Check product dimensions are set and reasonable
 - **Fix**: Verify addresses are valid
 
 ### Issue: "Webhook signature verification failed"
+
 - **Fix**: Ensure webhook secret is correct
 - **Fix**: Check ngrok URL matches configured webhook URL
 
 ### Issue: "Order not appearing in UI"
+
 - **Fix**: Check authentication is working
 - **Fix**: Verify order was actually created in database
 - **Fix**: Check user IDs match
 
 ### Issue: "Label URL expired or not working"
+
 - **Fix**: EasyPost labels expire after 30 days
 - **Fix**: Use EasyPost dashboard to regenerate label
 

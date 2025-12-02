@@ -3,10 +3,12 @@
 ## 🎯 Problem Statement
 
 The web app was using an inconsistent routing pattern for category pages:
+
 - **Mobile App**: Used proper RESTful routes `/category/[slug]` (correct)
 - **Web App**: Used query parameter hack `/listings?category=slug` (incorrect)
 
 This architectural inconsistency caused:
+
 - Confusing navigation patterns between platforms
 - Harder to maintain and debug
 - SEO disadvantages (query params vs. clean URLs)
@@ -27,6 +29,7 @@ This architectural inconsistency caused:
 - Generates proper metadata for SEO
 
 **Key Features**:
+
 ```typescript
 // Validates category exists
 const category = getCategoryBySlug(categorySlug);
@@ -129,6 +132,7 @@ Added `textDecoration: 'none'` to Link components wrapping buttons:
 ## 📊 Summary
 
 ### Files Changed: 5
+
 1. **Created**: `apps/web/src/app/category/[slug]/page.tsx` (236 lines)
 2. **Modified**: `apps/web/src/app/_components/header/ButterHeader.tsx`
 3. **Modified**: `apps/web/src/app/_components/marketplace/CategoriesSection.tsx`
@@ -136,12 +140,14 @@ Added `textDecoration: 'none'` to Link components wrapping buttons:
 5. **Modified**: `packages/app/src/components/Hero.tsx`
 
 ### Links Updated: 13 total
+
 - Header navigation: 8 links
 - Categories carousel: 1 dynamic template (all categories)
 - Category grid: 4 featured cards
 - Hero buttons: 2 links (styling fix)
 
 ### Architecture Now Consistent
+
 - ✅ Mobile: `/category/[slug]` → Uses `CategoryListScreen`
 - ✅ Web: `/category/[slug]` → Uses new `page.tsx` handler
 - ✅ Both platforms: Same URL structure, same routing pattern
@@ -151,11 +157,13 @@ Added `textDecoration: 'none'` to Link components wrapping buttons:
 ### Route Resolution Flow
 
 **Before**:
+
 ```
 User clicks "Drivers" → /listings?category=drivers → ListingsPage with category filter
 ```
 
 **After**:
+
 ```
 User clicks "Drivers" → /category/drivers → CategoryPage → ListingsClient
 ```
@@ -163,6 +171,7 @@ User clicks "Drivers" → /category/drivers → CategoryPage → ListingsClient
 ### Data Fetching
 
 The new category page:
+
 1. Validates category slug against database constants
 2. Fetches products with `where: { category: { slug } }`
 3. Computes available filters (brands, price range) for that category
@@ -171,11 +180,13 @@ The new category page:
 ### SEO Benefits
 
 **Before**: `/listings?category=drivers`
+
 - Query parameters aren't indexed as separate pages
 - No category-specific metadata
 - Harder to rank for "golf drivers" searches
 
 **After**: `/category/drivers`
+
 - Clean, semantic URL structure
 - Category-specific page titles and descriptions
 - Better crawlability and indexing
@@ -196,11 +207,13 @@ The new category page:
 ## 🚀 Next Steps
 
 **Immediate**:
+
 1. Test all category pages thoroughly
 2. Verify mobile app still works (should be unaffected)
 3. Check that SEO metadata renders correctly
 
 **Future Improvements**:
+
 1. Consider adding breadcrumbs to category pages
 2. Add related categories section
 3. Implement category-specific featured products
@@ -209,14 +222,17 @@ The new category page:
 ## 📚 Related Files
 
 **Routing Configuration**:
+
 - `packages/app/src/navigation/routes.ts` - Defines category route pattern
 - `apps/mobile/App.tsx` - Mobile linking config (already correct)
 
 **Database**:
+
 - `packages/db/src/categories.ts` - Category constants and validation
 - `packages/db/prisma/schema.prisma` - Category model
 
 **Components**:
+
 - `apps/web/src/app/listings/ListingsClient.tsx` - Reused for category pages
 - `packages/app/src/features/categories/category-list-screen.tsx` - Mobile category screen
 

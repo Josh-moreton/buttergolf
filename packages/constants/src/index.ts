@@ -1,8 +1,8 @@
 /**
  * @buttergolf/constants
- * 
+ *
  * Shared domain constants safe for use across all platforms (web, mobile, server).
  * This package has no external dependencies and can be safely imported in React Native.
  */
 
-export * from './categories';
+export * from "./categories";

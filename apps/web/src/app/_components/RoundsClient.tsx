@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { RoundsScreen } from '@buttergolf/app'
+import { RoundsScreen } from "@buttergolf/app";
 
 export default function RoundsClient() {
-  return <RoundsScreen />
+  return <RoundsScreen />;
 }

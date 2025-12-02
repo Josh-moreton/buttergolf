@@ -39,7 +39,12 @@
  * ```
  */
 
-import { styled, GetProps, TextArea as TamaguiTextArea, type TextAreaProps as TamaguiTextAreaProps } from 'tamagui'
+import {
+  styled,
+  GetProps,
+  TextArea as TamaguiTextArea,
+  type TextAreaProps as TamaguiTextAreaProps,
+} from "tamagui";
 
 /**
  * Base TextArea component with Input-matching styles
@@ -50,84 +55,84 @@ import { styled, GetProps, TextArea as TamaguiTextArea, type TextAreaProps as Ta
  * - Size variants: sm/md/lg matching Input styling
  */
 export const TextArea = styled(TamaguiTextArea, {
-  name: 'TextArea',
+  name: "TextArea",
 
   // Base styles matching Input component
-  backgroundColor: '$surface',
+  backgroundColor: "$surface",
   borderWidth: 1,
-  borderColor: '$fieldBorder',
+  borderColor: "$fieldBorder",
   borderRadius: 24,
-  color: '$text',
-  fontFamily: '$body',
+  color: "$text",
+  fontFamily: "$body",
   outlineWidth: 0,
 
   // TextArea-specific defaults
   minHeight: 80,
-  paddingVertical: '$3',
-  textAlignVertical: 'top', // Align text to top on mobile
+  paddingVertical: "$3",
+  textAlignVertical: "top", // Align text to top on mobile
 
   // Focus styles (using border for better cross-platform support)
   focusStyle: {
-    borderColor: '$fieldBorderFocus',
+    borderColor: "$fieldBorderFocus",
     borderWidth: 2,
   },
 
   // Hover styles
   hoverStyle: {
-    borderColor: '$fieldBorderHover',
+    borderColor: "$fieldBorderHover",
   },
 
   // Disabled styles
   disabledStyle: {
     opacity: 0.5,
-    cursor: 'not-allowed',
-    backgroundColor: '$backgroundPress',
-    borderColor: '$fieldBorderDisabled',
+    cursor: "not-allowed",
+    backgroundColor: "$backgroundPress",
+    borderColor: "$fieldBorderDisabled",
   },
 
   variants: {
     size: {
       sm: {
-        paddingHorizontal: '$2.5',
-        paddingVertical: '$2',
-        fontSize: '$3',
+        paddingHorizontal: "$2.5",
+        paddingVertical: "$2",
+        fontSize: "$3",
         minHeight: 64,
       },
       md: {
-        paddingHorizontal: '$3',
-        paddingVertical: '$3',
-        fontSize: '$4',
+        paddingHorizontal: "$3",
+        paddingVertical: "$3",
+        fontSize: "$4",
         minHeight: 80,
       },
       lg: {
-        paddingHorizontal: '$4',
-        paddingVertical: '$4',
-        fontSize: '$5',
+        paddingHorizontal: "$4",
+        paddingVertical: "$4",
+        fontSize: "$5",
         minHeight: 96,
       },
     },
 
     error: {
       true: {
-        borderColor: '$error',
+        borderColor: "$error",
 
         focusStyle: {
-          borderColor: '$error',
+          borderColor: "$error",
           borderWidth: 2,
         },
 
         hoverStyle: {
-          borderColor: '$errorDark',
+          borderColor: "$errorDark",
         },
       },
     },
 
     success: {
       true: {
-        borderColor: '$success',
+        borderColor: "$success",
 
         focusStyle: {
-          borderColor: '$success',
+          borderColor: "$success",
           borderWidth: 2,
         },
       },
@@ -135,15 +140,16 @@ export const TextArea = styled(TamaguiTextArea, {
 
     fullWidth: {
       true: {
-        width: '100%',
+        width: "100%",
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 // Export type that includes BOTH our custom variants AND all base Tamagui TextArea props
-export type TextAreaProps = GetProps<typeof TextArea> & Omit<TamaguiTextAreaProps, keyof GetProps<typeof TextArea>>
+export type TextAreaProps = GetProps<typeof TextArea> &
+  Omit<TamaguiTextAreaProps, keyof GetProps<typeof TextArea>>;

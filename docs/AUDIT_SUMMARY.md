@@ -8,14 +8,14 @@
 
 ## Quick Stats
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| **Files Analyzed** | 55 | ✅ |
-| **Hardcoded Colors** | 41 | 🟡 |
-| **Hardcoded Sizes** | 31 | 🟡 |
-| **Token Types Used** | 28 | ✅ |
-| **Component Imports** | @buttergolf/ui: 24<br>tamagui: 13 | 🟡 |
-| **Theme Tokens Added** | 15+ | ✅ |
+| Metric                 | Value                             | Status |
+| ---------------------- | --------------------------------- | ------ |
+| **Files Analyzed**     | 55                                | ✅     |
+| **Hardcoded Colors**   | 41                                | 🟡     |
+| **Hardcoded Sizes**    | 31                                | 🟡     |
+| **Token Types Used**   | 28                                | ✅     |
+| **Component Imports**  | @buttergolf/ui: 24<br>tamagui: 13 | 🟡     |
+| **Theme Tokens Added** | 15+                               | ✅     |
 
 ---
 
@@ -68,17 +68,20 @@
 **File**: `scripts/audit-tamagui-usage.js`
 
 Automated script that analyzes:
+
 - Hardcoded color values
 - Hardcoded size values
 - Token usage patterns
 - Component import patterns
 
 **Usage**:
+
 ```bash
 node scripts/audit-tamagui-usage.js
 ```
 
 **Output**:
+
 - Console report with top issues
 - Detailed JSON report for analysis
 - Prioritized recommendations
@@ -90,54 +93,56 @@ node scripts/audit-tamagui-usage.js
 Added semantic tokens for **all** hardcoded colors found:
 
 **Before**:
+
 ```typescript
 const butterGolfColors = {
-    green700: '#0b6b3f',
-    green500: '#13a063',
-    amber400: '#f2b705',
-    bg: '#fbfbf9',
-    cardBg: '#ffffff',
-    text: '#0f1720',
-    muted: '#6b7280',
-}
+  green700: "#0b6b3f",
+  green500: "#13a063",
+  amber400: "#f2b705",
+  bg: "#fbfbf9",
+  cardBg: "#ffffff",
+  text: "#0f1720",
+  muted: "#6b7280",
+};
 ```
 
 **After**:
+
 ```typescript
 const butterGolfColors = {
-    // Primary brand colors
-    green700: '#0b6b3f',
-    green500: '#13a063',
-    amber400: '#f2b705',
-    
-    // Background colors
-    bg: '#fbfbf9',
-    bgGray: '#F7F7F7',      // NEW
-    bgCard: '#F6F7FB',       // NEW
-    cardBg: '#ffffff',
-    
-    // Text colors
-    text: '#0f1720',
-    textDark: '#1C274C',     // NEW
-    muted: '#6b7280',
-    
-    // Accent colors
-    blue: '#3C50E0',         // NEW
-    blueLight: '#93C5FD',    // NEW
-    teal: '#02AAA4',         // NEW
-    red: '#DC2626',          // NEW
-    
-    // Neutral colors
-    gray100: '#dfe6e9',      // NEW
-    gray300: '#b2bec3',      // NEW
-    gray400: '#D1D5DB',      // NEW
-    gray500: '#636e72',      // NEW
-    gray700: '#2d3436',      // NEW
-    
-    // Utility colors
-    accentBlue: '#74b9ff',   // NEW
-    accentPurple: '#a29bfe', // NEW
-}
+  // Primary brand colors
+  green700: "#0b6b3f",
+  green500: "#13a063",
+  amber400: "#f2b705",
+
+  // Background colors
+  bg: "#fbfbf9",
+  bgGray: "#F7F7F7", // NEW
+  bgCard: "#F6F7FB", // NEW
+  cardBg: "#ffffff",
+
+  // Text colors
+  text: "#0f1720",
+  textDark: "#1C274C", // NEW
+  muted: "#6b7280",
+
+  // Accent colors
+  blue: "#3C50E0", // NEW
+  blueLight: "#93C5FD", // NEW
+  teal: "#02AAA4", // NEW
+  red: "#DC2626", // NEW
+
+  // Neutral colors
+  gray100: "#dfe6e9", // NEW
+  gray300: "#b2bec3", // NEW
+  gray400: "#D1D5DB", // NEW
+  gray500: "#636e72", // NEW
+  gray700: "#2d3436", // NEW
+
+  // Utility colors
+  accentBlue: "#74b9ff", // NEW
+  accentPurple: "#a29bfe", // NEW
+};
 ```
 
 **Impact**: Now every hardcoded color has a semantic token available!
@@ -147,7 +152,9 @@ const butterGolfColors = {
 Created **4 new documentation files**:
 
 #### 📘 TAMAGUI_BEST_PRACTICES.md (11KB)
+
 The **primary reference** for developers:
+
 - All available theme tokens
 - Component creation patterns
 - Styling best practices
@@ -156,7 +163,9 @@ The **primary reference** for developers:
 - Quick reference section
 
 #### 📊 TAMAGUI_USAGE_AUDIT.md (13KB)
+
 The **detailed audit report**:
+
 - Component inventory (55 files)
 - Theme & token compliance analysis
 - Component architecture review
@@ -165,7 +174,9 @@ The **detailed audit report**:
 - Action items with effort estimates
 
 #### 📝 MIGRATION_EXAMPLE.md (8KB)
+
 **Step-by-step migration guide**:
+
 - Real before/after examples
 - Conversion table
 - Common patterns
@@ -173,7 +184,9 @@ The **detailed audit report**:
 - Quick reference
 
 #### 🤝 CONTRIBUTING.md (4KB)
+
 **Development guidelines**:
+
 - Code style rules
 - Tamagui-specific guidelines
 - PR checklist
@@ -192,41 +205,47 @@ Added quick links to all new documentation and Tamagui guidance.
 **Goal**: Migrate high-impact files to use tokens
 
 1. **HeroSectionNew.tsx** (17 issues)
+
    ```diff
    - color="#3C50E0"
    + color="$blue"
-   
+
    - backgroundColor="#1C274C"
    + backgroundColor="$textDark"
-   
+
    - backgroundColor="#F7F7F7"
    + backgroundColor="$bgGray"
    ```
+
    **Effort**: 1 hour  
    **Impact**: High
 
 2. **MarketplaceHeader.tsx** (6 issues)
+
    ```diff
    - backgroundColor="#1C274C"
    + backgroundColor="$textDark"
-   
+
    - color="#93C5FD"
    + color="$blueLight"
-   
+
    - backgroundColor="#DC2626"
    + backgroundColor="$red"
    ```
+
    **Effort**: 45 minutes  
    **Impact**: High
 
 3. **Product Pages** (7 issues)
+
    ```diff
    - color="#3C50E0"
    + color="$blue"
-   
+
    - backgroundColor="#F7F7F7"
    + backgroundColor="$bgGray"
    ```
+
    **Effort**: 30 minutes  
    **Impact**: Medium
 
@@ -276,6 +295,7 @@ Added quick links to all new documentation and Tamagui guidance.
 ## Impact Visualization
 
 ### Before Audit
+
 ```
 ❌ 41 hardcoded colors
 ❌ Inconsistent styling
@@ -285,6 +305,7 @@ Added quick links to all new documentation and Tamagui guidance.
 ```
 
 ### After Phase 1 (2-3 hours)
+
 ```
 ✅ 30/41 colors migrated (73%)
 ✅ High-traffic components fixed
@@ -294,6 +315,7 @@ Added quick links to all new documentation and Tamagui guidance.
 ```
 
 ### After Phase 2 (4-6 hours total)
+
 ```
 ✅ All hardcoded colors resolved
 ✅ Consistent imports
@@ -303,6 +325,7 @@ Added quick links to all new documentation and Tamagui guidance.
 ```
 
 ### After Phase 3 (12-18 hours total)
+
 ```
 ✅ Complete design system
 ✅ Light/dark themes
@@ -341,6 +364,7 @@ Added quick links to all new documentation and Tamagui guidance.
 ## How to Get Started
 
 ### 1. Review the Documentation
+
 ```bash
 # Read best practices first
 open docs/TAMAGUI_BEST_PRACTICES.md
@@ -353,6 +377,7 @@ open docs/TAMAGUI_USAGE_AUDIT.md
 ```
 
 ### 2. Run the Audit
+
 ```bash
 # See current state
 node scripts/audit-tamagui-usage.js
@@ -362,6 +387,7 @@ cat TAMAGUI_AUDIT_REPORT.json
 ```
 
 ### 3. Start Migrating
+
 ```bash
 # Edit a file (e.g., HeroSectionNew.tsx)
 # Replace hardcoded colors with tokens
@@ -382,6 +408,7 @@ node scripts/audit-tamagui-usage.js
 ## Success Criteria
 
 ### Completed ✅
+
 - [x] Audit script created and tested
 - [x] All hardcoded colors have tokens
 - [x] Comprehensive documentation written
@@ -390,6 +417,7 @@ node scripts/audit-tamagui-usage.js
 - [x] README updated
 
 ### Recommended Next Steps
+
 - [ ] Migrate HeroSectionNew.tsx
 - [ ] Migrate MarketplaceHeader.tsx
 - [ ] Migrate product pages
@@ -398,6 +426,7 @@ node scripts/audit-tamagui-usage.js
 - [ ] Create button variants
 
 ### Long-term Goals
+
 - [ ] Implement theme switching
 - [ ] Add visual regression tests
 - [ ] Consolidate duplicate components

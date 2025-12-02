@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Column, ScrollView, Text, Button, Heading, Spinner } from "@buttergolf/ui";
+import {
+  Column,
+  ScrollView,
+  Text,
+  Button,
+  Heading,
+  Spinner,
+} from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -28,12 +35,15 @@ export function ForgotPasswordScreen({
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
 
-  const handleEmailChange = useCallback((newEmail: string) => {
-    setEmail(newEmail);
-    if (emailError) {
-      setEmailError(null);
-    }
-  }, [emailError]);
+  const handleEmailChange = useCallback(
+    (newEmail: string) => {
+      setEmail(newEmail);
+      if (emailError) {
+        setEmailError(null);
+      }
+    },
+    [emailError],
+  );
 
   const handleSubmit = useCallback(async () => {
     setError(null);
@@ -63,15 +73,14 @@ export function ForgotPasswordScreen({
       // Call success to navigate to reset password screen
       onSuccess?.(email);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
 
       if (errorMessage.includes("identifier_not_found")) {
         setError(mapClerkErrorToMessage("identifier_not_found"));
       } else {
         setError(
           errorMessage ||
-          "Failed to process request. Please check your email and try again."
+            "Failed to process request. Please check your email and try again.",
         );
       }
     } finally {
@@ -102,10 +111,7 @@ export function ForgotPasswordScreen({
 
           {/* Error Display */}
           {error && (
-            <AuthErrorDisplay
-              error={error}
-              onDismiss={() => setError(null)}
-            />
+            <AuthErrorDisplay error={error} onDismiss={() => setError(null)} />
           )}
 
           {/* Email Input */}
@@ -136,7 +142,11 @@ export function ForgotPasswordScreen({
             disabled={isSubmitting || !isLoaded}
             opacity={isSubmitting ? 0.7 : 1}
           >
-            {isSubmitting ? <Spinner size="sm" color="$textInverse" /> : "Send Reset Code"}
+            {isSubmitting ? (
+              <Spinner size="sm" color="$textInverse" />
+            ) : (
+              "Send Reset Code"
+            )}
           </Button>
 
           {/* Back Button */}

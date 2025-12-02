@@ -5,6 +5,7 @@
 ### Before This PR ❌
 
 **Mobile Experience Issues:**
+
 ```
 📱 Mobile Web Issues:
 - No viewport optimization
@@ -20,12 +21,13 @@
 ```
 
 **Code State:**
+
 ```typescript
 // layout.tsx - Basic metadata only
 export const metadata: Metadata = {
   title: "ButterGolf",
   description: "P2P Marketplace for Golf Equipment",
-}
+};
 
 // No viewport configuration
 // No mobile optimizations
@@ -33,6 +35,7 @@ export const metadata: Metadata = {
 ```
 
 **Header Issues:**
+
 ```typescript
 // MarketplaceHeader.tsx
 <Row paddingHorizontal="$4" paddingVertical="$4">
@@ -47,6 +50,7 @@ export const metadata: Metadata = {
 ### After This PR ✅
 
 **Mobile Experience Enhanced:**
+
 ```
 📱 Mobile Web Features:
 ✅ Optimized viewport configuration
@@ -62,36 +66,38 @@ export const metadata: Metadata = {
 ```
 
 **Code Improvements:**
+
 ```typescript
 // layout.tsx - Complete mobile metadata
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: '#13a063',
-}
+  themeColor: "#13a063",
+};
 
 export const metadata: Metadata = {
   title: "ButterGolf",
   description: "P2P Marketplace for Golf Equipment",
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'ButterGolf',
+    statusBarStyle: "default",
+    title: "ButterGolf",
   },
   other: {
-    'apple-itunes-app': 'app-id=YOUR_APP_ID',
-    'mobile-web-app-capable': 'yes',
+    "apple-itunes-app": "app-id=YOUR_APP_ID",
+    "mobile-web-app-capable": "yes",
   },
-}
+};
 ```
 
 **Header Improvements:**
+
 ```typescript
 // MarketplaceHeader.tsx - Mobile optimized
-<Row 
+<Row
   paddingHorizontal="$3"
   paddingVertical="$3"
   $md={{ paddingHorizontal: "$4", paddingVertical: "$4" }}
@@ -100,7 +106,7 @@ export const metadata: Metadata = {
   <Row display="none" $md={{ display: "flex" }}>
     {/* Promotional content */}
   </Row>
-  
+
   {/* Touch targets 44px+ */}
   <Row
     padding="$2"
@@ -121,12 +127,14 @@ export const metadata: Metadata = {
 ### App Promotion
 
 **Before:**
+
 - ❌ No app promotion
 - ❌ No installation flow
 - ❌ Users unaware of app
 - ❌ No conversion funnel
 
 **After:**
+
 - ✅ Smart banner with timing
 - ✅ iOS App Store integration
 - ✅ Android PWA install
@@ -139,22 +147,27 @@ export const metadata: Metadata = {
 ### Mobile Metadata
 
 **Before:**
+
 ```html
 <!-- Minimal meta tags -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 **After:**
+
 ```html
 <!-- Complete mobile optimization -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
-<meta name="theme-color" content="#13a063">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ButterGolf">
-<meta name="apple-itunes-app" content="app-id=YOUR_APP_ID">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" href="/manifest.json">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes"
+/>
+<meta name="theme-color" content="#13a063" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="ButterGolf" />
+<meta name="apple-itunes-app" content="app-id=YOUR_APP_ID" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="manifest" href="/manifest.json" />
 ```
 
 ---
@@ -162,12 +175,14 @@ export const metadata: Metadata = {
 ### PWA Support
 
 **Before:**
+
 - ❌ No manifest.json
 - ❌ No service worker
 - ❌ No offline support
 - ❌ No installation
 
 **After:**
+
 ```json
 // manifest.json
 {
@@ -182,12 +197,13 @@ export const metadata: Metadata = {
 
 ```javascript
 // sw.js - Service worker
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-  )
-})
+    caches
+      .match(event.request)
+      .then((response) => response || fetch(event.request)),
+  );
+});
 ```
 
 ---
@@ -195,6 +211,7 @@ self.addEventListener('fetch', (event) => {
 ### Touch Targets
 
 **Before:**
+
 ```typescript
 // Small, hard to tap
 <Row cursor="pointer">
@@ -204,6 +221,7 @@ self.addEventListener('fetch', (event) => {
 ```
 
 **After:**
+
 ```typescript
 // Apple HIG compliant
 <Row
@@ -224,6 +242,7 @@ self.addEventListener('fetch', (event) => {
 ### Header Layout
 
 **Before:**
+
 ```
 ┌─────────────────────────────┐
 │ Free delivery over £100     │ ← Always visible
@@ -233,6 +252,7 @@ self.addEventListener('fetch', (event) => {
 ```
 
 **After:**
+
 ```
 Mobile (< 768px):
 ┌─────────────────────────────┐
@@ -282,6 +302,7 @@ Alternative:
 ## Analytics Visibility
 
 ### Before
+
 ```typescript
 // No analytics for mobile behavior
 // No conversion tracking
@@ -289,6 +310,7 @@ Alternative:
 ```
 
 ### After
+
 ```typescript
 // Complete funnel tracking
 trackEvent('app_banner_shown')           // Impression
@@ -299,6 +321,7 @@ trackEvent('app_store_redirect', {...})  // iOS flow
 ```
 
 **Dashboard Metrics Available:**
+
 - Banner impression rate
 - Click-through rate (CTR)
 - Install conversion rate
@@ -311,6 +334,7 @@ trackEvent('app_store_redirect', {...})  // iOS flow
 ## Code Quality
 
 ### Before
+
 ```typescript
 // Minimal mobile considerations
 // No type safety issues (simple code)
@@ -318,6 +342,7 @@ trackEvent('app_store_redirect', {...})  // iOS flow
 ```
 
 ### After
+
 ```typescript
 // Comprehensive mobile optimizations
 // Type safety (with known React 19 compatibility)
@@ -350,6 +375,7 @@ Impact: Negligible (+0.6%)
 ## Browser Support
 
 **Before:**
+
 ```
 ✅ Desktop Chrome/Firefox/Safari
 ⚠️ Mobile (basic responsive)
@@ -358,6 +384,7 @@ Impact: Negligible (+0.6%)
 ```
 
 **After:**
+
 ```
 ✅ Desktop Chrome/Firefox/Safari
 ✅ iOS Safari 13+ (full support)
@@ -374,6 +401,7 @@ Impact: Negligible (+0.6%)
 ### Lighthouse Scores (Estimated)
 
 **Before:**
+
 ```
 Performance:    85 ⚠️
 Accessibility:  90 ⚠️
@@ -383,6 +411,7 @@ PWA:            0 ❌
 ```
 
 **After (Expected):**
+
 ```
 Performance:    90+ ✅
 Accessibility:  95+ ✅
@@ -396,6 +425,7 @@ PWA:           100 ✅ (Installable)
 ## Deployment Complexity
 
 **Before:**
+
 ```
 Deploy:
 1. Build
@@ -404,6 +434,7 @@ Done ✅
 ```
 
 **After:**
+
 ```
 Deploy:
 1. Build
@@ -421,6 +452,7 @@ Time: +2-4 hours (one-time setup)
 ## Maintenance
 
 **Before:**
+
 ```
 Maintenance:
 - Standard web app updates
@@ -428,6 +460,7 @@ Maintenance:
 ```
 
 **After:**
+
 ```
 Maintenance:
 - Standard web app updates
@@ -447,21 +480,25 @@ Benefits: Significant
 ### Measurable Improvements
 
 **User Engagement:**
+
 - ⬆️ Session duration (expected +15-25%)
 - ⬆️ Return visitor rate (expected +10-20%)
 - ⬇️ Bounce rate (expected -5-10%)
 
 **App Adoption:**
+
 - ⬆️ iOS App Store visits (new metric)
 - ⬆️ Android PWA installs (new metric)
 - ⬆️ Native app installs (attributed)
 
 **Mobile Experience:**
+
 - ⬆️ Mobile conversion rate
 - ⬆️ Pages per session
 - ⬆️ Time on site
 
 **Technical:**
+
 - ⬆️ Lighthouse PWA score (0 → 100)
 - ⬆️ Performance score (+5 points)
 - ⬆️ Accessibility score (+5 points)
@@ -471,11 +508,13 @@ Benefits: Significant
 ## ROI Calculation
 
 **Investment:**
+
 - Development: 8 hours (this PR)
 - Setup: 2-4 hours (one-time)
 - Maintenance: <1 hour/month
 
 **Expected Returns:**
+
 - Mobile conversion: +2-5%
 - App installs: +100-500/month
 - User retention: +10-15%
@@ -488,6 +527,7 @@ Benefits: Significant
 ## Conclusion
 
 ### Before
+
 ❌ Basic mobile web experience
 ❌ No app promotion strategy
 ❌ Suboptimal touch interactions
@@ -495,6 +535,7 @@ Benefits: Significant
 ❌ Missing analytics
 
 ### After
+
 ✅ Professional mobile UX
 ✅ Smart app promotion
 ✅ Touch-optimized interface
@@ -509,4 +550,4 @@ Benefits: Significant
 
 ---
 
-*This comparison demonstrates the significant improvements made to ButterGolf's mobile web experience, bringing it in line with industry leaders like Vinted, Depop, and Airbnb.*
+_This comparison demonstrates the significant improvements made to ButterGolf's mobile web experience, bringing it in line with industry leaders like Vinted, Depop, and Airbnb._

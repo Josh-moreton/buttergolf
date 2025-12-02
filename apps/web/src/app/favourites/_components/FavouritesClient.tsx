@@ -9,7 +9,9 @@ import { HorizontalProductCard } from "./HorizontalProductCard";
 import { MakeOfferModal } from "../../products/[id]/_components/MakeOfferModal";
 
 interface FavouritesResponse {
-  products: Array<ProductCardData & { favouritedAt: string; description?: string }>;
+  products: Array<
+    ProductCardData & { favouritedAt: string; description?: string }
+  >;
   pagination: {
     page: number;
     limit: number;
@@ -25,7 +27,9 @@ export function FavouritesClient() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [offerModalProduct, setOfferModalProduct] = useState<(ProductCardData & { description?: string; price: number }) | null>(null);
+  const [offerModalProduct, setOfferModalProduct] = useState<
+    (ProductCardData & { description?: string; price: number }) | null
+  >(null);
 
   useEffect(() => {
     async function fetchFavourites() {
@@ -48,7 +52,9 @@ export function FavouritesClient() {
         setTotalPages(data.pagination.totalPages);
       } catch (err) {
         console.error("Error fetching favourites:", err);
-        setError(err instanceof Error ? err.message : "Failed to load favourites");
+        setError(
+          err instanceof Error ? err.message : "Failed to load favourites",
+        );
       } finally {
         setLoading(false);
       }
@@ -198,8 +204,14 @@ export function FavouritesClient() {
             <Heading level={2} color="$text" textAlign="center">
               No favourites yet
             </Heading>
-            <Text size="$5" color="$textSecondary" textAlign="center" maxWidth={500}>
-              Browse our marketplace to discover amazing golf equipment and save your favourites here for easy access.
+            <Text
+              size="$5"
+              color="$textSecondary"
+              textAlign="center"
+              maxWidth={500}
+            >
+              Browse our marketplace to discover amazing golf equipment and save
+              your favourites here for easy access.
             </Text>
             <Button
               size="$5"
@@ -242,7 +254,12 @@ export function FavouritesClient() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <Row gap="$md" alignItems="center" justifyContent="center" marginTop="$xl">
+              <Row
+                gap="$md"
+                alignItems="center"
+                justifyContent="center"
+                marginTop="$xl"
+              >
                 <Button
                   size="$4"
                   backgroundColor={page === 1 ? "$backgroundPress" : "$surface"}
@@ -264,7 +281,9 @@ export function FavouritesClient() {
 
                 <Button
                   size="$4"
-                  backgroundColor={page === totalPages ? "$backgroundPress" : "$surface"}
+                  backgroundColor={
+                    page === totalPages ? "$backgroundPress" : "$surface"
+                  }
                   color={page === totalPages ? "$textMuted" : "$text"}
                   borderWidth={1}
                   borderColor="$border"
@@ -285,12 +304,14 @@ export function FavouritesClient() {
       {/* Make Offer Modal */}
       {offerModalProduct && (
         <MakeOfferModal
-          product={{
-            id: offerModalProduct.id,
-            title: offerModalProduct.title,
-            price: offerModalProduct.price,
-            images: [{ url: offerModalProduct.imageUrl }],
-          } as any}
+          product={
+            {
+              id: offerModalProduct.id,
+              title: offerModalProduct.title,
+              price: offerModalProduct.price,
+              images: [{ url: offerModalProduct.imageUrl }],
+            } as any
+          }
           isOpen={!!offerModalProduct}
           onClose={() => setOfferModalProduct(null)}
           onSubmitOffer={handleSubmitOffer}

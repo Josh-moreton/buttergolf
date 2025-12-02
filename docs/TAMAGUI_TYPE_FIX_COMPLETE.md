@@ -5,6 +5,7 @@
 Successfully fixed systemic type definition issues across the entire Tamagui component library, eliminating **ALL** unnecessary escape hatches and type assertions from the codebase.
 
 ### Impact
+
 - **6 component families** now have proper type definitions
 - **11 escape hatch workarounds** removed (position, overflow, background/border)
 - **23 type assertion workarounds** removed (color, size, tone, padding)
@@ -26,6 +27,7 @@ export type ButtonProps = GetProps<typeof Button>; // ❌ Only has size/tone, mi
 ```
 
 This caused:
+
 1. TypeScript errors when using base props like `whiteSpace`, `color`, `padding`
 2. Developers resorted to escape hatches: `{...{ whiteSpace: "nowrap" as any }}`
 3. Poor developer experience: No autocomplete, no type safety
@@ -44,6 +46,7 @@ export type ButtonProps = GetProps<typeof Button> & Omit<TamaguiButtonProps, key
 ```
 
 This pattern:
+
 1. Preserves custom variants from `GetProps<>`
 2. Adds all base component props from `TamaguiButtonProps`
 3. Uses `Omit<>` to prevent conflicts (custom variants override base props)
@@ -54,12 +57,16 @@ This pattern:
 ### 1. Text Component (`/packages/ui/src/components/Text.tsx`)
 
 **Changes:**
+
 - Added imports: `type TextProps as TamaguiTextProps`, `type LabelProps as TamaguiLabelProps`
 - Updated exports:
   ```tsx
-  export type TextProps = GetProps<typeof Text> & Omit<TamaguiTextProps, keyof GetProps<typeof Text>>;
-  export type HeadingProps = GetProps<typeof Heading> & Omit<TamaguiTextProps, keyof GetProps<typeof Heading>>;
-  export type LabelProps = GetProps<typeof Label> & Omit<TamaguiLabelProps, keyof GetProps<typeof Label>>;
+  export type TextProps = GetProps<typeof Text> &
+    Omit<TamaguiTextProps, keyof GetProps<typeof Text>>;
+  export type HeadingProps = GetProps<typeof Heading> &
+    Omit<TamaguiTextProps, keyof GetProps<typeof Heading>>;
+  export type LabelProps = GetProps<typeof Label> &
+    Omit<TamaguiLabelProps, keyof GetProps<typeof Label>>;
   ```
 
 **Impact:** Enabled removal of **17 color type assertions** across `SellerOnboarding.tsx` and `AccountSettingsClient.tsx`
@@ -67,13 +74,18 @@ This pattern:
 ### 2. Card Component (`/packages/ui/src/components/Card.tsx`)
 
 **Changes:**
+
 - Added imports: `type YStackProps`, `type CardProps as TamaguiCardProps`, `type CardHeaderProps as TamaguiCardHeaderProps`, `type CardFooterProps as TamaguiCardFooterProps`
 - Updated exports:
   ```tsx
-  export type CardProps = GetProps<typeof CardBase> & Omit<TamaguiCardProps, keyof GetProps<typeof CardBase>>;
-  export type CardHeaderProps = GetProps<typeof CardHeader> & Omit<TamaguiCardHeaderProps, keyof GetProps<typeof CardHeader>>;
-  export type CardBodyProps = GetProps<typeof CardBody> & Omit<YStackProps, keyof GetProps<typeof CardBody>>;
-  export type CardFooterProps = GetProps<typeof CardFooter> & Omit<TamaguiCardFooterProps, keyof GetProps<typeof CardFooter>>;
+  export type CardProps = GetProps<typeof CardBase> &
+    Omit<TamaguiCardProps, keyof GetProps<typeof CardBase>>;
+  export type CardHeaderProps = GetProps<typeof CardHeader> &
+    Omit<TamaguiCardHeaderProps, keyof GetProps<typeof CardHeader>>;
+  export type CardBodyProps = GetProps<typeof CardBody> &
+    Omit<YStackProps, keyof GetProps<typeof CardBody>>;
+  export type CardFooterProps = GetProps<typeof CardFooter> &
+    Omit<TamaguiCardFooterProps, keyof GetProps<typeof CardFooter>>;
   ```
 
 **Impact:** Enabled direct `padding="$xl"` usage instead of `{...{ padding: "$xl" as any }}`
@@ -81,10 +93,12 @@ This pattern:
 ### 3. Input Component (`/packages/ui/src/components/Input.tsx`)
 
 **Changes:**
+
 - Added import: `type InputProps as TamaguiInputProps`
 - Updated export:
   ```tsx
-  export type InputProps = GetProps<typeof Input> & Omit<TamaguiInputProps, keyof GetProps<typeof Input>>;
+  export type InputProps = GetProps<typeof Input> &
+    Omit<TamaguiInputProps, keyof GetProps<typeof Input>>;
   ```
 
 **Impact:** Full type safety for all Input props (size, error, success, fullWidth + all base props)
@@ -92,10 +106,12 @@ This pattern:
 ### 4. Badge Component (`/packages/ui/src/components/Badge.tsx`)
 
 **Changes:**
+
 - Added import: `type ViewProps`
 - Updated export:
   ```tsx
-  export type BadgeProps = GetProps<typeof Badge> & Omit<ViewProps, keyof GetProps<typeof Badge>>;
+  export type BadgeProps = GetProps<typeof Badge> &
+    Omit<ViewProps, keyof GetProps<typeof Badge>>;
   ```
 - **Critical fix**: Removed `color` and `fontSize` from variants (View doesn't support these props)
 - Variants now only set `backgroundColor` (children should be Text components for styling)
@@ -105,10 +121,12 @@ This pattern:
 ### 5. Spinner Component (`/packages/ui/src/components/Spinner.tsx`)
 
 **Changes:**
+
 - Added import: `type SpinnerProps as TamaguiSpinnerProps`
 - Updated export:
   ```tsx
-  export type SpinnerProps = GetProps<typeof Spinner> & Omit<TamaguiSpinnerProps, keyof GetProps<typeof Spinner>>;
+  export type SpinnerProps = GetProps<typeof Spinner> &
+    Omit<TamaguiSpinnerProps, keyof GetProps<typeof Spinner>>;
   ```
 
 **Impact:** Full type safety for Spinner (size variants + all base props like `color`)
@@ -165,12 +183,14 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Text {...{ color: "secondary" as any }}>` → `<Text color="$textSecondary">`
 
 **SellerOnboarding.tsx** (5 instances):
+
 - Loading state text
 - Error message text (2 instances)
 - Failed state text
 - Description text
 
 **AccountSettingsClient.tsx** (8 instances):
+
 - Active account description
 - Restricted account description
 - Pending review description
@@ -185,6 +205,7 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Button {...{ size: "md" as any, tone: "outline" as any }}>` → `<Button size="md" tone="outline">`
 
 **AccountSettingsClient.tsx**:
+
 - View Dashboard button
 - Update Account button
 - Resolve Issues button
@@ -197,6 +218,7 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Badge variant="success" {...{ size: "md" as any }}>` → `<Badge variant="success" size="md">`
 
 **AccountSettingsClient.tsx**:
+
 - Active Seller badge
 - Restricted badge
 - Pending badge
@@ -206,6 +228,7 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Card variant="elevated" {...{ padding: "$xl" as any }}>` → `<Card variant="elevated" padding="$xl">`
 
 **SellerOnboarding.tsx** (3 instances):
+
 - Loading card
 - Error card
 - Failed card
@@ -215,6 +238,7 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Container {...{ size: "lg" as any, padding: "md" as any }}>` → `<Container size="lg" paddingHorizontal="$md">`
 
 **AccountSettingsClient.tsx** (2 instances):
+
 - Onboarding container
 - Main page container
 
@@ -223,11 +247,13 @@ Already fixed in PR #160 - served as the template for all other component fixes.
 **Pattern:** `<Row {...{ justify: "space-between" as any }}>` → `<Row justifyContent="space-between">`
 
 **AccountSettingsClient.tsx**:
+
 - Seller Account header row
 
 ### Web-Only Assertions (Retained)
 
 **Sheet.tsx** (6 instances - kept with comments):
+
 ```tsx
 tag: "div" as any, // Web-only: React Native doesn't support HTML tags
 position: "fixed" as any, // Web-only: React Native doesn't support fixed positioning
@@ -239,6 +265,7 @@ overflow: "auto" as any, // Web-only: React Native overflow is different
 ## Files Modified
 
 ### Component Type Definitions (6 files)
+
 1. `/packages/ui/src/components/Text.tsx` - Text, Heading, Label types
 2. `/packages/ui/src/components/Card.tsx` - Card, CardHeader, CardBody, CardFooter types
 3. `/packages/ui/src/components/Input.tsx` - Input type
@@ -247,6 +274,7 @@ overflow: "auto" as any, // Web-only: React Native overflow is different
 6. `/packages/ui/src/components/Button.tsx` - Already fixed (reference)
 
 ### Escape Hatch Removals (10 files)
+
 1. `/apps/web/src/components/ProductCardWithCart.tsx` - 2 position escapes
 2. `/apps/web/src/app/_components/header/ButterHeader.tsx` - 2 position escapes
 3. `/apps/web/src/app/_components/header/MarketplaceHeader.tsx` - 3 escapes (1 position, 2 background)
@@ -259,6 +287,7 @@ overflow: "auto" as any, // Web-only: React Native overflow is different
 10. `/packages/ui/src/components/Sheet.tsx` - 3 position/overflow fixes (kept web-only assertions)
 
 ### Other Fixes
+
 - `/packages/ui/src/components/Autocomplete.tsx` - Fixed `useRef` type, onKeyDown handler, overflow (web-only)
 
 ## Verification
@@ -266,12 +295,14 @@ overflow: "auto" as any, // Web-only: React Native overflow is different
 ### Type Checking Results
 
 **Before:**
+
 - 34+ workarounds scattered across codebase
 - No autocomplete for inherited props
 - TypeScript errors when using base props
 - Poor developer experience
 
 **After:**
+
 ```bash
 pnpm check-types # packages/ui
 ✅ PASS - 0 errors
@@ -280,6 +311,7 @@ pnpm check-types # packages/ui
 ### Remaining Type Errors (Outside Scope)
 
 The `@buttergolf/app` package has unrelated type errors:
+
 - Old color tokens (`$butter200`, `$navy800`) in config - needs separate fix
 - Missing SVG type declarations - needs separate fix
 - App-specific type issues (Badge usage, $gray200 references) - needs app package refactor
@@ -294,10 +326,13 @@ These are **not related** to the Tamagui component type fix and should be addres
 // ✅ CORRECT PATTERN
 export const MyComponent = styled(BaseComponent, {
   name: "MyComponent",
-  variants: { /* custom variants */ }
+  variants: {
+    /* custom variants */
+  },
 });
 
-export type MyComponentProps = GetProps<typeof MyComponent> & Omit<BaseComponentProps, keyof GetProps<typeof MyComponent>>;
+export type MyComponentProps = GetProps<typeof MyComponent> &
+  Omit<BaseComponentProps, keyof GetProps<typeof MyComponent>>;
 ```
 
 ### 2. Never Use Escape Hatches
@@ -344,6 +379,7 @@ Always add comments explaining why the assertion is necessary.
 ## Documentation Updates
 
 Updated `.github/copilot-instructions.md`:
+
 - Added critical error prevention guidelines (point 9)
 - Documented proper Tamagui component prop usage patterns
 - Added examples of correct vs incorrect patterns
@@ -369,11 +405,13 @@ For other projects using Tamagui with the same issue:
 ## Next Steps
 
 ### Immediate
+
 - ✅ All fixes committed to branch `fix/tamagui-components-missing-type-declarations`
 - 🔄 Create PR for review
 - 🔄 Merge after approval
 
 ### Follow-up (Separate PRs)
+
 1. Fix `@buttergolf/app` package type errors (old color tokens, SVG declarations)
 2. Refactor Badge to use Text children pattern more consistently
 3. Update component documentation with proper usage examples

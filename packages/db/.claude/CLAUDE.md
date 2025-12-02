@@ -17,23 +17,25 @@ This package provides the Prisma database client and schema for ButterGolf. It u
 
 ```typescript
 // ❌ WRONG - NEVER DO THIS - Causes build failures
-import { PrismaClient } from '@prisma/client'
-import { ProductCondition } from '@prisma/client'
-import type { Prisma } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
+import { ProductCondition } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 // ✅ CORRECT - ALWAYS import from @buttergolf/db
-import { prisma } from '@buttergolf/db'
-import { ProductCondition } from '@buttergolf/db'
-import type { Prisma } from '@buttergolf/db'
+import { prisma } from "@buttergolf/db";
+import { ProductCondition } from "@buttergolf/db";
+import type { Prisma } from "@buttergolf/db";
 ```
 
 **Why This Matters:**
+
 - pnpm uses symlinks and strict module resolution
 - `@prisma/client` looks for `.prisma/client/default` which doesn't exist at expected paths
 - Our custom Prisma output (`packages/db/generated/client`) fixes this
 - Direct `@prisma/client` imports bypass this fix and cause build failures
 
 **Available exports from @buttergolf/db:**
+
 - `prisma` - The singleton PrismaClient instance
 - `Prisma` - The Prisma namespace for types
 - Enums: `ProductCondition`, `ClubKind`, `OrderStatus`, `OfferStatus`, `ShipmentStatus`
@@ -303,10 +305,7 @@ const courses = await db.course.findMany({
 // OR conditions
 const courses = await db.course.findMany({
   where: {
-    OR: [
-      { location: "California" },
-      { location: "Texas" },
-    ],
+    OR: [{ location: "California" }, { location: "Texas" }],
   },
 });
 
@@ -324,10 +323,7 @@ const bookings = await db.booking.findMany({
   where: {
     AND: [
       {
-        OR: [
-          { status: "CONFIRMED" },
-          { status: "PENDING" },
-        ],
+        OR: [{ status: "CONFIRMED" }, { status: "PENDING" }],
       },
       {
         date: {
@@ -351,10 +347,7 @@ const courses = await db.course.findMany({
 
 // Multiple fields
 const courses = await db.course.findMany({
-  orderBy: [
-    { location: "asc" },
-    { name: "asc" },
-  ],
+  orderBy: [{ location: "asc" }, { name: "asc" }],
 });
 
 // Related field
@@ -696,9 +689,7 @@ const createCourseData: Prisma.CourseCreateInput = {
   name: "Augusta National",
   location: "Georgia",
   holes: {
-    create: [
-      { number: 1, par: 4, yardage: 445 },
-    ],
+    create: [{ number: 1, par: 4, yardage: 445 }],
   },
 };
 
@@ -780,13 +771,13 @@ try {
 
 ## Common Error Codes
 
-| Code | Description |
-|------|-------------|
-| P2002 | Unique constraint violation |
+| Code  | Description                      |
+| ----- | -------------------------------- |
+| P2002 | Unique constraint violation      |
 | P2003 | Foreign key constraint violation |
-| P2025 | Record not found |
-| P2015 | Related record not found |
-| P2016 | Query interpretation error |
+| P2025 | Record not found                 |
+| P2015 | Related record not found         |
+| P2016 | Query interpretation error       |
 
 ## Testing
 

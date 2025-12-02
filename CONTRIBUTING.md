@@ -32,6 +32,7 @@ pnpm check-types
 When working with UI components and styling, please follow our [Tamagui Best Practices](./docs/TAMAGUI_BEST_PRACTICES.md) guide.
 
 **Key principles**:
+
 - ✅ Always use theme tokens (`$colorName`, `$4` for spacing, etc.)
 - ✅ Never use hardcoded colors or raw pixel values
 - ✅ Import from `@buttergolf/ui` instead of direct `tamagui` imports
@@ -53,6 +54,7 @@ When working with UI components and styling, please follow our [Tamagui Best Pra
 ```
 
 **Resources**:
+
 - [Tamagui Best Practices Guide](./docs/TAMAGUI_BEST_PRACTICES.md)
 - [Tamagui Documentation](https://tamagui.dev)
 - [Component Usage Audit](./docs/TAMAGUI_USAGE_AUDIT.md)

@@ -16,7 +16,7 @@ export function AppPromoBanner() {
 
   const trackEvent = (
     eventName: string,
-    properties?: Record<string, string | boolean>
+    properties?: Record<string, string | boolean>,
   ) => {
     // TODO: Integrate with your analytics service
     console.log("Analytics Event:", eventName, properties);
@@ -87,7 +87,7 @@ export function AppPromoBanner() {
       clearTimeout(timer);
       window.removeEventListener(
         "beforeinstallprompt",
-        handleBeforeInstallPrompt
+        handleBeforeInstallPrompt,
       );
     };
   }, []);

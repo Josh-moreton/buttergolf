@@ -82,13 +82,15 @@ export function FilterSidebar({
         />
       </FilterSection>
 
-        <FilterSection title="Favourites">
+      <FilterSection title="Favourites">
         <Row
           alignItems="center"
           gap="$2"
           cursor="pointer"
           userSelect="none"
-          onPress={() => onChange({ showFavouritesOnly: !filters.showFavouritesOnly })}
+          onPress={() =>
+            onChange({ showFavouritesOnly: !filters.showFavouritesOnly })
+          }
         >
           <input
             type="checkbox"

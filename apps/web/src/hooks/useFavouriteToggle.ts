@@ -54,10 +54,8 @@ export function useFavouriteToggle(productId: string) {
           headers: wasOptimisticUpdate
             ? { "Content-Type": "application/json" }
             : {},
-          body: wasOptimisticUpdate
-            ? JSON.stringify({ productId })
-            : undefined,
-        }
+          body: wasOptimisticUpdate ? JSON.stringify({ productId }) : undefined,
+        },
       );
 
       if (!response.ok) {
@@ -65,7 +63,10 @@ export function useFavouriteToggle(productId: string) {
         throw new Error(error.error || "Failed to update favourite");
       }
 
-      return { success: true, action: wasOptimisticUpdate ? "added" : "removed" };
+      return {
+        success: true,
+        action: wasOptimisticUpdate ? "added" : "removed",
+      };
     } catch (error) {
       // Rollback optimistic update
       if (wasOptimisticUpdate) {

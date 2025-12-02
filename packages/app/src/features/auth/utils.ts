@@ -95,7 +95,7 @@ export function getPasswordStrength(password: string): PasswordStrength {
  */
 export function validatePasswordMatch(
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
 ): string | null {
   if (!confirmPassword) {
     return "Please confirm your password";
@@ -157,7 +157,8 @@ export function mapClerkErrorToMessage(errorCode: string): string {
 
     // Verification errors
     verification_code_invalid: "Invalid verification code",
-    verification_code_expired: "Verification code has expired. Please request a new one.",
+    verification_code_expired:
+      "Verification code has expired. Please request a new one.",
 
     // Network/General errors
     form_error: "An error occurred. Please try again.",
@@ -172,7 +173,10 @@ export function mapClerkErrorToMessage(errorCode: string): string {
 /**
  * Validates sign-in form
  */
-export function validateSignInForm(email: string, password: string): ValidationResult {
+export function validateSignInForm(
+  email: string,
+  password: string,
+): ValidationResult {
   const errors: Record<string, string> = {};
 
   const emailError = validateEmail(email);
@@ -193,7 +197,7 @@ export function validateSignUpForm(
   firstName: string,
   email: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
 ): ValidationResult {
   const errors: Record<string, string> = {};
 

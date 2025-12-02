@@ -76,12 +76,7 @@ export function CategoryGrid() {
         </Heading>
 
         {/* Category Grid */}
-        <Row
-          flexWrap="wrap"
-          gap="$lg"
-          width="100%"
-          $gtSm={{ gap: "$lg" }}
-        >
+        <Row flexWrap="wrap" gap="$lg" width="100%" $gtSm={{ gap: "$lg" }}>
           {categories.map((category) => (
             <Link
               key={category.id}

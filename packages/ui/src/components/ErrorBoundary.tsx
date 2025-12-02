@@ -12,53 +12,63 @@
  * ```
  */
 
-import { Component, type ReactNode, type ErrorInfo, useCallback, useEffect, useState } from 'react'
-import { Column, Row, Text, Heading, Button } from '../index'
+import {
+  Component,
+  type ReactNode,
+  type ErrorInfo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { Column, Row, Text, Heading, Button } from "../index";
 
 export interface ErrorBoundaryProps {
-  children: ReactNode
-  fallback?: ReactNode
-  onError?: (error: Error, errorInfo: ErrorInfo) => void
-  onReset?: () => void
+  children: ReactNode;
+  fallback?: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  onReset?: () => void;
 }
 
 export interface ErrorBoundaryState {
-  hasError: boolean
-  error: Error | null
-  errorInfo: ErrorInfo | null
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
-    super(props)
+    super(props);
     this.state = {
       hasError: false,
       error: null,
       errorInfo: null,
-    }
+    };
   }
 
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     return {
       hasError: true,
       error,
-    }
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo)
+    if (process.env.NODE_ENV === "development") {
+      console.error("ErrorBoundary caught an error:", error, errorInfo);
     }
 
     // Store error info in state
     this.setState({
       errorInfo,
-    })
+    });
 
     // Call custom error handler if provided
     if (this.props.onError) {
-      this.props.onError(error, errorInfo)
+      this.props.onError(error, errorInfo);
     }
 
     // Report to error tracking service (Sentry, etc.)
@@ -71,18 +81,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       hasError: false,
       error: null,
       errorInfo: null,
-    })
+    });
 
     if (this.props.onReset) {
-      this.props.onReset()
+      this.props.onReset();
     }
-  }
+  };
 
   render() {
     if (this.state.hasError) {
       // Use custom fallback if provided
       if (this.props.fallback) {
-        return this.props.fallback
+        return this.props.fallback;
       }
 
       // Default fallback UI
@@ -103,10 +113,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </Heading>
 
             <Text align="center" color="$textSecondary">
-              We're sorry for the inconvenience. The error has been logged and we'll look into it.
+              We're sorry for the inconvenience. The error has been logged and
+              we'll look into it.
             </Text>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {process.env.NODE_ENV === "development" && this.state.error && (
               <Column
                 backgroundColor="$errorLight"
                 padding="$md"
@@ -146,7 +157,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 onPress={() => {
                   // Navigate to home or reload page
                   if (globalThis.window !== undefined) {
-                    globalThis.window.location.href = '/'
+                    globalThis.window.location.href = "/";
                   }
                 }}
               >
@@ -155,10 +166,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </Row>
           </Column>
         </Column>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
@@ -167,20 +178,20 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
  * Note: This doesn't catch errors in event handlers or async code
  */
 export function useErrorBoundary() {
-  const [error, setError] = useState<Error | null>(null)
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (error) {
-      throw error
+      throw error;
     }
-  }, [error])
+  }, [error]);
 
   const reset = useCallback(() => {
-    setError(null)
-  }, [])
+    setError(null);
+  }, []);
 
   return {
     showError: setError,
     reset,
-  }
+  };
 }

@@ -67,13 +67,15 @@ export const GlassmorphismCard = styled(View, {
 /**
  * Get consistent glassmorphism styles for web-specific styling
  * Use this when you need to apply the effect via style prop
- * 
+ *
  * Creates a liquid glass effect with:
  * - Backdrop blur for frosted glass look
  * - Multiple layered shadows for depth and "liquid" edge appearance
  * - Inner highlight for dimensional glass effect
  */
-export const getGlassmorphismStyles = (blur: "light" | "medium" | "strong" = "medium") => {
+export const getGlassmorphismStyles = (
+  blur: "light" | "medium" | "strong" = "medium",
+) => {
   const blurAmount = {
     light: "8px",
     medium: "16px",
@@ -94,8 +96,12 @@ export const getGlassmorphismStyles = (blur: "light" | "medium" | "strong" = "me
       0 0 0 1px rgba(255, 255, 255, 0.15),
       0 4px 16px -2px rgba(0, 0, 0, 0.1),
       0 8px 32px -4px rgba(0, 0, 0, 0.08)
-    `.trim().replaceAll(/\s+/g, ' '),
+    `
+      .trim()
+      .replaceAll(/\s+/g, " "),
   };
 };
 
-export type GlassmorphismCardProps = React.ComponentProps<typeof GlassmorphismCard>;
+export type GlassmorphismCardProps = React.ComponentProps<
+  typeof GlassmorphismCard
+>;

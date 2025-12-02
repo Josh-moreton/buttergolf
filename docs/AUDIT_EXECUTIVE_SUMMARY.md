@@ -8,6 +8,7 @@
 ## 📊 Current State
 
 ### Overall Metrics
+
 - **New Pattern Adoption**: **1%** (Target: 90%)
 - **Layout Components**: 0% using Row/Column (255 instances of XStack/YStack)
 - **Card Components**: 0% using compound pattern (6 instances of old pattern)
@@ -17,13 +18,13 @@
 
 ### Component Breakdown
 
-| Pattern | Current | Target | Priority |
-|---------|---------|--------|----------|
-| **Layout** | 0% (255 old) | 90% | 🔴 **HIGH** |
-| **Cards** | 0% (6 old) | 90% | 🔴 **HIGH** |
-| **Buttons** | 38% (5/13) | 90% | 🟡 **MEDIUM** |
-| **Props** | 55 old | 0 | 🟡 **MEDIUM** |
-| **Spacing** | ✅ 100% | 100% | ✅ **DONE** |
+| Pattern     | Current      | Target | Priority      |
+| ----------- | ------------ | ------ | ------------- |
+| **Layout**  | 0% (255 old) | 90%    | 🔴 **HIGH**   |
+| **Cards**   | 0% (6 old)   | 90%    | 🔴 **HIGH**   |
+| **Buttons** | 38% (5/13)   | 90%    | 🟡 **MEDIUM** |
+| **Props**   | 55 old       | 0      | 🟡 **MEDIUM** |
+| **Spacing** | ✅ 100%      | 100%   | ✅ **DONE**   |
 
 ---
 
@@ -32,11 +33,13 @@
 You have an **excellent component library** but it's **not being used consistently**:
 
 ✅ **Good News**:
+
 - Zero hardcoded spacing values (already using tokens!)
 - Mobile app is exemplary (95% adoption)
 - Some components follow best practices (CategoryButton, OnboardingScreen)
 
 ⚠️ **Needs Attention**:
+
 - **255 instances** of XStack/YStack should be Row/Column
 - **6 instances** of old Card pattern should use compound components
 - **55 instances** of old prop names (alignItems, justifyContent)
@@ -62,6 +65,7 @@ pnpm check-types
 ```
 
 **Expected Results**:
+
 - 255 layout components migrated
 - 55 prop names updated
 - ~40% improvement in consistency
@@ -71,6 +75,7 @@ pnpm check-types
 ### Files Needing Most Attention
 
 **Top 5 by Impact**:
+
 1. `apps/web/src/app/theme-test/page.tsx` - 39 instances
 2. `apps/web/src/app/products/[slug]/page.tsx` - 19 instances
 3. `apps/web/src/app/products/[slug]/ProductPageClient.tsx` - 17 instances
@@ -82,6 +87,7 @@ pnpm check-types
 ## 📈 Migration Path
 
 ### Week 1 (High Impact)
+
 - ✅ Run `migrate-layouts.sh` (15 min)
 - ✅ Run `map-props.sh` (5 min)
 - ⏳ Manual Card migration (2-3 hours)
@@ -90,6 +96,7 @@ pnpm check-types
 **Expected Progress**: 0% → 60%
 
 ### Week 2 (Refinement)
+
 - ⏳ Button variant standardization (4 hours)
 - ⏳ Token migration with `migrate-tokens.sh` (2 hours)
 - ⏳ Testing and verification (2 hours)
@@ -97,6 +104,7 @@ pnpm check-types
 **Expected Progress**: 60% → 85%
 
 ### Week 3 (Polish)
+
 - ⏳ Documentation updates
 - ⏳ VS Code snippets
 - ⏳ Component showcase
@@ -108,6 +116,7 @@ pnpm check-types
 ## 💡 Key Insights
 
 ### What's Working
+
 1. **Mobile is perfect** (95% adoption)
    - Use mobile code as reference!
    - OnboardingScreen is textbook example
@@ -122,6 +131,7 @@ pnpm check-types
    - Just needs to be applied consistently
 
 ### What Needs Improvement
+
 1. **Layout components not adopted**
    - 100% still using primitives (XStack/YStack)
    - Easy fix with automated scripts
@@ -142,6 +152,7 @@ pnpm check-types
 ## 🎓 Learning from Best Practices
 
 ### Excellent Example: OnboardingScreen
+
 ```tsx
 // ✅ Perfect token usage
 <Button
@@ -149,7 +160,7 @@ pnpm check-types
   height={56}
   backgroundColor="$primary"
   pressStyle={{
-    backgroundColor: '$primaryPress',
+    backgroundColor: "$primaryPress",
     scale: 0.97,
   }}
 >
@@ -160,6 +171,7 @@ pnpm check-types
 ```
 
 ### Should Migrate To:
+
 ```tsx
 // ✅ Even better with variants
 <Button size="lg" tone="primary" fullWidth>
@@ -172,12 +184,14 @@ pnpm check-types
 ## 🔧 Tools Available
 
 ### Migration Scripts
+
 - ✅ `audit-patterns.sh` - Show current state (you just ran this!)
 - ✅ `migrate-layouts.sh` - Migrate XStack/YStack → Row/Column
 - ✅ `map-props.sh` - Update prop names
 - ✅ `migrate-tokens.sh` - Update token names
 
 ### Documentation
+
 - ✅ `COMPONENT_LIBRARY_AUDIT_REPORT.md` - Full 30-page analysis
 - ✅ `MIGRATION_ACTION_PLAN.md` - Week-by-week guide
 - ✅ `packages/ui/README.md` - Component API reference
@@ -188,12 +202,14 @@ pnpm check-types
 ## 📞 Next Steps
 
 ### Right Now (5 minutes)
+
 1. Read `MIGRATION_ACTION_PLAN.md` (skim for 2 min)
 2. Run `./scripts/migrate-layouts.sh` (automated)
 3. Run `./scripts/map-props.sh` (automated)
 4. Run `pnpm check-types` (verify)
 
 ### This Week
+
 1. Follow Week 1 plan in `MIGRATION_ACTION_PLAN.md`
 2. Manually migrate Card components (6 files)
 3. Test on web: `pnpm dev:web`
@@ -201,6 +217,7 @@ pnpm check-types
 5. Commit and push
 
 ### This Month
+
 1. Complete all 3 weeks of migration
 2. Achieve 90%+ consistency
 3. Update team on new patterns
@@ -211,6 +228,7 @@ pnpm check-types
 ## ✅ Success Criteria
 
 **Technical**:
+
 - ✅ Zero XStack/YStack in new code
 - ✅ Zero CardHeader/CardFooter imports
 - ✅ 90%+ Button variant usage
@@ -218,12 +236,14 @@ pnpm check-types
 - ✅ Builds pass without errors
 
 **User Experience**:
+
 - ✅ No visual regressions
 - ✅ All features working
 - ✅ Performance maintained
 - ✅ Dark mode ready
 
 **Developer Experience**:
+
 - ✅ Clear patterns to follow
 - ✅ Fast development
 - ✅ Easy onboarding
@@ -233,7 +253,7 @@ pnpm check-types
 
 ## 🎉 The Good News
 
-Your component library is **production-ready and excellent**. The issue isn't quality—it's **adoption**. 
+Your component library is **production-ready and excellent**. The issue isn't quality—it's **adoption**.
 
 With the automated migration scripts, you can fix **70% of issues in under 30 minutes**. The remaining 30% (Card components, Button variants) are straightforward manual updates.
 
@@ -244,6 +264,7 @@ With the automated migration scripts, you can fix **70% of issues in under 30 mi
 ## 📋 Quick Reference Card
 
 ### Before You Start
+
 ```bash
 # See current state
 ./scripts/audit-patterns.sh
@@ -261,6 +282,7 @@ pnpm dev:web
 ```
 
 ### Component Patterns
+
 ```tsx
 // Layout: Use Row/Column (not XStack/YStack)
 <Row gap="md" align="center">

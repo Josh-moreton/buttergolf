@@ -40,7 +40,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
       try {
         const response = await fetch(
           `/api/search?q=${encodeURIComponent(query)}&limit=10`,
-          { signal: abortController.signal }
+          { signal: abortController.signal },
         );
 
         if (!response.ok) {
@@ -80,7 +80,11 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
           <Row gap="$2" flexWrap="wrap">
             {["Drivers", "Titleist", "Golf Balls", "Irons", "Putters"].map(
               (term) => (
-                <Link key={term} href={`/listings?q=${term}`} onClick={onSelect}>
+                <Link
+                  key={term}
+                  href={`/listings?q=${term}`}
+                  onClick={onSelect}
+                >
                   <Text
                     size="$2"
                     {...{ color: "$primary" }}
@@ -90,7 +94,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
                     {term}
                   </Text>
                 </Link>
-              )
+              ),
             )}
           </Row>
         </Column>
@@ -161,7 +165,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
           padding="$3"
           backgroundColor="$backgroundHover"
         >
-          <Link href={`/listings?q=${encodeURIComponent(query)}`} onClick={onSelect}>
+          <Link
+            href={`/listings?q=${encodeURIComponent(query)}`}
+            onClick={onSelect}
+          >
             <Text
               size="$3"
               weight="medium"

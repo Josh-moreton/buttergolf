@@ -17,28 +17,36 @@ A full-screen onboarding experience inspired by Vinted's clean design, featuring
 ## Usage
 
 ```tsx
-import { OnboardingScreen } from '@buttergolf/app'
+import { OnboardingScreen } from "@buttergolf/app";
 
 function MyComponent() {
   return (
     <OnboardingScreen
-      onSkip={() => {/* Navigate to home */}}
-      onSignUp={() => {/* Navigate to sign up */}}
-      onSignIn={() => {/* Navigate to sign in */}}
-      onAbout={() => {/* Navigate to about page */}}
+      onSkip={() => {
+        /* Navigate to home */
+      }}
+      onSignUp={() => {
+        /* Navigate to sign up */
+      }}
+      onSignIn={() => {
+        /* Navigate to sign in */
+      }}
+      onAbout={() => {
+        /* Navigate to about page */
+      }}
     />
-  )
+  );
 }
 ```
 
 ## Props
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `onSkip` | `() => void` | No | Called when the Skip button is pressed |
-| `onSignUp` | `() => void` | No | Called when the Sign Up button is pressed |
-| `onSignIn` | `() => void` | No | Called when the Sign In button is pressed |
-| `onAbout` | `() => void` | No | Called when the About link is pressed |
+| Prop       | Type         | Required | Description                               |
+| ---------- | ------------ | -------- | ----------------------------------------- |
+| `onSkip`   | `() => void` | No       | Called when the Skip button is pressed    |
+| `onSignUp` | `() => void` | No       | Called when the Sign Up button is pressed |
+| `onSignIn` | `() => void` | No       | Called when the Sign In button is pressed |
+| `onAbout`  | `() => void` | No       | Called when the About link is pressed     |
 
 ## Animation
 

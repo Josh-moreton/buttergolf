@@ -3,6 +3,7 @@
 ## 🎯 Problem Solved
 
 The category dropdown on the Sell page (`/sell`) was blank because:
+
 - ❌ Categories were only defined in database seed file
 - ❌ No centralized management
 - ❌ Frontend couldn't access category definitions
@@ -36,12 +37,13 @@ export const CATEGORIES = [
 
 ```typescript
 // Re-export category constants
-export * from './constants/categories'
+export * from "./constants/categories";
 ```
 
 Now categories can be imported anywhere:
+
 ```typescript
-import { CATEGORIES, getCategoryBySlug } from '@buttergolf/db'
+import { CATEGORIES, getCategoryBySlug } from "@buttergolf/db";
 ```
 
 ### 3. Updated Database Seed
@@ -49,18 +51,18 @@ import { CATEGORIES, getCategoryBySlug } from '@buttergolf/db'
 **File**: `packages/db/prisma/seed.ts`
 
 ```typescript
-import { CATEGORIES } from '../src/constants/categories'
+import { CATEGORIES } from "../src/constants/categories";
 
 // Automatically creates all categories from constants
 const categories = await Promise.all(
-    CATEGORIES.map((categoryDef) =>
-        prisma.category.upsert({
-            where: { slug: categoryDef.slug },
-            update: { ...categoryDef },
-            create: categoryDef,
-        })
-    )
-)
+  CATEGORIES.map((categoryDef) =>
+    prisma.category.upsert({
+      where: { slug: categoryDef.slug },
+      update: { ...categoryDef },
+      create: categoryDef,
+    }),
+  ),
+);
 ```
 
 ✅ **Result**: Database now has 10 categories (verified by running `pnpm db:seed`)
@@ -104,16 +106,18 @@ const categories = await Promise.all(
 ## 🔄 How the Sell Page Gets Categories
 
 ### Current Implementation (API Fetch)
+
 ```typescript
 // apps/web/src/app/sell/page.tsx
 useEffect(() => {
   fetch("/api/categories")
     .then((res) => res.json())
-    .then((data) => setCategories(data))
-}, [])
+    .then((data) => setCategories(data));
+}, []);
 ```
 
 ### Alternative (Direct Import) - Also Works!
+
 ```typescript
 import { CATEGORIES } from '@buttergolf/db'
 
@@ -132,6 +136,7 @@ Both approaches work! The API fetch is dynamic (gets data from DB), while direct
 ## 🧪 Testing Instructions
 
 ### 1. Verify Database
+
 ```bash
 pnpm db:studio
 # Navigate to "categories" table
@@ -139,6 +144,7 @@ pnpm db:studio
 ```
 
 ### 2. Test API Endpoint
+
 ```bash
 # Start dev server
 pnpm dev:web
@@ -148,6 +154,7 @@ curl http://localhost:3000/api/categories | jq
 ```
 
 Expected output:
+
 ```json
 [
   { "id": "...", "name": "Drivers", "slug": "drivers", ... },
@@ -158,6 +165,7 @@ Expected output:
 ```
 
 ### 3. Test Sell Page
+
 1. Navigate to `http://localhost:3000/sell`
 2. Check category dropdown - should show all 10 categories
 3. Select a category and create a test listing
@@ -186,12 +194,12 @@ pnpm db:seed
 
 ## 🎨 New Categories Added
 
-| Category | Slug | Description |
-|----------|------|-------------|
-| Apparel | `apparel` | Golf clothing and shoes |
-| Accessories | `accessories` | Golf accessories, gloves, tees, and more |
-| Training Aids | `training-aids` | Training aids and practice equipment |
-| GPS & Tech | `gps-tech` | GPS devices, rangefinders, and tech |
+| Category      | Slug            | Description                              |
+| ------------- | --------------- | ---------------------------------------- |
+| Apparel       | `apparel`       | Golf clothing and shoes                  |
+| Accessories   | `accessories`   | Golf accessories, gloves, tees, and more |
+| Training Aids | `training-aids` | Training aids and practice equipment     |
+| GPS & Tech    | `gps-tech`      | GPS devices, rangefinders, and tech      |
 
 ## 📚 Files Changed
 
@@ -223,7 +231,7 @@ pnpm db:seed
 ✅ **Easy to Maintain** - Add/edit in one place  
 ✅ **Consistent** - Same categories everywhere  
 ✅ **Scalable** - Easy to add new categories  
-✅ **Well Documented** - Clear guides for developers  
+✅ **Well Documented** - Clear guides for developers
 
 ---
 

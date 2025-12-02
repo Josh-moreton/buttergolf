@@ -3,6 +3,7 @@
 ## Overview
 
 The Butter Golf branded background pattern is used for product images after background removal. When sellers upload product photos, the first image automatically gets:
+
 1. AI-powered background removal
 2. Branded "Butter Golf" tiled pattern as the new background
 
@@ -23,6 +24,7 @@ pnpm tsx scripts/upload-background-pattern.ts
 ```
 
 This will:
+
 - Upload `butter-pattern.png` to Cloudinary
 - Store it at `backgrounds/butter-pattern`
 - Make it available for use in transformations
@@ -30,6 +32,7 @@ This will:
 ### 2. Verify the Upload
 
 The script will output:
+
 ```
 ✅ Background pattern uploaded successfully!
 📍 Public ID: backgrounds/butter-pattern
@@ -58,11 +61,13 @@ When a seller uploads the first product image:
 ### URL Structure
 
 Original upload:
+
 ```
 https://res.cloudinary.com/buttergolf/image/upload/v1234567890/products/my-product.jpg
 ```
 
 With transformation:
+
 ```
 https://res.cloudinary.com/buttergolf/image/upload/
   e_background_removal/

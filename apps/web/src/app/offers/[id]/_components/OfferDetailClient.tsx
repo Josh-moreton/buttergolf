@@ -12,14 +12,14 @@ import type { Prisma } from "@buttergolf/db";
 
 /**
  * Client Component: Offer Detail Interactive UI
- * 
+ *
  * Displays three-column layout with:
  * - Left: Offers sidebar with Buying/Selling toggle (desktop only)
  * - Center: Conversation thread + counter-offer form
  * - Right: Product summary with action buttons (desktop only)
- * 
+ *
  * Mobile: Full-screen conversation with expandable product bar at top
- * 
+ *
  * Features:
  * - Manual refresh only (after user actions like accept/reject/counter)
  * - Accept/Reject offer actions
@@ -163,8 +163,6 @@ export function OfferDetailClient({
     // Refetch to get updated conversation
     await refetch();
   };
-
-
 
   return (
     <>

@@ -364,14 +364,16 @@ User Action → Component → Fetch Function → API → Database
 ## Key Integration Points
 
 ### 1. Route Definition (Shared)
+
 ```typescript
 // packages/app/src/navigation/routes.ts
 export const routes = {
-  productDetail: '/products/[id]',  // ← Single source of truth
-}
+  productDetail: "/products/[id]", // ← Single source of truth
+};
 ```
 
 ### 2. Web Implementation
+
 ```typescript
 // apps/web/src/app/products/[id]/page.tsx
 // Next.js uses file-based routing
@@ -379,26 +381,28 @@ export const routes = {
 ```
 
 ### 3. Mobile Implementation
+
 ```typescript
 // apps/mobile/App.tsx
 const linking = {
   config: {
     screens: {
       ProductDetail: {
-        path: 'products/:id',  // ← Maps to routes.productDetail
-      }
-    }
-  }
-}
+        path: "products/:id", // ← Maps to routes.productDetail
+      },
+    },
+  },
+};
 ```
 
 ### 4. Component Usage
+
 ```typescript
 // Both platforms use the same component
 import { ProductDetailScreen } from '@buttergolf/app'
 
 // Mobile
-<ProductDetailScreen 
+<ProductDetailScreen
   productId={route.params?.id}
   onFetchProduct={fetchProduct}
 />
@@ -444,17 +448,18 @@ import { ProductDetailScreen } from '@buttergolf/app'
 
 ## Success Metrics Summary
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Sitemap DB Queries | 100% of requests | ~0.3% of requests | 99.7% reduction |
-| Sitemap Response Time | 200-500ms | 10-50ms (cached) | 80-95% faster |
-| Deep Link Behavior | Opens to Home | Opens to Product | ✅ Fixed |
-| Cross-Platform Routes | Inconsistent | Unified via Solito | ✅ Consistent |
-| Product Detail Screen | Web only | Web + Mobile | ✅ Full parity |
+| Metric                | Before           | After              | Improvement     |
+| --------------------- | ---------------- | ------------------ | --------------- |
+| Sitemap DB Queries    | 100% of requests | ~0.3% of requests  | 99.7% reduction |
+| Sitemap Response Time | 200-500ms        | 10-50ms (cached)   | 80-95% faster   |
+| Deep Link Behavior    | Opens to Home    | Opens to Product   | ✅ Fixed        |
+| Cross-Platform Routes | Inconsistent     | Unified via Solito | ✅ Consistent   |
+| Product Detail Screen | Web only         | Web + Mobile       | ✅ Full parity  |
 
 ## Conclusion
 
 This implementation provides:
+
 - ✅ Seamless deep linking to product pages
 - ✅ Efficient sitemap generation with ISR
 - ✅ Cross-platform consistency via Solito

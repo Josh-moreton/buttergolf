@@ -96,9 +96,10 @@ export function CategoriesSection() {
             gap: "24px",
             willChange: "transform",
             // CSS animation for infinite scroll
-            animation: isMounted && !prefersReducedMotion 
-              ? `scroll-infinite ${animationDuration}s linear infinite` 
-              : "none",
+            animation:
+              isMounted && !prefersReducedMotion
+                ? `scroll-infinite ${animationDuration}s linear infinite`
+                : "none",
             animationPlayState: isPaused ? "paused" : "running",
           }}
           className="categories-track"
@@ -115,7 +116,8 @@ export function CategoriesSection() {
                 borderRadius: "14px",
                 flexShrink: 0,
                 textDecoration: "none",
-                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)",
+                boxShadow:
+                  "0 8px 16px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
               }}
             >

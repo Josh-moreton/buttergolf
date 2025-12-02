@@ -7,6 +7,7 @@ The Golf Marketplace theme has been fully implemented and applied universally ac
 ## 🎨 Theme Implementation
 
 ### Core Configuration
+
 **File**: `packages/config/src/tamagui.config.ts`
 
 - ✅ Imported `themes` from `@tamagui/themes`
@@ -18,12 +19,14 @@ The Golf Marketplace theme has been fully implemented and applied universally ac
 ### Theme Colors
 
 **Light Theme** (Golf Green):
+
 - Background: `#fbfbf9` (cream/off-white)
 - Primary: `#13a063` (golf green)
 - Text: `#042918` (deep forest)
 - Accent: Green scale from `#f8faf7` to `#042918`
 
 **Dark Theme** (Forest Dark):
+
 - Background: `#0a1410` (deep forest)
 - Primary: `#13a063` (same green, pops on dark)
 - Text: `#e5f0e0` (light cream)
@@ -32,14 +35,17 @@ The Golf Marketplace theme has been fully implemented and applied universally ac
 ## 🔄 Universal Theme Application
 
 ### Providers (Already Configured)
+
 Both platforms use the theme system through proper providers:
 
 **Web**: `apps/web/src/app/NextTamaguiProvider.tsx`
+
 - Uses `@buttergolf/app/NextTamaguiProvider`
 - Wrapped with Clerk auth
 - Supports theme switching
 
 **Mobile**: `apps/mobile/App.tsx`
+
 - Uses `@buttergolf/app/Provider`
 - Wrapped with Clerk auth
 - Auto-detects system color scheme
@@ -49,6 +55,7 @@ Both platforms use the theme system through proper providers:
 All components now use semantic theme tokens instead of hardcoded colors:
 
 #### ✅ Core Components (`packages/app/src/components/`)
+
 1. **HeroSection.tsx**
    - Background: `$color1` (lightest tint)
    - Headings: `$color12` (darkest/text)
@@ -83,6 +90,7 @@ All components now use semantic theme tokens instead of hardcoded colors:
    - Border: `$borderColor`
 
 #### ✅ Features (`packages/app/src/features/`)
+
 1. **HomeScreen** (`features/home/screen.tsx`)
    - Background: `$background`
    - Already using themed components
@@ -101,6 +109,7 @@ All components now use semantic theme tokens instead of hardcoded colors:
    - Muted text: `$color11`
 
 #### ✅ Web Header (`apps/web/src/app/_components/header/`)
+
 1. **MarketplaceHeader.tsx**
    - Top bar: `$color12` (dark bar)
    - Text on dark bar: `$color1` (light)
@@ -115,7 +124,9 @@ All components now use semantic theme tokens instead of hardcoded colors:
    - Hover: `$backgroundHover`
 
 #### ✅ Global Styles
+
 **File**: `apps/web/src/app/globals.css`
+
 - Updated CSS variables to match theme
 - Light and dark mode support
 - Smooth transitions between theme changes
@@ -125,6 +136,7 @@ All components now use semantic theme tokens instead of hardcoded colors:
 When components use these tokens, they automatically adapt to theme changes:
 
 ### Semantic Color Scale (color1-12)
+
 - `$color1` - Lightest (backgrounds, subtle tints)
 - `$color2-3` - Light (cards, elevated surfaces)
 - `$color6-8` - Medium (interactive elements)
@@ -133,6 +145,7 @@ When components use these tokens, they automatically adapt to theme changes:
 - `$color12` - Darkest (primary text, headlines)
 
 ### Semantic Backgrounds
+
 - `$background` - Main background
 - `$backgroundHover` - Hover state background
 - `$backgroundPress` - Press state background
@@ -140,25 +153,30 @@ When components use these tokens, they automatically adapt to theme changes:
 - `$backgroundTransparent` - Transparent variant
 
 ### Semantic Colors
+
 - `$color` - Primary text color
 - `$colorHover` - Text hover state
 - `$colorFocus` - Text focus state
 - `$colorTransparent` - Transparent text
 
 ### Semantic Borders
+
 - `$borderColor` - Default border
 - `$borderColorHover` - Hover border
 - `$borderColorFocus` - Focus border (forms)
 - `$borderColorPress` - Press border
 
 ### Semantic Shadows
+
 - `$shadowColor` - Default shadow
 - `$shadowColorHover` - Hover shadow
 - `$shadowColorPress` - Press shadow
 - `$shadowColorFocus` - Focus shadow (subtle accent)
 
 ### Legacy Color Tokens (Still Available)
+
 These are still accessible for specific use cases:
+
 - `$green700`, `$green500` - Brand greens
 - `$amber400` - Amber accent
 - `$bg`, `$bgGray`, `$bgCard`, `$cardBg` - Backgrounds
@@ -169,42 +187,46 @@ These are still accessible for specific use cases:
 When Marketing provides the final brand guidelines:
 
 ### Option 1: Update Existing Theme
+
 Edit `packages/config/src/tamagui.config.ts`:
+
 ```typescript
 const golfMarketplaceThemes = {
   light: {
     ...defaultThemes.light,
-    color9: '#YOUR_NEW_PRIMARY',  // Update brand color
-    background: '#YOUR_BG',        // Update backgrounds
+    color9: "#YOUR_NEW_PRIMARY", // Update brand color
+    background: "#YOUR_BG", // Update backgrounds
     // ... update other colors
   },
   dark: {
     // ... update dark theme
   },
-}
+};
 ```
 
 ### Option 2: Import from @tamagui/themes
+
 ```typescript
-import { themes as defaultThemes } from '@tamagui/themes'
+import { themes as defaultThemes } from "@tamagui/themes";
 
 export const config = createTamagui({
   ...defaultConfig,
   themes: {
-    ...defaultThemes,  // Use defaults or customize
+    ...defaultThemes, // Use defaults or customize
   },
-})
+});
 ```
 
 ### Option 3: Create Entirely New Theme
+
 ```typescript
 const brandThemes = {
   light: {
-    color1: '#...',
-    color2: '#...',
+    color1: "#...",
+    color2: "#...",
     // Define all semantic colors
   },
-}
+};
 ```
 
 ## ✨ Benefits
@@ -220,6 +242,7 @@ const brandThemes = {
 ## 🧪 Testing
 
 1. Start dev servers:
+
    ```bash
    pnpm dev:web     # Web on localhost:3000
    pnpm dev:mobile  # Mobile in Expo
@@ -258,7 +281,8 @@ const brandThemes = {
 
 ---
 
-**Next Steps**: 
+**Next Steps**:
+
 - Run `pnpm dev:web` and `pnpm dev:mobile` to see the theme in action
 - Make any theme color adjustments in `packages/config/src/tamagui.config.ts`
 - When final brand arrives, update the theme config and everything updates automatically

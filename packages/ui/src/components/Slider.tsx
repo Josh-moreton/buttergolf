@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 const SliderContainer = styled(Stack, {
   name: "SliderContainer",
-  tag: "div" as 'div',
+  tag: "div" as const,
   width: "100%",
   paddingVertical: "$3",
   position: "relative",
@@ -13,7 +13,7 @@ const SliderContainer = styled(Stack, {
 
 const SliderTrack = styled(Stack, {
   name: "SliderTrack",
-  tag: "div" as 'div',
+  tag: "div" as const,
   height: 4,
   backgroundColor: "$border",
   borderRadius: "$full",
@@ -23,7 +23,7 @@ const SliderTrack = styled(Stack, {
 
 const SliderRange = styled(Stack, {
   name: "SliderRange",
-  tag: "div" as 'div',
+  tag: "div" as const,
   position: "absolute",
   height: "100%",
   backgroundColor: "$primary",
@@ -32,7 +32,7 @@ const SliderRange = styled(Stack, {
 
 const SliderThumb = styled(Stack, {
   name: "SliderThumb",
-  tag: "div" as 'div',
+  tag: "div" as const,
   width: 20,
   height: 20,
   borderRadius: "$full",
@@ -92,31 +92,40 @@ export function Slider({
     return ((val - min) / (max - min)) * 100;
   };
 
-  const getValueFromPosition = useCallback((clientX: number) => {
-    if (!trackRef.current) return min;
+  const getValueFromPosition = useCallback(
+    (clientX: number) => {
+      if (!trackRef.current) return min;
 
-    const rect = trackRef.current.getBoundingClientRect();
-    const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    const rawValue = min + percentage * (max - min);
-    const steppedValue = Math.round(rawValue / step) * step;
-    return Math.max(min, Math.min(max, steppedValue));
-  }, [min, max, step]);
+      const rect = trackRef.current.getBoundingClientRect();
+      const percentage = Math.max(
+        0,
+        Math.min(1, (clientX - rect.left) / rect.width),
+      );
+      const rawValue = min + percentage * (max - min);
+      const steppedValue = Math.round(rawValue / step) * step;
+      return Math.max(min, Math.min(max, steppedValue));
+    },
+    [min, max, step],
+  );
 
-  const updateValue = useCallback((thumbIndex: number, newValue: number) => {
-    const newValues = [...value];
+  const updateValue = useCallback(
+    (thumbIndex: number, newValue: number) => {
+      const newValues = [...value];
 
-    if (thumbIndex === 0) {
-      newValues[0] = Math.min(newValue, newValues[1] ?? max);
-    } else {
-      newValues[1] = Math.max(newValue, newValues[0] ?? min);
-    }
+      if (thumbIndex === 0) {
+        newValues[0] = Math.min(newValue, newValues[1] ?? max);
+      } else {
+        newValues[1] = Math.max(newValue, newValues[0] ?? min);
+      }
 
-    if (!isControlled) {
-      setUncontrolledValue(newValues);
-    }
+      if (!isControlled) {
+        setUncontrolledValue(newValues);
+      }
 
-    onChange?.(newValues);
-  }, [value, max, min, isControlled, onChange]);
+      onChange?.(newValues);
+    },
+    [value, max, min, isControlled, onChange],
+  );
 
   const handleMouseDown = (thumbIndex: number) => (e: React.MouseEvent) => {
     if (disabled) return;

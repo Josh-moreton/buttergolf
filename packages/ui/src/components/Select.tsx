@@ -32,9 +32,12 @@
  * ```
  */
 
-import React from 'react'
-import { styled, GetProps } from 'tamagui'
-import { Select as TamaguiSelect, type SelectProps as TamaguiSelectProps } from 'tamagui'
+import React from "react";
+import { styled, GetProps } from "tamagui";
+import {
+  Select as TamaguiSelect,
+  type SelectProps as TamaguiSelectProps,
+} from "tamagui";
 
 /**
  * Base Select component with Input-matching styles
@@ -45,71 +48,71 @@ import { Select as TamaguiSelect, type SelectProps as TamaguiSelectProps } from 
  * - Size variants: sm/md/lg matching Input heights
  */
 export const Select = styled(TamaguiSelect, {
-  name: 'Select',
+  name: "Select",
 
   // Base styles matching Input component
-  backgroundColor: '$surface',
+  backgroundColor: "$surface",
   borderWidth: 1,
-  borderColor: '$fieldBorder',
+  borderColor: "$fieldBorder",
   borderRadius: 24,
   outlineWidth: 0,
 
   // Focus styles (using border for better cross-platform support)
   focusStyle: {
-    borderColor: '$fieldBorderFocus',
+    borderColor: "$fieldBorderFocus",
     borderWidth: 2,
   },
 
   // Hover styles
   hoverStyle: {
-    borderColor: '$fieldBorderHover',
+    borderColor: "$fieldBorderHover",
   },
 
   // Disabled styles
   disabledStyle: {
     opacity: 0.5,
-    cursor: 'not-allowed',
-    backgroundColor: '$backgroundPress',
-    borderColor: '$fieldBorderDisabled',
+    cursor: "not-allowed",
+    backgroundColor: "$backgroundPress",
+    borderColor: "$fieldBorderDisabled",
   },
 
   variants: {
     size: {
       sm: {
-        height: '$inputSm',
-        paddingHorizontal: '$2.5',
+        height: "$inputSm",
+        paddingHorizontal: "$2.5",
       },
       md: {
-        height: '$inputMd',
-        paddingHorizontal: '$3',
+        height: "$inputMd",
+        paddingHorizontal: "$3",
       },
       lg: {
-        height: '$inputLg',
-        paddingHorizontal: '$4',
+        height: "$inputLg",
+        paddingHorizontal: "$4",
       },
     },
 
     error: {
       true: {
-        borderColor: '$error',
+        borderColor: "$error",
 
         focusStyle: {
-          borderColor: '$error',
+          borderColor: "$error",
           borderWidth: 2,
         },
 
         hoverStyle: {
-          borderColor: '$errorDark',
+          borderColor: "$errorDark",
         },
       },
     },
 
     success: {
       true: {
-        borderColor: '$success',
+        borderColor: "$success",
 
         focusStyle: {
-          borderColor: '$success',
+          borderColor: "$success",
           borderWidth: 2,
         },
       },
@@ -117,15 +120,15 @@ export const Select = styled(TamaguiSelect, {
 
     fullWidth: {
       true: {
-        width: '100%',
+        width: "100%",
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 // Export type that includes BOTH our custom variants AND all base Tamagui Select props
-export type SelectProps = GetProps<typeof Select> & TamaguiSelectProps
+export type SelectProps = GetProps<typeof Select> & TamaguiSelectProps;

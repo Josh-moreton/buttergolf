@@ -2,14 +2,7 @@
 
 import React, { useCallback } from "react";
 import { TouchableOpacity } from "react-native";
-import {
-  Column,
-  Row,
-  Text,
-  View,
-  Image,
-  ScrollView,
-} from "@buttergolf/ui";
+import { Column, Row, Text, View, Image, ScrollView } from "@buttergolf/ui";
 import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
 
 import type { ImageData } from "../types";
@@ -66,7 +59,7 @@ export function PhotoStep({
       const updatedImages = images.filter((_, i) => i !== index);
       onImagesChange(updatedImages);
     },
-    [images, onImagesChange]
+    [images, onImagesChange],
   );
 
   const canAddMore = images.length < MAX_IMAGES;
@@ -138,12 +131,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Use a clean, uncluttered background
               </Text>
             </Row>
@@ -158,12 +146,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Use natural lighting for best results
               </Text>
             </Row>
@@ -178,12 +161,7 @@ export function PhotoStep({
               >
                 <Check size={12} color="$pureWhite" />
               </View>
-              <Text
-                size="$4"
-                fontWeight="500"
-                color="$burntOlive"
-                flex={1}
-              >
+              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
                 Include multiple angles and any imperfections
               </Text>
             </Row>
@@ -277,11 +255,7 @@ export function PhotoStep({
                   >
                     <ImagePlus size={22} color="$slateSmoke" />
                   </View>
-                  <Text
-                    size="$2"
-                    fontWeight="600"
-                    color="$slateSmoke"
-                  >
+                  <Text size="$2" fontWeight="600" color="$slateSmoke">
                     Add Photo
                   </Text>
                 </Column>

@@ -7,21 +7,21 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
 ## Completed Features
 
 ### 1. Database Schema ✅
+
 - **Offer Model**: Added `expiresAt DateTime?` field with index
 - **Migration**: `20251124135100_add_offer_expiration` successfully applied
 - **Expiration Logic**: Offers expire 7 days after creation, extended by 7 days on each counter-offer
 
 ### 2. API Routes ✅
+
 - **GET /api/offers/[id]**: Fetch single offer with full conversation
   - Returns offer with product, buyer, seller, counter-offers
   - Auto-updates expired offers (status → EXPIRED)
   - Authorization check (user must be buyer or seller)
-  
 - **PATCH /api/offers/[id]**: Accept or reject offers
   - Validates offer status (PENDING or COUNTERED)
   - Updates status to ACCEPTED or REJECTED
   - Authorization check (seller only)
-  
 - **POST /api/offers/[id]/counter**: Submit counter-offers
   - Validates negotiation rules (seller counters lower, buyer counters higher)
   - Minimum 50% of listed price, less than listed price
@@ -32,12 +32,12 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
 - **POST /api/offers**: Updated to set 7-day expiration on creation
 
 ### 3. Real-Time Strategy ✅
+
 - **Polling Implementation**: Custom `useOfferUpdates` hook
   - Fetches offer data every 5 seconds
   - Provides manual refetch function for immediate updates after actions
   - Configurable interval and enable/disable
   - Initial data from server component (no loading flash)
-  
 - **WebSocket Ready**: Socket.io and socket.io-client installed
   - Upgrade path documented in implementation plan
   - Polling provides solid MVP functionality
@@ -45,6 +45,7 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
 ### 4. UI Components ✅
 
 #### Core Components
+
 1. **OfferMessage** - Message bubble with sender identification
    - Buyer/seller styling differentiation (primary vs surface background)
    - Displays: sender name, amount, optional message, timestamp
@@ -61,10 +62,10 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
 3. **CounterOfferForm** - Role-based counter-offer submission
    - Amount input with £ prefix, optional message textarea
    - Client-side validation:
-     * Seller must counter lower than current amount
-     * Buyer must counter higher than current amount
-     * Minimum 50% of listed price
-     * Less than listed price
+     - Seller must counter lower than current amount
+     - Buyer must counter higher than current amount
+     - Minimum 50% of listed price
+     - Less than listed price
    - Disabled when offer is accepted/rejected/expired
    - Submits to POST /api/offers/[id]/counter
    - Calls onSuccess callback to refetch data
@@ -75,9 +76,9 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
    - Seller info with rating (star icon + average + count)
    - Product specs: brand, model, condition (formatted)
    - Conditional action buttons:
-     * Accepted + Buyer: "Proceed to Checkout" (navigates to /checkout/[id]?offerId=[id])
-     * Active + Seller: "Accept Offer" + "Reject Offer"
-     * Expired/Rejected: Empty state message
+     - Accepted + Buyer: "Proceed to Checkout" (navigates to /checkout/[id]?offerId=[id])
+     - Active + Seller: "Accept Offer" + "Reject Offer"
+     - Expired/Rejected: Empty state message
    - Sticky positioning: top: 100px
    - Width: 35% on $gtLg (1281px+), full-width on mobile
 
@@ -95,27 +96,28 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
    - Bar content: thumbnail (60x60), title (truncated), current offer amount, status badge, chevron down
    - Click opens Tamagui Sheet with 85% snap point
    - Expanded content:
-     * Full product image (250px height)
-     * Status badge, title, listed vs current offer prices
-     * Seller info with rating
-     * Product specs (brand/model/condition)
-     * Action buttons (Accept/Reject for sellers)
+     - Full product image (250px height)
+     - Status badge, title, listed vs current offer prices
+     - Seller info with rating
+     - Product specs (brand/model/condition)
+     - Action buttons (Accept/Reject for sellers)
    - Buttons in sheet close sheet + call action handlers
 
 #### Page Components
+
 7. **OfferDetailClient** - Main three-column layout
    - Three-column desktop layout:
-     * Left (20%): OffersSidebar (hidden below $gtLg)
-     * Center (45%): ConversationThread + CounterOfferForm
-     * Right (35%): ProductSummaryCard (hidden below $gtLg)
+     - Left (20%): OffersSidebar (hidden below $gtLg)
+     - Center (45%): ConversationThread + CounterOfferForm
+     - Right (35%): ProductSummaryCard (hidden below $gtLg)
    - Mobile layout:
-     * MobileProductBar at top (sticky)
-     * Full-screen conversation + form
+     - MobileProductBar at top (sticky)
+     - Full-screen conversation + form
    - Polling for real-time updates (5 seconds)
    - Action handlers:
-     * handleAccept: PATCH /api/offers/[id] with action: "accept"
-     * handleReject: PATCH /api/offers/[id] with action: "reject"
-     * handleCounterOfferSuccess: Refetches offer data
+     - handleAccept: PATCH /api/offers/[id] with action: "accept"
+     - handleReject: PATCH /api/offers/[id] with action: "reject"
+     - handleCounterOfferSuccess: Refetches offer data
    - Loading states and error handling
    - Fetches all offers for sidebar on mount
 
@@ -124,14 +126,15 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
    - Fetches user from Prisma (clerkId → user.id mapping)
    - Fetches offer with all includes (product, images, buyer, seller, counter-offers)
    - Authorization checks:
-     * User must be authenticated
-     * User must be buyer or seller
-     * Redirects to /sign-in or /offers on failure
+     - User must be authenticated
+     - User must be buyer or seller
+     - Redirects to /sign-in or /offers on failure
    - Passes data to OfferDetailClient
    - Route: /offers/[id]
    - Dynamic rendering (export const dynamic = "force-dynamic")
 
 ### 5. Custom Hooks ✅
+
 - **useOfferUpdates**: Polling hook for real-time updates
   - Parameters: offerId, enabled, interval, initialOffer
   - Returns: { offer, loading, error, refetch }
@@ -142,39 +145,43 @@ The "Make an Offer" messaging system is now fully implemented with a three-colum
 ## Architecture Patterns
 
 ### Server Component → Client Component Flow
+
 ```typescript
 // Server Component (page.tsx)
 export default async function OfferDetailPage({ params }: PageProps) {
   const { userId } = await auth();
   const user = await prisma.user.findUnique({ where: { clerkId: userId } });
   const offer = await prisma.offer.findUnique({ where: { id }, include: {...} });
-  
+
   // Authorization checks
   if (offer.buyerId !== user.id && offer.sellerId !== user.id) redirect('/offers');
-  
+
   return <OfferDetailClient offer={offer} currentUserId={user.id} />;
 }
 
 // Client Component (OfferDetailClient.tsx)
 export function OfferDetailClient({ offer: initialOffer, currentUserId }) {
   const { offer, refetch } = useOfferUpdates({ offerId: initialOffer.id, initialOffer });
-  
+
   // Interactive UI with actions and real-time updates
 }
 ```
 
 ### Responsive Layout Strategy
+
 - **Desktop ($gtLg: 1281px+)**: Three columns side-by-side
 - **Tablet ($md - $gtLg)**: Hide sidebars, full-width conversation
 - **Mobile (< $md)**: Hide sidebars, add sticky product bar with Sheet expansion
 
 ### Authorization Pattern
+
 - Server-side auth checks in page.tsx (prevents unauthorized access)
 - API routes verify user is buyer or seller before returning data
 - Client components receive pre-authorized data from server
 - Actions (accept/reject/counter) re-verified server-side in API routes
 
 ### Data Flow
+
 1. Server fetches initial offer data (with auth)
 2. Client receives data, starts polling (5-second interval)
 3. User performs action (accept/reject/counter)
@@ -216,6 +223,7 @@ apps/web/src/
 ## Testing Checklist
 
 ### Manual Testing Steps
+
 1. ✅ Create offer on product page
 2. ✅ Navigate to /offers/[id]
 3. ✅ Verify three-column layout on desktop
@@ -232,12 +240,14 @@ apps/web/src/
 14. ✅ Verify authorization (try accessing another user's offer)
 
 ### Unit Testing (Future)
+
 - [ ] API route authorization checks
 - [ ] Counter-offer validation logic
 - [ ] Expiration date calculations
 - [ ] Polling hook behavior
 
 ### Integration Testing (Future)
+
 - [ ] Complete offer negotiation flow (create → counter → accept)
 - [ ] Expiration workflow (create → wait 7 days → verify EXPIRED status)
 - [ ] Authorization failures (unauthorized access attempts)
@@ -245,6 +255,7 @@ apps/web/src/
 ## Remaining Work
 
 ### 1. Email Notifications 📝
+
 - [ ] Create email templates (offer created, counter-offer, accepted, rejected)
 - [ ] Implement sendOfferCreatedEmail function
 - [ ] Implement sendCounterOfferEmail function
@@ -255,12 +266,14 @@ apps/web/src/
 - [ ] Add email calls to PATCH /api/offers/[id] (line 179)
 
 ### 2. Toast Notifications 📝
+
 - [ ] Install toast library (react-hot-toast or sonner)
 - [ ] Add success toasts for accept/reject/counter actions
 - [ ] Add error toasts for failed actions
 - [ ] Replace TODO comments in OfferDetailClient.tsx (lines 118, 121, 149, 152)
 
 ### 3. Offers List Page 📝
+
 - [ ] Create /offers page with list of all offers
 - [ ] Filter tabs: All / Buying / Selling
 - [ ] Empty state: "No offers yet..."
@@ -268,6 +281,7 @@ apps/web/src/
 - [ ] Click card → navigate to /offers/[id]
 
 ### 4. WebSocket Upgrade (Optional) 🔮
+
 - [ ] Create Socket.io server in Next.js API route
 - [ ] Emit events on offer actions (accept, reject, counter)
 - [ ] Update useOfferUpdates to use WebSocket instead of polling
@@ -275,6 +289,7 @@ apps/web/src/
 - [ ] Fallback to polling if WebSocket fails
 
 ### 5. Checkout Integration 📝
+
 - [ ] Create /checkout/[productId] page
 - [ ] Accept offerId query parameter
 - [ ] Show accepted offer amount (not listed price)

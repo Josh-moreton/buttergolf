@@ -1,31 +1,31 @@
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
-import { prisma } from '@buttergolf/db'
-import { OrderDetail } from './OrderDetail'
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { prisma } from "@buttergolf/db";
+import { OrderDetail } from "./OrderDetail";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export default async function OrderDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { userId: clerkId } = await auth()
+  const { userId: clerkId } = await auth();
 
   if (!clerkId) {
-    redirect('/sign-in')
+    redirect("/sign-in");
   }
 
   // Get user from database
   const user = await prisma.user.findUnique({
     where: { clerkId },
-  })
+  });
 
   if (!user) {
-    redirect('/sign-in')
+    redirect("/sign-in");
   }
 
-  const { id } = await params
+  const { id } = await params;
 
   // Fetch order
   const order = await prisma.order.findUnique({
@@ -34,7 +34,7 @@ export default async function OrderDetailPage({
       product: {
         include: {
           images: {
-            orderBy: { sortOrder: 'asc' },
+            orderBy: { sortOrder: "asc" },
           },
           category: true,
           brand: true,
@@ -59,29 +59,31 @@ export default async function OrderDetailPage({
       fromAddress: true,
       toAddress: true,
     },
-  })
+  });
 
   if (!order) {
-    redirect('/orders')
+    redirect("/orders");
   }
 
   // Check authorization
   if (order.buyerId !== user.id && order.sellerId !== user.id) {
-    redirect('/orders')
+    redirect("/orders");
   }
 
   // Add role information
   const orderWithRole = {
     ...order,
-    userRole: order.buyerId === user.id ? 'buyer' as const : 'seller' as const, product: {
+    userRole:
+      order.buyerId === user.id ? ("buyer" as const) : ("seller" as const),
+    product: {
       ...order.product,
       brand: order.product.brand?.name || null,
     },
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <OrderDetail order={orderWithRole} />
     </div>
-  )
+  );
 }

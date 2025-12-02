@@ -70,7 +70,7 @@ export function HorizontalProductCard({
 
         {/* Category */}
         <Text size="$4" color="$textSecondary">
-          {product.category || 'Uncategorized'}
+          {product.category || "Uncategorized"}
         </Text>
 
         {/* Price */}
@@ -80,9 +80,9 @@ export function HorizontalProductCard({
 
         {/* Description */}
         {product.description && (
-          <Text 
-            size="$4" 
-            color="$textSecondary" 
+          <Text
+            size="$4"
+            color="$textSecondary"
             numberOfLines={2}
             ellipsizeMode="tail"
           >
@@ -105,7 +105,8 @@ export function HorizontalProductCard({
                   ★
                 </Text>
                 <Text size="$3" color="$textSecondary">
-                  {product.seller.averageRating?.toFixed(1)} ({product.seller.ratingCount})
+                  {product.seller.averageRating?.toFixed(1)} (
+                  {product.seller.ratingCount})
                 </Text>
               </Row>
             </>
@@ -114,8 +115,8 @@ export function HorizontalProductCard({
       </Column>
 
       {/* Action Buttons - Right */}
-      <Row 
-        gap="$sm" 
+      <Row
+        gap="$sm"
         flexShrink={0}
         flexDirection="row"
         flexWrap="wrap"

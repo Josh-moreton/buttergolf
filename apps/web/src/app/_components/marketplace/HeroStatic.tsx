@@ -13,25 +13,25 @@ import { imagePaths } from "@buttergolf/assets";
  * - Mobile/app shows static text immediately for performance
  */
 export function HeroStatic() {
-    return (
-        <Hero
-            heading={{
-                line1: "Butter Up Your Game",
-            }}
-            subtitle="The Marketplace to Buy, Sell & Upgrade"
-            primaryCta={{
-                label: "Sell now",
-                href: "/sell",
-            }}
-            secondaryCta={{
-                label: "Shop now",
-                href: "/listings",
-            }}
-            backgroundImage={imagePaths.hero.background}
-            heroImage={imagePaths.hero.club}
-            showHeroImage={true}
-            animationVariant="fade-up"
-            animationDelay={0.6}
-        />
-    );
+  return (
+    <Hero
+      heading={{
+        line1: "Butter Up Your Game",
+      }}
+      subtitle="The Marketplace to Buy, Sell & Upgrade"
+      primaryCta={{
+        label: "Sell now",
+        href: "/sell",
+      }}
+      secondaryCta={{
+        label: "Shop now",
+        href: "/listings",
+      }}
+      backgroundImage={imagePaths.hero.background}
+      heroImage={imagePaths.hero.club}
+      showHeroImage={true}
+      animationVariant="fade-up"
+      animationDelay={0.6}
+    />
+  );
 }

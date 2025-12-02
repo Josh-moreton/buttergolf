@@ -18,6 +18,7 @@ Updated `.claude/CLAUDE.md` with comprehensive documentation about the layout co
 **Location**: Lines 253-362 in `.claude/CLAUDE.md`
 
 **What Changed**:
+
 - Expanded from ~20 lines to ~110 lines
 - Added explicit warning about Row/Column being minimal shims
 - Added comprehensive examples of correct usage
@@ -29,6 +30,7 @@ Updated `.claude/CLAUDE.md` with comprehensive documentation about the layout co
 **New Content Includes**:
 
 #### ✅ CORRECT Patterns:
+
 - `gap="$md"` (with $ prefix)
 - `alignItems="center"` (native React Native prop)
 - `justifyContent="space-between"` (native React Native prop)
@@ -36,6 +38,7 @@ Updated `.claude/CLAUDE.md` with comprehensive documentation about the layout co
 - Media query examples
 
 #### ❌ WRONG Patterns (Explicitly Forbidden):
+
 - `align="center"` → Use `alignItems="center"`
 - `justify="between"` → Use `justifyContent="space-between"`
 - `gap="md"` → Use `gap="$md"`
@@ -46,6 +49,7 @@ Updated `.claude/CLAUDE.md` with comprehensive documentation about the layout co
 ### 3. Added Common Layout Patterns
 
 **New Examples**:
+
 ```tsx
 // Horizontal spacing
 <Row gap="$md">
@@ -67,6 +71,7 @@ Updated `.claude/CLAUDE.md` with comprehensive documentation about the layout co
 **Location**: Lines 672-710 in `.claude/CLAUDE.md`
 
 **What It Includes**:
+
 - Reference to migration documentation
 - Quick reference guide for DO/DON'T patterns
 - Detection script for checking regressions
@@ -135,6 +140,7 @@ This reinforces the cross-platform nature of the components.
 ### Before Migration Documentation
 
 Old guidance was minimal:
+
 ```tsx
 // ✅ CORRECT
 <Column gap="$lg">
@@ -150,6 +156,7 @@ Old guidance was minimal:
 ### After Migration Documentation
 
 New guidance is comprehensive:
+
 ```tsx
 // ✅ CORRECT - Use Native Tamagui Props
 <Row gap="$md">                              // Gap with $ prefix
@@ -185,6 +192,7 @@ grep -r '<Row.*justify="' apps/web/src/app --include="*.tsx"
 ### Future Enhancements Documented
 
 The migration docs also mention potential future enhancements:
+
 - ESLint rules to catch old patterns
 - Pre-commit hooks to block problematic code
 - CI/CD checks in GitHub Actions
@@ -284,6 +292,7 @@ Periodically run detection scripts to ensure codebase still matches documentatio
 **The `.claude/CLAUDE.md` file now serves as the single source of truth for layout patterns.**
 
 Benefits:
+
 - ✅ Clear guidance for developers
 - ✅ Prevention of common mistakes
 - ✅ Type-safe patterns documented

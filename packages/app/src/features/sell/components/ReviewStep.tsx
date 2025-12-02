@@ -2,14 +2,7 @@
 
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import {
-  Column,
-  Row,
-  Text,
-  View,
-  Image,
-  ScrollView,
-} from "@buttergolf/ui";
+import { Column, Row, Text, View, Image, ScrollView } from "@buttergolf/ui";
 import {
   Pencil,
   Camera,
@@ -324,7 +317,12 @@ export function ReviewStep({
                 Before you submit
               </Text>
             </Row>
-            <Text size="$3" fontWeight="400" color="$burntOlive" lineHeight={20}>
+            <Text
+              size="$3"
+              fontWeight="400"
+              color="$burntOlive"
+              lineHeight={20}
+            >
               By submitting this listing, you confirm that you have the right to
               sell this item and that all details are accurate. You agree to our
               terms of service and community guidelines.

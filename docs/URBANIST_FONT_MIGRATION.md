@@ -18,43 +18,53 @@ Successfully migrated the entire ButterGolf design system from Gotham to Urbanis
 ### 1. Tamagui Configuration (`packages/config/src/tamagui.config.ts`)
 
 **Before (Gotham):**
+
 ```typescript
 const gothamFace = {
-    normal: { normal: 'Gotham-Book, Gotham', italic: 'Gotham-Book, Gotham' },
-    bold: { normal: 'Gotham-Bold, Gotham', italic: 'Gotham-Bold, Gotham' },
-    // ... weight-specific variants
-}
+  normal: { normal: "Gotham-Book, Gotham", italic: "Gotham-Book, Gotham" },
+  bold: { normal: "Gotham-Bold, Gotham", italic: "Gotham-Bold, Gotham" },
+  // ... weight-specific variants
+};
 
 const headingFont = createFont({
-    family: 'Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
-    // ...
-})
+  family:
+    "Gotham, Gotham-Book, -apple-system, system-ui, BlinkMacSystemFont, sans-serif",
+  // ...
+});
 ```
 
 **After (Urbanist):**
+
 ```typescript
 const urbanistFace = {
-    normal: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    bold: { normal: 'Urbanist, system-ui', italic: 'Urbanist, system-ui' },
-    // ... simplified weight mapping
-}
+  normal: { normal: "Urbanist, system-ui", italic: "Urbanist, system-ui" },
+  bold: { normal: "Urbanist, system-ui", italic: "Urbanist, system-ui" },
+  // ... simplified weight mapping
+};
 
 const headingFont = createFont({
-    family: 'Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
-    // ...
-})
+  family: "Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif",
+  // ...
+});
 ```
 
 ### 2. Next.js Layout (`apps/web/src/app/layout.tsx`)
 
 **Before (Local Font Files):**
+
 ```typescript
 import localFont from "next/font/local";
 
 const gotham = localFont({
   src: [
-    { path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf", weight: "100" },
-    { path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf", weight: "200" },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf",
+      weight: "100",
+    },
+    {
+      path: "../../../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-XLight.otf",
+      weight: "200",
+    },
     // ... 8 total font files
   ],
   variable: "--font-gotham",
@@ -63,6 +73,7 @@ const gotham = localFont({
 ```
 
 **After (Google Fonts):**
+
 ```typescript
 import { Urbanist } from "next/font/google";
 
@@ -78,6 +89,7 @@ const urbanist = Urbanist({
 ### 3. Mobile App (`apps/mobile/App.tsx`)
 
 **Before (Manual Font Loading):**
+
 ```typescript
 const [fontsLoaded] = useFonts({
   "Gotham-Thin": require("../../packages/assets/fonts/Gotham-font-family/Gotham/Gotham-Thin.otf"),
@@ -87,6 +99,7 @@ const [fontsLoaded] = useFonts({
 ```
 
 **After (Tamagui Handles It):**
+
 ```typescript
 // Urbanist font is loaded via Google Fonts through Tamagui config
 // No need to manually load fonts in mobile - Tamagui handles it
@@ -96,6 +109,7 @@ const [fontsLoaded] = useFonts({});
 ### 4. Global CSS (`apps/web/src/app/globals.css`)
 
 **Before:**
+
 ```css
 /* Gotham font family */
 --font-gotham: var(--font-gotham);
@@ -104,12 +118,13 @@ body {
   font-family:
     var(--font-gotham),
     -apple-system,
-    BlinkMacSystemFont,
-    /* ... */
+    BlinkMacSystemFont;
+  /* ... */
 }
 ```
 
 **After:**
+
 ```css
 /* Urbanist font family */
 --font-urbanist: var(--font-urbanist);
@@ -118,8 +133,8 @@ body {
   font-family:
     var(--font-urbanist),
     -apple-system,
-    BlinkMacSystemFont,
-    /* ... */
+    BlinkMacSystemFont;
+  /* ... */
 }
 ```
 
@@ -145,41 +160,46 @@ body {
 
 Urbanist supports the full range of weights that were previously used:
 
-| Weight | Name | Usage |
-|--------|------|-------|
-| 100 | Thin | Rarely used, decorative |
-| 200 | Extra Light | Light headings |
-| 300 | Light | Subheadings, captions |
-| 400 | Regular | Body text (default) |
-| 500 | Medium | Navigation links, buttons |
-| 600 | Semi Bold | Emphasis text |
-| 700 | Bold | Headings, strong emphasis |
-| 800 | Extra Bold | Large headings |
-| 900 | Black | Hero text, ultra-bold headings |
+| Weight | Name        | Usage                          |
+| ------ | ----------- | ------------------------------ |
+| 100    | Thin        | Rarely used, decorative        |
+| 200    | Extra Light | Light headings                 |
+| 300    | Light       | Subheadings, captions          |
+| 400    | Regular     | Body text (default)            |
+| 500    | Medium      | Navigation links, buttons      |
+| 600    | Semi Bold   | Emphasis text                  |
+| 700    | Bold        | Headings, strong emphasis      |
+| 800    | Extra Bold  | Large headings                 |
+| 900    | Black       | Hero text, ultra-bold headings |
 
 ## Benefits of This Change
 
 ### 1. **No Licensing Issues**
+
 - Urbanist is 100% free and open source
 - No commercial licensing concerns
 - Safe for redistribution
 
 ### 2. **Simplified Font Loading**
+
 - Web: One Google Fonts import vs 8 local font files
 - Mobile: Tamagui handles loading automatically
 - Reduced bundle size
 
 ### 3. **Better Performance**
+
 - Google Fonts CDN with worldwide caching
 - Optimized WOFF2 format with compression
 - `font-display: swap` prevents FOIT (Flash of Invisible Text)
 
 ### 4. **Easier Maintenance**
+
 - No local font files to manage
 - Updates automatically from Google Fonts
 - Consistent across all platforms
 
 ### 5. **Complete Feature Set**
+
 - Variable weights (100-900)
 - Italic support for all weights
 - Excellent readability
@@ -188,25 +208,30 @@ Urbanist supports the full range of weights that were previously used:
 ## Verification
 
 ### Build Success ✅
+
 ```bash
 pnpm --filter web run build
 # ✓ Compiled successfully in 60s
 ```
 
 ### Compiled CSS ✅
+
 ```css
 :root .font_heading {
-  --f-family: Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+  --f-family:
+    Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
   /* ... */
 }
 
 :root .font_body {
-  --f-family: Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+  --f-family:
+    Urbanist, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
   /* ... */
 }
 ```
 
 ### Dev Server ✅
+
 ```bash
 pnpm --filter web run dev
 # ✓ Starting...
@@ -240,13 +265,16 @@ Urbanist via Google Fonts is compatible with:
 ## Migration Notes
 
 ### No Breaking Changes
+
 - Font family names changed in config only
 - Component APIs remain unchanged
 - All existing components work without modification
 - CSS variable names updated but old ones removed safely
 
 ### Cleanup Opportunities
+
 The following Gotham font files can now be removed (if desired):
+
 ```
 packages/assets/fonts/Gotham-font-family/Gotham/
 ├── Gotham-Thin.otf
@@ -273,16 +301,16 @@ packages/assets/fonts/Gotham-font-family/Gotham/
 
 The Urbanist migration maintains our Pure Butter brand identity:
 
-| Element | Font Weight | Usage |
-|---------|-------------|-------|
-| Hero Title | 700 (Bold) | Large homepage headlines |
-| Hero Subtitle | 900 (Black) | Massive impact text |
-| Navigation | 500 (Medium) | Header navigation links |
-| Headings | 700 (Bold) | Section headings |
-| Body Text | 400 (Regular) | Paragraph content |
-| Labels | 500 (Medium) | Form labels, small text |
-| Buttons | 700 (Bold) | CTA buttons |
-| Captions | 300 (Light) | Helper text, metadata |
+| Element       | Font Weight   | Usage                    |
+| ------------- | ------------- | ------------------------ |
+| Hero Title    | 700 (Bold)    | Large homepage headlines |
+| Hero Subtitle | 900 (Black)   | Massive impact text      |
+| Navigation    | 500 (Medium)  | Header navigation links  |
+| Headings      | 700 (Bold)    | Section headings         |
+| Body Text     | 400 (Regular) | Paragraph content        |
+| Labels        | 500 (Medium)  | Form labels, small text  |
+| Buttons       | 700 (Bold)    | CTA buttons              |
+| Captions      | 300 (Light)   | Helper text, metadata    |
 
 ## Resources
 
@@ -302,4 +330,4 @@ The Urbanist migration maintains our Pure Butter brand identity:
 
 ---
 
-*Migration completed: November 13, 2025*
+_Migration completed: November 13, 2025_

@@ -136,7 +136,9 @@ export function MobileFilterSheet({
                 maxPrice={priceRange.max}
                 selectedMin={filters.minPrice}
                 selectedMax={filters.maxPrice}
-                onChange={(minPrice, maxPrice) => onChange({ minPrice, maxPrice })}
+                onChange={(minPrice, maxPrice) =>
+                  onChange({ minPrice, maxPrice })
+                }
               />
             </FilterSection>
 

@@ -29,48 +29,54 @@ Always use theme tokens instead of hardcoded values. Tokens ensure consistency, 
 The following color tokens are defined in `packages/config/src/tamagui.config.ts`:
 
 #### Brand Colors
+
 ```tsx
-$green700     // #0b6b3f - Dark green (primary dark)
-$green500     // #13a063 - Primary green (main brand)
-$amber400     // #f2b705 - Accent amber
+$green700; // #0b6b3f - Dark green (primary dark)
+$green500; // #13a063 - Primary green (main brand)
+$amber400; // #f2b705 - Accent amber
 ```
 
 #### Background Colors
+
 ```tsx
-$bg           // #fbfbf9 - Main background
-$bgGray       // #F7F7F7 - Gray background for sections
-$bgCard       // #F6F7FB - Card background
-$cardBg       // #ffffff - White card background
+$bg; // #fbfbf9 - Main background
+$bgGray; // #F7F7F7 - Gray background for sections
+$bgCard; // #F6F7FB - Card background
+$cardBg; // #ffffff - White card background
 ```
 
 #### Text Colors
+
 ```tsx
-$text         // #0f1720 - Primary text
-$textDark     // #1C274C - Dark text for emphasis
-$muted        // #6b7280 - Muted/secondary text
+$text; // #0f1720 - Primary text
+$textDark; // #1C274C - Dark text for emphasis
+$muted; // #6b7280 - Muted/secondary text
 ```
 
 #### Accent Colors
+
 ```tsx
-$blue         // #3C50E0 - Primary blue accent
-$blueLight    // #93C5FD - Light blue for hover states
-$teal         // #02AAA4 - Teal accent
-$red          // #DC2626 - Red for alerts/badges
+$blue; // #3C50E0 - Primary blue accent
+$blueLight; // #93C5FD - Light blue for hover states
+$teal; // #02AAA4 - Teal accent
+$red; // #DC2626 - Red for alerts/badges
 ```
 
 #### Neutral Colors
+
 ```tsx
-$gray100      // #dfe6e9 - Very light gray
-$gray300      // #b2bec3 - Light gray
-$gray400      // #D1D5DB - Medium-light gray
-$gray500      // #636e72 - Medium gray
-$gray700      // #2d3436 - Dark gray
+$gray100; // #dfe6e9 - Very light gray
+$gray300; // #b2bec3 - Light gray
+$gray400; // #D1D5DB - Medium-light gray
+$gray500; // #636e72 - Medium gray
+$gray700; // #2d3436 - Dark gray
 ```
 
 #### Utility Colors
+
 ```tsx
-$accentBlue   // #74b9ff - Blue utility
-$accentPurple // #a29bfe - Purple utility
+$accentBlue; // #74b9ff - Blue utility
+$accentPurple; // #a29bfe - Purple utility
 ```
 
 ### Spacing Tokens
@@ -78,18 +84,18 @@ $accentPurple // #a29bfe - Purple utility
 Use Tamagui's built-in spacing tokens:
 
 ```tsx
-$1   // 4px
-$2   // 8px
-$3   // 12px
-$4   // 16px
-$5   // 20px
-$6   // 24px
-$7   // 28px
-$8   // 32px
-$9   // 36px
-$10  // 40px
-$11  // 44px
-$12  // 48px
+$1; // 4px
+$2; // 8px
+$3; // 12px
+$4; // 16px
+$5; // 20px
+$6; // 24px
+$7; // 28px
+$8; // 32px
+$9; // 36px
+$10; // 40px
+$11; // 44px
+$12; // 48px
 // ... continues through $20
 ```
 
@@ -98,12 +104,12 @@ $12  // 48px
 For width, height, and other size properties:
 
 ```tsx
-$0   // 0
-$1   // 24px
-$2   // 28px
-$3   // 32px
-$4   // 36px
-$5   // 40px
+$0; // 0
+$1; // 24px
+$2; // 28px
+$3; // 32px
+$4; // 36px
+$5; // 40px
 // ... and more
 ```
 
@@ -112,16 +118,16 @@ $5   // 40px
 Use semantic font size tokens:
 
 ```tsx
-$1   // 11px
-$2   // 12px
-$3   // 13px
-$4   // 14px
-$5   // 16px
-$6   // 18px
-$7   // 20px
-$8   // 23px
-$9   // 26px
-$10  // 32px
+$1; // 11px
+$2; // 12px
+$3; // 13px
+$4; // 14px
+$5; // 16px
+$6; // 18px
+$7; // 20px
+$8; // 23px
+$9; // 26px
+$10; // 32px
 // ... and more
 ```
 
@@ -142,50 +148,50 @@ Create a shared component in `packages/ui/src/components/` when:
 
 ```tsx
 // packages/ui/src/components/MyComponent.tsx
-import { styled, YStack } from 'tamagui'
+import { styled, YStack } from "tamagui";
 
 export const MyComponent = styled(YStack, {
-  name: 'MyComponent', // Required for compiler optimization
-  backgroundColor: '$background',
-  padding: '$4',
-  borderRadius: '$4',
-  
+  name: "MyComponent", // Required for compiler optimization
+  backgroundColor: "$background",
+  padding: "$4",
+  borderRadius: "$4",
+
   variants: {
     size: {
       small: {
-        padding: '$3',
-        fontSize: '$3',
+        padding: "$3",
+        fontSize: "$3",
       },
       medium: {
-        padding: '$4',
-        fontSize: '$4',
+        padding: "$4",
+        fontSize: "$4",
       },
       large: {
-        padding: '$5',
-        fontSize: '$5',
+        padding: "$5",
+        fontSize: "$5",
       },
     },
-    
+
     variant: {
       default: {
-        backgroundColor: '$background',
+        backgroundColor: "$background",
       },
       primary: {
-        backgroundColor: '$green500',
+        backgroundColor: "$green500",
       },
       secondary: {
-        backgroundColor: '$blue',
+        backgroundColor: "$blue",
       },
     },
   } as const,
-  
-  defaultVariants: {
-    size: 'medium',
-    variant: 'default',
-  },
-})
 
-export type MyComponentProps = React.ComponentProps<typeof MyComponent>
+  defaultVariants: {
+    size: "medium",
+    variant: "default",
+  },
+});
+
+export type MyComponentProps = React.ComponentProps<typeof MyComponent>;
 ```
 
 ### Component Export Pattern
@@ -194,8 +200,8 @@ Always export both the component and its props type:
 
 ```tsx
 // packages/ui/src/index.ts
-export { MyComponent } from './components/MyComponent'
-export type { MyComponentProps } from './components/MyComponent'
+export { MyComponent } from "./components/MyComponent";
+export type { MyComponentProps } from "./components/MyComponent";
 ```
 
 ---
@@ -244,10 +250,10 @@ Use media query props for responsive layouts:
 ```tsx
 <YStack
   width="100%"
-  $sm={{ width: '100%' }}      // Small screens
-  $md={{ width: '50%' }}        // Medium screens
-  $lg={{ width: '33.33%' }}     // Large screens
-  $xl={{ width: '25%' }}        // Extra large screens
+  $sm={{ width: "100%" }} // Small screens
+  $md={{ width: "50%" }} // Medium screens
+  $lg={{ width: "33.33%" }} // Large screens
+  $xl={{ width: "25%" }} // Extra large screens
 >
   <Text>Responsive content</Text>
 </YStack>
@@ -261,7 +267,7 @@ Use pseudo-state props for interactive elements:
 <Button
   backgroundColor="$blue"
   hoverStyle={{
-    backgroundColor: '$blueLight',
+    backgroundColor: "$blueLight",
     scale: 1.02,
   }}
   pressStyle={{
@@ -269,7 +275,7 @@ Use pseudo-state props for interactive elements:
     opacity: 0.8,
   }}
   focusStyle={{
-    borderColor: '$blue',
+    borderColor: "$blue",
     borderWidth: 2,
   }}
 >
@@ -283,7 +289,7 @@ For complex hover interactions:
 
 ```tsx
 <YStack group="card" hoverStyle={{ scale: 1.02 }}>
-  <Text $group-card-hover={{ color: '$blue' }}>
+  <Text $group-card-hover={{ color: "$blue" }}>
     This text changes when card is hovered
   </Text>
 </YStack>
@@ -299,7 +305,7 @@ For complex hover interactions:
 
 ```tsx
 // Bad
-<YStack style={{ backgroundColor: '#fbfbf9' }}>
+<YStack style={{ backgroundColor: "#fbfbf9" }}>
   <Text>Content</Text>
 </YStack>
 ```
@@ -336,9 +342,9 @@ When creating styled components, always include the `name` prop:
 ```tsx
 // Required for compiler optimization
 export const Card = styled(YStack, {
-  name: 'Card', // ← Don't forget this!
+  name: "Card", // ← Don't forget this!
   // ... rest of styles
-})
+});
 ```
 
 ### 4. Hardcoded Breakpoints
@@ -347,14 +353,14 @@ export const Card = styled(YStack, {
 
 ```tsx
 // Bad
-const isSmall = width < 768
+const isSmall = width < 768;
 ```
 
 ✅ **Do** use Tamagui's media queries:
 
 ```tsx
 // Good
-const media = useMedia()
+const media = useMedia();
 if (media.sm) {
   // Small screen logic
 }
@@ -366,9 +372,7 @@ if (media.sm) {
 
 ```tsx
 // Bad
-<Button backgroundColor={isPrimary ? '#13a063' : '#3C50E0'}>
-  Click
-</Button>
+<Button backgroundColor={isPrimary ? "#13a063" : "#3C50E0"}>Click</Button>
 ```
 
 ✅ **Do** create variants:
@@ -396,28 +400,28 @@ const StyledButton = styled(Button, {
 
 ```tsx
 // packages/ui/src/components/ProductCard.tsx
-import { styled, YStack, XStack, Image, Text } from 'tamagui'
+import { styled, YStack, XStack, Image, Text } from "tamagui";
 
 export const ProductCard = styled(YStack, {
-  name: 'ProductCard',
-  backgroundColor: '$cardBg',
-  borderRadius: '$4',
-  padding: '$4',
-  gap: '$3',
-  
-  shadowColor: '$shadowColor',
+  name: "ProductCard",
+  backgroundColor: "$cardBg",
+  borderRadius: "$4",
+  padding: "$4",
+  gap: "$3",
+
+  shadowColor: "$shadowColor",
   shadowRadius: 8,
   shadowOffset: { width: 0, height: 2 },
-  
+
   hoverStyle: {
     scale: 1.02,
     shadowRadius: 12,
   },
-  
+
   pressStyle: {
     scale: 0.98,
   },
-  
+
   variants: {
     elevated: {
       true: {
@@ -426,13 +430,13 @@ export const ProductCard = styled(YStack, {
       },
     },
   } as const,
-})
+});
 ```
 
 ### Example 2: Using the Card
 
 ```tsx
-import { ProductCard, Image, Text, XStack } from '@buttergolf/ui'
+import { ProductCard, Image, Text, XStack } from "@buttergolf/ui";
 
 function ProductList() {
   return (
@@ -455,22 +459,22 @@ function ProductList() {
         </Text>
       </XStack>
     </ProductCard>
-  )
+  );
 }
 ```
 
 ### Example 3: Responsive Layout
 
 ```tsx
-import { XStack, YStack, Text } from '@buttergolf/ui'
+import { XStack, YStack, Text } from "@buttergolf/ui";
 
 function HeroSection() {
   return (
     <XStack
       padding="$6"
       gap="$6"
-      $sm={{ flexDirection: 'column' }}
-      $lg={{ flexDirection: 'row' }}
+      $sm={{ flexDirection: "column" }}
+      $lg={{ flexDirection: "row" }}
     >
       <YStack flex={1} gap="$4">
         <Text fontSize="$10" fontWeight="800">
@@ -480,12 +484,10 @@ function HeroSection() {
           Find great deals or list your gear
         </Text>
       </YStack>
-      
-      <YStack flex={1}>
-        {/* Image or content */}
-      </YStack>
+
+      <YStack flex={1}>{/* Image or content */}</YStack>
     </XStack>
-  )
+  );
 }
 ```
 
@@ -496,6 +498,7 @@ function HeroSection() {
 ### How to Migrate Hardcoded Colors
 
 1. **Identify the color in the code**
+
    ```tsx
    // Before
    <Text color="#1C274C">Header</Text>
@@ -514,6 +517,7 @@ function HeroSection() {
 ### How to Migrate Hardcoded Spacing
 
 1. **Identify the hardcoded value**
+
    ```tsx
    // Before
    <YStack padding={16} margin={24}>
@@ -534,11 +538,12 @@ function HeroSection() {
 If you need a color or size that doesn't exist:
 
 1. **Add to config** (`packages/config/src/tamagui.config.ts`):
+
    ```tsx
    const butterGolfColors = {
      // ... existing colors
-     newBrand: '#123456', // Add your color
-   }
+     newBrand: "#123456", // Add your color
+   };
    ```
 
 2. **Document it** (add to this file's token list)

@@ -1,29 +1,29 @@
-import { auth } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
-import { prisma } from '@buttergolf/db'
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { prisma } from "@buttergolf/db";
 
 // GET /api/orders/[id] - Get single order details
 export async function GET(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId: clerkId } = await auth()
-    
+    const { userId: clerkId } = await auth();
+
     if (!clerkId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from database
     const user = await prisma.user.findUnique({
       where: { clerkId },
-    })
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const { id } = await context.params
+    const { id } = await context.params;
 
     // Fetch order
     const order = await prisma.order.findUnique({
@@ -32,7 +32,7 @@ export async function GET(
         product: {
           include: {
             images: {
-              orderBy: { sortOrder: 'asc' },
+              orderBy: { sortOrder: "asc" },
             },
             category: true,
           },
@@ -56,29 +56,29 @@ export async function GET(
         fromAddress: true,
         toAddress: true,
       },
-    })
+    });
 
     if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     // Check authorization - user must be either buyer or seller
     if (order.buyerId !== user.id && order.sellerId !== user.id) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Add role information
     const orderWithRole = {
       ...order,
-      userRole: order.buyerId === user.id ? 'buyer' : 'seller',
-    }
+      userRole: order.buyerId === user.id ? "buyer" : "seller",
+    };
 
-    return NextResponse.json(orderWithRole)
+    return NextResponse.json(orderWithRole);
   } catch (error) {
-    console.error('Error fetching order:', error)
+    console.error("Error fetching order:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch order' },
-      { status: 500 }
-    )
+      { error: "Failed to fetch order" },
+      { status: 500 },
+    );
   }
 }

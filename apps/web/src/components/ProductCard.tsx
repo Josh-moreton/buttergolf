@@ -29,7 +29,9 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
       setShowAuthMessage(true);
       // Redirect to sign-in after 1 second
       setTimeout(() => {
-        router.push(`/sign-in?redirect_url=${encodeURIComponent(globalThis.location.pathname)}`);
+        router.push(
+          `/sign-in?redirect_url=${encodeURIComponent(globalThis.location.pathname)}`,
+        );
       }, 1000);
       return;
     }

@@ -9,7 +9,7 @@ import { images } from '@buttergolf/assets'
 // Using club images in mobile app
 export function ProductCard() {
   return (
-    <Image 
+    <Image
       source={images.clubs.club1}
       width={200}
       height={200}
@@ -31,8 +31,8 @@ const randomClub = images.clubs[clubKeys[Math.floor(Math.random() * clubKeys.len
 ### Option 1: Using Next.js Image with public folder
 
 ```tsx
-import { Image } from '@buttergolf/ui'
-import { imagePaths } from '@buttergolf/assets'
+import { Image } from "@buttergolf/ui";
+import { imagePaths } from "@buttergolf/assets";
 
 export function HeroSection() {
   return (
@@ -43,14 +43,14 @@ export function HeroSection() {
       objectFit="cover"
       borderRadius="$2xl"
     />
-  )
+  );
 }
 ```
 
 ### Option 2: Using Next.js optimized Image component
 
 ```tsx
-import NextImage from 'next/image'
+import NextImage from "next/image";
 
 export function OptimizedImage() {
   return (
@@ -59,44 +59,48 @@ export function OptimizedImage() {
       alt="Golf clubs"
       width={400}
       height={400}
-      style={{ borderRadius: '24px', objectFit: 'cover' }}
+      style={{ borderRadius: "24px", objectFit: "cover" }}
     />
-  )
+  );
 }
 ```
 
 ## Type-Safe Access
 
 ```tsx
-import { images, type ClubImageKey } from '@buttergolf/assets'
+import { images, type ClubImageKey } from "@buttergolf/assets";
 
 // Type-safe key selection
-const imageKey: ClubImageKey = 'club1'
-const image = images.clubs[imageKey]
+const imageKey: ClubImageKey = "club1";
+const image = images.clubs[imageKey];
 
 // Works with arrays
-const allClubImages = Object.values(images.clubs)
-const featuredImages = [images.clubs.club1, images.clubs.club4, images.clubs.club6]
+const allClubImages = Object.values(images.clubs);
+const featuredImages = [
+  images.clubs.club1,
+  images.clubs.club4,
+  images.clubs.club6,
+];
 ```
 
 ## Carousel/Slider Example
 
 ```tsx
-import { images } from '@buttergolf/assets'
+import { images } from "@buttergolf/assets";
 
 const CAROUSEL_ITEMS = [
   {
     id: 1,
     image: images.clubs.club1, // Mobile
-    imagePath: '/_assets/images/clubs-1.jpg', // Web
-    title: 'Premium Driver Set',
+    imagePath: "/_assets/images/clubs-1.jpg", // Web
+    title: "Premium Driver Set",
   },
   {
     id: 2,
     image: images.clubs.club2,
-    imagePath: '/_assets/images/clubs-2.webp',
-    title: 'Complete Iron Collection',
+    imagePath: "/_assets/images/clubs-2.webp",
+    title: "Complete Iron Collection",
   },
   // ... more items
-]
+];
 ```

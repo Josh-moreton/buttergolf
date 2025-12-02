@@ -5,10 +5,11 @@
 ---
 
 title: Accordion
-description:  A vertically stacked set of interactive headings with content.
+description: A vertically stacked set of interactive headings with content.
 name: accordion
 component: Accordion
 package: accordion
+
 ---
 
 <Beta />
@@ -22,11 +23,11 @@ package: accordion
 ```
 
 <Highlights
-  features={[
-    'Full keyboard navigation.',
-    'Can expand one or multiple items.',
-    'Can be controlled or uncontrolled.',
-  ]}
+features={[
+'Full keyboard navigation.',
+'Can expand one or multiple items.',
+'Can be controlled or uncontrolled.',
+]}
 />
 
 ## Installation
@@ -42,7 +43,7 @@ npm install @tamagui/accordion
 Import all parts and piece them together.
 
 ```jsx
-import { Accordion } from 'tamagui';
+import { Accordion } from "tamagui";
 
 export default () => (
   <Accordion>
@@ -53,7 +54,7 @@ export default () => (
       <Accordion.Content />
     </Accordion.Item>
   </Accordion>
-)
+);
 ```
 
 ## API Reference
@@ -63,134 +64,134 @@ export default () => (
 Contains all the parts of an accordion.
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
-    },
-    {
-      name: 'type',
-      required: true,
-      type: '"single" | "multiple"',
-      typeSimple: 'enum',
-      description: (
-        <span>
-          Determines whether one or multiple items can be opened at the same time.
-        </span>
-      ),
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'string',
-      description: (
-        <span>
-          The controlled value of the item to expand when <Code>type</Code> is{' '}
-          <Code>"single"</Code>. Must be used in conjunction with{' '}
-          <Code>onValueChange</Code>.
-        </span>
-      ),
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      type: 'string',
-      description: (
-        <span>
-          The value of the item to expand when initially rendered and <Code>type</Code> is{' '}
-          <Code>"single"</Code>. Use when you do not need to control the state of the
-          items.
-        </span>
-      ),
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-      type: '(value: string) => void',
-      typeSimple: 'function',
-      description: (
-        <span>
-          Event handler called when the expanded state of an item changes and{' '}
-          <Code>type</Code> is <Code>"single"</Code>.
-        </span>
-      ),
-    },
-    {
-      name: 'value',
-      required: false,
-      default: '[]',
-      type: 'string[]',
-      description: (
-        <span>
-          The controlled value of the item to expand when <Code>type</Code> is{' '}
-          <Code>"multiple"</Code>. Must be used in conjunction with{' '}
-          <Code>onValueChange</Code>.
-        </span>
-      ),
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      default: '[]',
-      type: 'string[]',
-      description: (
-        <span>
-          The value of the item to expand when initially rendered when <Code>type</Code>{' '}
-          is <Code>"multiple"</Code>. Use when you do not need to control the state of the
-          items.
-        </span>
-      ),
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-      type: '(value: string[]) => void',
-      typeSimple: 'function',
-      description: (
-        <span>
-          Event handler called when the expanded state of an item changes and{' '}
-          <Code>type</Code> is <Code>"multiple"</Code>.
-        </span>
-      ),
-    },
-    {
-      name: 'collapsible',
-      required: false,
-      default: 'false',
-      type: 'boolean',
-      description: (
-        <span>
-          When <Code>type</Code> is <Code>"single"</Code>, allows closing content when
-          clicking trigger for an open item.
-        </span>
-      ),
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description: (
-        <span>
-          When <Code>true</Code>, prevents the user from interacting with the accordion
-          and all its items.
-        </span>
-      ),
-    },
-    {
-      name: 'dir',
-      required: false,
-      type: '"ltr" | "rtl"',
-      typeSimple: 'enum',
-      default: '"ltr"',
-      description:
-        'The reading direction of the accordion when applicable. If omitted, assumes LTR (left-to-right) reading mode.',
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+required: false,
+type: 'boolean',
+default: 'false',
+description:
+'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+},
+{
+name: 'type',
+required: true,
+type: '"single" | "multiple"',
+typeSimple: 'enum',
+description: (
+<span>
+Determines whether one or multiple items can be opened at the same time.
+</span>
+),
+},
+{
+name: 'value',
+required: false,
+type: 'string',
+description: (
+<span>
+The controlled value of the item to expand when <Code>type</Code> is{' '}
+<Code>"single"</Code>. Must be used in conjunction with{' '}
+<Code>onValueChange</Code>.
+</span>
+),
+},
+{
+name: 'defaultValue',
+required: false,
+type: 'string',
+description: (
+<span>
+The value of the item to expand when initially rendered and <Code>type</Code> is{' '}
+<Code>"single"</Code>. Use when you do not need to control the state of the
+items.
+</span>
+),
+},
+{
+name: 'onValueChange',
+required: false,
+type: '(value: string) => void',
+typeSimple: 'function',
+description: (
+<span>
+Event handler called when the expanded state of an item changes and{' '}
+<Code>type</Code> is <Code>"single"</Code>.
+</span>
+),
+},
+{
+name: 'value',
+required: false,
+default: '[]',
+type: 'string[]',
+description: (
+<span>
+The controlled value of the item to expand when <Code>type</Code> is{' '}
+<Code>"multiple"</Code>. Must be used in conjunction with{' '}
+<Code>onValueChange</Code>.
+</span>
+),
+},
+{
+name: 'defaultValue',
+required: false,
+default: '[]',
+type: 'string[]',
+description: (
+<span>
+The value of the item to expand when initially rendered when <Code>type</Code>{' '}
+is <Code>"multiple"</Code>. Use when you do not need to control the state of the
+items.
+</span>
+),
+},
+{
+name: 'onValueChange',
+required: false,
+type: '(value: string[]) => void',
+typeSimple: 'function',
+description: (
+<span>
+Event handler called when the expanded state of an item changes and{' '}
+<Code>type</Code> is <Code>"multiple"</Code>.
+</span>
+),
+},
+{
+name: 'collapsible',
+required: false,
+default: 'false',
+type: 'boolean',
+description: (
+<span>
+When <Code>type</Code> is <Code>"single"</Code>, allows closing content when
+clicking trigger for an open item.
+</span>
+),
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+default: 'false',
+description: (
+<span>
+When <Code>true</Code>, prevents the user from interacting with the accordion
+and all its items.
+</span>
+),
+},
+{
+name: 'dir',
+required: false,
+type: '"ltr" | "rtl"',
+typeSimple: 'enum',
+default: '"ltr"',
+description:
+'The reading direction of the accordion when applicable. If omitted, assumes LTR (left-to-right) reading mode.',
+},
+]}
 />
 
 ### Item
@@ -198,33 +199,33 @@ Contains all the parts of an accordion.
 Contains all the parts of a collapsible section.
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description: (
-        <span>
-          When <Code>true</Code>, prevents the user from interacting with the item.
-        </span>
-      ),
-    },
-    {
-      name: 'value',
-      required: true,
-      type: 'string',
-      description: 'A unique value for the item.',
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+required: false,
+type: 'boolean',
+default: 'false',
+description:
+'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+default: 'false',
+description: (
+<span>
+When <Code>true</Code>, prevents the user from interacting with the item.
+</span>
+),
+},
+{
+name: 'value',
+required: true,
+type: 'string',
+description: 'A unique value for the item.',
+},
+]}
 />
 
 ### Header
@@ -232,16 +233,16 @@ Contains all the parts of a collapsible section.
 Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the appropriate heading level for your page.
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+required: false,
+type: 'boolean',
+default: 'false',
+description:
+'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+},
+]}
 />
 
 ### Trigger
@@ -249,16 +250,16 @@ Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the appropr
 Toggles the collapsed state of its associated item. It should be nested inside of an `Accordion.Header`.
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+required: false,
+type: 'boolean',
+default: 'false',
+description:
+'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+},
+]}
 />
 
 ### Content
@@ -266,26 +267,26 @@ Toggles the collapsed state of its associated item. It should be nested inside o
 Contains the collapsible content for an item.
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      required: false,
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
-    },
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      description: (
-        <span>
-          Used to force mounting when more control is needed. Useful when controlling
-          animation with React animation libraries.
-        </span>
-      ),
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+required: false,
+type: 'boolean',
+default: 'false',
+description:
+'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+},
+{
+name: 'forceMount',
+type: 'boolean',
+description: (
+<span>
+Used to force mounting when more control is needed. Useful when controlling
+animation with React animation libraries.
+</span>
+),
+},
+]}
 />
 
 ## Examples
@@ -337,6 +338,7 @@ name: alertDialog
 component: AlertDialog
 package: alert-dialog
 demoName: AlertDialog
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -348,11 +350,11 @@ demoName: AlertDialog
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible with dev-time checks to ensure ARIA props.`,
-  ]}
+features={[
+`Comes with styling, completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible with dev-time checks to ensure ARIA props.`,
+]}
 />
 
 ## Installation
@@ -372,24 +374,24 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 ## Anatomy
 
 ```tsx
-import { AlertDialog } from 'tamagui' // or '@tamagui/alert-dialog'
+import { AlertDialog } from "tamagui"; // or '@tamagui/alert-dialog'
 
 export default () => (
   <AlertDialog>
@@ -404,7 +406,7 @@ export default () => (
       </AlertDialog.Content>
     </AlertDialog.Portal>
   </AlertDialog>
-)
+);
 ```
 
 ## API Reference
@@ -414,14 +416,14 @@ export default () => (
 Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/components/dialog#api), except modal which is on by default. Adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'native',
-      type: 'boolean',
-      required: false,
-      description: `When true, on iOS it will render as a native AlertDialog.`,
-    },
-  ]}
+data={[
+{
+name: 'native',
+type: 'boolean',
+required: false,
+description: `When true, on iOS it will render as a native AlertDialog.`,
+},
+]}
 />
 
 ### AlertDialog.Trigger
@@ -433,14 +435,14 @@ Just [Tamagui Props](/docs/intro/props).
 Renders AlertDialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+]}
 />
 
 ### AlertDialog.Content
@@ -450,14 +452,14 @@ Main container for AlertDialog content, this is where you should apply animation
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+]}
 />
 
 ### AlertDialog.Overlay
@@ -465,14 +467,14 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
 Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+]}
 />
 
 ### AlertDialog.Title
@@ -492,26 +494,26 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
 
 <PropsTable
-  data={[
-    {
-      name: 'displayWhenAdapted',
-      type: 'boolean',
-      description: `By default Cancel elements hide when Adapt is active. If set to true, they will show when adapted.`,
-    },
-  ]}
+data={[
+{
+name: 'displayWhenAdapted',
+type: 'boolean',
+description: `By default Cancel elements hide when Adapt is active. If set to true, they will show when adapted.`,
+},
+]}
 />
 
 ### PortalProvider
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Examples
@@ -521,7 +523,7 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
 If you're using native modals (maybe from react-navigation), you'll notice the Dialogs won't show up inside the modal. To get around this, you should wrap your screen inside `PortalProvider`, like so:
 
 ```tsx
-import { PortalProvider } from 'tamagui'
+import { PortalProvider } from "tamagui";
 
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
@@ -529,7 +531,7 @@ export function Page() {
     <PortalProvider>
       {/* rest of your page, including the Dialog... */}
     </PortalProvider>
-  )
+  );
 }
 ```
 
@@ -541,10 +543,11 @@ title: Anchor
 description: Link to external websites.
 name: html
 component: Anchor
+
 ---
 
 <Highlights
-  features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
+features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
 />
 
 ## Usage
@@ -560,24 +563,24 @@ On native, it will use React Native `Linking.openURL`, on web it will render to 
 Inherits [Tamagui props](/docs/intro/props) as well as:
 
 <PropsTable
-  data={[
-    {
-      name: 'href',
-      required: false,
-      type: 'string',
-      description: `Location to link to.`,
-    },
-    {
-      name: 'target',
-      required: false,
-      type: 'string',
-    },
-    {
-      name: 'rel',
-      required: false,
-      type: 'string',
-    },
-  ]}
+data={[
+{
+name: 'href',
+required: false,
+type: 'string',
+description: `Location to link to.`,
+},
+{
+name: 'target',
+required: false,
+type: 'string',
+},
+{
+name: 'rel',
+required: false,
+type: 'string',
+},
+]}
 />
 
 ## components/avatar/1.0.0
@@ -590,6 +593,7 @@ name: avatar
 component: Avatar
 package: avatar
 demoName: Avatar
+
 ---
 
 <HeroContainer>
@@ -601,11 +605,11 @@ demoName: Avatar
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that stays in sync with other components.',
-    'Completely control styles on every element.',
-    'Automatically swaps fallback for image on load.',
-  ]}
+features={[
+'Accepts size prop that stays in sync with other components.',
+'Completely control styles on every element.',
+'Automatically swaps fallback for image on load.',
+]}
 />
 
 ## Installation
@@ -619,14 +623,14 @@ npm install @tamagui/avatar
 ## Usage
 
 ```tsx
-import { Avatar } from 'tamagui'
+import { Avatar } from "tamagui";
 
 export default () => (
   <Avatar circular size="$6">
     <Avatar.Image src="http://picsum.photos/200/300" />
     <Avatar.Fallback bc="red" />
   </Avatar>
-)
+);
 ```
 
 ## API Reference
@@ -640,14 +644,14 @@ Avatar extends [Square](/docs/components/shapes#shape-props), giving it all the 
 Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'delayMs',
-      required: false,
-      type: 'number',
-      description: `Milliseconds to wait before showing the fallback, to prevent flicker.`,
-    },
-  ]}
+data={[
+{
+name: 'delayMs',
+required: false,
+type: 'number',
+description: `Milliseconds to wait before showing the fallback, to prevent flicker.`,
+},
+]}
 />
 
 ### Avatar.Image
@@ -663,6 +667,7 @@ description: A simple button component
 name: button
 component: Button
 demoName: Button
+
 ---
 
 # Button
@@ -678,19 +683,19 @@ demoName: Button
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Can inverse theme with themeInverse.',
-    'Place an icon before or after.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Can inverse theme with themeInverse.',
+'Place an icon before or after.',
+]}
 />
 
 ### Usage
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button>Lorem ipsum</Button>
+export default () => <Button>Lorem ipsum</Button>;
 ```
 
 ### Sizing
@@ -701,9 +706,9 @@ on the text wrapped inside. Tamagui supports adjusting the padding, border
 radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="$6">Lorem ipsum</Button>;
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the
@@ -722,50 +727,50 @@ Button extends View, inheriting all the
 [Tamagui standard props](/docs/intro/props), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'theme',
-      required: false,
-      type: 'string',
-      description: `Apply a theme just to the button and it's children`,
-    },
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'textProps',
-      required: false,
-      type: 'TextProps',
-      description: `By default a button wraps contents in Text and will pass textProps if set.`,
-    },
-    {
-      name: 'noTextWrap',
-      required: false,
-      type: 'boolean',
-      description: `If true, Button won't wrap content with a Text element.`,
-    },
-    {
-      name: 'icon',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears before the text.`,
-    },
-    {
-      name: 'iconAfter',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears after the text.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'theme',
+required: false,
+type: 'string',
+description: `Apply a theme just to the button and it's children`,
+},
+{
+name: 'themeInverse',
+required: false,
+type: 'boolean',
+description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+},
+{
+name: 'textProps',
+required: false,
+type: 'TextProps',
+description: `By default a button wraps contents in Text and will pass textProps if set.`,
+},
+{
+name: 'noTextWrap',
+required: false,
+type: 'boolean',
+description: `If true, Button won't wrap content with a Text element.`,
+},
+{
+name: 'icon',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears before the text.`,
+},
+{
+name: 'iconAfter',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears after the text.`,
+},
+]}
 />
 
 ## components/button/1.0.0-beta.0
@@ -777,6 +782,7 @@ description: A simple button component
 name: button
 component: Button
 demoName: Button
+
 ---
 
 # Button
@@ -792,19 +798,19 @@ demoName: Button
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Can inverse theme with themeInverse.',
-    'Place an icon before or after.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Can inverse theme with themeInverse.',
+'Place an icon before or after.',
+]}
 />
 
 ### Usage
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button>Lorem ipsum</Button>
+export default () => <Button>Lorem ipsum</Button>;
 ```
 
 ### Sizing
@@ -815,9 +821,9 @@ on the text wrapped inside. Tamagui supports adjusting the padding, border
 radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="$6">Lorem ipsum</Button>;
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the
@@ -836,86 +842,86 @@ Button extends View, inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'theme',
-      required: false,
-      type: 'string',
-      description: `Apply a theme just to the button and it's children`,
-    },
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'noTextWrap',
-      required: false,
-      type: 'boolean',
-      description: `If true, Button won't wrap content with a Text element.`,
-    },
-    {
-      name: 'icon',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears before the text.`,
-    },
-    {
-      name: 'iconAfter',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears after the text.`,
-    },
-    {
-      name: 'scaleIcon',
-      required: false,
-      type: 'number',
-      description: `Scale the icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSpace',
-      required: false,
-      type: 'number',
-      description: `Scale the spacing more than usual by this number.`,
-    },
-    {
-      name: 'spaceFlex',
-      required: false,
-      type: `boolean`,
-      description: `Makes all space elements have a flex.`,
-    },
-    {
-      name: 'color',
-      required: false,
-      type: `SizableTextProps['color']`,
-      description: `Passes "color" down to the inner text component`,
-    },
-    {
-      name: 'fontWeight',
-      required: false,
-      type: `SizableTextProps['fontWeight']`,
-      description: `Passes "fontWeight" down to the inner text component`,
-    },
-    {
-      name: 'letterSpacing',
-      required: false,
-      type: `SizableTextProps['letterSpacing']`,
-      description: `Passes "letterSpacing" down to the inner text component`,
-    },
-    {
-      name: 'textAlign',
-      required: false,
-      type: `SizableTextProps['textAlign']`,
-      description: `Passes "textAlign" down to the inner text component`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'theme',
+required: false,
+type: 'string',
+description: `Apply a theme just to the button and it's children`,
+},
+{
+name: 'themeInverse',
+required: false,
+type: 'boolean',
+description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+},
+{
+name: 'noTextWrap',
+required: false,
+type: 'boolean',
+description: `If true, Button won't wrap content with a Text element.`,
+},
+{
+name: 'icon',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears before the text.`,
+},
+{
+name: 'iconAfter',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears after the text.`,
+},
+{
+name: 'scaleIcon',
+required: false,
+type: 'number',
+description: `Scale the icon more than usual by this number.`,
+},
+{
+name: 'scaleSpace',
+required: false,
+type: 'number',
+description: `Scale the spacing more than usual by this number.`,
+},
+{
+name: 'spaceFlex',
+required: false,
+type: `boolean`,
+description: `Makes all space elements have a flex.`,
+},
+{
+name: 'color',
+required: false,
+type: `SizableTextProps['color']`,
+description: `Passes "color" down to the inner text component`,
+},
+{
+name: 'fontWeight',
+required: false,
+type: `SizableTextProps['fontWeight']`,
+description: `Passes "fontWeight" down to the inner text component`,
+},
+{
+name: 'letterSpacing',
+required: false,
+type: `SizableTextProps['letterSpacing']`,
+description: `Passes "letterSpacing" down to the inner text component`,
+},
+{
+name: 'textAlign',
+required: false,
+type: `SizableTextProps['textAlign']`,
+description: `Passes "textAlign" down to the inner text component`,
+},
+]}
 />
 
 ## components/button/1.0.0
@@ -928,6 +934,7 @@ name: button
 component: Button
 package: button
 demoName: Button
+
 ---
 
 # Button
@@ -943,19 +950,19 @@ demoName: Button
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Can inverse theme with themeInverse.',
-    'Place an icon before or after.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Can inverse theme with themeInverse.',
+'Place an icon before or after.',
+]}
 />
 
 ### Usage
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button>Lorem ipsum</Button>
+export default () => <Button>Lorem ipsum</Button>;
 ```
 
 ### Sizing
@@ -963,9 +970,9 @@ export default () => <Button>Lorem ipsum</Button>
 Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="$6">Lorem ipsum</Button>;
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -983,7 +990,7 @@ Button only supports a limited subset of text props directly, and doesn't accept
 Please note that this pattern is a bit antithetical to the multiple-components APIs that Tamagui generally prefers. In a future release we hope to fix this, but that change should be easy to migrate to.
 
 ```tsx
-import { forwardRef } from 'react'
+import { forwardRef } from "react";
 import {
   ButtonFrame,
   ButtonText,
@@ -992,28 +999,30 @@ import {
   styled,
   themeable,
   useButton,
-} from 'tamagui'
+} from "tamagui";
 
 const CustomButtonFrame = styled(ButtonFrame, {
   // ...
-})
+});
 
 const CustomButtonText = styled(ButtonText, {
   // ...
-})
+});
 
 // to capture the custom variant types you define
-type CustomButtonFrameProps = GetProps<typeof CustomButtonFrame>
-type CustomButtonTextProps = GetProps<typeof CustomButtonText>
+type CustomButtonFrameProps = GetProps<typeof CustomButtonFrame>;
+type CustomButtonTextProps = GetProps<typeof CustomButtonText>;
 
 export type CustomButtonProps = TamaguiButtonProps &
   CustomButtonFrameProps &
-  CustomButtonTextProps
+  CustomButtonTextProps;
 
-export const Button = CustomButtonFrame.styleable<CustomButtonProps>((propsIn, ref) => {
-  const { props } = useButton(propsIn, { Text: CustomButtonText })
-  return <CustomButtonFrame {...props} ref={ref} />
-})
+export const Button = CustomButtonFrame.styleable<CustomButtonProps>(
+  (propsIn, ref) => {
+    const { props } = useButton(propsIn, { Text: CustomButtonText });
+    return <CustomButtonFrame {...props} ref={ref} />;
+  },
+);
 ```
 
 ### Button props
@@ -1021,98 +1030,98 @@ export const Button = CustomButtonFrame.styleable<CustomButtonProps>((propsIn, r
 Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'theme',
-      required: false,
-      type: 'string',
-      description: `Apply a theme just to the button and it's children`,
-    },
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'noTextWrap',
-      required: false,
-      type: 'boolean',
-      description: `If true, Button won't wrap content with a Text element.`,
-    },
-    {
-      name: 'icon',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears before the text.`,
-    },
-    {
-      name: 'iconAfter',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears after the text.`,
-    },
-    {
-      name: 'scaleIcon',
-      required: false,
-      type: 'number',
-      description: `Scale the icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSpace',
-      required: false,
-      type: 'number',
-      description: `Scale the spacing more than usual by this number.`,
-    },
-    {
-      name: 'spaceFlex',
-      required: false,
-      type: `boolean`,
-      description: `Makes all space elements have a flex.`,
-    },
-    {
-      name: 'color',
-      required: false,
-      type: `SizableTextProps['color']`,
-      description: `Passes "color" down to the inner text component`,
-    },
-    {
-      name: 'fontWeight',
-      required: false,
-      type: `SizableTextProps['fontWeight']`,
-      description: `Passes "fontWeight" down to the inner text component`,
-    },
-    {
-      name: 'letterSpacing',
-      required: false,
-      type: `SizableTextProps['letterSpacing']`,
-      description: `Passes "letterSpacing" down to the inner text component`,
-    },
-    {
-      name: 'textAlign',
-      required: false,
-      type: `SizableTextProps['textAlign']`,
-      description: `Passes "textAlign" down to the inner text component`,
-    },
-    {
-      name: 'circular',
-      required: false,
-      type: `boolean`,
-      description: `Forces a circular button.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'theme',
+required: false,
+type: 'string',
+description: `Apply a theme just to the button and it's children`,
+},
+{
+name: 'themeInverse',
+required: false,
+type: 'boolean',
+description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+},
+{
+name: 'noTextWrap',
+required: false,
+type: 'boolean',
+description: `If true, Button won't wrap content with a Text element.`,
+},
+{
+name: 'icon',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears before the text.`,
+},
+{
+name: 'iconAfter',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears after the text.`,
+},
+{
+name: 'scaleIcon',
+required: false,
+type: 'number',
+description: `Scale the icon more than usual by this number.`,
+},
+{
+name: 'scaleSpace',
+required: false,
+type: 'number',
+description: `Scale the spacing more than usual by this number.`,
+},
+{
+name: 'spaceFlex',
+required: false,
+type: `boolean`,
+description: `Makes all space elements have a flex.`,
+},
+{
+name: 'color',
+required: false,
+type: `SizableTextProps['color']`,
+description: `Passes "color" down to the inner text component`,
+},
+{
+name: 'fontWeight',
+required: false,
+type: `SizableTextProps['fontWeight']`,
+description: `Passes "fontWeight" down to the inner text component`,
+},
+{
+name: 'letterSpacing',
+required: false,
+type: `SizableTextProps['letterSpacing']`,
+description: `Passes "letterSpacing" down to the inner text component`,
+},
+{
+name: 'textAlign',
+required: false,
+type: `SizableTextProps['textAlign']`,
+description: `Passes "textAlign" down to the inner text component`,
+},
+{
+name: 'circular',
+required: false,
+type: `boolean`,
+description: `Forces a circular button.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ## components/button/1.28.0
@@ -1125,6 +1134,7 @@ name: button
 component: Button
 package: button
 demoName: Button
+
 ---
 
 <InstallBanner name="@tamagui/button" />
@@ -1138,11 +1148,11 @@ demoName: Button
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Can inverse theme with themeInverse.',
-    'Place an icon before or after.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Can inverse theme with themeInverse.',
+'Place an icon before or after.',
+]}
 />
 
 ## Usage
@@ -1150,9 +1160,9 @@ demoName: Button
 When using the simple Button API, it's as simple as this:
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button>Lorem ipsum</Button>
+export default () => <Button>Lorem ipsum</Button>;
 ```
 
 ### Sizing
@@ -1160,9 +1170,9 @@ export default () => <Button>Lorem ipsum</Button>
 Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="$6">Lorem ipsum</Button>;
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -1190,98 +1200,98 @@ Tamagui now has all the features necessary to make creating a custom Button easy
 Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'theme',
-      required: false,
-      type: 'string',
-      description: `Apply a theme just to the button and it's children`,
-    },
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'noTextWrap',
-      required: false,
-      type: 'boolean',
-      description: `If true, Button won't wrap content with a Text element.`,
-    },
-    {
-      name: 'icon',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears before the text.`,
-    },
-    {
-      name: 'iconAfter',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears after the text.`,
-    },
-    {
-      name: 'scaleIcon',
-      required: false,
-      type: 'number',
-      description: `Scale the icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSpace',
-      required: false,
-      type: 'number',
-      description: `Scale the spacing more than usual by this number.`,
-    },
-    {
-      name: 'spaceFlex',
-      required: false,
-      type: `boolean`,
-      description: `Makes all space elements have a flex.`,
-    },
-    {
-      name: 'color',
-      required: false,
-      type: `SizableTextProps['color']`,
-      description: `Passes "color" down to the inner text component`,
-    },
-    {
-      name: 'fontWeight',
-      required: false,
-      type: `SizableTextProps['fontWeight']`,
-      description: `Passes "fontWeight" down to the inner text component`,
-    },
-    {
-      name: 'letterSpacing',
-      required: false,
-      type: `SizableTextProps['letterSpacing']`,
-      description: `Passes "letterSpacing" down to the inner text component`,
-    },
-    {
-      name: 'textAlign',
-      required: false,
-      type: `SizableTextProps['textAlign']`,
-      description: `Passes "textAlign" down to the inner text component`,
-    },
-    {
-      name: 'circular',
-      required: false,
-      type: `boolean`,
-      description: `Forces a circular button.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'theme',
+required: false,
+type: 'string',
+description: `Apply a theme just to the button and it's children`,
+},
+{
+name: 'themeInverse',
+required: false,
+type: 'boolean',
+description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+},
+{
+name: 'noTextWrap',
+required: false,
+type: 'boolean',
+description: `If true, Button won't wrap content with a Text element.`,
+},
+{
+name: 'icon',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears before the text.`,
+},
+{
+name: 'iconAfter',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears after the text.`,
+},
+{
+name: 'scaleIcon',
+required: false,
+type: 'number',
+description: `Scale the icon more than usual by this number.`,
+},
+{
+name: 'scaleSpace',
+required: false,
+type: 'number',
+description: `Scale the spacing more than usual by this number.`,
+},
+{
+name: 'spaceFlex',
+required: false,
+type: `boolean`,
+description: `Makes all space elements have a flex.`,
+},
+{
+name: 'color',
+required: false,
+type: `SizableTextProps['color']`,
+description: `Passes "color" down to the inner text component`,
+},
+{
+name: 'fontWeight',
+required: false,
+type: `SizableTextProps['fontWeight']`,
+description: `Passes "fontWeight" down to the inner text component`,
+},
+{
+name: 'letterSpacing',
+required: false,
+type: `SizableTextProps['letterSpacing']`,
+description: `Passes "letterSpacing" down to the inner text component`,
+},
+{
+name: 'textAlign',
+required: false,
+type: `SizableTextProps['textAlign']`,
+description: `Passes "textAlign" down to the inner text component`,
+},
+{
+name: 'circular',
+required: false,
+type: `boolean`,
+description: `Forces a circular button.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ## components/card/1.0.0
@@ -1294,6 +1304,7 @@ name: card
 component: Card
 package: card
 demoName: Card
+
 ---
 
 <HeroContainer>
@@ -1305,11 +1316,11 @@ demoName: Card
 ```
 
 <Highlights
-  features={[
-    `Sizable with a size prop that passes to Card children.`,
-    `Themeable helper props like elevate.`,
-    `Background component that handles positioning.`,
-  ]}
+features={[
+`Sizable with a size prop that passes to Card children.`,
+`Themeable helper props like elevate.`,
+`Background component that handles positioning.`,
+]}
 />
 
 ## Installation
@@ -1323,7 +1334,7 @@ npm install @tamagui/card
 ## Anatomy
 
 ```tsx
-import { Card } from 'tamagui' // or '@tamagui/card'
+import { Card } from "tamagui"; // or '@tamagui/card'
 
 export default () => (
   <Card>
@@ -1332,7 +1343,7 @@ export default () => (
     {/* any other components */}
     <Card.Background />
   </Card>
-)
+);
 ```
 
 ## API Reference
@@ -1342,20 +1353,20 @@ export default () => (
 Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Card.Header
@@ -1363,14 +1374,14 @@ Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themea
 Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Card.Footer
@@ -1378,14 +1389,14 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Card.Background
@@ -1393,14 +1404,14 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below Header/Footer.
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ## components/checkbox/1.3.0
@@ -1413,6 +1424,7 @@ name: checkbox
 component: Checkbox
 package: checkbox
 demoName: Checkbox
+
 ---
 
 # Checkbox
@@ -1428,12 +1440,12 @@ demoName: Checkbox
 ```
 
 <Highlights
-  features={[
-    `Supports indeterminate state.`,
-    `Accessible, easy to compose and customize.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Ability to opt-out to native checkbox on web.`,
-  ]}
+features={[
+`Supports indeterminate state.`,
+`Accessible, easy to compose and customize.`,
+`Sizable & works controlled or uncontrolled.`,
+`Ability to opt-out to native checkbox on web.`,
+]}
 />
 
 ## Installation
@@ -1447,8 +1459,8 @@ npm install @tamagui/checkbox
 ## Usage
 
 ```tsx
-import { Check } from '@tamagui/lucide-icons'
-import { Checkbox } from 'tamagui'
+import { Check } from "@tamagui/lucide-icons";
+import { Checkbox } from "tamagui";
 
 export default () => (
   <Checkbox size="$4">
@@ -1456,7 +1468,7 @@ export default () => (
       <Check />
     </Checkbox.Indicator>
   </Checkbox>
-)
+);
 ```
 
 ## API Reference
@@ -1466,71 +1478,71 @@ export default () => (
 `Checkbox` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native checkbox input on web.`,
-      default: false,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean | "indeterminate") => void',
-      description: 'Callback that fires when the checkbox state is changed.',
-    },
-    {
-      name: 'sizeAdjust',
-      type: 'number',
-      description: `Adjust the checkbox size scaling by this number.`,
-    },
-    {
-      name: 'scaleIcon',
-      type: 'number',
-      description: `Scale the indicator icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native checkbox input on web.`,
+default: false,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean | "indeterminate") => void',
+description: 'Callback that fires when the checkbox state is changed.',
+},
+{
+name: 'sizeAdjust',
+type: 'number',
+description: `Adjust the checkbox size scaling by this number.`,
+},
+{
+name: 'scaleIcon',
+type: 'number',
+description: `Scale the indicator icon more than usual by this number.`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Checkbox.Indicator
@@ -1538,20 +1550,20 @@ export default () => (
 `Checkbox.Indicator` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      required: false,
-      type: `boolean`,
-      description: `Used to force mounting when more control is needed.`,
-    },
-    {
-      name: 'disablePassStyles',
-      required: false,
-      type: 'boolean',
-      description: `Used to disable passing styles down to children.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+required: false,
+type: `boolean`,
+description: `Used to force mounting when more control is needed.`,
+},
+{
+name: 'disablePassStyles',
+required: false,
+type: 'boolean',
+description: `Used to disable passing styles down to children.`,
+},
+]}
 />
 
 ## components/checkbox/1.85.0
@@ -1564,6 +1576,7 @@ name: checkbox
 component: Checkbox
 package: checkbox
 demoName: Checkbox
+
 ---
 
 # Checkbox
@@ -1614,32 +1627,32 @@ demoName: Checkbox
 
 <Tabs.Content value="styled">
 
-  ```tsx hero template=Checkbox
+```tsx hero template=Checkbox
 
-````
+```
 
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 
 ```tsx hero template=CheckboxUnstyled
 
-````
+```
 
 </Tabs.Content>
-  <Tabs.Content value="headless">
+<Tabs.Content value="headless">
 
-  ```tsx hero template=CheckboxHeadless
+```tsx hero template=CheckboxHeadless
 
-````
+```
 
 </Tabs.Content>
 
 <Highlights
 features={[
-  `Supports indeterminate state.`,
-  `Accessible, easy to compose and customize.`,
-  `Sizable & works controlled or uncontrolled.`,
-  `Ability to opt-out to native checkbox on web.`,
+`Supports indeterminate state.`,
+`Accessible, easy to compose and customize.`,
+`Sizable & works controlled or uncontrolled.`,
+`Ability to opt-out to native checkbox on web.`,
 ]}
 />
 
@@ -1650,7 +1663,7 @@ Checkbox is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/checkbox
-````
+```
 
 </Tabs.Content>
 
@@ -1681,8 +1694,8 @@ npm install @tamagui/switch-headless
 <Tabs.Content value="styled">
 
 ```tsx
-import { Check } from '@tamagui/lucide-icons'
-import { Checkbox } from 'tamagui'
+import { Check } from "@tamagui/lucide-icons";
+import { Checkbox } from "tamagui";
 
 export default () => (
   <Checkbox size="$4">
@@ -1690,7 +1703,7 @@ export default () => (
       <Check />
     </Checkbox.Indicator>
   </Checkbox>
-)
+);
 ```
 
 </Tabs.Content>
@@ -1727,71 +1740,71 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch.
 [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native checkbox input on web.`,
-      default: false,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean | "indeterminate") => void',
-      description: 'Callback that fires when the checkbox state is changed.',
-    },
-    {
-      name: 'sizeAdjust',
-      type: 'number',
-      description: `Adjust the checkbox size scaling by this number.`,
-    },
-    {
-      name: 'scaleIcon',
-      type: 'number',
-      description: `Scale the indicator icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native checkbox input on web.`,
+default: false,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean | "indeterminate") => void',
+description: 'Callback that fires when the checkbox state is changed.',
+},
+{
+name: 'sizeAdjust',
+type: 'number',
+description: `Adjust the checkbox size scaling by this number.`,
+},
+{
+name: 'scaleIcon',
+type: 'number',
+description: `Scale the indicator icon more than usual by this number.`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Checkbox.Indicator
@@ -1800,20 +1813,20 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch.
 [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      required: false,
-      type: `boolean`,
-      description: `Used to force mounting when more control is needed.`,
-    },
-    {
-      name: 'disablePassStyles',
-      required: false,
-      type: 'boolean',
-      description: `Used to disable passing styles down to children.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+required: false,
+type: `boolean`,
+description: `Used to force mounting when more control is needed.`,
+},
+{
+name: 'disablePassStyles',
+required: false,
+type: 'boolean',
+description: `Used to disable passing styles down to children.`,
+},
+]}
 />
 
 </Tabs>
@@ -1828,6 +1841,7 @@ name: checkbox
 component: Checkbox
 package: checkbox
 demoName: Checkbox
+
 ---
 
 <YStack className="is-sticky" />
@@ -1874,32 +1888,32 @@ demoName: Checkbox
 
 <Tabs.Content value="styled">
 
-  ```tsx hero template=Checkbox
+```tsx hero template=Checkbox
 
-````
+```
 
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 
 ```tsx hero template=CheckboxUnstyled
 
-````
+```
 
 </Tabs.Content>
-  <Tabs.Content value="headless">
+<Tabs.Content value="headless">
 
-  ```tsx hero template=CheckboxHeadless
+```tsx hero template=CheckboxHeadless
 
-````
+```
 
 </Tabs.Content>
 
 <Highlights
 features={[
-  `Supports indeterminate state.`,
-  `Accessible, easy to compose and customize.`,
-  `Sizable & works controlled or uncontrolled.`,
-  `Ability to opt-out to native checkbox on web.`,
+`Supports indeterminate state.`,
+`Accessible, easy to compose and customize.`,
+`Sizable & works controlled or uncontrolled.`,
+`Ability to opt-out to native checkbox on web.`,
 ]}
 />
 
@@ -1910,7 +1924,7 @@ Checkbox is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/checkbox
-````
+```
 
 </Tabs.Content>
 
@@ -1941,8 +1955,8 @@ npm install @tamagui/switch-headless
 <Tabs.Content value="styled">
 
 ```tsx
-import { Check } from '@tamagui/lucide-icons'
-import { Checkbox } from 'tamagui'
+import { Check } from "@tamagui/lucide-icons";
+import { Checkbox } from "tamagui";
 
 export default () => (
   <Checkbox size="$4">
@@ -1950,7 +1964,7 @@ export default () => (
       <Check />
     </Checkbox.Indicator>
   </Checkbox>
-)
+);
 ```
 
 </Tabs.Content>
@@ -1987,71 +2001,71 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch.
 [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native checkbox input on web.`,
-      default: false,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean | "indeterminate") => void',
-      description: 'Callback that fires when the checkbox state is changed.',
-    },
-    {
-      name: 'sizeAdjust',
-      type: 'number',
-      description: `Adjust the checkbox size scaling by this number.`,
-    },
-    {
-      name: 'scaleIcon',
-      type: 'number',
-      description: `Scale the indicator icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native checkbox input on web.`,
+default: false,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean | "indeterminate") => void',
+description: 'Callback that fires when the checkbox state is changed.',
+},
+{
+name: 'sizeAdjust',
+type: 'number',
+description: `Adjust the checkbox size scaling by this number.`,
+},
+{
+name: 'scaleIcon',
+type: 'number',
+description: `Scale the indicator icon more than usual by this number.`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Checkbox.Indicator
@@ -2060,20 +2074,20 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch.
 [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      required: false,
-      type: `boolean`,
-      description: `Used to force mounting when more control is needed.`,
-    },
-    {
-      name: 'disablePassStyles',
-      required: false,
-      type: 'boolean',
-      description: `Used to disable passing styles down to children.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+required: false,
+type: `boolean`,
+description: `Used to force mounting when more control is needed.`,
+},
+{
+name: 'disablePassStyles',
+required: false,
+type: 'boolean',
+description: `Used to disable passing styles down to children.`,
+},
+]}
 />
 
 </Tabs>
@@ -2088,6 +2102,7 @@ name: dialog
 component: Dialog
 package: dialog
 demoName: Dialog
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -2099,11 +2114,11 @@ demoName: Dialog
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible with dev-time checks to ensure ARIA props.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible with dev-time checks to ensure ARIA props.`,
+]}
 />
 
 <Notice>
@@ -2128,24 +2143,24 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 ## Anatomy
 
 ```tsx
-import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Dialog } from "tamagui"; // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -2159,7 +2174,7 @@ export default () => (
         {/* ... */}
       </Dialog.Content>
     </Dialog.Portal>
-    
+
     {/* Optional: Control focus behavior */}
     <Dialog.FocusScope loop trapped focusOnIdle={true}>
       <Dialog.FocusScope.Scope>
@@ -2167,7 +2182,7 @@ export default () => (
       </Dialog.FocusScope.Scope>
     </Dialog.FocusScope>
   </Dialog>
-)
+);
 ```
 
 ## API Reference
@@ -2177,44 +2192,44 @@ export default () => (
 Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Dialog.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      description: `Renders into root of app instead of inline`,
-    },
-    {
-      name: 'disableRemoveScroll',
-      type: 'boolean',
-      required: false,
-      description: `Used to disable the automatic removal of scrolling from the page when open.`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Dialog.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+description: `Renders into root of app instead of inline`,
+},
+{
+name: 'disableRemoveScroll',
+type: 'boolean',
+required: false,
+description: `Used to disable the automatic removal of scrolling from the page when open.`,
+},
+]}
 />
 
 ### Dialog.Trigger
@@ -2226,20 +2241,20 @@ Just [Tamagui Props](/docs/intro/props).
 Renders Dialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Dialog.Content
@@ -2249,20 +2264,20 @@ Main container for Dialog content, this is where you should apply animations.
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Dialog.Overlay
@@ -2270,14 +2285,14 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
 Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+]}
 />
 
 ### Dialog.Title
@@ -2297,13 +2312,13 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 Closes the Dialog, accepts the same props as YStack. Recommended to use with your own component and `asChild`.
 
 <PropsTable
-  data={[
-    {
-      name: 'displayWhenAdapted',
-      type: 'boolean',
-      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
-    },
-  ]}
+data={[
+{
+name: 'displayWhenAdapted',
+type: 'boolean',
+description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+},
+]}
 />
 
 Just [Tamagui Props](/docs/intro/props).
@@ -2313,42 +2328,42 @@ Just [Tamagui Props](/docs/intro/props).
 Provides access to the underlying FocusScope component used by Dialog for focus management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Dialog.Sheet
@@ -2360,7 +2375,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
 
 ```tsx
-import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Dialog } from "tamagui"; // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -2386,7 +2401,7 @@ export default () => (
       </Dialog.Sheet>
     </Dialog.Adapt>
   </Dialog>
-)
+);
 ```
 
 <Notice>
@@ -2398,14 +2413,14 @@ export default () => (
 ### PortalProvider
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Examples
@@ -2415,7 +2430,7 @@ export default () => (
 If you're using native modals (maybe from react-navigation), you'll notice the Dialogs won't show up inside the modal. To get around this, you should wrap your screen inside `PortalProvider`, like so:
 
 ```tsx
-import { PortalProvider } from 'tamagui'
+import { PortalProvider } from "tamagui";
 
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
@@ -2423,7 +2438,7 @@ export function Page() {
     <PortalProvider>
       {/* rest of your page, including the Dialog... */}
     </PortalProvider>
-  )
+  );
 }
 ```
 
@@ -2437,6 +2452,7 @@ name: dialog
 component: Dialog
 package: dialog
 demoName: Dialog
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -2448,11 +2464,11 @@ demoName: Dialog
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible with dev-time checks to ensure ARIA props.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible with dev-time checks to ensure ARIA props.`,
+]}
 />
 
 Dialog is a great way to show content inside a new floating window above
@@ -2476,24 +2492,24 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 ## Anatomy
 
 ```tsx
-import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Dialog } from "tamagui"; // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -2515,7 +2531,7 @@ export default () => (
       </Dialog.FocusScope.Scope>
     </Dialog.FocusScope>
   </Dialog>
-)
+);
 ```
 
 ## Scoping
@@ -2532,7 +2548,7 @@ Here's the basic anatomy of using `scope` and placing your Dialog higher up for
 performance:
 
 ```tsx fileName=_layout.tsx
-import { Dialog } from 'tamagui'
+import { Dialog } from "tamagui";
 
 // in your root layout:
 export default ({ children }) => (
@@ -2550,7 +2566,7 @@ export default ({ children }) => (
     {/* the rest of of your app, note that it's inside of Dialog */}
     {children}
   </Dialog>
-)
+);
 ```
 
 ```tsx fileName=UserProfile.tsx
@@ -2558,7 +2574,7 @@ export default () => (
   <Dialog.Trigger scope="user-profile">
     <Button>Open Profile</Button>
   </Dialog.Trigger>
-)
+);
 ```
 
 Note that the `Trigger` scope ties to the `Dialog` scope.
@@ -2577,7 +2593,6 @@ By default, dialogs can be dismissed by:
   - In v1, have `disableOutsidePointerEvents` set to `true` by default
   - Still dismiss on outside click, but prevent interaction with elements behind the dialog
   - Prevent right-click dismissal (right-clicks on the overlay are ignored)
-  
 - **Non-modal dialogs** (`modal={false}`):
   - Allow interaction with elements behind the dialog
   - Dismiss on any outside click
@@ -2590,7 +2605,7 @@ To prevent a dialog from closing when clicking outside:
 ```tsx
 <Dialog.Content
   onPointerDownOutside={(event) => {
-    event.preventDefault()
+    event.preventDefault();
   }}
 >
   {/* Dialog contents */}
@@ -2605,44 +2620,44 @@ Contains every component for the dialog. Beyond
 [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Dialog.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      description: `Renders into root of app instead of inline`,
-    },
-    {
-      name: 'disableRemoveScroll',
-      type: 'boolean',
-      required: false,
-      description: `Used to disable the automatic removal of scrolling from the page when open.`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Dialog.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+description: `Renders into root of app instead of inline`,
+},
+{
+name: 'disableRemoveScroll',
+type: 'boolean',
+required: false,
+description: `Used to disable the automatic removal of scrolling from the page when open.`,
+},
+]}
 />
 
 ### Dialog.Trigger
@@ -2655,20 +2670,20 @@ Renders Dialog into appropriate container. Beyond
 [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Dialog.Content
@@ -2678,26 +2693,26 @@ Main container for Dialog content, this is where you should apply animations.
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-    {
-      name: 'disableOutsidePointerEvents',
-      type: 'boolean',
-      required: false,
-      description: `When true, hover/focus/click interactions will be disabled on elements outside the Dialog. Users will need to click twice on outside elements to interact with them: once to close the Dialog, and again to trigger the element. Note: In v1, modal dialogs have this set to true by default.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+{
+name: 'disableOutsidePointerEvents',
+type: 'boolean',
+required: false,
+description: `When true, hover/focus/click interactions will be disabled on elements outside the Dialog. Users will need to click twice on outside elements to interact with them: once to close the Dialog, and again to trigger the element. Note: In v1, modal dialogs have this set to true by default.`,
+},
+]}
 />
 
 ### Dialog.Overlay
@@ -2705,14 +2720,14 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
 Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-  ]}
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+]}
 />
 
 ### Dialog.Title
@@ -2733,13 +2748,13 @@ Closes the Dialog, accepts the same props as YStack. Recommended to use with
 your own component and `asChild`.
 
 <PropsTable
-  data={[
-    {
-      name: 'displayWhenAdapted',
-      type: 'boolean',
-      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
-    },
-  ]}
+data={[
+{
+name: 'displayWhenAdapted',
+type: 'boolean',
+description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+},
+]}
 />
 
 Just [Tamagui Props](/docs/intro/props).
@@ -2750,42 +2765,42 @@ Provides access to the underlying FocusScope component used by Dialog for focus
 management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Dialog.Sheet
@@ -2799,7 +2814,7 @@ Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents
 given to `Dialog.Content`
 
 ```tsx
-import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Dialog } from "tamagui"; // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -2825,7 +2840,7 @@ export default () => (
       </Dialog.Sheet>
     </Dialog.Adapt>
   </Dialog>
-)
+);
 ```
 
 <Notice>
@@ -2837,14 +2852,14 @@ export default () => (
 ### PortalProvider
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Examples
@@ -2856,7 +2871,7 @@ Dialogs won't show up inside the modal. To get around this, you should wrap your
 screen inside `PortalProvider`, like so:
 
 ```tsx
-import { PortalProvider } from 'tamagui'
+import { PortalProvider } from "tamagui";
 
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
@@ -2864,7 +2879,7 @@ export function Page() {
     <PortalProvider>
       {/* rest of your page, including the Dialog... */}
     </PortalProvider>
-  )
+  );
 }
 ```
 
@@ -2877,6 +2892,7 @@ description: Manage focus behavior within elements accessibly.
 name: focus-scope
 component: FocusScope
 package: focus-scope
+
 ---
 
 <IntroParagraph marginTop={-5} marginBottom={30}>
@@ -2888,12 +2904,12 @@ package: focus-scope
 Note that this is a web-only component, on native it is a no-op.
 
 <Highlights
-  features={[
-    'Trap focus within a container for modal-like behavior.',
-    'Auto-focus on mount and return focus on unmount.',
-    'Loop focus between first and last tabbable elements.',
-    'Prevent reflows during animations with focusOnIdle.',
-  ]}
+features={[
+'Trap focus within a container for modal-like behavior.',
+'Auto-focus on mount and return focus on unmount.',
+'Loop focus between first and last tabbable elements.',
+'Prevent reflows during animations with focusOnIdle.',
+]}
 />
 
 ## Installation
@@ -2910,7 +2926,7 @@ npm install @tamagui/focus-scope
 Wrap any content that needs focus management:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, FocusScope, XStack } from "tamagui";
 
 export default () => (
   <FocusScope loop trapped>
@@ -2920,7 +2936,7 @@ export default () => (
       <Button>Third</Button>
     </XStack>
   </FocusScope>
-)
+);
 ```
 
 ## Focus Trapping
@@ -2928,7 +2944,7 @@ export default () => (
 Use `trapped` to prevent focus from escaping the scope:
 
 ```tsx
-import { Button, Dialog, FocusScope, XStack, YStack } from 'tamagui'
+import { Button, Dialog, FocusScope, XStack, YStack } from "tamagui";
 
 export default () => (
   <Dialog>
@@ -2952,7 +2968,7 @@ export default () => (
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog>
-)
+);
 ```
 
 ## Focus Looping
@@ -2960,7 +2976,7 @@ export default () => (
 Enable `loop` to cycle focus between first and last elements:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, FocusScope, XStack } from "tamagui";
 
 export default () => (
   <FocusScope loop>
@@ -2971,7 +2987,7 @@ export default () => (
       {/* Tab from "Last" goes to "First" */}
     </XStack>
   </FocusScope>
-)
+);
 ```
 
 ## Animation-Friendly Focusing
@@ -2979,7 +2995,7 @@ export default () => (
 Use `focusOnIdle` to prevent reflows during animations:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, FocusScope, XStack } from "tamagui";
 
 export default () => (
   <FocusScope
@@ -2991,7 +3007,7 @@ export default () => (
       <Button>Content</Button>
     </XStack>
   </FocusScope>
-)
+);
 ```
 
 ## Advanced Control with FocusScopeController
@@ -2999,16 +3015,16 @@ export default () => (
 Use the controller pattern for managing focus from parent components:
 
 ```tsx
-import { Button, FocusScope, XStack, YStack } from 'tamagui'
-import { useState } from 'react'
+import { Button, FocusScope, XStack, YStack } from "tamagui";
+import { useState } from "react";
 
 export default () => {
-  const [trapped, setTrapped] = useState(false)
+  const [trapped, setTrapped] = useState(false);
 
   return (
     <YStack space="$4">
       <Button onPress={() => setTrapped(!trapped)}>
-        {trapped ? 'Disable' : 'Enable'} Focus Trap
+        {trapped ? "Disable" : "Enable"} Focus Trap
       </Button>
 
       <FocusScope.Controller trapped={trapped} loop>
@@ -3021,8 +3037,8 @@ export default () => {
         </FocusScope>
       </FocusScope.Controller>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## Function as Children
@@ -3030,7 +3046,7 @@ export default () => {
 For advanced use cases, pass a function to get access to focus props:
 
 ```tsx
-import { FocusScope, View } from 'tamagui'
+import { FocusScope, View } from "tamagui";
 
 export default () => (
   <FocusScope loop>
@@ -3047,7 +3063,7 @@ export default () => (
       </View>
     )}
   </FocusScope>
-)
+);
 ```
 
 ## API Reference
@@ -3055,60 +3071,60 @@ export default () => (
 ### FocusScope
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: 'Whether focus management is enabled',
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable',
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number | { min?: number; max?: number }',
-      default: 'false',
-      description:
-        'When true, waits for idle before focusing using requestIdleCallback. When a number, waits that many ms. Object sets a lower and upper bound. Helps to prevent reflows during animations, as focusing inputs easily blocks main thread.',
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description:
-        'Event handler called when auto-focusing on mount. Can be prevented',
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description:
-        'Event handler called when auto-focusing on unmount. Can be prevented',
-    },
-    {
-      name: 'forceUnmount',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'If unmount is animated, you want to force re-focus at start of animation not after',
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode | ((props: FocusProps) => React.ReactNode)',
-      description:
-        'Content to apply focus management to, or function that receives focus props',
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: 'Whether focus management is enabled',
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description:
+'When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable',
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description:
+'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number | { min?: number; max?: number }',
+default: 'false',
+description:
+'When true, waits for idle before focusing using requestIdleCallback. When a number, waits that many ms. Object sets a lower and upper bound. Helps to prevent reflows during animations, as focusing inputs easily blocks main thread.',
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description:
+'Event handler called when auto-focusing on mount. Can be prevented',
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description:
+'Event handler called when auto-focusing on unmount. Can be prevented',
+},
+{
+name: 'forceUnmount',
+type: 'boolean',
+default: 'false',
+description:
+'If unmount is animated, you want to force re-focus at start of animation not after',
+},
+{
+name: 'children',
+type: 'React.ReactNode | ((props: FocusProps) => React.ReactNode)',
+description:
+'Content to apply focus management to, or function that receives focus props',
+},
+]}
 />
 
 ### FocusScope.Controller
@@ -3116,50 +3132,50 @@ export default () => (
 Provides context-based control over FocusScope behavior:
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      description:
-        'Override enabled state for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      description:
-        'Override loop state for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      description:
-        'Override trapped state for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      description:
-        'Override focusOnIdle behavior for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description:
-        'Override onMountAutoFocus handler for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description:
-        'Override onUnmountAutoFocus handler for all child FocusScope.Controller.Scope components',
-    },
-    {
-      name: 'forceUnmount',
-      type: 'boolean',
-      description:
-        'Override forceUnmount behavior for all child FocusScope.Controller.Scope components',
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+description:
+'Override enabled state for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'loop',
+type: 'boolean',
+description:
+'Override loop state for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'trapped',
+type: 'boolean',
+description:
+'Override trapped state for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+description:
+'Override focusOnIdle behavior for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description:
+'Override onMountAutoFocus handler for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description:
+'Override onUnmountAutoFocus handler for all child FocusScope.Controller.Scope components',
+},
+{
+name: 'forceUnmount',
+type: 'boolean',
+description:
+'Override forceUnmount behavior for all child FocusScope.Controller.Scope components',
+},
+]}
 />
 
 The FocusScope component automatically inherits props from the nearest
@@ -3201,7 +3217,7 @@ FocusScope follows accessibility best practices:
 ### Modal Focus Management
 
 ```tsx
-import { Button, Dialog, FocusScope, Input, XStack, YStack } from 'tamagui'
+import { Button, Dialog, FocusScope, Input, XStack, YStack } from "tamagui";
 
 export default () => (
   <Dialog>
@@ -3228,31 +3244,31 @@ export default () => (
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog>
-)
+);
 ```
 
 ### Custom Focus Container
 
 ```tsx
-import { Button, FocusScope, styled, XStack } from 'tamagui'
+import { Button, FocusScope, styled, XStack } from "tamagui";
 
 const FocusContainer = styled(XStack, {
   borderWidth: 2,
-  borderColor: 'transparent',
-  borderRadius: '$4',
-  padding: '$4',
+  borderColor: "transparent",
+  borderRadius: "$4",
+  padding: "$4",
 
   variants: {
     focused: {
       true: {
-        borderColor: '$blue10',
-        shadowColor: '$blue10',
+        borderColor: "$blue10",
+        shadowColor: "$blue10",
         shadowRadius: 10,
         shadowOpacity: 0.3,
       },
     },
   },
-})
+});
 
 export default () => (
   <FocusScope loop>
@@ -3270,7 +3286,7 @@ export default () => (
       </FocusContainer>
     )}
   </FocusScope>
-)
+);
 ```
 
 ## components/form/1.3.0
@@ -3283,6 +3299,7 @@ name: form
 component: Form
 package: form
 demoName: Form
+
 ---
 
 <HeroContainer>
@@ -3294,11 +3311,11 @@ demoName: Form
 ```
 
 <Highlights
-  features={[
-    `Works on native and web.`,
-    `Outputs accessible forms.`,
-    `Works with every Tamagui prop.`,
-  ]}
+features={[
+`Works on native and web.`,
+`Outputs accessible forms.`,
+`Works with every Tamagui prop.`,
+]}
 />
 
 ## Installation
@@ -3312,7 +3329,7 @@ npm install @tamagui/form
 ## Anatomy
 
 ```tsx
-import { Form } from 'tamagui' // or '@tamagui/form'
+import { Form } from "tamagui"; // or '@tamagui/form'
 
 export default () => (
   <Form>
@@ -3321,7 +3338,7 @@ export default () => (
       <Button />
     </Form.Trigger>
   </Form>
-)
+);
 ```
 
 ## API Reference
@@ -3329,14 +3346,14 @@ export default () => (
 ### Form
 
 <PropsTable
-  data={[
-    {
-      name: 'onSubmit',
-      type: '() => void',
-      required: true,
-      description: `Must use Form.Trigger to ensure onSubmit will callback.`,
-    },
-  ]}
+data={[
+{
+name: 'onSubmit',
+type: '() => void',
+required: true,
+description: `Must use Form.Trigger to ensure onSubmit will callback.`,
+},
+]}
 />
 
 ### Form.Trigger
@@ -3354,6 +3371,7 @@ description: Render horizontal or vertical groups easily.
 name: group
 component: Group
 demoName: Group
+
 ---
 
 # Group
@@ -3369,12 +3387,12 @@ demoName: Group
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Align vertically or horizontally.',
+'Natural spacing and disabled props.',
+'Use with or without Item for more control.',
+]}
 />
 
 ## Usage
@@ -3386,7 +3404,7 @@ By default, Groups will control the border radius of their children automaticall
 You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage with Item:
 export default () => (
@@ -3401,13 +3419,13 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage without Item:
 export default () => (
@@ -3416,7 +3434,7 @@ export default () => (
     <Button>Second</Button>
     <Button>Third</Button>
   </XGroup>
-)
+);
 ```
 
 ## Sizing
@@ -3424,7 +3442,7 @@ export default () => (
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 export default () => (
   <XGroup size="$6">
@@ -3438,7 +3456,7 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 ## Disabled
@@ -3456,38 +3474,38 @@ The `disabled` property will pass to children
 `XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: 'boolean',
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'vertical',
-      required: false,
-      type: 'boolean',
-      description: `Can be used to force an XGroup to render like a YGroup or vice-versa.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | SizeTokens',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+description: `Pass disabled down to children.`,
+},
+{
+name: 'disablePassBorderRadius',
+required: false,
+type: 'boolean',
+description: `Disables passing border radius to first/last children.`,
+},
+{
+name: 'vertical',
+required: false,
+type: 'boolean',
+description: `Can be used to force an XGroup to render like a YGroup or vice-versa.`,
+},
+{
+name: 'forceUseItem',
+required: false,
+type: 'boolean',
+desctiption: `Can be used to force the group to assume it has Item components as children.`,
+},
+]}
 />
 
 ### Group.Item
@@ -3505,6 +3523,7 @@ description: Render horizontal or vertical groups easily.
 name: group
 component: Group
 demoName: Group
+
 ---
 
 # Group
@@ -3520,12 +3539,12 @@ demoName: Group
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Align vertically or horizontally.',
+'Natural spacing and disabled props.',
+'Use with or without Item for more control.',
+]}
 />
 
 ## Usage
@@ -3537,7 +3556,7 @@ By default, Groups will control the border radius of their children automaticall
 You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage with Item:
 export default () => (
@@ -3552,13 +3571,13 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage without Item:
 export default () => (
@@ -3567,7 +3586,7 @@ export default () => (
     <Button>Second</Button>
     <Button>Third</Button>
   </XGroup>
-)
+);
 ```
 
 ## Sizing
@@ -3575,7 +3594,7 @@ export default () => (
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 export default () => (
   <XGroup size="$6">
@@ -3589,7 +3608,7 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 ## Disabled
@@ -3607,44 +3626,44 @@ The `disabled` property will pass to children
 `Group`, `XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'orientation',
-      required: false,
-      type: '"horizontal" | "vertical"',
-      description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'orientation',
+required: false,
+type: '"horizontal" | "vertical"',
+description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
+},
+{
+name: 'size',
+required: false,
+type: 'string | SizeTokens',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+description: `Pass disabled down to children.`,
+},
+{
+name: 'disablePassBorderRadius',
+required: false,
+type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
+description: `Disables passing border radius to first/last children.`,
+},
+{
+name: 'forceUseItem',
+required: false,
+type: 'boolean',
+desctiption: `Can be used to force the group to assume it has Item components as children.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Group.Item
@@ -3662,6 +3681,7 @@ description: Render horizontal or vertical groups easily.
 name: group
 component: Group
 demoName: Group
+
 ---
 
 <HeroContainer>
@@ -3673,12 +3693,12 @@ demoName: Group
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Align vertically or horizontally.',
+'Natural spacing and disabled props.',
+'Use with or without Item for more control.',
+]}
 />
 
 ## Installation
@@ -3698,7 +3718,7 @@ By default, Groups will control the border radius of their children automaticall
 You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage with Item:
 export default () => (
@@ -3713,13 +3733,13 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage without Item:
 export default () => (
@@ -3728,7 +3748,7 @@ export default () => (
     <Button>Second</Button>
     <Button>Third</Button>
   </XGroup>
-)
+);
 ```
 
 ## Sizing
@@ -3736,7 +3756,7 @@ export default () => (
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 export default () => (
   <XGroup size="$6">
@@ -3750,7 +3770,7 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 ## Disabled
@@ -3768,44 +3788,44 @@ The `disabled` property will pass to children
 `Group`, `XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'orientation',
-      required: false,
-      type: '"horizontal" | "vertical"',
-      description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'orientation',
+required: false,
+type: '"horizontal" | "vertical"',
+description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
+},
+{
+name: 'size',
+required: false,
+type: 'string | SizeTokens',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+description: `Pass disabled down to children.`,
+},
+{
+name: 'disablePassBorderRadius',
+required: false,
+type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
+description: `Disables passing border radius to first/last children.`,
+},
+{
+name: 'forceUseItem',
+required: false,
+type: 'boolean',
+desctiption: `Can be used to force the group to assume it has Item components as children.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Group.Item
@@ -3813,19 +3833,19 @@ The `disabled` property will pass to children
 Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui apply the needed styles to them. It accepts the following props:
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      required: true,
-      type: 'ReactNode',
-    },
-    {
-      name: 'forcePlacement',
-      required: false,
-      type: '"first" | "center" | "last"',
-      description: `Forces the item to be a starting, center or ending item and gets the respective styles`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+required: true,
+type: 'ReactNode',
+},
+{
+name: 'forcePlacement',
+required: false,
+type: '"first" | "center" | "last"',
+description: `Forces the item to be a starting, center or ending item and gets the respective styles`,
+},
+]}
 />
 
 ## components/group/1.6.0
@@ -3837,6 +3857,7 @@ description: Render horizontal or vertical groups easily.
 name: group
 component: Group
 demoName: Group
+
 ---
 
 # Group
@@ -3852,12 +3873,12 @@ demoName: Group
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Align vertically or horizontally.',
+'Natural spacing and disabled props.',
+'Use with or without Item for more control.',
+]}
 />
 
 ## Usage
@@ -3869,7 +3890,7 @@ By default, Groups will control the border radius of their children automaticall
 You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage with Item:
 export default () => (
@@ -3884,13 +3905,13 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage without Item:
 export default () => (
@@ -3899,7 +3920,7 @@ export default () => (
     <Button>Second</Button>
     <Button>Third</Button>
   </XGroup>
-)
+);
 ```
 
 ## Sizing
@@ -3907,7 +3928,7 @@ export default () => (
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 export default () => (
   <XGroup size="$6">
@@ -3921,7 +3942,7 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 ## Disabled
@@ -3939,38 +3960,38 @@ The `disabled` property will pass to children
 `Group`, `XGroup`and`YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'axis',
-      required: false,
-      type: '"horizontal" | "vertical"',
-      description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: 'boolean',
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    },
-  ]}
+data={[
+{
+name: 'axis',
+required: false,
+type: '"horizontal" | "vertical"',
+description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
+},
+{
+name: 'size',
+required: false,
+type: 'string | SizeTokens',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+description: `Pass disabled down to children.`,
+},
+{
+name: 'disablePassBorderRadius',
+required: false,
+type: 'boolean',
+description: `Disables passing border radius to first/last children.`,
+},
+{
+name: 'forceUseItem',
+required: false,
+type: 'boolean',
+desctiption: `Can be used to force the group to assume it has Item components as children.`,
+},
+]}
 />
 
 ### Group.Item
@@ -3988,6 +4009,7 @@ description: Render horizontal or vertical groups easily.
 name: group
 component: Group
 demoName: Group
+
 ---
 
 # Group
@@ -4003,12 +4025,12 @@ demoName: Group
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Align vertically or horizontally.',
+'Natural spacing and disabled props.',
+'Use with or without Item for more control.',
+]}
 />
 
 ## Usage
@@ -4020,7 +4042,7 @@ By default, Groups will control the border radius of their children automaticall
 You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage with Item:
 export default () => (
@@ -4035,13 +4057,13 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 // usage without Item:
 export default () => (
@@ -4050,7 +4072,7 @@ export default () => (
     <Button>Second</Button>
     <Button>Third</Button>
   </XGroup>
-)
+);
 ```
 
 ## Sizing
@@ -4058,7 +4080,7 @@ export default () => (
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
 
 ```tsx
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from "tamagui";
 
 export default () => (
   <XGroup size="$6">
@@ -4072,7 +4094,7 @@ export default () => (
       <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
-)
+);
 ```
 
 ## Disabled
@@ -4090,38 +4112,38 @@ The `disabled` property will pass to children
 `Group`, `XGroup`and`YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'axis',
-      required: false,
-      type: '"horizontal" | "vertical"',
-      description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      desctiption: `Can be used to force the group to assume it has Item components as children.`,
-    },
-  ]}
+data={[
+{
+name: 'axis',
+required: false,
+type: '"horizontal" | "vertical"',
+description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
+},
+{
+name: 'size',
+required: false,
+type: 'string | SizeTokens',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'disabled',
+required: false,
+type: 'boolean',
+description: `Pass disabled down to children.`,
+},
+{
+name: 'disablePassBorderRadius',
+required: false,
+type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
+description: `Disables passing border radius to first/last children.`,
+},
+{
+name: 'forceUseItem',
+required: false,
+type: 'boolean',
+desctiption: `Can be used to force the group to assume it has Item components as children.`,
+},
+]}
 />
 
 ### Group.Item
@@ -4140,6 +4162,7 @@ name: html
 component: Headings
 package: text
 demoName: Headings
+
 ---
 
 <HeroContainer>
@@ -4151,10 +4174,10 @@ demoName: Headings
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Define custom fonts with styles per-size.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Define custom fonts with styles per-size.',
+]}
 />
 
 ## Installation
@@ -4166,7 +4189,7 @@ npm install @tamagui/text
 ```
 
 ```tsx
-import { H1, H2, H3, H4, H5, H6, Heading } from 'tamagui'
+import { H1, H2, H3, H4, H5, H6, Heading } from "tamagui";
 
 export default () => (
   <>
@@ -4178,7 +4201,7 @@ export default () => (
     <H6>Heading 6</H6>
     <Heading>Heading</Heading>
   </>
-)
+);
 ```
 
 The headings all extend from the base `Heading` component. Note, this is just our own theme for Inter headings, but you can change the styles for any font completely.
@@ -4191,13 +4214,13 @@ The `Heading` component is defined as follows:
 
 ```tsx
 export const Heading = styled(Paragraph, {
-  tag: 'span',
-  name: 'Heading',
-  accessibilityRole: 'header',
-  fontFamily: '$heading',
-  size: '$8',
+  tag: "span",
+  name: "Heading",
+  accessibilityRole: "header",
+  fontFamily: "$heading",
+  size: "$8",
   margin: 0,
-})
+});
 ```
 
 Note that Heading, and H1-H6 all default to the `heading` font family that must be defined in your tamagui.config.ts.
@@ -4205,22 +4228,22 @@ Note that Heading, and H1-H6 all default to the `heading` font family that must 
 Because [Paragraph](/docs/components/text#paragraph) extends [SizableText](/docs/components/text#sizabletext), you get automatic styles based on your font theme. Let's see how `SizableText` defines the size variant, roughly, which gives a good idea of how Tamagui works, and how you could create or change your own headings at a lower level.
 
 ```tsx
-import { Text } from 'tamagui' // or '@tamagui/core'
+import { Text } from "tamagui"; // or '@tamagui/core'
 
 const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: '$body',
-  color: '$color',
+  name: "SizableText",
+  fontFamily: "$body",
+  color: "$color",
 
   variants: {
     size: {
-      '...fontSize': (val, { font, props }) => {
-        const fontSize = font.size[val]
-        const lineHeight = font.lineHeight[val]
-        const fontWeight = font.weight[val]
-        const letterSpacing = font.letterSpacing[val]
-        const fontStyle = font.style?.[val]
-        const textTransform = font.transform?.[val]
+      "...fontSize": (val, { font, props }) => {
+        const fontSize = font.size[val];
+        const lineHeight = font.lineHeight[val];
+        const fontWeight = font.weight[val];
+        const letterSpacing = font.letterSpacing[val];
+        const fontStyle = font.style?.[val];
+        const textTransform = font.transform?.[val];
         return {
           fontStyle,
           textTransform,
@@ -4228,16 +4251,16 @@ const SizableText = styled(Text, {
           letterSpacing,
           fontSize,
           lineHeight,
-        }
+        };
       },
     },
   },
 
   defaultVariants: {
     // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
-    size: '$true',
+    size: "$true",
   },
-})
+});
 ```
 
 ## API Reference
@@ -4254,6 +4277,7 @@ title: HTML Elements
 description: Render semantic HTML with these elements.
 name: html-elements
 component: Layouts
+
 ---
 
 To assist in creating accessible web apps, the following components are exported, all mapping directly to DOM elements of the lowercase names:
@@ -4288,6 +4312,7 @@ name: html
 component: Image
 package: image
 demoName: Image
+
 ---
 
 # Image
@@ -4303,7 +4328,7 @@ demoName: Image
 ```
 
 <Highlights
-  features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
+features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
 />
 
 ### Props
@@ -4320,6 +4345,7 @@ name: html
 component: Image
 package: image
 demoName: Image
+
 ---
 
 <HeroContainer noPad>
@@ -4331,7 +4357,7 @@ demoName: Image
 ```
 
 <Highlights
-  features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
+features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
 />
 
 ## Installation
@@ -4349,11 +4375,11 @@ Note that you need to set `source` like so - the `width` and `height` properties
 ```tsx
 export default () => (
   <Image
-    source={{ width: 200, height: 200, uri: 'https://...' }}
+    source={{ width: 200, height: 200, uri: "https://..." }}
     width="100%"
     height="100%"
   />
-)
+);
 ```
 
 ## API Reference
@@ -4371,6 +4397,7 @@ name: inputs
 description: Flexible form fields in styled and unstyled forms.
 component: Input
 demoName: Inputs
+
 ---
 
 <HeroContainer demoMultiple>
@@ -4396,12 +4423,12 @@ npm install @tamagui/input
 A one-line input field:
 
 ```tsx
-import { Input } from 'tamagui'
+import { Input } from "tamagui";
 
 export const App = () => (
   // Accepts size and style properties directly
   <Input size="$4" borderWidth={2} />
-)
+);
 ```
 
 ## TextArea
@@ -4409,20 +4436,19 @@ export const App = () => (
 For multi-line inputs:
 
 ```tsx
-import { TextArea } from 'tamagui'
+import { TextArea } from "tamagui";
 
 export const App = () => (
   // Accepts size and style properties directly
   <TextArea size="$4" borderWidth={2} />
-)
+);
 ```
 
 ## components/intro/1.0.0
 
 ---
 
-title: Tamagui UI
----
+## title: Tamagui UI
 
 <IntroParagraph>
 Tamagui UI is a complete suite of components that render nicely on both React web and React native and come in both
@@ -4442,16 +4468,16 @@ The package `tamagui` is a superset of `@tamagui/core`, so if you've already ins
 You'll need to add a provider to the root of your app (unlike core, where that is optional), as it will set up the root portal for components like dialogs and popovers.
 
 ```tsx
-import { createTamagui,TamaguiProvider, View } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v4' // for quick config install this
+import { createTamagui, TamaguiProvider, View } from "tamagui";
+import { defaultConfig } from "@tamagui/config/v4"; // for quick config install this
 
-const config = createTamagui(defaultConfig)
+const config = createTamagui(defaultConfig);
 
 export default () => (
   <TamaguiProvider config={config}>
     <View />
   </TamaguiProvider>
-)
+);
 ```
 
 For a full guide configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration).
@@ -4466,6 +4492,7 @@ name: label
 component: Label
 package: label
 demoName: Label
+
 ---
 
 <HeroContainer>
@@ -4477,11 +4504,11 @@ demoName: Label
 ```
 
 <Highlights
-  features={[
-    `Supports nested controls and custom controls.`,
-    `Sizable and styleable inline.`,
-    `Works on web with aria-labelledby.`,
-  ]}
+features={[
+`Supports nested controls and custom controls.`,
+`Sizable and styleable inline.`,
+`Works on web with aria-labelledby.`,
+]}
 />
 
 ## Installation
@@ -4495,14 +4522,14 @@ npm install @tamagui/label
 ## Usage
 
 ```tsx
-import { Label } from 'tamagui'
+import { Label } from "tamagui";
 
 export default () => (
   <>
     <Label htmlFor="name">Name</Label>
     <Input id="name" defaultValue="Nate Wienert" />
   </>
-)
+);
 ```
 
 ## Accessibility
@@ -4516,20 +4543,20 @@ Use with Input or other form elements to automatically get correct labelling by 
 Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'htmlFor',
-      type: 'string',
-      required: true,
-      description: `Matching to a Tamagui form element id.`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'htmlFor',
+type: 'string',
+required: true,
+description: `Matching to a Tamagui form element id.`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ## components/linear-gradient/1.0.0-alpha
@@ -4541,6 +4568,7 @@ description: Linear Gradient that works with Tamagui style props.
 name: html
 component: LinearGradient
 demoName: LinearGradient
+
 ---
 
 # Linear Gradient
@@ -4558,11 +4586,11 @@ demoName: LinearGradient
 ```
 
 <Highlights
-  features={[
-    'Works on native and web.',
-    'Bundles nicely with webpack.',
-    'Accepts Tamagui style props.',
-  ]}
+features={[
+'Works on native and web.',
+'Bundles nicely with webpack.',
+'Accepts Tamagui style props.',
+]}
 />
 
 ### Usage
@@ -4578,6 +4606,7 @@ description: Linear gradients that works with Tamagui style props
 name: html
 component: LinearGradient
 demoName: LinearGradient
+
 ---
 
 <HeroContainer>
@@ -4589,11 +4618,11 @@ demoName: LinearGradient
 ```
 
 <Highlights
-  features={[
-    'Works on native and web.',
-    'Accepts Tamagui style props and theme colors.',
-    'Bundles easily with webpack.',
-  ]}
+features={[
+'Works on native and web.',
+'Accepts Tamagui style props and theme colors.',
+'Bundles easily with webpack.',
+]}
 />
 
 ## Installation
@@ -4611,8 +4640,8 @@ To use this package you'll need to add `expo-linear-gradient` to your app. This 
 Because LinearGradient requires a more complex to install native package, we've left it out of the `tamagui` export until Metro supports async import. Import it either separately or using the path `/linear-gradient`:
 
 ```tsx
-import { LinearGradient } from '@tamagui/linear-gradient'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from "@tamagui/linear-gradient";
+import { LinearGradient } from "tamagui/linear-gradient";
 ```
 
 LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors, that places `expo-linear-gradient` inside it set to absoluteFill.
@@ -4626,35 +4655,35 @@ See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) 
 LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'colors',
-      required: true,
-      type: 'string[]',
-      description: `Two or more colors.`,
-    },
-    {
-      name: 'locations',
-      required: false,
-      type: 'number[] | null',
-      description: `An array that contains numbers ranging from 0 to 1, inclusive, and is the same length as the colors property. Each number indicates a color-stop location where each respective color should be located.`,
-      default: '[0.0, 1.0]',
-    },
-    {
-      name: 'start',
-      required: false,
-      type: 'LinearGradientPoint | null',
-      default: '{ x: 0.5, y: 0.0 }',
-      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will start 10% from the left and 20% from the top.`,
-    },
-    {
-      name: 'end',
-      required: false,
-      type: 'LinearGradientPoint | null',
-      default: '{ x: 0.5, y: 1.0 }',
-      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will end 10% from the left and 20% from the bottom.`,
-    },
-  ]}
+data={[
+{
+name: 'colors',
+required: true,
+type: 'string[]',
+description: `Two or more colors.`,
+},
+{
+name: 'locations',
+required: false,
+type: 'number[] | null',
+description: `An array that contains numbers ranging from 0 to 1, inclusive, and is the same length as the colors property. Each number indicates a color-stop location where each respective color should be located.`,
+default: '[0.0, 1.0]',
+},
+{
+name: 'start',
+required: false,
+type: 'LinearGradientPoint | null',
+default: '{ x: 0.5, y: 0.0 }',
+description: `For example, { x: 0.1, y: 0.2 } means that the gradient will start 10% from the left and 20% from the top.`,
+},
+{
+name: 'end',
+required: false,
+type: 'LinearGradientPoint | null',
+default: '{ x: 0.5, y: 1.0 }',
+description: `For example, { x: 0.1, y: 0.2 } means that the gradient will end 10% from the left and 20% from the bottom.`,
+},
+]}
 />
 
 ## components/list-item/1.0.0
@@ -4667,6 +4696,7 @@ name: list-item
 component: ListItem
 package: list-item
 demoName: ListItem
+
 ---
 
 <HeroContainer>
@@ -4678,11 +4708,11 @@ demoName: ListItem
 ```
 
 <Highlights
-  features={[
-    'Accepts size prop that works on all styles.',
-    'Place an icon before or after.',
-    'Works with themes, animations, Group.',
-  ]}
+features={[
+'Accepts size prop that works on all styles.',
+'Place an icon before or after.',
+'Works with themes, animations, Group.',
+]}
 />
 
 ## Installation
@@ -4696,9 +4726,9 @@ npm install @tamagui/list-item
 ## Usage
 
 ```tsx
-import { ListItem } from 'tamagui'
+import { ListItem } from "tamagui";
 
-export default () => <ListItem>Lorem ipsum</ListItem>
+export default () => <ListItem>Lorem ipsum</ListItem>;
 ```
 
 ## Sizing
@@ -4706,9 +4736,9 @@ export default () => <ListItem>Lorem ipsum</ListItem>
 Sizing listItems provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { ListItem } from 'tamagui'
+import { ListItem } from "tamagui";
 
-export default () => <ListItem size="$6">Lorem ipsum</ListItem>
+export default () => <ListItem size="$6">Lorem ipsum</ListItem>;
 ```
 
 Given your theme defines a size `6`, the listItem will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -4722,7 +4752,7 @@ You can pass icons as either elements or components. If passing components, Tama
 ListItem only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
 
 ```tsx
-import { forwardRef } from 'react'
+import { forwardRef } from "react";
 import {
   ListItemFrame,
   ListItemText,
@@ -4731,33 +4761,33 @@ import {
   styled,
   themeable,
   useListItem,
-} from 'tamagui'
+} from "tamagui";
 
 const CustomListItemFrame = styled(ListItemFrame, {
-  backgroundColor: 'orange', // or "$color", etc.
-})
+  backgroundColor: "orange", // or "$color", etc.
+});
 
 const CustomListItemTitle = styled(ListItemTitle, {
-  color: 'blue',
-})
+  color: "blue",
+});
 
 const CustomListItemSubtitle = styled(ListItemSubtitle, {
-  color: 'pink',
-})
+  color: "pink",
+});
 
 const CustomListItemText = styled(ListItemText, {
-  color: 'red',
-})
+  color: "red",
+});
 
 export const ListItem = CustomListItemFrame.styleable((propsIn, ref) => {
   const { props } = useListItem(propsIn, {
     Title: CustomListItemTitle,
     Text: CustomListItemText,
     Subtitle: CustomListItemSubtitle,
-  })
+  });
 
-  return <CustomListItemFrame {...props} ref={ref} />
-})
+  return <CustomListItemFrame {...props} ref={ref} />;
+});
 ```
 
 There are 3 different components you can customize: `ListItemText`, `ListItemSubtitle` and `ListItemTitle`.
@@ -4774,11 +4804,11 @@ export const ListItem = themeable(
       Title: CustomListItemTitle,
       Text: CustomListItemText,
       Subtitle: CustomListItemSubtitle,
-    })
+    });
 
-    return <ListItemFrame {...props} ref={ref} />
-  })
-)
+    return <ListItemFrame {...props} ref={ref} />;
+  }),
+);
 ```
 
 ## API Reference
@@ -4788,104 +4818,104 @@ export const ListItem = themeable(
 ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'title',
-      required: false,
-      type: 'React.ReactNode',
-      description: `Can use either children or title + subTitle to set the contents.`,
-    },
-    {
-      name: 'subTitle',
-      required: false,
-      type: 'React.ReactNode',
-      description: `Sets a subTitle, recommended to use with title.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'theme',
-      required: false,
-      type: 'string',
-      description: `Apply a theme just to the listItem and it's children`,
-    },
-    {
-      name: 'themeInverse',
-      required: false,
-      type: 'boolean',
-      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'noTextWrap',
-      required: false,
-      type: 'boolean',
-      description: `If true, ListItem won't wrap content with a Text element.`,
-    },
-    {
-      name: 'icon',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears before the text.`,
-    },
-    {
-      name: 'iconAfter',
-      required: false,
-      type: 'JSX.Element',
-      description: `Pass any React element, appears after the text.`,
-    },
-    {
-      name: 'scaleIcon',
-      required: false,
-      type: 'number',
-      description: `Scale the icon more than usual by this number.`,
-    },
-    {
-      name: 'scaleSpace',
-      required: false,
-      type: 'number',
-      description: `Scale the spacing more than usual by this number.`,
-    },
-    {
-      name: 'spaceFlex',
-      required: false,
-      type: `boolean`,
-      description: `Makes all space elements have a flex.`,
-    },
-    {
-      name: 'color',
-      required: false,
-      type: `SizableTextProps['color']`,
-      description: `Passes "color" down to the inner text component`,
-    },
-    {
-      name: 'fontWeight',
-      required: false,
-      type: `SizableTextProps['fontWeight']`,
-      description: `Passes "fontWeight" down to the inner text component`,
-    },
-    {
-      name: 'letterSpacing',
-      required: false,
-      type: `SizableTextProps['letterSpacing']`,
-      description: `Passes "letterSpacing" down to the inner text component`,
-    },
-    {
-      name: 'textAlign',
-      required: false,
-      type: `SizableTextProps['textAlign']`,
-      description: `Passes "textAlign" down to the inner text component`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'title',
+required: false,
+type: 'React.ReactNode',
+description: `Can use either children or title + subTitle to set the contents.`,
+},
+{
+name: 'subTitle',
+required: false,
+type: 'React.ReactNode',
+description: `Sets a subTitle, recommended to use with title.`,
+},
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'theme',
+required: false,
+type: 'string',
+description: `Apply a theme just to the listItem and it's children`,
+},
+{
+name: 'themeInverse',
+required: false,
+type: 'boolean',
+description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+},
+{
+name: 'noTextWrap',
+required: false,
+type: 'boolean',
+description: `If true, ListItem won't wrap content with a Text element.`,
+},
+{
+name: 'icon',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears before the text.`,
+},
+{
+name: 'iconAfter',
+required: false,
+type: 'JSX.Element',
+description: `Pass any React element, appears after the text.`,
+},
+{
+name: 'scaleIcon',
+required: false,
+type: 'number',
+description: `Scale the icon more than usual by this number.`,
+},
+{
+name: 'scaleSpace',
+required: false,
+type: 'number',
+description: `Scale the spacing more than usual by this number.`,
+},
+{
+name: 'spaceFlex',
+required: false,
+type: `boolean`,
+description: `Makes all space elements have a flex.`,
+},
+{
+name: 'color',
+required: false,
+type: `SizableTextProps['color']`,
+description: `Passes "color" down to the inner text component`,
+},
+{
+name: 'fontWeight',
+required: false,
+type: `SizableTextProps['fontWeight']`,
+description: `Passes "fontWeight" down to the inner text component`,
+},
+{
+name: 'letterSpacing',
+required: false,
+type: `SizableTextProps['letterSpacing']`,
+description: `Passes "letterSpacing" down to the inner text component`,
+},
+{
+name: 'textAlign',
+required: false,
+type: `SizableTextProps['textAlign']`,
+description: `Passes "textAlign" down to the inner text component`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### ListItem.Title
@@ -4907,6 +4937,7 @@ ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/i
 title: Lucide Icons
 description: Cross-platform compatible SVG based icons
 demoName: LucideIcons
+
 ---
 
 <HeroContainer noPad>
@@ -4924,22 +4955,14 @@ yarn add react-native-svg @tamagui/lucide-icons
 Use them as regular React components
 
 ```tsx
-import { Button } from 'tamagui'
-import { Plus } from '@tamagui/lucide-icons'
+import { Button } from "tamagui";
+import { Plus } from "@tamagui/lucide-icons";
 
 // Button will automatically pass size/theme to icon
-export default () => (
-  <Button icon={Plus}>
-    Hello world
-  </Button>
-)
+export default () => <Button icon={Plus}>Hello world</Button>;
 
 // or you can control it
-export default () => (
-  <Button icon={<Plus size="$4" />}>
-    Hello world
-  </Button>
-)
+export default () => <Button icon={<Plus size="$4" />}>Hello world</Button>;
 ```
 
 They accept your tokens/theme keys for color and size.
@@ -4956,6 +4979,7 @@ title: Input & Textarea
 name: inputs
 component: Input
 demoName: Inputs
+
 ---
 
 <HeroContainer demoMultiple>
@@ -4981,12 +5005,12 @@ npm install @tamagui/input
 A one-line input field:
 
 ```tsx
-import { Input } from 'tamagui'
+import { Input } from "tamagui";
 
 export const App = () => (
   // Accepts size and style properties directly
   <Input gap="$4" borderWidth={2} />
-)
+);
 ```
 
 ## TextArea
@@ -4994,12 +5018,12 @@ export const App = () => (
 For multi-line inputs:
 
 ```tsx
-import { TextArea } from 'tamagui'
+import { TextArea } from "tamagui";
 
 export const App = () => (
   // Accepts size and style properties directly
   <TextArea gap="$4" borderWidth={2} />
-)
+);
 ```
 
 ## components/popover/1.0.0
@@ -5012,6 +5036,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 # Popover
@@ -5027,11 +5052,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
@@ -5054,7 +5079,7 @@ npm install @tamagui/popover
 ## Anatomy
 
 ```tsx
-import { Popover } from 'tamagui' // or '@tamagui/popover'
+import { Popover } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -5080,7 +5105,7 @@ export default () => (
       </Popover.Sheet>
     </Popover.Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -5090,73 +5115,73 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Trigger
@@ -5197,6 +5222,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 <InstallBanner name="@tamagui/popover" />
@@ -5210,11 +5236,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
@@ -5238,35 +5264,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -5293,7 +5319,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -5303,72 +5329,72 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+]}
 />
 
 <Notice>
@@ -5390,19 +5416,19 @@ Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/st
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -5433,6 +5459,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -5444,11 +5471,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
@@ -5476,35 +5503,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -5531,7 +5558,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -5541,78 +5568,78 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-    {
-      name: 'resize',
-      type: 'SizeProps | boolean',
-      required: false,
-      description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+{
+name: 'resize',
+type: 'SizeProps | boolean',
+required: false,
+description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+},
+]}
 />
 
 For most of these properties, you'll want to reference the [floating-ui docs](https://floating-ui.com/docs/getting-started).
@@ -5636,19 +5663,19 @@ Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/st
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -5679,6 +5706,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -5690,11 +5718,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is
@@ -5728,35 +5756,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -5786,7 +5814,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -5796,78 +5824,78 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-    {
-      name: 'resize',
-      type: 'SizeProps | boolean',
-      required: false,
-      description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+{
+name: 'resize',
+type: 'SizeProps | boolean',
+required: false,
+description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+},
+]}
 />
 
 For most of these properties, you'll want to reference the
@@ -5900,56 +5928,56 @@ Also extends
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'enableAnimationForPositionChange',
-      type: 'boolean',
-      description: 'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.'
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: 'Controls default padding/borderRadius when unstyled is false.'
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      default: false,
-      description: `Removes all default Tamagui styles.`,
-    },
-    {
-      name: 'trapFocus',
-      type: 'boolean',
-      default: false,
-      description: 'Whether focus should be trapped within the `Popover`',
-    },
-    {
-      name: 'disableFocusScope',
-      type: 'boolean',
-      default: false,
-      description: 'Whether popover should not focus contents on open'
-    },
-    {
-      name: 'onOpenAutoFocus',
-      type: `FocusScopeProps['onMountAutoFocus']`,
-      default: false,
-      description: 'Event handler called when auto-focusing on open. Can be prevented.'
-    },
-    {
-      name: 'onCloseAutoFocus',
-      type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
-      default: false,
-      description: 'Event handler called when auto-focusing on close. Can be prevented.'
-    },
-    {
-      name: 'lazyMount',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'enableAnimationForPositionChange',
+type: 'boolean',
+description: 'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.'
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: 'Controls default padding/borderRadius when unstyled is false.'
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+default: false,
+description: `Removes all default Tamagui styles.`,
+},
+{
+name: 'trapFocus',
+type: 'boolean',
+default: false,
+description: 'Whether focus should be trapped within the `Popover`',
+},
+{
+name: 'disableFocusScope',
+type: 'boolean',
+default: false,
+description: 'Whether popover should not focus contents on open'
+},
+{
+name: 'onOpenAutoFocus',
+type: `FocusScopeProps['onMountAutoFocus']`,
+default: false,
+description: 'Event handler called when auto-focusing on open. Can be prevented.'
+},
+{
+name: 'onCloseAutoFocus',
+type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
+default: false,
+description: 'Event handler called when auto-focusing on close. Can be prevented.'
+},
+{
+name: 'lazyMount',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -5976,42 +6004,42 @@ Provides access to the underlying FocusScope component used by Popover for focus
 management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Popover.ScrollView
@@ -6031,6 +6059,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -6042,11 +6071,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is
@@ -6080,35 +6109,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -6138,7 +6167,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -6148,78 +6177,78 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean | "lazy"',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-    {
-      name: 'resize',
-      type: 'SizeProps | boolean',
-      required: false,
-      description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean | "lazy"',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+{
+name: 'resize',
+type: 'SizeProps | boolean',
+required: false,
+description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+},
+]}
 />
 
 For most of these properties, you'll want to reference the
@@ -6252,60 +6281,60 @@ Also extends
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'enableAnimationForPositionChange',
-      type: 'boolean',
-      description:
-        'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description:
-        'Controls default padding/borderRadius when unstyled is false.',
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      default: false,
-      description: `Removes all default Tamagui styles.`,
-    },
-    {
-      name: 'trapFocus',
-      type: 'boolean',
-      default: false,
-      description: 'Whether focus should be trapped within the `Popover`',
-    },
-    {
-      name: 'disableFocusScope',
-      type: 'boolean',
-      default: false,
-      description: 'Whether popover should not focus contents on open',
-    },
-    {
-      name: 'onOpenAutoFocus',
-      type: `FocusScopeProps['onMountAutoFocus']`,
-      default: false,
-      description:
-        'Event handler called when auto-focusing on open. Can be prevented.',
-    },
-    {
-      name: 'onCloseAutoFocus',
-      type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
-      default: false,
-      description:
-        'Event handler called when auto-focusing on close. Can be prevented.',
-    },
-    {
-      name: 'lazyMount',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'enableAnimationForPositionChange',
+type: 'boolean',
+description:
+'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description:
+'Controls default padding/borderRadius when unstyled is false.',
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+default: false,
+description: `Removes all default Tamagui styles.`,
+},
+{
+name: 'trapFocus',
+type: 'boolean',
+default: false,
+description: 'Whether focus should be trapped within the `Popover`',
+},
+{
+name: 'disableFocusScope',
+type: 'boolean',
+default: false,
+description: 'Whether popover should not focus contents on open',
+},
+{
+name: 'onOpenAutoFocus',
+type: `FocusScopeProps['onMountAutoFocus']`,
+default: false,
+description:
+'Event handler called when auto-focusing on open. Can be prevented.',
+},
+{
+name: 'onCloseAutoFocus',
+type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
+default: false,
+description:
+'Event handler called when auto-focusing on close. Can be prevented.',
+},
+{
+name: 'lazyMount',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -6332,42 +6361,42 @@ Provides access to the underlying FocusScope component used by Popover for focus
 management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Popover.ScrollView
@@ -6387,6 +6416,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -6398,11 +6428,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is
@@ -6435,35 +6465,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -6493,7 +6523,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## Scoping
@@ -6511,7 +6541,7 @@ Here's the basic anatomy of using `scope` and placing your Popover higher up
 for performance:
 
 ```tsx fileName=_layout.tsx
-import { Popover } from 'tamagui'
+import { Popover } from "tamagui";
 
 // in your root layout:
 export default ({ children }) => (
@@ -6525,7 +6555,7 @@ export default ({ children }) => (
     {/* the rest of of your app, note that it's inside of Popover */}
     {children}
   </Popover>
-)
+);
 ```
 
 ```tsx fileName=UserAvatar.tsx
@@ -6533,7 +6563,7 @@ export default () => (
   <Popover.Trigger scope="user-avatar">
     <Avatar />
   </Popover.Trigger>
-)
+);
 ```
 
 Note that the `Trigger` scope ties to the `Popover` scope.
@@ -6545,78 +6575,78 @@ Note that the `Trigger` scope ties to the `Popover` scope.
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean | "lazy"',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-    {
-      name: 'resize',
-      type: 'SizeProps | boolean',
-      required: false,
-      description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean | "lazy"',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+{
+name: 'resize',
+type: 'SizeProps | boolean',
+required: false,
+description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+},
+]}
 />
 
 For most of these properties, you'll want to reference the
@@ -6649,60 +6679,60 @@ Also extends
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'enableAnimationForPositionChange',
-      type: 'boolean',
-      description:
-        'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description:
-        'Controls default padding/borderRadius when unstyled is false.',
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      default: false,
-      description: `Removes all default Tamagui styles.`,
-    },
-    {
-      name: 'trapFocus',
-      type: 'boolean',
-      default: false,
-      description: 'Whether focus should be trapped within the `Popover`',
-    },
-    {
-      name: 'disableFocusScope',
-      type: 'boolean',
-      default: false,
-      description: 'Whether popover should not focus contents on open',
-    },
-    {
-      name: 'onOpenAutoFocus',
-      type: `FocusScopeProps['onMountAutoFocus']`,
-      default: false,
-      description:
-        'Event handler called when auto-focusing on open. Can be prevented.',
-    },
-    {
-      name: 'onCloseAutoFocus',
-      type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
-      default: false,
-      description:
-        'Event handler called when auto-focusing on close. Can be prevented.',
-    },
-    {
-      name: 'lazyMount',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'enableAnimationForPositionChange',
+type: 'boolean',
+description:
+'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description:
+'Controls default padding/borderRadius when unstyled is false.',
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+default: false,
+description: `Removes all default Tamagui styles.`,
+},
+{
+name: 'trapFocus',
+type: 'boolean',
+default: false,
+description: 'Whether focus should be trapped within the `Popover`',
+},
+{
+name: 'disableFocusScope',
+type: 'boolean',
+default: false,
+description: 'Whether popover should not focus contents on open',
+},
+{
+name: 'onOpenAutoFocus',
+type: `FocusScopeProps['onMountAutoFocus']`,
+default: false,
+description:
+'Event handler called when auto-focusing on open. Can be prevented.',
+},
+{
+name: 'onCloseAutoFocus',
+type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
+default: false,
+description:
+'Event handler called when auto-focusing on close. Can be prevented.',
+},
+{
+name: 'lazyMount',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -6729,42 +6759,42 @@ Provides access to the underlying FocusScope component used by Popover for focus
 management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Popover.ScrollView
@@ -6784,6 +6814,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 # Popover
@@ -6799,11 +6830,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
@@ -6825,7 +6856,7 @@ npm install @tamagui/popover
 ## Anatomy
 
 ```tsx
-import { Popover } from 'tamagui' // or '@tamagui/popover'
+import { Popover } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -6851,7 +6882,7 @@ export default () => (
       </Popover.Sheet>
     </Popover.Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -6861,73 +6892,73 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline.`,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline.`,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+]}
 />
 
 ### Popover.Trigger
@@ -6941,19 +6972,19 @@ Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/st
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -6984,6 +7015,7 @@ name: popover
 component: Popover
 package: popover
 demoName: Popover
+
 ---
 
 # Popover
@@ -7001,11 +7033,11 @@ demoName: Popover
 ```
 
 <Highlights
-  features={[
-    `Optional arrow to point to content.`,
-    `Keeps within bounds of page.`,
-    `Can be placed into 12 anchor positions.`,
-  ]}
+features={[
+`Optional arrow to point to content.`,
+`Keeps within bounds of page.`,
+`Can be placed into 12 anchor positions.`,
+]}
 />
 
 Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
@@ -7029,35 +7061,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from "tamagui"; // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -7084,7 +7116,7 @@ export default () => (
       </Popover.Sheet>
     </Adapt>
   </Popover>
-)
+);
 ```
 
 ## API Reference
@@ -7094,79 +7126,79 @@ export default () => (
 Contains every component for the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline.`,
-    },
-    {
-      name: 'keepChildrenMounted',
-      type: 'boolean',
-      required: false,
-      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps | boolean',
-      required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps | boolean',
-      required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-    {
-      name: 'hoverable',
-      type: 'boolean | UseFloatingProps',
-      required: false,
-      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline.`,
+},
+{
+name: 'keepChildrenMounted',
+type: 'boolean',
+required: false,
+description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render.`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps | boolean',
+required: false,
+description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps | boolean',
+required: false,
+description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+{
+name: 'hoverable',
+type: 'boolean | UseFloatingProps',
+required: false,
+description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+},
+]}
 />
 
 <Notice>
@@ -7188,19 +7220,19 @@ Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/st
 Used to display the content of the popover.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+},
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ### Popover.Anchor
@@ -7230,6 +7262,7 @@ description: Send items to other areas of the tree.
 name: portal
 component: Portal
 package: portal
+
 ---
 
 Portal is included in `tamagui` as it's used by a few components. For now, it's simply using [@gorhom/portal](https://github.com/gorhom/react-native-portal).
@@ -7244,6 +7277,7 @@ name: progress
 component: Progress
 package: progress
 demoName: Progress
+
 ---
 
 # Progress
@@ -7259,16 +7293,16 @@ demoName: Progress
 ```
 
 <Highlights
-  features={[
-    'Sizable, themeable, animatable.',
-    'Compound component API for complete control.',
-    <span>
-      Adheres to the{' '}
-      <a href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
-        progressbar role requirements
-      </a>
-    </span>,
-  ]}
+features={[
+'Sizable, themeable, animatable.',
+'Compound component API for complete control.',
+<span>
+Adheres to the{' '}
+<a href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
+progressbar role requirements
+</a>
+</span>,
+]}
 />
 
 ## Installation
@@ -7284,13 +7318,13 @@ npm install @tamagui/progress
 The `value` property controls the percent, but you can override it by adjusting the `x` property.
 
 ```tsx
-import { Button, Progress } from 'tamagui'
+import { Button, Progress } from "tamagui";
 
 export default () => (
   <Progress value={60}>
     <Progress.Indicator animation="bouncy" />
   </Progress>
-)
+);
 ```
 
 ## API Reference
@@ -7300,24 +7334,24 @@ export default () => (
 Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: '"small" | "large"',
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'number | null',
-      description: `Control the percent progress.`,
-    },
-    {
-      name: 'max',
-      required: false,
-      type: 'number',
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: '"small" | "large"',
+},
+{
+name: 'value',
+required: false,
+type: 'number | null',
+description: `Control the percent progress.`,
+},
+{
+name: 'max',
+required: false,
+type: 'number',
+},
+]}
 />
 
 ### Progress.Indicator
@@ -7334,6 +7368,7 @@ name: progress
 component: Progress
 package: progress
 demoName: Progress
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -7345,16 +7380,16 @@ demoName: Progress
 ```
 
 <Highlights
-  features={[
-    'Sizable, themeable, animatable.',
-    'Compound component API for complete control.',
-    <span>
-      Adheres to the{' '}
-      <Link href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
-        progressbar role requirements
-      </Link>
-    </span>,
-  ]}
+features={[
+'Sizable, themeable, animatable.',
+'Compound component API for complete control.',
+<span>
+Adheres to the{' '}
+<Link href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
+progressbar role requirements
+</Link>
+</span>,
+]}
 />
 
 ## Installation
@@ -7370,13 +7405,13 @@ npm install @tamagui/progress
 The `value` property controls the percent, but you can override it by adjusting the `x` property.
 
 ```tsx
-import { Button, Progress } from 'tamagui'
+import { Button, Progress } from "tamagui";
 
 export default () => (
   <Progress value={60}>
     <Progress.Indicator animation="bouncy" />
   </Progress>
-)
+);
 ```
 
 ## API Reference
@@ -7386,30 +7421,30 @@ export default () => (
 Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: '"small" | "large"',
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'number | null',
-      description: `Control the percent progress.`,
-    },
-    {
-      name: 'max',
-      required: false,
-      type: 'number',
-    },
-    {
-      name: 'unstyled',
-      required: false,
-      type: 'boolean',
-      description: `When true will remove all default styles`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: '"small" | "large"',
+},
+{
+name: 'value',
+required: false,
+type: 'number | null',
+description: `Control the percent progress.`,
+},
+{
+name: 'max',
+required: false,
+type: 'number',
+},
+{
+name: 'unstyled',
+required: false,
+type: 'boolean',
+description: `When true will remove all default styles`,
+},
+]}
 />
 
 ### Progress.Indicator
@@ -7417,14 +7452,14 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
 `Progress.Indicator` extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props).
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: 'boolean',
-      description: `When true will remove all default styles`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: 'boolean',
+description: `When true will remove all default styles`,
+},
+]}
 />
 
 ## components/radio-group/1.2.0
@@ -7437,6 +7472,7 @@ name: radio-group
 component: RadioGroup
 package: radio-group
 demoName: RadioGroup
+
 ---
 
 # RadioGroup
@@ -7489,31 +7525,31 @@ Choose one option from a list in a form.
 
 <Tabs.Content value="styled">
 
-  ```tsx hero template=RadioGroup
+```tsx hero template=RadioGroup
 
-````
+```
 
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 
-  ```tsx hero template=RadioGroupUnstyled
+```tsx hero template=RadioGroupUnstyled
 
-````
+```
 
 </Tabs.Content>
 <Tabs.Content value="headless">
 
-  ```tsx hero template=RadioGroupHeadless
+```tsx hero template=RadioGroupHeadless
 
-````
+```
 
 </Tabs.Content>
 
 <Highlights
 features={[
-  `Accessible, easy to compose and customize.`,
-  `Sizable & works controlled or uncontrolled.`,
-  `Ability to opt-out to native radio button on web.`,
+`Accessible, easy to compose and customize.`,
+`Sizable & works controlled or uncontrolled.`,
+`Ability to opt-out to native radio button on web.`,
 ]}
 />
 
@@ -7524,7 +7560,7 @@ RadioGroup is already installed in `tamagui`, or you can install it independentl
 
 ```bash
 npm install @tamagui/radio-group
-````
+```
 
 </Tabs.Content>
 
@@ -7533,7 +7569,7 @@ RadioGroup is already installed in `tamagui`, or you can install it independentl
 
 ```bash
 npm install @tamagui/radio-group
-````
+```
 
 </Tabs.Content>
 
@@ -7555,7 +7591,7 @@ npm install @tamagui/radio-headless
 <Tabs.Content value="styled">
 
 ```tsx
-import { RadioGroup } from 'tamagui'
+import { RadioGroup } from "tamagui";
 
 export default () => (
   <RadioGroup value="foo" gap="$2">
@@ -7566,7 +7602,7 @@ export default () => (
       <RadioGroup.Indicator />
     </RadioGroup.Item>
   </RadioGroup>
-)
+);
 ```
 
 </Tabs.Content>
@@ -7604,82 +7640,82 @@ Using the `useRadioGroup` and `useRadioGroupItem` API, you can make your own Rad
 RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native for all children items`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native radio button on web.`,
-      default: false,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-    },
-    {
-      name: 'accentColor',
-      type: 'string',
-      description: 'Sets `accent-color` style when `native` prop is enabled',
-    },
-  ]}
+data={[
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native for all children items`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native radio button on web.`,
+default: false,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+},
+{
+name: 'accentColor',
+type: 'string',
+description: 'Sets `accent-color` style when `native` prop is enabled',
+},
+]}
 />
 
 ### RadioGroup.Item
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by on web`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Input value for the radio button.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native`,
-    },
-    {
-      name: 'id',
-      type: 'string',
-      description: `Id used on the web`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by on web`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Input value for the radio button.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native`,
+},
+{
+name: 'id',
+type: 'string',
+description: `Id used on the web`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### RadioGroup.Indicator
@@ -7687,14 +7723,14 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
 RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 </Tabs.Content>
@@ -7707,82 +7743,82 @@ RadioGroup.Indicator appears only when the parent Item is checked. it extends [T
 RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native for all children items`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native radio button on web.`,
-      default: false,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-    },
-    {
-      name: 'accentColor',
-      type: 'string',
-      description: 'Sets `accent-color` style when `native` prop is enabled',
-    },
-  ]}
+data={[
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native for all children items`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native radio button on web.`,
+default: false,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+},
+{
+name: 'accentColor',
+type: 'string',
+description: 'Sets `accent-color` style when `native` prop is enabled',
+},
+]}
 />
 
 ### RadioGroup.Item
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by on web`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Input value for the radio button.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native`,
-    },
-    {
-      name: 'id',
-      type: 'string',
-      description: `Id used on the web`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by on web`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Input value for the radio button.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native`,
+},
+{
+name: 'id',
+type: 'string',
+description: `Id used on the web`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### RadioGroup.Indicator
@@ -7790,14 +7826,14 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
 RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 </Tabs.Content>
@@ -7814,6 +7850,7 @@ name: radio-group
 component: RadioGroup
 package: radio-group
 demoName: RadioGroup
+
 ---
 
 <HeroContainer>
@@ -7825,11 +7862,11 @@ demoName: RadioGroup
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Ability to opt-out to native radio button on web.`,
-  ]}
+features={[
+`Accessible, easy to compose and customize.`,
+`Sizable & works controlled or uncontrolled.`,
+`Ability to opt-out to native radio button on web.`,
+]}
 />
 
 ## Installation
@@ -7843,7 +7880,7 @@ npm install @tamagui/radio-group
 ## Usage
 
 ```tsx
-import { RadioGroup } from 'tamagui'
+import { RadioGroup } from "tamagui";
 
 export default () => (
   <RadioGroup value="foo" gap="$2">
@@ -7854,7 +7891,7 @@ export default () => (
       <RadioGroup.Indicator />
     </RadioGroup.Item>
   </RadioGroup>
-)
+);
 ```
 
 ## API Reference
@@ -7864,82 +7901,82 @@ export default () => (
 RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native for all children items`,
-    },
-    {
-      name: 'native',
-      type: 'boolean',
-      description: `Renders native radio button on web.`,
-      default: false,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-    },
-    {
-      name: 'accentColor',
-      type: 'string',
-      description: 'Sets `accent-color` style when `native` prop is enabled',
-    },
-  ]}
+data={[
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native for all children items`,
+},
+{
+name: 'native',
+type: 'boolean',
+description: `Renders native radio button on web.`,
+default: false,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+},
+{
+name: 'accentColor',
+type: 'string',
+description: 'Sets `accent-color` style when `native` prop is enabled',
+},
+]}
 />
 
 ### RadioGroup.Item
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by on web`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Input value for the radio button.`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native`,
-    },
-    {
-      name: 'id',
-      type: 'string',
-      description: `Id used on the web`,
-    },
-    {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by on web`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Input value for the radio button.`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `Set aria-disabled on web, and disable touch on native`,
+},
+{
+name: 'id',
+type: 'string',
+description: `Id used on the web`,
+},
+{
+name: 'scaleSize',
+type: 'number',
+default: '0.5',
+description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### RadioGroup.Indicator
@@ -7947,14 +7984,14 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
 RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+required: false,
+type: `boolean`,
+description: `Removes all default Tamagui styles.`,
+},
+]}
 />
 
 ## components/scroll-view/1.0.0
@@ -7967,6 +8004,7 @@ name: scrollView
 component: ScrollView
 package: scroll-view
 demoName: ScrollView
+
 ---
 
 <HeroContainer>
@@ -7978,10 +8016,10 @@ demoName: ScrollView
 ```
 
 <Highlights
-  features={[
-    `All the features of React Native ScrollView.`,
-    `Adds all the style properties of Tamagui.`,
-  ]}
+features={[
+`All the features of React Native ScrollView.`,
+`Adds all the style properties of Tamagui.`,
+]}
 />
 
 ## Installation
@@ -7995,7 +8033,7 @@ npm install @tamagui/scroll-view
 ## Usage
 
 ```tsx
-import { ScrollView, YStack, ListItem } from 'tamagui'
+import { ScrollView, YStack, ListItem } from "tamagui";
 
 export default () => (
   <ScrollView>
@@ -8006,7 +8044,7 @@ export default () => (
       <ListItem>4</ListItem>
     </YStack>
   </ScrollView>
-)
+);
 ```
 
 ## API Reference
@@ -8025,6 +8063,7 @@ name: select
 component: Select
 package: select
 demoName: Select
+
 ---
 
 # Select
@@ -8040,17 +8079,17 @@ demoName: Select
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible, keyboard navigable, full-featured.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible, keyboard navigable, full-featured.`,
+]}
 />
 
 ### Anatomy
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8070,7 +8109,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 <Notice>
@@ -8085,63 +8124,63 @@ export default () => (
 Contains every component for the select:
 
 <PropsTable
-  data={[
-    {
-      name: 'id',
-      type: 'string',
-      description: `Optional for usage with Label`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Set the size of itself and pass to all inner elements`,
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      description: `Select children API components`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Controlled value`,
-    },
-    {
-      name: 'defaultValue',
-      type: 'string',
-      description: `Default value`,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `Callback on value change`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: `Controlled open value`,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Default open value`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Callback on open change`,
-    },
-    {
-      name: 'dir',
-      type: 'Direction',
-      description: `Direction of text display`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `For use in forms`,
-    },
-  ]}
+data={[
+{
+name: 'id',
+type: 'string',
+description: `Optional for usage with Label`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Set the size of itself and pass to all inner elements`,
+},
+{
+name: 'children',
+type: 'React.ReactNode',
+description: `Select children API components`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Controlled value`,
+},
+{
+name: 'defaultValue',
+type: 'string',
+description: `Default value`,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+description: `Callback on value change`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: `Controlled open value`,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Default open value`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Callback on open change`,
+},
+{
+name: 'dir',
+type: 'Direction',
+description: `Direction of text display`,
+},
+{
+name: 'name',
+type: 'string',
+description: `For use in forms`,
+},
+]}
 />
 
 #### &lt;Trigger /&gt;
@@ -8153,13 +8192,13 @@ Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 Extends [Paragraph](/docs/components/text), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'placeholder',
-      type: 'string',
-      description: `Optional placeholder to show when no value selected`,
-    },
-  ]}
+data={[
+{
+name: 'placeholder',
+type: 'string',
+description: `Optional placeholder to show when no value selected`,
+},
+]}
 />
 
 #### &lt;Content /&gt;
@@ -8183,13 +8222,13 @@ Extends [YStack](/docs/components/stacks).
 Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
 <PropsTable
-  data={[
-    {
-      name: 'disableScroll',
-      type: 'boolean',
-      description: `Removes ability to scroll and all style and functionality related to scrolling`,
-    },
-  ]}
+data={[
+{
+name: 'disableScroll',
+type: 'boolean',
+description: `Removes ability to scroll and all style and functionality related to scrolling`,
+},
+]}
 />
 
 #### &lt;Group /&gt;
@@ -8205,13 +8244,13 @@ Extends [ListItem](/docs/components/list-item). Used to label Groups.
 Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      type: 'number',
-      required: true,
-      description: `Incrementally starting from 0, matching its appearance in the list.`,
-    },
+data={[
+{
+name: 'index',
+type: 'number',
+required: true,
+description: `Incrementally starting from 0, matching its appearance in the list.`,
+},
 
     {
       name: 'value',
@@ -8237,7 +8276,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8268,7 +8307,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 ## components/select/1.128.0
@@ -8281,6 +8320,7 @@ name: select
 component: Select
 package: select
 demoName: Select
+
 ---
 
 <HeroContainer>
@@ -8292,11 +8332,11 @@ demoName: Select
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible, keyboard navigable, full-featured.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible, keyboard navigable, full-featured.`,
+]}
 />
 
 ## Installation
@@ -8310,7 +8350,7 @@ npm install @tamagui/select
 ## Anatomy
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8333,7 +8373,7 @@ export default () => (
       </Select.Content>
     </Select.FocusScope>
   </Select>
-)
+);
 ```
 
 <Notice>
@@ -8348,68 +8388,68 @@ export default () => (
 Contains every component for the select:
 
 <PropsTable
-  data={[
-    {
-      name: 'id',
-      type: 'string',
-      description: `Optional for usage with Label`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Set the size of itself and pass to all inner elements`,
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      description: `Select children API components`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Controlled value`,
-    },
-    {
-      name: 'defaultValue',
-      type: 'string',
-      description: `Default value`,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `Callback on value change`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: `Controlled open value`,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Default open value`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Callback on open change`,
-    },
-    {
-      name: 'dir',
-      type: 'Direction',
-      description: `Direction of text display`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `For use in forms`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue',
-      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
-    },
-  ]}
+data={[
+{
+name: 'id',
+type: 'string',
+description: `Optional for usage with Label`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Set the size of itself and pass to all inner elements`,
+},
+{
+name: 'children',
+type: 'React.ReactNode',
+description: `Select children API components`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Controlled value`,
+},
+{
+name: 'defaultValue',
+type: 'string',
+description: `Default value`,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+description: `Callback on value change`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: `Controlled open value`,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Default open value`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Callback on open change`,
+},
+{
+name: 'dir',
+type: 'Direction',
+description: `Direction of text display`,
+},
+{
+name: 'name',
+type: 'string',
+description: `For use in forms`,
+},
+{
+name: 'native',
+type: 'NativeValue',
+description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+},
+]}
 />
 
 ### Select.Trigger
@@ -8421,13 +8461,13 @@ Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 Extends [Paragraph](/docs/components/text), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'placeholder',
-      type: 'string',
-      description: `Optional placeholder to show when no value selected`,
-    },
-  ]}
+data={[
+{
+name: 'placeholder',
+type: 'string',
+description: `Optional placeholder to show when no value selected`,
+},
+]}
 />
 
 #### SelectContent
@@ -8451,18 +8491,18 @@ Extends [YStack](/docs/components/stacks).
 Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
 <PropsTable
-  data={[
-    {
-      name: 'disableScroll',
-      type: 'boolean',
-      description: `Removes ability to scroll and all style and functionality related to scrolling`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      description: `Removes all default styles`,
-    },
-  ]}
+data={[
+{
+name: 'disableScroll',
+type: 'boolean',
+description: `Removes ability to scroll and all style and functionality related to scrolling`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+description: `Removes all default styles`,
+},
+]}
 />
 
 <Notice>
@@ -8483,13 +8523,13 @@ Extends [ListItem](/docs/components/list-item). Used to label Groups.
 Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      type: 'number',
-      required: true,
-      description: `Incrementally starting from 0, matching its appearance in the list.`,
-    },
+data={[
+{
+name: 'index',
+type: 'number',
+required: true,
+description: `Incrementally starting from 0, matching its appearance in the list.`,
+},
 
     {
       name: 'value',
@@ -8509,42 +8549,42 @@ Extends [Paragraph](/docs/components/text). Used inside Item to provide unselect
 Provides access to the underlying FocusScope component used by Select for focus management. Can be used to control focus behavior from a parent component.
 
 <PropsTable
-  data={[
-    {
-      name: 'enabled',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether focus management is enabled`,
-    },
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
-    },
-    {
-      name: 'trapped',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
-    },
-    {
-      name: 'focusOnIdle',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
-    },
-    {
-      name: 'onMountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
-    },
-    {
-      name: 'onUnmountAutoFocus',
-      type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
-    },
-  ]}
+data={[
+{
+name: 'enabled',
+type: 'boolean',
+default: 'true',
+description: `Whether focus management is enabled`,
+},
+{
+name: 'loop',
+type: 'boolean',
+default: 'false',
+description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+},
+{
+name: 'trapped',
+type: 'boolean',
+default: 'false',
+description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+},
+{
+name: 'focusOnIdle',
+type: 'boolean | number',
+default: 'false',
+description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+},
+{
+name: 'onMountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on mount. Can be prevented`,
+},
+{
+name: 'onUnmountAutoFocus',
+type: '(event: Event) => void',
+description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+},
+]}
 />
 
 ### Select.Sheet
@@ -8558,7 +8598,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8589,7 +8629,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 ## components/select/1.19.0
@@ -8602,6 +8642,7 @@ name: select
 component: Select
 package: select
 demoName: Select
+
 ---
 
 # Select
@@ -8617,17 +8658,17 @@ demoName: Select
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible, keyboard navigable, full-featured.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible, keyboard navigable, full-featured.`,
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8647,7 +8688,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 <Notice>
@@ -8662,68 +8703,68 @@ export default () => (
 Contains every component for the select:
 
 <PropsTable
-  data={[
-    {
-      name: 'id',
-      type: 'string',
-      description: `Optional for usage with Label`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Set the size of itself and pass to all inner elements`,
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      description: `Select children API components`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Controlled value`,
-    },
-    {
-      name: 'defaultValue',
-      type: 'string',
-      description: `Default value`,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `Callback on value change`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: `Controlled open value`,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Default open value`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Callback on open change`,
-    },
-    {
-      name: 'dir',
-      type: 'Direction',
-      description: `Direction of text display`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `For use in forms`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue',
-      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
-    },
-  ]}
+data={[
+{
+name: 'id',
+type: 'string',
+description: `Optional for usage with Label`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Set the size of itself and pass to all inner elements`,
+},
+{
+name: 'children',
+type: 'React.ReactNode',
+description: `Select children API components`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Controlled value`,
+},
+{
+name: 'defaultValue',
+type: 'string',
+description: `Default value`,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+description: `Callback on value change`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: `Controlled open value`,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Default open value`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Callback on open change`,
+},
+{
+name: 'dir',
+type: 'Direction',
+description: `Direction of text display`,
+},
+{
+name: 'name',
+type: 'string',
+description: `For use in forms`,
+},
+{
+name: 'native',
+type: 'NativeValue',
+description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+},
+]}
 />
 
 ### Select.Trigger
@@ -8735,13 +8776,13 @@ Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 Extends [Paragraph](/docs/components/text), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'placeholder',
-      type: 'string',
-      description: `Optional placeholder to show when no value selected`,
-    },
-  ]}
+data={[
+{
+name: 'placeholder',
+type: 'string',
+description: `Optional placeholder to show when no value selected`,
+},
+]}
 />
 
 #### SelectContent
@@ -8765,13 +8806,13 @@ Extends [YStack](/docs/components/stacks).
 Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
 <PropsTable
-  data={[
-    {
-      name: 'disableScroll',
-      type: 'boolean',
-      description: `Removes ability to scroll and all style and functionality related to scrolling`,
-    },
-  ]}
+data={[
+{
+name: 'disableScroll',
+type: 'boolean',
+description: `Removes ability to scroll and all style and functionality related to scrolling`,
+},
+]}
 />
 
 ### Select.Group
@@ -8787,13 +8828,13 @@ Extends [ListItem](/docs/components/list-item). Used to label Groups.
 Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      type: 'number',
-      required: true,
-      description: `Incrementally starting from 0, matching its appearance in the list.`,
-    },
+data={[
+{
+name: 'index',
+type: 'number',
+required: true,
+description: `Incrementally starting from 0, matching its appearance in the list.`,
+},
 
     {
       name: 'value',
@@ -8819,7 +8860,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8850,7 +8891,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 ## components/select/1.40.0
@@ -8863,6 +8904,7 @@ name: select
 component: Select
 package: select
 demoName: Select
+
 ---
 
 <HeroContainer>
@@ -8874,11 +8916,11 @@ demoName: Select
 ```
 
 <Highlights
-  features={[
-    `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible, keyboard navigable, full-featured.`,
-  ]}
+features={[
+`Comes with styling, yet completely customizable and themeable.`,
+`Accepts animations, themes, size props and more.`,
+`Accessible, keyboard navigable, full-featured.`,
+]}
 />
 
 ## Installation
@@ -8892,7 +8934,7 @@ npm install @tamagui/select
 ## Anatomy
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -8912,7 +8954,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 <Notice>
@@ -8927,68 +8969,68 @@ export default () => (
 Contains every component for the select:
 
 <PropsTable
-  data={[
-    {
-      name: 'id',
-      type: 'string',
-      description: `Optional for usage with Label`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Set the size of itself and pass to all inner elements`,
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      description: `Select children API components`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Controlled value`,
-    },
-    {
-      name: 'defaultValue',
-      type: 'string',
-      description: `Default value`,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `Callback on value change`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      description: `Controlled open value`,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Default open value`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Callback on open change`,
-    },
-    {
-      name: 'dir',
-      type: 'Direction',
-      description: `Direction of text display`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `For use in forms`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue',
-      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
-    },
-  ]}
+data={[
+{
+name: 'id',
+type: 'string',
+description: `Optional for usage with Label`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+description: `Set the size of itself and pass to all inner elements`,
+},
+{
+name: 'children',
+type: 'React.ReactNode',
+description: `Select children API components`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Controlled value`,
+},
+{
+name: 'defaultValue',
+type: 'string',
+description: `Default value`,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+description: `Callback on value change`,
+},
+{
+name: 'open',
+type: 'boolean',
+description: `Controlled open value`,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Default open value`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Callback on open change`,
+},
+{
+name: 'dir',
+type: 'Direction',
+description: `Direction of text display`,
+},
+{
+name: 'name',
+type: 'string',
+description: `For use in forms`,
+},
+{
+name: 'native',
+type: 'NativeValue',
+description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+},
+]}
 />
 
 ### Select.Trigger
@@ -9000,13 +9042,13 @@ Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 Extends [Paragraph](/docs/components/text), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'placeholder',
-      type: 'string',
-      description: `Optional placeholder to show when no value selected`,
-    },
-  ]}
+data={[
+{
+name: 'placeholder',
+type: 'string',
+description: `Optional placeholder to show when no value selected`,
+},
+]}
 />
 
 #### SelectContent
@@ -9030,18 +9072,18 @@ Extends [YStack](/docs/components/stacks).
 Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
 <PropsTable
-  data={[
-    {
-      name: 'disableScroll',
-      type: 'boolean',
-      description: `Removes ability to scroll and all style and functionality related to scrolling`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      description: `Removes all default styles`,
-    },
-  ]}
+data={[
+{
+name: 'disableScroll',
+type: 'boolean',
+description: `Removes ability to scroll and all style and functionality related to scrolling`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+description: `Removes all default styles`,
+},
+]}
 />
 
 <Notice>
@@ -9062,13 +9104,13 @@ Extends [ListItem](/docs/components/list-item). Used to label Groups.
 Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      type: 'number',
-      required: true,
-      description: `Incrementally starting from 0, matching its appearance in the list.`,
-    },
+data={[
+{
+name: 'index',
+type: 'number',
+required: true,
+description: `Incrementally starting from 0, matching its appearance in the list.`,
+},
 
     {
       name: 'value',
@@ -9094,7 +9136,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Select } from "tamagui"; // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -9125,7 +9167,7 @@ export default () => (
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
-)
+);
 ```
 
 ## components/separator/1.0.0
@@ -9138,6 +9180,7 @@ name: separator
 component: Separator
 package: separator
 demoName: Separator
+
 ---
 
 <HeroContainer>
@@ -9171,8 +9214,7 @@ export default () => (
     <Separator alignSelf="stretch" vertical />
     <Paragraph>Source</Paragraph>
   </XStack>
-)
-
+);
 ```
 
 ## API Reference
@@ -9182,14 +9224,14 @@ export default () => (
 Separators extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'vertical',
-      required: false,
-      type: 'boolean',
-      description: `Show vertical separator.`,
-    },
-  ]}
+data={[
+{
+name: 'vertical',
+required: false,
+type: 'boolean',
+description: `Show vertical separator.`,
+},
+]}
 />
 
 ## components/shapes/1.0.0
@@ -9202,6 +9244,7 @@ name: shapes
 component: Square
 package: shapes
 demoName: Shapes
+
 ---
 
 <HeroContainer>
@@ -9213,10 +9256,10 @@ demoName: Shapes
 ```
 
 <Highlights
-  features={[
-    'Accepts size props as number or token value.',
-    'Sets min and max width and height.',
-  ]}
+features={[
+'Accepts size props as number or token value.',
+'Sets min and max width and height.',
+]}
 />
 
 ## Installation
@@ -9232,7 +9275,7 @@ npm install @tamagui/shapes
 Tamagui supports sizing shapes using your `size` tokens, or plain numbers.
 
 ```tsx
-import { Circle, Square } from 'tamagui'
+import { Circle, Square } from "tamagui";
 
 export default () => (
   <>
@@ -9241,7 +9284,7 @@ export default () => (
     <Circle size="$4" />
     <Circle size={100} />
   </>
-)
+);
 ```
 
 ## API Reference
@@ -9251,20 +9294,20 @@ export default () => (
 `Square` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'string | tokens.size',
-      description: `Set a size, number or one of the size token values.`,
-    },
-    {
-      name: 'circular',
-      required: false,
-      type: 'boolean',
-      description: `Rounds the border radius to be circular.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: 'string | tokens.size',
+description: `Set a size, number or one of the size token values.`,
+},
+{
+name: 'circular',
+required: false,
+type: 'boolean',
+description: `Rounds the border radius to be circular.`,
+},
+]}
 />
 
 ### Circle
@@ -9281,6 +9324,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -9296,28 +9340,26 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ### Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>
-      {/* ...inner contents */}
-    </Sheet.Frame>
+    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ### API
@@ -9327,78 +9369,78 @@ export default () => (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+]}
 />
 
 #### &lt;Overlay /&gt;
@@ -9433,6 +9475,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -9450,12 +9493,12 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ## Installation
@@ -9477,35 +9520,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -9513,7 +9556,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ## Snap points
@@ -9544,8 +9587,8 @@ Using the `createSheet` export, you can create a fully custom sheet without usin
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
-import { createSheet } from '@tamagui/sheet'
+import { Stack, styled } from "@tamagui/core";
+import { createSheet } from "@tamagui/sheet";
 
 const Handle = styled(Stack, {
   variants: {
@@ -9558,33 +9601,33 @@ const Handle = styled(Stack, {
       },
     },
   } as const,
-})
+});
 
 const Overlay = styled(Stack, {
   variants: {
     open: {
       true: {
         opacity: 1,
-        pointerEvents: 'auto',
+        pointerEvents: "auto",
       },
       false: {
         opacity: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
       },
     },
   } as const,
-})
+});
 
 const Frame = styled(Stack, {
-  backgroundColor: '$background',
+  backgroundColor: "$background",
   // can add open variant as well
-})
+});
 
 export const Sheet = createSheet({
   Frame,
   Handle,
   Overlay,
-})
+});
 ```
 
 ## Native support
@@ -9604,18 +9647,14 @@ Then, rebuild your native iOS app so it picks up the new native dependencies. Th
 Finally, set it up:
 
 ```tsx
-import { Sheet, setupNativeSheet } from '@tamagui/sheet'
-import * as NativeModal from 'react-native-ios-modal'
+import { Sheet, setupNativeSheet } from "@tamagui/sheet";
+import * as NativeModal from "react-native-ios-modal";
 
-setupNativeSheet('ios', NativeModal)
+setupNativeSheet("ios", NativeModal);
 
 // now you can use the `native` prop:
 
-export default (
-  <Sheet native>
-    {/* ... the rest of your sheet */}
-  </Sheet>
-)
+export default <Sheet native>{/* ... the rest of your sheet */}</Sheet>;
 ```
 
 ## API Reference
@@ -9625,103 +9664,103 @@ export default (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: '(number | string)[] | undefined',
-      default: `[80]`,
-      description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
-    },
-    {
-      name: 'snapPointsMode',
-      type: '"percent" | "constant" | "fit" | "mixed"',
-      default: '"percent"',
-      description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-      {
-      name: 'unmountChildrenWhenHidden',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Flag to enable unmounting the children after the exit animation has completed.',
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: '(number | string)[] | undefined',
+default: `[80]`,
+description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
+},
+{
+name: 'snapPointsMode',
+type: '"percent" | "constant" | "fit" | "mixed"',
+default: '"percent"',
+description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+{
+name: 'unmountChildrenWhenHidden',
+type: 'boolean',
+default: 'false',
+description:
+'Flag to enable unmounting the children after the exit animation has completed.',
+},
+]}
 />
 
 <Notice>
@@ -9737,13 +9776,13 @@ Displays behind Frame. Extends [YStack](/docs/components/stacks).
 Contains the content. Extends [YStack](/docs/components/stacks).
 
 <PropsTable
-  data={[
-    {
-      name: 'disableHideBottomOverflow',
-      type: 'boolean',
-      description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
-    },
-  ]}
+data={[
+{
+name: 'disableHideBottomOverflow',
+type: 'boolean',
+description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
+},
+]}
 />
 
 ### Sheet.Handle
@@ -9761,19 +9800,19 @@ Allows scrolling within Sheet. Extends [ScrollView](/docs/components/scroll-view
 Use this to control the sheet programatically.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'setOpen',
-      type: 'Function',
-      description: `Control the open state of the sheet.`,
-    },
-    {
-      name: 'setPosition',
-      type: '(index: number) => void',
-      description: `Control the position of the sheet.`,
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'setOpen',
+type: 'Function',
+description: `Control the open state of the sheet.`,
+},
+{
+name: 'setPosition',
+type: '(index: number) => void',
+description: `Control the position of the sheet.`,
+},
+]}
 />
 
 ## Notes
@@ -9790,6 +9829,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -9801,12 +9841,12 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ## Installation
@@ -9820,7 +9860,7 @@ npm install @tamagui/sheet
 ### Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -9828,7 +9868,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ### API
@@ -9838,90 +9878,90 @@ export default () => (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+]}
 />
 
 #### &lt;Overlay /&gt;
@@ -9960,6 +10000,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -9971,12 +10012,12 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ## Installation
@@ -9990,7 +10031,7 @@ npm install @tamagui/sheet
 ### Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -9998,7 +10039,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ### API
@@ -10008,100 +10049,100 @@ export default () => (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    {
-      name: 'open',
-      type: 'boolean',
-      description: `Set to use as controlled component.`,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-    {
-      name: 'preferAdaptParentOpenState',
-      type: 'boolean',
-      default: 'false',
-      description: `By default Sheet will prefer the open prop over a parent component that is controlling it via Adapt. In general if you want to Adapt to a sheet, you'd leave the open prop undefined. If you'd like to have the parent override the prop you've set manually on Sheet, set this to true.`,
-    },
-  ]}
+data={[
+{
+name: 'open',
+type: 'boolean',
+description: `Set to use as controlled component.`,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+{
+name: 'preferAdaptParentOpenState',
+type: 'boolean',
+default: 'false',
+description: `By default Sheet will prefer the open prop over a parent component that is controlling it via Adapt. In general if you want to Adapt to a sheet, you'd leave the open prop undefined. If you'd like to have the parent override the prop you've set manually on Sheet, set this to true.`,
+},
+]}
 />
 
 #### &lt;Overlay /&gt;
@@ -10143,6 +10184,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -10158,18 +10200,18 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ### Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -10177,7 +10219,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ### API
@@ -10187,90 +10229,90 @@ export default () => (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+]}
 />
 
 #### &lt;Overlay /&gt;
@@ -10305,6 +10347,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -10320,12 +10363,12 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ## Installation
@@ -10339,7 +10382,7 @@ npm install @tamagui/sheet
 ## Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -10347,7 +10390,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ## Unstyled
@@ -10361,8 +10404,8 @@ Using the `createSheet` export, you can create a fully custom sheet without usin
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
-import { createSheet } from '@tamagui/sheet'
+import { Stack, styled } from "@tamagui/core";
+import { createSheet } from "@tamagui/sheet";
 
 const Handle = styled(Stack, {
   variants: {
@@ -10375,33 +10418,33 @@ const Handle = styled(Stack, {
       },
     },
   } as const,
-})
+});
 
 const Overlay = styled(Stack, {
   variants: {
     open: {
       true: {
         opacity: 1,
-        pointerEvents: 'auto',
+        pointerEvents: "auto",
       },
       false: {
         opacity: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
       },
     },
   } as const,
-})
+});
 
 const Frame = styled(Stack, {
-  backgroundColor: '$background',
+  backgroundColor: "$background",
   // can add open variant as well
-})
+});
 
 export const Sheet = createSheet({
   Frame,
   Handle,
   Overlay,
-})
+});
 ```
 
 ## Native support
@@ -10419,16 +10462,16 @@ pod install
 And set it up as follows:
 
 ```tsx
-import { Sheet, setupNativeSheet } from '@tamagui/sheet'
-import { ModalView } from 'react-native-ios-modal'
+import { Sheet, setupNativeSheet } from "@tamagui/sheet";
+import { ModalView } from "react-native-ios-modal";
 
-setupNativeSheet('ios', ModalView)
+setupNativeSheet("ios", ModalView);
 
 export default (
   <Sheet native>
     {/* The rest of your sheet views, see Anatomy, example and props API */}
   </Sheet>
-)
+);
 ```
 
 ## API Reference
@@ -10438,90 +10481,90 @@ export default (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+]}
 />
 
 ### Sheet.Overlay
@@ -10533,13 +10576,13 @@ Displays behind Frame. Extends [YStack](/docs/components/stacks).
 Contains the content. Extends [YStack](/docs/components/stacks).
 
 <PropsTable
-  data={[
-    {
-      name: 'disableHideBottomOverflow',
-      type: 'boolean',
-      description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
-    },
-  ]}
+data={[
+{
+name: 'disableHideBottomOverflow',
+type: 'boolean',
+description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
+},
+]}
 />
 
 ### Sheet.Handle
@@ -10557,19 +10600,19 @@ Allows scrolling within Sheet. Extends [Scrollview](/docs/components/scroll-view
 Use this to control the sheet programatically.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'setOpen',
-      type: 'Function',
-      description: `Control the open state of the sheet.`,
-    },
-    {
-      name: 'setPosition',
-      type: '(index: number) => void',
-      description: `Control the position of the sheet.`,
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'setOpen',
+type: 'Function',
+description: `Control the open state of the sheet.`,
+},
+{
+name: 'setPosition',
+type: '(index: number) => void',
+description: `Control the position of the sheet.`,
+},
+]}
 />
 
 ## Notes
@@ -10586,6 +10629,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -10603,12 +10647,12 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ## Installation
@@ -10630,35 +10674,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -10666,7 +10710,7 @@ export default () => (
     <Sheet.Handle />
     <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ## Snap points
@@ -10697,8 +10741,8 @@ Using the `createSheet` export, you can create a fully custom sheet without usin
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
-import { createSheet } from '@tamagui/sheet'
+import { Stack, styled } from "@tamagui/core";
+import { createSheet } from "@tamagui/sheet";
 
 const Handle = styled(Stack, {
   variants: {
@@ -10711,33 +10755,33 @@ const Handle = styled(Stack, {
       },
     },
   } as const,
-})
+});
 
 const Overlay = styled(Stack, {
   variants: {
     open: {
       true: {
         opacity: 1,
-        pointerEvents: 'auto',
+        pointerEvents: "auto",
       },
       false: {
         opacity: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
       },
     },
   } as const,
-})
+});
 
 const Frame = styled(Stack, {
-  backgroundColor: '$background',
+  backgroundColor: "$background",
   // can add open variant as well
-})
+});
 
 export const Sheet = createSheet({
   Frame,
   Handle,
   Overlay,
-})
+});
 ```
 
 ## Native support
@@ -10755,16 +10799,16 @@ pod install
 And set it up as follows:
 
 ```tsx
-import { Sheet, setupNativeSheet } from '@tamagui/sheet'
-import { ModalView } from 'react-native-ios-modal'
+import { Sheet, setupNativeSheet } from "@tamagui/sheet";
+import { ModalView } from "react-native-ios-modal";
 
-setupNativeSheet('ios', ModalView)
+setupNativeSheet("ios", ModalView);
 
 export default (
   <Sheet native>
     {/* The rest of your sheet views, see Anatomy, example and props API */}
   </Sheet>
-)
+);
 ```
 
 ## API Reference
@@ -10774,103 +10818,103 @@ export default (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: '(number | string)[] | undefined',
-      default: `[80]`,
-      description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
-    },
-    {
-      name: 'snapPointsMode',
-      type: '"percent" | "constant" | "fit" | "mixed"',
-      default: '"percent"',
-      description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'native',
-      type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
-    },
-      {
-      name: 'unmountChildrenWhenHidden',
-      type: 'boolean',
-      default: 'false',
-      description:
-        'Flag to enable unmounting the children after the exit animation has completed.',
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: '(number | string)[] | undefined',
+default: `[80]`,
+description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
+},
+{
+name: 'snapPointsMode',
+type: '"percent" | "constant" | "fit" | "mixed"',
+default: '"percent"',
+description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'native',
+type: 'boolean | "ios"[]',
+description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description:
+'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+},
+{
+name: 'unmountChildrenWhenHidden',
+type: 'boolean',
+default: 'false',
+description:
+'Flag to enable unmounting the children after the exit animation has completed.',
+},
+]}
 />
 
 <Notice>
@@ -10886,13 +10930,13 @@ Displays behind Frame. Extends [YStack](/docs/components/stacks).
 Contains the content. Extends [YStack](/docs/components/stacks).
 
 <PropsTable
-  data={[
-    {
-      name: 'disableHideBottomOverflow',
-      type: 'boolean',
-      description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
-    },
-  ]}
+data={[
+{
+name: 'disableHideBottomOverflow',
+type: 'boolean',
+description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
+},
+]}
 />
 
 ### Sheet.Handle
@@ -10910,19 +10954,19 @@ Allows scrolling within Sheet. Extends [ScrollView](/docs/components/scroll-view
 Use this to control the sheet programatically.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'setOpen',
-      type: 'Function',
-      description: `Control the open state of the sheet.`,
-    },
-    {
-      name: 'setPosition',
-      type: '(index: number) => void',
-      description: `Control the position of the sheet.`,
-    },
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'setOpen',
+type: 'Function',
+description: `Control the open state of the sheet.`,
+},
+{
+name: 'setPosition',
+type: '(index: number) => void',
+description: `Control the position of the sheet.`,
+},
+]}
 />
 
 ## Notes
@@ -10939,6 +10983,7 @@ name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
+
 ---
 
 # Sheet
@@ -10954,28 +10999,26 @@ demoName: Sheet
 ```
 
 <Highlights
-  features={[
-    `Lightweight implementation with dragging support.`,
-    `Multiple snap point points and a handle.`,
-    `Automatically adjusts to screen size.`,
-    `Accepts animations, themes, size props and more.`,
-  ]}
+features={[
+`Lightweight implementation with dragging support.`,
+`Multiple snap point points and a handle.`,
+`Automatically adjusts to screen size.`,
+`Accepts animations, themes, size props and more.`,
+]}
 />
 
 ### Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+import { Sheet } from "tamagui"; // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>
-      {/* ...inner contents */}
-    </Sheet.Frame>
+    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
-)
+);
 ```
 
 ### API
@@ -10985,84 +11028,84 @@ export default () => (
 Contains every component for the sheet.
 
 <PropsTable
-  data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      description: `Uncontrolled open state on mount.`,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Called on change open, controlled or uncontrolled.`,
-    },
-    {
-      name: 'position',
-      type: 'number',
-      description: `Controlled position, set to an index of snapPoints.`,
-    },
-    {
-      name: 'defaultPosition',
-      type: 'number',
-      description: `Uncontrolled default position on mount.`,
-    },
-    {
-      name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
-    },
-    {
-      name: 'onPositionChange',
-      type: '(position: number) => void',
-      description: `Called on change position, controlled or uncontrolled.`,
-    },
-    {
-      name: 'dismissOnOverlayPress',
-      type: 'boolean',
-      default: 'true',
-      description: `Controls tapping on the overlay to close, defaults to true.`,
-    },
-    {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
-    },
-    {
-      name: 'disableDrag',
-      type: 'boolean',
-      description: `Disables all touch events to drag the sheet.`,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      description: `Renders sheet into the root of your app instead of inline.`,
-    },
-    {
-      name: 'dismissOnSnapToBottom',
-      type: 'boolean',
-      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
-    },
-    {
-      name: 'forceRemoveScrollEnabled',
-      type: 'boolean',
-      default: 'false',
-      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
-    },
-    {
-      name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
-    },
-    {
-      name: 'moveOnKeyboardChange',
-      type: 'boolean',
-      default: 'false',
-      description: 'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.'
-    }
-  ]}
+data={[
+{ name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+{
+name: 'defaultOpen',
+type: 'boolean',
+description: `Uncontrolled open state on mount.`,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+description: `Called on change open, controlled or uncontrolled.`,
+},
+{
+name: 'position',
+type: 'number',
+description: `Controlled position, set to an index of snapPoints.`,
+},
+{
+name: 'defaultPosition',
+type: 'number',
+description: `Uncontrolled default position on mount.`,
+},
+{
+name: 'snapPoints',
+type: 'number[]',
+default: `[80, 10]`,
+description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+},
+{
+name: 'onPositionChange',
+type: '(position: number) => void',
+description: `Called on change position, controlled or uncontrolled.`,
+},
+{
+name: 'dismissOnOverlayPress',
+type: 'boolean',
+default: 'true',
+description: `Controls tapping on the overlay to close, defaults to true.`,
+},
+{
+name: 'animationConfig',
+type: 'Animated.SpringAnimationConfig',
+default: 'true',
+description: `Customize the spring used, passed to react-native Animated.spring().`,
+},
+{
+name: 'disableDrag',
+type: 'boolean',
+description: `Disables all touch events to drag the sheet.`,
+},
+{
+name: 'modal',
+type: 'boolean',
+description: `Renders sheet into the root of your app instead of inline.`,
+},
+{
+name: 'dismissOnSnapToBottom',
+type: 'boolean',
+description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+},
+{
+name: 'forceRemoveScrollEnabled',
+type: 'boolean',
+default: 'false',
+description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+},
+{
+name: 'portalProps',
+type: 'Object',
+description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+},
+{
+name: 'moveOnKeyboardChange',
+type: 'boolean',
+default: 'false',
+description: 'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.'
+}
+]}
 />
 
 #### &lt;Overlay /&gt;
@@ -11097,6 +11140,7 @@ name: slider
 component: Slider
 package: slider
 demoName: Slider
+
 ---
 
 # Slider
@@ -11112,12 +11156,12 @@ demoName: Slider
 ```
 
 <Highlights
-  features={[
-    `Sizable, themed, works controlled or uncontrolled.`,
-    `Multiple thumbs support.`,
-    `Control steps and control with your keyboard.`,
-    `Accessible, easy to compose and customize.`,
-  ]}
+features={[
+`Sizable, themed, works controlled or uncontrolled.`,
+`Multiple thumbs support.`,
+`Control steps and control with your keyboard.`,
+`Accessible, easy to compose and customize.`,
+]}
 />
 
 ## Installation
@@ -11133,7 +11177,7 @@ npm install @tamagui/slider
 Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
 
 ```tsx
-import { Slider } from 'tamagui'
+import { Slider } from "tamagui";
 
 export default () => (
   <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
@@ -11142,17 +11186,17 @@ export default () => (
     </Slider.Track>
     <Slider.Thumb circular index={0} />
   </Slider>
-)
+);
 ```
 
 You can also optionally style any component, either using inline style props or by wrapping with `styled`:
 
 ```tsx
-import { Slider, styled } from 'tamagui'
+import { Slider, styled } from "tamagui";
 
 const CustomSliderTrack = styled(Slider.Track, {
-  backgroundColor: 'red',
-})
+  backgroundColor: "red",
+});
 
 export default () => (
   <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
@@ -11161,7 +11205,7 @@ export default () => (
     </CustomSliderTrack>
     <Slider.Thumb circular index={0} />
   </Slider>
-)
+);
 ```
 
 ## API Reference
@@ -11171,36 +11215,36 @@ export default () => (
 Contains every component for the slider.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'SizeTokens',
-      description: `Control size of every component.`,
-    },
-    {
-      name: 'name',
-      required: false,
-      type: 'string',
-      description: `For usage with forms.`,
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'number[]',
-      description: `Controlled value.`,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      type: 'number[]',
-      description: `Uncontrolled starting value.`,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-      type: '(value: number[]): void',
-      description: ``,
+data={[
+{
+name: 'size',
+required: false,
+type: 'SizeTokens',
+description: `Control size of every component.`,
+},
+{
+name: 'name',
+required: false,
+type: 'string',
+description: `For usage with forms.`,
+},
+{
+name: 'value',
+required: false,
+type: 'number[]',
+description: `Controlled value.`,
+},
+{
+name: 'defaultValue',
+required: false,
+type: 'number[]',
+description: `Uncontrolled starting value.`,
+},
+{
+name: 'onValueChange',
+required: false,
+type: '(value: number[]): void',
+description: ``,
     },
     {
       name: 'disabled',
@@ -11244,8 +11288,8 @@ Contains every component for the slider.
       required: false,
       type: 'number',
       description: `Minimum steps between thumbs.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Slider.Track
@@ -11261,14 +11305,14 @@ Contains every component for the slider.
 `Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      required: true,
-      type: 'number',
-      description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
-    },
-  ]}
+data={[
+{
+name: 'index',
+required: true,
+type: 'number',
+description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
+},
+]}
 />
 
 ## components/slider/1.45.0
@@ -11281,6 +11325,7 @@ name: slider
 component: Slider
 package: slider
 demoName: Slider
+
 ---
 
 <HeroContainer>
@@ -11292,12 +11337,12 @@ demoName: Slider
 ```
 
 <Highlights
-  features={[
-    `Sizable, themed, works controlled or uncontrolled.`,
-    `Multiple thumbs support.`,
-    `Control steps and control with your keyboard.`,
-    `Accessible, easy to compose and customize.`,
-  ]}
+features={[
+`Sizable, themed, works controlled or uncontrolled.`,
+`Multiple thumbs support.`,
+`Control steps and control with your keyboard.`,
+`Accessible, easy to compose and customize.`,
+]}
 />
 
 ## Installation
@@ -11313,7 +11358,7 @@ npm install @tamagui/slider
 Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
 
 ```tsx
-import { Slider } from 'tamagui'
+import { Slider } from "tamagui";
 
 export default () => (
   <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
@@ -11322,17 +11367,17 @@ export default () => (
     </Slider.Track>
     <Slider.Thumb circular index={0} />
   </Slider>
-)
+);
 ```
 
 You can also optionally style any component, either using inline style props or by wrapping with `styled`:
 
 ```tsx
-import { Slider, styled } from 'tamagui'
+import { Slider, styled } from "tamagui";
 
 const CustomSliderTrack = styled(Slider.Track, {
-  backgroundColor: 'red',
-})
+  backgroundColor: "red",
+});
 
 export default () => (
   <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
@@ -11341,7 +11386,7 @@ export default () => (
     </CustomSliderTrack>
     <Slider.Thumb circular index={0} />
   </Slider>
-)
+);
 ```
 
 ## API Reference
@@ -11351,36 +11396,36 @@ export default () => (
 Contains every component for the slider.
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: 'SizeTokens',
-      description: `Control size of every component.`,
-    },
-    {
-      name: 'name',
-      required: false,
-      type: 'string',
-      description: `For usage with forms.`,
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'number[]',
-      description: `Controlled value.`,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      type: 'number[]',
-      description: `Uncontrolled starting value.`,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-      type: '(value: number[]): void',
-      description: ``,
+data={[
+{
+name: 'size',
+required: false,
+type: 'SizeTokens',
+description: `Control size of every component.`,
+},
+{
+name: 'name',
+required: false,
+type: 'string',
+description: `For usage with forms.`,
+},
+{
+name: 'value',
+required: false,
+type: 'number[]',
+description: `Controlled value.`,
+},
+{
+name: 'defaultValue',
+required: false,
+type: 'number[]',
+description: `Uncontrolled starting value.`,
+},
+{
+name: 'onValueChange',
+required: false,
+type: '(value: number[]): void',
+description: ``,
     },
     {
       name: 'disabled',
@@ -11442,8 +11487,8 @@ Contains every component for the slider.
       required: false,
       type: `(event: GestureReponderEvent, value: number) => void`,
       description: `Called on slide end.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Slider.Track
@@ -11459,14 +11504,14 @@ Contains every component for the slider.
 `Slider.Thumb` Inherits `SizableStack`, extending all the default [props](/docs/intro/props), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'index',
-      required: true,
-      type: 'number',
-      description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
-    },
-  ]}
+data={[
+{
+name: 'index',
+required: true,
+type: 'number',
+description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
+},
+]}
 />
 
 ## components/spinner/1.0.0
@@ -11478,6 +11523,7 @@ description: Render a loading indicator.
 name: spinner
 component: Spinner
 demoName: Spinner
+
 ---
 
 <HeroContainer>
@@ -11489,11 +11535,11 @@ demoName: Spinner
 ```
 
 <Highlights
-  features={[
-    'Custom size "small" or "large".',
-    'Accepts all theme colors.',
-    'Accepts all YStack props.',
-  ]}
+features={[
+'Custom size "small" or "large".',
+'Accepts all theme colors.',
+'Accepts all YStack props.',
+]}
 />
 
 ## Installation
@@ -11507,9 +11553,9 @@ npm install @tamagui/spinner
 Note that due to the fact that Spinner is an extension of React Native [ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that only accepts size `small` or `large`, we are currently limited to just these sizes.
 
 ```tsx
-import { Button, Spinner } from 'tamagui'
+import { Button, Spinner } from "tamagui";
 
-export default () => <Spinner size="large" color="$green10" />
+export default () => <Spinner size="large" color="$green10" />;
 ```
 
 ## API Reference
@@ -11519,19 +11565,19 @@ export default () => <Spinner size="large" color="$green10" />
 Spinner extends [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'size',
-      required: false,
-      type: '"small" | "large"',
-    },
-    {
-      name: 'color',
-      required: false,
-      type: 'string | ColorTokens',
-      description: `Give the spinner a color.`,
-    },
-  ]}
+data={[
+{
+name: 'size',
+required: false,
+type: '"small" | "large"',
+},
+{
+name: 'color',
+required: false,
+type: 'string | ColorTokens',
+description: `Give the spinner a color.`,
+},
+]}
 />
 
 ## components/stacks/1.0.0
@@ -11544,6 +11590,7 @@ name: stacks
 component: Stacks
 package: stacks
 demoName: Stacks
+
 ---
 
 <HeroContainer>
@@ -11555,11 +11602,11 @@ demoName: Stacks
 ```
 
 <Highlights
-  features={[
-    'X, Y, and Z stacks for easy flex layouts.',
-    'Gap property to add space between elements.',
-    'Handle press, focus, and layout events easily.',
-  ]}
+features={[
+'X, Y, and Z stacks for easy flex layouts.',
+'Gap property to add space between elements.',
+'Handle press, focus, and layout events easily.',
+]}
 />
 
 Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
@@ -11577,7 +11624,7 @@ npm install @tamagui/stacks
 ```
 
 ```tsx
-import { XStack, YStack } from 'tamagui'
+import { XStack, YStack } from "tamagui";
 
 export default () => (
   <XStack gap="$2">
@@ -11585,7 +11632,7 @@ export default () => (
     <YStack />
     <YStack />
   </XStack>
-)
+);
 ```
 
 To see all the style properties supported, see the [Props](/docs/intro/props) documentation.
@@ -11595,7 +11642,7 @@ To see all the style properties supported, see the [Props](/docs/intro/props) do
 An example using a wide variety of style properties:
 
 ```tsx
-import { Text, XStack, YStack } from 'tamagui'
+import { Text, XStack, YStack } from "tamagui";
 
 export default () => (
   <XStack
@@ -11603,12 +11650,12 @@ export default () => (
     flexWrap="wrap"
     backgroundColor="#fff"
     hoverStyle={{
-      backgroundColor: 'red',
+      backgroundColor: "red",
     }}
     // media query
     $gtSm={{
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
+      flexDirection: "column",
+      flexWrap: "nowrap",
     }}
   >
     <YStack gap="$3">
@@ -11616,7 +11663,7 @@ export default () => (
       <Text>World</Text>
     </YStack>
   </XStack>
-)
+);
 ```
 
 ## API Reference
@@ -11626,26 +11673,26 @@ export default () => (
 Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
 
 <PropsTable
-  data={[
-    {
-      name: 'fullscreen',
-      required: false,
-      type: 'boolean',
-      description: (
-        <span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>
-      ),
-    },
-    {
-      name: 'elevation',
-      required: false,
-      type: 'number | tokens.size',
-      description: (
-        <span>
-          Sets a natural looking shadow that expands out and away as the size gets bigger.
-        </span>
-      ),
-    },
-  ]}
+data={[
+{
+name: 'fullscreen',
+required: false,
+type: 'boolean',
+description: (
+<span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>
+),
+},
+{
+name: 'elevation',
+required: false,
+type: 'number | tokens.size',
+description: (
+<span>
+Sets a natural looking shadow that expands out and away as the size gets bigger.
+</span>
+),
+},
+]}
 />
 
 ## components/switch/1.0.0
@@ -11658,6 +11705,7 @@ name: switch
 component: Switch
 package: switch
 demoName: Switch
+
 ---
 
 # Switch
@@ -11673,23 +11721,23 @@ demoName: Switch
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Style and animate both frame and thumb.`,
-    `Sizable & works controlled or uncontrolled.`,
-  ]}
+features={[
+`Accessible, easy to compose and customize.`,
+`Style and animate both frame and thumb.`,
+`Sizable & works controlled or uncontrolled.`,
+]}
 />
 
 ### Usage
 
 ```tsx
-import { Switch } from 'tamagui'
+import { Switch } from "tamagui";
 
 export default () => (
   <Switch size="$4">
     <Switch.Thumb animation="bouncy" />
   </Switch>
-)
+);
 ```
 
 ### Switch props
@@ -11697,48 +11745,48 @@ export default () => (
 Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean) => void',
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ## components/switch/1.28.0
@@ -11751,6 +11799,7 @@ name: switch
 component: Switch
 package: switch
 demoName: Switch
+
 ---
 
 # Switch
@@ -11766,12 +11815,12 @@ demoName: Switch
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Style and animate both frame and thumb.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Native prop that renders native Switch on mobile`,
-  ]}
+features={[
+`Accessible, easy to compose and customize.`,
+`Style and animate both frame and thumb.`,
+`Sizable & works controlled or uncontrolled.`,
+`Native prop that renders native Switch on mobile`,
+]}
 />
 
 ## Installation
@@ -11785,13 +11834,13 @@ npm install @tamagui/switch
 ## Usage
 
 ```tsx
-import { Switch } from 'tamagui' // or '@tamagui/switch'
+import { Switch } from "tamagui"; // or '@tamagui/switch'
 
 export default () => (
   <Switch size="$4">
     <Switch.Thumb animation="bouncy" />
   </Switch>
-)
+);
 ```
 
 ## API Reference
@@ -11801,58 +11850,58 @@ export default () => (
 Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue<"mobile" | "ios" | "android">',
-      description: `Render to a native switch. (Not supported on web)`,
-    },
-    {
-      name: 'nativeProps',
-      type: 'SwitchProps (from `react-native`)',
-      description: `Props to pass to the native Switch;`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean) => void',
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+{
+name: 'native',
+type: 'NativeValue<"mobile" | "ios" | "android">',
+description: `Render to a native switch. (Not supported on web)`,
+},
+{
+name: 'nativeProps',
+type: 'SwitchProps (from `react-native`)',
+description: `Props to pass to the native Switch;`,
+},
+]}
 />
 
 ### Switch.Thumb
@@ -11860,14 +11909,14 @@ Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/int
 `Switch.Thumb` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ## components/switch/1.58.0
@@ -11880,6 +11929,7 @@ name: switch
 component: Switch
 package: switch
 demoName: Switch
+
 ---
 
 # Switch
@@ -11895,12 +11945,12 @@ demoName: Switch
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Style and animate both frame and thumb.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Native prop that renders native Switch on mobile`,
-  ]}
+features={[
+`Accessible, easy to compose and customize.`,
+`Style and animate both frame and thumb.`,
+`Sizable & works controlled or uncontrolled.`,
+`Native prop that renders native Switch on mobile`,
+]}
 />
 
 ## Installation
@@ -11914,13 +11964,13 @@ npm install @tamagui/switch
 ## Usage
 
 ```tsx
-import { Switch } from 'tamagui' // or '@tamagui/switch'
+import { Switch } from "tamagui"; // or '@tamagui/switch'
 
 export default () => (
   <Switch size="$4">
     <Switch.Thumb animation="bouncy" />
   </Switch>
-)
+);
 ```
 
 ## Headless with `createSwitch`
@@ -11934,21 +11984,21 @@ If you define a `checked` variant, it will apply those styles.
 Here's an example:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
-import { createSwitch } from '@tamagui/switch'
+import { Stack, styled } from "@tamagui/core";
+import { createSwitch } from "@tamagui/switch";
 
 const Frame = styled(Stack, {
   variants: {
     checked: {
       true: {
-        backgroundColor: 'yellow'
+        backgroundColor: "yellow",
       },
       false: {
-        backgroundColor: 'green',
+        backgroundColor: "green",
       },
     },
   } as const,
-})
+});
 
 const Thumb = styled(Stack, {
   variants: {
@@ -11961,12 +12011,12 @@ const Thumb = styled(Stack, {
       },
     },
   } as const,
-})
+});
 
 export const Switch = createSwitch({
   Frame,
   Thumb,
-})
+});
 ```
 
 ## API Reference
@@ -11976,58 +12026,58 @@ export const Switch = createSwitch({
 `Switch` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue<"mobile" | "ios" | "android">',
-      description: `Render to a native switch. (Not supported on web)`,
-    },
-    {
-      name: 'nativeProps',
-      type: 'SwitchProps (from `react-native`)',
-      description: `Props to pass to the native Switch;`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean) => void',
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+{
+name: 'native',
+type: 'NativeValue<"mobile" | "ios" | "android">',
+description: `Render to a native switch. (Not supported on web)`,
+},
+{
+name: 'nativeProps',
+type: 'SwitchProps (from `react-native`)',
+description: `Props to pass to the native Switch;`,
+},
+]}
 />
 
 ### Switch.Thumb
@@ -12035,14 +12085,14 @@ export const Switch = createSwitch({
 `Switch.Thumb` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ## components/switch/1.89.0
@@ -12055,6 +12105,7 @@ name: switch
 component: Switch
 package: switch
 demoName: Switch
+
 ---
 
 <YStack className="is-sticky" />
@@ -12101,32 +12152,32 @@ demoName: Switch
 
 <Tabs.Content value="styled">
 
-  ```tsx hero template=Switch
+```tsx hero template=Switch
 
-````
+```
 
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 
 ```tsx hero template=SwitchUnstyled
 
-````
+```
 
 </Tabs.Content>
-  <Tabs.Content value="headless">
+<Tabs.Content value="headless">
 
-  ```tsx hero template=SwitchHeadless
+```tsx hero template=SwitchHeadless
 
-````
+```
 
 </Tabs.Content>
 
 <Highlights
 features={[
-  `Accessible, easy to compose and customize.`,
-  `Style and animate both frame and thumb.`,
-  `Sizable & works controlled or uncontrolled.`,
-  `Native prop that renders native Switch on mobile`,
+`Accessible, easy to compose and customize.`,
+`Style and animate both frame and thumb.`,
+`Sizable & works controlled or uncontrolled.`,
+`Native prop that renders native Switch on mobile`,
 ]}
 />
 
@@ -12138,7 +12189,7 @@ Switch is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/switch
-````
+```
 
 </Tabs.Content>
 
@@ -12170,13 +12221,13 @@ npm install @tamagui/switch-headless
 <Tabs.Content value="styled">
 
 ```tsx
-import { Switch } from 'tamagui' // or '@tamagui/switch'
+import { Switch } from "tamagui"; // or '@tamagui/switch'
 
 export default () => (
   <Switch size="$4">
     <Switch.Thumb animation="bouncy" />
   </Switch>
-)
+);
 ```
 
 </Tabs.Content>
@@ -12217,58 +12268,58 @@ Using the `useSwitch` API, you can make your own Switch from scratch.
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'labeledBy',
-      type: 'string',
-      description: `Set aria-labeled-by.`,
-    },
-    {
-      name: 'name',
-      type: 'string',
-      description: `Equivalent to input name.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `Give it a value (for use in HTML forms).`,
-    },
-    {
-      name: 'checked',
-      type: 'boolean',
-      description: `Control the input.`,
-    },
-    {
-      name: 'defaultChecked',
-      type: 'boolean',
-      description: `Uncontrolled default value.`,
-    },
-    {
-      name: 'required',
-      type: 'boolean',
-      description: `Sets aria-required.`,
-    },
-    {
-      name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-    {
-      name: 'native',
-      type: 'NativeValue<"mobile" | "ios" | "android">',
-      description: `Render to a native switch. (Not supported on web)`,
-    },
-    {
-      name: 'nativeProps',
-      type: 'SwitchProps (from `react-native`)',
-      description: `Props to pass to the native Switch;`,
-    },
-  ]}
+data={[
+{
+name: 'labeledBy',
+type: 'string',
+description: `Set aria-labeled-by.`,
+},
+{
+name: 'name',
+type: 'string',
+description: `Equivalent to input name.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `Give it a value (for use in HTML forms).`,
+},
+{
+name: 'checked',
+type: 'boolean',
+description: `Control the input.`,
+},
+{
+name: 'defaultChecked',
+type: 'boolean',
+description: `Uncontrolled default value.`,
+},
+{
+name: 'required',
+type: 'boolean',
+description: `Sets aria-required.`,
+},
+{
+name: 'onCheckedChange',
+type: '(checked: boolean) => void',
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+{
+name: 'native',
+type: 'NativeValue<"mobile" | "ios" | "android">',
+description: `Render to a native switch. (Not supported on web)`,
+},
+{
+name: 'nativeProps',
+type: 'SwitchProps (from `react-native`)',
+description: `Props to pass to the native Switch;`,
+},
+]}
 />
 
 ### Switch.Thumb
@@ -12277,19 +12328,19 @@ Using the `useSwitch` API, you can make your own Switch from scratch.
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 </Tabs>
 
-{/*TODO: document createSwitch and useSwitch's API*/}
+{/_TODO: document createSwitch and useSwitch's API_/}
 
 ## components/tabs/1.125.35
 
@@ -12301,6 +12352,7 @@ name: tabs
 component: Tabs
 package: tabs
 demoName: Tabs
+
 ---
 
 <Tabs id="type" defaultValue="styled">
@@ -12315,21 +12367,21 @@ demoName: Tabs
 </Tabs>
 
 <Tabs.Content value="styled">
-  <HeroContainer>
-    <TabsDemo />
-  </HeroContainer>
+<HeroContainer>
+<TabsDemo />
+</HeroContainer>
 
 ```tsx hero template=Tabs
 
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose, customize and animate`,
-    `Sizable & works controlled or uncontrolled`,
-    `Supports automatic and manual activation modes for web`,
-    `Full keyboard navigation`,
-  ]}
+features={[
+`Accessible, easy to compose, customize and animate`,
+`Sizable & works controlled or uncontrolled`,
+`Supports automatic and manual activation modes for web`,
+`Full keyboard navigation`,
+]}
 />
 
 Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your feedback and we'll address it. We're marking it Beta a such as there may be hopefully minimal breaking changes as we get feedback on the API.
@@ -12375,40 +12427,40 @@ export default () => (
 Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size` prop to this component will have effect on the descendants.
 
 <PropsTable
-  data={[
-    {
-      name: "value",
-      type: "string",
-      description: `The value for the selected tab, if controlled`,
-    },
-    {
-      name: "defaultValue",
-      type: "string",
-      description: `The value of the tab to select by default, if uncontrolled`,
-    },
-    {
-      name: "onValueChange",
-      type: "(value: string) => void",
-      description: `A function called when a new tab is selected`,
-    },
-    {
-      name: "orientation",
-      type: '"horizontal" | "vertical"',
-      default: "horizontal",
-      description: `The orientation the tabs are layed out`,
-    },
-    {
-      name: "dir",
-      type: '"ltr" | "rtl"',
-      description: `The direction of navigation between toolbar items`,
-    },
-    {
-      name: "activationMode",
-      type: '"manual" | "automatic"',
-      default: "automatic",
-      description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
-    },
-  ]}
+data={[
+{
+name: "value",
+type: "string",
+description: `The value for the selected tab, if controlled`,
+},
+{
+name: "defaultValue",
+type: "string",
+description: `The value of the tab to select by default, if uncontrolled`,
+},
+{
+name: "onValueChange",
+type: "(value: string) => void",
+description: `A function called when a new tab is selected`,
+},
+{
+name: "orientation",
+type: '"horizontal" | "vertical"',
+default: "horizontal",
+description: `The orientation the tabs are layed out`,
+},
+{
+name: "dir",
+type: '"ltr" | "rtl"',
+description: `The direction of navigation between toolbar items`,
+},
+{
+name: "activationMode",
+type: '"manual" | "automatic"',
+default: "automatic",
+description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
+},
+]}
 />
 
 ### Tabs.List
@@ -12416,14 +12468,14 @@ Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size`
 Container for the trigger buttons. Supports scrolling by extending [Group](/docs/components/group). You can disable passing border radius to children by passing `disablePassBorderRadius`.
 
 <PropsTable
-  data={[
-    {
-      name: "loop",
-      type: "boolean",
-      default: "true",
-      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
-    },
-  ]}
+data={[
+{
+name: "loop",
+type: "boolean",
+default: "true",
+description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
+},
+]}
 />
 
 ### Tabs.Trigger
@@ -12431,23 +12483,23 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
 Extends [Button](/docs/components/button), adding:
 
 <PropsTable
-  data={[
-    {
-      name: "value",
-      type: "string",
-      description: `The value for the tabs state to be changed to after activation of the trigger`,
-    },
-    {
-      name: "onInteraction",
-      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
-      description: `Used for making custom indicators when trigger interacted with`,
-    },
-    {
-      name: "unstyled",
-      type: `boolean`,
-      description: `When true, remove all default tamagui styling`,
-    },
-  ]}
+data={[
+{
+name: "value",
+type: "string",
+description: `The value for the tabs state to be changed to after activation of the trigger`,
+},
+{
+name: "onInteraction",
+type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
+description: `Used for making custom indicators when trigger interacted with`,
+},
+{
+name: "unstyled",
+type: `boolean`,
+description: `When true, remove all default tamagui styling`,
+},
+]}
 />
 
 ### Tabs.Content
@@ -12455,19 +12507,19 @@ Extends [Button](/docs/components/button), adding:
 Where each tab's content will be shown. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
-  data={[
-    {
-      name: "value",
-      type: "string",
-      description: `Will show the content when the value matches the state of Tabs root`,
-    },
-    {
-      name: "forceMount",
-      type: "boolean",
-      default: "false",
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
-    },
-  ]}
+data={[
+{
+name: "value",
+type: "string",
+description: `Will show the content when the value matches the state of Tabs root`,
+},
+{
+name: "forceMount",
+type: "boolean",
+default: "false",
+description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
+},
+]}
 />
 
 ## Examples
@@ -12487,9 +12539,9 @@ Here is a demo with more advanced animations using [AnimatePresence](/docs/core/
 </Tabs.Content>
 
 <Tabs.Content value="headless">
-  <HeroContainer>
-    <TabsHeadlessDemo />
-  </HeroContainer>
+<HeroContainer>
+<TabsHeadlessDemo />
+</HeroContainer>
 
 ```tsx hero template=TabsHeadless
 
@@ -12519,6 +12571,7 @@ name: tabs
 component: Tabs
 package: tabs
 demoName: Tabs
+
 ---
 
 <InstallBanner name="@tamagui/tabs" />
@@ -12532,12 +12585,12 @@ demoName: Tabs
 ```
 
 <Highlights
-  features={[
-    `Accessible, easy to compose, customize and animate`,
-    `Sizable & works controlled or uncontrolled`,
-    `Supports automatic and manual activation modes for web`,
-    `Full keyboard navigation`,
-  ]}
+features={[
+`Accessible, easy to compose, customize and animate`,
+`Sizable & works controlled or uncontrolled`,
+`Supports automatic and manual activation modes for web`,
+`Full keyboard navigation`,
+]}
 />
 
 Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your feedback and we'll address it. We're marking it Beta a such as there may be hopefully minimal breaking changes as we get feedback on the API.
@@ -12545,7 +12598,7 @@ Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your fee
 ## Usage
 
 ```tsx
-import { SizableText, Tabs } from 'tamagui'
+import { SizableText, Tabs } from "tamagui";
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
@@ -12565,7 +12618,7 @@ export default () => (
       <H5>Tab 2</H5>
     </Tabs.Content>
   </Tabs>
-)
+);
 ```
 
 ## API Reference
@@ -12575,40 +12628,40 @@ export default () => (
 Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size` prop to this component will have effect on the descendants.
 
 <PropsTable
-  data={[
-    {
-      name: 'value',
-      type: 'string',
-      description: `The value for the selected tab, if controlled`,
-    },
-    {
-      name: 'defaultValue',
-      type: 'string',
-      description: `The value of the tab to select by default, if uncontrolled`,
-    },
-    {
-      name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `A function called when a new tab is selected`,
-    },
-    {
-      name: 'orientation',
-      type: '"horizontal" | "vertical"',
-      default: 'horizontal',
-      description: `The orientation the tabs are layed out`,
-    },
-    {
-      name: 'dir',
-      type: '"ltr" | "rtl"',
-      description: `The direction of navigation between toolbar items`,
-    },
-    {
-      name: 'activationMode',
-      type: '"manual" | "automatic"',
-      default: 'automatic',
-      description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
-    },
-  ]}
+data={[
+{
+name: 'value',
+type: 'string',
+description: `The value for the selected tab, if controlled`,
+},
+{
+name: 'defaultValue',
+type: 'string',
+description: `The value of the tab to select by default, if uncontrolled`,
+},
+{
+name: 'onValueChange',
+type: '(value: string) => void',
+description: `A function called when a new tab is selected`,
+},
+{
+name: 'orientation',
+type: '"horizontal" | "vertical"',
+default: 'horizontal',
+description: `The orientation the tabs are layed out`,
+},
+{
+name: 'dir',
+type: '"ltr" | "rtl"',
+description: `The direction of navigation between toolbar items`,
+},
+{
+name: 'activationMode',
+type: '"manual" | "automatic"',
+default: 'automatic',
+description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
+},
+]}
 />
 
 ### Tabs.List
@@ -12616,14 +12669,14 @@ Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size`
 Container for the trigger buttons. Supports scrolling by extending [Group](/docs/components/group). You can disable passing border radius to children by passing `disablePassBorderRadius`.
 
 <PropsTable
-  data={[
-    {
-      name: 'loop',
-      type: 'boolean',
-      default: 'true',
-      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
-    },
-  ]}
+data={[
+{
+name: 'loop',
+type: 'boolean',
+default: 'true',
+description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
+},
+]}
 />
 
 ### Tabs.Trigger
@@ -12631,23 +12684,23 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
 Extends [Button](/docs/components/button), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'value',
-      type: 'string',
-      description: `The value for the tabs state to be changed to after activation of the trigger`,
-    },
-    {
-      name: 'onInteraction',
-      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
-      description: `Used for making custom indicators when trigger interacted with`,
-    },
-    {
-      name: 'unstyled',
-      type: `boolean`,
-      description: `When true, remove all default tamagui styling`,
-    },
-  ]}
+data={[
+{
+name: 'value',
+type: 'string',
+description: `The value for the tabs state to be changed to after activation of the trigger`,
+},
+{
+name: 'onInteraction',
+type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
+description: `Used for making custom indicators when trigger interacted with`,
+},
+{
+name: 'unstyled',
+type: `boolean`,
+description: `When true, remove all default tamagui styling`,
+},
+]}
 />
 
 ### Tabs.Content
@@ -12655,19 +12708,19 @@ Extends [Button](/docs/components/button), adding:
 Where each tab's content will be shown. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'value',
-      type: 'string',
-      description: `Will show the content when the value matches the state of Tabs root`,
-    },
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      default: 'false',
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
-    },
-  ]}
+data={[
+{
+name: 'value',
+type: 'string',
+description: `Will show the content when the value matches the state of Tabs root`,
+},
+{
+name: 'forceMount',
+type: 'boolean',
+default: 'false',
+description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
+},
+]}
 />
 
 ## Examples
@@ -12694,6 +12747,7 @@ name: html
 component: Image
 package: image-next
 demoName: WebNativeImageDemo
+
 ---
 
 <HeroContainer noPad>
@@ -12705,13 +12759,13 @@ demoName: WebNativeImageDemo
 ```
 
 <Highlights
-  features={[
-    "Web compatible.",
-    "Supports SSR.",
-    "Works on native and web.",
-    "No react-native-web depedency",
-    "Super light",
-  ]}
+features={[
+"Web compatible.",
+"Supports SSR.",
+"Works on native and web.",
+"No react-native-web depedency",
+"Super light",
+]}
 />
 
 ## Installation
@@ -12725,13 +12779,7 @@ npm install @tamagui/image-next
 ## Usage
 
 ```tsx
-export default () => (
-  <Image
-    src='https://...'
-    width={300}
-    height={400}
-  />
-)
+export default () => <Image src="https://..." width={300} height={400} />;
 ```
 
 ## API Reference
@@ -12751,44 +12799,44 @@ export default () => (
 #### Some common props
 
 <PropsTable
-  data={[
-    {
-      name: "src",
-      required: true,
-      type: "string",
-      description: `The image URL.`,
-    },
-    {
-      name: "alt",
-      required: false,
-      type: "string",
-      description: `mandatory and incredibly useful for accessibility`,
-    },
-    {
-      name: "objectFit",
-      required: false,
-      type: "CSS.ObjectFit",
-      description: `sets how the content of image is resized to fit its container. it's alternative to resizeMode prop`,
-    },
-    {
-      name: "unstyled",
-      required: false,
-      type: "boolean",
-      description: `When true will remove all default styles`,
-    },
-    {
-      name: "onLoad",
-      required: false,
-      type: "function",
-      description: `Callback when image is loaded`,
-    },
-    {
-      name: "onError",
-      required: false,
-      type: "function",
-      description: `Callback when image fails to load`,
-    },
-  ]}
+data={[
+{
+name: "src",
+required: true,
+type: "string",
+description: `The image URL.`,
+},
+{
+name: "alt",
+required: false,
+type: "string",
+description: `mandatory and incredibly useful for accessibility`,
+},
+{
+name: "objectFit",
+required: false,
+type: "CSS.ObjectFit",
+description: `sets how the content of image is resized to fit its container. it's alternative to resizeMode prop`,
+},
+{
+name: "unstyled",
+required: false,
+type: "boolean",
+description: `When true will remove all default styles`,
+},
+{
+name: "onLoad",
+required: false,
+type: "function",
+description: `Callback when image is loaded`,
+},
+{
+name: "onError",
+required: false,
+type: "function",
+description: `Callback when image fails to load`,
+},
+]}
 />
 
 ## components/text/1.0.0-alpha
@@ -12800,6 +12848,7 @@ description: Text, Sized Text and Paragraph show one way to build a design syste
 name: text
 component: Paragraph
 demoName: Text
+
 ---
 
 # Text
@@ -12817,11 +12866,11 @@ demoName: Text
 ```
 
 <Highlights
-  features={[
-    'Supports all react-native-web props and Tamagui styling props.',
-    'Media query styles, hoverStyle, pressStyle.',
-    'Paragraph uses themes and spread variants for a nicer default.',
-  ]}
+features={[
+'Supports all react-native-web props and Tamagui styling props.',
+'Media query styles, hoverStyle, pressStyle.',
+'Paragraph uses themes and spread variants for a nicer default.',
+]}
 />
 
 ### Usage
@@ -12831,7 +12880,7 @@ Text in Tamagui matches to Text in react-native-web, just with the added [Tamagu
 It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
 
 ```tsx
-import { Text, XStack, YStack } from 'tamagui'
+import { Text, XStack, YStack } from "tamagui";
 
 export default () => (
   <>
@@ -12842,13 +12891,13 @@ export default () => (
       // or just use direct values
       fontSize={20}
       hoverStyle={{
-        color: '$color2',
+        color: "$color2",
       }}
     >
       Lorem ipsum
     </Text>
   </>
-)
+);
 ```
 
 <Notice>
@@ -12875,11 +12924,11 @@ Finally Paragraph extends `SizableText` and simply sets some default values from
 
 ```tsx
 export const Paragraph = styled(SizableText, {
-  fontFamily: '$body',
-  color: '$color',
+  fontFamily: "$body",
+  color: "$color",
   // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
-  size: '$true',
-})
+  size: "$true",
+});
 ```
 
 ## components/text/1.0.0
@@ -12892,6 +12941,7 @@ name: text
 component: Paragraph
 package: text
 demoName: Text
+
 ---
 
 <HeroContainer demoMultiple>
@@ -12903,11 +12953,11 @@ demoName: Text
 ```
 
 <Highlights
-  features={[
-    'Themes that give you control over spacing, weights, and sizes custom to each font.',
-    'Size prop that automatically matches all theme values.',
-    'Media query styles, hoverStyle, pressStyle, focusStyle.',
-  ]}
+features={[
+'Themes that give you control over spacing, weights, and sizes custom to each font.',
+'Size prop that automatically matches all theme values.',
+'Media query styles, hoverStyle, pressStyle, focusStyle.',
+]}
 />
 
 ## Installation
@@ -12927,7 +12977,7 @@ export default () => (
     <SizableText>Sizable Text</SizableText>
     <Paragraph>Paragraph</Paragraph>
   </>
-)
+);
 ```
 
 ## Text
@@ -12937,7 +12987,7 @@ Text in Tamagui matches to Text in react-native-web, just with the added [Tamagu
 It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
 
 ```tsx
-import { Text, XStack, YStack } from 'tamagui'
+import { Text, XStack, YStack } from "tamagui";
 
 export default () => (
   <>
@@ -12948,13 +12998,13 @@ export default () => (
       // or just use direct values
       fontSize={20}
       hoverStyle={{
-        color: '$colorHover',
+        color: "$colorHover",
       }}
     >
       Lorem ipsum
     </Text>
   </>
-)
+);
 ```
 
 ## SizableText
@@ -12986,13 +13036,13 @@ Paragraph extends SizableText and is defined as:
 
 ```tsx
 export const Paragraph = styled(SizableText, {
-  name: 'Paragraph',
-  tag: 'p',
-  userSelect: 'auto',
-  color: '$color',
-  size: '$true',
-  whiteSpace: 'normal',
-})
+  name: "Paragraph",
+  tag: "p",
+  userSelect: "auto",
+  color: "$color",
+  size: "$true",
+  whiteSpace: "normal",
+});
 ```
 
 <Notice>
@@ -13011,6 +13061,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 # Toast <Beta />
@@ -13026,13 +13077,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web (notification API)`,
+]}
 />
 
 ## Installation
@@ -13050,39 +13101,41 @@ then, rebuild your React Native app. React Native requires sub-dependencies with
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
-import { Button } from 'tamagui' // or '@tamagui/button'
-import { Toast, ToastProvider, useToast } from '@tamagui/toast'
+import { Button } from "tamagui"; // or '@tamagui/button'
+import { Toast, ToastProvider, useToast } from "@tamagui/toast";
 
 export default () => (
-  <ToastProvider native={['mobile']}>
+  <ToastProvider native={["mobile"]}>
     <CurrentToast />
     <MyPage />
     <ToastViewport />
   </ToastProvider>
-)
+);
 
 const CurrentToast = () => {
-  const { currentToast } = useToast()
+  const { currentToast } = useToast();
 
   // only show the component if it's present and not handled by native toast
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) return null;
   return (
     <Toast key={currentToast.id}>
       <Toast.Title>{currentToast.title}</Toast.Title>
       <Toast.Description>{currentToast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 
 const MyPage = () => {
-  const { show } = useToast()
+  const { show } = useToast();
 
   return (
-    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
+    <Button
+      onPress={() => show("Done!", { message: "Form submitted successfully." })}
+    >
       Show Toast
     </Button>
-  )
-}
+  );
+};
 ```
 
 ## API
@@ -13092,46 +13145,46 @@ const MyPage = () => {
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-    {
-      name: 'native',
-      required: false,
-      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+{
+name: 'native',
+required: false,
+type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name:`burntOptions`,
@@ -13144,8 +13197,8 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       required: false,
       type:`NotificationOptions`,
       description:`Options for the notification API if you're using native toasts on web`,
-    },
-  ]}
+},
+]}
 />
 
 ### ToastViewport
@@ -13153,20 +13206,20 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
@@ -13179,8 +13232,8 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
       type: 'boolean',
       required: false,
       description:`Pass this when you want to have multiple/duplicated toasts.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -13188,24 +13241,24 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -13272,9 +13325,9 @@ Contains the Title, Description, Action and Close component. Should be used insi
       type: 'string',
       required: false,
       description:`The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
-      default: 'default',
-    },
-  ]}
+default: 'default',
+},
+]}
 />
 
 #### Toast.Title
@@ -13298,24 +13351,24 @@ Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1
 Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: 'currentToast',
-      type: 'ToastData | null',
-      description: `The information about the current toast to show such as title, message, duration, etc.`,
-    },
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name:`hide`,
-      type: '(): void',
-      description:`Call it to hide the currently displayed toast.`,
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: 'currentToast',
+type: 'ToastData | null',
+description: `The information about the current toast to show such as title, message, duration, etc.`,
+},
+{
+name: `show`,
+type: '(title: string, showOptions?: ShowToastOptions): void',
+description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+},
+{
+name:`hide`,
+type: '(): void',
+description:`Call it to hide the currently displayed toast.`,
+},
+]}
 />
 
 ## FAQ
@@ -13358,14 +13411,19 @@ Or for bottom center:
 Install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets();
   return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  );
+};
 ```
 
 #### Can I send toasts to different toast viewports?
@@ -13379,16 +13437,16 @@ const App = () => {
       <ToastViewport /> {/* name will be "default" */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
-  )
-}
+  );
+};
 
 const MyComponent = () => {
-  return <Toast>{/* goes to default viewport */}</Toast>
-}
+  return <Toast>{/* goes to default viewport */}</Toast>;
+};
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom" />
-}
+  return <Toast viewportName="viewport-custom" />;
+};
 ```
 
 #### How can I have more control over toasts?
@@ -13399,22 +13457,22 @@ You will have to opt-out of the native toasts and only use custom ones. Here are
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -13432,8 +13490,8 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ##### Multiple Toasts
@@ -13445,13 +13503,13 @@ export default () => {
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -13470,8 +13528,8 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## components/toast/1.13.0
@@ -13484,6 +13542,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 # Toast <Beta />
@@ -13499,13 +13558,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web (notification API)`,
+]}
 />
 
 ## Installation
@@ -13523,23 +13582,28 @@ then, if targetin native, rebuild your React Native app. React Native requires s
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
-import { Toast, ToastProvider, useToastController, useToastState } from '@tamagui/toast'
-import { Button } from 'tamagui' // or '@tamagui/button'
+import {
+  Toast,
+  ToastProvider,
+  useToastController,
+  useToastState,
+} from "@tamagui/toast";
+import { Button } from "tamagui"; // or '@tamagui/button'
 
 export default () => (
-  <ToastProvider native={['mobile']}>
+  <ToastProvider native={["mobile"]}>
     <CurrentToast />
     <MyPage />
     <ToastViewport />
   </ToastProvider>
-)
+);
 
 const CurrentToast = () => {
-  const toast = useToastState()
+  const toast = useToastState();
 
   // only show the component if it's present and not handled by native toast
   if (!toast || toast.isHandledNatively) {
-    return null
+    return null;
   }
 
   return (
@@ -13547,18 +13611,20 @@ const CurrentToast = () => {
       <Toast.Title>{toast.title}</Toast.Title>
       <Toast.Description>{toast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 
 const MyPage = () => {
-  const { show } = useToastController()
+  const { show } = useToastController();
 
   return (
-    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
+    <Button
+      onPress={() => show("Done!", { message: "Form submitted successfully." })}
+    >
       Show Toast
     </Button>
-  )
-}
+  );
+};
 ```
 
 ## API
@@ -13568,46 +13634,46 @@ const MyPage = () => {
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-    {
-      name: 'native',
-      required: false,
-      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+{
+name: 'native',
+required: false,
+type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name:`burntOptions`,
@@ -13620,8 +13686,8 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       required: false,
       type:`NotificationOptions`,
       description:`Options for the notification API if you're using native toasts on web`,
-    },
-  ]}
+},
+]}
 />
 
 ### ToastViewport
@@ -13629,20 +13695,20 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
@@ -13655,8 +13721,8 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
       type: 'boolean',
       required: false,
       description:`Pass this when you want to have multiple/duplicated toasts.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -13664,24 +13730,24 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -13748,9 +13814,9 @@ Contains the Title, Description, Action and Close component. Should be used insi
       type: 'string',
       required: false,
       description:`The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
-      default: 'default',
-    },
-  ]}
+default: 'default',
+},
+]}
 />
 
 #### Toast.Title
@@ -13774,19 +13840,19 @@ Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1
 Used to control the display of toasts. Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name:`hide`,
-      type: '(): void',
-      description:`Call it to hide the currently displayed toast.`,
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: `show`,
+type: '(title: string, showOptions?: ShowToastOptions): void',
+description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+},
+{
+name:`hide`,
+type: '(): void',
+description:`Call it to hide the currently displayed toast.`,
+},
+]}
 />
 
 ### useToastState
@@ -13794,25 +13860,25 @@ Used to control the display of toasts. Should be used inside [ToastProvider](#to
 Used to render out your toast contents. Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
-  title="Hook for rendering toast"
-  data={[
-    {
-      name: `title`,
-      type: 'string',
-    },
-    {
-      name: `id`,
-      type: 'string',
-    },
-    {
-      name: `message`,
-      type: 'string',
-    },
-    {
-      name: `duration`,
-      type: 'number',
-    },
-  ]}
+title="Hook for rendering toast"
+data={[
+{
+name: `title`,
+type: 'string',
+},
+{
+name: `id`,
+type: 'string',
+},
+{
+name: `message`,
+type: 'string',
+},
+{
+name: `duration`,
+type: 'number',
+},
+]}
 />
 
 ## FAQ
@@ -13855,14 +13921,19 @@ Or for bottom center:
 Install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets();
   return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  );
+};
 ```
 
 #### Can I send toasts to different toast viewports?
@@ -13876,16 +13947,16 @@ const App = () => {
       <ToastViewport /> {/* name will be "default" */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
-  )
-}
+  );
+};
 
 const MyComponent = () => {
-  return <Toast>{/* goes to default viewport */}</Toast>
-}
+  return <Toast>{/* goes to default viewport */}</Toast>;
+};
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom" />
-}
+  return <Toast viewportName="viewport-custom" />;
+};
 ```
 
 #### How can I have more control over toasts?
@@ -13896,22 +13967,22 @@ You will have to opt-out of the native toasts and only use custom ones. Here are
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -13929,8 +14000,8 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ##### Multiple Toasts
@@ -13942,13 +14013,13 @@ export default () => {
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -13967,8 +14038,8 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## components/toast/1.15.15
@@ -13981,6 +14052,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 # Toast <Beta />
@@ -13996,13 +14068,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web (notification API)`,
+]}
 />
 
 ## Installation
@@ -14037,46 +14109,46 @@ Then, if targeting native, rebuild your React Native app. React Native requires 
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-    {
-      name: 'native',
-      required: false,
-      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+{
+name: 'native',
+required: false,
+type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name:`burntOptions`,
@@ -14089,8 +14161,8 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       required: false,
       type:`NotificationOptions`,
       description:`Options for the notification API if you're using native toasts on web`,
-    },
-  ]}
+},
+]}
 />
 
 ### ToastViewport
@@ -14098,20 +14170,20 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
@@ -14130,8 +14202,8 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
       type: 'boolean',
       default: 'false',
       description:`When true, remove all default tamagui styling.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -14139,24 +14211,24 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -14230,8 +14302,8 @@ Contains the Title, Description, Action and Close component. Should be used insi
       type: 'boolean',
       default: 'false',
       description:`When true, remove all default tamagui styling.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast.Title
@@ -14239,14 +14311,14 @@ Contains the Title, Description, Action and Close component. Should be used insi
 Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### Toast.Description
@@ -14254,14 +14326,14 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### Toast.Close
@@ -14277,24 +14349,24 @@ Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1
 Used to control the display of toasts. Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name:`hide`,
-      type: '(): void',
-      description:`Call it to hide the currently displayed toast.`,
-    },
-    {
-      name:`options`,
-      type:`ToastOptions`,
-      description:`You can use if need to access the toast options.`,
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: `show`,
+type: '(title: string, showOptions?: ShowToastOptions): void',
+description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+},
+{
+name:`hide`,
+type: '(): void',
+description:`Call it to hide the currently displayed toast.`,
+},
+{
+name:`options`,
+type:`ToastOptions`,
+description:`You can use if need to access the toast options.`,
+},
+]}
 />
 
 ### useToastState
@@ -14303,11 +14375,11 @@ Used to render out your toast contents. Should be used inside [ToastProvider](#t
 
 ```tsx
 const CurrentToast = () => {
-  const toast = useToastState()
+  const toast = useToastState();
 
   // don't show any toast if no toast is present or it's handled natively
   if (!toast || toast.isHandledNatively) {
-    return null
+    return null;
   }
 
   return (
@@ -14315,8 +14387,8 @@ const CurrentToast = () => {
       <Toast.Title>{toast.title}</Toast.Title>
       <Toast.Description>{toast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 ```
 
 ## Examples
@@ -14359,14 +14431,19 @@ Or for bottom center:
 To show toasts inside device's safe area, install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and then use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets();
   return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  );
+};
 ```
 
 ### Different viewports
@@ -14380,21 +14457,20 @@ const App = () => {
       <ToastViewport /> {/* default viewport */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
-  )
-}
+  );
+};
 ```
 
 And then, use the viewport's name on the toasts.
 
 ```tsx
 const MyComponent = () => {
-  return <Toast /> // default viewport
-}
+  return <Toast />; // default viewport
+};
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom" />
-}
-
+  return <Toast viewportName="viewport-custom" />;
+};
 ```
 
 ### Custom data
@@ -14402,26 +14478,25 @@ const MyComponent2 = () => {
 Just pass your custom data to the second parameter of the `show()` method.
 
 ```ts
-const toastController = useToastController()
-toastController.show("Title", { myPreset: 'error' }) // or toastController.show("Title", { customData: { myPreset: 'error' } })
+const toastController = useToastController();
+toastController.show("Title", { myPreset: "error" }); // or toastController.show("Title", { customData: { myPreset: 'error' } })
 ```
 
 then, when showing the toast, you can retrieve them like so:
 
 ```ts
-const toastState = useToastState()
-toastState.myPreset // or toastState.customData.myPreset
+const toastState = useToastState();
+toastState.myPreset; // or toastState.customData.myPreset
 ```
 
 To add TypeScript auto-completion for your custom fields, you can use TS module augmentation:
 
 ```ts
-declare module '@tamagui/toast' {
+declare module "@tamagui/toast" {
   interface CustomData {
-    myPreset: 'error' | 'success' | 'warning'
+    myPreset: "error" | "success" | "warning";
   }
 }
-
 ```
 
 ### Without hooks
@@ -14434,22 +14509,22 @@ You can also use toasts without the hooks.
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -14467,8 +14542,8 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 #### Multiple Toasts
@@ -14480,13 +14555,13 @@ export default () => {
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -14505,8 +14580,8 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## components/toast/1.8.0
@@ -14519,6 +14594,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 # Toast <Beta />
@@ -14534,13 +14610,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web`,
+]}
 />
 
 ## Install
@@ -14550,7 +14626,7 @@ For native support, run `yarn add burnt` to add `burnt`, then rebuild your React
 ## Anatomy
 
 ```tsx
-import { Toast, ToastProvider, ToastViewport } from 'tamagui' // or '@tamagui/toast'
+import { Toast, ToastProvider, ToastViewport } from "tamagui"; // or '@tamagui/toast'
 
 export default () => (
   <ToastProvider>
@@ -14563,7 +14639,7 @@ export default () => (
 
     <ToastViewport />
   </ToastProvider>
-)
+);
 ```
 
 ## Usage
@@ -14572,22 +14648,22 @@ export default () => (
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -14605,21 +14681,21 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ### Duplicate Toasts
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -14638,17 +14714,17 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ### Using `createToast`
 
 ```tsx
-import { Button } from 'tamagui' // or '@tamagui/button'
-import { Toast, ToastProvider, createToast } from 'tamagui' // or '@tamagui/toast'
+import { Button } from "tamagui"; // or '@tamagui/button'
+import { Toast, ToastProvider, createToast } from "tamagui"; // or '@tamagui/toast'
 
-export const { ImperativeToastProvider, useToast } = createToast()
+export const { ImperativeToastProvider, useToast } = createToast();
 
 export default () => (
   <ToastProvider>
@@ -14659,29 +14735,31 @@ export default () => (
 
     <ToastViewport />
   </ToastProvider>
-)
+);
 
 const CurrentToast = () => {
-  const { currentToast } = useToast()
+  const { currentToast } = useToast();
 
-  if (!currentToast) return
+  if (!currentToast) return;
   return (
     <Toast key={currentToast.id}>
       <Toast.Title>{currentToast.title}</Toast.Title>
       <Toast.Description>{currentToast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 
 const MyPage = () => {
-  const { show } = useToast()
+  const { show } = useToast();
 
   return (
-    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
+    <Button
+      onPress={() => show("Done!", { message: "Form submitted successfully." })}
+    >
       Show Toast
     </Button>
-  )
-}
+  );
+};
 ```
 
 ## API
@@ -14691,42 +14769,42 @@ const MyPage = () => {
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-  ]}
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+]}
 />
 
 ### ToastViewport
@@ -14734,28 +14812,28 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
       type: 'string',
       required: false,
       description:`Used to reference the viewport if you want to have multiple viewports in the same provider.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -14763,24 +14841,24 @@ The portal for toasts to be directed to. Should be inside [ToastProvider](#toast
 Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -14847,9 +14925,9 @@ Contains the Title, Description, Action and Close component. Should be inside [T
       type: 'string',
       required: false,
       description:`The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
-      default: 'default',
-    },
-  ]}
+default: 'default',
+},
+]}
 />
 
 #### Toast.Title
@@ -14873,15 +14951,15 @@ Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0)
 An alternative way to work with toasts.
 
 <PropsTable
-  title="Arguments"
-  data={[
-    {
-      name: 'native',
-      type: "boolean | 'web' | 'mobile'",
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
-      default: 'false',
-    },
-  ]}
+title="Arguments"
+data={[
+{
+name: 'native',
+type: "boolean | 'web' | 'mobile'",
+description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+default: 'false',
+},
+]}
 />
 
 This function, then returns the following:
@@ -14895,19 +14973,19 @@ Wrap children within this provider so that they can use `useToast()`. Takes no p
 You may export this hook to use it throughout your app.
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: 'currentToast',
-      type: 'ToastData | null',
-      description: `The information about the current toast to showm such as title, message, duration, etc.`,
-    },
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ToastOptions): void',
-      description: 'Call it to show a new toast.',
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: 'currentToast',
+type: 'ToastData | null',
+description: `The information about the current toast to showm such as title, message, duration, etc.`,
+},
+{
+name: `show`,
+type: '(title: string, showOptions?: ToastOptions): void',
+description: 'Call it to show a new toast.',
+},
+]}
 />
 
 ## components/toast/1.83.0
@@ -14920,6 +14998,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -14931,13 +15010,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web (notification API)`,
+]}
 />
 
 ## Installation
@@ -14976,46 +15055,46 @@ We're open to a refactor that moves the burnt dependency into a sub-path like `@
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-    {
-      name: 'native',
-      required: false,
-      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+{
+name: 'native',
+required: false,
+type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name:`burntOptions`,
@@ -15028,8 +15107,8 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       required: false,
       type:`NotificationOptions`,
       description:`Options for the notification API if you're using native toasts on web`,
-    },
-  ]}
+},
+]}
 />
 
 ### ToastViewport
@@ -15037,20 +15116,20 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
@@ -15075,8 +15154,8 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
       type: 'boolean',
       default: 'false',
       description:`When true, remove all default tamagui styling.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -15084,24 +15163,24 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -15175,8 +15254,8 @@ Contains the Title, Description, Action and Close component. Should be used insi
       type: 'boolean',
       default: 'false',
       description:`When true, remove all default tamagui styling.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast.Title
@@ -15184,14 +15263,14 @@ Contains the Title, Description, Action and Close component. Should be used insi
 Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### Toast.Description
@@ -15199,14 +15278,14 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 ### Toast.Close
@@ -15222,24 +15301,24 @@ Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1
 Used to control the display of toasts. Should be used inside [ToastProvider](#toastprovider).
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name:`hide`,
-      type: '(): void',
-      description:`Call it to hide the currently displayed toast.`,
-    },
-    {
-      name:`options`,
-      type:`ToastOptions`,
-      description:`You can use if need to access the toast options.`,
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: `show`,
+type: '(title: string, showOptions?: ShowToastOptions): void',
+description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+},
+{
+name:`hide`,
+type: '(): void',
+description:`Call it to hide the currently displayed toast.`,
+},
+{
+name:`options`,
+type:`ToastOptions`,
+description:`You can use if need to access the toast options.`,
+},
+]}
 />
 
 ### useToastState
@@ -15248,11 +15327,11 @@ Used to render out your toast contents. Should be used inside [ToastProvider](#t
 
 ```tsx
 const CurrentToast = () => {
-  const toast = useToastState()
+  const toast = useToastState();
 
   // don't show any toast if no toast is present or it's handled natively
   if (!toast || toast.isHandledNatively) {
-    return null
+    return null;
   }
 
   return (
@@ -15260,8 +15339,8 @@ const CurrentToast = () => {
       <Toast.Title>{toast.title}</Toast.Title>
       <Toast.Description>{toast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 ```
 
 ## Examples
@@ -15304,14 +15383,19 @@ Or for bottom center:
 To show toasts inside device's safe area, install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and then use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets();
   return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  );
+};
 ```
 
 ### Different viewports
@@ -15325,21 +15409,20 @@ const App = () => {
       <ToastViewport /> {/* default viewport */}
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
-  )
-}
+  );
+};
 ```
 
 And then, use the viewport's name on the toasts.
 
 ```tsx
 const MyComponent = () => {
-  return <Toast /> // default viewport
-}
+  return <Toast />; // default viewport
+};
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom" />
-}
-
+  return <Toast viewportName="viewport-custom" />;
+};
 ```
 
 ### Custom data
@@ -15347,26 +15430,25 @@ const MyComponent2 = () => {
 Just pass your custom data to the second parameter of the `show()` method.
 
 ```ts
-const toastController = useToastController()
-toastController.show("Title", { myPreset: 'error' }) // or toastController.show("Title", { customData: { myPreset: 'error' } })
+const toastController = useToastController();
+toastController.show("Title", { myPreset: "error" }); // or toastController.show("Title", { customData: { myPreset: 'error' } })
 ```
 
 then, when showing the toast, you can retrieve them like so:
 
 ```ts
-const toastState = useToastState()
-toastState.myPreset // or toastState.customData.myPreset
+const toastState = useToastState();
+toastState.myPreset; // or toastState.customData.myPreset
 ```
 
 To add TypeScript auto-completion for your custom fields, you can use TS module augmentation:
 
 ```ts
-declare module '@tamagui/toast' {
+declare module "@tamagui/toast" {
   interface CustomData {
-    myPreset: 'error' | 'success' | 'warning'
+    myPreset: "error" | "success" | "warning";
   }
 }
-
 ```
 
 ### Without hooks
@@ -15379,22 +15461,22 @@ You can also use toasts without the hooks.
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -15412,8 +15494,8 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 #### Multiple Toasts
@@ -15425,13 +15507,13 @@ export default () => {
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -15450,8 +15532,8 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## components/toast/1.9.1
@@ -15464,6 +15546,7 @@ name: toast
 component: Toast
 package: toast
 demoName: Toast
+
 ---
 
 # Toast <Beta />
@@ -15479,13 +15562,13 @@ demoName: Toast
 ```
 
 <Highlights
-  features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
-  ]}
+features={[
+`Automatically closes`,
+`Pause closing on hover, focus, window blur and mobile touch`,
+`Supports closing via swipe gesture`,
+`Easily animatable with Tamagui's animation drivers`,
+`Native toasts included for Android, iOS and web (notification API)`,
+]}
 />
 
 ## Usage
@@ -15505,10 +15588,15 @@ Note: `Burnt` [will not work](https://github.com/nandorojo/burnt?tab=readme-ov-f
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
 
 ```tsx
-import { Button } from 'tamagui' // or '@tamagui/button'
-import { Toast, ToastImperativeProvider, ToastProvider, useToast } from 'tamagui' // or '@tamagui/toast'
+import { Button } from "tamagui"; // or '@tamagui/button'
+import {
+  Toast,
+  ToastImperativeProvider,
+  ToastProvider,
+  useToast,
+} from "tamagui"; // or '@tamagui/toast'
 
-const options = { native: 'mobile' }
+const options = { native: "mobile" };
 
 export default () => (
   <ToastProvider>
@@ -15519,30 +15607,32 @@ export default () => (
 
     <ToastViewport />
   </ToastProvider>
-)
+);
 
 const CurrentToast = () => {
-  const { currentToast } = useToast()
+  const { currentToast } = useToast();
 
   // only show the component if it's present and not handled by native toast
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) return null;
   return (
     <Toast key={currentToast.id}>
       <Toast.Title>{currentToast.title}</Toast.Title>
       <Toast.Description>{currentToast.message}</Toast.Description>
     </Toast>
-  )
-}
+  );
+};
 
 const MyPage = () => {
-  const { show } = useToast()
+  const { show } = useToast();
 
   return (
-    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
+    <Button
+      onPress={() => show("Done!", { message: "Form submitted successfully." })}
+    >
       Show Toast
     </Button>
-  )
-}
+  );
+};
 ```
 
 ### Barebone API
@@ -15556,22 +15646,22 @@ const MyPage = () => {
 
 ```tsx
 export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
+  const [open, setOpen] = React.useState(false);
+  const timerRef = React.useRef(0);
 
   React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
           timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
+            setOpen(true);
+          }, 150);
         }}
       >
         Single Toast
@@ -15589,8 +15679,8 @@ export default () => {
         <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
-  )
-}
+  );
+};
 ```
 
 #### Multiple Toast
@@ -15602,13 +15692,13 @@ export default () => {
 
 ```tsx
 export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  const [savedCount, setSavedCount] = React.useState(0);
 
   return (
     <YStack ai="center">
       <Button
         onPress={() => {
-          setSavedCount((old) => old + 1)
+          setSavedCount((old) => old + 1);
         }}
       >
         Show toast
@@ -15627,8 +15717,8 @@ export default () => {
         </Toast>
       ))}
     </YStack>
-  )
-}
+  );
+};
 ```
 
 ## API
@@ -15638,42 +15728,42 @@ export default () => {
 Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
 
 <PropsTable
-  data={[
-    {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
-    },
-    {
-      name: 'duration',
-      required: false,
-      type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
-    },
-    {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
-    },
-    {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
-    },
-    {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-    },
-  ]}
+data={[
+{
+name: 'label',
+required: false,
+type: 'string',
+description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+default: 'Notification',
+},
+{
+name: 'duration',
+required: false,
+type: 'number',
+description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+default: 5000,
+},
+{
+name: 'swipeDirection',
+required: false,
+type: 'SwipeDirection',
+description: `Direction of pointer swipe that should close the toast.`,
+default: 'right',
+},
+{
+name: 'swipeThreshold',
+required: false,
+type: 'number',
+description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+default: 50,
+},
+{
+name: 'id',
+required: false,
+type: 'string',
+default: 'A unique generated ID',
+},
+]}
 />
 
 ### ToastViewport
@@ -15681,20 +15771,20 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 The portal for toasts to be directed to. Should be inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'hotkey',
-      type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
-    },
-    {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+data={[
+{
+name: 'hotkey',
+type: 'string[]',
+default: "['F8']",
+required: false,
+description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+},
+{
+name: 'label',
+type: 'string',
+default: 'Notifications ({hotkey})',
+required: false,
+description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
     },
     {
       name: 'name',
@@ -15707,8 +15797,8 @@ The portal for toasts to be directed to. Should be inside [ToastProvider](#toast
       type: 'boolean',
       required: false,
       description:`Pass this when you want to have multiple/duplicated toasts.`,
-    },
-  ]}
+},
+]}
 />
 
 ### Toast
@@ -15716,24 +15806,24 @@ The portal for toasts to be directed to. Should be inside [ToastProvider](#toast
 Contains the Title, Description, Action and Close component. Should be inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+data={[
+{
+name: 'forceMount',
+type: 'boolean',
+required: false,
+description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+},
+{
+name: 'type',
+type: "'foreground' | 'background'",
+required: false,
+description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+},
+{
+name: 'duration',
+type: 'number',
+required: false,
+description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
     },
     {
       name: 'defaultOpen',
@@ -15800,9 +15890,9 @@ Contains the Title, Description, Action and Close component. Should be inside [T
       type: 'string',
       required: false,
       description:`The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
-      default: 'default',
-    },
-  ]}
+default: 'default',
+},
+]}
 />
 
 #### Toast.Title
@@ -15826,14 +15916,14 @@ Should be inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0)
 Wrap components within this provider to use `useToast()` inside them.
 
 <PropsTable
-  data={[
-    {
-      name: 'options',
-      type: 'ToastImperativeOptions',
-      required: false,
-      description: `Used to provide defaults to imperative API. Options can be overwritten when calling \`show()\`.`,
-    },
-  ]}
+data={[
+{
+name: 'options',
+type: 'ToastImperativeOptions',
+required: false,
+description: `Used to provide defaults to imperative API. Options can be overwritten when calling \`show()\`.`,
+},
+]}
 />
 
 ### useToast
@@ -15841,24 +15931,24 @@ Wrap components within this provider to use `useToast()` inside them.
 Used when using the imperative API.
 
 <PropsTable
-  title="Returns"
-  data={[
-    {
-      name: 'currentToast',
-      type: 'ToastData | null',
-      description: `The information about the current toast to show such as title, message, duration, etc.`,
-    },
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name:`hide`,
-      type: '(): void',
-      description:`Call it to hide the currently displayed toast.`,
-    },
-  ]}
+title="Returns"
+data={[
+{
+name: 'currentToast',
+type: 'ToastData | null',
+description: `The information about the current toast to show such as title, message, duration, etc.`,
+},
+{
+name: `show`,
+type: '(title: string, showOptions?: ShowToastOptions): void',
+description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+},
+{
+name:`hide`,
+type: '(): void',
+description:`Call it to hide the currently displayed toast.`,
+},
+]}
 />
 
 ## FAQ
@@ -15901,14 +15991,19 @@ Or for bottom center:
 Install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { left, top, right } = useSafeAreaInsets();
   return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+    <ToastViewport
+      flexDirection="column-reverse"
+      top={top}
+      left={left}
+      right={right}
+    />
+  );
+};
 ```
 
 #### Can I have multiple viewports?
@@ -15922,16 +16017,16 @@ const App = () => {
       <ToastViewport /> // name will be "default"
       <ToastViewport name="viewport-custom" />
     </ToastProvider>
-  )
-}
+  );
+};
 
 const MyComponent = () => {
-  return <Toast> // goes to default viewport // ...</Toast>
-}
+  return <Toast> // goes to default viewport // ...</Toast>;
+};
 
 const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom">// ...</Toast>
-}
+  return <Toast viewportName="viewport-custom">// ...</Toast>;
+};
 ```
 
 ## components/toggle-group/1.10.0
@@ -15944,6 +16039,7 @@ name: toggleGroup
 component: ToggleGroup
 package: toggle-group
 demoName: ToggleGroup
+
 ---
 
 <HeroContainer>
@@ -15955,12 +16051,12 @@ demoName: ToggleGroup
 ```
 
 <Highlights
-  features={[
-    `Full keyboard navigation.`,
-    `Supports horizontal/vertical orientation.`,
-    `Support single and multiple pressed buttons.`,
-    `Can be controlled or uncontrolled.`,
-  ]}
+features={[
+`Full keyboard navigation.`,
+`Supports horizontal/vertical orientation.`,
+`Support single and multiple pressed buttons.`,
+`Can be controlled or uncontrolled.`,
+]}
 />
 
 ## Installation
@@ -15974,7 +16070,7 @@ npm install @tamagui/toggle-group
 ## Usage
 
 ```tsx
-import { ToggleGroup } from 'tamagui'
+import { ToggleGroup } from "tamagui";
 
 export default () => {
   return (
@@ -15982,8 +16078,8 @@ export default () => {
       <ToggleGroup.Item value="foo"></ToggleGroup.Item>
       <ToggleGroup.Item value="bar"></ToggleGroup.Item>
     </ToggleGroup>
-  )
-}
+  );
+};
 ```
 
 ## API Reference
@@ -15993,28 +16089,28 @@ export default () => {
 `ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      type: 'boolean',
-      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
-      default: `false`,
-    },
-    {
-      name: 'type',
-      type: 'enum',
-      description: `Determines whether a single or multiple items can be pressed at a time.`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
-    },
-    {
-      name: 'defaultValue',
-      description: 'The values of the items to show as pressed when initially rendered.',
-      type: 'string',
-      default: ``,
+data={[
+{
+name: 'asChild',
+type: 'boolean',
+description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+default: `false`,
+},
+{
+name: 'type',
+type: 'enum',
+description: `Determines whether a single or multiple items can be pressed at a time.`,
+},
+{
+name: 'value',
+type: 'string',
+description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
+},
+{
+name: 'defaultValue',
+description: 'The values of the items to show as pressed when initially rendered.',
+type: 'string',
+default: ``,
     },
     {
       name: 'orientation',
@@ -16055,8 +16151,8 @@ export default () => {
       name: 'sizeAdjust',
       type: 'number',
       description: `Adjust the component's size scaling by this number.`,
-    },
-  ]}
+},
+]}
 />
 
 ### ToggleGroup.Item
@@ -16064,48 +16160,48 @@ export default () => {
 `ToggleGroup.Item` extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
 
 <PropsTable
-  data={[
-    {
-      name: 'asChild',
-      type: 'boolean',
-      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
-      default: `false`,
-    },
-    {
-      name: 'value',
-      type: 'string',
-      description: `The controlled value of the pressed item when type is "single".`,
-    },
-    {
-      name: 'disabled',
-      type: 'boolean',
-      description: `When true, prevents the user from interacting with the toggle group item.`,
-      default: `false`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
+data={[
+{
+name: 'asChild',
+type: 'boolean',
+description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+default: `false`,
+},
+{
+name: 'value',
+type: 'string',
+description: `The controlled value of the pressed item when type is "single".`,
+},
+{
+name: 'disabled',
+type: 'boolean',
+description: `When true, prevents the user from interacting with the toggle group item.`,
+default: `false`,
+},
+{
+name: 'unstyled',
+type: 'boolean',
+default: 'false',
+description: `When true, remove all default tamagui styling.`,
+},
+]}
 />
 
 When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
 
 ```tsx
-import { ToggleGroup } from '@tamagui/toggle-group'
-import { styled } from 'tamagui'
+import { ToggleGroup } from "@tamagui/toggle-group";
+import { styled } from "tamagui";
 
 const MyToggleGroupItem = styled(ToggleGroup.Item, {
   variants: {
     active: {
       true: {
-        backgroundColor: 'red'
+        backgroundColor: "red",
       },
     },
   },
-})
+});
 ```
 
 ## components/tooltip/1.0.0
@@ -16118,6 +16214,7 @@ name: tooltip
 component: Tooltip
 package: tooltip
 demoName: Tooltip
+
 ---
 
 # Tooltip
@@ -16135,11 +16232,11 @@ demoName: Tooltip
 ```
 
 <Highlights
-  features={[
-    `Doesn't open until your mouse stops moving.`,
-    `Easy to animate enter and exit.`,
-    `Sizable, positionable, unstyled or styled.`,
-  ]}
+features={[
+`Doesn't open until your mouse stops moving.`,
+`Easy to animate enter and exit.`,
+`Sizable, positionable, unstyled or styled.`,
+]}
 />
 
 <Notice>
@@ -16165,35 +16262,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
+import { Tooltip } from "tamagui"; // or '@tamagui/tooltip'
 
 export default () => (
   <Tooltip>
@@ -16203,7 +16300,7 @@ export default () => (
       {/* ... */}
     </Tooltip.Content>
   </Tooltip>
-)
+);
 ```
 
 ## API Reference
@@ -16213,85 +16310,85 @@ export default () => (
 Contains every component for the tooltip.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'groupId',
-      type: 'string',
-      required: false,
-      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
-    },
-    {
-      name: 'restMs',
-      type: 'number',
-      required: false,
-      description: `Time needed for cursor to rest before showing.`,
-    },
-    {
-      name: 'delay',
-      type: `number | { open?: number; close?: number }`,
-      required: false,
-      description: `Maximum time before showing (can be set independently for open/close).`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps',
-      required: false,
-      description: `See floating-ui shift()`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps',
-      required: false,
-      description: `See floating-ui flip`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'groupId',
+type: 'string',
+required: false,
+description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
+},
+{
+name: 'restMs',
+type: 'number',
+required: false,
+description: `Time needed for cursor to rest before showing.`,
+},
+{
+name: 'delay',
+type: `number | { open?: number; close?: number }`,
+required: false,
+description: `Maximum time before showing (can be set independently for open/close).`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps',
+required: false,
+description: `See floating-ui shift()`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps',
+required: false,
+description: `See floating-ui flip`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+]}
 />
 
 <Notice>
@@ -16322,6 +16419,7 @@ name: tooltip
 component: Tooltip
 package: tooltip
 demoName: Tooltip
+
 ---
 
 # Tooltip
@@ -16339,11 +16437,11 @@ demoName: Tooltip
 ```
 
 <Highlights
-  features={[
-    `Doesn't open until your mouse stops moving.`,
-    `Easy to animate enter and exit.`,
-    `Sizable, positionable, unstyled or styled.`,
-  ]}
+features={[
+`Doesn't open until your mouse stops moving.`,
+`Easy to animate enter and exit.`,
+`Sizable, positionable, unstyled or styled.`,
+]}
 />
 
 <Notice>
@@ -16369,35 +16467,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
+import { Tooltip } from "tamagui"; // or '@tamagui/tooltip'
 
 export default () => (
   <Tooltip>
@@ -16407,7 +16505,7 @@ export default () => (
       {/* ... */}
     </Tooltip.Content>
   </Tooltip>
-)
+);
 ```
 
 ## API Reference
@@ -16417,85 +16515,85 @@ export default () => (
 Contains every component for the tooltip.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'groupId',
-      type: 'string',
-      required: false,
-      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
-    },
-    {
-      name: 'restMs',
-      type: 'number',
-      required: false,
-      description: `Time needed for cursor to rest before showing.`,
-    },
-    {
-      name: 'delay',
-      type: `number | { open?: number; close?: number }`,
-      required: false,
-      description: `Maximum time before showing (can be set independently for open/close).`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps',
-      required: false,
-      description: `See floating-ui shift()`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps',
-      required: false,
-      description: `See floating-ui flip`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'groupId',
+type: 'string',
+required: false,
+description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
+},
+{
+name: 'restMs',
+type: 'number',
+required: false,
+description: `Time needed for cursor to rest before showing.`,
+},
+{
+name: 'delay',
+type: `number | { open?: number; close?: number }`,
+required: false,
+description: `Maximum time before showing (can be set independently for open/close).`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps',
+required: false,
+description: `See floating-ui shift()`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps',
+required: false,
+description: `See floating-ui flip`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+]}
 />
 
 <Notice>
@@ -16523,29 +16621,29 @@ This allows you to logically group any tooltips rendered below this component. Y
 See the [Floating UI docs](https://floating-ui.com/docs/floatingdelaygroup) for full details on how this works.
 
 <PropsTable
-  data={[
-    {
-      name: 'delay',
-      type: 'number | { open?: number; close?: number }',
-      default: 0,
-      required: false,
-      description: `The delay to use for the group.`,
-    },
-    {
-      name: 'timeoutMs',
-      type: 'number',
-      default: 0,
-      required: false,
-      description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
-    },
-    {
-      name: 'preventAnimation',
-      type: 'boolean',
-      default: false,
-      required: false,
-      description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
-    },
-  ]}
+data={[
+{
+name: 'delay',
+type: 'number | { open?: number; close?: number }',
+default: 0,
+required: false,
+description: `The delay to use for the group.`,
+},
+{
+name: 'timeoutMs',
+type: 'number',
+default: 0,
+required: false,
+description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
+},
+{
+name: 'preventAnimation',
+type: 'boolean',
+default: false,
+required: false,
+description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
+},
+]}
 />
 
 ## components/tooltip/1.122.0
@@ -16558,6 +16656,7 @@ name: tooltip
 component: Tooltip
 package: tooltip
 demoName: Tooltip
+
 ---
 
 <HeroContainer showAnimationDriverControl>
@@ -16569,11 +16668,11 @@ demoName: Tooltip
 ```
 
 <Highlights
-  features={[
-    `Doesn't open until your mouse stops moving.`,
-    `Easy to animate enter and exit.`,
-    `Sizable, positionable, unstyled or styled.`,
-  ]}
+features={[
+`Doesn't open until your mouse stops moving.`,
+`Easy to animate enter and exit.`,
+`Sizable, positionable, unstyled or styled.`,
+]}
 />
 
 <Notice>
@@ -16599,35 +16698,35 @@ npm install @tamagui/portal
 Then add `PortalProvider` to the root of your app:
 
 ```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
+import { PortalProvider } from "@tamagui/portal";
+import YourApp from "./components/YourApp";
 
 function App() {
   return (
     <PortalProvider shouldAddRootHost>
       <YourApp />
     </PortalProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 <PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
+data={[
+{
+name: 'shouldAddRootHost',
+type: 'boolean',
+required: false,
+description: `Defines whether to add a default root host or not.`,
+},
+]}
 />
 
 ## Anatomy
 
 ```tsx
-import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
+import { Tooltip } from "tamagui"; // or '@tamagui/tooltip'
 
 export default () => (
   <Tooltip>
@@ -16637,7 +16736,7 @@ export default () => (
       {/* ... */}
     </Tooltip.Content>
   </Tooltip>
-)
+);
 ```
 
 ## API Reference
@@ -16647,85 +16746,85 @@ export default () => (
 Contains every component for the tooltip.
 
 <PropsTable
-  data={[
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: true,
-      description: `Must contain Popover.Content`,
-    },
-    {
-      name: 'groupId',
-      type: 'string',
-      required: false,
-      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
-    },
-    {
-      name: 'restMs',
-      type: 'number',
-      required: false,
-      description: `Time needed for cursor to rest before showing.`,
-    },
-    {
-      name: 'delay',
-      type: `number | { open?: number; close?: number }`,
-      required: false,
-      description: `Maximum time before showing (can be set independently for open/close).`,
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
-    },
-    {
-      name: 'placement',
-      type: 'Placement',
-      required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
-    },
-    {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: ``,
-    },
-    {
-      name: 'defaultOpen',
-      type: 'boolean',
-      required: false,
-    },
-    {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      required: false,
-    },
-    {
-      name: 'modal',
-      type: 'boolean',
-      default: 'true',
-      required: false,
-      description: `Renders into root of app instead of inline`,
-    },
-    {
-      name: 'stayInFrame',
-      type: 'ShiftProps',
-      required: false,
-      description: `See floating-ui shift()`,
-    },
-    {
-      name: 'allowFlip',
-      type: 'FlipProps',
-      required: false,
-      description: `See floating-ui flip`,
-    },
-    {
-      name: 'offset',
-      type: 'OffsetOptions',
-      required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
-    },
-  ]}
+data={[
+{
+name: 'children',
+type: 'React.ReactNode',
+required: true,
+description: `Must contain Popover.Content`,
+},
+{
+name: 'groupId',
+type: 'string',
+required: false,
+description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
+},
+{
+name: 'restMs',
+type: 'number',
+required: false,
+description: `Time needed for cursor to rest before showing.`,
+},
+{
+name: 'delay',
+type: `number | { open?: number; close?: number }`,
+required: false,
+description: `Maximum time before showing (can be set independently for open/close).`,
+},
+{
+name: 'size',
+type: 'SizeTokens',
+required: false,
+description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+},
+{
+name: 'placement',
+type: 'Placement',
+required: false,
+description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+},
+{
+name: 'open',
+type: 'boolean',
+required: false,
+description: ``,
+},
+{
+name: 'defaultOpen',
+type: 'boolean',
+required: false,
+},
+{
+name: 'onOpenChange',
+type: '(open: boolean) => void',
+required: false,
+},
+{
+name: 'modal',
+type: 'boolean',
+default: 'true',
+required: false,
+description: `Renders into root of app instead of inline`,
+},
+{
+name: 'stayInFrame',
+type: 'ShiftProps',
+required: false,
+description: `See floating-ui shift()`,
+},
+{
+name: 'allowFlip',
+type: 'FlipProps',
+required: false,
+description: `See floating-ui flip`,
+},
+{
+name: 'offset',
+type: 'OffsetOptions',
+required: false,
+description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+},
+]}
 />
 
 <Notice>
@@ -16753,29 +16852,29 @@ This allows you to logically group any tooltips rendered below this component. Y
 See the [Floating UI docs](https://floating-ui.com/docs/floatingdelaygroup) for full details on how this works.
 
 <PropsTable
-  data={[
-    {
-      name: 'delay',
-      type: 'number | { open?: number; close?: number }',
-      default: 0,
-      required: false,
-      description: `The delay to use for the group.`,
-    },
-    {
-      name: 'timeoutMs',
-      type: 'number',
-      default: 0,
-      required: false,
-      description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
-    },
-    {
-      name: 'preventAnimation',
-      type: 'boolean',
-      default: false,
-      required: false,
-      description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
-    },
-  ]}
+data={[
+{
+name: 'delay',
+type: 'number | { open?: number; close?: number }',
+default: 0,
+required: false,
+description: `The delay to use for the group.`,
+},
+{
+name: 'timeoutMs',
+type: 'number',
+default: 0,
+required: false,
+description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
+},
+{
+name: 'preventAnimation',
+type: 'boolean',
+default: false,
+required: false,
+description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
+},
+]}
 />
 
 ### closeOpenTooltips
@@ -16790,6 +16889,7 @@ title: Unspaced
 description: Avoids spacing for children inside a spacing container.
 name: html
 component: Unspaced
+
 ---
 
 While the `space` property is deprecated, Unspaced lives on in a better form, one which is easily back-ported to add Unspaced support (as well as adding `gap` support).
@@ -16799,7 +16899,7 @@ When using the `space` style prop, you may want some children to not be spaced.
 Use Unspaced:
 
 ```tsx
-import { Text, Unspaced, View } from '@tamagui/core'
+import { Text, Unspaced, View } from "@tamagui/core";
 
 export default () => (
   <View position="relative" space>
@@ -16811,7 +16911,7 @@ export default () => (
       <Text position="absolute">Some absolute positioned text</Text>
     </Unspaced>
   </View>
-)
+);
 ```
 
 If you want the item to be visually hidden as well as unspaced, see
@@ -16825,15 +16925,16 @@ title: Visually Hidden
 description: Hide content accessibly.
 name: html
 component: VisuallyHidden
+
 ---
 
 VisuallyHidden hides an item but ensures it remains visible to accessibility readers.
 
 <Highlights
-  features={[
-    'Keeps content hidden on screen but visible to assistive tech.',
-    'Works with "space" prop to not disturb spacing.',
-  ]}
+features={[
+'Keeps content hidden on screen but visible to assistive tech.',
+'Works with "space" prop to not disturb spacing.',
+]}
 />
 
 ## Installation
@@ -16849,19 +16950,19 @@ npm install @tamagui/visually-hidden
 Simply wrap the content you want hidden in VisuallyHidden:
 
 ```tsx
-import { Text, VisuallyHidden } from 'tamagui'
+import { Text, VisuallyHidden } from "tamagui";
 
 export default () => (
   <VisuallyHidden>
     <Text>Add annotations here</Text>
   </VisuallyHidden>
-)
+);
 ```
 
 When using with the `space` property, it will avoid double-spacing:
 
 ```tsx
-import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
+import { H1, Text, VisuallyHidden, YStack } from "tamagui";
 
 export default () => (
   <YStack space>
@@ -16871,7 +16972,7 @@ export default () => (
       <Text>Add annotations here</Text>
     </VisuallyHidden>
   </YStack>
-)
+);
 ```
 
 ## core/animations
@@ -16880,6 +16981,7 @@ export default () => (
 
 title: Animations
 description: Swap out animation drivers per-platform or at runtime
+
 ---
 
 <HeroContainer>
@@ -16891,14 +16993,14 @@ description: Swap out animation drivers per-platform or at runtime
 ```
 
 <Highlights
-  disableLinks
-  features={[
-    `Animate any style prop with animation config per-prop.`,
-    `Can animate across all states (media queries, hover, etc).`,
-    `Three drivers you can swap out with type safety.`,
-    `SSR safe mount animations.`,
-    `Enter and exit animations with AnimatePresence.`,
-  ]}
+disableLinks
+features={[
+`Animate any style prop with animation config per-prop.`,
+`Can animate across all states (media queries, hover, etc).`,
+`Three drivers you can swap out with type safety.`,
+`SSR safe mount animations.`,
+`Enter and exit animations with AnimatePresence.`,
+]}
 />
 
 Add animations to Tamagui with an animation driver. See the configuration docs
@@ -16927,17 +17029,17 @@ yarn add @tamagui/animations-css
 Then add it to your [config](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-css'
-import { createTamagui } from 'tamagui'
+import { createAnimations } from "@tamagui/animations-css";
+import { createTamagui } from "tamagui";
 
 export default createTamagui({
   animations: createAnimations({
-    fast: 'ease-in 150ms',
-    medium: 'ease-in 300ms',
-    slow: 'ease-in 450ms',
+    fast: "ease-in 150ms",
+    medium: "ease-in 300ms",
+    slow: "ease-in 450ms",
   }),
   // ...
-})
+});
 ```
 
 At runtime, the plugin does very little except to set the `transition` property
@@ -16958,8 +17060,8 @@ yarn add @tamagui/animations-react-native
 Then add it to your [config](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-react-native'
-import { createTamagui } from 'tamagui'
+import { createAnimations } from "@tamagui/animations-react-native";
+import { createTamagui } from "tamagui";
 
 export default createTamagui({
   animations: createAnimations({
@@ -16979,7 +17081,7 @@ export default createTamagui({
     },
   }),
   // ...
-})
+});
 ```
 
 ### Reanimated
@@ -16999,31 +17101,31 @@ Tamagui leverages and appreciates the popular open source library [Moti](https:/
 Add your animations to your [configuration](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-moti'
-import { createTamagui } from 'tamagui'
+import { createAnimations } from "@tamagui/animations-moti";
+import { createTamagui } from "tamagui";
 
 export default createTamagui({
   animations: createAnimations({
     fast: {
-      type: 'spring',
+      type: "spring",
       damping: 20,
       mass: 1.2,
       stiffness: 250,
     },
     medium: {
-      type: 'spring',
+      type: "spring",
       damping: 10,
       mass: 0.9,
       stiffness: 100,
     },
     slow: {
-      type: 'spring',
+      type: "spring",
       damping: 20,
       stiffness: 60,
     },
   }),
   // ...
-})
+});
 ```
 
 At runtime, this plugin parses animatable style properties and hands them over
@@ -17091,20 +17193,20 @@ animations per-property.
 The basic object we'll call an `AnimationConfig`, looks like this:
 
 ```tsx
-import { YStack } from 'tamagui'
+import { YStack } from "tamagui";
 
 export default () => (
   <YStack
     animation={{
       // only x and y will apply animations
-      x: 'bouncy',
+      x: "bouncy",
       y: {
-        type: 'bouncy',
+        type: "bouncy",
         overshootClamping: true,
       },
     }}
   />
-)
+);
 ```
 
 Note that values can either map to `AnimationKey` as a string, or to
@@ -17114,24 +17216,24 @@ You can set a default value using a two-arity array with the default in the
 first position:
 
 ```tsx
-import { YStack } from 'tamagui'
+import { YStack } from "tamagui";
 
 export default () => (
   <YStack
     animation={[
       // all attributes get "bouncy"
-      'bouncy',
+      "bouncy",
       // these are customized
       {
-        y: 'slow',
+        y: "slow",
         scale: {
-          type: 'fast',
+          type: "fast",
           repeat: 2,
         },
       },
     ]}
   />
-)
+);
 ```
 
 ### animateOnly
@@ -17153,7 +17255,7 @@ It's already bundled and exported from `tamagui`.
 You can use it simply with `enterStyle` + `exitStyle`:
 
 ```tsx
-import { AnimatePresence, View } from 'tamagui'
+import { AnimatePresence, View } from "tamagui";
 
 export const MyComponent = ({ isVisible }) => (
   <AnimatePresence>
@@ -17176,7 +17278,7 @@ export const MyComponent = ({ isVisible }) => (
       />
     )}
   </AnimatePresence>
-)
+);
 ```
 
 <Notice theme="blue">
@@ -17209,10 +17311,10 @@ for animating a child out of the screen before it unmounts in a different
 direction, like the example above:
 
 ```tsx
-import { AnimatePresence } from '@tamagui/animate-presence'
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
-import { useState } from 'react'
-import { Button, Image, XStack, YStack, styled } from 'tamagui'
+import { AnimatePresence } from "@tamagui/animate-presence";
+import { ArrowLeft, ArrowRight } from "@tamagui/lucide-icons";
+import { useState } from "react";
+import { Button, Image, XStack, YStack, styled } from "tamagui";
 
 const GalleryItem = styled(YStack, {
   zIndex: 1,
@@ -17223,7 +17325,7 @@ const GalleryItem = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      ":number": (going) => ({
         enterStyle: {
           x: going > 0 ? 1000 : -1000,
           opacity: 0,
@@ -17236,26 +17338,26 @@ const GalleryItem = styled(YStack, {
       }),
     },
   } as const,
-})
+});
 
 const photos = [
-  'https://picsum.photos/500/300',
-  'https://picsum.photos/501/300',
-  'https://picsum.photos/502/300',
-]
+  "https://picsum.photos/500/300",
+  "https://picsum.photos/501/300",
+  "https://picsum.photos/502/300",
+];
 
 const wrap = (min: number, max: number, v: number) => {
-  const rangeSize = max - min
-  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
-}
+  const rangeSize = max - min;
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
+};
 
 export function Demo() {
-  const [[page, going], setPage] = useState([0, 0])
+  const [[page, going], setPage] = useState([0, 0]);
 
-  const imageIndex = wrap(0, photos.length, page)
+  const imageIndex = wrap(0, photos.length, page);
   const paginate = (going: number) => {
-    setPage([page + going, going])
-  }
+    setPage([page + going, going]);
+  };
 
   return (
     <XStack
@@ -17268,7 +17370,9 @@ export function Demo() {
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="slowest" going={going}>
-          <Image source={{ uri: photos[imageIndex], width: 500, height: 300 }} />
+          <Image
+            source={{ uri: photos[imageIndex], width: 500, height: 300 }}
+          />
         </GalleryItem>
       </AnimatePresence>
 
@@ -17295,7 +17399,7 @@ export function Demo() {
         zi={100}
       />
     </XStack>
-  )
+  );
 }
 ```
 
@@ -17312,7 +17416,7 @@ should keep `animation` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View animation={condition ? 'animation-name' : null} />
+<View animation={condition ? "animation-name" : null} />
 ```
 
 Note that because of this constraint, you also will see an error if you add the
@@ -17324,6 +17428,7 @@ Note that because of this constraint, you also will see an error if you add the
 
 title: Quick Config
 description: Easy config and themes with @tamagui/config/v4
+
 ---
 
 <IntroParagraph>
@@ -17339,15 +17444,15 @@ npm install @tamagui/config
 Using the new `defaultConfig` is the easiest way to start:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
-export const config = createTamagui(defaultConfig)
+export const config = createTamagui(defaultConfig);
 
-type CustomConfig = typeof config
+type CustomConfig = typeof config;
 
 // ensure types work
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends CustomConfig {}
 }
 ```
@@ -17375,56 +17480,56 @@ Config v4 has a new helper function `createThemes`, an opinionated way to genera
 It's easiest to get a feel for both createThemes the default themes by reading the source for how `defaultThemes` are defined:
 
 ```tsx fileName=themes.ts
-import * as Colors from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/config/v4'
+import * as Colors from "@tamagui/colors";
+import { createThemes, defaultComponentThemes } from "@tamagui/config/v4";
 
 const darkPalette = [
-  '#050505',
-  '#151515',
-  '#191919',
-  '#232323',
-  '#282828',
-  '#323232',
-  '#424242',
-  '#494949',
-  '#545454',
-  '#626262',
-  '#a5a5a5',
-  '#fff',
-]
+  "#050505",
+  "#151515",
+  "#191919",
+  "#232323",
+  "#282828",
+  "#323232",
+  "#424242",
+  "#494949",
+  "#545454",
+  "#626262",
+  "#a5a5a5",
+  "#fff",
+];
 
 const lightPalette = [
-  '#fff',
-  '#f8f8f8',
-  'hsl(0, 0%, 96.3%)',
-  'hsl(0, 0%, 94.1%)',
-  'hsl(0, 0%, 92.0%)',
-  'hsl(0, 0%, 90.0%)',
-  'hsl(0, 0%, 88.5%)',
-  'hsl(0, 0%, 81.0%)',
-  'hsl(0, 0%, 56.1%)',
-  'hsl(0, 0%, 50.3%)',
-  'hsl(0, 0%, 42.5%)',
-  'hsl(0, 0%, 9.0%)',
-]
+  "#fff",
+  "#f8f8f8",
+  "hsl(0, 0%, 96.3%)",
+  "hsl(0, 0%, 94.1%)",
+  "hsl(0, 0%, 92.0%)",
+  "hsl(0, 0%, 90.0%)",
+  "hsl(0, 0%, 88.5%)",
+  "hsl(0, 0%, 81.0%)",
+  "hsl(0, 0%, 56.1%)",
+  "hsl(0, 0%, 50.3%)",
+  "hsl(0, 0%, 42.5%)",
+  "hsl(0, 0%, 9.0%)",
+];
 
 const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.04)',
-  shadow2: 'rgba(0,0,0,0.08)',
-  shadow3: 'rgba(0,0,0,0.16)',
-  shadow4: 'rgba(0,0,0,0.24)',
-  shadow5: 'rgba(0,0,0,0.32)',
-  shadow6: 'rgba(0,0,0,0.4)',
-}
+  shadow1: "rgba(0,0,0,0.04)",
+  shadow2: "rgba(0,0,0,0.08)",
+  shadow3: "rgba(0,0,0,0.16)",
+  shadow4: "rgba(0,0,0,0.24)",
+  shadow5: "rgba(0,0,0,0.32)",
+  shadow6: "rgba(0,0,0,0.4)",
+};
 
 const darkShadows = {
-  shadow1: 'rgba(0,0,0,0.2)',
-  shadow2: 'rgba(0,0,0,0.3)',
-  shadow3: 'rgba(0,0,0,0.4)',
-  shadow4: 'rgba(0,0,0,0.5)',
-  shadow5: 'rgba(0,0,0,0.6)',
-  shadow6: 'rgba(0,0,0,0.7)',
-}
+  shadow1: "rgba(0,0,0,0.2)",
+  shadow2: "rgba(0,0,0,0.3)",
+  shadow3: "rgba(0,0,0,0.4)",
+  shadow4: "rgba(0,0,0,0.5)",
+  shadow5: "rgba(0,0,0,0.6)",
+  shadow6: "rgba(0,0,0,0.7)",
+};
 
 const extraColors = {
   black1: darkPalette[0],
@@ -17451,11 +17556,11 @@ const extraColors = {
   white10: lightPalette[9],
   white11: lightPalette[10],
   white12: lightPalette[11],
-}
+};
 
 const generatedThemes = createThemes({
   componentThemes: defaultComponentThemes,
-  
+
   base: {
     palette: {
       dark: darkPalette,
@@ -17519,9 +17624,9 @@ const generatedThemes = createThemes({
       },
     },
   },
-})
+});
 
-export type TamaguiThemes = typeof generatedThemes
+export type TamaguiThemes = typeof generatedThemes;
 
 /**
  * This is an optional production optimization: themes JS can get to 20Kb or more.
@@ -17529,10 +17634,10 @@ export type TamaguiThemes = typeof generatedThemes
  * So long as you server render your Tamagui CSS, this will save you bundle size:
  */
 export const themes: TamaguiThemes =
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  process.env.NODE_ENV === 'production'
+  process.env.TAMAGUI_ENVIRONMENT === "client" &&
+  process.env.NODE_ENV === "production"
     ? {}
-    : (generatedThemes as any)
+    : (generatedThemes as any);
 ```
 
 So what have we done?
@@ -17548,16 +17653,16 @@ So what have we done?
 #### Settings
 
 <PropsTable
-  data={[
-    { name: 'mediaQueryDefaultActive', description: 'See Media' },
-    { name: 'defaultFont', description: 'body', },
-    { name: 'fastSchemeChange', description: true, description: 'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.' },
-    { name: 'shouldAddPrefersColorThemes', description: true, description: 'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.' },
-    { name: 'allowedStyleDescriptions', description: 'somewhat-strict-web', description: 'More strict than just a string, but still allows web-only style descriptions like vh, vw.' },
-    { name: 'themeClassNameOnRoot', description: true, description: 'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.' },
-    { name: 'onlyAllowShorthands', description: true, description: 'For any shorthand defined, remove the types for the longhand.' },
-    { name: 'maxDarkLightNesting', description: 1, description: 'To save CSS and bundle size, only allow light and dark to nest once, instead prefer using black/white themes included below the root.' }
-  ]}
+data={[
+{ name: 'mediaQueryDefaultActive', description: 'See Media' },
+{ name: 'defaultFont', description: 'body', },
+{ name: 'fastSchemeChange', description: true, description: 'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.' },
+{ name: 'shouldAddPrefersColorThemes', description: true, description: 'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.' },
+{ name: 'allowedStyleDescriptions', description: 'somewhat-strict-web', description: 'More strict than just a string, but still allows web-only style descriptions like vh, vw.' },
+{ name: 'themeClassNameOnRoot', description: true, description: 'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.' },
+{ name: 'onlyAllowShorthands', description: true, description: 'For any shorthand defined, remove the types for the longhand.' },
+{ name: 'maxDarkLightNesting', description: 1, description: 'To save CSS and bundle size, only allow light and dark to nest once, instead prefer using black/white themes included below the root.' }
+]}
 />
 
 #### Media
@@ -17565,15 +17670,15 @@ So what have we done?
 The new media queries in v4 are also more simplified and aligned to Tailwind:
 
 <PropsTable
-  data={[
-    { name: '2xl', description: `minWidth: 1536` },
-    { name: 'xl', description: `minWidth: 1280` },
-    { name: 'lg', description: `minWidth: 1024` },
-    { name: 'md', description: `minWidth: 768` },
-    { name: 'sm', description: `minWidth: 640` },
-    { name: 'xs', description: `minWidth: 460` },
-    { name: '2xs', description: `minWidth: 340` },
-  ]}
+data={[
+{ name: '2xl', description: `minWidth: 1536` },
+{ name: 'xl', description: `minWidth: 1280` },
+{ name: 'lg', description: `minWidth: 1024` },
+{ name: 'md', description: `minWidth: 768` },
+{ name: 'sm', description: `minWidth: 640` },
+{ name: 'xs', description: `minWidth: 460` },
+{ name: '2xs', description: `minWidth: 340` },
+]}
 />
 
 On the server, only xs and 2xs default to `true` to align generally give you a [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design) setup, but of course you can change that. This only really affects `useMedia()`, as Tamagui generates proper SSR-safe CSS for media queries on the server for any style properties.
@@ -17583,42 +17688,42 @@ On the server, only xs and 2xs default to `true` to align generally give you a [
 Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarity:
 
 <PropsTable
-  data={[
-    { name: 'text', description: 'textAlign', },
-    { name: 'b', description: 'bottom', },
-    { name: 'bg', description: 'backgroundColor', },
-    { name: 'content', description: 'alignContent', },
-    { name: 'flex', description: 'flexDirection', },
-    { name: 'grow', description: 'flexGrow', },
-    { name: 'items', description: 'alignItems', },
-    { name: 'justify', description: 'justifyContent', },
-    { name: 'l', description: 'left', },
-    { name: 'm', description: 'margin', },
-    { name: 'maxH', description: 'maxHeight', },
-    { name: 'maxW', description: 'maxWidth', },
-    { name: 'mb', description: 'marginBottom', },
-    { name: 'minH', description: 'minHeight', },
-    { name: 'minW', description: 'minWidth', },
-    { name: 'ml', description: 'marginLeft', },
-    { name: 'mr', description: 'marginRight', },
-    { name: 'mt', description: 'marginTop', },
-    { name: 'mx', description: 'marginHorizontal', },
-    { name: 'my', description: 'marginVertical', },
-    { name: 'p', description: 'padding', },
-    { name: 'pb', description: 'paddingBottom', },
-    { name: 'pl', description: 'paddingLeft', },
-    { name: 'pr', description: 'paddingRight', },
-    { name: 'pt', description: 'paddingTop', },
-    { name: 'px', description: 'paddingHorizontal', },
-    { name: 'py', description: 'paddingVertical', },
-    { name: 'r', description: 'right', },
-    { name: 'rounded', description: 'borderRadius', },
-    { name: 'select', description: 'userSelect', },
-    { name: 'self', description: 'alignSelf', },
-    { name: 'shrink', description: 'flexShrink', },
-    { name: 't', description: 'top', },
-    { name: 'z', description: 'zIndex', },
-  ]}
+data={[
+{ name: 'text', description: 'textAlign', },
+{ name: 'b', description: 'bottom', },
+{ name: 'bg', description: 'backgroundColor', },
+{ name: 'content', description: 'alignContent', },
+{ name: 'flex', description: 'flexDirection', },
+{ name: 'grow', description: 'flexGrow', },
+{ name: 'items', description: 'alignItems', },
+{ name: 'justify', description: 'justifyContent', },
+{ name: 'l', description: 'left', },
+{ name: 'm', description: 'margin', },
+{ name: 'maxH', description: 'maxHeight', },
+{ name: 'maxW', description: 'maxWidth', },
+{ name: 'mb', description: 'marginBottom', },
+{ name: 'minH', description: 'minHeight', },
+{ name: 'minW', description: 'minWidth', },
+{ name: 'ml', description: 'marginLeft', },
+{ name: 'mr', description: 'marginRight', },
+{ name: 'mt', description: 'marginTop', },
+{ name: 'mx', description: 'marginHorizontal', },
+{ name: 'my', description: 'marginVertical', },
+{ name: 'p', description: 'padding', },
+{ name: 'pb', description: 'paddingBottom', },
+{ name: 'pl', description: 'paddingLeft', },
+{ name: 'pr', description: 'paddingRight', },
+{ name: 'pt', description: 'paddingTop', },
+{ name: 'px', description: 'paddingHorizontal', },
+{ name: 'py', description: 'paddingVertical', },
+{ name: 'r', description: 'right', },
+{ name: 'rounded', description: 'borderRadius', },
+{ name: 'select', description: 'userSelect', },
+{ name: 'self', description: 'alignSelf', },
+{ name: 'shrink', description: 'flexShrink', },
+{ name: 't', description: 'top', },
+{ name: 'z', description: 'zIndex', },
+]}
 />
 
 #### Tokens
@@ -17628,18 +17733,18 @@ Tokens default tokens are defined as:
 ```tsx
 export const size = {
   $0: 0,
-  '$0.25': 2,
-  '$0.5': 4,
-  '$0.75': 8,
+  "$0.25": 2,
+  "$0.5": 4,
+  "$0.75": 8,
   $1: 20,
-  '$1.5': 24,
+  "$1.5": 24,
   $2: 28,
-  '$2.5': 32,
+  "$2.5": 32,
   $3: 36,
-  '$3.5': 40,
+  "$3.5": 40,
   $4: 44,
   $true: 44,
-  '$4.5': 48,
+  "$4.5": 48,
   $5: 52,
   $6: 64,
   $7: 74,
@@ -17656,12 +17761,12 @@ export const size = {
   $18: 244,
   $19: 264,
   $20: 284,
-}
+};
 
 export const space = {
   // ... space is the same as size, but also defines "negative" values for every size, like:
-  '$-1': -20,
-}
+  "$-1": -20,
+};
 
 export const zIndex = {
   0: 0,
@@ -17670,7 +17775,7 @@ export const zIndex = {
   3: 300,
   4: 400,
   5: 500,
-}
+};
 
 export const radius = {
   0: 0,
@@ -17687,7 +17792,7 @@ export const radius = {
   10: 34,
   11: 42,
   12: 50,
-}
+};
 ```
 
 Note that `color` tokens aren't defined, instead we are just using themes.
@@ -17699,10 +17804,10 @@ Also note that the "true" value on tokens is the "default" - Tamagui UI for now 
 Only a `body` and `heading` font are exported, which both use "system" font families:
 
 <PropsTable
-  data={[
-    { name: 'web', description: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
-    { name: 'native', description: 'System' },
-  ]}
+data={[
+{ name: 'web', description: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
+{ name: 'native', description: 'System' },
+]}
 />
 
 You can create your own system font using the exported `createSystemFont` helper, or of course swap out your own fonts altogether.
@@ -17713,13 +17818,14 @@ You can create your own system font using the exported `createSystemFont` helper
 
 title: Configuration
 description: Set up media queries, tokens, themes, and more
+
 ---
 
 Setting up Tamagui is optional. If you use it with no configuration, it looks
 like this:
 
 ```tsx
-import { View, Text } from 'tamagui'
+import { View, Text } from "tamagui";
 
 export default () => (
   <View width={200} height={200} backgroundColor="rgba(0,0,0,0.2)">
@@ -17727,7 +17833,7 @@ export default () => (
       Tamagui can optimize this to div + span or View + Text on React Native.
     </Text>
   </View>
-)
+);
 ```
 
 Configuration in Tamagui controls things like tokens, themes, media queries,
@@ -17744,8 +17850,8 @@ npm install @tamagui/config
 ```
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
 export const config = createTamagui({
   ...defaultConfig,
@@ -17753,11 +17859,11 @@ export const config = createTamagui({
     ...defaultConfig.media,
     // add your own media queries here, if wanted
   },
-})
+});
 
-type OurConfig = typeof config
+type OurConfig = typeof config;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends OurConfig {}
 }
 ```
@@ -17770,7 +17876,7 @@ Here's an example of a stripped down configuration to get a feel for the most
 common concepts:
 
 ```tsx fileName=tamagui.config.ts
-import { createTamagui, getConfig } from 'tamagui'
+import { createTamagui, getConfig } from "tamagui";
 
 export const config = createTamagui({
   // tokens work like CSS Variables (and compile to them on the web)
@@ -17782,26 +17888,26 @@ export const config = createTamagui({
     space: { sm: 4, md: 8, lg: 12 },
     // radius="$none"
     radius: { none: 0, sm: 3 },
-    color: { white: '#fff', black: '#000' },
+    color: { white: "#fff", black: "#000" },
   },
 
   // themes are like CSS Variables that you can change anywhere in the tree
   // you use <Theme name="light" /> to change the theme
   themes: {
     light: {
-      bg: '#f2f2f2',
-      color: '#fff',
+      bg: "#f2f2f2",
+      color: "#fff",
     },
     dark: {
-      bg: '#111',
-      color: '#000',
+      bg: "#111",
+      color: "#000",
     },
     // sub-themes are a powerful feature of tamagui, explained later in the docs
     // user theme like <Theme name="dark"><Theme name="blue">
     // or just <Theme name="dark_blue">
     dark_blue: {
-      bg: 'darkblue',
-      color: '#fff',
+      bg: "darkblue",
+      color: "#fff",
     },
   },
 
@@ -17811,26 +17917,26 @@ export const config = createTamagui({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
     short: { maxHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
+    hoverNone: { hover: "none" },
+    pointerCoarse: { pointer: "coarse" },
   },
 
   shorthands: {
     // <View px={20} />
-    px: 'paddingHorizontal',
+    px: "paddingHorizontal",
   },
 
   // there are more settings, explained below:
   settings: {
     disableSSR: true,
-    allowedStyleValues: 'somewhat-strict-web',
+    allowedStyleValues: "somewhat-strict-web",
   },
-})
+});
 
 // now, make your types flow nicely back to your `tamagui` import:
-type OurConfig = typeof config
+type OurConfig = typeof config;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends OurConfig {}
 }
 ```
@@ -17845,14 +17951,14 @@ Finally, pass your `config` export to a `<TamaguiProvider />` at the root of
 your app:
 
 ```tsx
-import { TamaguiProvider, View } from 'tamagui'
-import { config } from './tamagui.config.ts'
+import { TamaguiProvider, View } from "tamagui";
+import { config } from "./tamagui.config.ts";
 
 export default () => (
   <TamaguiProvider config={config}>
     <View margin="$sm" />
   </TamaguiProvider>
-)
+);
 ```
 
 You're all set up!
@@ -17872,7 +17978,7 @@ You're all set up!
 Let's start with an example of a more complete `tamagui.config.ts`:
 
 ```tsx fileName="tamagui.config.ts"
-import { createFont, createTamagui, createTokens, isWeb } from 'tamagui'
+import { createFont, createTamagui, createTokens, isWeb } from "tamagui";
 
 // To work with the tamagui UI kit styled components (which is optional)
 // you'd want the keys used for `size`, `lineHeight`, `weight` and
@@ -17881,7 +17987,7 @@ import { createFont, createTamagui, createTokens, isWeb } from 'tamagui'
 // `letterSpacing` are subsets of `size`.
 
 const systemFont = createFont({
-  family: isWeb ? 'Helvetica, Arial, sans-serif' : 'System',
+  family: isWeb ? "Helvetica, Arial, sans-serif" : "System",
   size: {
     1: 12,
     2: 14,
@@ -17892,9 +17998,9 @@ const systemFont = createFont({
     2: 22,
   },
   weight: {
-    1: '300',
+    1: "300",
     // 2 will be 300
-    3: '600',
+    3: "600",
   },
   letterSpacing: {
     1: 0,
@@ -17903,10 +18009,10 @@ const systemFont = createFont({
   },
   // (native only) swaps out fonts by face/style
   face: {
-    300: { normal: 'InterLight', italic: 'InterItalic' },
-    600: { normal: 'InterBold' },
+    300: { normal: "InterLight", italic: "InterItalic" },
+    600: { normal: "InterBold" },
   },
-})
+});
 
 // Set up tokens
 
@@ -17917,18 +18023,18 @@ const size = {
   1: 5,
   2: 10,
   // ....
-}
+};
 
 export const tokens = createTokens({
   size,
-  space: { ...size, '-1': -5, '-2': -10 },
+  space: { ...size, "-1": -5, "-2": -10 },
   radius: { 0: 0, 1: 3 },
   zIndex: { 0: 0, 1: 100, 2: 200 },
   color: {
-    white: '#fff',
-    black: '#000',
+    white: "#fff",
+    black: "#000",
   },
-})
+});
 
 const config = createTamagui({
   fonts: {
@@ -17939,11 +18045,11 @@ const config = createTamagui({
 
   themes: {
     light: {
-      bg: '#f2f2f2',
+      bg: "#f2f2f2",
       color: tokens.color.black,
     },
     dark: {
-      bg: '#111',
+      bg: "#111",
       color: tokens.color.white,
     },
   },
@@ -17952,8 +18058,8 @@ const config = createTamagui({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
     short: { maxHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
+    hoverNone: { hover: "none" },
+    pointerCoarse: { pointer: "coarse" },
   },
 
   // Shorthands
@@ -17961,10 +18067,10 @@ const config = createTamagui({
   // See Settings section on this page to only allow shorthands
   // Be sure to have `as const` at the end
   shorthands: {
-    px: 'paddingHorizontal',
-    f: 'flex',
-    m: 'margin',
-    w: 'width',
+    px: "paddingHorizontal",
+    f: "flex",
+    m: "margin",
+    w: "width",
   } as const,
 
   // Change the default props for any styled() component with a name.
@@ -17972,25 +18078,25 @@ const config = createTamagui({
   // styled() on any component to change it's styles.
   defaultProps: {
     Text: {
-      color: 'green',
+      color: "green",
     },
   },
-})
+});
 
-type AppConfig = typeof config
+type AppConfig = typeof config;
 
 // this will give you types for your components
 // note - if using your own design system, put the package name here instead of tamagui
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends AppConfig {}
 
   // if you want types for group styling props, define them like so:
   interface TypeOverride {
-    groupNames(): 'card'
+    groupNames(): "card";
   }
 }
 
-export default config
+export default config;
 ```
 
 The `createTamagui` function receives a configuration object with properties:
@@ -18027,7 +18133,7 @@ export const tokens = createTokens({
     true: 20, // same goes for space and other token categories
     large: 30,
   },
-})
+});
 ```
 
 <Notice theme="green">
@@ -18042,42 +18148,42 @@ With your config set up, import it near the root of your app and pass it to
 `TamaguiProvider`:
 
 ```tsx line=3-5 fileName="App.tsx"
-import { TamaguiProvider } from 'tamagui'
-import { config } from './tamagui.config'
+import { TamaguiProvider } from "tamagui";
+import { config } from "./tamagui.config";
 
 export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <AppContents />
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
 `TamaguiProvider` accepts a few properties:
 
 <PropsTable
-  data={[
-    {
-      name: 'defaultTheme',
-      required: true,
-      type: 'string',
-      description: `The initial top level theme.`,
-    },
-    {
-      name: 'disableRootThemeClass',
-      required: false,
-      type: 'boolean',
-      description:
-        'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
-    },
-    {
-      name: 'disableInjectCSS',
-      required: false,
-      type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useInsertionEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
-    },
-  ]}
+data={[
+{
+name: 'defaultTheme',
+required: true,
+type: 'string',
+description: `The initial top level theme.`,
+},
+{
+name: 'disableRootThemeClass',
+required: false,
+type: 'boolean',
+description:
+'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
+},
+{
+name: 'disableInjectCSS',
+required: false,
+type: 'boolean',
+description: `By default Tamagui inserts CSS with a useInsertionEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
+},
+]}
 />
 
 By default, Tamagui injects the CSS for your configuration on the client-side
@@ -18088,7 +18194,7 @@ then do one of the following three options:
 If your framework has server-side layouts, you can just render it inline:
 
 ```tsx fileName=app/_layout.tsx
-import { config } from './tamagui.config'
+import { config } from "./tamagui.config";
 
 export default () => (
   <html>
@@ -18103,23 +18209,23 @@ export default () => (
       <Slot />
     </body>
   </html>
-)
+);
 ```
 
 To optimize a bit more so you share a single CSS file between all pages, you can
 use one of our bundler plugins' `outputCSS` setting, like so:
 
 ```tsx fileName=vite.config.ts
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 
 export default {
   plugins: [
     tamaguiPlugin({
-      config: './src/tamagui.config.ts',
-      outputCSS: './src/tamagui.css',
+      config: "./src/tamagui.config.ts",
+      outputCSS: "./src/tamagui.css",
     }),
   ],
-}
+};
 ```
 
 And then you'll want to import the resulting `tamagui.css` into your app.
@@ -18128,13 +18234,13 @@ As final option, you can also generate it yourself with the CLI. First create a
 `tamagui.build.ts`:
 
 ```tsx fileName=tamagui.build.ts
-import type { TamaguiBuildOptions } from 'tamagui'
+import type { TamaguiBuildOptions } from "tamagui";
 
 export default {
-  components: ['tamagui'],
-  config: './config/tamagui.config.ts',
-  outputCSS: './tamagui.css',
-} satisfies TamaguiBuildOptions
+  components: ["tamagui"],
+  config: "./config/tamagui.config.ts",
+  outputCSS: "./tamagui.css",
+} satisfies TamaguiBuildOptions;
 ```
 
 And then run:
@@ -18154,10 +18260,10 @@ depth on [the tokens page](/docs/core/tokens).
 The font tokens are a bit special and are created with `createFont`:
 
 ```tsx
-import { isWeb } from 'tamagui'
+import { isWeb } from "tamagui";
 
 const interFont = createFont({
-  family: isWeb ? 'Inter, Helvetica, Arial, sans-serif' : 'Inter',
+  family: isWeb ? "Inter, Helvetica, Arial, sans-serif" : "Inter",
   size: {
     1: 12,
     2: 14,
@@ -18171,8 +18277,8 @@ const interFont = createFont({
     // ...
   },
   weight: {
-    4: '300',
-    6: '600',
+    4: "300",
+    6: "600",
   },
   letterSpacing: {
     4: 0,
@@ -18183,10 +18289,10 @@ const interFont = createFont({
   // to the actual name of the font in the font-file
   // you can get the name with `otfinfo`: otfinfo --family Inter.ttf
   face: {
-    400: { normal: 'Inter', italic: 'Inter-Italic' },
-    500: { normal: 'InterBold', italic: 'InterBold-Italic' },
+    400: { normal: "Inter", italic: "Inter-Italic" },
+    500: { normal: "InterBold", italic: "InterBold-Italic" },
   },
-})
+});
 ```
 
 <Notice theme="blue">
@@ -18209,25 +18315,25 @@ use Expo or
 something like this:
 
 ```tsx fileName="App.tsx"
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font";
 
 function App() {
   const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
 
   useEffect(() => {
     if (loaded) {
       // can hide splash screen here
     }
-  }, [loaded])
+  }, [loaded]);
 
   if (!loaded) {
-    return null
+    return null;
   }
 
-  return <MyApp />
+  return <MyApp />;
 }
 ```
 
@@ -18241,10 +18347,10 @@ well.
 // passed into createTamagui
 const tokens = createTokens({
   color: {
-    white: '#fff',
-    black: '#000',
+    white: "#fff",
+    black: "#000",
   },
-})
+});
 ```
 
 You access tokens then by using `$` prefixes in your values. Tamagui knows which
@@ -18255,7 +18361,7 @@ const App = () => (
   <Text fontSize="$lg" lineHeight="$lg" fontFamily="$mono" color="$white">
     Hello world
   </Text>
-)
+);
 ```
 
 One final note: using tokens with themes. Tokens are considered a "fallback" to
@@ -18279,7 +18385,7 @@ following, but you can deviate if you create your own design system.
 
 ```tsx
 const light = {
-  background: '#fff',
+  background: "#fff",
   backgroundHover: tokens.color.gray2,
   backgroundPress: tokens.color.gray4,
   backgroundFocus: tokens.color.gray5,
@@ -18296,7 +18402,7 @@ const light = {
   shadowColorPress: tokens.color.grayA8,
   shadowColorFocus: tokens.color.grayA8,
   ...lightColors,
-}
+};
 ```
 
 You don't have to use tokens as your theme values, but if you do they avoid some
@@ -18309,27 +18415,27 @@ component that's used in `Button`:
 
 ```tsx
 export const InteractiveFrame = styled(XStack, {
-  borderRadius: '$1',
-  paddingVertical: '$2',
-  paddingHorizontal: '$3',
-  backgroundColor: '$background',
-  justifyContent: 'center',
-  alignItems: 'center',
-  cursor: 'pointer',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
+  borderRadius: "$1",
+  paddingVertical: "$2",
+  paddingHorizontal: "$3",
+  backgroundColor: "$background",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  flexWrap: "nowrap",
+  flexDirection: "row",
   flexShrink: 1,
 
   hoverStyle: {
-    backgroundColor: '$backgroundHover',
+    backgroundColor: "$backgroundHover",
   },
 
   pressStyle: {
-    backgroundColor: '$backgroundPress',
+    backgroundColor: "$backgroundPress",
   },
 
   // ...
-})
+});
 ```
 
 ### Media
@@ -18376,22 +18482,22 @@ shorthands configuration:
 ```tsx
 // the as const ensures types work with the optional `onlyAllowShorthands` option
 const shorthands = {
-  ac: 'alignContent',
-  ai: 'alignItems',
-  als: 'alignSelf',
-  bblr: 'borderBottomLeftRadius',
-  bbrr: 'borderBottomRightRadius',
-  bg: 'backgroundColor',
-  br: 'borderRadius',
-  btlr: 'borderTopLeftRadius',
-  btrr: 'borderTopRightRadius',
-  f: 'flex',
+  ac: "alignContent",
+  ai: "alignItems",
+  als: "alignSelf",
+  bblr: "borderBottomLeftRadius",
+  bbrr: "borderBottomRightRadius",
+  bg: "backgroundColor",
+  br: "borderRadius",
+  btlr: "borderTopLeftRadius",
+  btrr: "borderTopRightRadius",
+  f: "flex",
   // ...
-} as const
+} as const;
 
 export default createTamagui({
   shorthands,
-})
+});
 ```
 
 Which will enable usage like:
@@ -18407,99 +18513,99 @@ where `br` expands into `borderRadius`.
 You can pass a `settings` object to `createTamagui`:
 
 <PropsTable
-  data={[
-    {
-      name: `disableSSR`,
-      type: `boolean`,
-      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
-    },
-    {
-      name: `defaultFont`,
-      required: false,
-      type: `string`,
-      description: `Map it to the regular key of the font given to createTamagui, so "body" or "heading" make sense as values here. This will ensure this font is the fallback for any views that don't define it.`,
-    },
-    {
-      name: 'mediaQueryDefaultActive',
-      required: false,
-      type: 'Record<string, boolean>',
-      description: `For the first render, determines which media queries are true (useful for SSR).`,
-    },
-    {
-      name: 'cssStyleSeparator',
-      required: false,
-      type: 'string',
-      description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
-    },
-    {
-      name: 'themeClassNameOnRoot',
-      required: false,
-      type: 'boolean',
-      default: false,
-      description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
-    },
-    {
-      name: 'selectionStyles',
-      required: false,
-      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
-      default: false,
-      description: `On the web, will generate ::selection styles for text selection.`,
-    },
-    {
-      name: 'shouldAddPrefersColorThemes',
-      required: false,
-      type: 'boolean',
-      default: `true`,
-      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
-    },
-    {
-      name: 'maxDarkLightNesting',
-      required: false,
-      type: 'number',
-      default: 3,
-      description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
-    },
-    {
-      name: 'onlyAllowShorthands',
-      required: false,
-      type: 'boolean',
-      default: false,
-      description: `Will remove the type for the long-form versions of any shorthands you define.`,
-    },
-    {
-      name: `allowedStyleValues`,
-      required: false,
-      type: 'AllowedStyleValuesSetting',
-      description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
-    },
-    {
-      name: `autocompleteSpecificTokens`,
-      required: false,
-      type: `boolean | 'except-special'`,
-      description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
-    },
-    {
-      name: 'mediaPropOrder',
-      required: false,
-      type: 'boolean',
-      default: false,
-      description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
-    },
-    {
-      name: 'fastSchemeChange',
-      required: false,
-      type: 'boolean',
-      default: false,
-      description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
-    },
-    {
-      name: 'webContainerType',
-      required: false,
-      type: 'string',
-      default: 'inline-size',
-      description: `Only for web, when using group styles Tamagui uses container queries. When using a group on a containing element, Tamagui defaults to setting "container-type" in CSS to "inline-size".`,
-    },
-  ]}
+data={[
+{
+name: `disableSSR`,
+type: `boolean`,
+description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
+},
+{
+name: `defaultFont`,
+required: false,
+type: `string`,
+description: `Map it to the regular key of the font given to createTamagui, so "body" or "heading" make sense as values here. This will ensure this font is the fallback for any views that don't define it.`,
+},
+{
+name: 'mediaQueryDefaultActive',
+required: false,
+type: 'Record<string, boolean>',
+description: `For the first render, determines which media queries are true (useful for SSR).`,
+},
+{
+name: 'cssStyleSeparator',
+required: false,
+type: 'string',
+description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
+},
+{
+name: 'themeClassNameOnRoot',
+required: false,
+type: 'boolean',
+default: false,
+description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
+},
+{
+name: 'selectionStyles',
+required: false,
+type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+default: false,
+description: `On the web, will generate ::selection styles for text selection.`,
+},
+{
+name: 'shouldAddPrefersColorThemes',
+required: false,
+type: 'boolean',
+default: `true`,
+description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
+},
+{
+name: 'maxDarkLightNesting',
+required: false,
+type: 'number',
+default: 3,
+description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+},
+{
+name: 'onlyAllowShorthands',
+required: false,
+type: 'boolean',
+default: false,
+description: `Will remove the type for the long-form versions of any shorthands you define.`,
+},
+{
+name: `allowedStyleValues`,
+required: false,
+type: 'AllowedStyleValuesSetting',
+description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
+},
+{
+name: `autocompleteSpecificTokens`,
+required: false,
+type: `boolean | 'except-special'`,
+description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
+},
+{
+name: 'mediaPropOrder',
+required: false,
+type: 'boolean',
+default: false,
+description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
+},
+{
+name: 'fastSchemeChange',
+required: false,
+type: 'boolean',
+default: false,
+description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
+},
+{
+name: 'webContainerType',
+required: false,
+type: 'string',
+default: 'inline-size',
+description: `Only for web, when using group styles Tamagui uses container queries. When using a group on a containing element, Tamagui defaults to setting "container-type" in CSS to "inline-size".`,
+},
+]}
 />
 
 #### Type strictness
@@ -18522,20 +18628,20 @@ You can pass a `settings` object to `createTamagui`:
 ```tsx
 type AllowedValueSetting =
   | boolean
-  | 'strict'
-  | 'somewhat-strict'
-  | 'strict-web'
-  | 'somewhat-strict-web'
+  | "strict"
+  | "somewhat-strict"
+  | "strict-web"
+  | "somewhat-strict-web";
 
 type AllowedStyleValuesSetting =
   | AllowedValueSetting
   | {
-      space?: AllowedValueSetting
-      size?: AllowedValueSetting
-      radius?: AllowedValueSetting
-      zIndex?: AllowedValueSetting
-      color?: AllowedValueSetting
-    }
+      space?: AllowedValueSetting;
+      size?: AllowedValueSetting;
+      radius?: AllowedValueSetting;
+      zIndex?: AllowedValueSetting;
+      color?: AllowedValueSetting;
+    };
 ```
 
 #### `autocompleteSpecificTokens`
@@ -18554,6 +18660,7 @@ color.
 
 title: 'Other exports'
 description: Helpful functions and constants
+
 ---
 
 Let's take a quick look through some of the useful other exports in `@tamagui/core`.
@@ -18582,10 +18689,7 @@ The exported `getConfig` will return your fully parsed Tamagui config. This is s
 ### insertFont
 
 ```tsx
-type insertFont = (
-  name: string,
-  fontIn: GenericFont
-) => ParsedFont
+type insertFont = (name: string, fontIn: GenericFont) => ParsedFont;
 ```
 
 Will add a new font after initial createTamagui call. Where `GenericFont` is the same as a font passed to createTamagui, and `ParsedFont` is the font with the subkeys prefixed with `$` and turned into variable objects.
@@ -18613,7 +18717,7 @@ If no name given, true if a Tamagui ReactElement, if name given ensures it's the
 ### getTokens
 
 ```tsx
-;() => TokensParsed
+() => TokensParsed;
 ```
 
 Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens. If you are looking to get a single token value, prefer `getToken` or `getTokenValue`.
@@ -18621,33 +18725,33 @@ Returns the parsed Tamagui config object of all your tokens, can be used at runt
 ### getToken
 
 ```tsx
-(name: Token, group?: keyof Tokens) => any
+(name: Token, group?: keyof Tokens) => any;
 ```
 
 Given the specific name of a token or a name + group, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
 
 ```tsx
-getToken('$size.small') // returns on web var(--size-small), native 14
-getToken('$small', 'size') // returns on web var(--size-small), native 14
+getToken("$size.small"); // returns on web var(--size-small), native 14
+getToken("$small", "size"); // returns on web var(--size-small), native 14
 ```
 
 ### getTokenValue
 
 ```tsx
-(name: Token, group?: keyof Tokens) => any
+(name: Token, group?: keyof Tokens) => any;
 ```
 
 Similar to getToken, but always returns the raw value rather than the variable name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
-getTokenValue('$size.small') // returns 14
-getTokenValue('$small', 'size') // returns 14
+getTokenValue("$size.small"); // returns 14
+getTokenValue("$small", "size"); // returns 14
 ```
 
 ### getExpandedShorthands
 
 ```tsx
-;(props: Object) => Object
+(props: Object) => Object;
 ```
 
 Take props, returns new object with all shorthand props expanded.
@@ -18663,7 +18767,7 @@ A higher order component that accepts `theme` and `themeInverse`, rendering them
 ### getVariable
 
 ```tsx
-type getVariable = (value: Variable) => string
+type getVariable = (value: Variable) => string;
 ```
 
 If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
@@ -18698,7 +18802,7 @@ Pass in props that include media styles and shorthands, get back a flat object o
 
 // if shorthands like m => margin, then m always expands to margin
 function MyButton(props) {
-  const activeProps = useProps(props)
+  const activeProps = useProps(props);
 }
 ```
 
@@ -18706,7 +18810,7 @@ You can pass an option to disable the shorthands expansion, and another option t
 
 ```tsx
 function MyButton(props) {
-  const activeProps = useProps(props)
+  const activeProps = useProps(props);
 }
 ```
 
@@ -18728,7 +18832,7 @@ Pass in props that include media styles and shorthands, get back a flat style ob
 // if shorthands like m => margin, then m expands to margin
 
 function MyButton(props) {
-  const style = useStyle(props)
+  const style = useStyle(props);
 }
 ```
 
@@ -18742,10 +18846,10 @@ function MyButton(props) {
     // option to change how values are resolved
     // 'auto' (default) resolves to optimized value on all platforms (CSS variable on web, DynamicColor on iOS, not optimized on android)
     // 'value' resolves to the raw theme/token string on all platforms (the same as useTheme()[name].val)
-    resolveValues: 'value',
+    resolveValues: "value",
     // pass a Tamagui component to resolve any custom variants:
-    forComponent: CustomComponent
-  })
+    forComponent: CustomComponent,
+  });
 }
 ```
 
@@ -18755,7 +18859,7 @@ Similar to the above two hooks, this returns your fully resolved/merged/media qu
 
 ```tsx
 function MyButton(props) {
-  const [props, style, theme, media] = usePropsAndStyle(props, opts)
+  const [props, style, theme, media] = usePropsAndStyle(props, opts);
   // see useStyle to for documentation on opts
   // we return theme, media as they are used internally already in the hook
 }
@@ -18782,11 +18886,11 @@ SSR-friendly, returns true if SSR has completed on the client, false before hydr
 Fetches the type of props for a Tamagui component:
 
 ```tsx
-import { Stack, GetProps, styled } from '@tamagui/core'
+import { Stack, GetProps, styled } from "@tamagui/core";
 
-const X = styled(Stack, {})
+const X = styled(Stack, {});
 
-type XProps = GetProps<typeof X>
+type XProps = GetProps<typeof X>;
 ```
 
 ### GetRef
@@ -18794,14 +18898,14 @@ type XProps = GetProps<typeof X>
 Fetches the type of a ref for a Tamagui component, or any React component:
 
 ```tsx
-import { Stack, GetRef, styled } from '@tamagui/core'
+import { Stack, GetRef, styled } from "@tamagui/core";
 
-const X = styled(Stack, {})
+const X = styled(Stack, {});
 
 const MyComponent = () => {
-  const ref = useRef<GetRef<typeof X>>()
-  return <X ref={ref} />
-}
+  const ref = useRef<GetRef<typeof X>>();
+  return <X ref={ref} />;
+};
 ```
 
 ## core/font-language
@@ -18810,6 +18914,7 @@ const MyComponent = () => {
 
 title: FontLanguage
 description: Using custom fonts for each language
+
 ---
 
 The `FontLanguage` component works with the Tamagui design system, allowing you to define custom fonts per-language.
@@ -18823,7 +18928,7 @@ This would work, but having to update every Text component on page with a condit
 With `FontLanguage`, you can do:
 
 ```tsx
-<FontLanguage body={isFrench ? 'french' : 'default'}>
+<FontLanguage body={isFrench ? "french" : "default"}>
   <Text fontfamily="$body">Hello world</Text>
 </FontLanguage>
 ```
@@ -18845,34 +18950,32 @@ On the web, FontLanguage uses CSS Variables to avoid re-renders even when changi
 In your `tamagui.config.ts`, you can add a language variant for any font by adding a suffix with a custom name for that language. Here's a stripped down config showing how you can add the custom `_cn` suffix for a Chinese language font:
 
 ```tsx
-import { createFont, createTamagui, createTokens } from 'tamagui'
+import { createFont, createTamagui, createTokens } from "tamagui";
 
 export default createTamagui({
   fonts: {
     body: createFont({
-      family: 'Inter, Helvetica, Arial, sans-serif',
+      family: "Inter, Helvetica, Arial, sans-serif",
       // ...
     }),
     body_cn: createFont({
-      family: 'Inter-CN',
+      family: "Inter-CN",
       // ...
     }),
   },
-})
+});
 ```
 
 You'll then need to load the `Inter` and `Inter-CN` fonts for the platforms you support. Once you do, you'll get fully typed support for changing any `body` font to `cn` in a component:
 
 ```tsx
-import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
+import { FontLanguage, Text } from "tamagui"; // or '@tamagui/core'
 
 export default (
   <FontLanguage body="cn">
-    <Text fontFamily="$body">
-      你好
-    </Text>
+    <Text fontFamily="$body">你好</Text>
   </FontLanguage>
-)
+);
 ```
 
 The name you choose for the suffix is up to you, and Tamagui will treat any font with a `_` separator as a language variant.
@@ -18880,20 +18983,16 @@ The name you choose for the suffix is up to you, and Tamagui will treat any font
 To reset your font back to your base `body` font, you can use the reserved key `default`:
 
 ```tsx
-import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
+import { FontLanguage, Text } from "tamagui"; // or '@tamagui/core'
 
 export default (
   <FontLanguage body="cn">
-    <Text fontFamily="$body">
-      你好
-    </Text>
+    <Text fontFamily="$body">你好</Text>
     <FontLanguage body="default">
-      <Text fontFamily="$body">
-        Hello
-      </Text>
+      <Text fontFamily="$body">Hello</Text>
     </FontLanguage>
   </FontLanguage>
-)
+);
 ```
 
 ## core/stack-and-text
@@ -18902,6 +19001,7 @@ export default (
 
 title: View & Text
 description: Your base components
+
 ---
 
 View and Text are functionally equivalent to React Native `View` and `Text`, they just accept the superset of props that Tamagui supports.
@@ -18915,25 +19015,25 @@ See [the Props docs](/docs/intro/props) for the full list of properties View and
 You can use them directly:
 
 ```tsx
-import { View, Text } from 'tamagui' // or '@tamagui/core'
+import { View, Text } from "tamagui"; // or '@tamagui/core'
 
 export default () => (
   <View margin={10}>
     <Text color="$color">Hello</Text>
   </View>
-)
+);
 ```
 
 We encourage you to use inline styles. Combined with [shorthands](/docs/core/configuration#shorthands) they can lead to really easy styling, and the Tamagui optimizing compiler will take care of optimizing everything for you so that there is little to no extra cost in performance:
 
 ```tsx
-import { View, Text } from 'tamagui' // or '@tamagui/core'
+import { View, Text } from "tamagui"; // or '@tamagui/core'
 
 export default () => (
   <View mx="$sm" scale={1.2}>
     <Text c="$color">Hello</Text>
   </View>
-)
+);
 ```
 
 <Notice theme="blue">
@@ -18946,7 +19046,7 @@ export default () => (
 You can also use them [with styled](/docs/core/styled) to create your own lower level views that are meant to be re-usable:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -18954,28 +19054,28 @@ export const Circle = styled(View, {
   variants: {
     pin: {
       top: {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
       },
     },
 
     centered: {
       true: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
       },
     },
 
     size: {
-      '...size': (size, { tokens }) => {
+      "...size": (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 Inline styles and `styled()` both are optimized by the compiler, so you can author styles using both depending on the use case.
@@ -18986,6 +19086,7 @@ Inline styles and `styled()` both are optimized by the compiler, so you can auth
 
 title: styled()
 description: Extend and build custom and optimizable components
+
 ---
 
 <Notice theme="green">
@@ -18996,14 +19097,14 @@ description: Extend and build custom and optimizable components
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, View, styled } from '@tamagui/core'
+import { GetProps, View, styled } from "@tamagui/core";
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
-})
+});
 
 // helper to get props for any TamaguiComponent
-export type RoundedSquareProps = GetProps<typeof RoundedSquare>
+export type RoundedSquareProps = GetProps<typeof RoundedSquare>;
 ```
 
 Usage:
@@ -19021,7 +19122,7 @@ One really important and useful thing to note about Tamagui style properties: th
 Let's add some variants:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from "@tamagui/core";
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -19029,28 +19130,28 @@ export const RoundedSquare = styled(View, {
   variants: {
     pin: {
       top: {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
       },
     },
 
     centered: {
       true: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
       },
     },
 
     size: {
-      '...size': (size, { tokens }) => {
+      "...size": (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 <Notice theme="blue">
@@ -19077,12 +19178,12 @@ The `styled()` function supports Tamagui views, React Native views, and any othe
 If it does accept `className`, you can opt-in to className, CSS media queries, and compile-time optimization by adding `acceptsClassName`:
 
 ```tsx
-import { SomeCustomComponent } from 'some-library'
-import { styled } from 'tamagui' // or '@tamagui/core'
+import { SomeCustomComponent } from "some-library";
+import { styled } from "tamagui"; // or '@tamagui/core'
 
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
-})
+});
 ```
 
 ## styleable
@@ -19093,18 +19194,18 @@ If you want a functional component that renders a Tamagui-styled component insid
 
 ```tsx
 // 1. you create a `styled` component as usual:
-const StyledText = styled(Text)
+const StyledText = styled(Text);
 
 // 2. you create a wrapper component that adds some logic
 //    but still returns a styled component that receives the props:
-const HigherOrderStyledText = (props) => <StyledText {...props} />
+const HigherOrderStyledText = (props) => <StyledText {...props} />;
 
 // 3. you want that wrapper component itself to be able to use with `styled`:
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
     // oops, variants will merge incorrectly
   },
-})
+});
 ```
 
 The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
@@ -19112,18 +19213,18 @@ The above code will generally cause weird issues, because Tamagui can't know tha
 The way to fix this is to add a `.styleable` around your `HigherOrderStyledText`. You'll also want to forward the ref, which is forwarded for you:
 
 ```tsx
-const StyledText = styled(Text)
+const StyledText = styled(Text);
 
 // note the styleable wrapper here:
 const HigherOrderStyledText = StyledText.styleable((props, ref) => (
   <StyledText ref={ref} {...props} />
-))
+));
 
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
     // variants now merge correctly
   },
-})
+});
 ```
 
 Now your component will handle everything properly, even if a theme is changed on `HigherOrderStyledText`, it will be applied.
@@ -19133,18 +19234,18 @@ A final note: you must pass all Tamagui style props given to `HigherOrderStyledT
 And if you'd like to add new props on top of the existing props, you can pass them in for the first generic type argument of styleable:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { View, ViewProps } from "@tamagui/core";
 
 type ExtraProps = {
-  someCustomProp: boolean
-}
+  someCustomProp: boolean;
+};
 
-export type CustomProps = ViewProps & ExtraProps
+export type CustomProps = ViewProps & ExtraProps;
 
 const Custom = View.styleable<ExtraProps>((props) => {
   // ...
-  return null
-})
+  return null;
+});
 ```
 
 ### createStyledContext
@@ -19161,7 +19262,7 @@ export default () => (
     </Button.Icon>
     <Button.Text>Lorem ipsum</Button.Text>
   </Button>
-)
+);
 ```
 
 Note how the `size="$large"` is set on the outer Button frame. We'd expect this size property to pass down to both the Icon and Text so that our frame size always matches the icon and text size. It would be cumbersome and bug-prone to have to always pass the size to every sub-component.
@@ -19178,52 +19279,52 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from "@tamagui/core";
 
 export const ButtonContext = createStyledContext<{
-  size: SizeTokens
+  size: SizeTokens;
 }>({
-  size: '$medium',
-})
+  size: "$medium",
+});
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  name: "Button",
   context: ButtonContext,
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      "...size": (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
           gap: tokens.space[name].val * 0.2,
-        }
+        };
       },
     },
   } as const,
 
   defaultVariants: {
-    size: '$medium',
+    size: "$medium",
   },
-})
+});
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  name: "ButtonText",
   context: ButtonContext,
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      "...fontSize": (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
   } as const,
-})
+});
 
 export const Button = withStaticProperties(ButtonFrame, {
   Props: ButtonContext.Provider,
   Text: ButtonText,
-})
+});
 ```
 
 A few things to note here:
@@ -19243,15 +19344,11 @@ Finally, it's important to note that the order of style properties is significan
 Lets see how it lets us control overriding styles:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { View, ViewProps } from "@tamagui/core";
 
 export default (props: ViewProps) => (
-  <View
-    background="red"
-    {...props}
-    width={200}
-  />
-)
+  <View background="red" {...props} width={200} />
+);
 ```
 
 In this case we set a default `background` to red, but it can be overridden by props. But we set `width` _after_ the prop spread, so width is _always_ going to be set to 200.
@@ -19260,20 +19357,10 @@ It also is necessary for variants to make sense. Say we have a variant `huge` th
 
 ```tsx
 // this will be scale = 3
-export default (props: ViewProps) => (
-  <MyView
-    huge
-    scale={3}
-  />
-)
+export default (props: ViewProps) => <MyView huge scale={3} />;
 
 // this will be scale = 2
-export default (props: ViewProps) => (
-  <MyView
-    scale={3}
-    huge
-  />
-)
+export default (props: ViewProps) => <MyView scale={3} huge />;
 ```
 
 If order wasn't important, how would you expect these two different usages to work? You'd have to make order important _somewhere_. If you do it in the `styled()` helper somewhere, you end up having no flexibility and would end up with boilerplate. Making the prop order important gives us maximum expressiveness and is easy to understand.
@@ -19289,11 +19376,15 @@ You can skip this section unless you're building out very rich components that a
 If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `accept`:
 
 ```tsx
-const StyledSVG = styled(SVG, {}, {
-  accept: {
-    fill: 'color'
-  } as const
-})
+const StyledSVG = styled(
+  SVG,
+  {},
+  {
+    accept: {
+      fill: "color",
+    } as const,
+  },
+);
 ```
 
 Note the `as const`, until we can drop TypeScript 4 support. Now, your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
@@ -19301,11 +19392,15 @@ Note the `as const`, until we can drop TypeScript 4 support. Now, your StyledSVG
 You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
 
 ```tsx
-const MyScrollView = styled(ScrollView, {}, {
-  accept: {
-    contentContainerStyle: 'style' // or 'textStyle'
-  } as const
-})
+const MyScrollView = styled(
+  ScrollView,
+  {},
+  {
+    accept: {
+      contentContainerStyle: "style", // or 'textStyle'
+    } as const,
+  },
+);
 ```
 
 ## core/theme
@@ -19314,6 +19409,7 @@ const MyScrollView = styled(ScrollView, {}, {
 
 title: Theme
 description: Change themes contextually
+
 ---
 
 <Notice theme="blue">
@@ -19328,13 +19424,13 @@ Changing themes in Tamagui is as easy as passing their name to the Theme compone
 Change themes anywhere in your app like so:
 
 ```tsx
-import { Button, Theme } from 'tamagui' // or '@tamagui/core'
+import { Button, Theme } from "tamagui"; // or '@tamagui/core'
 
 export default () => (
   <Theme name="dark">
     <Button>I'm a dark button</Button>
   </Theme>
-)
+);
 ```
 
 ### Sub-themes
@@ -19350,26 +19446,26 @@ Then, you just give your component a `theme="pink"` prop, or wrap it in `<Theme 
 It's easier to understand with an example. First, define your tokens and themes:
 
 ```tsx
-import { createTamagui, createTokens } from 'tamagui'
+import { createTamagui, createTokens } from "tamagui";
 
 const tokens = createTokens({
   color: {
-    pinkDark: '#610c62',
-    pinkLight: '#f17efc',
+    pinkDark: "#610c62",
+    pinkLight: "#f17efc",
   },
   // ... see configuration docs for required tokens
-})
+});
 
 export default createTamagui({
   tokens,
   themes: {
     dark: {
-      background: '#000',
-      color: '#fff',
+      background: "#000",
+      color: "#fff",
     },
     light: {
-      color: '#000',
-      background: '#fff',
+      color: "#000",
+      background: "#fff",
     },
     dark_pink: {
       background: tokens.color.pinkDark,
@@ -19380,13 +19476,13 @@ export default createTamagui({
       color: tokens.color.pinkDark,
     },
   },
-})
+});
 ```
 
 Using the `_pink` suffix, the `Theme` component will now let us automatically do sub-theming:
 
 ```tsx
-import { Button, Theme } from 'tamagui'
+import { Button, Theme } from "tamagui";
 
 export default () => {
   return (
@@ -19396,8 +19492,8 @@ export default () => {
         <Button>I have the theme pink-dark</Button>
       </Theme>
     </Theme>
-  )
-}
+  );
+};
 ```
 
 Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[currentThemeName]_[givenName]`, in this case `dark_pink`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
@@ -19448,6 +19544,7 @@ It's used for example on [Button](/docs/components/button).
 
 title: Tokens
 description: Accessing and using tokens
+
 ---
 
 Tamagui lets you create tokens using `createTokens`, which is then passed to the `createTamagui` function as part of the [configuration](/docs/core/configuration) object.
@@ -19459,23 +19556,23 @@ For example if you define some tokens:
 ```tsx
 const tokens = createTokens({
   size: {
-    small: 10
-  }
-})
+    small: 10,
+  },
+});
 ```
 
 After you pass that into `createTamagui`, you can access your tokens from anywhere using `getTokens`:
 
 ```tsx
-import { getTokens } from '@tamagui/core'
+import { getTokens } from "@tamagui/core";
 
-getTokens().size.small
+getTokens().size.small;
 ```
 
 or
 
 ```tsx
-getTokens().size['$small']
+getTokens().size["$small"];
 ```
 
 If you'd like just an object containing the prefixed (starting with `$`) or non-prefixed values, you can use the `prefixed` option:
@@ -19490,8 +19587,8 @@ getTokens({ prefixed: true }).['$size'].small
 What is returned is of type `Variable`, which is what Tamagui turns all tokens and theme values into internally in order to give them CSS variable names, as well as other things:
 
 ```tsx
-getTokens().size.small.val // returns 10
-getTokens().size.small.variable // returns something like (--size-small), which matches the CSS rule inserted
+getTokens().size.small.val; // returns 10
+getTokens().size.small.variable; // returns something like (--size-small), which matches the CSS rule inserted
 ```
 
 Tamagui has some helpers that make working with variables easier, which are documented in [Exports](/docs/core/exports), namely [`getVariable`](/docs/core/exports#getvariable) which will return the CSS variable on web, but raw value on native, and `getVariableValue` which always returns the raw value.
@@ -19516,31 +19613,31 @@ Tokens are automatically applied to certain properties. For example, `size` toke
 Here's how they all apply:
 
 <PropsTable
-  title="How tokens apply to attributes"
-  data={[
-    {
-      name: 'Size',
-      description: 'width, height, minWidth, minHeight, maxWidth, maxHeight',
-    },
-    {
-      name: 'zIndex',
-      description: 'zIndex',
-    },
-    {
-      name: 'Radius',
-      description:
-        'borderRadius, borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius',
-    },
-    {
-      name: 'Color',
-      description:
-        'color, backgroundColor, borderColor, borderBottomColor, borderTopColor, borderLeftColor, borderRightColor',
-    },
-    {
-      name: 'Space',
-      description: 'All properties not matched by the above.',
-    },
-  ]}
+title="How tokens apply to attributes"
+data={[
+{
+name: 'Size',
+description: 'width, height, minWidth, minHeight, maxWidth, maxHeight',
+},
+{
+name: 'zIndex',
+description: 'zIndex',
+},
+{
+name: 'Radius',
+description:
+'borderRadius, borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius',
+},
+{
+name: 'Color',
+description:
+'color, backgroundColor, borderColor, borderBottomColor, borderTopColor, borderLeftColor, borderRightColor',
+},
+{
+name: 'Space',
+description: 'All properties not matched by the above.',
+},
+]}
 />
 
 ### Specific tokens
@@ -19555,7 +19652,7 @@ const tokens = createTokens({
     medium: 24,
     large: 32,
   },
-})
+});
 ```
 
 And then access them using the new "specific tokens" syntax:
@@ -19566,36 +19663,36 @@ export default () => (
     // access with the category first:
     width="$icon.small"
   />
-)
+);
 ```
 
 This, like all token values, works the same with `styled`:
 
 ```tsx
-import { styled, Stack } from '@tamagui/core'
+import { styled, Stack } from "@tamagui/core";
 
 export const MyStack = styled(Stack, {
-  width: '$icon.small'
-})
+  width: "$icon.small",
+});
 ```
 
 When creating custom tokens, you can use the `px` helper to ensure values get proper pixel units on web while remaining as raw numbers on native:
 
 ```tsx
-import { createTokens, px } from '@tamagui/core'
+import { createTokens, px } from "@tamagui/core";
 
 const tokens = createTokens({
   customSize: {
-    small: px(100),   // → "100px" on web, 100 on native
+    small: px(100), // → "100px" on web, 100 on native
     medium: px(200),
     large: px(300),
   },
   opacity: {
-    low: 0.25,        // → 0.25 (unitless on both platforms)
+    low: 0.25, // → 0.25 (unitless on both platforms)
     medium: 0.5,
     high: 0.75,
   },
-})
+});
 ```
 
 <Notice theme="blue">
@@ -19608,6 +19705,7 @@ const tokens = createTokens({
 
 title: useMedia
 description: Respond to different screen sizes
+
 ---
 
 Define your media rules in the media object of your `tamagui.config.ts`:
@@ -19625,10 +19723,10 @@ export default createTamagui({
     gtLg: { minWidth: 1120 + 1 },
     short: { maxHeight: 820 },
     tall: { minHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
+    hoverNone: { hover: "none" },
+    pointerCoarse: { pointer: "coarse" },
   },
-})
+});
 ```
 
 <Notice theme="blue">
@@ -19646,24 +19744,24 @@ Now in any component you may import and use `useMedia` or `$` prefixed media pro
 ### Inline props
 
 ```tsx
-import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+import { Button, XStack, useMedia } from "tamagui"; // note: design system can use @tamagui/core
 
 export default () => {
-  const [x, setX] = useState(0)
+  const [x, setX] = useState(0);
   return (
     <XStack
       backgroundColor="red"
       $gtSm={{
-        backgroundColor: 'blue',
+        backgroundColor: "blue",
       }}
       $gtMd={{
-        backgroundColor: x > 0.5 ? 'green' : 'yellow',
+        backgroundColor: x > 0.5 ? "green" : "yellow",
       }}
     >
       <Button onPress={() => setX(Math.random())}>Hello</Button>
     </XStack>
-  )
-}
+  );
+};
 ```
 
 In this example we are doing mobile-first design, where the base props will be overridden as the viewport gets wider. Notice the ternary logic in `$gtMd`: this is extractable with Tamagui, and will still output simple CSS with no leftover style props in your component's render function.
@@ -19671,15 +19769,15 @@ In this example we are doing mobile-first design, where the base props will be o
 ### Hooks
 
 ```tsx
-import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+import { Button, XStack, useMedia } from "tamagui"; // note: design system can use @tamagui/core
 
 export default () => {
-  const media = useMedia()
+  const media = useMedia();
 
   return (
     <XStack
       // can be used as a ternary
-      backgroundColor={media.sm ? 'red' : 'blue'}
+      backgroundColor={media.sm ? "red" : "blue"}
       // can be used as a spread
       {...(media.lg && {
         x: 10,
@@ -19688,8 +19786,8 @@ export default () => {
     >
       <Button>Hello</Button>
     </XStack>
-  )
-}
+  );
+};
 ```
 
 As long as **all** of your usages of useMedia are extractable, Tamagui will actually generate your CSS and then fully remove the hook from the output code. You can check this by adding `// debug` to the top of your component.
@@ -19711,6 +19809,7 @@ The `useMedia` hook uses proxies so it can track which keys you are accessing an
 
 title: useTheme
 description: Creating and using theme values
+
 ---
 
 Access the current theme in context with `useTheme`. Tamagui themes operate much
@@ -19726,13 +19825,13 @@ behaves just like CSS variables at well, at runtime.
 A short example:
 
 ```tsx
-import { YStack, useTheme } from 'tamagui'
+import { YStack, useTheme } from "tamagui";
 
 const App = () => {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  return <YStack backgroundColor={theme.color1.val} />
-}
+  return <YStack backgroundColor={theme.color1.val} />;
+};
 ```
 
 The `useTheme` hook returns your Theme turned into a `ThemeParsed`, which means
@@ -19767,18 +19866,18 @@ re-rendering there too - unless you do `get('web')` in which case it will only
 optimize for web.
 
 ```tsx
-import { Stack, useTheme } from '@tamagui/core'
-import { SomeExternalComponent } from 'some-external-component'
+import { Stack, useTheme } from "@tamagui/core";
+import { SomeExternalComponent } from "some-external-component";
 
 const App = () => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   // on the web this is something like var(--background) and will avoid re-renders
   // on native it will be something like #fff and will re-render
-  const background = theme.background.get()
+  const background = theme.background.get();
 
   // if you needed to access it in a way that always returns the raw value
-  const backgroundValue = theme.background.val
+  const backgroundValue = theme.background.val;
 
   return (
     <SomeExternalComponent
@@ -19786,8 +19885,8 @@ const App = () => {
         backgroundColor: background,
       }}
     />
-  )
-}
+  );
+};
 ```
 
 You can mix and match `useMedia` and `useTheme`, and the compiler understands
@@ -19795,11 +19894,11 @@ most basic usages, even with nested logic or constants within the file or
 imports [white-listed in your build setup](/docs/compiler/install):
 
 ```tsx
-import { YStack, useMedia, useTheme } from 'tamagui'
+import { YStack, useMedia, useTheme } from "tamagui";
 
 const App = () => {
-  const theme = useTheme()
-  const media = useMedia()
+  const theme = useTheme();
+  const media = useMedia();
 
   return (
     <YStack
@@ -19809,21 +19908,21 @@ const App = () => {
         y: theme.space2,
       })}
     />
-  )
-}
+  );
+};
 ```
 
 This will compile on the web to:
 
 ```tsx
 const _cn =
-  ' _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0'
+  " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0";
 
-import { YStack, useMedia, useTheme } from 'tamagui'
+import { YStack, useMedia, useTheme } from "tamagui";
 
 const App = () => {
-  return <div className={_cn} />
-}
+  return <div className={_cn} />;
+};
 ```
 
 And the following CSS:
@@ -19905,18 +20004,16 @@ If you access `theme.bg.val` in your render function, the component will only
 re-render when theme.bg changes.
 
 ```tsx
-import { theme, View } from '@tamagui/core'
+import { theme, View } from "@tamagui/core";
 
 export default () => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   // access the value
-  console.log(theme.bg.val)
+  console.log(theme.bg.val);
 
-  return (
-    <View backgroundColor={theme.color1} />
-  )
-}
+  return <View backgroundColor={theme.color1} />;
+};
 ```
 
 ## Changing the theme at the hook level
@@ -19928,7 +20025,7 @@ subset theme:
 
 ```tsx
 function MyComponent(props) {
-  const theme = useTheme(props.theme, 'MyComponent')
+  const theme = useTheme(props.theme, "MyComponent");
 }
 ```
 
@@ -19954,6 +20051,7 @@ The above `useTheme` hook would return the `dark_green_MyComponent` theme.
 
 title: Variants
 description: Simple typed prop styles through styled()
+
 ---
 
 Variants allow for a nice balance between simplicity and power, with affordances
@@ -19964,7 +20062,7 @@ that expand into groups of styles. Variants do just that. Before explaining more
 on why and how they work, an example:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -19972,28 +20070,28 @@ export const Circle = styled(View, {
   variants: {
     pin: {
       top: {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
       },
     },
 
     centered: {
       true: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
       },
     },
 
     size: {
-      '...size': (size, { tokens }) => {
+      "...size": (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 <Notice theme="blue">
@@ -20054,20 +20152,20 @@ prop will be typed to accept true or false, and when true it will apply it's
 styles.
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const MyView = styled(View, {
   variants: {
     selectable: {
       true: {
-        userSelect: 'auto',
+        userSelect: "auto",
       },
       false: {
-        userSelect: 'none',
+        userSelect: "none",
       },
     },
   } as const,
-})
+});
 ```
 
 #### String, Boolean, Number Variants
@@ -20079,21 +20177,21 @@ You can use a pseudo Typescript syntax for other variants:
 - `:number` - Accepts a `number`
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const ColorfulView = styled(View, {
   variants: {
     color: {
-      ':string': (color) => {
+      ":string": (color) => {
         // color is of type "string"
         return {
           color,
           borderColor: color,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 ### Spread Variants
@@ -20195,16 +20293,16 @@ easily.
 const SizableText = styled(Text, {
   variants: {
     size: {
-      '...size': (size, { tokens, font }) => {
+      "...size": (size, { tokens, font }) => {
         return {
           fontSize: font?.size,
           lineHeight: font?.lineHeight,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 Which you can use:
@@ -20218,38 +20316,38 @@ given to the property (`"$lg"`), and the second is an object with
 `{ theme, tokens, props, font }`.
 
 <PropsTable
-  data={[
-    {
-      name: 'theme',
-      type: 'ThemeParsed',
-      description: `A proxy to your theme that lets you access all theme values using normal keys, or with a "$" prefix.`,
-    },
-    {
-      name: 'tokens',
-      type: 'TokensParsed',
-      description: `All your tokens given to createTamagui, ensuring the keys all start with "$".`,
-    },
-    {
-      name: 'props',
-      type: 'Props',
-      description: `All props passed to the styled component.`,
-    },
-    {
-      name: 'font',
-      type: 'Font',
-      description: `Maybe undefined. A single resolved Font that you passed to you fonts config.`,
-    },
-    {
-      name: 'fontFamily',
-      type: 'string',
-      description: `Maybe undefined. The name of the current fontFamily.`,
-    },
-    {
-      name: 'fonts',
-      type: 'string',
-      description: `All your fonts passed to createTamagui.`,
-    },
-  ]}
+data={[
+{
+name: 'theme',
+type: 'ThemeParsed',
+description: `A proxy to your theme that lets you access all theme values using normal keys, or with a "$" prefix.`,
+},
+{
+name: 'tokens',
+type: 'TokensParsed',
+description: `All your tokens given to createTamagui, ensuring the keys all start with "$".`,
+},
+{
+name: 'props',
+type: 'Props',
+description: `All props passed to the styled component.`,
+},
+{
+name: 'font',
+type: 'Font',
+description: `Maybe undefined. A single resolved Font that you passed to you fonts config.`,
+},
+{
+name: 'fontFamily',
+type: 'string',
+description: `Maybe undefined. The name of the current fontFamily.`,
+},
+{
+name: 'fonts',
+type: 'string',
+description: `All your fonts passed to createTamagui.`,
+},
+]}
 />
 
 #### Catch-all variants
@@ -20258,23 +20356,23 @@ Much like a dynamic variant, except it lets you use it alongside the other typed
 variants you need. Use '...' and it will grab all variants that don't match:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const ColorfulView = styled(View, {
   variants: {
     colorful: {
       true: {
-        color: 'red',
+        color: "red",
       },
-      '...': (val: string) => {
+      "...": (val: string) => {
         // this will catch any other values that don't match
         return {
           color: val,
-        }
+        };
       },
     },
   } as const,
-})
+});
 ```
 
 #### Dynamic variants
@@ -20283,7 +20381,7 @@ If you need more complex types, or simply prefer a shorter syntax, you can use a
 single function instead of using the object syntax for variants:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from "tamagui"; // or '@tamagui/core'
 
 export const MyView = styled(View, {
   variants: {
@@ -20291,7 +20389,7 @@ export const MyView = styled(View, {
       margin: val * 2,
     }),
   } as const,
-})
+});
 ```
 
 Tamagui also provides a few types of other variant definition patterns that work
@@ -20310,22 +20408,22 @@ The `defaultVariants` option allows you to set these, properly typed:
 const Square = styled(View, {
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
+      "...size": (size, { tokens }) => {
         // size === '$lg'
         // tokens.size.$lg === 25
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   } as const,
 
   // <Square /> will get size '$10' from size tokens automatically
   defaultVariants: {
-    size: '$10',
+    size: "$10",
   },
-})
+});
 ```
 
 ### Variants and Pseudos, Media Queries
@@ -20338,19 +20436,19 @@ const SizedText = styled(Text, {
   variants: {
     size: {
       md: {
-        fontSize: '$sm',
+        fontSize: "$sm",
 
         $gtMd: {
-          fontSize: '$md',
+          fontSize: "$md",
         },
 
         $gt2xl: {
-          fontSize: '$lg',
+          fontSize: "$lg",
         },
       },
     },
   } as const,
-})
+});
 ```
 
 ### Variants and Parent Variants
@@ -20363,17 +20461,17 @@ const ColorfulText = styled(Text, {
   variants: {
     colored: {
       true: {
-        color: '$color',
+        color: "$color",
       },
     },
 
     large: {
       true: {
-        fontSize: '$8',
+        fontSize: "$8",
       },
     },
   } as const,
-})
+});
 
 const MyParagraph = styled(ColorfulText, {
   colored: true,
@@ -20385,7 +20483,7 @@ const MyParagraph = styled(ColorfulText, {
       },
     },
   } as const,
-})
+});
 ```
 
 ## guides/create-tamagui-app
@@ -20394,6 +20492,7 @@ const MyParagraph = styled(ColorfulText, {
 
 title: Bootstrapping
 description: Starter kits for React Native
+
 ---
 
 Set up a starter repo to help learn about and/or bootstrap your tamagui app:
@@ -20450,7 +20549,6 @@ the power and simplicity of creating universal apps.
 ## 🗂 Folder layout
 
 - `apps` entry points for each app
-
   - `expo`
   - `next`
 
@@ -20517,6 +20615,7 @@ need to use Lerna to use that lib).
 
 title: Design Systems
 description: Put together your own design system
+
 ---
 
 Tamagui allows you to build our your own set of components that are optimized
@@ -20614,33 +20713,33 @@ Now, create and export the components. You can re-export components from
 `Circle.tsx`:
 
 ```tsx
-import { GetProps, YStack, styled } from 'tamagui' // or '@tamagui/core' if extending just that
+import { GetProps, YStack, styled } from "tamagui"; // or '@tamagui/core' if extending just that
 
 export const Circle = styled(YStack, {
-  alignItems: 'center',
-  justifyContent: 'center',
+  alignItems: "center",
+  justifyContent: "center",
   borderRadius: 100_000_000,
-  overflow: 'hidden',
+  overflow: "hidden",
 
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
+      "...size": (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
-        }
+        };
       },
     },
   },
-})
+});
 
-export type CircleProps = GetProps<typeof Circle>
+export type CircleProps = GetProps<typeof Circle>;
 ```
 
 And then export from `index.tsx`:
 
 ```tsx
-export * from './Circle'
+export * from "./Circle";
 ```
 
 ## Step 4: Set up your build
@@ -20669,10 +20768,10 @@ In your `next.config.js`:
 ```js
 export default withPlugins([
   withTamagui({
-    config: './tamagui.config.ts',
-    components: ['@ourapp/components', 'tamagui'],
-  })
-])
+    config: "./tamagui.config.ts",
+    components: ["@ourapp/components", "tamagui"],
+  }),
+]);
 ```
 
 ### React Native
@@ -20683,15 +20782,15 @@ In your `babel.config.js`:
 export default {
   plugins: [
     [
-      '@tamagui/babel-plugin',
+      "@tamagui/babel-plugin",
       {
         exclude: /node_modules/,
-        config: './tamagui.config.ts',
-        components: ['@ourapp/components', 'tamagui']
+        config: "./tamagui.config.ts",
+        components: ["@ourapp/components", "tamagui"],
       },
     ],
   ],
-}
+};
 ```
 
 ### Configuration notes
@@ -20710,9 +20809,9 @@ you can see the compiler at work:
 Anywhere in your app:
 
 ```tsx
-import { Circle } from '@ourapp/components'
+import { Circle } from "@ourapp/components";
 
-export default () => <Circle size="$large" />
+export default () => <Circle size="$large" />;
 ```
 
 When it compiles you should see something like:
@@ -20726,9 +20825,9 @@ To get more information on any extraction, use the `// debug` pragma:
 ```tsx
 // debug
 // ^ the above pragma will direct Tamagui to output a lot of information on the extraction
-import { Circle } from '@ourapp/components'
+import { Circle } from "@ourapp/components";
 
-export default () => <Circle size="$large" />
+export default () => <Circle size="$large" />;
 ```
 
 You should see much more log output with details on how it extracted, including
@@ -20740,6 +20839,7 @@ the final CSS and JS.
 
 title: Developing with Tamagui
 description: Tips and tricks
+
 ---
 
 Tamagui includes many helpful tools for debugging UI.
@@ -20758,15 +20858,15 @@ the styled components names and even the file numbers and components they are in
 development mode.
 
 ```tsx
-import { setupDev } from '@tamagui/core'
+import { setupDev } from "@tamagui/core";
 
 setupDev({
   // can just be true as well for defaulting to key: Alt + delay: 800
   visualizer: {
-    key: 'Alt',
-    delay: 800
-  }
-})
+    key: "Alt",
+    delay: 800,
+  },
+});
 ```
 
 #### Debug pragma
@@ -20787,9 +20887,9 @@ Adding `debug` to any Tamagui component will output a lot of information on
 what's going on at runtime. Use it like so:
 
 ```tsx
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
-export default () => <Button debug>Hello world</Button>
+export default () => <Button debug>Hello world</Button>;
 ```
 
 And you'll see props, styles, and a variety of variables relevant to processing
@@ -20823,9 +20923,9 @@ Any `styled()` component will have a `staticConfig` property attached to it:
 ```tsx
 const Circle = styled(View, {
   borderRadius: 1000,
-})
+});
 
-console.log(Circle.staticConfig) // lots of helpful information
+console.log(Circle.staticConfig); // lots of helpful information
 ```
 
 - `componentName` is taken from the `name` key
@@ -20840,9 +20940,9 @@ where a `name` is set like this:
 
 ```tsx
 const MyButton = styled(View, {
-  name: 'MyButton',
-  backgroundColor: 'red',
-})
+  name: "MyButton",
+  backgroundColor: "red",
+});
 ```
 
 Tamagui adds the classname `is_MyButton`. This is a useful escape hatch for
@@ -20864,6 +20964,7 @@ The classnames `is_Paragraph` and `font_body` will be output to DOM.
 
 title: Expo Guide
 description: How to set up Tamagui with Expo
+
 ---
 
 We've created a new template repo for starting an Expo Router based app based on
@@ -20911,26 +21012,25 @@ Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 
 ```js fileName="babel.config.js"
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
       [
-        '@tamagui/babel-plugin',
+        "@tamagui/babel-plugin",
         {
-          components: ['tamagui'],
-          config: './tamagui.config.ts',
+          components: ["tamagui"],
+          config: "./tamagui.config.ts",
           logTimings: true,
-          disableExtraction: process.env.NODE_ENV === 'development',
+          disableExtraction: process.env.NODE_ENV === "development",
         },
       ],
 
       // NOTE: this is only necessary if you are using reanimated for animations
-      'react-native-reanimated/plugin',
+      "react-native-reanimated/plugin",
     ],
-  }
-}
-
+  };
+};
 ```
 
 <Notice>
@@ -20945,16 +21045,16 @@ module.exports = function (api) {
 Add `@tamagui/config/v4` and `tamagui` to your package.json and install them. Then add a `tamagui.config.ts`:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
-export const tamaguiConfig = createTamagui(defaultConfig)
+export const tamaguiConfig = createTamagui(defaultConfig);
 
-export default tamaguiConfig
+export default tamaguiConfig;
 
-export type Conf = typeof tamaguiConfig
+export type Conf = typeof tamaguiConfig;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends Conf {}
 }
 ```
@@ -20962,29 +21062,33 @@ declare module 'tamagui' {
 Then update `app/_layout.tsx`:
 
 ```tsx showMore fileName="app/_layout.tsx"
-import '../tamagui-web.css'
+import "../tamagui-web.css";
 
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { Stack } from 'expo-router'
-import { useColorScheme } from 'react-native'
-import { TamaguiProvider } from 'tamagui'
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
+import { TamaguiProvider } from "tamagui";
 
-import { tamaguiConfig } from '../tamagui.config'
+import { tamaguiConfig } from "../tamagui.config";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme()
+  const colorScheme = useColorScheme();
 
   return (
     // add this
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         </Stack>
       </ThemeProvider>
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
@@ -21016,25 +21120,25 @@ Using the `@tamagui/font-inter` package which is a pre-configured version of the
 Import the `useFonts` hook and load the fonts:
 
 ```tsx fileName="App.tsx"
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font";
 
 function App() {
   const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
 
   useEffect(() => {
     if (loaded) {
       // can hide splash screen here
     }
-  }, [loaded])
+  }, [loaded]);
 
   if (!loaded) {
-    return null
+    return null;
   }
 
-  return <MyApp />
+  return <MyApp />;
 }
 ```
 
@@ -21059,25 +21163,29 @@ npx expo install @expo-google-fonts/inter
 Import the `useFonts` hook and load the fonts:
 
 ```tsx fileName="App.tsx"
-import { useFonts, Inter_400Regular, Inter_900Black } from '@expo-google-fonts/inter'
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
 
 function App() {
   const [loaded] = useFonts({
     Inter_400Regular,
     Inter_900Black,
-  })
+  });
 
   useEffect(() => {
     if (loaded) {
       // can hide splash screen here
     }
-  }, [loaded])
+  }, [loaded]);
 
   if (!loaded) {
-    return null
+    return null;
   }
 
-  return <MyApp />
+  return <MyApp />;
 }
 ```
 
@@ -21117,10 +21225,11 @@ Your `package.json` scripts should look something like this:
 
 title: How to Build a Button
 description:
-  Learn how to create a powerful yet simple API for a button with Tamagui and
-  compound components
+Learn how to create a powerful yet simple API for a button with Tamagui and
+compound components
 hero: HowToBuildAButton
 demoName: BuildAButton
+
 ---
 
 <HeroContainer noScroll>
@@ -21168,7 +21277,7 @@ To the point, here is the final code we'll end up with for our Button, ready to
 copy and paste right into your app:
 
 ```tsx
-import { getSize, getSpace } from '@tamagui/get-token'
+import { getSize, getSpace } from "@tamagui/get-token";
 import {
   GetProps,
   SizeTokens,
@@ -21178,31 +21287,31 @@ import {
   styled,
   useTheme,
   withStaticProperties,
-} from '@tamagui/web'
-import { cloneElement, isValidElement, useContext } from 'react'
+} from "@tamagui/web";
+import { cloneElement, isValidElement, useContext } from "react";
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
-})
+  size: "$md" as SizeTokens,
+});
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  name: "Button",
   context: ButtonContext,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+  backgroundColor: "$background",
+  alignItems: "center",
+  flexDirection: "row",
 
   hoverStyle: {
-    backgroundColor: '$backgroundHover',
+    backgroundColor: "$backgroundHover",
   },
 
   pressStyle: {
-    backgroundColor: '$backgroundPress',
+    backgroundColor: "$backgroundPress",
   },
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      "...size": (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
@@ -21213,50 +21322,52 @@ export const ButtonFrame = styled(View, {
           paddingHorizontal: getSpace(name, {
             shift: -1,
           }),
-        }
+        };
       },
     },
   } as const,
 
   defaultVariants: {
-    size: '$md',
+    size: "$md",
   },
-})
+});
 
-type ButtonProps = GetProps<typeof ButtonFrame>
+type ButtonProps = GetProps<typeof ButtonFrame>;
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  name: "ButtonText",
   context: ButtonContext,
-  color: '$color',
-  userSelect: 'none',
+  color: "$color",
+  userSelect: "none",
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      "...fontSize": (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
   } as const,
-})
+});
 
 const ButtonIcon = (props: { children: any }) => {
-  const { size } = useContext(ButtonContext.context)
+  const { size } = useContext(ButtonContext.context);
   const smaller = getSize(size, {
     shift: -2,
-  })
-  const theme = useTheme()
-  return isValidElement(props.children) ? cloneElement(props.children, {
-    size: smaller.val * 0.5,
-    color: theme.color.get(),
-  }) : null
-}
+  });
+  const theme = useTheme();
+  return isValidElement(props.children)
+    ? cloneElement(props.children, {
+        size: smaller.val * 0.5,
+        color: theme.color.get(),
+      })
+    : null;
+};
 
 export const Button = withStaticProperties(ButtonFrame, {
   Props: ButtonContext.Provider,
   Text: ButtonText,
   Icon: ButtonIcon,
-})
+});
 ```
 
 Now you can use your button like so:
@@ -21269,7 +21380,7 @@ export default () => (
     </Button.Icon>
     <Button.Text>hi</Button.Text>
   </Button>
-)
+);
 
 // multiple icons:
 export default () => (
@@ -21282,7 +21393,7 @@ export default () => (
       <Moon />
     </Button.Icon>
   </Button>
-)
+);
 ```
 
 This may only be a ~hundred lines of code, but there's a lot to take in. And
@@ -21297,7 +21408,7 @@ We start with the assumption that we have a design system set up with a tokens
 that use keys `sm`, `md`, and `lg` and a few themes:
 
 ```tsx
-import { createTamagui, createTokens } from '@tamagui/core'
+import { createTamagui, createTokens } from "@tamagui/core";
 
 export default createTamagui({
   tokens: createTokens({
@@ -21321,21 +21432,21 @@ export default createTamagui({
 
   themes: {
     light: {
-      background: '#fff',
-      color: '#000',
+      background: "#fff",
+      color: "#000",
     },
 
     // define a Button sub-theme, see the Themes docs for more
     light_Button: {
-      background: '#ccc',
-      backgroundPress: '#bbb', // darker background on press
-      backgroundHover: '#ddd', // lighter background on hover
-      color: '#222'
+      background: "#ccc",
+      backgroundPress: "#bbb", // darker background on press
+      backgroundHover: "#ddd", // lighter background on hover
+      color: "#222",
     },
   },
 
   // ... the rest of your tamagui.config.ts
-})
+});
 ```
 
 If you'd like to see a more complete work-up of a Tamagui config, check out
@@ -21346,38 +21457,37 @@ With that in mind, we can create the outer frame of the button fairly simply,
 like so:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from "@tamagui/core";
 
 const ButtonFrame = styled(View, {
   // the name indicates to use the sub-theme `Button`
   // since we defined light_Button, if our theme is light, this component
   // will always use the values from our `light_Button` theme
-  name: 'Button',
+  name: "Button",
 
-  alignItems: 'center',
-  flexDirection: 'row',
+  alignItems: "center",
+  flexDirection: "row",
 
   // our $ prefixed values look for theme first, then fallback to tokens
-  backgroundColor: '$background', // #ccc
+  backgroundColor: "$background", // #ccc
   hoverStyle: {
-    backgroundColor: '$backgroundHover', // #ddd
+    backgroundColor: "$backgroundHover", // #ddd
   },
   pressStyle: {
-    backgroundColor: '$backgroundPress', // #bbb
+    backgroundColor: "$backgroundPress", // #bbb
   },
 
   // these all use tokens
   // note that size tokens are used only for these properties:
   //   width, height, minWidth, minHeight, maxWidth and maxHeight
-  height: '$md', // 46
+  height: "$md", // 46
 
   // meanwhile our radius token is used here
-  borderRadius: '$md', // 8
+  borderRadius: "$md", // 8
 
   // and space tokens are used for all others
-  paddingHorizontal: '$sm', // 25
-})
-
+  paddingHorizontal: "$sm", // 25
+});
 ```
 
 This gets us a simple rounded rectangle that uses the `md` tokens from your
@@ -21395,16 +21505,16 @@ when hovered or pressed.
 Next we'll want a Text component to go inside:
 
 ```tsx
-import { Text, styled } from '@tamagui/core'
+import { Text, styled } from "@tamagui/core";
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
-  color: '$color',
-  fontFamily: '$body',
-  fontSize: '$md',
-  lineHeight: '$md',
-  userSelect: 'none',
-})
+  name: "ButtonText",
+  color: "$color",
+  fontFamily: "$body",
+  fontSize: "$md",
+  lineHeight: "$md",
+  userSelect: "none",
+});
 ```
 
 This is pretty similar to the frame, just with its own name and with a `color`
@@ -21417,11 +21527,9 @@ We can use our simple button. It's nicely themed, but only renders at one size:
 ```tsx
 export default () => (
   <Button>
-    <ButtonText>
-      Hello world
-    </ButtonText>
+    <ButtonText>Hello world</ButtonText>
   </Button>
-)
+);
 ```
 
 So we'll make it sizeable. First, let's look at how we'd solve this without the
@@ -21431,32 +21539,31 @@ We can add some variants:
 
 ```tsx
 const ButtonFrame = styled(View, {
-  name: 'Button',
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+  name: "Button",
+  backgroundColor: "$background",
+  alignItems: "center",
+  flexDirection: "row",
 
   variants: {
     size: {
       sm: {
-        height: '$sm',
-        borderRadius: '$sm',
+        height: "$sm",
+        borderRadius: "$sm",
         gap: 4,
       },
       md: {
-        height: '$md',
-        borderRadius: '$md',
+        height: "$md",
+        borderRadius: "$md",
         gap: 6,
       },
       lg: {
-        height: '$lg',
-        borderRadius: '$lg',
+        height: "$lg",
+        borderRadius: "$lg",
         gap: 8,
       },
     },
   } as const,
-})
-
+});
 ```
 
 Still, this is somewhat repetitive and prone to mistakes via typo. To allow us
@@ -21465,40 +21572,40 @@ design system in the future, we can use the handy Tamagui
 [Spread Variants](/docs/core/variants#spread-variants):
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from "@tamagui/core";
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+  name: "Button",
+  backgroundColor: "$background",
+  alignItems: "center",
+  flexDirection: "row",
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      "...size": (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
           gap: tokens.space[name].val * 0.2,
-        }
+        };
       },
     },
   } as const,
-})
+});
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
-  color: '$color',
-  userSelect: 'none',
+  name: "ButtonText",
+  color: "$color",
+  userSelect: "none",
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      "...fontSize": (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
   } as const,
-})
+});
 ```
 
 <Notice>
@@ -21519,10 +21626,10 @@ used together (and are easier to import for users):
 
 ```tsx
 export const Button = ButtonFrame as typeof ButtonFrame & {
-  Text: typeof ButtonText
-}
+  Text: typeof ButtonText;
+};
 
-Button.Text = Text
+Button.Text = Text;
 ```
 
 What is this whole `typeof ButtonFrame` thing? It's just TypeScript being
@@ -21530,23 +21637,23 @@ awkward. Since Tamagui uses this pattern internally for many components, we've
 made a small helper:
 
 ```tsx
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from "@tamagui/core";
 
 export const Button = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
-})
+});
 ```
 
 Which is functionally the same as the above. So, now our users can do:
 
 ```tsx
-import { Button } from './OurButton'
+import { Button } from "./OurButton";
 
 export default () => (
   <Button size="$md">
     <Button.Text size="$md">Hello world</Button.Text>
   </Button>
-)
+);
 ```
 
 ### Improving the API
@@ -21565,14 +21672,14 @@ const Button = ({
   textProps,
   ...props
 }: ViewProps & {
-  textProps?: TextProps
+  textProps?: TextProps;
 }) => (
   <ButtonFrame size={size} {...props}>
     <ButtonText size={size} {...textProps}>
       {children}
     </ButtonText>
   </ButtonFrame>
-)
+);
 ```
 
 But suddenly we have issues. What if a user wants to show an icon? We need to
@@ -21591,28 +21698,28 @@ the existing `styled` function to re-style each piece, before re-exporting it
 again:
 
 ```tsx
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from "@tamagui/core";
 
-import { Button } from './OurButton'
+import { Button } from "./OurButton";
 
 const CustomButtonFrame = styled(Button, {
   // override some styles
-})
+});
 
 const CustomButtonText = styled(Button.Text, {
   // override some styles
-})
+});
 
 export const CustomButton = withStaticProperties(CustomButtonFrame, {
   Text: CustomButtonText,
-})
+});
 
 export default () => (
   <CustomButton>
     <CustomButton.Text>Hello world</CustomButton.Text>
     <CustomButton.Text size="$sm">(Smaller text)</CustomButton.Text>
   </CustomButton>
-)
+);
 ```
 
 Not to mention by staying with the `styled` world, the Tamagui optimizing
@@ -21631,32 +21738,32 @@ Here's how we'd solve for size using context in plain-old React, while still
 keeping the compound API:
 
 ```tsx
-import { createContext } from 'react'
-import { SizeTokens, GetProps, withStaticProperties } from '@tamagui/core'
-import { Button } from './OurButton'
+import { createContext } from "react";
+import { SizeTokens, GetProps, withStaticProperties } from "@tamagui/core";
+import { Button } from "./OurButton";
 
-const SizeContext = createContext<SizeTokens>('$md')
+const SizeContext = createContext<SizeTokens>("$md");
 
 const ButtonFrame = Button.styleable(
-  ({ size = '$md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
+  ({ size = "$md", ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
         <Button size={size} {...props} />
       </SizeContext.Provider>
-    )
+    );
   },
-)
+);
 
 const ButtonText = Button.Text.styleable(
   (props: GetProps<typeof OGB.ButtonText>) => {
-    const size = useContext(SizeContext)
-    return <Button.Text size={size} {...props} />
+    const size = useContext(SizeContext);
+    return <Button.Text size={size} {...props} />;
   },
-)
+);
 
 export const NewButton = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
-})
+});
 ```
 
 What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
@@ -21682,11 +21789,11 @@ Finally we get to use `createStyledContext`. We just change from `createContext`
 to:
 
 ```tsx
-import { createStyledContext } from '@tamagui/core'
+import { createStyledContext } from "@tamagui/core";
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
-})
+  size: "$md" as SizeTokens,
+});
 ```
 
 This in fact it returns a slightly modified `React.Context` just like
@@ -21698,65 +21805,63 @@ And now, bringing back the full example, we add an extra property to each
 `styled` component, `context`:
 
 ```tsx
-import { View, styled, createStyledContext } from '@tamagui/core'
+import { View, styled, createStyledContext } from "@tamagui/core";
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
-})
+  size: "$md" as SizeTokens,
+});
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
+  name: "Button",
   context: ButtonContext,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+  backgroundColor: "$background",
+  alignItems: "center",
+  flexDirection: "row",
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      "...size": (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
           gap: tokens.space[name].val * 0.2,
-        }
+        };
       },
     },
   } as const,
-})
+});
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  name: "ButtonText",
   context: ButtonContext,
-  color: '$color',
-  userSelect: 'none',
+  color: "$color",
+  userSelect: "none",
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      "...fontSize": (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
   } as const,
-})
+});
 
 export const Button = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
   Props: ButtonContext.Provider,
-})
+});
 ```
 
 ...and we've finally arrived at our destination! We can now do the following:
 
 ```tsx
-import { Button } from './OurButton'
+import { Button } from "./OurButton";
 
 export default () => (
   <Button size="$md">
-    <Button.Text>
-      Hello world
-    </Button.Text>
+    <Button.Text>Hello world</Button.Text>
   </Button>
-)
+);
 ```
 
 This time since `Button` knows the `size` property is defined in the `context`
@@ -21773,17 +21878,15 @@ the same as any other React provider. We can now control the variant from
 anywhere above in the React tree:
 
 ```tsx
-import { Button } from './OurButton'
+import { Button } from "./OurButton";
 
 export default () => (
   <Button.Props size="$md">
     <Button>
-      <Button.Text>
-        Hello world
-      </Button.Text>
+      <Button.Text>Hello world</Button.Text>
     </Button>
   </Button.Props>
-)
+);
 ```
 
 The only difference from `createContext` is that the `createStyledContext`
@@ -21805,20 +21908,20 @@ functional component. It will still work nicely with the Tamagui themes and
 sizes, showing how you can use them together with external React components.
 
 ```tsx
-import { getTokens, useTheme } from '@tamagui/core'
-import * as React from 'react'
+import { getTokens, useTheme } from "@tamagui/core";
+import * as React from "react";
 
 const ButtonIcon = (props: { children: React.ReactNode }) => {
-  const { size } = React.useContext(ButtonContext)
-  const tokens = getTokens()
-  const smallerSize = tokens.size[size].val * 0.5
-  const theme = useTheme()
+  const { size } = React.useContext(ButtonContext);
+  const tokens = getTokens();
+  const smallerSize = tokens.size[size].val * 0.5;
+  const theme = useTheme();
   return React.cloneElement(props.children, {
     width: smallerSize,
     height: smallerSize,
     color: theme.color.get(),
-  })
-}
+  });
+};
 
 // add it to your Button:
 
@@ -21826,25 +21929,23 @@ export const Button = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
   Icon: ButtonIcon,
   Props: ButtonContext.Provider,
-})
+});
 ```
 
 Now we can use it like this, assuming your Icon accepts `width`, `height`, and
 `color`:
 
 ```tsx
-import { MyIcon } from 'some-icon-library'
+import { MyIcon } from "some-icon-library";
 
 export default () => (
   <Button size="$lg">
     <Button.Icon>
       <MyIcon />
     </Button.Icon>
-    <Button.Text>
-      Hello world
-    </Button.Text>
+    <Button.Text>Hello world</Button.Text>
   </Button>
-)
+);
 ```
 
 Of course you can make your `Button.Icon` work a bit differently if you'd like,
@@ -21878,25 +21979,26 @@ of that we'd still somehow accidentally break memoization or scoped values!
 
 title: Metro Guide
 description: How to set up Tamagui with Metro
+
 ---
 
 If you're using a monorepo, you probably want to use this Metro configuration in your `metro.config.js`:
 
 ```ts fileName="metro.config.js"
 // Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config')
+const { getDefaultConfig } = require("expo/metro-config");
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname, {
   // [Web-only]: Enables CSS support in Metro.
   isCSSEnabled: true,
-})
+});
 
 // Expo 49 issue: default metro config needs to include "mjs"
 // https://github.com/expo/expo/issues/23180
-config.resolver.sourceExts.push('mjs')
+config.resolver.sourceExts.push("mjs");
 
-module.exports = config
+module.exports = config;
 ```
 
 ## Web support
@@ -21913,21 +22015,21 @@ Then adjust your `metro.config.js`:
 
 ```tsx fileName="metro.config.js"
 // Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config')
+const { getDefaultConfig } = require("expo/metro-config");
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname, {
   // [Web-only]: Enables CSS support in Metro.
   isCSSEnabled: true,
-})
+});
 
 // add nice web support with optimizing compiler + CSS extraction
-const { withTamagui } = require('@tamagui/metro-plugin')
+const { withTamagui } = require("@tamagui/metro-plugin");
 module.exports = withTamagui(config, {
-  components: ['tamagui'],
-  config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-})
+  components: ["tamagui"],
+  config: "./tamagui.config.ts",
+  outputCSS: "./tamagui-web.css",
+});
 ```
 
 <Notice>
@@ -21940,6 +22042,7 @@ module.exports = withTamagui(config, {
 
 title: Next.js Guide
 description: How to set up Tamagui with Next.js
+
 ---
 
 <Notice theme="green">
@@ -21964,21 +22067,21 @@ yarn add @tamagui/next-plugin
 While you don't have to setup a config, we recommend starting with our default config which gives you media queries and other nice things:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui' // or '@tamagui/core'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui"; // or '@tamagui/core'
 
-const appConfig = createTamagui(defaultConfig)
+const appConfig = createTamagui(defaultConfig);
 
-export type AppConfig = typeof appConfig
+export type AppConfig = typeof appConfig;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
 }
 
-export default appConfig
+export default appConfig;
 ```
 
 From here, choose your Next.js routing option to continue:
@@ -22009,27 +22112,27 @@ From here, choose your Next.js routing option to continue:
 Set up the optional Tamagui plugin to `next.config.js`:
 
 ```tsx showMore fileName="next.config.js"
-const { withTamagui } = require('@tamagui/next-plugin')
+const { withTamagui } = require("@tamagui/next-plugin");
 
 module.exports = function (name, { defaultConfig }) {
   let config = {
     ...defaultConfig,
     // ...your configuration
-  }
+  };
   const tamaguiPlugin = withTamagui({
-    config: './tamagui.config.ts',
-    components: ['tamagui'],
-  })
+    config: "./tamagui.config.ts",
+    components: ["tamagui"],
+  });
   return {
     ...config,
     ...tamaguiPlugin(config),
-  }
-}
+  };
+};
 ```
 
 ### pages/\_document.tsx
 
-You'll want modify _document to add the global Tamagui styles using `tamaguiConfig.getCSS()` into the head element. If you are also using React Native, we can gather the `react-native-web` style with AppRegistry here as well.
+You'll want modify \_document to add the global Tamagui styles using `tamaguiConfig.getCSS()` into the head element. If you are also using React Native, we can gather the `react-native-web` style with AppRegistry here as well.
 
 ```tsx fileName="_document.tsx"
 import NextDocument, {
@@ -22038,18 +22141,18 @@ import NextDocument, {
   Html,
   Main,
   NextScript,
-} from 'next/document'
-import { StyleSheet } from 'react-native'
+} from "next/document";
+import { StyleSheet } from "react-native";
 
 // import the config you just exported from the tamagui.config.ts file
-import { config } from './tamagui.config'
+import { config } from "./tamagui.config";
 
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }: DocumentContext) {
-    const page = await renderPage()
+    const page = await renderPage();
 
     // @ts-ignore RN doesn't have this type
-    const rnwStyle = StyleSheet.getSheet()
+    const rnwStyle = StyleSheet.getSheet();
 
     return {
       ...page,
@@ -22068,7 +22171,7 @@ export default class Document extends NextDocument {
           />
         </>
       ),
-    }
+    };
   }
   render() {
     return (
@@ -22082,7 +22185,7 @@ export default class Document extends NextDocument {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 ```
@@ -22093,22 +22196,22 @@ Add `TamaguiProvider`:
 
 ```tsx fileName="tamagui.config.ts"
 // Optional: add the reset to get more consistent styles across browsers
-import '@tamagui/core/reset.css'
+import "@tamagui/core/reset.css";
 
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
-import Head from 'next/head'
-import React, { useMemo } from 'react'
-import { TamaguiProvider, createTamagui } from 'tamagui'
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import { AppProps } from "next/app";
+import Head from "next/head";
+import React, { useMemo } from "react";
+import { TamaguiProvider, createTamagui } from "tamagui";
 
 // import the config you just exported from the tamagui.config.ts file
-import { config } from './tamagui.config'
+import { config } from "./tamagui.config";
 
 export default function App({ Component, pageProps }: AppProps) {
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
-    return <Component {...pageProps} />
-  }, [pageProps])
+    return <Component {...pageProps} />;
+  }, [pageProps]);
 
   return (
     <>
@@ -22118,12 +22221,16 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NextThemeProvider>
-        <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
+        <TamaguiProvider
+          config={tamaguiConfig}
+          disableInjectCSS
+          disableRootThemeClass
+        >
           {contents}
         </TamaguiProvider>
       </NextThemeProvider>
     </>
-  )
+  );
 }
 ```
 
@@ -22143,31 +22250,31 @@ Here's how you'd set up your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
 // Optional: add the reset to get more consistent styles across browsers
-import '@tamagui/core/reset.css'
+import "@tamagui/core/reset.css";
 
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
-import Head from 'next/head'
-import React, { useMemo } from 'react'
-import { TamaguiProvider, createTamagui } from 'tamagui'
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import { AppProps } from "next/app";
+import Head from "next/head";
+import React, { useMemo } from "react";
+import { TamaguiProvider, createTamagui } from "tamagui";
 
 // you usually export this from a tamagui.config.ts file:
-import { defaultConfig } from '@tamagui/config/v4'
-const tamaguiConfig = createTamagui(defaultConfig)
+import { defaultConfig } from "@tamagui/config/v4";
+const tamaguiConfig = createTamagui(defaultConfig);
 
 // make TypeScript type everything based on your config
-type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
+type Conf = typeof tamaguiConfig;
+declare module "@tamagui/core" {
   interface TamaguiCustomConfig extends Conf {}
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = useRootTheme()
+  const [theme, setTheme] = useRootTheme();
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
-    return <Component {...pageProps} />
-  }, [pageProps])
+    return <Component {...pageProps} />;
+  }, [pageProps]);
 
   return (
     <>
@@ -22191,7 +22298,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </TamaguiProvider>
       </NextThemeProvider>
     </>
-  )
+  );
 }
 ```
 
@@ -22206,7 +22313,7 @@ const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
   outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-  disableExtraction: process.env.NODE_ENV === 'development" 
+  disableExtraction: process.env.NODE_ENV === 'development"
 })
 ```
 
@@ -22217,8 +22324,8 @@ const tamaguiPlugin = withTamagui({
 And then add this to include the CSS file generated at build-time:
 
 ```tsx fileName="_app.tsx"
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
+if (process.env.NODE_ENV === "production") {
+  require("../public/tamagui.css");
 }
 ```
 
@@ -22229,7 +22336,7 @@ Add `exclude` option to `getCSS()` in `_document.tsx`:
   <style
     dangerouslySetInnerHTML={{
       __html: tamaguiConfig.getCSS({
-        exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+        exclude: process.env.NODE_ENV === "production" ? "design-system" : null,
       }),
     }}
   />
@@ -22243,7 +22350,7 @@ To ensure font loads globally, add a global style to `styles` in `_document_.tsx
 ```tsx fileName="NextTamaguiProvider.tsx"
 <style jsx global>{`
   html {
-    font-family: 'Inter';
+    font-family: "Inter";
   }
 `}</style>
 ```
@@ -22255,7 +22362,7 @@ There is an optional CSS reset to get more consistent styles across browsers, th
 You can import it into your app like so:
 
 ```tsx fileName="_app.tsx"
-import '@tamagui/core/reset.css'
+import "@tamagui/core/reset.css";
 ```
 
 ## App router
@@ -22269,25 +22376,25 @@ Note that "use client" does render on the server, and since Tamagui extracts to 
 The Tamagui plugin is optional but helps with compatibility with the rest of the React Native ecosystem. It requires CommonJS for now as the optimizing compiler makes use of a variety of resolving features that haven't been ported to ESM yet. Be sure to rename your `next.config.mjs` to `next.config.js` before adding it:
 
 ```tsx fileName="next.config.js"
-const { withTamagui } = require('@tamagui/next-plugin')
+const { withTamagui } = require("@tamagui/next-plugin");
 
 module.exports = function (name, { defaultConfig }) {
   let config = {
     ...defaultConfig,
     // ...your configuration
-  }
+  };
 
   const tamaguiPlugin = withTamagui({
-    config: './tamagui.config.ts',
-    components: ['tamagui'],
+    config: "./tamagui.config.ts",
+    components: ["tamagui"],
     appDir: true,
-  })
+  });
 
   return {
     ...config,
     ...tamaguiPlugin(config),
-  }
-}
+  };
+};
 ```
 
 <Notice theme="blue">You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
@@ -22301,23 +22408,22 @@ Create a new component to add `TamaguiProvider`:
 </Notice>
 
 ```tsx fileName="NextTamaguiProvider.tsx"
-'use client'
+"use client";
 
-import '@tamagui/core/reset.css'
-import '@tamagui/polyfill-dev'
+import "@tamagui/core/reset.css";
+import "@tamagui/polyfill-dev";
 
-import { ReactNode } from 'react'
-import { StyleSheet } from 'react-native'
-import { useServerInsertedHTML } from 'next/navigation'
-import { NextThemeProvider } from '@tamagui/next-theme'
-import { TamaguiProvider } from 'tamagui'
-import tamaguiConfig from '../tamagui.config'
+import { ReactNode } from "react";
+import { StyleSheet } from "react-native";
+import { useServerInsertedHTML } from "next/navigation";
+import { NextThemeProvider } from "@tamagui/next-theme";
+import { TamaguiProvider } from "tamagui";
+import tamaguiConfig from "../tamagui.config";
 
 export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
-
   useServerInsertedHTML(() => {
     // @ts-ignore
-    const rnwStyle = StyleSheet.getSheet()
+    const rnwStyle = StyleSheet.getSheet();
     return (
       <>
         <style
@@ -22332,8 +22438,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
           }}
         />
       </>
-    )
-  })
+    );
+  });
 
   return (
     <NextThemeProvider skipNextHead>
@@ -22341,8 +22447,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
-  )
-}
+  );
+};
 ```
 
 <Notice theme="green">
@@ -22353,23 +22459,27 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 Then add it to your `app/layout.tsx`:
 
 ```tsx fileName="layout.tsx"
-import { Metadata } from 'next'
-import { NextTamaguiProvider } from './NextTamaguiProvider'
+import { Metadata } from "next";
+import { NextTamaguiProvider } from "./NextTamaguiProvider";
 
 export const metadata: Metadata = {
-  title: 'Your page title',
-  description: 'Your page description',
-  icons: '/favicon.ico',
-}
+  title: "Your page title",
+  description: "Your page description",
+  icons: "/favicon.ico",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
         <NextTamaguiProvider>{children}</NextTamaguiProvider>
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -22382,12 +22492,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 Now you're ready to start adding components to `app/page.tsx`:
 
 ```tsx fileName="page.tsx"
-'use client'
+"use client";
 
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
 export default function Home() {
-  return <Button>Hello world!</Button>
+  return <Button>Hello world!</Button>;
 }
 ```
 
@@ -22402,26 +22512,26 @@ yarn add @tamagui/next-theme
 Here's how you'd set up your `NextTamaguiProvider.tsx`:
 
 ```tsx fileName="NextTamaguiProvider.tsx"
-'use client'
+"use client";
 
-import '@tamagui/core/reset.css'
-import '@tamagui/font-inter/css/400.css'
-import '@tamagui/font-inter/css/700.css'
-import '@tamagui/polyfill-dev'
+import "@tamagui/core/reset.css";
+import "@tamagui/font-inter/css/400.css";
+import "@tamagui/font-inter/css/700.css";
+import "@tamagui/polyfill-dev";
 
-import { ReactNode } from 'react'
-import { StyleSheet } from 'react-native'
-import { useServerInsertedHTML } from 'next/navigation'
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { TamaguiProvider } from 'tamagui'
-import tamaguiConfig from '../tamagui.config'
+import { ReactNode } from "react";
+import { StyleSheet } from "react-native";
+import { useServerInsertedHTML } from "next/navigation";
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import { TamaguiProvider } from "tamagui";
+import tamaguiConfig from "../tamagui.config";
 
 export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useRootTheme()
+  const [theme, setTheme] = useRootTheme();
 
   useServerInsertedHTML(() => {
     // @ts-ignore
-    const rnwStyle = StyleSheet.getSheet()
+    const rnwStyle = StyleSheet.getSheet();
     return (
       <>
         {/* Link your CSS output for optimized themes */}
@@ -22435,13 +22545,14 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
             __html: tamaguiConfig.getCSS({
               // if you are using "outputCSS" option, you should use this "exclude"
               // if not, then you can leave the option out
-              exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+              exclude:
+                process.env.NODE_ENV === "production" ? "design-system" : null,
             }),
           }}
         />
       </>
-    )
-  })
+    );
+  });
 
   return (
     <NextThemeProvider
@@ -22449,15 +22560,19 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
       // change default theme (system) here:
       // defaultTheme="light"
       onChangeTheme={(next) => {
-        setTheme(next as any)
+        setTheme(next as any);
       }}
     >
-      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
+      <TamaguiProvider
+        config={tamaguiConfig}
+        disableRootThemeClass
+        defaultTheme={theme}
+      >
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
-  )
-}
+  );
+};
 ```
 
 ### Performance
@@ -22469,7 +22584,7 @@ const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
   outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-  disableExtraction: process.env.NODE_ENV === 'development" 
+  disableExtraction: process.env.NODE_ENV === 'development"
 })
 ```
 
@@ -22485,7 +22600,7 @@ Add `exclude` option to `useServerInsertedHTML` in `NextTamaguiProvider`:
     __html: tamaguiConfig.getCSS({
       // if you are using "outputCSS" option, you should use this "exclude"
       // if not, then you can leave the option out
-      exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+      exclude: process.env.NODE_ENV === "production" ? "design-system" : null,
     }),
   }}
 />
@@ -22498,7 +22613,7 @@ To ensure font loads globally, add a global style to `useServerInsertedHTML` in 
 ```tsx fileName="NextTamaguiProvider.tsx"
 <style jsx global>{`
   html {
-    font-family: 'Inter';
+    font-family: "Inter";
   }
 `}</style>
 ```
@@ -22510,7 +22625,7 @@ There is an optional CSS reset to get more consistent styles across browsers, th
 You can import it into your app like so:
 
 ```tsx fileName="NextTamaguiProvider.tsx"
-import '@tamagui/core/reset.css'
+import "@tamagui/core/reset.css";
 ```
 
 ## NextThemeProvider
@@ -22518,74 +22633,74 @@ import '@tamagui/core/reset.css'
 The `NextThemeProvider` is a provider that allows you to set the theme for your app. It also provides a hook to access the current theme and a function to change the theme.
 
 <PropsTable
-  data={[
-    {
-      name: 'skipNextHead',
-      required: false,
-      type: 'boolean',
-      description: `Required in app router. The internal usage of next/head is not supported in the app directory, so you need to add it.`,
-    },
-    {
-      name: 'enableSystem',
-      required: false,
-      type: 'boolean',
-      description: `Whether to switch between dark and light themes based on prefers-color-scheme.`,
-    },
-    {
-      name: 'defaultTheme',
-      required: false,
-      type: 'string',
-      description: 'If enableSystem is `false`, the default theme is light. Default theme name (for v0.0.12 and lower the default was light).',
-    },
-    {
-      name: 'forcedTheme',
-      required: false,
-      type: 'string',
-      description: 'Forced theme name for the current page.',
-    },
-    {
-      name: 'onChangeTheme',
-      required: false,
-      type: '(name: string) => void',
-      description: 'Used to change the current theme. The function receives the theme name as a parameter.',
-    },
-    {
-      name: 'systemTheme',
-      required: false,
-      type: 'string',
-      description: 'System theme name for the current page.',
-    },
-    {
-      name: 'enableColorScheme',
-      required: false,
-      type: 'boolean',
-      description: `Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons.`,
-    },
-    {
-      name: 'disableTransitionOnChange',
-      required: false,
-      type: 'boolean',
-      description: `Disable all CSS transitions when switching themes.`,
-    },
-    {
-      name: 'storageKey',
-      required: false,
-      type: 'string',
-      description: `Key used to store theme setting in localStorage.`,
-    },
-    {
-      name: 'themes',
-      required: false,
-      type: 'string[]',
-      description: `List of all available theme names.`,
-    },
-    {
-      name: 'value',
-      required: false,
-      type: 'ValueObject',
-      description: `Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value.`,
-    },
-  ]}
+data={[
+{
+name: 'skipNextHead',
+required: false,
+type: 'boolean',
+description: `Required in app router. The internal usage of next/head is not supported in the app directory, so you need to add it.`,
+},
+{
+name: 'enableSystem',
+required: false,
+type: 'boolean',
+description: `Whether to switch between dark and light themes based on prefers-color-scheme.`,
+},
+{
+name: 'defaultTheme',
+required: false,
+type: 'string',
+description: 'If enableSystem is `false`, the default theme is light. Default theme name (for v0.0.12 and lower the default was light).',
+},
+{
+name: 'forcedTheme',
+required: false,
+type: 'string',
+description: 'Forced theme name for the current page.',
+},
+{
+name: 'onChangeTheme',
+required: false,
+type: '(name: string) => void',
+description: 'Used to change the current theme. The function receives the theme name as a parameter.',
+},
+{
+name: 'systemTheme',
+required: false,
+type: 'string',
+description: 'System theme name for the current page.',
+},
+{
+name: 'enableColorScheme',
+required: false,
+type: 'boolean',
+description: `Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons.`,
+},
+{
+name: 'disableTransitionOnChange',
+required: false,
+type: 'boolean',
+description: `Disable all CSS transitions when switching themes.`,
+},
+{
+name: 'storageKey',
+required: false,
+type: 'string',
+description: `Key used to store theme setting in localStorage.`,
+},
+{
+name: 'themes',
+required: false,
+type: 'string[]',
+description: `List of all available theme names.`,
+},
+{
+name: 'value',
+required: false,
+type: 'ValueObject',
+description: `Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value.`,
+},
+]}
 />
 
 ### Theme toggle
@@ -22593,22 +22708,24 @@ The `NextThemeProvider` is a provider that allows you to set the theme for your 
 If you need to access the current theme, say for a toggle button, you will then use the `useThemeSetting` hook. We'll release an update in the future that makes this automatically work better with Tamagui's built-in `useThemeSetting`.
 
 ```tsx fileName="SwitchThemeButton.tsx"
-import { useState } from 'react'
-import { Button, useIsomorphicLayoutEffect } from 'tamagui'
-import { useThemeSetting, useRootTheme } from '@tamagui/next-theme'
+import { useState } from "react";
+import { Button, useIsomorphicLayoutEffect } from "tamagui";
+import { useThemeSetting, useRootTheme } from "@tamagui/next-theme";
 
 export const SwitchThemeButton = () => {
-  const themeSetting = useThemeSetting()
-  const [theme] = useRootTheme()
+  const themeSetting = useThemeSetting();
+  const [theme] = useRootTheme();
 
-  const [clientTheme, setClientTheme] = useState<string | undefined>('light')
+  const [clientTheme, setClientTheme] = useState<string | undefined>("light");
 
   useIsomorphicLayoutEffect(() => {
-    setClientTheme(themeSetting.forcedTheme || themeSetting.current || theme)
-  }, [themeSetting.current, themeSetting.resolvedTheme])
+    setClientTheme(themeSetting.forcedTheme || themeSetting.current || theme);
+  }, [themeSetting.current, themeSetting.resolvedTheme]);
 
-  return <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
-}
+  return (
+    <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
+  );
+};
 ```
 
 ## guides/one
@@ -22617,6 +22734,7 @@ export const SwitchThemeButton = () => {
 
 title: One Guide
 description: How to set up Tamagui with One
+
 ---
 
 [One](https://onestack.dev) is a React framework for web, iOS, and Android, built on the power of Vite. It offers seamless cross-platform development capabilities and integrates well with Tamagui.
@@ -22640,17 +22758,17 @@ yarn add tamagui @tamagui/config
 Create a `tamagui.config.ts` file in your project root:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { defaultConfig } from "@tamagui/config/v4";
+import { createTamagui } from "tamagui";
 
-const tamaguiConfig = createTamagui(defaultConfig)
+const tamaguiConfig = createTamagui(defaultConfig);
 
-export default tamaguiConfig
+export default tamaguiConfig;
 
 // this is important!
-export type Conf = typeof tamaguiConfig
+export type Conf = typeof tamaguiConfig;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends Conf {}
 }
 ```
@@ -22658,20 +22776,20 @@ declare module 'tamagui' {
 Update your `vite.config.ts`:
 
 ```tsx fileName="vite.config.ts"
-import { one } from 'one/vite'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import type { UserConfig } from 'vite'
+import { one } from "one/vite";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
+import type { UserConfig } from "vite";
 
 export default {
   plugins: [
     one({
       web: {
-        defaultRenderMode: 'ssg',
+        defaultRenderMode: "ssg",
       },
     }),
     tamaguiPlugin({
-      config: './tamagui.config.ts',
-      components: ['tamagui'],
+      config: "./tamagui.config.ts",
+      components: ["tamagui"],
     }),
   ],
 
@@ -22681,16 +22799,13 @@ export default {
   },
 
   optimizeDeps: {
-    include: [
-      '@tamagui/core',
-      '@tamagui/config',
-    ],
+    include: ["@tamagui/core", "@tamagui/config"],
   },
 
   build: {
-    cssTarget: 'safari15',
+    cssTarget: "safari15",
   },
-} satisfies UserConfig
+} satisfies UserConfig;
 ```
 
 ## Setup Tamagui Provider
@@ -22698,16 +22813,16 @@ export default {
 Update your root layout file (typically `app/_layout.tsx`):
 
 ```tsx fileName="app/_layout.tsx"
-import { TamaguiProvider } from 'tamagui'
-import { Slot } from 'one'
-import config from '../tamagui.config'
+import { TamaguiProvider } from "tamagui";
+import { Slot } from "one";
+import config from "../tamagui.config";
 
 export default function Layout() {
   return (
     <TamaguiProvider config={config}>
       <Slot />
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
@@ -22716,7 +22831,7 @@ export default function Layout() {
 Now you can use Tamagui components in your One app:
 
 ```tsx fileName="app/index.tsx"
-import { Button, Text, YStack } from 'tamagui'
+import { Button, Text, YStack } from "tamagui";
 
 export default function Home() {
   return (
@@ -22724,7 +22839,7 @@ export default function Home() {
       <Text fontSize="$6">Welcome to Tamagui with One!</Text>
       <Button>Click me</Button>
     </YStack>
-  )
+  );
 }
 ```
 
@@ -22733,13 +22848,13 @@ export default function Home() {
 To support light and dark modes, you can use One's built-in color scheme support along with Tamagui's theming system. Update your root layout:
 
 ```tsx fileName="app/_layout.tsx"
-import { TamaguiProvider, Theme } from 'tamagui'
-import { Slot } from 'one'
-import { useColorScheme } from 'react-native'
-import config from '../tamagui.config'
+import { TamaguiProvider, Theme } from "tamagui";
+import { Slot } from "one";
+import { useColorScheme } from "react-native";
+import config from "../tamagui.config";
 
 export default function Layout() {
-  const colorScheme = useColorScheme()
+  const colorScheme = useColorScheme();
 
   return (
     <TamaguiProvider config={config} defaultTheme={colorScheme}>
@@ -22747,7 +22862,7 @@ export default function Layout() {
         <Slot />
       </Theme>
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
@@ -22757,16 +22872,17 @@ For better performance, you can use the `outputCSS` option in the Tamagui Vite p
 
 ```tsx fileName="vite.config.ts"
 tamaguiPlugin({
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-})
+  config: "./tamagui.config.ts",
+  components: ["tamagui"],
+  outputCSS:
+    process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+});
 ```
 
 Then import the CSS in your root layout:
 
 ```tsx fileName="app/_layout.tsx"
-import '../public/tamagui.css'
+import "../public/tamagui.css";
 // ... rest of your imports and component
 ```
 
@@ -22781,6 +22897,7 @@ You now have Tamagui set up with [One](https://onestack.dev)! You can start buil
 title: Creating Themes with Tamagui
 description: Learn how to create a suite of themes for a Tamagui app
 demoName: ThemeBuilder
+
 ---
 
 <HeroContainer noScroll>
@@ -22803,16 +22920,16 @@ We've also released [Theme](/theme), a free point-and-click way to create themes
 At it's simplest, `createThemes` is as simple as:
 
 ```tsx
-import { createThemes } from '@tamagui/theme-builder'
+import { createThemes } from "@tamagui/theme-builder";
 
 export const themes = createThemes({
   base: {
     palette: {
-      dark: ['#000', '#fff'],
-      light: ['#fff', '#000'],
-    }
+      dark: ["#000", "#fff"],
+      light: ["#fff", "#000"],
+    },
   },
-})
+});
 ```
 
 Which will generate `light` and `dark` themes, spreading your palette colors between 1 and 12, and adding component themes.
@@ -22872,12 +22989,12 @@ Under the hood, `createThemes` uses `createThemeBuilder`. It's a very powerful w
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, and themes:
 
 ```tsx
-import { createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder } from "@tamagui/theme-builder";
 
 const themesBuilder = createThemeBuilder()
   .addPalettes({
-    dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
-    light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
+    dark: ["#000", "#111", "#222", "#999", "#ccc", "#eee", "#fff"],
+    light: ["#fff", "#eee", "#ccc", "#999", "#222", "#111", "#000"],
   })
   .addTemplates({
     base: {
@@ -22887,42 +23004,42 @@ const themesBuilder = createThemeBuilder()
     subtle: {
       background: 1,
       color: -1,
-    }
+    },
   })
   .addThemes({
     light: {
-      template: 'base',
-      palette: 'light',
+      template: "base",
+      palette: "light",
     },
     dark: {
-      template: 'base',
-      palette: 'dark',
+      template: "base",
+      palette: "dark",
     },
   })
   .addChildThemes({
     subtle: {
-      template: 'subtle',
+      template: "subtle",
     },
-  })
+  });
 
-export const themes = themesBuilder.build()
+export const themes = themesBuilder.build();
 ```
 
 To optionally set up your compiler to automatically watch and build your themes at build-time (to save some bundle size), add the following to your compiler config (for example with Next.js):
 
 ```tsx
 withTamagui({
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
+  config: "./tamagui.config.ts",
+  components: ["tamagui"],
 
   // input is the file that imports @tamagui/theme-builder
   // and has an `export const themes`
   // output is then the file you import and use with your `createTamagui`
   themeBuilder: {
-    input: './themes-input.tsx',
-    output: './themes.tsx',
+    input: "./themes-input.tsx",
+    output: "./themes.tsx",
   },
-})
+});
 ```
 
 You can also use the new `@tamagui/cli` package to enable `npx @tamagui/cli generate-themes ./src/themes-in.ts ./src/themes-out.ts`.
@@ -22964,19 +23081,19 @@ Here's that same palette in code (the `dark_blue` one):
 
 ```tsx
 const dark_blue = [
-  'hsl(212, 35.0%, 9.2%)', // background
-  'hsl(216, 50.0%, 11.8%)',
-  'hsl(214, 59.4%, 15.3%)',
-  'hsl(214, 65.8%, 17.9%)',
-  'hsl(213, 71.2%, 20.2%)',
-  'hsl(212, 77.4%, 23.1%)',
-  'hsl(211, 85.1%, 27.4%)',
-  'hsl(211, 89.7%, 34.1%)',
-  'hsl(206, 100%, 50.0%)',
-  'hsl(209, 100%, 60.6%)',
-  'hsl(210, 100%, 66.1%)',
-  'hsl(206, 98.0%, 95.8%)', // foreground
-]
+  "hsl(212, 35.0%, 9.2%)", // background
+  "hsl(216, 50.0%, 11.8%)",
+  "hsl(214, 59.4%, 15.3%)",
+  "hsl(214, 65.8%, 17.9%)",
+  "hsl(213, 71.2%, 20.2%)",
+  "hsl(212, 77.4%, 23.1%)",
+  "hsl(211, 85.1%, 27.4%)",
+  "hsl(211, 89.7%, 34.1%)",
+  "hsl(206, 100%, 50.0%)",
+  "hsl(209, 100%, 60.6%)",
+  "hsl(210, 100%, 66.1%)",
+  "hsl(206, 98.0%, 95.8%)", // foreground
+];
 ```
 
 Palettes are great for a design system because they constrain your color choices to a consistent scale. Designs look better when they have constraints.
@@ -23008,39 +23125,42 @@ The `tamagui` components have standardized on the following minimum theme, so if
 
 ```tsx
 {
-  background: string
-  backgroundFocus: string
-  backgroundHover: string
-  backgroundPress: string
-  borderColor: string
-  borderColorFocus: string
-  borderColorHover: string
-  borderColorPress: string
-  color: string
-  colorFocus: string
-  colorHover: string
-  colorPress: string
-  colorTransparent: string
-  placeholderColor: string
-  shadowColor: string
-  shadowColorFocus: string
-  shadowColorHover: string
-  shadowColorPress: string
+  background: string;
+  backgroundFocus: string;
+  backgroundHover: string;
+  backgroundPress: string;
+  borderColor: string;
+  borderColorFocus: string;
+  borderColorHover: string;
+  borderColorPress: string;
+  color: string;
+  colorFocus: string;
+  colorHover: string;
+  colorPress: string;
+  colorTransparent: string;
+  placeholderColor: string;
+  shadowColor: string;
+  shadowColorFocus: string;
+  shadowColorHover: string;
+  shadowColorPress: string;
 }
 ```
 
 We could make a quick and hard-coded function that takes a template + palette and returns a theme, just to illustrate how they are used:
 
 ```tsx
-const createTheme = (palette: string[], colorTemplate: {
-  background: number
-  color: number
-}) => ({
+const createTheme = (
+  palette: string[],
+  colorTemplate: {
+    background: number;
+    color: number;
+  },
+) => ({
   background: palette[colorTemplate.background],
   color: palette[colorTemplate.color],
-})
+});
 
-createTheme(dark_blue, { background: 0, color: 11 })
+createTheme(dark_blue, { background: 0, color: 11 });
 // => {
 //   background: 'hsl(212, 35.0%, 9.2%)',
 //   color: 'hsl(206, 98.0%, 95.8%)'
@@ -23060,10 +23180,10 @@ In this case, we'd call `createTheme` with the same template, just changing out 
 const colorTemplate = {
   background: 0,
   color: 12,
-}
+};
 
-const blue_theme = createTheme(bluePalette, colorTemplate)
-const red_theme = createTheme(redPalette, colorTemplate)
+const blue_theme = createTheme(bluePalette, colorTemplate);
+const red_theme = createTheme(redPalette, colorTemplate);
 ```
 
 This is nice. We can share a template but pass in different palettes, ensuring we can generate consistent themes but swap out for different palettes.
@@ -23076,33 +23196,33 @@ Let's take a quick detour. Tamagui themes can nest as many times as you want. Th
 
 ```tsx
 const dark = {
-  background: 'black',
-  color: 'white',
-}
+  background: "black",
+  color: "white",
+};
 
 const dark_subtle = {
-  background: '#222', // not as dark as black
-  color: '#ccc', // not as light as white
-}
+  background: "#222", // not as dark as black
+  color: "#ccc", // not as light as white
+};
 
 createTamagui({
   themes: {
     dark,
     dark_subtle,
   },
-})
+});
 ```
 
 Note the `_subtle`. An underscore defines a sub-theme, so `dark_subtle` is a sub-theme of `dark`. In your code you can now do this:
 
 ```tsx
-import { View, Theme, styled } from '@tamagui/core'
+import { View, Theme, styled } from "@tamagui/core";
 
 const Square = styled(View, {
-  background: '$background',
+  background: "$background",
   width: 100,
   height: 100,
-})
+});
 
 export default () => (
   <Theme name="dark">
@@ -23114,7 +23234,7 @@ export default () => (
       <Square />
     </Theme>
   </Theme>
-)
+);
 ```
 
 Sub-themes are amazing - they avoid a trap that you can fall into when designing screens where you decide you want a different look for an area, so you go off and change all the color values. But then later on you want to share that area somewhere else, or perhaps you just change your mind and want to revert the feel. In those two cases you'd either be stuck refactoring the whole area to accept two or more sets of ternaries on every color value, or you'd have to manually go through and change all the values by hand.
@@ -23126,14 +23246,14 @@ Where it gets interesting is in a final feature of sub-themes: component themes,
 Taking our example above, we can add a `name` to our `styled` call:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from "@tamagui/core";
 
 const Square = styled(View, {
-  name: 'Square',
-  backgroundColor: '$background',
+  name: "Square",
+  backgroundColor: "$background",
   width: 100,
   height: 100,
-})
+});
 ```
 
 And just like that, if we define a `_Square` sub-theme, any usage of `<Square />` will pick it up:
@@ -23142,13 +23262,13 @@ And just like that, if we define a `_Square` sub-theme, any usage of `<Square />
 // in your tamagui.config.ts:
 
 const dark_Square = {
-  background: 'darkblue',
-}
+  background: "darkblue",
+};
 
 export const themes = {
   dark,
   dark_Square,
-}
+};
 
 // in your app:
 
@@ -23166,7 +23286,7 @@ export default () => (
         */}
     </Theme>
   </>
-)
+);
 ```
 
 This is how Tamagui "solves" themes. It gives you incredible power to re-skin the entire interface without having to touch any code. It's not mandatory - you can always just go in and change the color values inline as you please. But it does mean that we (and your team) can ship components and screens that can be completely re-skinned at any point in the tree.
@@ -23180,12 +23300,12 @@ Now that we have all the required context to understand palettes and templates, 
 Let's get back to our minimal example:
 
 ```tsx
-import { createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder } from "@tamagui/theme-builder";
 
 const themesBuilder = createThemeBuilder()
   .addPalettes({
-    dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
-    light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
+    dark: ["#000", "#111", "#222", "#999", "#ccc", "#eee", "#fff"],
+    light: ["#fff", "#eee", "#ccc", "#999", "#222", "#111", "#000"],
   })
   .addTemplates({
     base: {
@@ -23195,25 +23315,25 @@ const themesBuilder = createThemeBuilder()
     subtle: {
       background: 1,
       color: -1,
-    }
+    },
   })
   .addThemes({
     light: {
-      template: 'base',
-      palette: 'light',
+      template: "base",
+      palette: "light",
     },
     dark: {
-      template: 'base',
-      palette: 'dark',
+      template: "base",
+      palette: "dark",
     },
   })
   .addChildThemes({
     subtle: {
-      template: 'subtle',
+      template: "subtle",
     },
-  })
+  });
 
-export const themes = themesBuilder.build()
+export const themes = themesBuilder.build();
 ```
 
 This is the full API, minus some optional extra props that each function takes. Calling `themesBuilder.build()` will generate the following:
@@ -23245,6 +23365,7 @@ This is the full API, minus some optional extra props that each function takes. 
 
 title: Vite Guide
 description: How to set up Tamagui with Vite
+
 ---
 
 Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
@@ -23272,55 +23393,55 @@ yarn add @tamagui/vite-plugin
 Update your `vite.config.ts`:
 
 ```tsx fileName="vite.config.ts"
-import react from '@vitejs/plugin-react-swc'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import react from "@vitejs/plugin-react-swc";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 
 export default {
   plugins: [
     react(),
     tamaguiPlugin({
       // points to your tamagui config file
-      config: 'src/tamagui.config.ts',
+      config: "src/tamagui.config.ts",
       // points to any linked packages or node_modules
       // that have tamagui components to optimize
-      components: ['tamagui'],
+      components: ["tamagui"],
       // turns on the optimizing compiler
       optimize: true,
     }),
   ].filter(Boolean),
-}
+};
 ```
 
 Or a minimal manual setup for Vite that just adds some compatibility for react-native-web and react-native extensions:
 
 ```tsx showMore
 config.define = {
-  __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-}
+  __DEV__: `${process.env.NODE_ENV === "development" ? true : false}`,
+  "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+};
 
-config.resolve.alias['react-native'] = 'react-native-web'
+config.resolve.alias["react-native"] = "react-native-web";
 
 // set up web extensions
 config.optimizeDeps.esbuildOptions = {
   ...config.optimizeDeps.esbuildOptions,
   resolveExtensions: [
-    '.web.js',
-    '.web.jsx',
-    '.web.ts',
-    '.web.tsx',
-    '.mjs',
-    '.js',
-    '.mts',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json',
+    ".web.js",
+    ".web.jsx",
+    ".web.ts",
+    ".web.tsx",
+    ".mjs",
+    ".js",
+    ".mts",
+    ".ts",
+    ".jsx",
+    ".tsx",
+    ".json",
   ],
   loader: {
-    '.js': 'jsx',
+    ".js": "jsx",
   },
-}
+};
 ```
 
 ## guides/webpack
@@ -23329,6 +23450,7 @@ config.optimizeDeps.esbuildOptions = {
 
 title: Webpack Guide
 description: How to set up Tamagui with Webpack
+
 ---
 
 First, install [webpack and webpack-cli](https://webpack.js.org/guides/installation/):
@@ -23348,14 +23470,14 @@ yarn add -D tamagui-loader
 You can then use the plugin in `webpack.config.js`:
 
 ```tsx fileName="webpack.config.js"
-const { TamaguiPlugin } = require('tamagui-loader')
+const { TamaguiPlugin } = require("tamagui-loader");
 
 config.plugins.push(
   new TamaguiPlugin({
-    config: './src/tamagui.config.ts',
-    components: ['tamagui'],
+    config: "./src/tamagui.config.ts",
+    components: ["tamagui"],
   }),
-)
+);
 ```
 
 Or use a minimal manual setup:
@@ -23366,24 +23488,24 @@ config.plugins.push(
   new webpack.DefinePlugin({
     process: {
       env: {
-        __DEV__: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+        __DEV__: process.env.NODE_ENV === "development" ? "true" : "false",
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
     },
-  })
-)
+  }),
+);
 
-config.resolve.alias['react-native$'] = 'react-native-web'
+config.resolve.alias["react-native$"] = "react-native-web";
 
 // set up web extensions
 compiler.options.resolve.extensions = [
-  '.web.tsx',
-  '.web.ts',
-  '.web.js',
-  '.ts',
-  '.tsx',
-  '.js',
-]
+  ".web.tsx",
+  ".web.ts",
+  ".web.js",
+  ".ts",
+  ".tsx",
+  ".js",
+];
 ```
 
 ## Usage
@@ -23406,6 +23528,7 @@ yarn run webpack serve
 
 title: Benchmarks
 description: Performance tests and comparisons
+
 ---
 
 Tamagui compares well to the fastest libraries at runtime, and the compiler further optimizes your styled components, flattening them down and hoisting objects out of your rendering loop (and extracting CSS on the web).
@@ -23433,14 +23556,14 @@ We forked and ran a few more [benchmarks](https://github.com/tamagui/tamagui/tre
 Timing rendering a simple custom component.
 
 <BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.018 },
-    { name: 'RNW', value: 0.057 },
-    { name: 'Dripsy', value: 0.042 },
-    { name: 'NativeBase', value: 0.67 },
-    { name: 'Stitches', value: 0.023 },
-    { name: 'Emotion', value: 0.041 },
-  ]}
+data={[
+{ name: 'Tamagui', value: 0.018 },
+{ name: 'RNW', value: 0.057 },
+{ name: 'Dripsy', value: 0.042 },
+{ name: 'NativeBase', value: 0.67 },
+{ name: 'Stitches', value: 0.023 },
+{ name: 'Emotion', value: 0.041 },
+]}
 />
 
 ### Updating variants
@@ -23448,15 +23571,15 @@ Timing rendering a simple custom component.
 Changing variants is fast at runtime, and even faster when compiled:
 
 <BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.02 },
-    { name: 'RNW', value: 0.063 },
-    { name: 'Dripsy', value: 0.108 },
-    { name: 'NativeBase', value: 0.73 },
-    { name: 'Stitches', value: 0.037 },
-    { name: 'Emotion', value: 0.069 },
-    { name: 'SC', value: 0.081 },
-  ]}
+data={[
+{ name: 'Tamagui', value: 0.02 },
+{ name: 'RNW', value: 0.063 },
+{ name: 'Dripsy', value: 0.108 },
+{ name: 'NativeBase', value: 0.73 },
+{ name: 'Stitches', value: 0.037 },
+{ name: 'Emotion', value: 0.069 },
+{ name: 'SC', value: 0.081 },
+]}
 />
 
 > Since styled-components and Emotion don't offer a first-class variant API, this was done via prop interpolation.
@@ -23466,14 +23589,14 @@ Changing variants is fast at runtime, and even faster when compiled:
 Tamagui has a big advantage for inline styles, it's the only library to compile them and flatten the tree.
 
 <BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.025 },
-    { name: 'RNW', value: 0.06 },
-    { name: 'Dripsy', value: 0.266 },
-    { name: 'NativeBase', value: 0.8 },
-    { name: 'Stitches', value: 0.027 },
-    { name: 'Emotion', value: 0.047 },
-  ]}
+data={[
+{ name: 'Tamagui', value: 0.025 },
+{ name: 'RNW', value: 0.06 },
+{ name: 'Dripsy', value: 0.266 },
+{ name: 'NativeBase', value: 0.8 },
+{ name: 'Stitches', value: 0.027 },
+{ name: 'Emotion', value: 0.047 },
+]}
 />
 
 ---
@@ -23483,12 +23606,12 @@ Tamagui has a big advantage for inline styles, it's the only library to compile 
 These benchmarks don't benefit from the compiler. The React Native API surface is much more feature-rich than DOM.
 
 <BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 31.0 },
-    { name: 'Dripsy', value: 57.5 },
-    { name: 'Stitches', value: 14.5 },
-    { name: 'Emotion', value: 49.01 },
-  ]}
+data={[
+{ name: 'Tamagui', value: 31.0 },
+{ name: 'Dripsy', value: 57.5 },
+{ name: 'Stitches', value: 14.5 },
+{ name: 'Emotion', value: 49.01 },
+]}
 />
 
 - NativeBase - couldn't get running
@@ -23500,13 +23623,13 @@ These benchmarks don't benefit from the compiler. The React Native API surface i
 In this test, we mount a tree with many nested nodes.
 
 <BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 18.61 },
-    { name: 'Dripsy', value: 44.43 },
-    { name: 'Stitches', value: 8.32 },
-    { name: 'Emotion', value: 42.49 },
-    { name: 'SC', value: 51.4 },
-  ]}
+data={[
+{ name: 'Tamagui', value: 18.61 },
+{ name: 'Dripsy', value: 44.43 },
+{ name: 'Stitches', value: 8.32 },
+{ name: 'Emotion', value: 42.49 },
+{ name: 'SC', value: 51.4 },
+]}
 />
 
 - SC - Styled Components
@@ -23518,8 +23641,7 @@ In this test, we mount a tree with many nested nodes.
 
 ---
 
-title: Colors
----
+## title: Colors
 
 <Notice theme="blue">
   This is the Tamagui documentation sites [own color
@@ -23539,6 +23661,7 @@ title: Colors
 
 title: Tamagui Compiler
 description: Adding the compiler to your apps
+
 ---
 
 <IntroParagraph>
@@ -23579,27 +23702,27 @@ Add `tamagui-loader` and set up your `webpack.config.js`.
 You can set it up more manually like so:
 
 ```js
-const { shouldExclude } = require('tamagui-loader')
+const { shouldExclude } = require("tamagui-loader");
 
 const tamaguiOptions = {
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  importsWhitelist: ['constants.js', 'colors.js'],
+  config: "./tamagui.config.ts",
+  components: ["tamagui"],
+  importsWhitelist: ["constants.js", "colors.js"],
   logTimings: true,
-  disableExtraction: process.env.NODE_ENV === 'development',
+  disableExtraction: process.env.NODE_ENV === "development",
   // optional advanced optimization of styled() definitions within your app itself, not just ones in your components option
   // default is false
   enableDynamicEvaluation: false,
-}
+};
 
 module.exports = {
   resolve: {
     alias: {
       // Resolve react-native to react-native-web
-      'react-native$': require.resolve('react-native-web'),
+      "react-native$": require.resolve("react-native-web"),
       // optional, for lighter svg icons on web
-      'react-native-svg': require.resolve('@tamagui/react-native-svg'),
-    }
+      "react-native-svg": require.resolve("@tamagui/react-native-svg"),
+    },
   },
   module: {
     rules: [
@@ -23607,43 +23730,43 @@ module.exports = {
         test: /\.[jt]sx?$/,
         // you'll likely want to adjust this helper function,
         // but it serves as a decent start that you can copy/paste from
-        exclude: path => shouldExclude(path, __dirname, tamaguiOptions),
+        exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
         use: [
           // optionally thread-loader for significantly faster compile!
-          'thread-loader',
+          "thread-loader",
 
           // works nicely alongside esbuild
           {
-            loader: 'esbuild-loader',
+            loader: "esbuild-loader",
           },
 
           {
-            loader: 'tamagui-loader',
+            loader: "tamagui-loader",
             options: tamaguiOptions,
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
-}
+};
 ```
 
 Or you can use the TamaguiPlugin which automates some of this setup for you:
 
 ```tsx
-const { TamaguiPlugin } = require('tamagui-loader')
+const { TamaguiPlugin } = require("tamagui-loader");
 
 module.exports = {
   plugins: [
     new TamaguiPlugin({
-      config: './tamagui.config.ts',
-      components: ['tamagui'],
-      importsWhitelist: ['constants.js', 'colors.js'],
+      config: "./tamagui.config.ts",
+      components: ["tamagui"],
+      importsWhitelist: ["constants.js", "colors.js"],
       logTimings: true,
-      disableExtraction: process.env.NODE_ENV === 'development',
+      disableExtraction: process.env.NODE_ENV === "development",
     }),
   ],
-}
+};
 ```
 
 Some notes on the options:
@@ -23662,21 +23785,21 @@ See the [Vite guide](/docs/guides/vite) for more complete setup.
 Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
 
 ```tsx
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 
 export default defineConfig({
   plugins: [
     tamaguiPlugin({
       // points to your tamagui config file
-      config: 'src/tamagui.config.ts',
+      config: "src/tamagui.config.ts",
       // points to any linked packages or node_modules
       // that have tamagui components to optimize
-      components: ['tamagui'],
+      components: ["tamagui"],
       // turns on the optimizing compiler
       optimize: true,
     }),
   ],
-})
+});
 ```
 
 ### Next.js
@@ -23757,17 +23880,17 @@ Add to your `babel.config.js`:
 module.exports = {
   plugins: [
     [
-      '@tamagui/babel-plugin',
+      "@tamagui/babel-plugin",
       {
-        components: ['tamagui'],
-        config: './tamagui.config.ts',
-        importsWhitelist: ['constants.js', 'colors.js'],
+        components: ["tamagui"],
+        config: "./tamagui.config.ts",
+        importsWhitelist: ["constants.js", "colors.js"],
         logTimings: true,
-        disableExtraction: process.env.NODE_ENV === 'development',
-      }
+        disableExtraction: process.env.NODE_ENV === "development",
+      },
     ],
-  ]
-}
+  ],
+};
 ```
 
 Currently the native compiler doesn't optimize as much as it could. It bails out
@@ -23788,92 +23911,92 @@ Expo.
 All compiler plugins accept the same options:
 
 <PropsTable
-  data={[
-    {
-      name: 'config',
-      required: true,
-      type: 'string',
-      typeSimple: 'enum',
-      description:
-        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
-    },
-    {
-      name: 'components',
-      required: false,
-      type: 'string[]',
-      typeSimple: 'enum',
-      default: "['tamagui']",
-      description: `Array of npm modules containing Tamagui components which you'll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.`,
-    },
-    {
-      name: 'importsWhitelist',
-      required: false,
-      type: 'string[]',
-      typeSimple: 'enum',
-      description: `Array of whitelisted file paths (always end in .js) which the compiler may try and import and parse at build-time. It is normalized to ".js" ending for all file extensions (js, jsx, tsx, ts). This usually should be set to something like ['constants.js', 'colors.js'] for example, where you have a couple mostly static files of constants that are used as default values for styles.`,
-    },
-    {
-      name: 'logTimings',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'true',
-      description:
-        'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
-    },
-    {
-      name: 'disable',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description: 'Disable everything - debug and extraction.',
-    },
-    {
-      name: 'disableExtraction',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
-    },
-    {
-      name: 'disableDebugAttr',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
-    },
-    {
-      name: 'disableFlattening',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description: 'Turns off tree-flattening.',
-    },
-    {
-      name: 'enableDynamicEvaluation',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
-    },
-    {
-      name: 'experimentalFlattenThemesOnNative',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        '(Experimental) Enables further extracting of components that use theme values on native.',
-    },
-  ]}
+data={[
+{
+name: 'config',
+required: true,
+type: 'string',
+typeSimple: 'enum',
+description:
+'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
+},
+{
+name: 'components',
+required: false,
+type: 'string[]',
+typeSimple: 'enum',
+default: "['tamagui']",
+description: `Array of npm modules containing Tamagui components which you'll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.`,
+},
+{
+name: 'importsWhitelist',
+required: false,
+type: 'string[]',
+typeSimple: 'enum',
+description: `Array of whitelisted file paths (always end in .js) which the compiler may try and import and parse at build-time. It is normalized to ".js" ending for all file extensions (js, jsx, tsx, ts). This usually should be set to something like ['constants.js', 'colors.js'] for example, where you have a couple mostly static files of constants that are used as default values for styles.`,
+},
+{
+name: 'logTimings',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'true',
+description:
+'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
+},
+{
+name: 'disable',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description: 'Disable everything - debug and extraction.',
+},
+{
+name: 'disableExtraction',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description:
+'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
+},
+{
+name: 'disableDebugAttr',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description:
+'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
+},
+{
+name: 'disableFlattening',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description: 'Turns off tree-flattening.',
+},
+{
+name: 'enableDynamicEvaluation',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description:
+'(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
+},
+{
+name: 'experimentalFlattenThemesOnNative',
+required: false,
+type: 'boolean',
+typeSimple: 'enum',
+default: 'false',
+description:
+'(Experimental) Enables further extracting of components that use theme values on native.',
+},
+]}
 />
 
 ### Dynamic Evaluation
@@ -23926,11 +24049,9 @@ You can disable the compiler optimization for a single component with the
 boolean property `disableOptimization`:
 
 ```tsx
-import { View } from '@tamagui/core'
+import { View } from "@tamagui/core";
 
-export default () => (
-  <View disableOptimization />
-)
+export default () => <View disableOptimization />;
 ```
 
 ### Web-only apps
@@ -23943,8 +24064,7 @@ and add `@types/react-native` at the latest version.
 
 ---
 
-title: Errors
----
+## title: Errors
 
 ### Error 001
 
@@ -23991,6 +24111,7 @@ You're rendering a Tamagui <Adapt /> component without nesting it inside a paren
 
 title: FAQ
 description: Common problems, questions and answers
+
 ---
 
 ##
@@ -24001,6 +24122,7 @@ description: Common problems, questions and answers
 
 title: Installation
 description: Get Tamagui set up, step by step
+
 ---
 
 <IntroParagraph>
@@ -24030,15 +24152,15 @@ Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, View } from '@tamagui/core'
-import config from './tamagui.config' // your configuration
+import { TamaguiProvider, View } from "@tamagui/core";
+import config from "./tamagui.config"; // your configuration
 
 export default function App() {
   return (
     <TamaguiProvider config={config}>
       <View width={200} height={200} backgroundColor="$background" />
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
@@ -24051,24 +24173,24 @@ yarn add @tamagui/config
 You can use it like so:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { defaultConfig } from '@tamagui/config/v4'
+import { TamaguiProvider, createTamagui } from "@tamagui/core";
+import { defaultConfig } from "@tamagui/config/v4";
 
 // you usually export this from a tamagui.config.ts file
-const config = createTamagui(defaultConfig)
+const config = createTamagui(defaultConfig);
 
-type Conf = typeof config
+type Conf = typeof config;
 
 // make imports typed
-declare module '@tamagui/core' {
+declare module "@tamagui/core" {
   interface TamaguiCustomConfig extends Conf {}
 }
 
 export default () => {
   return (
     <TamaguiProvider config={config}>{/* your app here */}</TamaguiProvider>
-  )
-}
+  );
+};
 ```
 
 And that's it!
@@ -24078,10 +24200,10 @@ And that's it!
 </Preview>
 
 ```tsx class=preview line=5
-import { Button } from 'tamagui'
+import { Button } from "tamagui";
 
 export default function Demo() {
-  return <Button theme="blue">Hello world</Button>
+  return <Button theme="blue">Hello world</Button>;
 }
 ```
 
@@ -24155,8 +24277,7 @@ plugins that help with that:
 
 ---
 
-title: Introduction
----
+## title: Introduction
 
 <DocsIntro />
 
@@ -24165,16 +24286,16 @@ title: Introduction
 #### Highlights
 
 <Highlights
-  disableLinks
-  disableTitle
-  large
-  features={[
-    `Core only has one dependency - React - but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
-    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
-    `Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
-    `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
-    `Unstyled and styled versions of all components.`,
-  ]}
+disableLinks
+disableTitle
+large
+features={[
+`Core only has one dependency - React - but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
+`A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
+`Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
+`useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
+`Unstyled and styled versions of all components.`,
+]}
 />
 
 ---
@@ -24207,6 +24328,7 @@ A big thanks to:
 
 title: Tamagui Props
 description: All the base props
+
 ---
 
 Tamagui supports a superset of the React Native props. Start with:
@@ -24220,17 +24342,17 @@ object.
 Finally, there are a few non-style props Tamagui adds:
 
 <PropsTable
-  data={[
-    {
-      name: 'animation',
-      required: false,
-      type: 'string',
-      description: (
-        <span>
-          Apply an animation as defined in your createTamagui configuration.
-        </span>
-      ),
-    },
+data={[
+{
+name: 'animation',
+required: false,
+type: 'string',
+description: (
+<span>
+Apply an animation as defined in your createTamagui configuration.
+</span>
+),
+},
 
     {
       name: 'animateOnly',
@@ -24469,6 +24591,7 @@ Finally, there are a few non-style props Tamagui adds:
 
 title: Static Optimization
 description: How `@tamagui/static` works to speed up code
+
 ---
 
 ## intro/styles
@@ -24477,6 +24600,7 @@ description: How `@tamagui/static` works to speed up code
 
 title: Style API
 description: The Tamagui superset of React Native styles
+
 ---
 
 Tamagui supports a superset of the React Native style properties - either to the
@@ -24486,20 +24610,20 @@ Text base components.
 Here's how that looks in practice:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from "@tamagui/core";
 
 const StyledView = styled(View, {
   padding: 10,
-})
+});
 
 const MyView = () => (
   <StyledView
     backgroundColor="red"
     hoverStyle={{
-      backgroundColor: 'green'
+      backgroundColor: "green",
     }}
   />
-)
+);
 ```
 
 The types for the full set of styles accepted by styled, View and Text are
@@ -24682,13 +24806,13 @@ createTamagui({
   media: {
     sm: { maxWidth: 800 },
   },
-})
+});
 ```
 
 Then you can use it like:
 
 ```tsx
-<Text color="red" $sm={{ color: 'blue' }} />
+<Text color="red" $sm={{ color: "blue" }} />
 ```
 
 ### Theme
@@ -24700,7 +24824,7 @@ they only can target your top level themes, so if you have `light`, and
 Use them like so:
 
 ```tsx
-<Text $theme-dark={{ color: 'white' }} />
+<Text $theme-dark={{ color: "white" }} />
 ```
 
 ### Platform
@@ -24712,7 +24836,7 @@ Android).
 Use it like so:
 
 ```tsx
-<Text $platform-ios={{ color: 'white' }} />
+<Text $platform-ios={{ color: "white" }} />
 ```
 
 ### Group
@@ -24725,7 +24849,7 @@ A short example:
 
 ```tsx
 <View group="header">
-  <Text $group-header={{ color: 'white' }} />
+  <Text $group-header={{ color: "white" }} />
 </View>
 ```
 
@@ -24736,7 +24860,7 @@ Group styles also allow for targeting the parent pseudo state:
 
 ```tsx
 <View group>
-  <Text $group-hover={{ color: 'white' }} />
+  <Text $group-hover={{ color: "white" }} />
 </View>
 ```
 
@@ -24749,8 +24873,8 @@ For more advanced usecases you can use named groups
 <View group="card">
   <Text>Outer</Text>
   <View group>
-    <Text $group-card-hover={{ color: 'blue' }}>Inner</Text>
-    <Text $group-hover={{ color: 'green' }}>Sibling</Text>
+    <Text $group-card-hover={{ color: "blue" }}>Inner</Text>
+    <Text $group-hover={{ color: "green" }}>Sibling</Text>
   </View>
 </View>
 ```
@@ -24762,12 +24886,12 @@ To make this typed, you need to set `TypeOverride` alongside the same area you
 set up your Tamagui types:
 
 ```tsx
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends AppConfig {}
 
   // if you want types for group styling props, define them like so:
   interface TypeOverride {
-    groupNames(): 'a' | 'b' | 'c'
+    groupNames(): "a" | "b" | "c";
   }
 }
 ```
@@ -24780,10 +24904,7 @@ which is what Tamagui outputs as CSS under the hood. They look like this:
 
 ```tsx
 <View group>
-  <Text
-    $group-sm={{ color: 'white' }}
-    $group-sm-hover={{ color: 'green' }}
-  />
+  <Text $group-sm={{ color: "white" }} $group-sm-hover={{ color: "green" }} />
 </View>
 ```
 
@@ -24797,13 +24918,10 @@ For more advanced use cases, you can use named groups with container queries:
 <View group="card">
   <View group>
     <Text
-      $group-card-sm={{ color: 'white' }}
-      $group-card-sm-hover={{ color: 'green' }}
+      $group-card-sm={{ color: "white" }}
+      $group-card-sm-hover={{ color: "green" }}
     />
-    <Text
-      $group-sm={{ color: 'white' }}
-      $group-sm-hover={{ color: 'green' }}
-    />
+    <Text $group-sm={{ color: "white" }} $group-sm-hover={{ color: "green" }} />
   </View>
 </View>
 ```
@@ -24825,7 +24943,7 @@ First, there's a new property `untilMeasured`:
 <View group untilMeasured="hide">
   <Text
     $group-sm={{
-      color: 'white',
+      color: "white",
     }}
   />
 </View>
@@ -24856,18 +24974,21 @@ const CalHeader = styled(Text, {
     isHero: {
       true: {
         fontSize: 36,
-        backgroundColor: 'blue',
-        color: 'white',
+        backgroundColor: "blue",
+        color: "white",
       },
     },
   },
-})
+});
 ```
 
 And then use it in a view you're building:
 
 ```tsx
-export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number }) => {
+export const MyCalendar = (props: {
+  isHero?: boolean;
+  headerFontSize?: number;
+}) => {
   return (
     <>
       {/* ... some other components... */}
@@ -24875,8 +24996,8 @@ export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number })
         {monthName}
       </CalHeader>
     </>
-  )
-}
+  );
+};
 ```
 
 #### Why it's important
@@ -24904,8 +25025,8 @@ export const MyCalendarHeader = (props: CalHeaderProps) => {
     <CalHeader isHero {...props} fontSize={36}>
       {monthName}
     </CalHeader>
-  )
-}
+  );
+};
 ```
 
 This component defaults to `isHero` styles, but if a user passes in `isHero` as
@@ -24918,6 +25039,7 @@ after the spread, it will always be set to 36.
 
 title: Themes
 description: Create themes and sub-themes
+
 ---
 
 Themes map neatly to CSS variables: they are objects whose values you want to contextually change at any point in your React tree. They are used either as the first lookup for `$` prefixed style values, or with the `useTheme` hook directly. Tamagui allows nesting themes - both the definition and at runtime. At runtime Tamagui resolves theme values upwards, ultimately all the way back to tokens.
@@ -24936,10 +25058,10 @@ You define a theme like this:
 
 ```tsx
 const dark = {
-  background: '#000',
-  color: '#fff',
+  background: "#000",
+  color: "#fff",
   // define any key to any string or number value
-}
+};
 ```
 
 If you use tokens, you can share values from tokens down to themes. Tokens act as fallback values for themes, like global CSS variables vs scoped ones:
@@ -24947,16 +25069,16 @@ If you use tokens, you can share values from tokens down to themes. Tokens act a
 ```tsx
 const tokens = createTokens({
   color: {
-    black: '#000',
-    white: '#fff',
+    black: "#000",
+    white: "#fff",
   },
-})
+});
 
 // theme:
 const dark = {
   background: tokens.color.black,
   color: tokens.color.white,
-}
+};
 ```
 
 ### Sub-themes
@@ -24991,12 +25113,12 @@ In general you want your themes to all be the same shape - the same named keys a
 Every Tamagui `styled()` component looks for its own specific theme if you pass it the `name` property. For example:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { Stack, styled } from "tamagui"; // or '@tamagui/core'
 
 const Circle = styled(Stack, {
-  name: 'Circle',
-  backgroundColor: '$background',
-})
+  name: "Circle",
+  backgroundColor: "$background",
+});
 ```
 
 The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for a sub-theme that ends with `_Circle`.
@@ -25005,14 +25127,14 @@ Now you can create the default theme for all Circle components at any level of n
 
 ```tsx
 const dark_Circle = {
-  background: 'darkred',
-  color: 'white',
-}
+  background: "darkred",
+  color: "white",
+};
 
 const light_Circle = {
-  background: 'lightred',
-  color: 'black',
-}
+  background: "lightred",
+  color: "black",
+};
 ```
 
 <Notice theme="blue">Component themes must have the first letter capitalized.</Notice>
@@ -25050,51 +25172,51 @@ A minimal theme might look like this:
 ```tsx
 const dark = {
   // Standard keys for all components
-  background: '#000',
-  backgroundHover: '#111',
-  backgroundPress: '#222',
-  backgroundFocus: '#333',
-  backgroundStrong: '#444',
-  backgroundTransparent: 'rgba(0, 0, 0, 0.5)',
-  color: '#fff',
-  colorHover: '#eee',
-  colorPress: '#ddd',
-  colorFocus: '#ccc',
-  colorTransparent: 'rgba(255, 255, 255, 0.5)',
-  borderColor: '#555',
-  borderColorHover: '#666',
-  borderColorFocus: '#777',
-  borderColorPress: '#888',
-  placeholderColor: '#999',
-  outlineColor: '#aaa',
+  background: "#000",
+  backgroundHover: "#111",
+  backgroundPress: "#222",
+  backgroundFocus: "#333",
+  backgroundStrong: "#444",
+  backgroundTransparent: "rgba(0, 0, 0, 0.5)",
+  color: "#fff",
+  colorHover: "#eee",
+  colorPress: "#ddd",
+  colorFocus: "#ccc",
+  colorTransparent: "rgba(255, 255, 255, 0.5)",
+  borderColor: "#555",
+  borderColorHover: "#666",
+  borderColorFocus: "#777",
+  borderColorPress: "#888",
+  placeholderColor: "#999",
+  outlineColor: "#aaa",
   // Custom tokens like "brand"
-  brandBackground: '#000', // You can add your own tokens like "brand"
-  brandColor: '#fff', // and use them in your components
-}
+  brandBackground: "#000", // You can add your own tokens like "brand"
+  brandColor: "#fff", // and use them in your components
+};
 
 const light = {
   // Standard keys for all components
-  background: '#fff',
-  backgroundHover: '#f5f5f5',
-  backgroundPress: '#e0e0e0',
-  backgroundFocus: '#d5d5d5',
-  backgroundStrong: '#ccc',
-  backgroundTransparent: 'rgba(255, 255, 255, 0.5)',
-  color: '#000',
-  colorHover: '#111',
-  colorPress: '#222',
-  colorFocus: '#333',
-  colorTransparent: 'rgba(0, 0, 0, 0.5)',
-  borderColor: '#444',
-  borderColorHover: '#555',
-  borderColorFocus: '#666',
-  borderColorPress: '#777',
-  placeholderColor: '#888',
-  outlineColor: '#999',
+  background: "#fff",
+  backgroundHover: "#f5f5f5",
+  backgroundPress: "#e0e0e0",
+  backgroundFocus: "#d5d5d5",
+  backgroundStrong: "#ccc",
+  backgroundTransparent: "rgba(255, 255, 255, 0.5)",
+  color: "#000",
+  colorHover: "#111",
+  colorPress: "#222",
+  colorFocus: "#333",
+  colorTransparent: "rgba(0, 0, 0, 0.5)",
+  borderColor: "#444",
+  borderColorHover: "#555",
+  borderColorFocus: "#666",
+  borderColorPress: "#777",
+  placeholderColor: "#888",
+  outlineColor: "#999",
   // Custom tokens like "brand"
-  brandBackground: '#000', // You can add your own tokens like "brand"
-  brandColor: '#fff', // and use them in your components
-}
+  brandBackground: "#000", // You can add your own tokens like "brand"
+  brandColor: "#fff", // and use them in your components
+};
 ```
 
 You can of course do all of this yourself in your own design system with `styled`:
@@ -25102,28 +25224,30 @@ You can of course do all of this yourself in your own design system with `styled
 If you are building a component with more than one sub-components, you can follow this pattern:
 
 ```tsx
-import { GetProps, Stack, Text, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, Stack, Text, styled } from "tamagui"; // or '@tamagui/core'
 
 const ButtonFrame = styled(Stack, {
-  name: 'Button',
-  backgroundColor: '$background',
-})
+  name: "Button",
+  backgroundColor: "$background",
+});
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
-  color: '$color',
-})
+  name: "ButtonText",
+  color: "$color",
+});
 
-type ButtonProps = GetProps<typeof ButtonFrame>
+type ButtonProps = GetProps<typeof ButtonFrame>;
 
 // note: styleable will tell the tamagui compiler to optimize usages of this:
-export const Button = ButtonFrame.styleable<ButtonProps>(({ children, ...props }, ref) => {
-  return (
-    <ButtonFrame ref={ref} {...props}>
-      <ButtonText>{children}</ButtonText>
-    </ButtonFrame>
-  )
-})
+export const Button = ButtonFrame.styleable<ButtonProps>(
+  ({ children, ...props }, ref) => {
+    return (
+      <ButtonFrame ref={ref} {...props}>
+        <ButtonText>{children}</ButtonText>
+      </ButtonFrame>
+    );
+  },
+);
 ```
 
 And now you can add two themes: `dark_Button` and `dark_ButtonText`, and override their default styles.
@@ -25135,8 +25259,8 @@ To get started quickly, you can use the themes we've developed alongside this si
 To install, just add import it and add it to your `tamagui.config.ts`:
 
 ```tsx
-import { color, radius, size, space, themes, zIndex } from '@tamagui/themes'
-import { createTamagui, createTokens } from 'tamagui'
+import { color, radius, size, space, themes, zIndex } from "@tamagui/themes";
+import { createTamagui, createTokens } from "tamagui";
 
 const tokens = createTokens({
   size,
@@ -25144,21 +25268,21 @@ const tokens = createTokens({
   zIndex,
   color,
   radius,
-})
+});
 
 const config = createTamagui({
   themes,
   tokens,
   // ... see Configuration
-})
+});
 
-export type Conf = typeof config
+export type Conf = typeof config;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends Conf {}
 }
 
-export default config
+export default config;
 ```
 
 <Notice theme="green">
@@ -25232,7 +25356,7 @@ export const App = () => (
       <div className="baCo-2nesi3" />
     </Theme>
   </Provider>
-)
+);
 
 // CSS output:
 //  .color-2nesi3 { background-color: var(--red); }
@@ -25243,10 +25367,10 @@ export const App = () => (
 Here's what we've landed on which helps ensure everything is typed properly. Keep themes in a separate `themes.ts` file, and structure it like this:
 
 ```tsx
-import { tokens } from './tokens'
+import { tokens } from "./tokens";
 
 const light = {
-  background: '#fff',
+  background: "#fff",
   backgroundHover: tokens.color.gray3,
   backgroundPress: tokens.color.gray4,
   backgroundFocus: tokens.color.gray5,
@@ -25258,49 +25382,49 @@ const light = {
   colorFocus: tokens.color.gray6,
   shadowColor: tokens.color.grayA5,
   shadowColorHover: tokens.color.grayA6,
-}
+};
 
 // note: we set up a single consistent base type to validate the rest:
-type BaseTheme = typeof light
+type BaseTheme = typeof light;
 
 // the rest of the themes use BaseTheme
 const dark: BaseTheme = {
-  background: '#000',
+  background: "#000",
   backgroundHover: tokens.color.gray2Dark,
   backgroundPress: tokens.color.gray3Dark,
   backgroundFocus: tokens.color.gray4Dark,
   borderColor: tokens.color.gray3Dark,
   borderColorHover: tokens.color.gray4Dark,
-  color: '#ddd',
+  color: "#ddd",
   colorHover: tokens.color.gray11Dark,
   colorPress: tokens.color.gray10Dark,
   colorFocus: tokens.color.gray6Dark,
   shadowColor: tokens.color.grayA6,
   shadowColorHover: tokens.color.grayA7,
-}
+};
 
 const dark_translucent: BaseTheme = {
   ...dark,
-  background: 'rgba(0,0,0,0.7)',
-  backgroundHover: 'rgba(0,0,0,0.5)',
-  backgroundPress: 'rgba(0,0,0,0.25)',
-  backgroundFocus: 'rgba(0,0,0,0.1)',
-}
+  background: "rgba(0,0,0,0.7)",
+  backgroundHover: "rgba(0,0,0,0.5)",
+  backgroundPress: "rgba(0,0,0,0.25)",
+  backgroundFocus: "rgba(0,0,0,0.1)",
+};
 
 const light_translucent: BaseTheme = {
   ...light,
-  background: 'rgba(255,255,255,0.85)',
-  backgroundHover: 'rgba(250,250,250,0.85)',
-  backgroundPress: 'rgba(240,240,240,0.85)',
-  backgroundFocus: 'rgba(240,240,240,0.7)',
-}
+  background: "rgba(255,255,255,0.85)",
+  backgroundHover: "rgba(250,250,250,0.85)",
+  backgroundPress: "rgba(240,240,240,0.85)",
+  backgroundFocus: "rgba(240,240,240,0.7)",
+};
 
 export const allThemes = {
   dark,
   light,
   dark_translucent,
   light_translucent,
-} satisfies {[key: string]: BaseTheme}
+} satisfies { [key: string]: BaseTheme };
 // note: `satisfies` was introduced with TypeScript 4.9
 ```
 
@@ -25351,7 +25475,7 @@ You can configure Tamagui to not send any themes JS to the client side, so long 
 To enable this you need to have your bundler tree shake away the themes object you'd typically pass to `createTamagui` for the client bundle. Note this is a somewhat advanced optimization and not necessary to do right away.
 
 ```tsx
-import { themes as themesIn } from './your-themes-file'
+import { themes as themesIn } from "./your-themes-file";
 
 // We leave this value empty for production client side bundles to save on bundle size.
 // The `@tamagui/next-plugin` sets TAMAGUI_IS_SERVER automatically.
@@ -25359,14 +25483,14 @@ import { themes as themesIn } from './your-themes-file'
 // It typically takes low single-digit ms to scan and can save significantly on JS size.
 
 const themes =
-  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== 'production'
+  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== "production"
     ? themesIn
-    : ({} as typeof themesIn)
+    : ({} as typeof themesIn);
 
 export const config = createTamagui({
   themes,
   // ...
-})
+});
 ```
 
 ## intro/thinking-in-tamagui
@@ -25375,14 +25499,14 @@ export const config = createTamagui({
 
 title: Thinking in Tamagui
 description: TODO
+
 ---
 
 ## intro/tokens
 
 ---
 
-title: Tokens
----
+## title: Tokens
 
 <Notice theme="blue">
   This is the only documenting the default `@tamagui/config` tokens that power this site, you are free to create your own token system with more refined logical underpinning.
@@ -25416,8 +25540,7 @@ Tamagui switches to an exponential scale from sizes 11 to 16 so you still get so
 
 ---
 
-title: The Frontend Trilemma
----
+## title: The Frontend Trilemma
 
 <IntroParagraph>
   If you're developing a cross-platform app, you've committed to the **frontend
@@ -25425,14 +25548,14 @@ title: The Frontend Trilemma
 </IntroParagraph>
 
 <YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
-  <Image
-    title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
-    src="/trilemma.svg"
-    size="hero"
-    height={270 *2}
-    width={320* 2}
-    resizeMode="contain"
-  />
+<Image
+title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
+src="/trilemma.svg"
+size="hero"
+height={270 _2}
+width={320_ 2}
+resizeMode="contain"
+/>
 </YStack>
 
 React Native recommends writing things twice generally for the best UX as is made clear in the `<title>` of the homepage: "[learn once, write anywhere](https://reactnative.dev/)". This is opposed to the sort of holy grail mantra of "write once, runs everywhere". Doing this results in native-feeling and performing apps, while still saving quite a bit of development time thanks to sharing everything besides your views: utils, state and data management, hooks, etc.
@@ -25448,7 +25571,7 @@ This document goes over how we can achieve the last one. The first one is doable
 **The idea is to make another "bump" towards properly native-experience apps with shared code, much like how React Native Web made one:**
 
 <YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
-  <Image
+<Image
     title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
     src="/code-sharing2.svg"
     size="hero"

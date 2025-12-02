@@ -16,70 +16,70 @@
  * ```
  */
 
-import { styled, GetProps, View, type ViewProps } from 'tamagui'
+import { styled, GetProps, View, type ViewProps } from "tamagui";
 
 export const Badge = styled(View, {
-  name: 'Badge',
+  name: "Badge",
 
   // Base styles
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'row',
-  borderRadius: '$full',
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "row",
+  borderRadius: "$full",
 
   variants: {
     variant: {
       primary: {
-        backgroundColor: '$primary',
+        backgroundColor: "$primary",
       },
 
       secondary: {
-        backgroundColor: '$secondary',
+        backgroundColor: "$secondary",
       },
 
       success: {
-        backgroundColor: '$successLight',
+        backgroundColor: "$successLight",
       },
 
       error: {
-        backgroundColor: '$errorLight',
+        backgroundColor: "$errorLight",
       },
 
       warning: {
-        backgroundColor: '$warningLight',
+        backgroundColor: "$warningLight",
       },
 
       info: {
-        backgroundColor: '$infoLight',
+        backgroundColor: "$infoLight",
       },
 
       neutral: {
-        backgroundColor: '$backgroundPress',
+        backgroundColor: "$backgroundPress",
       },
 
       outline: {
-        backgroundColor: 'transparent',
+        backgroundColor: "transparent",
         borderWidth: 1,
-        borderColor: '$border',
+        borderColor: "$border",
       },
     },
 
     size: {
       sm: {
-        paddingHorizontal: '$2',
-        paddingVertical: '$1',
+        paddingHorizontal: "$2",
+        paddingVertical: "$1",
         minHeight: 20,
         minWidth: 20,
       },
       md: {
-        paddingHorizontal: '$2.5',
-        paddingVertical: '$1.5',
+        paddingHorizontal: "$2.5",
+        paddingVertical: "$1.5",
         minHeight: 24,
         minWidth: 24,
       },
       lg: {
-        paddingHorizontal: '$3',
-        paddingVertical: '$2',
+        paddingHorizontal: "$3",
+        paddingVertical: "$2",
         minHeight: 28,
         minWidth: 28,
       },
@@ -89,15 +89,16 @@ export const Badge = styled(View, {
       true: {
         width: 8,
         height: 8,
-        borderRadius: '$full',
+        borderRadius: "$full",
         padding: 0,
         minWidth: 8,
         minHeight: 8,
       },
     },
   } as const,
-})
+});
 
 // Export type that includes BOTH our custom variants AND all base View props
 // Note: Badge uses 'color' in variants but View doesn't have native color prop - variants override
-export type BadgeProps = GetProps<typeof Badge> & Omit<ViewProps, keyof GetProps<typeof Badge>>
+export type BadgeProps = GetProps<typeof Badge> &
+  Omit<ViewProps, keyof GetProps<typeof Badge>>;

@@ -63,6 +63,7 @@ export const Row = styled(TamaguiXStack, {
 ```
 
 **Problems**:
+
 - ❌ TypeScript errors: `gap` prop conflicts with base `gap` prop
 - ❌ Custom variants reinvent what Tamagui already provides
 - ❌ Type assertions (`as any`) required to bypass errors
@@ -112,6 +113,7 @@ export const Container = styled(TamaguiYStack, {
 ```
 
 **Usage - Clean and Type-Safe**:
+
 ```tsx
 <Row gap="$md" alignItems="center" justifyContent="space-between">
   <Text>Content</Text>
@@ -124,6 +126,7 @@ export const Container = styled(TamaguiYStack, {
 ```
 
 **Benefits**:
+
 - ✅ No TypeScript errors - using native Tamagui props
 - ✅ No type assertions - fully type-safe
 - ✅ Full Tamagui API - all props work as documented
@@ -236,9 +239,11 @@ All filter components (`FilterSidebar.tsx`, `MobileFilterSheet.tsx`, `ProductsGr
 #### 1. **Tamagui's Design Philosophy**
 
 From Tamagui documentation:
+
 > "Styled components should extend primitives, not reinvent them. Use Tamagui's prop system directly for maximum flexibility and type safety."
 
 Our approach:
+
 - Row/Column are **thin semantic wrappers** over XStack/YStack
 - No abstraction layer - expose full Tamagui API
 - Better naming for readability
@@ -331,6 +336,7 @@ Direct props enable better performance optimizations.
 ### 4. **Maintenance Burden**
 
 Every time we wanted to use a new layout prop:
+
 1. Check if variant exists
 2. If not, add to variant definition
 3. Update types
@@ -374,10 +380,10 @@ Every time we wanted to use a new layout prop:
 <Row align="center" justify="end" wrap fullWidth>
 
 // AFTER
-<Row 
-  alignItems="center" 
-  justifyContent="flex-end" 
-  flexWrap="wrap" 
+<Row
+  alignItems="center"
+  justifyContent="flex-end"
+  flexWrap="wrap"
   width="100%"
 >
 ```
@@ -385,8 +391,8 @@ Every time we wanted to use a new layout prop:
 ### Step 4: Media Queries Work Out of the Box
 
 ```tsx
-<Row 
-  gap="$md" 
+<Row
+  gap="$md"
   flexDirection="column"
   $gtMd={{ flexDirection: "row", gap: "$lg" }}
 >
@@ -401,6 +407,7 @@ Every time we wanted to use a new layout prop:
 ### 1. **Minimal Shims Over Primitives**
 
 Components should be **thin wrappers** that:
+
 - Provide semantic naming (Row vs XStack)
 - Preserve full base API
 - Add value through naming, not abstraction
@@ -408,11 +415,13 @@ Components should be **thin wrappers** that:
 ### 2. **Variants Only for Component-Specific Behavior**
 
 Create variants ONLY when:
+
 - The prop is **truly component-specific** (e.g., Container size)
 - The prop **doesn't exist** on base component
 - You're **enforcing design system boundaries** (approved sizes only)
 
 **Don't create variants for**:
+
 - Props that exist on base components (gap, alignItems, padding)
 - Simple value mappings (just use tokens directly)
 - Renaming existing props (align vs alignItems)
@@ -430,13 +439,16 @@ Create variants ONLY when:
 ### 4. **Container is the Exception (Good Variant Example)**
 
 Container has size variants because:
+
 - ✅ **Component-specific**: maxWidth concept unique to containers
 - ✅ **Design system boundary**: Enforces approved content widths
 - ✅ **No base prop conflict**: maxWidth doesn't conflict with anything
 - ✅ **Semantic value**: "lg" clearer than "1024px"
 
 ```tsx
-<Container size="lg">  // Good variant usage
+<Container size="lg">
+  {" "}
+  // Good variant usage
   <Text>Content</Text>
 </Container>
 ```

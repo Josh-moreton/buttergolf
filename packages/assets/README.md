@@ -18,23 +18,29 @@ packages/assets/
 ### Mobile (React Native / Expo)
 
 ```tsx
-import { images } from '@buttergolf/assets'
+import { images } from "@buttergolf/assets";
 
-<Image source={images.golf.hero1} />
+<Image source={images.golf.hero1} />;
 ```
 
 ### Web (Next.js)
 
 ```tsx
-import { imagePaths } from '@buttergolf/assets'
-import Image from 'next/image'
+import { imagePaths } from "@buttergolf/assets";
+import Image from "next/image";
 
-<Image src={imagePaths.golf.hero1} alt="Golf" width={400} height={400} />
+<Image src={imagePaths.golf.hero1} alt="Golf" width={400} height={400} />;
 ```
 
 Or reference directly from public folder:
+
 ```tsx
-<Image src="/_assets/images/golf-hero-1.jpg" alt="Golf" width={400} height={400} />
+<Image
+  src="/_assets/images/golf-hero-1.jpg"
+  alt="Golf"
+  width={400}
+  height={400}
+/>
 ```
 
 ## Adding New Images
@@ -47,6 +53,7 @@ Or reference directly from public folder:
 ## Build Process
 
 For web, images should be copied to the public folder:
+
 - Add a build script to copy images to `apps/web/public/_assets/`
 - Or use Next.js image optimization by importing directly
 

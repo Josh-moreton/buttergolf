@@ -4,7 +4,7 @@ import { prisma } from "@buttergolf/db";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ paymentIntentId: string }> }
+  { params }: { params: Promise<{ paymentIntentId: string }> },
 ) {
   try {
     const { userId } = await auth();
@@ -45,7 +45,7 @@ export async function GET(
     console.error("Error fetching order:", error);
     return NextResponse.json(
       { error: "Failed to fetch order" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

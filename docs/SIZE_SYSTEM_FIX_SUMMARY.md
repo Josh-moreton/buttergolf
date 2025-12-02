@@ -3,6 +3,7 @@
 ## Summary
 
 Successfully migrated the project to use the **standard Tamagui size system** where:
+
 1. **Typography components** (Text, Heading, Paragraph, Label) use `size="$1"` through `size="$16"` (numeric tokens)
 2. **UI components** (Button, Input, Badge, Spinner) use `size="sm" | "md" | "lg"` (component-specific variants)
 
@@ -11,6 +12,7 @@ This aligns with Tamagui's default patterns and official documentation.
 ## Problem Statement (Previous Implementation)
 
 The project had been incorrectly using `fontSize="$n"` on Text components instead of the standard Tamagui `size="$n"` prop. This was a workaround that:
+
 - Diverged from Tamagui's standard patterns
 - Made code less maintainable
 - Required custom documentation explaining the non-standard approach
@@ -44,6 +46,7 @@ The project had been incorrectly using `fontSize="$n"` on Text components instea
 - ✅ Fixed lint errors (parseInt → Number.parseInt)
 
 **Key Points**:
+
 - Numeric size tokens are inherited from `@tamagui/config/v4` (already correct)
 - Body font: `$5` = 15px (default), `$1` = 11px, `$16` = 64px
 - Heading font: `$5` = 20px (default), `$1` = 12px, `$16` = 112px
@@ -58,12 +61,13 @@ The project had been incorrectly using `fontSize="$n"` on Text components instea
 - ✅ Added comprehensive documentation explaining font size usage
 
 **Key Changes**:
+
 ```tsx
 // BEFORE (confusing)
 export const Text = styled(TamaguiText, {
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      "...fontSize": (name, { font }) => ({
         fontSize: font?.size[name],
         lineHeight: font?.lineHeight?.[name],
       }),
@@ -81,6 +85,7 @@ export const Text = styled(TamaguiText, {
 ### 3. Updated Component Documentation
 
 **Files**:
+
 - `packages/ui/src/components/Button.tsx`
 - `packages/ui/src/components/Input.tsx`
 - `packages/ui/src/components/Badge.tsx`
@@ -103,6 +108,7 @@ find packages/app -type f -name "*.tsx" -exec sed -i '' 's/\(<Text[^>]*\) size="
 ```
 
 **Changed Pattern**:
+
 ```tsx
 // BEFORE (incorrect)
 <Text size="$3">Small text</Text>
@@ -189,38 +195,38 @@ find packages/app -type f -name "*.tsx" -exec sed -i '' 's/\(<Text[^>]*\) size="
 
 ### Font Size Tokens (Body Font)
 
-| Token | Size | Use Case |
-|-------|------|----------|
-| `$1` | 11px | Legal text, tiny labels |
-| `$2` | 12px | Captions, metadata |
-| `$3` | 13px | Small labels, helper text |
-| `$4` | 14px | Body small |
-| `$5` | **15px** | **Default body text** |
-| `$6` | 16px | Large body text |
-| `$7` | 18px | Subheadings |
-| `$8` | 20px | Large subheadings |
-| `$9` | 22px | Small headings |
-| `$10` | 24px | Medium headings |
-| `$11` | 28px | Large headings |
-| `$12` | 32px | XL headings |
-| `$13+` | 40px+ | Hero/display text |
+| Token  | Size     | Use Case                  |
+| ------ | -------- | ------------------------- |
+| `$1`   | 11px     | Legal text, tiny labels   |
+| `$2`   | 12px     | Captions, metadata        |
+| `$3`   | 13px     | Small labels, helper text |
+| `$4`   | 14px     | Body small                |
+| `$5`   | **15px** | **Default body text**     |
+| `$6`   | 16px     | Large body text           |
+| `$7`   | 18px     | Subheadings               |
+| `$8`   | 20px     | Large subheadings         |
+| `$9`   | 22px     | Small headings            |
+| `$10`  | 24px     | Medium headings           |
+| `$11`  | 28px     | Large headings            |
+| `$12`  | 32px     | XL headings               |
+| `$13+` | 40px+    | Hero/display text         |
 
 ### Component Size Variants
 
-| Component | Variant | Dimensions |
-|-----------|---------|------------|
-| Button | `sm` | 32px height, `$3` padding |
-| Button | `md` | 40px height, `$4` padding |
-| Button | `lg` | 48px height, `$5` padding |
-| Input | `sm` | 32px height |
-| Input | `md` | 40px height |
-| Input | `lg` | 48px height |
-| Badge | `sm` | 20px min-height |
-| Badge | `md` | 24px min-height |
-| Badge | `lg` | 28px min-height |
-| Spinner | `sm` | 16px (uses `$4` space token) |
-| Spinner | `md` | 20px (uses `$5` space token) |
-| Spinner | `lg` | 24px (uses `$6` space token) |
+| Component | Variant | Dimensions                   |
+| --------- | ------- | ---------------------------- |
+| Button    | `sm`    | 32px height, `$3` padding    |
+| Button    | `md`    | 40px height, `$4` padding    |
+| Button    | `lg`    | 48px height, `$5` padding    |
+| Input     | `sm`    | 32px height                  |
+| Input     | `md`    | 40px height                  |
+| Input     | `lg`    | 48px height                  |
+| Badge     | `sm`    | 20px min-height              |
+| Badge     | `md`    | 24px min-height              |
+| Badge     | `lg`    | 28px min-height              |
+| Spinner   | `sm`    | 16px (uses `$4` space token) |
+| Spinner   | `md`    | 20px (uses `$5` space token) |
+| Spinner   | `lg`    | 24px (uses `$6` space token) |
 
 ## Migration Checklist
 
@@ -247,6 +253,7 @@ find packages/app -type f -name "*.tsx" -exec sed -i '' 's/\(<Text[^>]*\) size="
 ### For Copilot
 
 The updated Copilot instructions include:
+
 - Clear "Critical: Size System Rules" section at top of Best Practices
 - Detailed explanation of two different "size" contexts
 - Comparison table showing when to use each approach
@@ -256,9 +263,11 @@ The updated Copilot instructions include:
 ## Files Changed
 
 ### Configuration
+
 - `packages/config/src/tamagui.config.ts` - Added documentation header, fixed lint
 
 ### Components
+
 - `packages/ui/src/components/Text.tsx` - Removed size variant, added fontSize default
 - `packages/ui/src/components/Button.tsx` - Added documentation
 - `packages/ui/src/components/Input.tsx` - Added documentation
@@ -266,11 +275,13 @@ The updated Copilot instructions include:
 - `packages/ui/src/components/Spinner.tsx` - Added documentation
 
 ### Documentation
+
 - `docs/TAMAGUI_SIZE_SYSTEM.md` - **NEW** - Complete size system guide
 - `docs/SIZE_SYSTEM_FIX_SUMMARY.md` - **NEW** - This file
 - `.github/copilot-instructions.md` - Updated with size system rules
 
 ### Fixed Usages (50+ files)
+
 - All files in `apps/web/src/app/**/*.tsx` with Text components
 - All files in `packages/app/src/**/*.tsx` with Text components
 - Automated replacement: `size="$` → `fontSize="$`
@@ -278,12 +289,14 @@ The updated Copilot instructions include:
 ## Testing
 
 ### Type Checking
+
 ```bash
 pnpm check-types
 # Result: ✅ All packages pass
 ```
 
 ### Manual Verification
+
 - [x] SearchResultItem.tsx - fontSize correctly applied
 - [x] Button components use size variants
 - [x] Input components use size variants

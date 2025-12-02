@@ -1,6 +1,7 @@
 # WebSocket Server Implementation for Real-Time Offers
 
 ## Overview
+
 This document outlines the WebSocket implementation for real-time offer updates in the ButterGolf marketplace.
 
 ## Architecture
@@ -19,7 +20,7 @@ For MVP, we'll implement polling in the client (every 5 seconds when viewing an 
 
 ```typescript
 // apps/web/src/hooks/useOfferUpdates.ts
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface UseOfferUpdatesOptions {
   offerId: string;
@@ -44,7 +45,7 @@ export function useOfferUpdates({
     const fetchOffer = async () => {
       try {
         const res = await fetch(`/api/offers/${offerId}`);
-        if (!res.ok) throw new Error('Failed to fetch offer');
+        if (!res.ok) throw new Error("Failed to fetch offer");
         const data = await res.json();
         setOffer(data);
         setLoading(false);
@@ -91,7 +92,7 @@ When API routes update offers, they can trigger broadcasts:
 
 ```typescript
 // Pseudo-code for future WebSocket implementation
-if (process.env.WEBSOCKET_ENABLED === 'true') {
+if (process.env.WEBSOCKET_ENABLED === "true") {
   await broadcastOfferUpdate(offerId, updatedOffer);
 }
 ```

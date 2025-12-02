@@ -6,23 +6,42 @@
  */
 
 // Re-export all Tamagui primitives
-export * from 'tamagui'
+export * from "tamagui";
 
 // Button Components
-export { Button } from './components/Button'
-export type { ButtonProps } from './components/Button'
-export { AuthButton } from './components/AuthButton'
-export type { AuthButtonProps } from './components/AuthButton'
-export { BuySellToggle } from './components/BuySellToggle'
-export type { BuySellToggleProps, BuySellMode } from './components/BuySellToggle'
+export { Button } from "./components/Button";
+export type { ButtonProps } from "./components/Button";
+export { AuthButton } from "./components/AuthButton";
+export type { AuthButtonProps } from "./components/AuthButton";
+export { BuySellToggle } from "./components/BuySellToggle";
+export type {
+  BuySellToggleProps,
+  BuySellMode,
+} from "./components/BuySellToggle";
 
 // Typography Components
-export { Text, Heading, Label } from './components/Text'
-export type { TextProps, HeadingProps, LabelProps } from './components/Text'
+export { Text, Heading, Label } from "./components/Text";
+export type { TextProps, HeadingProps, LabelProps } from "./components/Text";
 
 // Layout Components (semantic components with variants)
-export { Row, Column, Container, Spacer, XStack, YStack, View } from './components/Layout'
-export type { RowProps, ColumnProps, ContainerProps, SpacerProps, XStackProps, YStackProps, ViewProps } from './components/Layout'
+export {
+  Row,
+  Column,
+  Container,
+  Spacer,
+  XStack,
+  YStack,
+  View,
+} from "./components/Layout";
+export type {
+  RowProps,
+  ColumnProps,
+  ContainerProps,
+  SpacerProps,
+  XStackProps,
+  YStackProps,
+  ViewProps,
+} from "./components/Layout";
 
 // Brand Background Components
 export {
@@ -30,48 +49,62 @@ export {
   LemonHazeBackground,
   LemonHazeCard,
   VanillaCreamCard,
-} from './components/BrandBackgrounds'
+} from "./components/BrandBackgrounds";
 export type {
   VanillaCreamBackgroundProps,
   LemonHazeBackgroundProps,
   LemonHazeCardProps,
   VanillaCreamCardProps,
-} from './components/BrandBackgrounds'
+} from "./components/BrandBackgrounds";
 
 // Card Components
-export { Card, CardHeader, CardBody, CardFooter } from './components/Card'
-export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from './components/Card'
-export { GlassmorphismCard, getGlassmorphismStyles } from './components/GlassmorphismCard'
-export type { GlassmorphismCardProps } from './components/GlassmorphismCard'
+export { Card, CardHeader, CardBody, CardFooter } from "./components/Card";
+export type {
+  CardProps,
+  CardHeaderProps,
+  CardBodyProps,
+  CardFooterProps,
+} from "./components/Card";
+export {
+  GlassmorphismCard,
+  getGlassmorphismStyles,
+} from "./components/GlassmorphismCard";
+export type { GlassmorphismCardProps } from "./components/GlassmorphismCard";
 
 // Form Components
-export { Input } from './components/Input'
-export type { InputProps } from './components/Input'
-export { Select } from './components/Select'
-export type { SelectProps } from './components/Select'
-export { TextArea } from './components/TextArea'
-export type { TextAreaProps } from './components/TextArea'
-export { Radio, RadioGroup, RadioIndicator } from './components/Radio'
-export type { RadioProps, RadioGroupProps } from './components/Radio'
-export { Autocomplete } from './components/Autocomplete'
-export type { AutocompleteProps, AutocompleteSuggestion } from './components/Autocomplete'
-export { Checkbox } from './components/Checkbox'
-export type { CheckboxProps } from './components/Checkbox'
-export { Slider } from './components/Slider'
-export type { SliderProps } from './components/Slider'
+export { Input } from "./components/Input";
+export type { InputProps } from "./components/Input";
+export { Select } from "./components/Select";
+export type { SelectProps } from "./components/Select";
+export { TextArea } from "./components/TextArea";
+export type { TextAreaProps } from "./components/TextArea";
+export { Radio, RadioGroup, RadioIndicator } from "./components/Radio";
+export type { RadioProps, RadioGroupProps } from "./components/Radio";
+export { Autocomplete } from "./components/Autocomplete";
+export type {
+  AutocompleteProps,
+  AutocompleteSuggestion,
+} from "./components/Autocomplete";
+export { Checkbox } from "./components/Checkbox";
+export type { CheckboxProps } from "./components/Checkbox";
+export { Slider } from "./components/Slider";
+export type { SliderProps } from "./components/Slider";
 
 // Feedback Components
-export { Badge } from './components/Badge'
-export type { BadgeProps } from './components/Badge'
-export { Spinner } from './components/Spinner'
-export type { SpinnerProps } from './components/Spinner'
+export { Badge } from "./components/Badge";
+export type { BadgeProps } from "./components/Badge";
+export { Spinner } from "./components/Spinner";
+export type { SpinnerProps } from "./components/Spinner";
 
 // Media Components
-export { Image } from './components/Image'
-export type { ImageProps } from './components/Image'
-export { ScrollView } from './components/ScrollView'
-export type { ScrollViewProps } from './components/ScrollView'
+export { Image } from "./components/Image";
+export type { ImageProps } from "./components/Image";
+export { ScrollView } from "./components/ScrollView";
+export type { ScrollViewProps } from "./components/ScrollView";
 
 // Error Handling
-export { ErrorBoundary, useErrorBoundary } from './components/ErrorBoundary'
-export type { ErrorBoundaryProps, ErrorBoundaryState } from './components/ErrorBoundary'
+export { ErrorBoundary, useErrorBoundary } from "./components/ErrorBoundary";
+export type {
+  ErrorBoundaryProps,
+  ErrorBoundaryState,
+} from "./components/ErrorBoundary";

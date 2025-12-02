@@ -86,18 +86,20 @@ export function BuySellToggle({
         flex={isDesktop ? undefined : 1}
         {...(isDesktop && { style: { width: "25%", minWidth: 280 } })}
         {...(activeMode === "buying" ? activeButtonProps : inactiveButtonProps)}
-        {...(activeMode === "buying" && isWebPlatform && {
-          style: {
-            boxShadow:
-              "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
-          },
-        })}
-        {...(activeMode !== "buying" && isWebPlatform && {
-          style: {
-            boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
-            background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
-          },
-        })}
+        {...(activeMode === "buying" &&
+          isWebPlatform && {
+            style: {
+              boxShadow:
+                "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
+            },
+          })}
+        {...(activeMode !== "buying" &&
+          isWebPlatform && {
+            style: {
+              boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
+            },
+          })}
         pressStyle={{
           scale: 0.98,
           opacity: 0.9,
@@ -116,19 +118,23 @@ export function BuySellToggle({
         borderRadius="$full"
         flex={isDesktop ? undefined : 1}
         {...(isDesktop && { style: { width: "25%", minWidth: 280 } })}
-        {...(activeMode === "selling" ? activeButtonProps : inactiveButtonProps)}
-        {...(activeMode === "selling" && isWebPlatform && {
-          style: {
-            boxShadow:
-              "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
-          },
-        })}
-        {...(activeMode !== "selling" && isWebPlatform && {
-          style: {
-            boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
-            background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
-          },
-        })}
+        {...(activeMode === "selling"
+          ? activeButtonProps
+          : inactiveButtonProps)}
+        {...(activeMode === "selling" &&
+          isWebPlatform && {
+            style: {
+              boxShadow:
+                "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
+            },
+          })}
+        {...(activeMode !== "selling" &&
+          isWebPlatform && {
+            style: {
+              boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
+            },
+          })}
         pressStyle={{
           scale: 0.98,
           opacity: 0.9,

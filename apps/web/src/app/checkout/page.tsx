@@ -15,7 +15,9 @@ function CheckoutPageContent() {
   const productId = searchParams.get("productId");
 
   const [loading, setLoading] = useState(!!productId);
-  const [error, setError] = useState<string | null>(!productId ? "No product selected" : null);
+  const [error, setError] = useState<string | null>(
+    !productId ? "No product selected" : null,
+  );
   const [product, setProduct] = useState<{
     id: string;
     title: string;
@@ -93,22 +95,12 @@ function CheckoutPageContent() {
           alignItems="stretch"
         >
           {/* Left Column - Checkout Form (66%) */}
-          <Column
-            flexBasis={0}
-            flexGrow={2}
-            flexShrink={1}
-            minWidth={0}
-          >
+          <Column flexBasis={0} flexGrow={2} flexShrink={1} minWidth={0}>
             <CheckoutFormSimple product={product} />
           </Column>
 
           {/* Right Column - Order Summary (33%) */}
-          <Column
-            flexBasis={0}
-            flexGrow={1}
-            flexShrink={1}
-            minWidth={0}
-          >
+          <Column flexBasis={0} flexGrow={1} flexShrink={1} minWidth={0}>
             <OrderSummaryCard product={product} />
           </Column>
         </Row>

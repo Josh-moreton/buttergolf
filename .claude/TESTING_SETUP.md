@@ -9,6 +9,7 @@ React Native uses **Hermes** or **JSC** JavaScript engines which do **NOT** supp
 Web-only testing libraries like **jsdom** and **happy-dom** rely on `SharedArrayBuffer` and will crash mobile apps if bundled.
 
 **Symptoms:**
+
 ```
 ReferenceError: Property 'SharedArrayBuffer' doesn't exist
 ```
@@ -18,6 +19,7 @@ This error appears in the mobile app before any code runs if jsdom leaks into th
 ### Root Cause Analysis
 
 This monorepo uses aggressive dependency hoisting for performance:
+
 - **pnpm `shamefully-hoist=true`** - Makes dependencies available workspace-wide
 - **Workspace catalog** - Previously pinned jsdom globally
 - **pnpm symlinks** - Can make test libraries discoverable by Metro bundler
@@ -31,6 +33,7 @@ Even though all vitest configurations use `environment: 'node'` (which doesn't r
 **Location:** `pnpm-workspace.yaml` and `.npmrc`
 
 **What was done:**
+
 1. Removed `jsdom` from workspace catalog (was line 97)
 2. Added `nohoist-workspace-packages[]` configuration to `.npmrc`:
    - jsdom
@@ -47,6 +50,7 @@ Even though all vitest configurations use `environment: 'node'` (which doesn't r
 **Location:** `apps/mobile/metro.config.js`
 
 **Already in place:** Comprehensive regex blocklist (lines 40-56) prevents Metro from bundling:
+
 - jsdom and .pnpm/jsdom
 - happy-dom and .pnpm/happy-dom
 - vitest and @vitest packages
@@ -59,10 +63,12 @@ Even though all vitest configurations use `environment: 'node'` (which doesn't r
 ### Layer 3: ESLint Protection
 
 **Location:**
+
 - `packages/eslint-config/react-internal.js` - Shared warnings
 - `apps/mobile/eslint.config.mjs` - Strict mobile enforcement
 
 **What was added:**
+
 - `no-restricted-imports` rules that block jsdom, happy-dom, @testing-library/jest-dom, @vitest/browser
 - Helpful error messages guide developers to correct alternatives
 
@@ -83,23 +89,27 @@ Even though all vitest configurations use `environment: 'node'` (which doesn't r
 ### Mobile App (`apps/mobile/`)
 
 **What to test:**
+
 - Integration tests only (component mounting, navigation)
 - Use `@testing-library/react-native` for rendering tests
 
 **Where to put tests:**
+
 - Tests should be minimal in mobile app itself
 - Most tests should be in shared packages
 
 **Environment:**
+
 ```javascript
 // Don't use jsdom
 export default {
-  testEnvironment: 'node', // ✅ Correct
+  testEnvironment: "node", // ✅ Correct
   // testEnvironment: 'jsdom', // ❌ Wrong - not supported in React Native
-}
+};
 ```
 
 **Example:**
+
 ```typescript
 // apps/mobile/__tests__/navigation.test.ts
 import { render } from '@testing-library/react-native'
@@ -116,22 +126,25 @@ test('App renders without crashing', () => {
 ### Shared Packages (`packages/ui`, `packages/app`)
 
 **What to test:**
+
 - Component behavior, props, state
 - Hook logic
 - Utility functions
 - Any code that must work on both platforms
 
 **Where to put tests:**
+
 - `src/**/*.test.ts` or `src/**/*.test.tsx`
 - Test files should be co-located with source
 
 **Environment:**
+
 ```javascript
 // Always use node environment for shared code
 export default {
-  testEnvironment: 'node', // ✅ Required - must work on mobile
+  testEnvironment: "node", // ✅ Required - must work on mobile
   // testEnvironment: 'jsdom', // ❌ Wrong - breaks mobile
-}
+};
 ```
 
 **Testing Patterns:**
@@ -171,16 +184,19 @@ expect(screen.getByRole('button')).toHaveAccessibleName('Click')
 ### Web App (`apps/web/`)
 
 **What to test:**
+
 - Server Components (use default Node testing)
 - Client Components (can use jsdom if truly needed)
 - API routes
 - Integration tests
 
 **Where to put tests:**
+
 - `src/**/*.test.ts` or `src/**/*.test.tsx`
 - Keep web-specific tests here, not in shared packages
 
 **Environment:**
+
 ```javascript
 // Default: use node for most tests
 export default {
@@ -211,11 +227,12 @@ test('Modal closes on Escape key', async () => {
 ```
 
 **NEVER do this:**
+
 ```typescript
 // ❌ WRONG - DOM testing in shared packages
 // This breaks mobile and makes shared code web-specific
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 // Instead: Move this test to apps/web/src/components/
 ```
@@ -227,6 +244,7 @@ import '@testing-library/jest-dom'
 ### After Making Changes
 
 **1. Verify jsdom is not in root node_modules:**
+
 ```bash
 ls -la node_modules/ | grep jsdom
 # Should show jsdom (it's vitest's optional peer dependency)
@@ -234,6 +252,7 @@ ls -la node_modules/ | grep jsdom
 ```
 
 **2. Check jsdom is only required by vitest:**
+
 ```bash
 pnpm why jsdom
 # Should show:
@@ -242,12 +261,14 @@ pnpm why jsdom
 ```
 
 **3. Run linter to verify ESLint rules:**
+
 ```bash
 pnpm lint
 # Should pass without errors
 ```
 
 **4. Run tests:**
+
 ```bash
 # All tests should pass with environment: 'node'
 pnpm test
@@ -260,6 +281,7 @@ pnpm check-types
 ```
 
 **5. Start mobile app:**
+
 ```bash
 # Clear Metro cache
 pnpm dev:mobile --clear
@@ -268,6 +290,7 @@ pnpm dev:mobile --clear
 ```
 
 **6. Test ESLint protection (optional):**
+
 ```bash
 # Temporarily add forbidden import
 # Edit apps/mobile/App.tsx and add: import 'jsdom'
@@ -282,6 +305,7 @@ pnpm dev:mobile --clear
 ### Issue: "SharedArrayBuffer doesn't exist" Error
 
 **Solution:**
+
 1. Check Metro blocklist is still in `apps/mobile/metro.config.js`
 2. Verify jsdom not imported anywhere:
    ```bash
@@ -296,11 +320,13 @@ pnpm dev:mobile --clear
 **Root Cause:** Code is trying to use DOM APIs where none exist
 
 **Solution:**
+
 1. Verify vitest config uses `environment: 'node'`
 2. Check test code doesn't use DOM-only APIs:
    - `window`, `document`, `DOM selector queries`
    - `@testing-library/jest-dom` matchers
 3. Use React Testing Library's universal API instead:
+
    ```typescript
    // ❌ Wrong - assumes DOM
    const button = screen.getByRole('button')
@@ -313,6 +339,7 @@ pnpm dev:mobile --clear
 ### Issue: vitest Requires jsdom After Upgrade
 
 **Solution:**
+
 1. Do NOT add jsdom to workspace catalog
 2. Add jsdom ONLY in `apps/web/package.json` if needed:
    ```bash
@@ -329,6 +356,7 @@ pnpm dev:mobile --clear
 ### CI/CD Checks
 
 Add to your CI pipeline:
+
 ```bash
 # Verify jsdom not in workspace catalog
 ! grep '"jsdom"' pnpm-workspace.yaml
@@ -356,6 +384,7 @@ pnpm dev:mobile --clear
 ### Code Review Checklist
 
 When reviewing PRs:
+
 - ❌ Don't add jsdom to `pnpm-workspace.yaml` catalog
 - ❌ Don't remove nohoist from `.npmrc`
 - ❌ Don't import jsdom in shared packages
@@ -405,17 +434,20 @@ Keep the ESLint rules and documentation - they provide value even if package man
 ## Summary
 
 **The Rule:**
+
 - Mobile bundle must NEVER include jsdom, happy-dom, or @vitest/browser
 - Shared packages must ALWAYS use `environment: 'node'`
 - Web-specific tests should stay in `apps/web/`
 
 **The Defense:**
+
 1. Package management isolation
 2. Metro bundler blocklist
 3. ESLint compile-time checks
 4. Developer documentation
 
 **The Test:**
+
 - `pnpm test` - All tests pass
 - `pnpm dev:mobile --clear` - Mobile app starts without errors
 - `pnpm lint` - No ESLint violations

@@ -11,6 +11,7 @@ Successfully implemented comprehensive mobile web UX improvements and a smart ap
 A non-intrusive, intelligent banner that promotes app installation:
 
 **Smart Display Logic:**
+
 ```
 Show if:
   - (30 seconds of engagement) OR (2nd+ visit)
@@ -21,6 +22,7 @@ Show if:
 ```
 
 **Features:**
+
 - Platform detection (iOS vs Android)
 - Android PWA installation via `beforeinstallprompt`
 - iOS App Store redirect (configurable)
@@ -66,6 +68,7 @@ other: {
 Full PWA implementation for Android app-like experience:
 
 **Manifest** (`public/manifest.json`):
+
 - App name and description
 - Theme colors (#13a063)
 - Icon configurations
@@ -73,12 +76,14 @@ Full PWA implementation for Android app-like experience:
 - Standalone display mode
 
 **Service Worker** (`public/sw.js`):
+
 - Asset caching
 - Offline support
 - Cache-first strategy
 - Automatic updates
 
 **Registration** (`ServiceWorkerRegistration.tsx`):
+
 - Auto-registers service worker
 - Silent background installation
 
@@ -87,6 +92,7 @@ Full PWA implementation for Android app-like experience:
 Mobile-first header improvements:
 
 **Changes:**
+
 - ❌ Top promotional bar hidden on mobile
 - ✅ 44px minimum touch targets (Apple HIG)
 - ✅ Responsive padding (12px mobile → 16px desktop)
@@ -102,14 +108,15 @@ Ready-to-integrate event tracking:
 
 ```typescript
 // Events implemented:
-trackEvent('app_banner_shown')
-trackEvent('app_banner_clicked', { platform: 'ios' | 'android' })
-trackEvent('app_banner_dismissed')
-trackEvent('install_converted', { platform: 'android' })
-trackEvent('app_store_redirect', { platform: 'ios' })
+trackEvent("app_banner_shown");
+trackEvent("app_banner_clicked", { platform: "ios" | "android" });
+trackEvent("app_banner_dismissed");
+trackEvent("install_converted", { platform: "android" });
+trackEvent("app_store_redirect", { platform: "ios" });
 ```
 
 **Integration points:**
+
 - Google Analytics: `window.gtag?.('event', ...)`
 - Segment: `window.analytics?.track(...)`
 - Custom: Replace `trackEvent` function
@@ -146,23 +153,27 @@ Before deploying to production:
 ### 1. ⏳ App Store IDs (REQUIRED)
 
 **In `layout.tsx`:**
+
 ```typescript
 'apple-itunes-app': 'app-id=YOUR_ACTUAL_IOS_APP_ID'
 ```
 
 **In `AppPromoBanner.tsx`:**
+
 ```typescript
 // Line 90 - Replace TODO:
-window.open('https://apps.apple.com/app/YOUR_ACTUAL_IOS_APP_ID', '_blank')
+window.open("https://apps.apple.com/app/YOUR_ACTUAL_IOS_APP_ID", "_blank");
 ```
 
 ### 2. ⏳ App Icons (REQUIRED)
 
 Create and add to `apps/web/public/`:
+
 - `icon-192.png` (192x192px, PNG)
 - `icon-512.png` (512x512px, PNG)
 
 **Design specs:**
+
 - Use brand logo/golf ball
 - Primary green color (#13a063)
 - Transparent or white background
@@ -174,18 +185,24 @@ Create and add to `apps/web/public/`:
 
 ```typescript
 // Google Analytics
-const trackEvent = (eventName: string, properties?: Record<string, string | boolean>) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, properties)
+const trackEvent = (
+  eventName: string,
+  properties?: Record<string, string | boolean>,
+) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, properties);
   }
-}
+};
 
 // Segment
-const trackEvent = (eventName: string, properties?: Record<string, string | boolean>) => {
-  if (typeof window !== 'undefined' && window.analytics) {
-    window.analytics.track(eventName, properties)
+const trackEvent = (
+  eventName: string,
+  properties?: Record<string, string | boolean>,
+) => {
+  if (typeof window !== "undefined" && window.analytics) {
+    window.analytics.track(eventName, properties);
   }
-}
+};
 ```
 
 ### 4. ✅ Testing (BEFORE PRODUCTION)
@@ -202,24 +219,28 @@ const trackEvent = (eventName: string, properties?: Record<string, string | bool
 ## Key Technical Decisions
 
 ### 1. TypeScript Build Errors Bypassed
+
 **Why:** React 19 + Tamagui type compatibility issues
 **Solution:** `ignoreBuildErrors: true` in next.config.js
 **Impact:** Build succeeds, runtime works correctly
 **Future:** Remove when Tamagui updates React 19 types
 
 ### 2. Inline Styles for Banner
+
 **Why:** Avoid Tamagui type complexity in client component
 **Solution:** Pure CSS-in-JS with inline styles
 **Impact:** Zero dependencies, perfect runtime
 **Benefit:** Faster, no build issues
 
 ### 3. 30-Second Delay
+
 **Why:** Industry best practice (Vinted, Depop)
 **Solution:** setTimeout with engagement check
 **Impact:** Non-intrusive user experience
 **Alternative:** Configurable via environment variable
 
 ### 4. 7-Day Dismissal Period
+
 **Why:** Balance re-engagement vs annoyance
 **Solution:** localStorage timestamp check
 **Impact:** User-friendly persistence
@@ -228,12 +249,14 @@ const trackEvent = (eventName: string, properties?: Record<string, string | bool
 ## Performance Metrics
 
 ### Current Status
+
 - ✅ Build time: ~60 seconds
 - ✅ Bundle size impact: Minimal (+15KB)
 - ✅ Runtime overhead: Negligible
 - ✅ Service worker: Cache-first strategy
 
 ### Expected Lighthouse Scores (Mobile)
+
 - Performance: ≥ 90 (after image optimization)
 - Accessibility: ≥ 95
 - Best Practices: ≥ 95
@@ -242,13 +265,13 @@ const trackEvent = (eventName: string, properties?: Record<string, string | bool
 
 ## Browser Compatibility
 
-| Browser | Version | Support | Notes |
-|---------|---------|---------|-------|
-| iOS Safari | 13+ | ✅ Full | Smart App Banner + custom |
-| Android Chrome | 90+ | ✅ Full | PWA install prompt |
-| Samsung Internet | 14+ | ✅ Full | PWA support |
-| Firefox Mobile | 90+ | ✅ Good | Custom banner only |
-| iOS Safari | <13 | ⚠️ Partial | Custom banner only |
+| Browser          | Version | Support    | Notes                     |
+| ---------------- | ------- | ---------- | ------------------------- |
+| iOS Safari       | 13+     | ✅ Full    | Smart App Banner + custom |
+| Android Chrome   | 90+     | ✅ Full    | PWA install prompt        |
+| Samsung Internet | 14+     | ✅ Full    | PWA support               |
+| Firefox Mobile   | 90+     | ✅ Good    | Custom banner only        |
+| iOS Safari       | <13     | ⚠️ Partial | Custom banner only        |
 
 ## Security Considerations
 
@@ -278,6 +301,7 @@ const trackEvent = (eventName: string, properties?: Record<string, string | bool
 ## Future Enhancements
 
 ### Phase 2 (Post-MVP)
+
 1. **Deep Linking**
    - Universal Links (iOS)
    - App Links (Android)
@@ -299,6 +323,7 @@ const trackEvent = (eventName: string, properties?: Record<string, string | bool
    - Order updates
 
 ### Phase 3 (Advanced)
+
 1. **Offline-First**
    - Full offline functionality
    - Background sync
@@ -382,4 +407,4 @@ This implementation provides ButterGolf with a professional, production-ready mo
 ---
 
 **Built with ❤️ for ButterGolf**
-*Making golf equipment trading delightful on mobile*
+_Making golf equipment trading delightful on mobile_

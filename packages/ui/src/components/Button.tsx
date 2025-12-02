@@ -30,18 +30,19 @@ import { Platform } from "react-native";
  * Web: Combines drop shadow + inner shadow via boxShadow
  * Mobile: Only drop shadow via shadowColor/shadowOffset/shadowRadius/elevation
  */
-const getButtonShadow = (variant: 'primary' | 'secondary') => {
+const getButtonShadow = (variant: "primary" | "secondary") => {
   const baseShadow = {
-    shadowColor: 'rgba(0, 0, 0, 0.25)' as const,
+    shadowColor: "rgba(0, 0, 0, 0.25)" as const,
     shadowOffset: { width: 0, height: 1 } as const,
     shadowRadius: 5 as const,
     elevation: 3 as const, // Android shadow
   };
 
-  if (Platform.OS === 'web') {
-    const innerShadow = variant === 'primary'
-      ? 'inset 0px 2px 2px #FF7E4C'     // Inner glow for primary
-      : 'inset 0px 2px 2px #323232';    // Subtle inner shadow for secondary
+  if (Platform.OS === "web") {
+    const innerShadow =
+      variant === "primary"
+        ? "inset 0px 2px 2px #FF7E4C" // Inner glow for primary
+        : "inset 0px 2px 2px #323232"; // Subtle inner shadow for secondary
 
     return {
       ...baseShadow,
@@ -70,7 +71,7 @@ const ButtonBase = styled(TamaguiButton, {
         borderWidth: 1,
         borderColor: "$primaryBorder",
         color: "$textInverse",
-        ...getButtonShadow('primary'),
+        ...getButtonShadow("primary"),
 
         hoverStyle: {
           backgroundColor: "$primaryHover",
@@ -93,7 +94,7 @@ const ButtonBase = styled(TamaguiButton, {
         borderWidth: 1,
         borderColor: "$secondaryBorder",
         color: "$textInverse",
-        ...getButtonShadow('secondary'),
+        ...getButtonShadow("secondary"),
 
         hoverStyle: {
           backgroundColor: "$secondaryHover",

@@ -21,14 +21,14 @@ export async function POST(request: Request) {
     if (!productId) {
       return NextResponse.json(
         { error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!shippingAddress) {
       return NextResponse.json(
         { error: "Shipping address is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     if (product.isSold) {
       return NextResponse.json(
         { error: "Product is already sold" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -66,14 +66,14 @@ export async function POST(request: Request) {
     if (!product.user.stripeConnectId) {
       return NextResponse.json(
         { error: "Seller has not set up payments yet" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!product.user.stripeOnboardingComplete) {
       return NextResponse.json(
         { error: "Seller has not completed onboarding" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     if (!product.user.addresses.length) {
       return NextResponse.json(
         { error: "Seller has no shipping address configured" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -99,13 +99,13 @@ export async function POST(request: Request) {
         });
 
         const selectedRate = shippingData.rates?.find(
-          (rate) => rate.id === selectedRateId
+          (rate) => rate.id === selectedRateId,
         );
         if (selectedRate) {
           shippingAmount = parseInt(selectedRate.rate);
         }
       } catch (error) {
-        console.warn('Failed to calculate shipping, using fallback:', error);
+        console.warn("Failed to calculate shipping, using fallback:", error);
       }
     }
 
@@ -140,8 +140,8 @@ export async function POST(request: Request) {
         platformFee: platformFeeAmount.toString(),
         // Store shipping address for order creation
         shippingAddressJSON: JSON.stringify(shippingAddress),
-        selectedRateId: selectedRateId || '',
-        selectedRateJSON: selectedRate ? JSON.stringify(selectedRate) : '',
+        selectedRateId: selectedRateId || "",
+        selectedRateJSON: selectedRate ? JSON.stringify(selectedRate) : "",
       },
     });
 
@@ -161,7 +161,7 @@ export async function POST(request: Request) {
     console.error("Error creating payment intent:", error);
     return NextResponse.json(
       { error: "Failed to create payment intent" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

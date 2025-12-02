@@ -12,6 +12,7 @@
 **BREAKING CHANGE**: Row and Column components are now **minimal shims** over Tamagui primitives, not custom variant systems.
 
 #### ❌ OLD (Removed - Don't Use)
+
 ```tsx
 // Custom variants that caused TypeScript conflicts
 <Row gap="md" align="center" justify="between">
@@ -19,6 +20,7 @@
 ```
 
 #### ✅ NEW (Current - Use This)
+
 ```tsx
 // Native Tamagui props with tokens
 <Row gap="$md" alignItems="center" justifyContent="space-between">
@@ -26,6 +28,7 @@
 ```
 
 **Key Changes**:
+
 - ✅ Use `gap="$md"` (with `$` prefix for tokens)
 - ✅ Use `alignItems` (not `align`)
 - ✅ Use `justifyContent` (not `justify`)
@@ -39,6 +42,7 @@
 ## Project Overview
 
 ButterGolf is a cross-platform golf equipment marketplace built with:
+
 - **Web**: Next.js 16 (App Router)
 - **Mobile**: Expo ~54 (React Navigation)
 - **Shared**: Solito for navigation, Tamagui for UI
@@ -66,19 +70,19 @@ buttergolf/
 
 ### Technology Stack
 
-| Category | Technology | Version |
-|----------|-----------|---------|
-| **Build** | Turborepo | 2.6.0 |
-| **Package Manager** | pnpm | 10.20.0 |
-| **UI Framework** | Tamagui | 1.135.7 |
-| **Database** | Prisma + PostgreSQL | 6.x |
-| **React** | React | 19.1.0 |
-| **TypeScript** | TypeScript | 5.9.2 |
-| **Styling** | Tailwind v4 + Tamagui | - |
-| **Navigation** | Solito | 5.0.0 |
-| **Auth** | Clerk | 6.34.1 |
-| **Payments** | Stripe | 19.2.1 |
-| **Images** | Cloudinary | - |
+| Category            | Technology            | Version |
+| ------------------- | --------------------- | ------- |
+| **Build**           | Turborepo             | 2.6.0   |
+| **Package Manager** | pnpm                  | 10.20.0 |
+| **UI Framework**    | Tamagui               | 1.135.7 |
+| **Database**        | Prisma + PostgreSQL   | 6.x     |
+| **React**           | React                 | 19.1.0  |
+| **TypeScript**      | TypeScript            | 5.9.2   |
+| **Styling**         | Tailwind v4 + Tamagui | -       |
+| **Navigation**      | Solito                | 5.0.0   |
+| **Auth**            | Clerk                 | 6.34.1  |
+| **Payments**        | Stripe                | 19.2.1  |
+| **Images**          | Cloudinary            | -       |
 
 ---
 
@@ -89,6 +93,7 @@ buttergolf/
 #### Row & Column - Minimal Shims
 
 **Implementation**:
+
 ```tsx
 // packages/ui/src/components/Layout.tsx
 export const Row = styled(TamaguiXStack, {
@@ -103,9 +108,10 @@ export const Column = styled(TamaguiYStack, {
 ```
 
 **Usage Pattern**:
+
 ```tsx
 // ✅ CORRECT - Native Tamagui props with tokens
-<Row 
+<Row
   gap="$md"
   alignItems="center"
   justifyContent="space-between"
@@ -128,6 +134,7 @@ export const Column = styled(TamaguiYStack, {
 ```
 
 **Why This Works**:
+
 - ✅ No TypeScript conflicts (no custom variants)
 - ✅ No type assertions needed
 - ✅ Full Tamagui API available
@@ -141,7 +148,7 @@ export const Container = styled(TamaguiYStack, {
   name: "Container",
   width: "100%",
   marginHorizontal: "auto",
-  
+
   variants: {
     size: {
       sm: { maxWidth: 640 },
@@ -156,6 +163,7 @@ export const Container = styled(TamaguiYStack, {
 ```
 
 **Why This is Good**:
+
 - ✅ Component-specific (maxWidth concept unique to containers)
 - ✅ Design system boundary (enforces approved widths)
 - ✅ No base prop conflict
@@ -193,6 +201,7 @@ $pureWhite: #FFFFFF      // Pure white
 ```
 
 **When to Use Which**:
+
 - **Semantic tokens** → 99% of app code (automatic theme switching)
 - **Brand tokens** → Component defaults in `packages/ui`
 - **Raw hex** → Never use
@@ -219,12 +228,12 @@ $pureWhite: #FFFFFF      // Pure white
 #### Text Component
 
 ```tsx
-<Text 
-  size="$5"              // Font size (numeric token)
-  color="$text"          // Direct token reference
-  weight="600"           // Font weight
-  textAlign="center"     // Native prop
-  truncate               // Boolean prop
+<Text
+  size="$5" // Font size (numeric token)
+  color="$text" // Direct token reference
+  weight="600" // Font weight
+  textAlign="center" // Native prop
+  truncate // Boolean prop
 >
   Content
 </Text>
@@ -233,9 +242,9 @@ $pureWhite: #FFFFFF      // Pure white
 #### Heading Component
 
 ```tsx
-<Heading 
-  level={2}              // Semantic HTML level (h1-h6)
-  color="$text"          // Direct token reference
+<Heading
+  level={2} // Semantic HTML level (h1-h6)
+  color="$text" // Direct token reference
 >
   Section Title
 </Heading>
@@ -267,6 +276,7 @@ $pureWhite: #FFFFFF      // Pure white
 ```
 
 **Button Patterns**:
+
 ```tsx
 // Primary (pill-shaped)
 <Button size="$5" backgroundColor="$primary" color="$textInverse" borderRadius="$full">
@@ -385,6 +395,7 @@ const linking = {
 ```
 
 **Common Mistakes**:
+
 - ❌ Don't expect Expo Router file-based routing
 - ❌ Don't create separate screens for web/mobile
 - ❌ Don't forget to register routes in BOTH linking config AND Stack Navigator
@@ -410,6 +421,7 @@ pnpm prisma db push
 ```
 
 **If You Encounter Drift**:
+
 ```bash
 cd packages/db
 pnpm prisma migrate reset --force  # Drops DB, reapplies migrations
@@ -418,6 +430,7 @@ pnpm db:seed  # Reseed data
 ```
 
 **Why This Matters**:
+
 - ✅ Migrations are version-controlled and deployable
 - ✅ Team stays in sync
 - ✅ Production deployments work
@@ -454,7 +467,7 @@ import { redirect } from "next/navigation";
 export default async function ProtectedPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
-  
+
   return <div>Protected Content</div>;
 }
 ```
@@ -471,7 +484,7 @@ import * as SecureStore from "expo-secure-store";
   tokenCache={SecureStore}
 >
   <NavigationContainer>{/* ... */}</NavigationContainer>
-</ClerkProvider>
+</ClerkProvider>;
 ```
 
 ---
@@ -489,11 +502,13 @@ import * as SecureStore from "expo-secure-store";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+);
 
 <Elements stripe={stripePromise}>
   <CheckoutForm />
-</Elements>
+</Elements>;
 ```
 
 ### Mobile Pattern
@@ -501,9 +516,11 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 ```tsx
 import { StripeProvider } from "@stripe/stripe-react-native";
 
-<StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}>
+<StripeProvider
+  publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+>
   {/* Your app */}
-</StripeProvider>
+</StripeProvider>;
 ```
 
 **Always use native SDK on mobile** - don't use web views.
@@ -525,24 +542,25 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 ```tsx
 // Server-side upload
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
 
 const result = await cloudinary.uploader.upload(image, {
-  folder: 'products',
-  format: 'auto',
-  quality: 'auto',
+  folder: "products",
+  format: "auto",
+  quality: "auto",
 });
 
 // Store result.secure_url in database
 ```
 
 **Background Removal** (first image only):
+
 ```tsx
 {
   transformation: [
-    { effect: 'background_removal' },
-    { background: 'rgb:FFFAD2' },  // Vanilla Cream brand color
-  ]
+    { effect: "background_removal" },
+    { background: "rgb:FFFAD2" }, // Vanilla Cream brand color
+  ];
 }
 ```
 
@@ -607,13 +625,9 @@ When generating new code:
 ```tsx
 <Card variant="elevated" padding="none" fullWidth>
   <Card.Header padding="none" noBorder>
-    <Image
-      source={{ uri: product.imageUrl }}
-      width="100%"
-      height={200}
-    />
+    <Image source={{ uri: product.imageUrl }} width="100%" height={200} />
   </Card.Header>
-  
+
   <Card.Body padding="lg">
     <Column gap="$sm">
       <Heading level={4}>{product.name}</Heading>
@@ -626,13 +640,13 @@ When generating new code:
       </Row>
     </Column>
   </Card.Body>
-  
+
   <Card.Footer align="right">
-    <Button 
-      size="$4" 
-      backgroundColor="transparent" 
-      color="$primary" 
-      borderWidth={2} 
+    <Button
+      size="$4"
+      backgroundColor="transparent"
+      color="$primary"
+      borderWidth={2}
       borderColor="$primary"
     >
       Add to Cart
@@ -650,13 +664,7 @@ When generating new code:
       <Label htmlFor="email">Email</Label>
       <Text color="$error">*</Text>
     </Row>
-    <Input 
-      id="email" 
-      type="email" 
-      size="md" 
-      error={!!emailError} 
-      fullWidth 
-    />
+    <Input id="email" type="email" size="md" error={!!emailError} fullWidth />
     {emailError && (
       <Text size="$4" color="$error">
         {emailError}
@@ -664,10 +672,10 @@ When generating new code:
     )}
   </Column>
 
-  <Button 
-    size="$5" 
-    backgroundColor="$primary" 
-    color="$textInverse" 
+  <Button
+    size="$5"
+    backgroundColor="$primary"
+    color="$textInverse"
     width="100%"
   >
     Submit
@@ -679,15 +687,8 @@ When generating new code:
 
 ```tsx
 <Container size="lg">
-  <Column
-    gap="$md"
-    $gtMd={{ gap: "$lg" }}
-  >
-    <Row
-      flexDirection="column"
-      $gtSm={{ flexDirection: "row" }}
-      gap="$md"
-    >
+  <Column gap="$md" $gtMd={{ gap: "$lg" }}>
+    <Row flexDirection="column" $gtSm={{ flexDirection: "row" }} gap="$md">
       <Column flex={1}>Content 1</Column>
       <Column flex={1}>Content 2</Column>
     </Row>
@@ -700,12 +701,14 @@ When generating new code:
 ## Documentation References
 
 ### Core Docs
+
 - `docs/LISTINGS_LAYOUT_FIX_COMPLETE.md` - Layout system changes
 - `docs/COMPONENT_LIBRARY_AUDIT.md` - Component patterns
 - `docs/FINDING_ROUTES_NEEDING_FIXES.md` - Migration guide
 - `.github/copilot-instructions.md` - Full project instructions
 
 ### External
+
 - [Tamagui Documentation](https://tamagui.dev/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Expo Documentation](https://docs.expo.dev/)

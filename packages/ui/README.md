@@ -34,23 +34,24 @@ This package is part of the ButterGolf monorepo and uses the workspace protocol:
 
 ```tsx
 // ✅ Correct - Import config from @buttergolf/config
-import { config } from '@buttergolf/config'
-import { TamaguiProvider } from '@buttergolf/ui'
+import { config } from "@buttergolf/config";
+import { TamaguiProvider } from "@buttergolf/ui";
 
 function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       {/* Your app */}
     </TamaguiProvider>
-  )
+  );
 }
 ```
 
 ```tsx
 // ❌ Wrong - Config is not exported from @buttergolf/ui
-import { config } from '@buttergolf/ui' // Error: config is not exported!
+import { config } from "@buttergolf/ui"; // Error: config is not exported!
 ```
-```
+
+````
 
 ### Using Themes
 
@@ -76,7 +77,7 @@ function ThemedSection() {
     </Theme>
   )
 }
-```
+````
 
 ### Color Tokens
 
@@ -84,42 +85,42 @@ The design system includes semantic color tokens that adapt to light/dark themes
 
 ```tsx
 // Brand colors
-$primary         // Main brand color (green)
-$primaryHover    // Hover state
-$primaryPress    // Press state
-$secondary       // Secondary brand color (amber)
+$primary; // Main brand color (green)
+$primaryHover; // Hover state
+$primaryPress; // Press state
+$secondary; // Secondary brand color (amber)
 
 // Semantic colors
-$success         // Success state (teal)
-$error           // Error state (red)
-$warning         // Warning state (amber)
-$info            // Info state (blue)
+$success; // Success state (teal)
+$error; // Error state (red)
+$warning; // Warning state (amber)
+$info; // Info state (blue)
 
 // Text colors
-$text            // Primary text
-$textSecondary   // Secondary text
-$textMuted       // Muted text
+$text; // Primary text
+$textSecondary; // Secondary text
+$textMuted; // Muted text
 
 // Background colors
-$background      // Main background
-$surface         // Surface/card background
-$card            // Card background
+$background; // Main background
+$surface; // Surface/card background
+$card; // Card background
 
 // Border colors
-$border          // Default border
-$borderFocus     // Focused border
+$border; // Default border
+$borderFocus; // Focused border
 ```
 
 ### Spacing Tokens
 
 ```tsx
-$xs  // 4px
-$sm  // 8px
-$md  // 16px
-$lg  // 24px
-$xl  // 32px
-$2xl // 48px
-$3xl // 64px
+$xs; // 4px
+$sm; // 8px
+$md; // 16px
+$lg; // 24px
+$xl; // 32px
+$2xl; // 48px
+$3xl; // 64px
 ```
 
 ## 🧩 Components
@@ -149,6 +150,7 @@ import { Button } from '@buttergolf/ui'
 ```
 
 **Props**:
+
 - `size`: `'sm' | 'md' | 'lg'` - Button size (default: 'md')
 - `tone`: `'primary' | 'secondary' | 'outline' | 'ghost' | 'success' | 'error'` - Button style (default: 'primary')
 - `fullWidth`: `boolean` - Make button full width
@@ -208,12 +210,12 @@ Use the semantic shims that wrap Tamagui's stack primitives for readability.
 #### Row (Horizontal Layout)
 
 ```tsx
-import { Row } from '@buttergolf/ui'
+import { Row } from "@buttergolf/ui";
 
 <Row gap="$4" alignItems="center" justifyContent="space-between">
   <Text>Left</Text>
   <Button>Right</Button>
-</Row>
+</Row>;
 ```
 
 Row preserves all `XStack` props, so continue using native Tamagui layout props with token values.
@@ -221,35 +223,35 @@ Row preserves all `XStack` props, so continue using native Tamagui layout props 
 #### Column (Vertical Layout)
 
 ```tsx
-import { Column } from '@buttergolf/ui'
+import { Column } from "@buttergolf/ui";
 
 <Column gap="$6" alignItems="center">
   <Heading level={2}>Title</Heading>
   <Text>Content</Text>
   <Button>Action</Button>
-</Column>
+</Column>;
 ```
 
 #### Container
 
 ```tsx
-import { Container } from '@buttergolf/ui'
+import { Container } from "@buttergolf/ui";
 
 <Container size="lg" padding="$md">
   <Text>Constrained content</Text>
-</Container>
+</Container>;
 ```
 
 #### Spacer
 
 ```tsx
-import { Row, Spacer } from '@buttergolf/ui'
+import { Row, Spacer } from "@buttergolf/ui";
 
 <Row>
   <Text>Left</Text>
   <Spacer />
   <Text>Right</Text>
-</Row>
+</Row>;
 ```
 
 ### Card
@@ -286,6 +288,7 @@ import { Card, CardHeader, CardBody, CardFooter } from '@buttergolf/ui'
 ```
 
 **Variants**:
+
 - `elevated`: Shadow elevation (default)
 - `outlined`: Border with no shadow
 - `filled`: Filled background
@@ -319,6 +322,7 @@ import { Input, Label } from '@buttergolf/ui'
 ```
 
 **Props**:
+
 - `size`: `'sm' | 'md' | 'lg'` - Input size (default: 'md')
 - `error`: `boolean` - Show error state
 - `success`: `boolean` - Show success state
@@ -341,6 +345,7 @@ import { Badge } from '@buttergolf/ui'
 ```
 
 **Variants**:
+
 - `primary`, `secondary`, `success`, `error`, `warning`, `info`, `neutral`, `outline`
 
 ### Spinner
@@ -360,18 +365,19 @@ import { Spinner } from '@buttergolf/ui'
 Use media query props for responsive layouts:
 
 ```tsx
-import { Column } from '@buttergolf/ui'
+import { Column } from "@buttergolf/ui";
 
 <Column
   width="100%"
-  $gtSm={{ width: '50%' }}  // Greater than small breakpoint
-  $gtMd={{ width: '33%' }}  // Greater than medium breakpoint
+  $gtSm={{ width: "50%" }} // Greater than small breakpoint
+  $gtMd={{ width: "33%" }} // Greater than medium breakpoint
 >
   <Text>Responsive content</Text>
-</Column>
+</Column>;
 ```
 
 **Available breakpoints**:
+
 - `$xs`: Max width 660px
 - `$gtXs`: Min width 661px
 - `$sm`: Max width 860px
@@ -388,6 +394,7 @@ import { Column } from '@buttergolf/ui'
 ### 1. Use Semantic Tokens
 
 ✅ **Good**:
+
 ```tsx
 <Button backgroundColor="$primary" color="$white">
   Click me
@@ -395,6 +402,7 @@ import { Column } from '@buttergolf/ui'
 ```
 
 ❌ **Avoid**:
+
 ```tsx
 <Button backgroundColor="#13a063" color="#ffffff">
   Click me
@@ -404,12 +412,14 @@ import { Column } from '@buttergolf/ui'
 ### 2. Use Component Variants
 
 ✅ **Good**:
+
 ```tsx
 <Button size="lg" tone="primary">Submit</Button>
 <Text size="sm" color="$textMuted">Helper text</Text>
 ```
 
 ❌ **Avoid**:
+
 ```tsx
 <Button paddingHorizontal="$5" backgroundColor="$primary">Submit</Button>
 <Text fontSize="$3" color="$gray500">Helper text</Text>
@@ -418,6 +428,7 @@ import { Column } from '@buttergolf/ui'
 ### 3. Leverage Layout Components
 
 ✅ **Good**:
+
 ```tsx
 <Column gap="md" align="stretch">
   <Text>Item 1</Text>
@@ -426,6 +437,7 @@ import { Column } from '@buttergolf/ui'
 ```
 
 ❌ **Avoid**:
+
 ```tsx
 <View flexDirection="column">
   <Text marginBottom="$md">Item 1</Text>
@@ -436,6 +448,7 @@ import { Column } from '@buttergolf/ui'
 ### 4. Use Compound Components
 
 ✅ **Good**:
+
 ```tsx
 <Card variant="elevated">
   <Card.Header>
@@ -452,43 +465,43 @@ import { Column } from '@buttergolf/ui'
 ### Creating Custom Components
 
 ```tsx
-import { styled, GetProps } from '@buttergolf/ui'
-import { Button } from '@buttergolf/ui'
+import { styled, GetProps } from "@buttergolf/ui";
+import { Button } from "@buttergolf/ui";
 
 // Extend existing component
 export const IconButton = styled(Button, {
-  name: 'IconButton',
-  
-  width: '$buttonMd',
+  name: "IconButton",
+
+  width: "$buttonMd",
   paddingHorizontal: 0,
-  
+
   variants: {
     rounded: {
       true: {
-        borderRadius: '$full',
+        borderRadius: "$full",
       },
     },
   },
-})
+});
 
-export type IconButtonProps = GetProps<typeof IconButton>
+export type IconButtonProps = GetProps<typeof IconButton>;
 ```
 
 ### Adding Custom Variants
 
 ```tsx
-import { styled, Text } from '@buttergolf/ui'
+import { styled, Text } from "@buttergolf/ui";
 
 export const CustomText = styled(Text, {
   variants: {
     highlight: {
       true: {
-        backgroundColor: '$yellow',
-        paddingHorizontal: '$2',
+        backgroundColor: "$yellow",
+        paddingHorizontal: "$2",
       },
     },
   },
-})
+});
 ```
 
 ## 🐛 Troubleshooting
@@ -510,6 +523,7 @@ If you see type errors like "cannot be named without a reference", add these to 
 ### Components Not Updating
 
 If components don't reflect config changes:
+
 1. Restart dev servers (config isn't hot-reloaded)
 2. Clear Metro cache: `pnpm dev:mobile --clear`
 3. Clear Next.js cache: `rm -rf .next`
@@ -522,9 +536,9 @@ If tokens don't exist, they can be added to `packages/config/src/tamagui.config.
 const customTokens = createTokens({
   color: {
     // Add new colors here
-    myCustomColor: '#hexvalue',
+    myCustomColor: "#hexvalue",
   },
-})
+});
 ```
 
 ## 📚 Related Documentation
@@ -547,36 +561,36 @@ When adding new components:
 ### Component Template
 
 ```tsx
-import { styled, GetProps, View } from 'tamagui'
+import { styled, GetProps, View } from "tamagui";
 
 export const MyComponent = styled(View, {
-  name: 'MyComponent',
-  
+  name: "MyComponent",
+
   // Base styles
-  backgroundColor: '$surface',
-  padding: '$md',
-  borderRadius: '$md',
-  
+  backgroundColor: "$surface",
+  padding: "$md",
+  borderRadius: "$md",
+
   variants: {
     size: {
-      sm: { padding: '$sm' },
-      md: { padding: '$md' },
-      lg: { padding: '$lg' },
+      sm: { padding: "$sm" },
+      md: { padding: "$md" },
+      lg: { padding: "$lg" },
     },
-    
+
     variant: {
-      default: { backgroundColor: '$surface' },
-      primary: { backgroundColor: '$primary' },
+      default: { backgroundColor: "$surface" },
+      primary: { backgroundColor: "$primary" },
     },
   } as const,
-  
-  defaultVariants: {
-    size: 'md',
-    variant: 'default',
-  },
-})
 
-export type MyComponentProps = GetProps<typeof MyComponent>
+  defaultVariants: {
+    size: "md",
+    variant: "default",
+  },
+});
+
+export type MyComponentProps = GetProps<typeof MyComponent>;
 ```
 
 ## 📄 License

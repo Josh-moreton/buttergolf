@@ -45,11 +45,21 @@ export function ListingsClient({
           // Merge URL params (they take precedence)
           return {
             category: searchParams.get("category") || parsed.category || null,
-            conditions: searchParams.getAll("condition") || parsed.conditions || [],
-            minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || parsed.minPrice || initialFilters.priceRange.min,
-            maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || parsed.maxPrice || initialFilters.priceRange.max,
+            conditions:
+              searchParams.getAll("condition") || parsed.conditions || [],
+            minPrice:
+              Number.parseFloat(searchParams.get("minPrice") || "") ||
+              parsed.minPrice ||
+              initialFilters.priceRange.min,
+            maxPrice:
+              Number.parseFloat(searchParams.get("maxPrice") || "") ||
+              parsed.maxPrice ||
+              initialFilters.priceRange.max,
             brands: searchParams.getAll("brand") || parsed.brands || [],
-            showFavouritesOnly: searchParams.get("favourites") === "true" || parsed.showFavouritesOnly || false,
+            showFavouritesOnly:
+              searchParams.get("favourites") === "true" ||
+              parsed.showFavouritesOnly ||
+              false,
           };
         } catch {
           // Fall through to URL parsing
@@ -61,10 +71,14 @@ export function ListingsClient({
     return {
       category: searchParams.get("category") || null,
       conditions: searchParams.getAll("condition") || [],
-      minPrice: Number.parseFloat(searchParams.get("minPrice") || "") || initialFilters.priceRange.min,
-      maxPrice: Number.parseFloat(searchParams.get("maxPrice") || "") || initialFilters.priceRange.max,
+      minPrice:
+        Number.parseFloat(searchParams.get("minPrice") || "") ||
+        initialFilters.priceRange.min,
+      maxPrice:
+        Number.parseFloat(searchParams.get("maxPrice") || "") ||
+        initialFilters.priceRange.max,
       brands: searchParams.getAll("brand") || [],
-    showFavouritesOnly: searchParams.get("favourites") === "true" || false,
+      showFavouritesOnly: searchParams.get("favourites") === "true" || false,
     };
   };
 
@@ -108,7 +122,7 @@ export function ListingsClient({
 
       return `/listings?${params.toString()}`;
     },
-    [initialFilters.priceRange]
+    [initialFilters.priceRange],
   );
 
   // Calculate total pages
@@ -125,8 +139,10 @@ export function ListingsClient({
         for (const c of filters.conditions) {
           params.append("condition", c);
         }
-        if (filters.minPrice) params.set("minPrice", filters.minPrice.toString());
-        if (filters.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
+        if (filters.minPrice)
+          params.set("minPrice", filters.minPrice.toString());
+        if (filters.maxPrice)
+          params.set("maxPrice", filters.maxPrice.toString());
         for (const b of filters.brands) {
           params.append("brand", b);
         }
@@ -154,7 +170,7 @@ export function ListingsClient({
         setIsLoading(false);
       }
     },
-    [filters, sort, router, buildURL]
+    [filters, sort, router, buildURL],
   );
 
   // Debounced fetch on filter change
@@ -250,10 +266,7 @@ export function ListingsClient({
 
             <Row gap="$md" alignItems="center">
               {/* Mobile filter button */}
-              <Row
-                display="flex"
-                $gtLg={{ display: "none" }}
-              >
+              <Row display="flex" $gtLg={{ display: "none" }}>
                 <Button
                   size="$4"
                   chromeless
@@ -307,7 +320,9 @@ export function ListingsClient({
                       padding="$0"
                       onPress={() =>
                         handleFilterChange({
-                          conditions: filters.conditions.filter((c) => c !== condition),
+                          conditions: filters.conditions.filter(
+                            (c) => c !== condition,
+                          ),
                         })
                       }
                       aria-label={`Remove ${condition} filter`}
@@ -349,7 +364,9 @@ export function ListingsClient({
             <FilterSidebar
               filters={filters}
               availableBrands={availableFilters?.availableBrands || []}
-              priceRange={availableFilters?.priceRange || { min: 0, max: 10000 }}
+              priceRange={
+                availableFilters?.priceRange || { min: 0, max: 10000 }
+              }
               onChange={handleFilterChange}
               onClearAll={handleClearAll}
             />

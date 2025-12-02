@@ -34,7 +34,6 @@ export function ProductDetailScreen({
   const backLink = useLink({ href: routes.products });
 
   const fetchProduct = useCallback(async () => {
-
     if (!onFetchProduct || !productId) {
       setLoading(false);
       setError("No product ID provided");
@@ -57,7 +56,6 @@ export function ProductDetailScreen({
     } finally {
       setLoading(false);
     }
-
   }, [onFetchProduct, productId]);
 
   useEffect(() => {
@@ -209,7 +207,7 @@ export function ProductDetailScreen({
             Contact Seller
           </Button>
         </Column>
-      </Column >
-    </ScrollView >
+      </Column>
+    </ScrollView>
   );
 }

@@ -69,6 +69,7 @@ sequenceDiagram
 **POST** `/api/stripe/webhook`
 
 Handles Stripe checkout completion:
+
 - Verifies webhook signature
 - Extracts order metadata (productId, sellerId, buyerId)
 - Creates shipping addresses
@@ -81,6 +82,7 @@ Handles Stripe checkout completion:
 **POST** `/api/easypost/webhook`
 
 Handles EasyPost tracking updates:
+
 - Verifies webhook signature (HMAC-SHA256)
 - Processes tracker.created, tracker.updated events
 - Updates Order.shipmentStatus
@@ -91,6 +93,7 @@ Handles EasyPost tracking updates:
 **GET** `/api/orders`
 
 Lists user's orders with optional filters:
+
 - Query params: `role` (buyer/seller/all), `status`
 - Requires authentication (Clerk)
 - Returns orders with product, user, and address details
@@ -98,6 +101,7 @@ Lists user's orders with optional filters:
 **GET** `/api/orders/[id]`
 
 Gets single order details:
+
 - Requires authentication (Clerk)
 - Validates user is buyer or seller
 - Returns full order details with tracking info
@@ -149,6 +153,7 @@ EasyPost: https://your-ngrok-url/api/easypost/webhook
 ### Failed Label Generation
 
 If EasyPost label generation fails:
+
 - Order is still created with status PAYMENT_CONFIRMED
 - Admin is notified (TODO)
 - Label can be generated manually later
@@ -156,6 +161,7 @@ If EasyPost label generation fails:
 ### Webhook Failures
 
 Both webhook handlers return proper status codes:
+
 - 400: Invalid signature or missing data
 - 401: Unauthorized
 - 404: Resource not found

@@ -11,7 +11,11 @@ const FavouritesContext = createContext<FavouritesContextType | null>(null);
  * Provider that wraps the app and shares favourites state across all components
  * Place this in the root layout after ClerkProvider
  */
-export function FavouritesProvider({ children }: { readonly children: ReactNode }) {
+export function FavouritesProvider({
+  children,
+}: {
+  readonly children: ReactNode;
+}) {
   const favouritesState = useFavourites();
 
   return (
@@ -29,7 +33,9 @@ export function useFavouritesContext() {
   const context = useContext(FavouritesContext);
 
   if (!context) {
-    throw new Error("useFavouritesContext must be used within FavouritesProvider");
+    throw new Error(
+      "useFavouritesContext must be used within FavouritesProvider",
+    );
   }
 
   return context;

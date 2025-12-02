@@ -5,6 +5,7 @@
 ## What's Been Completed
 
 ### 1. Testing Packages Installed ✅
+
 - `vitest` v4.0.13 - Fast unit test framework
 - `@testing-library/react` v16.3.0 - React component testing
 - `@testing-library/react-native` v13.3.3 - React Native testing
@@ -13,6 +14,7 @@
 - `happy-dom` / `jsdom` - DOM environment for tests
 
 ### 2. Configuration Files Created ✅
+
 - `/vitest.config.ts` - Root configuration
 - `/vitest.setup.ts` - Global test setup
 - `/packages/ui/vitest.config.ts` - UI package config
@@ -20,7 +22,9 @@
 - `/packages/ui/tsconfig.test.json` - Test-specific TypeScript config
 
 ### 3. Test Scripts Added ✅
+
 **Root `package.json`:**
+
 ```json
 "test": "turbo run test",
 "test:ui": "vitest --ui",
@@ -29,6 +33,7 @@
 ```
 
 **Package `package.json` (ui):**
+
 ```json
 "test": "vitest run",
 "test:watch": "vitest",
@@ -37,6 +42,7 @@
 ```
 
 **`turbo.json`:**
+
 ```json
 "test": {
   "dependsOn": ["^build"],
@@ -46,11 +52,13 @@
 ```
 
 ### 4. Example Tests Written ✅
+
 - `packages/ui/src/components/Text.test.tsx` - Text component tests
 - `packages/ui/src/components/Badge.test.tsx` - Badge component tests
 - `packages/ui/src/components/Button.test.tsx` - Button component tests
 
 ### 5. Test Utilities Configured ✅
+
 - **matchMedia mock** - For responsive design testing
 - **Clerk mock** - For authentication in tests
 - **Next.js router mock** - For navigation testing
@@ -61,6 +69,7 @@
 **Problem**: TypeScript config resolution in Vitest with monorepo `extends` paths
 
 **Error**:
+
 ```
 TSConfckParseError: failed to resolve "extends":"@buttergolf/typescript-config/react-library.json"
 ```
@@ -70,6 +79,7 @@ TSConfckParseError: failed to resolve "extends":"@buttergolf/typescript-config/r
 ## Solutions to Try
 
 ### Option 1: Use tsconfigRaw (Recommended)
+
 Override esbuild to use inline TS config instead of file resolution:
 
 ```ts
@@ -78,94 +88,101 @@ export default defineConfig({
   esbuild: {
     tsconfigRaw: {
       compilerOptions: {
-        jsx: 'react-jsx',
+        jsx: "react-jsx",
         skipLibCheck: true,
-        module: 'ESNext',
-        moduleResolution: 'bundler',
+        module: "ESNext",
+        moduleResolution: "bundler",
       },
     },
   },
-})
+});
 ```
 
 ### Option 2: Flatten TypeScript Configs
+
 Remove `extends` from package tsconfigs and inline all settings.
 
 ### Option 3: Use vite-tsconfig-paths Plugin
+
 Install and configure:
+
 ```bash
 pnpm add -D vite-tsconfig-paths
 ```
 
 ```ts
-import tsconfigPaths from 'vite-tsconfig-paths'
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-})
+});
 ```
 
 ### Option 4: Separate Test Configs
+
 Create `tsconfig.test.json` in each package without extends (already started).
 
 ## Test Examples
 
 ### Text Component Test
+
 ```tsx
-describe('Text Component', () => {
-  it('renders text content', () => {
+describe("Text Component", () => {
+  it("renders text content", () => {
     render(
       <TestWrapper>
         <Text>Hello World</Text>
-      </TestWrapper>
-    )
-    expect(screen.getByText('Hello World')).toBeInTheDocument()
-  })
+      </TestWrapper>,
+    );
+    expect(screen.getByText("Hello World")).toBeInTheDocument();
+  });
 
-  it('applies weight variants correctly', () => {
+  it("applies weight variants correctly", () => {
     render(
       <TestWrapper>
         <Text weight="bold">Bold Text</Text>
-      </TestWrapper>
-    )
-    const textElement = screen.getByText('Bold Text')
-    expect(textElement).toBeInTheDocument()
-  })
-})
+      </TestWrapper>,
+    );
+    const textElement = screen.getByText("Bold Text");
+    expect(textElement).toBeInTheDocument();
+  });
+});
 ```
 
 ### Badge Component Test
+
 ```tsx
-describe('Badge Component', () => {
-  it('renders badge with text content', () => {
+describe("Badge Component", () => {
+  it("renders badge with text content", () => {
     render(
       <TestWrapper>
         <Badge variant="success">
           <Text>Active</Text>
         </Badge>
-      </TestWrapper>
-    )
-    expect(screen.getByText('Active')).toBeInTheDocument()
-  })
-})
+      </TestWrapper>,
+    );
+    expect(screen.getByText("Active")).toBeInTheDocument();
+  });
+});
 ```
 
 ### Button Component Test
+
 ```tsx
-describe('Button Component', () => {
-  it('handles click events', () => {
-    const handleClick = vi.fn()
+describe("Button Component", () => {
+  it("handles click events", () => {
+    const handleClick = vi.fn();
     render(
       <TestWrapper>
         <Button onPress={handleClick}>Click Me</Button>
-      </TestWrapper>
-    )
+      </TestWrapper>,
+    );
 
-    const button = screen.getByText('Click Me')
-    fireEvent.click(button)
-    expect(handleClick).toHaveBeenCalledTimes(1)
-  })
-})
+    const button = screen.getByText("Click Me");
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
 ```
 
 ## Running Tests

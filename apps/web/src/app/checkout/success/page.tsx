@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Column, Text, Heading, Button, Card, Spinner, Row } from "@buttergolf/ui";
+import {
+  Column,
+  Text,
+  Heading,
+  Button,
+  Card,
+  Spinner,
+  Row,
+} from "@buttergolf/ui";
 import Link from "next/link";
 
 interface OrderDetails {
@@ -32,7 +40,9 @@ export default function CheckoutSuccessPage() {
     // Fetch order details
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/api/orders/by-payment-intent/${paymentIntentId}`);
+        const response = await fetch(
+          `/api/orders/by-payment-intent/${paymentIntentId}`,
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch order details");
@@ -79,17 +89,26 @@ export default function CheckoutSuccessPage() {
           <Column gap="$md" alignItems="center">
             <Heading level={3}>Payment Successful!</Heading>
             <Text color="$textSecondary" align="center">
-              Your payment was processed successfully. You should receive an order
-              confirmation email shortly.
+              Your payment was processed successfully. You should receive an
+              order confirmation email shortly.
             </Text>
             <Row gap="$md" marginTop="$lg">
               <Link href="/orders" style={{ textDecoration: "none" }}>
-                <Button size="$5" backgroundColor="$primary" color="$textInverse">
+                <Button
+                  size="$5"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                >
                   View My Orders
                 </Button>
               </Link>
               <Link href="/" style={{ textDecoration: "none" }}>
-                <Button size="$5" borderWidth={1} borderColor="$border" backgroundColor="transparent">
+                <Button
+                  size="$5"
+                  borderWidth={1}
+                  borderColor="$border"
+                  backgroundColor="transparent"
+                >
                   Continue Shopping
                 </Button>
               </Link>
@@ -127,7 +146,8 @@ export default function CheckoutSuccessPage() {
           <Column gap="$sm" alignItems="center">
             <Heading level={2}>Order Confirmed!</Heading>
             <Text color="$textSecondary" align="center">
-              Thank you for your purchase. Your order has been successfully placed.
+              Thank you for your purchase. Your order has been successfully
+              placed.
             </Text>
           </Column>
 
@@ -200,12 +220,23 @@ export default function CheckoutSuccessPage() {
               href={`/orders/${order.id}`}
               style={{ textDecoration: "none", flex: 1 }}
             >
-              <Button size="$5" width="100%" backgroundColor="$primary" color="$textInverse">
+              <Button
+                size="$5"
+                width="100%"
+                backgroundColor="$primary"
+                color="$textInverse"
+              >
                 View Order Details
               </Button>
             </Link>
             <Link href="/" style={{ textDecoration: "none", flex: 1 }}>
-              <Button size="$5" width="100%" borderWidth={1} borderColor="$border" backgroundColor="transparent">
+              <Button
+                size="$5"
+                width="100%"
+                borderWidth={1}
+                borderColor="$border"
+                backgroundColor="transparent"
+              >
                 Continue Shopping
               </Button>
             </Link>

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { SignUp } from "@clerk/nextjs"
+import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+    <div style={{ display: "flex", justifyContent: "center", padding: 24 }}>
       <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
     </div>
-  )
+  );
 }

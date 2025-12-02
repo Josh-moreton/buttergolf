@@ -9,15 +9,18 @@ Successfully migrated all Tamagui configuration imports from `@buttergolf/ui` to
 ### 1. Code Migrations
 
 **Files Updated:**
+
 - `packages/app/src/provider/Provider.tsx` - Updated to import config from `@buttergolf/config`
 - `packages/app/src/provider/NextTamaguiProvider.tsx` - Updated to import config from `@buttergolf/config`
 
 **Before:**
+
 ```tsx
 import { config } from "@buttergolf/ui";
 ```
 
 **After:**
+
 ```tsx
 import { config } from "@buttergolf/config";
 ```
@@ -25,6 +28,7 @@ import { config } from "@buttergolf/config";
 ### 2. Complete Removal
 
 Removed all config exports from `@buttergolf/ui`:
+
 - Deleted `packages/ui/tamagui.config.ts` file entirely
 - Removed config re-exports from `packages/ui/src/index.ts`
 - Config must now be imported directly from `@buttergolf/config`
@@ -32,12 +36,14 @@ Removed all config exports from `@buttergolf/ui`:
 ### 3. Documentation Updates
 
 **Updated Files:**
+
 - `packages/ui/README.md` - Updated examples to show correct import pattern
 - `.github/copilot-instructions.md` - Updated all code examples to use `@buttergolf/config`
 
 ### 4. ESLint Rule
 
 Added `no-restricted-imports` rule to `packages/eslint-config/base.js`:
+
 - Prevents importing `config` from `@buttergolf/ui`
 - Prevents deep path imports like `@buttergolf/ui/tamagui.config`
 - Provides helpful error messages with migration instructions
@@ -45,6 +51,7 @@ Added `no-restricted-imports` rule to `packages/eslint-config/base.js`:
 ### 5. CI Check
 
 Created `.github/workflows/check-tamagui-config-imports.yml`:
+
 - Runs on all PRs and pushes to main/develop
 - Scans for deprecated import patterns
 - Fails the build if deprecated imports are found
@@ -53,31 +60,38 @@ Created `.github/workflows/check-tamagui-config-imports.yml`:
 ## Verification
 
 ### Build Status
+
 ✅ Web build passes: `pnpm --filter web build`
 
 ### ESLint Verification
+
 The ESLint rule successfully catches deprecated imports:
+
 ```bash
 # Test shows the rule working:
-# warning  'config' import from '@buttergolf/ui' is restricted. 
+# warning  'config' import from '@buttergolf/ui' is restricted.
 # Import Tamagui config from '@buttergolf/config' instead
 ```
 
 ### No Deprecated Imports Remain
+
 Verified that no imports of config from `@buttergolf/ui` exist in the codebase (excluding the deprecation shim itself).
 
 ## Configuration Verification
 
 ### Next.js (Web)
+
 - ✅ `apps/web/next.config.js` - Already configured with correct config path
 - ✅ `transpilePackages` includes `@buttergolf/config`
 - ✅ Build succeeds without errors
 
 ### Expo (Mobile)
+
 - ✅ `apps/mobile/babel.config.js` - Already configured with correct config path
 - ✅ Module resolution points to `packages/config/src`
 
 ### TypeScript
+
 - ✅ `tsconfig.base.json` - Path mapping via `@buttergolf/*` wildcard covers `@buttergolf/config`
 
 ## Correct Import Pattern
@@ -110,7 +124,9 @@ import { config } from "@buttergolf/ui/tamagui.config";
 ## Future Work
 
 ### Planned Removal
+
 The re-export shim at `packages/ui/tamagui.config.ts` should be removed in a future release after:
+
 1. One release cycle has passed
 2. All downstream consumers have been verified to use the new import
 3. No deprecation warnings are being triggered

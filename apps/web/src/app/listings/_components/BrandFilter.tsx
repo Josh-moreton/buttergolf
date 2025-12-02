@@ -19,7 +19,7 @@ export function BrandFilter({
   const filteredBrands = useMemo(() => {
     if (!searchQuery) return availableBrands;
     return availableBrands.filter((brand) =>
-      brand.toLowerCase().includes(searchQuery.toLowerCase())
+      brand.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [availableBrands, searchQuery]);
 

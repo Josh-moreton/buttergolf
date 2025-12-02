@@ -1,14 +1,14 @@
-import Stripe from 'stripe'
+import Stripe from "stripe";
 
 // Initialize Stripe client
 const getStripeClient = () => {
-  const secretKey = process.env.STRIPE_SECRET_KEY
+  const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) {
-    throw new Error('STRIPE_SECRET_KEY environment variable is not set')
+    throw new Error("STRIPE_SECRET_KEY environment variable is not set");
   }
   return new Stripe(secretKey, {
-    apiVersion: '2025-10-29.clover',
-  })
-}
+    apiVersion: "2025-10-29.clover",
+  });
+};
 
-export const stripe = getStripeClient()
+export const stripe = getStripeClient();

@@ -8,7 +8,7 @@ import { prisma } from "@buttergolf/db";
  */
 export async function DELETE(
   req: NextRequest,
-  context: { params: Promise<{ productId: string }> }
+  context: { params: Promise<{ productId: string }> },
 ) {
   try {
     const { userId: clerkId } = await auth();
@@ -22,7 +22,7 @@ export async function DELETE(
     if (!productId) {
       return NextResponse.json(
         { error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -33,10 +33,7 @@ export async function DELETE(
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Delete favourite using unique constraint
@@ -55,14 +52,19 @@ export async function DELETE(
           success: true,
           message: "Product removed from favourites",
         },
-        { status: 200 }
+        { status: 200 },
       );
     } catch (error: unknown) {
       // Handle case where favourite doesn't exist
-      if (error && typeof error === "object" && "code" in error && error.code === "P2025") {
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "P2025"
+      ) {
         return NextResponse.json(
           { error: "Favourite not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
       throw error;
@@ -71,7 +73,7 @@ export async function DELETE(
     console.error("Error removing favourite:", error);
     return NextResponse.json(
       { error: "Failed to remove favourite" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

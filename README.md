@@ -138,6 +138,7 @@ pnpm turbo link
 This project uses [Tamagui](https://tamagui.dev) for cross-platform UI components and theming. **Always use theme tokens instead of hardcoded values.**
 
 ### Quick Start
+
 ```tsx
 // ✅ Good - Using theme tokens
 <YStack backgroundColor="$bg" padding="$4">
@@ -151,12 +152,14 @@ This project uses [Tamagui](https://tamagui.dev) for cross-platform UI component
 ```
 
 ### Documentation
+
 - **[Tamagui Best Practices](./docs/TAMAGUI_BEST_PRACTICES.md)** - Component creation, styling patterns, and token usage
 - **[Migration Example](./docs/MIGRATION_EXAMPLE.md)** - Step-by-step guide to migrate from hardcoded values
 - **[Usage Audit](./docs/TAMAGUI_USAGE_AUDIT.md)** - Detailed analysis and recommendations
 - **[Contributing Guide](./CONTRIBUTING.md)** - Development guidelines
 
 ### Run Tamagui Audit
+
 ```sh
 node scripts/audit-tamagui-usage.js
 ```

@@ -2,7 +2,13 @@
 
 import React from "react";
 import { Row, Column, Text } from "@buttergolf/ui";
-import { Home, Heart, PlusCircle, MessageCircle, User } from "@tamagui/lucide-icons";
+import {
+  Home,
+  Heart,
+  PlusCircle,
+  MessageCircle,
+  User,
+} from "@tamagui/lucide-icons";
 
 export interface MobileBottomNavProps {
   activeTab?: "home" | "wishlist" | "sell" | "messages" | "login";
@@ -38,7 +44,11 @@ export function MobileBottomNav({
       paddingTop="$3"
       paddingBottom="$6"
     >
-      <Row alignItems="center" justifyContent="space-around" paddingHorizontal="$4">
+      <Row
+        alignItems="center"
+        justifyContent="space-around"
+        paddingHorizontal="$4"
+      >
         {/* Home */}
         <Column
           gap="$1"
@@ -78,7 +88,9 @@ export function MobileBottomNav({
         >
           <Heart
             size={24}
-            color={activeTab === "wishlist" ? "$spicedClementine" : "$ironstone"}
+            color={
+              activeTab === "wishlist" ? "$spicedClementine" : "$ironstone"
+            }
             opacity={activeTab === "wishlist" ? 1 : 0.5}
           />
           <Text
@@ -130,7 +142,9 @@ export function MobileBottomNav({
         >
           <MessageCircle
             size={24}
-            color={activeTab === "messages" ? "$spicedClementine" : "$ironstone"}
+            color={
+              activeTab === "messages" ? "$spicedClementine" : "$ironstone"
+            }
             opacity={activeTab === "messages" ? 1 : 0.5}
           />
           <Text

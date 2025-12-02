@@ -30,8 +30,11 @@
  * ```
  */
 
-import { RadioGroup as TamaguiRadioGroup, styled, GetProps } from 'tamagui'
-import type { RadioGroupProps as TamaguiRadioGroupProps, RadioGroupItemProps as TamaguiRadioGroupItemProps } from 'tamagui'
+import { RadioGroup as TamaguiRadioGroup, styled, GetProps } from "tamagui";
+import type {
+  RadioGroupProps as TamaguiRadioGroupProps,
+  RadioGroupItemProps as TamaguiRadioGroupItemProps,
+} from "tamagui";
 
 /**
  * RadioGroup wrapper component
@@ -40,20 +43,20 @@ import type { RadioGroupProps as TamaguiRadioGroupProps, RadioGroupItemProps as 
  * Supports error states and orientation (horizontal/vertical).
  */
 export const RadioGroup = styled(TamaguiRadioGroup, {
-  name: 'RadioGroup',
+  name: "RadioGroup",
 
   // Base styles
-  gap: '$md',
-  flexDirection: 'column',
+  gap: "$md",
+  flexDirection: "column",
 
   variants: {
     orientation: {
       horizontal: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: "row",
+        flexWrap: "wrap",
       },
       vertical: {
-        flexDirection: 'column',
+        flexDirection: "column",
       },
     },
 
@@ -65,9 +68,9 @@ export const RadioGroup = styled(TamaguiRadioGroup, {
   } as const,
 
   defaultVariants: {
-    orientation: 'vertical',
+    orientation: "vertical",
   },
-})
+});
 
 /**
  * Individual Radio button component
@@ -76,13 +79,13 @@ export const RadioGroup = styled(TamaguiRadioGroup, {
  * Styled to match Input component border colors and states.
  */
 export const Radio = styled(TamaguiRadioGroup.Item, {
-  name: 'Radio',
+  name: "Radio",
 
   // Base styles
-  backgroundColor: '$surface',
+  backgroundColor: "$surface",
   borderWidth: 2,
-  borderColor: '$fieldBorder',
-  borderRadius: '$full',
+  borderColor: "$fieldBorder",
+  borderRadius: "$full",
   width: 20,
   height: 20,
   padding: 0,
@@ -91,27 +94,27 @@ export const Radio = styled(TamaguiRadioGroup.Item, {
   outlineWidth: 0,
 
   // Checked indicator (inner circle)
-  '$group-item-checked': {
-    borderColor: '$primary',
+  "$group-item-checked": {
+    borderColor: "$primary",
   },
 
   // Hover styles
   hoverStyle: {
-    borderColor: '$fieldBorderHover',
+    borderColor: "$fieldBorderHover",
   },
 
   // Focus styles
   focusStyle: {
-    borderColor: '$fieldBorderFocus',
+    borderColor: "$fieldBorderFocus",
     borderWidth: 2,
   },
 
   // Disabled styles
   disabledStyle: {
     opacity: 0.5,
-    cursor: 'not-allowed',
-    backgroundColor: '$backgroundPress',
-    borderColor: '$fieldBorderDisabled',
+    cursor: "not-allowed",
+    backgroundColor: "$backgroundPress",
+    borderColor: "$fieldBorderDisabled",
   },
 
   variants: {
@@ -132,24 +135,24 @@ export const Radio = styled(TamaguiRadioGroup.Item, {
 
     error: {
       true: {
-        borderColor: '$error',
+        borderColor: "$error",
 
         focusStyle: {
-          borderColor: '$error',
+          borderColor: "$error",
           borderWidth: 2,
         },
 
         hoverStyle: {
-          borderColor: '$errorDark',
+          borderColor: "$errorDark",
         },
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 /**
  * Radio indicator (inner filled circle when checked)
@@ -157,14 +160,16 @@ export const Radio = styled(TamaguiRadioGroup.Item, {
  * Styled to show primary color when radio is selected.
  */
 export const RadioIndicator = styled(TamaguiRadioGroup.Indicator, {
-  name: 'RadioIndicator',
+  name: "RadioIndicator",
 
-  backgroundColor: '$primary',
-  borderRadius: '$full',
-  width: '60%',
-  height: '60%',
-})
+  backgroundColor: "$primary",
+  borderRadius: "$full",
+  width: "60%",
+  height: "60%",
+});
 
 // Export types
-export type RadioGroupProps = GetProps<typeof RadioGroup> & Omit<TamaguiRadioGroupProps, keyof GetProps<typeof RadioGroup>>
-export type RadioProps = GetProps<typeof Radio> & Omit<TamaguiRadioGroupItemProps, keyof GetProps<typeof Radio>>
+export type RadioGroupProps = GetProps<typeof RadioGroup> &
+  Omit<TamaguiRadioGroupProps, keyof GetProps<typeof RadioGroup>>;
+export type RadioProps = GetProps<typeof Radio> &
+  Omit<TamaguiRadioGroupItemProps, keyof GetProps<typeof Radio>>;

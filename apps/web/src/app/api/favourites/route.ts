@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
     console.error("Error fetching favourites:", error);
     return NextResponse.json(
       { error: "Failed to fetch favourites" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     if (!productId || typeof productId !== "string") {
       return NextResponse.json(
         { error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -153,10 +153,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!product) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     // Ensure user exists in database (create if webhook hasn't synced yet)
@@ -188,14 +185,19 @@ export async function POST(req: NextRequest) {
             createdAt: favourite.createdAt,
           },
         },
-        { status: 201 }
+        { status: 201 },
       );
     } catch (error: unknown) {
       // Handle duplicate favourite (unique constraint violation)
-      if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "P2002"
+      ) {
         return NextResponse.json(
           { error: "Product already in favourites" },
-          { status: 409 }
+          { status: 409 },
         );
       }
       throw error;
@@ -204,7 +206,7 @@ export async function POST(req: NextRequest) {
     console.error("Error adding favourite:", error);
     return NextResponse.json(
       { error: "Failed to add favourite" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

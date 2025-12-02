@@ -23,7 +23,7 @@
  * ```
  */
 
-import { styled, YStack, type YStackProps } from 'tamagui'
+import { styled, YStack, type YStackProps } from "tamagui";
 
 /**
  * VanillaCreamBackground
@@ -36,19 +36,19 @@ import { styled, YStack, type YStackProps } from 'tamagui'
  * - Trust/testimonial sections
  */
 export const VanillaCreamBackground = styled(YStack, {
-  name: 'VanillaCreamBackground',
+  name: "VanillaCreamBackground",
 
-  backgroundColor: '$vanillaCream',
-  width: '100%',
+  backgroundColor: "$vanillaCream",
+  width: "100%",
 
   variants: {
     fullHeight: {
       true: {
-        minHeight: '100vh',
+        minHeight: "100vh",
       },
     },
   } as const,
-})
+});
 
 /**
  * LemonHazeBackground
@@ -61,19 +61,19 @@ export const VanillaCreamBackground = styled(YStack, {
  * - Subtle emphasis
  */
 export const LemonHazeBackground = styled(YStack, {
-  name: 'LemonHazeBackground',
+  name: "LemonHazeBackground",
 
-  backgroundColor: '$lemonHaze',
-  width: '100%',
+  backgroundColor: "$lemonHaze",
+  width: "100%",
 
   variants: {
     fullHeight: {
       true: {
-        minHeight: '100vh',
+        minHeight: "100vh",
       },
     },
   } as const,
-})
+});
 
 /**
  * LemonHazeCard
@@ -86,46 +86,46 @@ export const LemonHazeBackground = styled(YStack, {
  * - Filter badges
  */
 export const LemonHazeCard = styled(YStack, {
-  name: 'LemonHazeCard',
+  name: "LemonHazeCard",
 
-  backgroundColor: '$lemonHaze',
-  borderRadius: '$lg',
+  backgroundColor: "$lemonHaze",
+  borderRadius: "$lg",
   borderWidth: 1,
-  borderColor: '$lemonHazeHover',
-  padding: '$md',
+  borderColor: "$lemonHazeHover",
+  padding: "$md",
 
   // Hover effect
   hoverStyle: {
-    backgroundColor: '$lemonHazeHover',
+    backgroundColor: "$lemonHazeHover",
   },
 
   // Press effect
   pressStyle: {
-    backgroundColor: '$lemonHazePress',
+    backgroundColor: "$lemonHazePress",
     scale: 0.99,
   },
 
   variants: {
     size: {
       sm: {
-        padding: '$sm',
-        borderRadius: '$md',
+        padding: "$sm",
+        borderRadius: "$md",
       },
       md: {
-        padding: '$md',
-        borderRadius: '$lg',
+        padding: "$md",
+        borderRadius: "$lg",
       },
       lg: {
-        padding: '$lg',
-        borderRadius: '$xl',
+        padding: "$lg",
+        borderRadius: "$xl",
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 /**
  * VanillaCreamCard
@@ -138,49 +138,49 @@ export const LemonHazeCard = styled(YStack, {
  * - Featured content
  */
 export const VanillaCreamCard = styled(YStack, {
-  name: 'VanillaCreamCard',
+  name: "VanillaCreamCard",
 
-  backgroundColor: '$vanillaCream',
-  borderRadius: '$lg',
+  backgroundColor: "$vanillaCream",
+  borderRadius: "$lg",
   borderWidth: 1,
-  borderColor: '$vanillaCreamHover',
-  padding: '$md',
+  borderColor: "$vanillaCreamHover",
+  padding: "$md",
 
   // Hover effect
   hoverStyle: {
-    backgroundColor: '$vanillaCreamHover',
+    backgroundColor: "$vanillaCreamHover",
   },
 
   // Press effect
   pressStyle: {
-    backgroundColor: '$vanillaCreamPress',
+    backgroundColor: "$vanillaCreamPress",
     scale: 0.99,
   },
 
   variants: {
     size: {
       sm: {
-        padding: '$sm',
-        borderRadius: '$md',
+        padding: "$sm",
+        borderRadius: "$md",
       },
       md: {
-        padding: '$md',
-        borderRadius: '$lg',
+        padding: "$md",
+        borderRadius: "$lg",
       },
       lg: {
-        padding: '$lg',
-        borderRadius: '$xl',
+        padding: "$lg",
+        borderRadius: "$xl",
       },
     },
   } as const,
 
   defaultVariants: {
-    size: 'md',
+    size: "md",
   },
-})
+});
 
 // Export types
-export type VanillaCreamBackgroundProps = YStackProps
-export type LemonHazeBackgroundProps = YStackProps
-export type LemonHazeCardProps = YStackProps
-export type VanillaCreamCardProps = YStackProps
+export type VanillaCreamBackgroundProps = YStackProps;
+export type LemonHazeBackgroundProps = YStackProps;
+export type LemonHazeCardProps = YStackProps;
+export type VanillaCreamCardProps = YStackProps;

@@ -55,7 +55,9 @@ interface ProductDetailClientProps {
   product: Product;
 }
 
-export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+export default function ProductDetailClient({
+  product,
+}: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [purchasing, setPurchasing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -88,9 +90,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const handleMakeOffer = () => {
     if (!isSignedIn) {
       // Redirect to sign-in page with return URL
-      const redirectUrl = typeof globalThis !== "undefined" && globalThis.location
-        ? globalThis.location.href
-        : `/products/${product.id}`;
+      const redirectUrl =
+        typeof globalThis !== "undefined" && globalThis.location
+          ? globalThis.location.href
+          : `/products/${product.id}`;
       router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
       return;
     }
@@ -128,17 +131,25 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }
   };
 
-  const handleKeyboardNav = useCallback((e: KeyboardEvent) => {
-    if (!lightboxOpen) return;
+  const handleKeyboardNav = useCallback(
+    (e: KeyboardEvent) => {
+      if (!lightboxOpen) return;
 
-    if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
-      setSelectedImageIndex((prev) => Math.max(0, prev - 1));
-    } else if (e.key === "ArrowRight" && selectedImageIndex < product.images.length - 1) {
-      setSelectedImageIndex((prev) => Math.min(product.images.length - 1, prev + 1));
-    } else if (e.key === "Escape") {
-      setLightboxOpen(false);
-    }
-  }, [lightboxOpen, product.images.length, selectedImageIndex]);
+      if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
+        setSelectedImageIndex((prev) => Math.max(0, prev - 1));
+      } else if (
+        e.key === "ArrowRight" &&
+        selectedImageIndex < product.images.length - 1
+      ) {
+        setSelectedImageIndex((prev) =>
+          Math.min(product.images.length - 1, prev + 1),
+        );
+      } else if (e.key === "Escape") {
+        setLightboxOpen(false);
+      }
+    },
+    [lightboxOpen, product.images.length, selectedImageIndex],
+  );
 
   useEffect(() => {
     globalThis.addEventListener?.("keydown", handleKeyboardNav);
@@ -152,21 +163,35 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* Breadcrumb */}
           <Row gap="$sm" alignItems="center" flexWrap="wrap">
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text
+                size="$3"
+                color="$ironstone"
+                hoverStyle={{ color: "$primary" }}
+              >
                 Listings
               </Text>
             </Link>
-            <Text size="$3" color="$ironstone">&gt;</Text>
+            <Text size="$3" color="$ironstone">
+              &gt;
+            </Text>
             <Link
               href={`/category/${product.category.slug}`}
               style={{ textDecoration: "none" }}
             >
-              <Text size="$3" color="$ironstone" hoverStyle={{ color: "$primary" }}>
+              <Text
+                size="$3"
+                color="$ironstone"
+                hoverStyle={{ color: "$primary" }}
+              >
                 {product.category.name}
               </Text>
             </Link>
-            <Text size="$3" color="$ironstone">&gt;</Text>
-            <Text size="$3" color="$ironstone" fontWeight="bold">{product.title}</Text>
+            <Text size="$3" color="$ironstone">
+              &gt;
+            </Text>
+            <Text size="$3" color="$ironstone" fontWeight="bold">
+              {product.title}
+            </Text>
           </Row>
 
           {/* Main Content Grid */}
@@ -185,7 +210,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               width="100%"
               $gtMd={{
                 width: "auto",
-                maxWidth: "calc(100% - 420px - 32px)"
+                maxWidth: "calc(100% - 420px - 32px)",
               }}
             >
               {/* Gallery Row: Thumbnails + Main Image */}
@@ -200,7 +225,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         padding="$0"
                         cursor="pointer"
                         onPress={() => setSelectedImageIndex(index)}
-                        borderColor={index === selectedImageIndex ? "$primary" : "$border"}
+                        borderColor={
+                          index === selectedImageIndex ? "$primary" : "$border"
+                        }
                         borderWidth={index === selectedImageIndex ? 3 : 1}
                         backgroundColor="$surface"
                         hoverStyle={{
@@ -325,7 +352,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             zIndex={10000}
             padding={0}
           >
-            <Text size="$8" fontWeight="bold" color="$text">✕</Text>
+            <Text size="$8" fontWeight="bold" color="$text">
+              ✕
+            </Text>
           </Button>
 
           {/* Navigation Arrows */}
@@ -348,7 +377,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               zIndex={10000}
               padding={0}
             >
-              <Text size="$8" fontWeight="bold" color="$text">←</Text>
+              <Text size="$8" fontWeight="bold" color="$text">
+                ←
+              </Text>
             </Button>
           )}
 
@@ -371,7 +402,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               zIndex={10000}
               padding={0}
             >
-              <Text size="$8" fontWeight="bold" color="$text">→</Text>
+              <Text size="$8" fontWeight="bold" color="$text">
+                →
+              </Text>
             </Button>
           )}
 
@@ -455,8 +488,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       )}
 
       {/* Responsive CSS */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           @media (min-width: 1024px) {
             .product-sidebar {
               position: sticky;
@@ -469,8 +503,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               display: flex !important;
             }
           }
-        `
-      }} />
+        `,
+        }}
+      />
 
       {/* Make Offer Modal */}
       <MakeOfferModal

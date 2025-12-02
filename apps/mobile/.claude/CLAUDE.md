@@ -17,11 +17,13 @@ This is the Expo mobile application for ButterGolf, supporting both iOS and Andr
 **This app uses React Navigation with manual screen registration in App.tsx**
 
 ❌ **DO NOT**:
+
 - Create `app/` directory for routing
 - Expect file-based routing
 - Use Expo Router APIs
 
 ✅ **DO**:
+
 - Register all screens in `App.tsx`
 - Use React Navigation Stack Navigator
 - Define linking configuration manually
@@ -77,10 +79,7 @@ export default function App() {
       <NavigationContainer linking={linking}>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen
-            name="Category"
-            component={CategoryScreen}
-          />
+          <Stack.Screen name="Category" component={CategoryScreen} />
           {/* Register all screens here */}
         </Stack.Navigator>
       </NavigationContainer>
@@ -92,29 +91,28 @@ export default function App() {
 ### Adding a New Screen
 
 1. **Import the shared screen** from `@buttergolf/app`:
+
    ```tsx
    import { NewScreen } from "@buttergolf/app/features/[feature]/new-screen";
    ```
 
 2. **Add to linking config**:
+
    ```tsx
    const linking = {
      config: {
        screens: {
-         NewScreen: { path: "new-route/:param" }
-       }
-     }
-   }
+         NewScreen: { path: "new-route/:param" },
+       },
+     },
+   };
    ```
 
 3. **Register in Stack Navigator**:
    ```tsx
    <Stack.Screen name="NewScreen">
      {({ route }) => (
-       <NewScreen
-         param={route.params?.param}
-         onFetchData={fetchDataFunction}
-       />
+       <NewScreen param={route.params?.param} onFetchData={fetchDataFunction} />
      )}
    </Stack.Screen>
    ```
@@ -146,11 +144,7 @@ export function Component() {
     href: "/category/golf-courses",
   });
 
-  return (
-    <Button onPress={link.onPress}>
-      View Courses
-    </Button>
-  );
+  return <Button onPress={link.onPress}>View Courses</Button>;
 }
 ```
 
@@ -185,7 +179,7 @@ export function CoursesScreenWrapper() {
   useEffect(() => {
     // Fetch data from API
     fetch("https://api.buttergolf.com/courses")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setCourses);
   }, []);
 
@@ -204,11 +198,7 @@ export function Component() {
       <Text size="$7" fontWeight="bold" color="$text">
         Welcome to ButterGolf
       </Text>
-      <Button
-        size="$5"
-        backgroundColor="$primary"
-        color="$textInverse"
-      >
+      <Button size="$5" backgroundColor="$primary" color="$textInverse">
         Book a Tee Time
       </Button>
     </Column>
@@ -224,9 +214,7 @@ import { Text } from "@buttergolf/ui";
 
 export function Component() {
   return (
-    <Text>
-      {Platform.OS === "ios" ? "iOS Specific" : "Android Specific"}
-    </Text>
+    <Text>{Platform.OS === "ios" ? "iOS Specific" : "Android Specific"}</Text>
   );
 }
 ```
@@ -244,12 +232,12 @@ export function useCourses() {
 
   useEffect(() => {
     fetch("https://api.buttergolf.com/courses")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setCourses(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         setLoading(false);
       });
@@ -298,9 +286,7 @@ export default function App() {
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
       tokenCache={tokenCache}
     >
-      <TamaguiProvider config={config}>
-        {/* Navigation */}
-      </TamaguiProvider>
+      <TamaguiProvider config={config}>{/* Navigation */}</TamaguiProvider>
     </ClerkProvider>
   );
 }
@@ -337,19 +323,11 @@ import { View, Text, Button } from "@buttergolf/ui";
 
 export function Component() {
   return (
-    <View
-      backgroundColor="$background"
-      padding="$md"
-      borderRadius="$lg"
-    >
+    <View backgroundColor="$background" padding="$md" borderRadius="$lg">
       <Text color="$text" size="$5">
         Hello Mobile World
       </Text>
-      <Button
-        size="$5"
-        backgroundColor="$primary"
-        color="$textInverse"
-      >
+      <Button size="$5" backgroundColor="$primary" color="$textInverse">
         Click Me
       </Button>
     </View>
@@ -366,10 +344,7 @@ export function Component() {
   const media = useMedia();
 
   return (
-    <View
-      width="100%"
-      padding={media.gtMd ? "$lg" : "$md"}
-    >
+    <View width="100%" padding={media.gtMd ? "$lg" : "$md"}>
       <Text>Responsive content</Text>
     </View>
   );
@@ -426,7 +401,8 @@ import * as Notifications from "expo-notifications";
 
 export function useNotifications() {
   const registerForPushNotifications = async () => {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     if (existingStatus !== "granted") {
@@ -566,6 +542,7 @@ eas submit --platform android
 ### Issue: "Module not found" for @buttergolf packages
 
 **Solution**:
+
 1. Check `metro.config.js` watchFolders and nodeModulesPaths
 2. Check `babel.config.js` module-resolver aliases
 3. Run `pnpm install` at root
@@ -574,6 +551,7 @@ eas submit --platform android
 ### Issue: Navigation not working
 
 **Solution**:
+
 1. Ensure screen is registered in `App.tsx` Stack Navigator
 2. Check linking configuration has correct path
 3. Use Solito's `Link` or `useLink` for navigation
@@ -582,6 +560,7 @@ eas submit --platform android
 ### Issue: Styles not loading
 
 **Solution**:
+
 1. Check `TamaguiProvider` wraps entire app
 2. Verify `babel.config.js` has `@tamagui/babel-plugin`
 3. Clear cache and restart: `pnpm dev:mobile --clear`
@@ -590,6 +569,7 @@ eas submit --platform android
 ### Issue: Environment variables not working
 
 **Solution**:
+
 1. Prefix with `EXPO_PUBLIC_` for client-side variables
 2. Restart dev server after adding variables
 3. Check `.env` is in `apps/mobile/` directory
@@ -597,6 +577,7 @@ eas submit --platform android
 ### Issue: Build fails
 
 **Solution**:
+
 1. Run `eas build:configure` if first time
 2. Check `app.json` configuration
 3. Verify all environment variables in EAS

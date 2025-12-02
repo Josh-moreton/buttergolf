@@ -117,7 +117,7 @@ I've created two additional files for you:
 
 Your setup was already quite good! Here's what was working:
 
-✅ Proper monorepo structure (apps/*and packages/*)
+✅ Proper monorepo structure (apps/_and packages/_)
 ✅ Correct pnpm workspace configuration
 ✅ Good Turborepo task pipelines
 ✅ React versions aligned across packages

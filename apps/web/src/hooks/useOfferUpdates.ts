@@ -3,11 +3,11 @@ import type { Prisma } from "@buttergolf/db";
 
 /**
  * Custom Hook: Poll for Offer Updates
- * 
+ *
  * Fetches offer data from API at regular intervals for real-time updates.
  * Uses initial server data and polls in background without causing visible refresh.
  * Provides refetch function for manual updates after actions.
- * 
+ *
  * Usage:
  * ```tsx
  * const { offer, loading, error, refetch } = useOfferUpdates({
@@ -17,7 +17,7 @@ import type { Prisma } from "@buttergolf/db";
  *   initialOffer: serverOffer
  * });
  * ```
- * 
+ *
  * Future: Replace with WebSocket connection for true real-time updates
  */
 
@@ -70,7 +70,7 @@ export function useOfferUpdates({
       setError(null);
 
       const response = await fetch(`/api/offers/${offerId}`);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch offer: ${response.statusText}`);
       }
