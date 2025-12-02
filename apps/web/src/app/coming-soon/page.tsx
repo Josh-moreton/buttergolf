@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AnimatedLogo } from "./_components/AnimatedLogo";
+import { InstagramLink } from "./_components/InstagramLink";
 import { WaitlistForm } from "./_components/WaitlistForm";
 
 export const metadata: Metadata = {
@@ -78,6 +79,9 @@ export default function ComingSoonPage() {
 
       {/* Waitlist Signup */}
       <WaitlistForm />
+
+      {/* Instagram Link */}
+      <InstagramLink />
     </main>
   );
 }
