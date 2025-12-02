@@ -144,15 +144,15 @@ export function ProductCard({
 
           {/* iOS Liquid Glass Info Card - Bottom */}
           <GlassmorphismCard
-            intensity="medium"
+            intensity="strong"
             blur="medium"
-            paddingHorizontal="$md"
-            paddingVertical="$sm"
+            paddingHorizontal={16}
+            paddingVertical={12}
             position="absolute"
             bottom={0}
             left={0}
             right={0}
-            height={122}
+            height={130}
             borderTopWidth={0}
             zIndex={1}
             overflow="hidden"
@@ -161,44 +161,42 @@ export function ProductCard({
           >
             {/* Product Title - Bold, fixed height for 2 lines */}
             <Text
-              fontSize={16}
+              size="$6"
               fontWeight="700"
-              lineHeight={21}
-              color="$text"
+              color="$textInverse"
               numberOfLines={2}
-              marginBottom="$2"
-              height={42}
+              marginBottom={10}
+              height={44}
             >
               {product.title}
             </Text>
 
             {/* Price */}
             <Text
-              fontSize={16}
+              size="$6"
               fontWeight="600"
-              lineHeight={16}
-              color="$text"
-              marginBottom="$1"
+              color="$textInverse"
+              marginBottom={8}
             >
               £{product.price.toFixed(2)}
             </Text>
 
             {/* Seller Info with Rating */}
-            <Row alignItems="center" gap="$2" flexWrap="wrap">
+            <Row alignItems="center" gap={8} flexWrap="wrap">
               <Text
-                fontSize={16}
+                size="$6"
                 fontWeight="400"
-                lineHeight={16}
-                color="$textSecondary"
+                color="$textInverse"
+                opacity={0.85}
               >
                 {product.seller.name}
               </Text>
               {product.seller.ratingCount > 0 ? (
-                <Row alignItems="center" gap="$1">
-                  <Text color="$primary" fontSize={16}>
+                <Row alignItems="center" gap={4}>
+                  <Text color="$primary" size="$6">
                     ★
                   </Text>
-                  <Text fontSize={16} fontWeight="600" color="$text">
+                  <Text size="$6" fontWeight="600" color="$textInverse">
                     {product.seller.averageRating?.toFixed(1)} (
                     {product.seller.ratingCount})
                   </Text>
@@ -206,11 +204,11 @@ export function ProductCard({
               ) : (
                 <View
                   backgroundColor="$primary"
-                  paddingHorizontal="$1.5"
-                  paddingVertical="$0.5"
-                  borderRadius="$xs"
+                  paddingHorizontal={10}
+                  paddingVertical={4}
+                  borderRadius={12}
                 >
-                  <Text fontSize={14} fontWeight="600" color="$textInverse">
+                  <Text size="$4" fontWeight="600" color="$textInverse">
                     NEW SELLER
                   </Text>
                 </View>
