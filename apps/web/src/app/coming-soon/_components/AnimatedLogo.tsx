@@ -52,11 +52,10 @@ export function AnimatedLogo() {
         }}
       >
         <svg
-          width="100%"
-          height="auto"
           viewBox="0 0 209 79"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          style={{ width: "100%", height: "auto", display: "block" }}
         >
           {paths.map((d, i) => (
             <path key={PATH_IDS[i]} d={d} fill={strokeColor} />
@@ -75,12 +74,10 @@ export function AnimatedLogo() {
       }}
     >
       <svg
-        width="100%"
-        height="auto"
         viewBox="0 0 209 79"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ display: "block" }}
+        style={{ width: "100%", height: "auto", display: "block" }}
       >
         {paths.map((d, i) => {
           const delay = i * 0.15;
