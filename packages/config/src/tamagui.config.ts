@@ -1,6 +1,7 @@
 import { defaultConfig } from "@tamagui/config/v4";
 import { createTamagui, createTokens, createFont } from "tamagui";
-import { createAnimations } from "@tamagui/animations-react-native";
+// Platform-specific animations: bundlers resolve animations.ts (web) or animations.native.ts (mobile)
+import { animations } from "./animations";
 
 /**
  * ============================================================================
@@ -432,44 +433,9 @@ const customTokens = createTokens({
   },
 });
 
-// Animation configuration for Sheet and other animated components
-// Using React Native animations for cross-platform compatibility (web + mobile)
-const animations = createAnimations({
-  fast: {
-    type: "spring",
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
-  medium: {
-    type: "spring",
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  slow: {
-    type: "spring",
-    damping: 20,
-    stiffness: 60,
-  },
-  bouncy: {
-    type: "spring",
-    damping: 9,
-    mass: 0.9,
-    stiffness: 150,
-  },
-  lazy: {
-    type: "spring",
-    damping: 18,
-    stiffness: 50,
-  },
-  quick: {
-    type: "spring",
-    damping: 20,
-    mass: 1,
-    stiffness: 300,
-  },
-});
+// Animations are imported from ./animations (platform-specific)
+// - Web (Next.js): uses animations.ts with @tamagui/animations-css
+// - Mobile (Expo): uses animations.native.ts with @tamagui/animations-react-native
 
 // Light theme with semantic token mappings
 const lightTheme = {
