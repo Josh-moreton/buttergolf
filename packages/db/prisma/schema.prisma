@@ -341,3 +341,13 @@ enum OfferStatus {
     COUNTERED
     EXPIRED
 }
+
+// Pre-launch waitlist signups
+model Waitlist {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    source    String   @default("coming-soon") // Where the signup came from
+    createdAt DateTime @default(now())
+
+    @@map("waitlist")
+}
