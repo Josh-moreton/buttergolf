@@ -1,43 +1,62 @@
 // Service Worker for PWA support
 // This is a minimal service worker to enable PWA installation
 
-const CACHE_NAME = 'buttergolf-v1';
+const CACHE_NAME = 'buttergolf-v2';
 const urlsToCache = [
-  '/',
   '/manifest.json',
 ];
 
 // Install event - cache assets
 self.addEventListener('install', (event) => {
+  // Skip waiting to activate immediately
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - network-first for navigation, cache for assets
 self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  
+  // For navigation requests (HTML pages), always go to network
+  // This prevents issues with redirects (e.g., coming-soon redirect)
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request).catch(() => {
+        // Only serve from cache if network fails
+        return caches.match(request);
+      })
+    );
+    return;
+  }
+  
+  // For other requests, try cache first, then network
   event.respondWith(
-    caches.match(event.request)
+    caches.match(request)
       .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
+        return response || fetch(request);
       })
   );
 });
 
-// Activate event - cleanup old caches
+// Activate event - cleanup old caches and take control immediately
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      // Take control of all clients immediately
+      self.clients.claim(),
+      // Clean up old caches
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== CACHE_NAME) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+    ])
   );
 });
