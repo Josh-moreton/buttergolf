@@ -73,16 +73,30 @@ export function ProductCarousel({
 
   return (
     <Column width="100%" alignItems="center" gap="$lg">
-      {/* Carousel */}
-      <div ref={emblaRef} style={{ overflow: "hidden", width: "100%" }}>
-        <Row gap="$lg" paddingHorizontal="$md">
+      {/* Carousel - extra padding inside to give shadows room */}
+      <div
+        ref={emblaRef}
+        style={{
+          overflow: "hidden",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "24px",
+            paddingLeft: "32px",
+            paddingRight: "32px",
+            paddingTop: "40px",
+            paddingBottom: "48px",
+          }}
+        >
           {products.map((product) => (
             <div
               key={product.id}
               style={{
-                flex: "0 0 auto",
-                width: "70vw",
-                maxWidth: "280px",
+                flex: "0 0 315px",
+                width: "315px",
               }}
             >
               <ProductCard
@@ -91,7 +105,7 @@ export function ProductCarousel({
               />
             </div>
           ))}
-        </Row>
+        </div>
       </div>
 
       {/* Pagination Dots (Desktop Only) */}

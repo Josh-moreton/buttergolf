@@ -18,20 +18,31 @@ export function SimilarItemsSection({
   }
 
   return (
-    <Column paddingVertical="$10" backgroundColor="$cloudMist" width="100%">
+    <Column paddingVertical="$3xl" backgroundColor="$surface" width="100%">
       <Column
-        maxWidth={1200}
+        maxWidth={1440}
         marginHorizontal="auto"
-        paddingHorizontal="$6"
+        paddingHorizontal="$xl"
         width="100%"
-        gap="$2xl"
+        gap="$3xl"
       >
         {/* Header */}
-        <Column gap="$md" alignItems="center">
-          <Heading level={2} color="$secondary" textAlign="center">
+        <Column alignItems="center" gap="$md" width="100%">
+          <Heading
+            level={2}
+            size="$9"
+            $gtMd={{ size: "$10" }}
+            color="$text"
+            textAlign="center"
+          >
             Similar Items
           </Heading>
-          <Text color="$textSecondary" textAlign="center">
+          <Text
+            size="$6"
+            $gtMd={{ size: "$7" }}
+            color="$textSecondary"
+            textAlign="center"
+          >
             Other {category.toLowerCase()} items you might like
           </Text>
         </Column>
