@@ -21,7 +21,7 @@ catalog:
   '@tamagui/sheet': 1.135.7
   '@tamagui/shorthands': 1.135.7
   '@tamagui/themes': 1.135.7
-  '@tamagui/toast': 1.135.7
+  '@tamagui/toast': 1.138.6
   '@testing-library/jest-dom': 6.9.1
   '@testing-library/react': 16.3.0
   '@types/node': 22.15.30
