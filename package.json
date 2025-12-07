@@ -33,9 +33,9 @@
     "@vitest/ui": "^4.0.13",
     "check-dependency-version-consistency": "^5.0.1",
     "dotenv": "^17.2.3",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.4",
     "tsx": "catalog:",
-    "turbo": "^2.6.0",
+    "turbo": "^2.6.3",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
