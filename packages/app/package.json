@@ -28,7 +28,7 @@
   "devDependencies": {
     "@buttergolf/typescript-config": "workspace:*",
     "@types/react": "catalog:",
-    "expo-image-picker": "^17.0.8",
+    "expo-image-picker": "^17.0.9",
     "next": "catalog:",
     "typescript": "catalog:"
   }
