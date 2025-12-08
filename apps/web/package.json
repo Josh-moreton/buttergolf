@@ -34,7 +34,7 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.24",
+    "framer-motion": "^12.23.25",
     "next": "^16.0.7",
     "next-cloudinary": "^6.17.5",
     "next-seo": "^7.0.1",
