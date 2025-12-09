@@ -1,7 +1,6 @@
 // Import config BEFORE importing TamaguiProvider to ensure createTamagui runs first
 import { config } from "@buttergolf/config";
 import type { PropsWithChildren } from "react";
-import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";
 
 export type ProviderProps = PropsWithChildren<
@@ -11,8 +10,9 @@ export type ProviderProps = PropsWithChildren<
 >;
 
 export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
-  const colorScheme = useColorScheme();
-  const theme = defaultTheme ?? (colorScheme === "dark" ? "dark" : "light");
+  // Trust defaultTheme from NextThemeProvider, fallback to "light" if undefined
+  // This keeps server and client rendering consistent for SSR
+  const theme = defaultTheme ?? "light";
 
   return (
     <TamaguiProvider

@@ -369,6 +369,9 @@ const customTokens = createTokens({
     primaryBorder: brandColors.primaryBorder,
     secondaryBorder: brandColors.secondaryBorder,
 
+    // White token (referenced by themes)
+    white: brandColors.pureWhite,
+
     // Backward compatibility (map old names to new colors)
     bg: brandColors.vanillaCream,
     bgGray: brandColors.cloudMist,

@@ -52,31 +52,14 @@ export function AnimatedView({
     return () => clearTimeout(timer);
   }, [delay]);
 
-  // Skip animation if disabled or user prefers reduced motion
-  if (disableAnimations || prefersReducedMotion) {
-    return <View width="100%">{children}</View>;
-  }
-
-  // Render nothing until delay has passed
-  if (!isVisible) {
-    return (
-      <View width="100%" opacity={0}>
-        {children}
-      </View>
-    );
-  }
-
-  // Animated view using Tamagui's enterStyle
+  // Always render same structure - only animate opacity and y values
+  // This prevents React from unmounting/remounting children during animation
   return (
     <View
       width="100%"
-      animation="medium"
-      enterStyle={{
-        opacity: 0,
-        y: 30,
-      }}
-      opacity={1}
-      y={0}
+      opacity={isVisible ? 1 : 0}
+      y={isVisible ? 0 : 30}
+      animation={disableAnimations || prefersReducedMotion ? undefined : "medium"}
     >
       {children}
     </View>
