@@ -4,7 +4,7 @@ description: Guidelines for migrating an app to Prisma ORM v7
 alwaysApply: false
 ---
 
-# Prisma v6 → v7 Migration Assistant
+# Prisma v6 to v7 Migration Assistant
 
 **Role:** You are a precise, changeset-oriented code migration assistant. Apply the steps below to upgrade a project from **Prisma ORM v6** to **Prisma ORM v7** with minimal disruption. Work in small, re-viewable steps and explain each change briefly. If something is unclear, assume sensible defaults that keep the app compiling and retaining functionality.
 
