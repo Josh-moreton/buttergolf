@@ -16,16 +16,10 @@ const plugins = [
     config: "../../packages/config/src/tamagui.config.ts",
     components: ["tamagui", "@buttergolf/ui"],
     appDir: true,
-    // Always generate static CSS file for both dev and production
-    // This ensures the file exists when NextTamaguiProvider loads it via <link> tag
-    // Removing the NODE_ENV check prevents Vercel build timing issues
-    outputCSS: "./public/tamagui.css",
+    outputCSS:
+      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
     logTimings: true,
     disableExtraction,
-    // Disable theme bundle optimization to fix "Missing theme" error in production
-    // See: https://github.com/tamagui/tamagui/issues/3372
-    // This is a known issue with @tamagui/config/v4 and Next.js App Router
-    disableThemesBundleOptimize: true,
     // Disable debug attributes to prevent hydration warnings
     // These are only useful for deep debugging of Tamagui compiler output
     useReactNativeWebLite: false,
@@ -54,9 +48,6 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
-    // Mark Prisma as external to fix pnpm monorepo module resolution
-    // Prisma generates client in a deeply nested path that Next.js bundler can't resolve
-    serverExternalPackages: ['@prisma/client'],
     // Disable caching in development to avoid stale CSS issues
     ...(process.env.NODE_ENV === "development" && {
       headers: async () => [
@@ -81,8 +72,8 @@ module.exports = () => {
       "tamagui",
       "@tamagui/core",
       "@tamagui/web",
-      "@tamagui/animations-css",
       "@tamagui/animations-react-native",
+      "@tamagui/animations-css",
       "@tamagui/card",
       "@tamagui/toast",
       "@tamagui/next-theme",
