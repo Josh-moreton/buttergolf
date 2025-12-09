@@ -29,15 +29,12 @@ export function NextTamaguiProvider({
         />
         {/* Tamagui compiled CSS file */}
         <link rel="stylesheet" href="/tamagui.css" />
-        {/* Dynamic Tamagui CSS - exclude design-system only when outputCSS is used */}
+        {/* Dynamic Tamagui CSS - includes all design tokens and themes
+            Note: Some duplication with tamagui.css is acceptable to ensure
+            themes are always available in all deployment environments */}
         <style
           dangerouslySetInnerHTML={{
-            __html: config.getCSS({
-              // Only exclude design-system in production when the CSS file is generated
-              // In development/preview, include all CSS to ensure themes work
-              exclude:
-                process.env.NODE_ENV === "production" ? "design-system" : null,
-            }),
+            __html: config.getCSS(),
           }}
         />
         <script
