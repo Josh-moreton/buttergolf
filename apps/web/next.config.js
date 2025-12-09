@@ -1,5 +1,5 @@
 const {withTamagui} = require("@tamagui/next-plugin");
-const {join} = require("node:path");
+const {join, resolve} = require("node:path");
 
 const boolVals = {
   true: true,
@@ -48,9 +48,6 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
-    // Mark Prisma as external to fix pnpm monorepo module resolution
-    // Prisma generates client in a deeply nested path that Next.js bundler can't resolve
-    serverExternalPackages: ['@prisma/client'],
     // Disable caching in development to avoid stale CSS issues
     ...(process.env.NODE_ENV === "development" && {
       headers: async () => [
@@ -75,8 +72,8 @@ module.exports = () => {
       "tamagui",
       "@tamagui/core",
       "@tamagui/web",
-      "@tamagui/animations-css",
       "@tamagui/animations-react-native",
+      "@tamagui/animations-css",
       "@tamagui/card",
       "@tamagui/toast",
       "@tamagui/next-theme",
@@ -120,6 +117,8 @@ module.exports = () => {
         tamagui: require.resolve("tamagui"),
         // Explicit alias for @tamagui/polyfill-dev to fix webpack resolution in pnpm monorepo
         "@tamagui/polyfill-dev": require.resolve("@tamagui/polyfill-dev"),
+        // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules
+        "@buttergolf/config": resolve(__dirname, "../../packages/config/src/tamagui.config.ts"),
       };
 
       return webpackConfig;

@@ -32,8 +32,8 @@ export default function MarketplaceHomeClient({
         <HeroStatic />
       </AnimatedView>
 
-      {/* Buy/Sell Toggle - Immediate page load animation */}
-      <AnimatedView delay={200}>
+      {/* Buy/Sell Toggle - Immediate page load animation (delay removed to fix cascade) */}
+      <AnimatedView delay={0}>
         <Column paddingTop="$6" paddingBottom="$4">
           <BuySellToggle activeMode={activeMode} onModeChange={setActiveMode} />
         </Column>
@@ -42,26 +42,26 @@ export default function MarketplaceHomeClient({
       {/* Conditionally render based on active mode */}
       {activeMode === "buying" ? (
         <>
-          {/* Categories Section - Immediate page load animation */}
-          <AnimatedView delay={400}>
+          {/* Categories Section - Immediate page load animation (delay removed) */}
+          <AnimatedView delay={0}>
             <CategoriesSection />
           </AnimatedView>
 
-          {/* Below the fold sections - simple fade in */}
-          <AnimatedView delay={600}>
+          {/* Below the fold sections - simple fade in (delays removed) */}
+          <AnimatedView delay={0}>
             <RecentlyListedSectionClient products={products} />
           </AnimatedView>
-          <AnimatedView delay={800}>
+          <AnimatedView delay={0}>
             <TrustSection />
           </AnimatedView>
         </>
       ) : (
-        <AnimatedView delay={400}>
+        <AnimatedView delay={0}>
           {isSignedIn ? <SellerHub /> : <SellingPlaceholder />}
         </AnimatedView>
       )}
 
-      <AnimatedView delay={1000}>
+      <AnimatedView delay={0}>
         <NewsletterSection />
       </AnimatedView>
       <FooterSection />
