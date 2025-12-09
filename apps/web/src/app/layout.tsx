@@ -4,6 +4,12 @@ import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 import { Urbanist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+
+// Load Tamagui CSS in production (compiled output)
+if (process.env.NODE_ENV === "production") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require("../../public/tamagui.css");
+}
 import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
 import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
