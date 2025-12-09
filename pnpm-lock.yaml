@@ -73,8 +73,8 @@ catalogs:
       specifier: 10.0.0
       version: 10.0.0
     eslint-config-next:
-      specifier: 16.0.1
-      version: 16.0.1
+      specifier: 16.0.8
+      version: 16.0.8
     expo:
       specifier: 54.0.25
       version: 54.0.25
@@ -440,7 +440,7 @@ importers:
         version: 9.28.0(jiti@2.6.1)
       eslint-config-next:
         specifier: 'catalog:'
-        version: 16.0.1(eslint@9.28.0(jiti@2.6.1))(typescript@5.9.3)
+        version: 16.0.8(eslint@9.28.0(jiti@2.6.1))(typescript@5.9.3)
       react-native:
         specifier: 'catalog:'
         version: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0)
@@ -2095,9 +2095,6 @@ packages:
 
   '@next/env@16.0.8':
     resolution: {integrity: sha512-xP4WrQZuj9MdmLJy3eWFHepo+R3vznsMSS8Dy3wdA7FKpjCiesQ6DxZvdGziQisj0tEtCgBKJzjcAc4yZOgLEQ==}
-
-  '@next/eslint-plugin-next@16.0.1':
-    resolution: {integrity: sha512-g4Cqmv/gyFEXNeVB2HkqDlYKfy+YrlM2k8AVIO/YQVEPfhVruH1VA99uT1zELLnPLIeOnx8IZ6Ddso0asfTIdw==}
 
   '@next/eslint-plugin-next@16.0.8':
     resolution: {integrity: sha512-1miV0qXDcLUaOdHridVPCh4i39ElRIAraseVIbb3BEqyZ5ol9sPyjTP/GNTPV5rBxqxjF6/vv5zQTVbhiNaLqA==}
@@ -4917,8 +4914,8 @@ packages:
     peerDependencies:
       eslint: '>=8.10'
 
-  eslint-config-next@16.0.1:
-    resolution: {integrity: sha512-wNuHw5gNOxwLUvpg0cu6IL0crrVC9hAwdS/7UwleNkwyaMiWIOAwf8yzXVqBBzL3c9A7jVRngJxjoSpPP1aEhg==}
+  eslint-config-next@16.0.8:
+    resolution: {integrity: sha512-8J5cOAboXIV3f8OD6BOyj7Fik6n/as7J4MboiUSExWruf/lCu1OPR3ZVSdnta6WhzebrmAATEmNSBZsLWA6kbg==}
     peerDependencies:
       eslint: '>=9.0.0'
       typescript: '>=3.3.1'
@@ -10094,10 +10091,6 @@ snapshots:
 
   '@next/env@16.0.8': {}
 
-  '@next/eslint-plugin-next@16.0.1':
-    dependencies:
-      fast-glob: 3.3.1
-
   '@next/eslint-plugin-next@16.0.8':
     dependencies:
       fast-glob: 3.3.1
@@ -14848,9 +14841,9 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-config-next@16.0.1(eslint@9.28.0(jiti@2.6.1))(typescript@5.9.3):
+  eslint-config-next@16.0.8(eslint@9.28.0(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      '@next/eslint-plugin-next': 16.0.1
+      '@next/eslint-plugin-next': 16.0.8
       eslint: 9.28.0(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.28.0(jiti@2.6.1))
