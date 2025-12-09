@@ -15,6 +15,7 @@ import {
 } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
 import { AuthModal } from "../auth/AuthModal";
+import { ThemeToggleButton } from "../ThemeToggleButton";
 
 // Custom icons for UserButton menu
 const HeartIcon = () => (
@@ -176,6 +177,9 @@ export function ButterHeader() {
               alignItems="center"
               flexShrink={0}
             >
+              {/* Theme toggle */}
+              <ThemeToggleButton />
+
               <SignedOut>
                 <AuthButton
                   variant="login"
@@ -355,6 +359,11 @@ export function ButterHeader() {
 
           {/* Mobile Auth Buttons */}
           <Column gap="$3" marginTop="$6">
+            {/* Theme toggle */}
+            <Row justifyContent="center">
+              <ThemeToggleButton />
+            </Row>
+
             <SignedOut>
               <AuthButton
                 variant="login"
