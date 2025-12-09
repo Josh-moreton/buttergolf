@@ -16,8 +16,10 @@ const plugins = [
     config: "../../packages/config/src/tamagui.config.ts",
     components: ["tamagui", "@buttergolf/ui"],
     appDir: true,
-    outputCSS:
-      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+    // Always generate static CSS file for both dev and production
+    // This ensures the file exists when NextTamaguiProvider loads it via <link> tag
+    // Removing the NODE_ENV check prevents Vercel build timing issues
+    outputCSS: "./public/tamagui.css",
     logTimings: true,
     disableExtraction,
     // Disable debug attributes to prevent hydration warnings
