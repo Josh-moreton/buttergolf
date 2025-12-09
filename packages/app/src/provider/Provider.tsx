@@ -10,9 +10,21 @@ export type ProviderProps = PropsWithChildren<
   }
 >;
 
+// Valid base themes that exist in our Tamagui config
+const VALID_THEMES = ["light", "dark"] as const;
+
 export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
   const colorScheme = useColorScheme();
-  const theme = defaultTheme ?? (colorScheme === "dark" ? "dark" : "light");
+
+  // Validate theme exists - "system" from NextThemeProvider isn't a valid Tamagui theme
+  // Fall back to colorScheme-based theme if defaultTheme is invalid or undefined
+  const isValidTheme =
+    defaultTheme && VALID_THEMES.includes(defaultTheme as (typeof VALID_THEMES)[number]);
+  const theme = isValidTheme
+    ? defaultTheme
+    : colorScheme === "dark"
+      ? "dark"
+      : "light";
 
   return (
     <TamaguiProvider
