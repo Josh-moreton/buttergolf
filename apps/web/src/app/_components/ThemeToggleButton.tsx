@@ -8,7 +8,11 @@ export function ThemeToggleButton() {
   const [theme, setTheme] = useRootTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    console.log("🎨 Button clicked! Current theme:", theme);
+    const newTheme = theme === "dark" ? "light" : "dark";
+    console.log("🎨 Setting new theme:", newTheme);
+    setTheme(newTheme);
+    console.log("🎨 setTheme called");
   };
 
   // Show Sun icon when in dark mode (clicking will make it light)
