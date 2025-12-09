@@ -22,6 +22,10 @@ const plugins = [
     outputCSS: "./public/tamagui.css",
     logTimings: true,
     disableExtraction,
+    // Disable theme bundle optimization to fix "Missing theme" error in production
+    // See: https://github.com/tamagui/tamagui/issues/3372
+    // This is a known issue with @tamagui/config/v4 and Next.js App Router
+    disableThemesBundleOptimize: true,
     // Disable debug attributes to prevent hydration warnings
     // These are only useful for deep debugging of Tamagui compiler output
     useReactNativeWebLite: false,
