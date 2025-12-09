@@ -1,5 +1,5 @@
 const {withTamagui} = require("@tamagui/next-plugin");
-const {join} = require("node:path");
+const {join, resolve} = require("node:path");
 
 const boolVals = {
   true: true,
@@ -117,6 +117,8 @@ module.exports = () => {
         tamagui: require.resolve("tamagui"),
         // Explicit alias for @tamagui/polyfill-dev to fix webpack resolution in pnpm monorepo
         "@tamagui/polyfill-dev": require.resolve("@tamagui/polyfill-dev"),
+        // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules
+        "@buttergolf/config": resolve(__dirname, "../../packages/config/src/tamagui.config.ts"),
       };
 
       return webpackConfig;
