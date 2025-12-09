@@ -1,7 +1,6 @@
 // Import config BEFORE importing TamaguiProvider to ensure createTamagui runs first
 import { config } from "@buttergolf/config";
 import type { PropsWithChildren } from "react";
-import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";
 
 export type ProviderProps = PropsWithChildren<
@@ -14,17 +13,18 @@ export type ProviderProps = PropsWithChildren<
 const VALID_THEMES = ["light", "dark"] as const;
 
 export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
-  const colorScheme = useColorScheme();
+  // CRITICAL: Don't use useColorScheme() here as it causes hydration mismatches
+  // Server returns null/undefined, client returns actual device preference
+  // This causes React to detect mismatch, throw away DOM, and re-render with errors
+  //
+  // Instead, trust the defaultTheme prop which comes from NextThemeProvider
+  // NextThemeProvider properly handles SSR hydration with useRootTheme()
 
   // Validate theme exists - "system" from NextThemeProvider isn't a valid Tamagui theme
-  // Fall back to colorScheme-based theme if defaultTheme is invalid or undefined
+  // Fall back to "light" if invalid or undefined (must be deterministic for SSR)
   const isValidTheme =
     defaultTheme && VALID_THEMES.includes(defaultTheme as (typeof VALID_THEMES)[number]);
-  const theme = isValidTheme
-    ? defaultTheme
-    : colorScheme === "dark"
-      ? "dark"
-      : "light";
+  const theme = isValidTheme ? defaultTheme : "light";
 
   return (
     <TamaguiProvider
