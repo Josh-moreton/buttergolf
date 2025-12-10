@@ -320,6 +320,9 @@ const customTokens = createTokens({
     textInverse: brandColors.pureWhite,
     helperText: brandColors.ironstone,
 
+    // Outline color for focus states (used by Tamagui form components)
+    outlineColor: brandColors.spicedClementine,
+
     // Surface colors (Pure White cards on Vanilla Cream background)
     surface: brandColors.pureWhite,
     card: brandColors.pureWhite,

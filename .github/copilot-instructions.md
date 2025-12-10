@@ -2336,8 +2336,38 @@ For detailed setup instructions, see `docs/CLOUDINARY_SETUP.md`.
 
 ## Documentation References
 
-- **Tamagui Full Documentation**: https://tamagui.dev/llms-full.txt
-- **Tamagui Core Concepts**: https://tamagui.dev/docs/intro/introduction
+### Tamagui Documentation (PRIMARY REFERENCE)
+
+**CRITICAL: Always reference Tamagui docs for component usage, styling patterns, and theming.**
+
+- **Full LLM-Optimized Documentation**: https://tamagui.dev/llms-full.txt (complete single-file reference)
+- **Quick Overview**: https://tamagui.dev/llms.txt (structured overview with links)
+- **Core Concepts**: https://tamagui.dev/docs/intro/introduction
+
+**Core Documentation:**
+- [Animations](https://tamagui.dev/docs/core/animations.md): Animation system and utilities
+- [Config V4](https://tamagui.dev/docs/core/config-v4.md): Version 4 configuration guide
+- [Configuration](https://tamagui.dev/docs/core/configuration.md): General configuration options
+- [Styled](https://tamagui.dev/docs/core/styled.md): Styled component system
+- [Theme](https://tamagui.dev/docs/core/theme.md): Theming system
+- [Tokens](https://tamagui.dev/docs/core/tokens.md): Design tokens and variables
+- [Use Media](https://tamagui.dev/docs/core/use-media.md): Media query hooks
+- [Use Theme](https://tamagui.dev/docs/core/use-theme.md): Theme hooks
+- [Variants](https://tamagui.dev/docs/core/variants.md): Component variants system
+
+**Component Documentation:**
+- All components at: https://tamagui.dev/ui/[component-name]
+- [Button](https://tamagui.dev/ui/button.md): Customizable button with variants and themes
+- [Text](https://tamagui.dev/ui/text.md): Text display component
+- [Stacks](https://tamagui.dev/ui/stacks.md): Layout stack components (XStack/YStack)
+- See full component list in the quick overview link above
+
+**Guides:**
+- [Next.js Guide](https://tamagui.dev/docs/guides/next-js): Next.js integration
+- [Theme Builder](https://tamagui.dev/docs/guides/theme-builder): Creating custom themes
+
+### Other Documentation
+
 - **Prisma Documentation**: https://www.prisma.io/docs
 - **Expo Documentation**: https://docs.expo.dev/
 - **Next.js Documentation**: https://nextjs.org/docs

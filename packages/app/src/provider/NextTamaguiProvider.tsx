@@ -10,11 +10,23 @@ import { config } from "@buttergolf/config";
 
 import { Provider } from "./Provider";
 
+/**
+ * Inner component that consumes the theme context
+ * MUST be rendered INSIDE NextThemeProvider to use useRootTheme() hook
+ */
+function TamaguiThemeProvider({ children }: { children: ReactNode }) {
+  const [theme] = useRootTheme(); // ✅ Safe - inside provider tree
+
+  return <Provider defaultTheme={theme ?? "light"}>{children}</Provider>;
+}
+
+/**
+ * Outer component that provides the theme context
+ * Sets up NextThemeProvider and CSS injection for Tamagui
+ */
 export function NextTamaguiProvider({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const [currentTheme, setTheme] = useRootTheme();
-
   useServerInsertedHTML(() => {
     return (
       <>
@@ -37,15 +49,8 @@ export function NextTamaguiProvider({
   });
 
   return (
-    <NextThemeProvider
-      skipNextHead
-      defaultTheme="system"
-      onChangeTheme={(next) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setTheme(next as any);
-      }}
-    >
-      <Provider defaultTheme={currentTheme ?? "light"}>{children}</Provider>
+    <NextThemeProvider skipNextHead defaultTheme="system">
+      <TamaguiThemeProvider>{children}</TamaguiThemeProvider>
     </NextThemeProvider>
   );
 }

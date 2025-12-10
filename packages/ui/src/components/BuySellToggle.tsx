@@ -32,7 +32,7 @@
  * ```
  */
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "tamagui";
 import { Row } from "./Layout";
 
@@ -52,7 +52,14 @@ export function BuySellToggle({
   onModeChange,
   variant = "mobile",
 }: Readonly<BuySellToggleProps>) {
-  const isWebPlatform = typeof document !== "undefined";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Use mounted state instead of document check to avoid hydration mismatch
+  const isWebPlatform = mounted;
   const isDesktop = variant === "desktop";
 
   // Active button base props (Spiced Clementine)

@@ -68,7 +68,6 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`light ${urbanist.variable}`}
     >
       <body className={urbanist.className}>
         <NextTamaguiProvider>
