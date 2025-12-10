@@ -88,6 +88,17 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
+    // Explicitly trace Prisma binaries from custom monorepo location
+    // Required for Vercel deployment with custom Prisma output path
+    outputFileTracingIncludes: {
+      '/*': [
+        '../../packages/db/generated/client/**/*',
+        '../../packages/db/prisma/schema.prisma',
+      ],
+    },
+    // Prevent Next.js from bundling Prisma Client (breaks native binaries)
+    // Essential for monorepo setups with custom Prisma output paths
+    serverExternalPackages: ['@buttergolf/db', '@prisma/client'],
     // Security and caching headers
     headers: async () => [
       {
@@ -133,6 +144,8 @@ module.exports = () => {
           "ttdr3bz5-3000.uks1.devtunnels.ms",
         ],
       },
+      // Set tracing root to monorepo root for proper workspace resolution
+      outputFileTracingRoot: join(__dirname, '../../'),
     },
     // Allow dev server access from local network devices (mobile testing, etc.)
     allowedDevOrigins: [
