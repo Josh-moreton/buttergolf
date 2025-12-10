@@ -39,6 +39,46 @@ const plugins = [
   }),
 ];
 
+// Security headers for Clerk authentication with Cloudflare Turnstile bot protection
+const securityHeaders = [
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      // Scripts: Allow self, Clerk, Cloudflare, and necessary inline scripts
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://challenges.cloudflare.com blob:",
+      // Styles: Allow self, inline styles, and Google Fonts
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      // Images: Allow self, data URIs, Cloudinary, and common image sources
+      "img-src 'self' data: blob: https://res.cloudinary.com https://img.clerk.com https://*.clerk.accounts.dev https://images.unsplash.com",
+      // Fonts: Allow self and Google Fonts
+      "font-src 'self' https://fonts.gstatic.com",
+      // Connect: Allow API calls to self, Clerk, Cloudflare, and Stripe
+      "connect-src 'self' https://*.clerk.accounts.dev https://clerk.buttergolf.com https://challenges.cloudflare.com https://api.stripe.com wss://*.clerk.accounts.dev",
+      // Frames: Allow Clerk and Cloudflare challenge iframes
+      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com",
+      // Workers: Allow blob for service workers
+      "worker-src 'self' blob:",
+      // Form actions
+      "form-action 'self'",
+      // Frame ancestors
+      "frame-ancestors 'self'",
+    ].join("; "),
+  },
+  {
+    key: "X-Frame-Options",
+    value: "SAMEORIGIN",
+  },
+  {
+    key: "X-Content-Type-Options",
+    value: "nosniff",
+  },
+  {
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
+  },
+];
+
 module.exports = () => {
   /** @type {import('next').NextConfig} */
   let config = {
@@ -48,17 +88,20 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
-    // Disable caching in development to avoid stale CSS issues
-    ...(process.env.NODE_ENV === "development" && {
-      headers: async () => [
-        {
-          source: "/:path*",
-          headers: [
-            {key: "Cache-Control", value: "no-store, must-revalidate"},
-          ],
-        },
-      ],
-    }),
+    // Security and caching headers
+    headers: async () => [
+      {
+        // Apply security headers to all routes
+        source: "/:path*",
+        headers: [
+          ...securityHeaders,
+          // Disable caching in development
+          ...(process.env.NODE_ENV === "development"
+            ? [{key: "Cache-Control", value: "no-store, must-revalidate"}]
+            : []),
+        ],
+      },
+    ],
     transpilePackages: [
       "@buttergolf/app",
       "@buttergolf/config",
