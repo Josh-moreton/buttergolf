@@ -70,17 +70,25 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // Build user name with fallback chain
+      // Priority: firstName + lastName > email prefix > fallback
+      let userName = [first, last].filter(Boolean).join(" ");
+      if (!userName) {
+        // Use email prefix as fallback
+        userName = email.split("@")[0];
+      }
+
       await prisma.user.upsert({
         where: { clerkId },
         update: {
           email,
-          name: [first, last].filter(Boolean).join(" ") || null,
+          name: userName,
           imageUrl,
         },
         create: {
           clerkId,
           email,
-          name: [first, last].filter(Boolean).join(" ") || null,
+          name: userName,
           imageUrl,
         },
       });

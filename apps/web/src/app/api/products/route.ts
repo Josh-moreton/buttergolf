@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma, ProductCondition } from "@buttergolf/db";
 
 export async function POST(request: Request) {
@@ -20,12 +20,38 @@ export async function POST(request: Request) {
     if (!user) {
       // Create user if not found (fallback for webhook delays)
       // In production, the webhook should handle this
+      // We need to fetch the full user profile to get the name
+      const clerkUser = await currentUser();
+
+      if (!clerkUser) {
+        return NextResponse.json({ error: "User not found" }, { status: 401 });
+      }
+
+      // Build user name from Clerk profile
+      // Priority: firstName + lastName > username > email prefix
+      let userName = "";
+      if (clerkUser.firstName || clerkUser.lastName) {
+        userName = [clerkUser.firstName, clerkUser.lastName]
+          .filter(Boolean)
+          .join(" ");
+      } else if (clerkUser.username) {
+        userName = clerkUser.username;
+      } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
+        // Use email prefix as fallback
+        userName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
+      } else {
+        // Last resort fallback
+        userName = "Golf Enthusiast";
+      }
+
       user = await prisma.user.create({
         data: {
           clerkId,
-          email: `user-${clerkId}@temp.local`, // Temporary email, will be updated by webhook
-          name: null,
-          imageUrl: null,
+          email:
+            clerkUser.emailAddresses?.[0]?.emailAddress ||
+            `user-${clerkId}@temp.local`,
+          name: userName,
+          imageUrl: clerkUser.imageUrl || null,
         },
       });
     }
