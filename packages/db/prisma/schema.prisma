@@ -6,6 +6,9 @@ generator client {
     // Output to a fixed location to fix pnpm monorepo module resolution issues
     // This prevents "Cannot find module '.prisma/client/default'" errors in Next.js builds
     output   = "../generated/client"
+    // Generate binaries for both local (macOS) and Vercel (Linux RHEL) platforms
+    // This ensures Prisma Client works in both development and production environments
+    binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
