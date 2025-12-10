@@ -24,6 +24,14 @@ export const AuthButton = styled(Button, {
   fontSize: "$4",
   letterSpacing: 0,
 
+  // Override base Button shadows with neutral drop shadow only (no inner glow)
+  shadowColor: "rgba(0, 0, 0, 0.15)",
+  shadowOffset: { width: 0, height: 1 },
+  shadowRadius: 3,
+  elevation: 2,
+  // @ts-ignore - boxShadow only exists on web
+  boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.15)",
+
   variants: {
     variant: {
       login: {

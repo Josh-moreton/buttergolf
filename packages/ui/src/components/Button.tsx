@@ -41,8 +41,8 @@ const getButtonShadow = (variant: "primary" | "secondary") => {
   if (Platform.OS === "web") {
     const innerShadow =
       variant === "primary"
-        ? "inset 0px 2px 2px #FF7E4C" // Inner glow for primary
-        : "inset 0px 2px 2px #323232"; // Subtle inner shadow for secondary
+        ? "inset 0px 2px 2px rgba(244, 83, 20, 0.3)" // Spiced Clementine glow ($primary with 30% opacity)
+        : "inset 0px 2px 2px rgba(50, 50, 50, 0.2)"; // Ironstone shadow ($ironstone with 20% opacity)
 
     return {
       ...baseShadow,
