@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { SeoJsonLd } from "@/components/seo";
 import ProductDetailClient, { type Product } from "./ProductDetailClient";
 import { PageHero } from "@/app/_components/marketplace/PageHero";
 import { TrustSection } from "@/app/_components/marketplace/TrustSection";
@@ -48,47 +47,6 @@ async function getSimilarProducts(id: string): Promise<ProductCardData[]> {
   }
 }
 
-function generateProductSchema(product: Product, siteUrl: string) {
-  // Map product condition to Schema.org itemCondition
-  let itemCondition = "https://schema.org/UsedCondition";
-  if (product.condition === "new") {
-    itemCondition = "https://schema.org/NewCondition";
-  } else if (product.condition === "like_new") {
-    itemCondition = "https://schema.org/RefurbishedCondition";
-  }
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.title,
-    description: product.description,
-    image:
-      product.images?.length > 0 ? product.images.map((img) => img.url) : [],
-    brand: product.brand
-      ? {
-          "@type": "Brand",
-          name: product.brand,
-        }
-      : undefined,
-    model: product.model,
-    offers: {
-      "@type": "Offer",
-      url: `${siteUrl}/products/${product.id}`,
-      priceCurrency: "GBP",
-      price: product.price,
-      availability: product.isSold
-        ? "https://schema.org/SoldOut"
-        : "https://schema.org/InStock",
-      itemCondition: itemCondition,
-      seller: {
-        "@type": "Person",
-        name: product.user?.name || "Anonymous",
-      },
-    },
-    category: product.category?.name,
-  };
-}
-
 export default async function ProductDetailPage({
   params,
 }: {
@@ -105,10 +63,6 @@ export default async function ProductDetailPage({
   // Fetch similar products
   const similarProducts = await getSimilarProducts(id);
 
-  // Generate structured data for the product
-  const siteUrl = process.env.SITE_URL || "https://buttergolf.com";
-  const productSchema = generateProductSchema(product, siteUrl);
-
   return (
     <>
       <PageHero />
@@ -120,7 +74,6 @@ export default async function ProductDetailPage({
       <TrustSection />
       <NewsletterSection />
       <FooterSection />
-      <SeoJsonLd data={productSchema} />
     </>
   );
 }

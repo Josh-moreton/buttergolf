@@ -395,34 +395,37 @@ interface HeroCTAButtonsProps {
 function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
   if (!primaryCta && !secondaryCta) return null;
 
+  // Define button styling inline to avoid butterVariant prop warning
+  const primaryButtonProps = {
+    size: "$4" as const,
+    paddingHorizontal: "$3" as const,
+    paddingVertical: "$2" as const,
+    backgroundColor: "$primary" as const,
+    borderWidth: 1,
+    borderColor: "$primaryBorder" as const,
+    color: "$textInverse" as const,
+  };
+
+  const secondaryButtonProps = {
+    size: "$4" as const,
+    paddingHorizontal: "$3" as const,
+    paddingVertical: "$2" as const,
+    backgroundColor: "$secondary" as const,
+    borderWidth: 1,
+    borderColor: "$secondaryBorder" as const,
+    color: "$textInverse" as const,
+  };
+
   return (
     <Row gap="$md" flexWrap="wrap" marginTop="$4">
       {primaryCta && (
         <Link href={primaryCta.href} style={{ textDecoration: "none" }}>
-          <Button
-            butterVariant="primary"
-            width={133}
-            height={41}
-            paddingHorizontal={12}
-            paddingVertical={5}
-            fontSize={14}
-          >
-            {primaryCta.label}
-          </Button>
+          <Button {...primaryButtonProps}>{primaryCta.label}</Button>
         </Link>
       )}
       {secondaryCta && (
         <Link href={secondaryCta.href} style={{ textDecoration: "none" }}>
-          <Button
-            butterVariant="secondary"
-            width={133}
-            height={41}
-            paddingHorizontal={12}
-            paddingVertical={5}
-            fontSize={14}
-          >
-            {secondaryCta.label}
-          </Button>
+          <Button {...secondaryButtonProps}>{secondaryCta.label}</Button>
         </Link>
       )}
     </Row>
