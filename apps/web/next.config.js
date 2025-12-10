@@ -1,5 +1,6 @@
 const {withTamagui} = require("@tamagui/next-plugin");
 const {join, resolve} = require("node:path");
+const {PrismaPlugin} = require("@prisma/nextjs-monorepo-workaround-plugin");
 
 const boolVals = {
   true: true,
@@ -90,10 +91,15 @@ module.exports = () => {
     },
     // Explicitly trace Prisma binaries from custom monorepo location
     // Required for Vercel deployment with custom Prisma output path
+    // Paths are relative to outputFileTracingRoot (monorepo root)
     outputFileTracingIncludes: {
-      '/*': [
-        '../../packages/db/generated/client/**/*',
-        '../../packages/db/prisma/schema.prisma',
+      '/api/**': [
+        './packages/db/generated/client/**/*',
+        './packages/db/prisma/schema.prisma',
+      ],
+      // Include for all server-side code
+      '/**': [
+        './packages/db/generated/client/**/*',
       ],
     },
     // Prevent Next.js from bundling Prisma Client (breaks native binaries)
@@ -163,7 +169,13 @@ module.exports = () => {
         },
       ],
     },
-    webpack: (webpackConfig) => {
+    webpack: (webpackConfig, {isServer}) => {
+      // Add PrismaPlugin to copy Prisma binaries into serverless bundle
+      // Required for monorepo deployments on Vercel with custom Prisma output path
+      if (isServer) {
+        webpackConfig.plugins = [...webpackConfig.plugins, new PrismaPlugin()];
+      }
+
       // Map React Native to React Native Web for web builds
       webpackConfig.resolve.alias = {
         ...webpackConfig.resolve.alias,

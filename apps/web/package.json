@@ -52,6 +52,7 @@
     "tamagui": "catalog:"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "^7.1.0",
     "@tailwindcss/postcss": "^4",
     "@tamagui/next-plugin": "catalog:",
     "@types/node": "catalog:",

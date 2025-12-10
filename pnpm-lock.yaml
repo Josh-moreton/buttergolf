@@ -423,6 +423,9 @@ importers:
         specifier: 'catalog:'
         version: 1.139.2(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
     devDependencies:
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^7.1.0
+        version: 7.1.0
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.1.17
@@ -2328,6 +2331,9 @@ packages:
 
   '@prisma/get-platform@6.19.0':
     resolution: {integrity: sha512-ym85WDO2yDhC3fIXHWYpG3kVMBA49cL1XD2GCsCF8xbwoy2OkDQY44gEbAt2X46IQ4Apq9H6g0Ex1iFfPqEkHA==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@7.1.0':
+    resolution: {integrity: sha512-TTIH/4BjSffs3dDXjwKVHWk30jr0aFTRbi79Bjel9zLxpO3QhGz6l6KpjZywGGURgTnIzJgcfuYoD8UMy5g5Bw==}
 
   '@react-native/assets-registry@0.81.5':
     resolution: {integrity: sha512-705B6x/5Kxm1RKRvSv0ADYWm5JOnoiQ1ufW7h8uu2E6G9Of/eE6hP/Ivw3U5jI16ERqZxiKQwk34VJbB0niX9w==}
@@ -10255,6 +10261,8 @@ snapshots:
   '@prisma/get-platform@6.19.0':
     dependencies:
       '@prisma/debug': 6.19.0
+
+  '@prisma/nextjs-monorepo-workaround-plugin@7.1.0': {}
 
   '@react-native/assets-registry@0.81.5': {}
 
