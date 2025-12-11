@@ -96,7 +96,9 @@ export async function POST(req: Request) {
       // Soft delete: mark user as deleted and anonymize PII
       const clerkId: string = evt.data.id;
 
-      await prisma.user.update({
+      // Use updateMany to avoid errors if user doesn't exist in database
+      // (e.g., if deleted from Clerk before user.created webhook fired)
+      await prisma.user.updateMany({
         where: { clerkId },
         data: {
           isDeleted: true,
