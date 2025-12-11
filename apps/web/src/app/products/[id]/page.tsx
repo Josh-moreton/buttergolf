@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { prisma } from "@buttergolf/db";
 import ProductDetailClient, { type Product } from "./ProductDetailClient";
 import { PageHero } from "@/app/_components/marketplace/PageHero";
 import { TrustSection } from "@/app/_components/marketplace/TrustSection";
@@ -11,17 +12,38 @@ export const dynamic = "force-dynamic";
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    // In production, this would use the actual domain
-    const baseUrl = process.env.SITE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      cache: "no-store",
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        images: {
+          orderBy: {
+            sortOrder: "asc",
+          },
+        },
+        category: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          },
+        },
+      },
     });
 
-    if (!res.ok) {
+    if (!product) {
       return null;
     }
 
-    return res.json();
+    // Increment view count (fire and forget)
+    prisma.product
+      .update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      })
+      .catch((err) => console.error("Failed to increment views:", err));
+
+    return product as Product;
   } catch (error) {
     console.error("Error fetching product:", error);
     return null;
@@ -30,17 +52,80 @@ async function getProduct(id: string): Promise<Product | null> {
 
 async function getSimilarProducts(id: string): Promise<ProductCardData[]> {
   try {
-    const baseUrl = process.env.SITE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/products/${id}/similar`, {
-      cache: "no-store",
+    // Get the current product to find similar ones
+    const product = await prisma.product.findUnique({
+      where: { id },
+      select: {
+        categoryId: true,
+        price: true,
+        brand: true,
+      },
     });
 
-    if (!res.ok) {
+    if (!product) {
       return [];
     }
 
-    const data = await res.json();
-    return data.products || [];
+    // Find similar products (same category, similar price range)
+    const priceMin = product.price * 0.7;
+    const priceMax = product.price * 1.3;
+
+    const similarProducts = await prisma.product.findMany({
+      where: {
+        id: { not: id },
+        isSold: false,
+        categoryId: product.categoryId,
+        price: {
+          gte: priceMin,
+          lte: priceMax,
+        },
+      },
+      include: {
+        images: {
+          orderBy: { sortOrder: "asc" },
+          take: 1,
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          },
+        },
+      },
+      orderBy: [{ createdAt: "desc" }],
+      take: 8,
+    });
+
+    // Map to ProductCardData format
+    return similarProducts.map((prod) => ({
+      id: prod.id,
+      title: prod.title,
+      price: prod.price,
+      condition: prod.condition,
+      imageUrl: prod.images[0]?.url || "/placeholder-product.jpg",
+      category: prod.category.name,
+      seller: {
+        id: prod.user.id,
+        name: prod.user.name || "Unknown Seller",
+        averageRating: null,
+        ratingCount: 0,
+      },
+    }));
   } catch (error) {
     console.error("Error fetching similar products:", error);
     return [];
