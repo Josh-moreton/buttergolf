@@ -418,15 +418,11 @@ export function ButterHeader() {
           <SignUp
             routing="hash"
             signInUrl="/sign-in"
-            forceRedirectUrl="/listings"
-            fallbackRedirectUrl="/listings"
           />
         ) : (
           <SignIn
             routing="hash"
             signUpUrl="/sign-up"
-            forceRedirectUrl="/listings"
-            fallbackRedirectUrl="/listings"
           />
         )}
       </AuthModal>

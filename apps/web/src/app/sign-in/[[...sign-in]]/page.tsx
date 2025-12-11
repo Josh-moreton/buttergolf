@@ -19,8 +19,6 @@ export default function Page() {
         path="/sign-in"
         routing="path"
         signUpUrl="/sign-up"
-        forceRedirectUrl="/listings"
-        fallbackRedirectUrl="/listings"
       />
     </div>
   );
