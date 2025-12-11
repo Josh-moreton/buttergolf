@@ -46,12 +46,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // Scripts: Allow self, Clerk, Cloudflare, and necessary inline scripts
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://challenges.cloudflare.com blob:",
+      // Scripts: Allow self, Clerk, Cloudflare, Vercel Live, and necessary inline scripts
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://vercel.live blob:",
       // Styles: Allow self, inline styles, and Google Fonts
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      // Images: Allow self, data URIs, Cloudinary, and common image sources
-      "img-src 'self' data: blob: https://res.cloudinary.com https://img.clerk.com https://*.clerk.accounts.dev https://images.unsplash.com",
+      // Images: Allow self, data URIs, Cloudinary, Vercel Blob Storage, and common image sources
+      "img-src 'self' data: blob: https://res.cloudinary.com https://img.clerk.com https://*.clerk.accounts.dev https://images.unsplash.com https://*.public.blob.vercel-storage.com",
       // Fonts: Allow self and Google Fonts
       "font-src 'self' https://fonts.gstatic.com",
       // Connect: Allow API calls to self, Clerk, Cloudflare, and Stripe
