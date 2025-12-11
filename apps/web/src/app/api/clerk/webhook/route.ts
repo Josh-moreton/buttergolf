@@ -92,6 +92,21 @@ export async function POST(req: Request) {
           imageUrl,
         },
       });
+    } else if (eventType === "user.deleted") {
+      // Soft delete: mark user as deleted and anonymize PII
+      const clerkId: string = evt.data.id;
+
+      await prisma.user.update({
+        where: { clerkId },
+        data: {
+          isDeleted: true,
+          deletedAt: new Date(),
+          // Anonymize PII while preserving referential integrity
+          email: `deleted_${clerkId}@deleted.local`,
+          name: "Deleted User",
+          imageUrl: null,
+        },
+      });
     }
 
     return NextResponse.json({ ok: true });
