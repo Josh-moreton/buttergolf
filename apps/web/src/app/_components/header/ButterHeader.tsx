@@ -415,9 +415,19 @@ export function ButterHeader() {
       {/* Auth Modal */}
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
         {authMode === "sign-up" ? (
-          <SignUp routing="hash" signInUrl="/sign-in" />
+          <SignUp
+            routing="hash"
+            signInUrl="/sign-in"
+            forceRedirectUrl="/listings"
+            fallbackRedirectUrl="/listings"
+          />
         ) : (
-          <SignIn routing="hash" signUpUrl="/sign-up" />
+          <SignIn
+            routing="hash"
+            signUpUrl="/sign-up"
+            forceRedirectUrl="/listings"
+            fallbackRedirectUrl="/listings"
+          />
         )}
       </AuthModal>
     </>
