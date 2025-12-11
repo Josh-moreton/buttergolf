@@ -56,8 +56,8 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       // Connect: Allow API calls to self, Clerk, Cloudflare, and Stripe
       "connect-src 'self' https://*.clerk.accounts.dev https://clerk.buttergolf.com https://challenges.cloudflare.com https://api.stripe.com wss://*.clerk.accounts.dev",
-      // Frames: Allow Clerk and Cloudflare challenge iframes
-      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com",
+      // Frames: Allow Clerk, Cloudflare challenge iframes, Vercel Live, and Stripe
+      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com https://vercel.live",
       // Workers: Allow blob for service workers
       "worker-src 'self' blob:",
       // Form actions
