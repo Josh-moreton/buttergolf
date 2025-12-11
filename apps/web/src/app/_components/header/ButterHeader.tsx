@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut, SignIn, SignUp, UserButton } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import {
   Row,
   Column,
@@ -14,7 +14,6 @@ import {
   getGlassmorphismStyles,
 } from "@buttergolf/ui";
 import { MenuIcon } from "./icons";
-import { AuthModal } from "../auth/AuthModal";
 
 // Custom icons for UserButton menu
 const HeartIcon = () => (
@@ -61,9 +60,8 @@ const NAV_CATEGORIES = [
 
 export function ButterHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -180,20 +178,14 @@ export function ButterHeader() {
                 <AuthButton
                   variant="login"
                   size="$4"
-                  onPress={() => {
-                    setAuthMode("sign-in");
-                    setAuthOpen(true);
-                  }}
+                  onPress={() => router.push('/sign-in')}
                 >
                   Log-in
                 </AuthButton>
                 <AuthButton
                   variant="signup"
                   size="$4"
-                  onPress={() => {
-                    setAuthMode("sign-up");
-                    setAuthOpen(true);
-                  }}
+                  onPress={() => router.push('/sign-up')}
                 >
                   Sign-up
                 </AuthButton>
@@ -361,8 +353,7 @@ export function ButterHeader() {
                 size="$5"
                 fullWidth
                 onPress={() => {
-                  setAuthMode("sign-in");
-                  setAuthOpen(true);
+                  router.push('/sign-in');
                   setMobileMenuOpen(false);
                 }}
               >
@@ -373,8 +364,7 @@ export function ButterHeader() {
                 size="$5"
                 fullWidth
                 onPress={() => {
-                  setAuthMode("sign-up");
-                  setAuthOpen(true);
+                  router.push('/sign-up');
                   setMobileMenuOpen(false);
                 }}
               >
@@ -411,21 +401,6 @@ export function ButterHeader() {
           </Column>
         </Column>
       )}
-
-      {/* Auth Modal */}
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)}>
-        {authMode === "sign-up" ? (
-          <SignUp
-            routing="hash"
-            signInUrl="/sign-in"
-          />
-        ) : (
-          <SignIn
-            routing="hash"
-            signUpUrl="/sign-up"
-          />
-        )}
-      </AuthModal>
     </>
   );
 }
