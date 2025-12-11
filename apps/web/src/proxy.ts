@@ -17,6 +17,20 @@ const isComingSoonAllowedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Handle CORS preflight OPTIONS requests
+  if (req.method === "OPTIONS") {
+    const origin = req.headers.get("origin");
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": origin || "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Max-Age": "86400",
+      },
+    });
+  }
+
   // Coming soon mode - redirect all traffic to coming soon page
   const isComingSoonEnabled =
     process.env.NEXT_PUBLIC_COMING_SOON_ENABLED === "true";
