@@ -227,8 +227,8 @@ export default function SellPage() {
     return null;
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError(null);
 
@@ -685,7 +685,7 @@ export default function SellPage() {
                     <Button
                       size="$5"
                       disabled={loading}
-                      onPress={() => handleSubmit({} as React.FormEvent)}
+                      onPress={() => handleSubmit()}
                       flex={1}
                     >
                       {loading ? "Uploading..." : "Upload"}
