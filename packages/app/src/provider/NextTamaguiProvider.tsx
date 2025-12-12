@@ -1,6 +1,7 @@
 "use client";
 
-import "@tamagui/core/reset.css";
+// Reset CSS is included in config.getCSS() output below
+// import "@tamagui/core/reset.css"; // Commented out - causes webpack resolution issues in Next.js
 import "@tamagui/polyfill-dev";
 
 import type { ReactNode } from "react";
@@ -49,5 +50,13 @@ export function NextTamaguiProvider({
     );
   });
 
-  return <Provider defaultTheme="light">{children}</Provider>;
+  return (
+    <Provider
+      defaultTheme="light"
+      disableInjectCSS  // CSS already injected via useServerInsertedHTML
+      disableRootThemeClass  // Prevent hydration mismatch from theme class
+    >
+      {children}
+    </Provider>
+  );
 }

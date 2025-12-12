@@ -143,6 +143,7 @@ module.exports = () => {
       "@tamagui/sheet",
       "@tamagui/portal",
       "@tamagui/polyfill-dev",
+      "@tamagui/form",
     ],
     experimental: {
       scrollRestoration: true,
@@ -186,6 +187,10 @@ module.exports = () => {
         // Enforce a single instance of 'tamagui' at runtime to avoid
         // "Haven't called createTamagui yet" errors caused by duplicate module instances
         tamagui: require.resolve("tamagui"),
+        // Enforce single instance of @tamagui/core to prevent "Missing theme" errors
+        // when @tamagui/form or other packages try to create their own context
+        "@tamagui/core": require.resolve("@tamagui/core"),
+        "@tamagui/web": require.resolve("@tamagui/web"),
         // Explicit alias for @tamagui/polyfill-dev to fix webpack resolution in pnpm monorepo
         "@tamagui/polyfill-dev": require.resolve("@tamagui/polyfill-dev"),
         // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules
