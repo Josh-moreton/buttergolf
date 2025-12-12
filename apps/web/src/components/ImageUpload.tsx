@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { Text, Row, Column, Image, Spinner } from "@buttergolf/ui";
 import { useImageUpload } from "../hooks/useImageUpload";
+import { ImageCropModal } from "./ImageCropModal";
 
 export interface ImageUploadProps {
   onUploadComplete: (url: string) => void;
@@ -17,6 +18,8 @@ export function ImageUpload({
 }: Readonly<ImageUploadProps>) {
   const { upload, uploading, error, progress } = useImageUpload();
   const [dragActive, setDragActive] = useState(false);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [fileToCrop, setFileToCrop] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,14 +32,9 @@ export function ImageUpload({
       return;
     }
 
-    // Upload with background removal for first image (cover photo)
-    try {
-      const isFirstImage = currentImages.length === 0;
-      const result = await upload(file, isFirstImage);
-      onUploadComplete(result.url);
-    } catch (err) {
-      console.error("Upload error:", err);
-    }
+    // Show crop modal BEFORE uploading
+    setFileToCrop(file);
+    setCropModalOpen(true);
 
     // Reset input
     if (fileInputRef.current) {
@@ -67,13 +65,9 @@ export function ImageUpload({
         return;
       }
 
-      try {
-        const isFirstImage = currentImages.length === 0;
-        const result = await upload(file, isFirstImage);
-        onUploadComplete(result.url);
-      } catch (err) {
-        console.error("Upload error:", err);
-      }
+      // Show crop modal BEFORE uploading
+      setFileToCrop(file);
+      setCropModalOpen(true);
     }
   };
 
@@ -220,6 +214,41 @@ export function ImageUpload({
             ))}
           </Row>
         </Column>
+      )}
+
+      {/* Crop Modal */}
+      {fileToCrop && (
+        <ImageCropModal
+          imageFile={fileToCrop}
+          open={cropModalOpen}
+          onCropComplete={async (croppedBlob) => {
+            try {
+              // Convert blob to File for upload
+              const isFirstImage = currentImages.length === 0;
+              const croppedFile = new File(
+                [croppedBlob],
+                fileToCrop.name,
+                { type: croppedBlob.type }
+              );
+
+              // Upload cropped image
+              const result = await upload(croppedFile, isFirstImage);
+              onUploadComplete(result.url);
+
+              // Close modal
+              setCropModalOpen(false);
+              setFileToCrop(null);
+            } catch (err) {
+              console.error("Upload error:", err);
+              // Keep modal open to show error
+            }
+          }}
+          onCancel={() => {
+            // Discard image, close modal
+            setCropModalOpen(false);
+            setFileToCrop(null);
+          }}
+        />
       )}
     </Column>
   );
