@@ -70,6 +70,16 @@ export async function POST(request: Request): Promise<NextResponse> {
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = `data:${contentType};base64,${buffer.toString("base64")}`;
 
+    // Debug logging
+    console.log("📤 Cloudinary Upload:", {
+      filename,
+      contentType,
+      sizeBytes: buffer.length,
+      sizeMB: (buffer.length / (1024 * 1024)).toFixed(2),
+      isFirstImage,
+      userId,
+    });
+
     // Build upload options
     const uploadOptions: UploadApiOptions = {
       folder: "products",
@@ -96,6 +106,14 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
+
+    console.log("✅ Cloudinary Upload Success:", {
+      publicId: result.public_id,
+      url: result.secure_url,
+      dimensions: `${result.width}x${result.height}`,
+      format: result.format,
+      bytes: result.bytes,
+    });
 
     return NextResponse.json({
       url: result.secure_url,

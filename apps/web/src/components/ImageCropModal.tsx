@@ -23,21 +23,41 @@ async function getCroppedImg(
     throw new Error("No 2d context");
   }
 
-  // Set canvas size to crop size
-  canvas.width = crop.width;
-  canvas.height = crop.height;
+  // CRITICAL FIX: Scale crop coordinates from displayed size to natural size
+  // The crop library gives us coordinates relative to the displayed image size,
+  // but we need to draw from the natural (full resolution) image
+  const scaleX = image.naturalWidth / image.width;
+  const scaleY = image.naturalHeight / image.height;
 
-  // Draw cropped image
+  // Debug logging to verify coordinate scaling
+  console.log("🖼️ Image Crop Debug:", {
+    natural: { width: image.naturalWidth, height: image.naturalHeight },
+    displayed: { width: image.width, height: image.height },
+    scale: { x: scaleX, y: scaleY },
+    cropDisplayed: { x: crop.x, y: crop.y, width: crop.width, height: crop.height },
+    cropNatural: {
+      x: crop.x * scaleX,
+      y: crop.y * scaleY,
+      width: crop.width * scaleX,
+      height: crop.height * scaleY
+    },
+  });
+
+  // Set canvas size to natural crop dimensions
+  canvas.width = crop.width * scaleX;
+  canvas.height = crop.height * scaleY;
+
+  // Draw cropped image using scaled coordinates
   ctx.drawImage(
     image,
-    crop.x,
-    crop.y,
-    crop.width,
-    crop.height,
-    0,
-    0,
-    crop.width,
-    crop.height
+    crop.x * scaleX,      // Scale source x
+    crop.y * scaleY,      // Scale source y
+    crop.width * scaleX,  // Scale source width
+    crop.height * scaleY, // Scale source height
+    0,                    // Destination x (always 0)
+    0,                    // Destination y (always 0)
+    crop.width * scaleX,  // Destination width (scaled)
+    crop.height * scaleY  // Destination height (scaled)
   );
 
   // Convert canvas to blob
