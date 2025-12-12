@@ -55,7 +55,6 @@ export async function POST() {
             merchant: {
               capabilities: {
                 card_payments: { requested: true },
-                transfers: { requested: true },
               },
             },
           },
@@ -171,8 +170,8 @@ export async function GET() {
           account.configuration?.merchant?.capabilities?.card_payments
             ?.status === "active",
         payoutsEnabled:
-          account.configuration?.merchant?.capabilities?.transfers?.status ===
-          "active",
+          account.configuration?.merchant?.capabilities?.card_payments
+            ?.status === "active", // V2 API: payouts are automatic with card_payments
         requirements: account.requirements,
       });
     }
