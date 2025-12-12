@@ -28,6 +28,9 @@ model User {
     stripeConnectId          String?        @unique // Stripe Connect account ID
     stripeOnboardingComplete Boolean        @default(false) // Whether seller onboarding is complete
     stripeAccountStatus      String? // Current account status (active, pending, etc.)
+    stripeAccountType        String?        @default("express") // Account type: "express" | "fully_embedded"
+    stripeRequirementsDue    Json? // Currently due requirements from Stripe
+    stripeRequirementsDeadline DateTime? // Deadline for requirements
     // Seller rating (cached for performance)
     averageRating            Float?         @default(0)
     ratingCount              Int            @default(0)

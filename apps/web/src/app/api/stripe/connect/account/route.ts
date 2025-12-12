@@ -5,8 +5,13 @@ import { prisma } from "@buttergolf/db";
 
 /**
  * POST /api/stripe/connect/account
- * Creates or retrieves a Stripe Connect Express account for the authenticated user
+ * Creates or retrieves a Stripe Connect Fully Embedded account for the authenticated user
  * Returns an account session client_secret for embedded onboarding
+ *
+ * Fully Embedded accounts have:
+ * - controller.stripe_dashboard.type = "none" (no Stripe Dashboard access)
+ * - Stripe manages risk and compliance
+ * - All account management through embedded components
  */
 export async function POST() {
   try {
@@ -29,7 +34,9 @@ export async function POST() {
 
     // 3. Create Stripe Connect account if it doesn't exist (using Accounts V2 API)
     if (!stripeAccountId) {
-      // Use Stripe V2 API to create account with merchant configuration
+      // Use Stripe V2 API to create Fully Embedded account
+      // - dashboard: "none" means no Stripe Dashboard access
+      // - All seller management happens through embedded components
       const response = await fetch("https://api.stripe.com/v2/core/accounts", {
         method: "POST",
         headers: {
@@ -40,7 +47,7 @@ export async function POST() {
         body: JSON.stringify({
           contact_email: user.email,
           display_name: user.name || "ButterGolf Seller",
-          dashboard: "express", // Express dashboard for simplified onboarding
+          dashboard: "none", // Fully embedded - no Stripe Dashboard access
           identity: {
             country: "US", // Default to US, user can change during onboarding
           },
@@ -55,8 +62,8 @@ export async function POST() {
           defaults: {
             currency: "usd",
             responsibilities: {
-              fees_collector: "stripe",
-              losses_collector: "stripe",
+              fees_collector: "stripe", // Stripe owns pricing - collects fees from sellers
+              losses_collector: "stripe", // Stripe manages fraud/risk
             },
             locales: ["en-US"],
           },
@@ -76,11 +83,12 @@ export async function POST() {
       const account = await response.json();
       stripeAccountId = account.id;
 
-      // Save to database
+      // Save to database with fully_embedded account type
       await prisma.user.update({
         where: { id: user.id },
         data: {
           stripeConnectId: stripeAccountId,
+          stripeAccountType: "fully_embedded",
         },
       });
     }

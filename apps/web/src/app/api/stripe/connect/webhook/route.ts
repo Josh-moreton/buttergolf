@@ -9,9 +9,14 @@ import Stripe from "stripe";
  * Handles Stripe Connect webhooks for account updates
  *
  * Events handled:
- * - account.updated: Syncs onboarding status and account details
+ * - account.updated: Syncs onboarding status, requirements, and account details
  * - account.application.authorized: User granted permission to platform
  * - account.application.deauthorized: User revoked permission
+ * - capability.updated: Track capability status changes
+ * - person.updated: Track person verification status
+ *
+ * For Fully Embedded Connect integrations, this webhook stores requirements
+ * data to enable the notification banner to function properly.
  */
 export async function POST(req: Request) {
   try {
@@ -81,10 +86,53 @@ export async function POST(req: Request) {
                 stripeConnectId: null,
                 stripeOnboardingComplete: false,
                 stripeAccountStatus: "deauthorized",
+                stripeRequirementsDue: null,
+                stripeRequirementsDeadline: null,
               },
             });
           }
         }
+        break;
+      }
+
+      case "capability.updated": {
+        // Handle capability status changes
+        const capability = event.data.object as Stripe.Capability;
+        console.log(
+          `Capability ${capability.id} updated: ${capability.status} for account ${capability.account}`
+        );
+
+        // Refresh account status when capabilities change
+        if (typeof capability.account === "string") {
+          const account = await stripe.accounts.retrieve(capability.account);
+          await handleAccountUpdated(account);
+        }
+        break;
+      }
+
+      case "person.updated": {
+        // Handle person verification status changes
+        const person = event.data.object as Stripe.Person;
+        console.log(
+          `Person ${person.id} updated for account ${person.account}`
+        );
+
+        // Refresh account status when person verification changes
+        if (typeof person.account === "string") {
+          const account = await stripe.accounts.retrieve(person.account);
+          await handleAccountUpdated(account);
+        }
+        break;
+      }
+
+      case "payout.created":
+      case "payout.paid":
+      case "payout.failed": {
+        // Log payout events for monitoring
+        const payout = event.data.object as Stripe.Payout;
+        console.log(
+          `Payout ${payout.id} ${event.type.split(".")[1]}: ${payout.amount / 100} ${payout.currency.toUpperCase()}`
+        );
         break;
       }
 
@@ -141,7 +189,8 @@ async function handleAccountUpdated(account: Stripe.Account) {
     const v2Account = await response.json();
 
     // Determine account status from V2 API
-    const hasNoDue = v2Account.requirements?.currently_due?.length === 0;
+    const currentlyDue = v2Account.requirements?.currently_due || [];
+    const hasNoDue = currentlyDue.length === 0;
     const cardPaymentsActive =
       v2Account.configuration?.merchant?.capabilities?.card_payments?.status ===
       "active";
@@ -156,16 +205,28 @@ async function handleAccountUpdated(account: Stripe.Account) {
       status = "restricted"; // No requirements due but capabilities not fully active
     }
 
-    // Update user record
+    // Extract requirements deadline if present
+    let requirementsDeadline: Date | null = null;
+    if (v2Account.requirements?.current_deadline) {
+      requirementsDeadline = new Date(
+        v2Account.requirements.current_deadline * 1000
+      );
+    }
+
+    // Update user record with requirements data for notification banner
     await prisma.user.update({
       where: { id: user.id },
       data: {
         stripeOnboardingComplete: hasNoDue,
         stripeAccountStatus: status,
+        stripeRequirementsDue: currentlyDue.length > 0 ? currentlyDue : null,
+        stripeRequirementsDeadline: requirementsDeadline,
       },
     });
 
-    console.log(`Updated user ${user.id} Connect status: ${status} (V2 API)`);
+    console.log(
+      `Updated user ${user.id} Connect status: ${status}, requirements: ${currentlyDue.length} (V2 API)`
+    );
   } catch (error) {
     console.error("Error updating user from webhook:", error);
     throw error;

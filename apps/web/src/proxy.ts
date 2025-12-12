@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 // Define protected routes that require authentication
 const isProtectedRoute = createRouteMatcher([
   "/sell(.*)",
+  "/seller(.*)", // Seller dashboard with Stripe Connect components
   "/dashboard(.*)",
   "/profile(.*)",
   "/api/upload(.*)",
