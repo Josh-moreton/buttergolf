@@ -87,24 +87,14 @@ export async function POST(request: Request): Promise<NextResponse> {
       resource_type: "image",
     };
 
-    // Apply background removal ONLY to first image (cost optimization)
-    if (isFirstImage) {
-      uploadOptions.transformation = [
-        {
-          effect: "background_removal",
-        },
-        {
-          // Use branded pattern background (uploaded to Cloudinary as 'backgrounds/butter-pattern')
-          underlay: "backgrounds:butter-pattern",
-          flags: "tiled", // Tile the pattern across the entire image
-        },
-        {
-          flags: "layer_apply", // Apply the tiled underlay
-        },
-      ];
-    }
+    // Debug: Log the image dimensions being uploaded
+    console.log("📐 Uploading image data:", {
+      base64Length: base64Image.length,
+      estimatedSizeKB: Math.round((base64Image.length * 0.75) / 1024),
+      isFirstImage,
+    });
 
-    // Upload to Cloudinary
+    // Upload to Cloudinary (store the cropped image as-is)
     const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
 
     console.log("✅ Cloudinary Upload Success:", {
@@ -115,8 +105,24 @@ export async function POST(request: Request): Promise<NextResponse> {
       bytes: result.bytes,
     });
 
+    // For first image, return URL with background removal transformation applied on-the-fly
+    // This ensures the cropped image is stored, and background removal is applied via URL
+    let finalUrl = result.secure_url;
+    if (isFirstImage && result.public_id) {
+      // Build URL with background removal transformation
+      // Format: https://res.cloudinary.com/{cloud}/image/upload/{transformations}/{public_id}.{format}
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const transformations = "e_background_removal/u_backgrounds:butter-pattern,fl_tiled/fl_layer_apply";
+      finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/${result.public_id}.${result.format}`;
+      
+      console.log("🎨 Applied background removal transformation:", {
+        originalUrl: result.secure_url,
+        transformedUrl: finalUrl,
+      });
+    }
+
     return NextResponse.json({
-      url: result.secure_url,
+      url: finalUrl,
       publicId: result.public_id,
       width: result.width,
       height: result.height,
