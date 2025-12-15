@@ -223,6 +223,13 @@ export function ImageUpload({
           open={cropModalOpen}
           onCropComplete={async (croppedBlob) => {
             try {
+              // Debug: Log the received blob
+              console.log("📦 ImageUpload received cropped blob:", {
+                size: croppedBlob.size,
+                sizeKB: Math.round(croppedBlob.size / 1024),
+                type: croppedBlob.type,
+              });
+
               // Convert blob to File for upload
               const isFirstImage = currentImages.length === 0;
               const croppedFile = new File(
@@ -230,6 +237,14 @@ export function ImageUpload({
                 fileToCrop.name,
                 { type: croppedBlob.type }
               );
+
+              console.log("📁 Created File object:", {
+                name: croppedFile.name,
+                size: croppedFile.size,
+                sizeKB: Math.round(croppedFile.size / 1024),
+                type: croppedFile.type,
+                isFirstImage,
+              });
 
               // Upload cropped image
               const result = await upload(croppedFile, isFirstImage);

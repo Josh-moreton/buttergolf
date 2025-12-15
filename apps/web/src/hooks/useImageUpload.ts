@@ -59,6 +59,15 @@ export function useImageUpload(): UseImageUploadReturn {
       const extension = file.name.split(".").pop();
       const filename = `${timestamp}-${randomStr}.${extension}`;
 
+      console.log("🚀 useImageUpload: Sending file to server:", {
+        filename,
+        originalName: file.name,
+        size: file.size,
+        sizeKB: Math.round(file.size / 1024),
+        type: file.type,
+        isFirstImage,
+      });
+
       setProgress(30);
 
       // Upload to API route with isFirstImage flag for background removal
@@ -81,6 +90,9 @@ export function useImageUpload(): UseImageUploadReturn {
       }
 
       const result: UploadResult = await response.json();
+      
+      console.log("✅ useImageUpload: Server response:", result);
+      
       setProgress(100);
       setUploading(false);
 

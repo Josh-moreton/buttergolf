@@ -34,35 +34,40 @@ async function getCroppedImg(
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
 
+  // Calculate natural (source) coordinates
+  const sourceX = crop.x * scaleX;
+  const sourceY = crop.y * scaleY;
+  const sourceWidth = crop.width * scaleX;
+  const sourceHeight = crop.height * scaleY;
+
   // Debug logging to verify coordinate scaling
   console.log("🖼️ Image Crop Debug:", {
     natural: { width: image.naturalWidth, height: image.naturalHeight },
     displayed: { width: image.width, height: image.height },
     scale: { x: scaleX, y: scaleY },
     cropDisplayed: { x: crop.x, y: crop.y, width: crop.width, height: crop.height },
-    cropNatural: {
-      x: crop.x * scaleX,
-      y: crop.y * scaleY,
-      width: crop.width * scaleX,
-      height: crop.height * scaleY
-    },
+    cropNatural: { x: sourceX, y: sourceY, width: sourceWidth, height: sourceHeight },
   });
 
-  // Set canvas size to natural crop dimensions
-  canvas.width = crop.width * scaleX;
-  canvas.height = crop.height * scaleY;
+  // Set canvas size to the cropped dimensions (in natural/source pixels)
+  const canvasWidth = Math.round(sourceWidth);
+  const canvasHeight = Math.round(sourceHeight);
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
 
-  // Draw cropped image using scaled coordinates
+  console.log("📐 Canvas dimensions set to:", { canvasWidth, canvasHeight });
+
+  // Draw the cropped portion of the image onto the canvas
   ctx.drawImage(
     image,
-    crop.x * scaleX,      // Scale source x
-    crop.y * scaleY,      // Scale source y
-    crop.width * scaleX,  // Scale source width
-    crop.height * scaleY, // Scale source height
-    0,                    // Destination x (always 0)
-    0,                    // Destination y (always 0)
-    crop.width * scaleX,  // Destination width (scaled)
-    crop.height * scaleY  // Destination height (scaled)
+    sourceX,        // Source X (where to start cutting from original)
+    sourceY,        // Source Y
+    sourceWidth,    // Source width (how much to cut)
+    sourceHeight,   // Source height
+    0,              // Destination X (always 0 - top-left of canvas)
+    0,              // Destination Y
+    canvasWidth,    // Destination width (fill entire canvas)
+    canvasHeight    // Destination height
   );
 
   // Convert canvas to blob
@@ -73,6 +78,12 @@ async function getCroppedImg(
           reject(new Error("Canvas is empty"));
           return;
         }
+        console.log("✅ Cropped blob created:", {
+          size: blob.size,
+          sizeKB: Math.round(blob.size / 1024),
+          type: blob.type,
+          expectedDimensions: `${canvasWidth}x${canvasHeight}`,
+        });
         resolve(blob);
       },
       "image/jpeg",
