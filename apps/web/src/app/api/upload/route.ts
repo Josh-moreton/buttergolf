@@ -110,14 +110,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     let finalUrl = result.secure_url;
     if (isFirstImage && result.public_id) {
       // Build URL with background removal transformation
-      // Format: https://res.cloudinary.com/{cloud}/image/upload/{transformations}/{public_id}.{format}
+      // IMPORTANT: Include the version number to prevent Cloudinary from serving cached transformations
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-      const transformations = "e_background_removal/u_backgrounds:butter-pattern,fl_tiled/fl_layer_apply";
-      finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/${result.public_id}.${result.format}`;
+      const version = result.version; // e.g., 1765809012
+      
+      // Simplified transformation: just background removal with vanilla cream background color
+      const transformations = "e_background_removal/b_rgb:FFFAD2";
+      finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/v${version}/${result.public_id}.${result.format}`;
       
       console.log("🎨 Applied background removal transformation:", {
         originalUrl: result.secure_url,
         transformedUrl: finalUrl,
+        storedDimensions: `${result.width}x${result.height}`,
+        version,
       });
     }
 
