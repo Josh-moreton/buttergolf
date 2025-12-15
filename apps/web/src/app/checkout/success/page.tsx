@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Column,
@@ -22,7 +22,7 @@ interface OrderDetails {
   status: string;
 }
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const paymentIntentId = searchParams.get("payment_intent");
 
@@ -244,5 +244,26 @@ export default function CheckoutSuccessPage() {
         </Column>
       </Card>
     </Column>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <Column
+          gap="$lg"
+          alignItems="center"
+          justifyContent="center"
+          paddingVertical="$3xl"
+          paddingHorizontal="$lg"
+        >
+          <Spinner size="lg" color="$primary" />
+          <Text color="$textSecondary">Loading order details...</Text>
+        </Column>
+      }
+    >
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }

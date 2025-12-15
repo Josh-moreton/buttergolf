@@ -83,6 +83,7 @@ function PaymentForm({
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const calculateTotal = () => {
@@ -109,8 +110,10 @@ function PaymentForm({
       if (error) {
         setErrorMessage(error.message || "An error occurred during payment");
         setIsProcessing(false);
+      } else {
+        // Payment succeeded and Stripe is redirecting
+        setIsRedirecting(true);
       }
-      // If successful, Stripe will redirect to return_url
     } catch (err) {
       console.error("Payment error:", err);
       setErrorMessage("An unexpected error occurred. Please try again.");
@@ -118,12 +121,31 @@ function PaymentForm({
     }
   };
 
+  // Show full-screen loading overlay during redirect
+  if (isRedirecting) {
+    return (
+      <Card variant="outlined" padding="$xl">
+        <Column gap="$lg" alignItems="center" paddingVertical="$xl">
+          <Spinner size="lg" color="$primary" />
+          <Column gap="$sm" alignItems="center">
+            <Text size="$6" weight="semibold">
+              Payment Successful!
+            </Text>
+            <Text color="$textSecondary" textAlign="center">
+              Redirecting to your order confirmation...
+            </Text>
+          </Column>
+        </Column>
+      </Card>
+    );
+  }
+
   return (
     <Card variant="outlined" padding="$lg">
       <Column gap="$lg">
         <Row justifyContent="space-between" alignItems="center">
           <Heading level={4}>Payment Details</Heading>
-          <Button chromeless size="$3" onPress={onBack}>
+          <Button chromeless size="$3" onPress={onBack} disabled={isProcessing}>
             ← Edit Shipping
           </Button>
         </Row>
@@ -141,7 +163,7 @@ function PaymentForm({
           onPress={handlePaymentSubmit}
         >
           {isProcessing
-            ? "Processing..."
+            ? "Processing payment..."
             : `Pay $${calculateTotal().toFixed(2)}`}
         </Button>
 

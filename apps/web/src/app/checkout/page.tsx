@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Column, Container, Spinner, Text, Row } from "@buttergolf/ui";
-import { CheckoutFormSimple } from "./_components/CheckoutFormSimple";
+import { CheckoutForm } from "./_components/ImprovedCheckoutFormV2";
 import { OrderSummaryCard } from "./_components/OrderSummaryCard";
 import { PageHero } from "../_components/marketplace/PageHero";
 import { TrustSection } from "../_components/marketplace/TrustSection";
@@ -96,7 +96,7 @@ function CheckoutPageContent() {
         >
           {/* Left Column - Checkout Form (66%) */}
           <Column flexBasis={0} flexGrow={2} flexShrink={1} minWidth={0}>
-            <CheckoutFormSimple product={product} />
+            <CheckoutForm product={product} />
           </Column>
 
           {/* Right Column - Order Summary (33%) */}
