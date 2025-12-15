@@ -112,20 +112,19 @@ export function ButterHeader() {
             $md={{ gap: "$6" }}
           >
             {/* Logo */}
-            <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
-              <Row alignItems="center" gap="$2" paddingVertical="$1">
-                <Image
-                  src="/logo-orange-on-white.svg"
-                  alt="ButterGolf"
-                  width={192}
-                  height={48}
-                  priority
-                  style={{
-                    height: "48px",
-                    width: "auto",
-                  }}
-                />
-              </Row>
+            <Link href="/" style={{ textDecoration: "none", flexShrink: 0, display: "flex", alignItems: "center" }}>
+              <Image
+                src="/logo-orange-on-white.svg"
+                alt="ButterGolf"
+                width={192}
+                height={48}
+                priority
+                style={{
+                  height: "48px",
+                  width: "auto",
+                  cursor: "pointer",
+                }}
+              />
             </Link>
 
             {/* Spacer to push navigation to the right */}
