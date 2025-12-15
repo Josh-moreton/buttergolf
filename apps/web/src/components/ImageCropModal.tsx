@@ -1,7 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
+import { useState, useRef, useEffect, useCallback } from "react";
+import ReactCrop, {
+  Crop,
+  PixelCrop,
+  centerCrop,
+  makeAspectCrop,
+} from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Column, Row, Button, Text, Heading, Spinner } from "@buttergolf/ui";
 
@@ -82,17 +87,47 @@ export function ImageCropModal({
   onCancel,
   open,
 }: Readonly<ImageCropModalProps>) {
-  const [crop, setCrop] = useState<Crop>({
-    unit: "%",
-    width: 90,
-    height: 90,
-    x: 5,
-    y: 5,
-  });
+  const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // Calculate a centered 1:1 aspect ratio crop when the image loads
+  const onImageLoad = useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const { naturalWidth, naturalHeight, width, height } = e.currentTarget;
+
+      // Create a 1:1 aspect ratio crop that takes up 90% of the smaller dimension
+      const initialCrop = centerCrop(
+        makeAspectCrop(
+          {
+            unit: "%",
+            width: 90,
+          },
+          1, // 1:1 aspect ratio (square)
+          naturalWidth,
+          naturalHeight
+        ),
+        naturalWidth,
+        naturalHeight
+      );
+
+      setCrop(initialCrop);
+
+      // Also calculate and set the pixel crop so the Apply button is enabled immediately
+      // Convert percentage crop to pixel crop based on displayed dimensions
+      const pixelCrop: PixelCrop = {
+        unit: "px",
+        x: (initialCrop.x / 100) * width,
+        y: (initialCrop.y / 100) * height,
+        width: (initialCrop.width / 100) * width,
+        height: (initialCrop.height / 100) * height,
+      };
+      setCompletedCrop(pixelCrop);
+    },
+    []
+  );
 
   // Load file into memory as blob URL
   useEffect(() => {
@@ -184,6 +219,7 @@ export function ImageCropModal({
                   src={imageSrc}
                   alt="Crop preview"
                   style={{ maxWidth: "100%", maxHeight: "60vh" }}
+                  onLoad={onImageLoad}
                 />
               </ReactCrop>
             )}
