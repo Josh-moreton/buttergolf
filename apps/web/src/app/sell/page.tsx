@@ -686,7 +686,7 @@ export default function SellPage() {
                         width: "100%",
                         boxSizing: "border-box",
                         fontFamily: "inherit",
-                        resize: "vertical",
+                        resize: "none",
                         outline: "none",
                         transition: "border-color 0.2s",
                       }}
