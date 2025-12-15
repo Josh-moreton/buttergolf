@@ -56,9 +56,9 @@ const securityHeaders = [
       // Fonts: Allow self and Google Fonts
       "font-src 'self' https://fonts.gstatic.com",
       // Connect: Allow API calls to self, Clerk, Cloudflare, Vercel, and Stripe
-      "connect-src 'self' https://*.clerk.accounts.dev https://clerk.buttergolf.com https://clerk-telemetry.com https://challenges.cloudflare.com https://cdn.cloudflare.com https://api.stripe.com https://vercel.live wss://*.clerk.accounts.dev wss://ws-us3.pusher.com",
+      "connect-src 'self' https://*.clerk.accounts.dev https://clerk.buttergolf.com https://clerk-telemetry.com https://challenges.cloudflare.com https://cdn.cloudflare.com https://api.stripe.com https://m.stripe.com https://r.stripe.com https://m.stripe.network https://merchant-ui-api.stripe.com https://vercel.live wss://*.clerk.accounts.dev wss://ws-us3.pusher.com",
       // Frames: Allow Clerk, Cloudflare challenge iframes, Vercel Live, and Stripe
-      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com https://vercel.live",
+      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com https://m.stripe.network https://vercel.live",
       // Workers: Allow blob for service workers
       "worker-src 'self' blob:",
       // Child sources: Allow blob for Cloudflare Turnstile

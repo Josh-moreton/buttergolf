@@ -31,6 +31,13 @@ export function useFavourites() {
         // Fetch all favourites (no pagination needed for the Set)
         const response = await fetch("/api/favourites?limit=1000");
 
+        // Handle 401 gracefully - user not authenticated yet (Clerk timing issue)
+        if (response.status === 401) {
+          setFavourites(new Set());
+          setLoading(false);
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch favourites");
         }
@@ -88,6 +95,13 @@ export function useFavourites() {
 
     try {
       const response = await fetch("/api/favourites?limit=1000");
+
+      // Handle 401 gracefully - user not authenticated
+      if (response.status === 401) {
+        setFavourites(new Set());
+        return;
+      }
+
       if (!response.ok) throw new Error("Failed to refresh favourites");
 
       const data = await response.json();
