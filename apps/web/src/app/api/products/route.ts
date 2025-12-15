@@ -68,6 +68,9 @@ export async function POST(request: Request) {
       clubKind, // Optional: used for creating/updating ClubModel
       categoryId,
       images,
+      // Golf club specific fields
+      flex,
+      loft,
       // Shipping dimensions
       length,
       width,
@@ -156,6 +159,9 @@ export async function POST(request: Request) {
         model: model || null,
         userId: user.id,
         categoryId,
+        // Golf club specific fields
+        flex: flex || null,
+        loft: loft || null,
         // Shipping dimensions
         length: length ? Number(length) : null,
         width: width ? Number(width) : null,

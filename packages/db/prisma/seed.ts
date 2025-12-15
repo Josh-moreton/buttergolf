@@ -82,7 +82,7 @@ async function main() {
   console.log(`✅ Created ${brands.length} brands`);
 
   // Get category references
-  const driversCategory = categories.find((c) => c.slug === "drivers")!;
+  const woodsCategory = categories.find((c) => c.slug === "woods")!;
   const ironsCategory = categories.find((c) => c.slug === "irons")!;
   const wedgesCategory = categories.find((c) => c.slug === "wedges")!;
   const puttersCategory = categories.find((c) => c.slug === "putters")!;
@@ -120,7 +120,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth 2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -153,7 +153,7 @@ async function main() {
         brandId: callaway.id,
         model: "Rogue ST Max",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -186,7 +186,7 @@ async function main() {
         brandId: ping.id,
         model: "G430 Max",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -219,7 +219,7 @@ async function main() {
         brandId: titleist.id,
         model: "TSi3",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -252,7 +252,7 @@ async function main() {
         brandId: cobra.id,
         model: "LTDx LS",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -281,7 +281,7 @@ async function main() {
         brandId: mizuno.id,
         model: "ST-Z",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -310,7 +310,7 @@ async function main() {
         brandId: srixon.id,
         model: "ZX5",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -339,7 +339,7 @@ async function main() {
         brandId: wilson.id,
         model: "Launch Pad 2",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -370,7 +370,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth 2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -399,7 +399,7 @@ async function main() {
         brandId: callaway.id,
         model: "Rogue ST Max",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -428,7 +428,7 @@ async function main() {
         brandId: ping.id,
         model: "G425",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -457,7 +457,7 @@ async function main() {
         brandId: titleist.id,
         model: "TSi2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -486,7 +486,7 @@ async function main() {
         brandId: callaway.id,
         model: "Apex",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -515,7 +515,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth Rescue",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -544,7 +544,7 @@ async function main() {
         brandId: ping.id,
         model: "G430",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {

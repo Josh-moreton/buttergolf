@@ -46,6 +46,8 @@ interface FormData {
   brandName: string; // For display
   model: string;
   categoryId: string;
+  flex: string; // Shaft flex for woods/irons
+  loft: string; // Loft angle for woods/wedges
   images: string[];
 }
 
@@ -56,6 +58,50 @@ const CONDITIONS = [
   { value: "GOOD", label: "Good" },
   { value: "FAIR", label: "Fair" },
   { value: "POOR", label: "Poor" },
+];
+
+const FLEX_OPTIONS = [
+  { value: "", label: "Select flex (optional)" },
+  { value: "L", label: "Ladies (L)" },
+  { value: "A", label: "Senior (A)" },
+  { value: "R", label: "Regular (R)" },
+  { value: "S", label: "Stiff (S)" },
+  { value: "X", label: "Extra Stiff (X)" },
+];
+
+const LOFT_OPTIONS_WOODS = [
+  { value: "", label: "Select loft (optional)" },
+  { value: "8°", label: "8°" },
+  { value: "9°", label: "9°" },
+  { value: "9.5°", label: "9.5°" },
+  { value: "10°", label: "10°" },
+  { value: "10.5°", label: "10.5°" },
+  { value: "11°", label: "11°" },
+  { value: "12°", label: "12°" },
+  { value: "13°", label: "13°" },
+  { value: "14°", label: "14°" },
+  { value: "15°", label: "15°" },
+  { value: "16°", label: "16°" },
+  { value: "18°", label: "18°" },
+  { value: "19°", label: "19°" },
+  { value: "21°", label: "21°" },
+  { value: "22°", label: "22°" },
+  { value: "24°", label: "24°" },
+  { value: "26°", label: "26°" },
+];
+
+const LOFT_OPTIONS_WEDGES = [
+  { value: "", label: "Select loft (optional)" },
+  { value: "46°", label: "46°" },
+  { value: "48°", label: "48°" },
+  { value: "50°", label: "50°" },
+  { value: "52°", label: "52°" },
+  { value: "54°", label: "54°" },
+  { value: "56°", label: "56°" },
+  { value: "58°", label: "58°" },
+  { value: "60°", label: "60°" },
+  { value: "62°", label: "62°" },
+  { value: "64°", label: "64°" },
 ];
 
 // Label component for form fields
@@ -98,6 +144,8 @@ export default function SellPage() {
     brandName: "",
     model: "",
     categoryId: "",
+    flex: "",
+    loft: "",
     images: [],
   });
 
@@ -105,7 +153,6 @@ export default function SellPage() {
   const singularize = (word: string): string => {
     // Handle common golf category plurals
     const pluralMap: Record<string, string> = {
-      Drivers: "Driver",
       Woods: "Wood",
       Hybrids: "Hybrid",
       Irons: "Iron",
@@ -226,6 +273,32 @@ export default function SellPage() {
     router.push("/sign-in?redirect=/sell");
     return null;
   }
+
+  // Helper functions to determine when to show conditional fields
+  const shouldShowFlex = (): boolean => {
+    if (!formData.categoryId) return false;
+    const category = categories.find((c) => c.id === formData.categoryId);
+    if (!category) return false;
+    // Show flex for Woods and Irons
+    return category.slug === "woods" || category.slug === "irons";
+  };
+
+  const shouldShowLoft = (): boolean => {
+    if (!formData.categoryId) return false;
+    const category = categories.find((c) => c.id === formData.categoryId);
+    if (!category) return false;
+    // Show loft for Woods and Wedges
+    return category.slug === "woods" || category.slug === "wedges";
+  };
+
+  const getLoftOptions = () => {
+    const category = categories.find((c) => c.id === formData.categoryId);
+    if (!category) return [];
+    // Return different loft options based on category
+    return category.slug === "wedges"
+      ? LOFT_OPTIONS_WEDGES
+      : LOFT_OPTIONS_WOODS;
+  };
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -418,47 +491,6 @@ export default function SellPage() {
                     )}
                   </Column>
 
-                  {/* Description */}
-                  <Column gap="$xs" width="100%">
-                    <FormLabel required>Describe your item</FormLabel>
-                    <textarea
-                      value={formData.description}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
-                      placeholder="e.g. only used for one season, minor scratches on the shaft..."
-                      required
-                      rows={3}
-                      style={{
-                        padding: "12px 18px",
-                        fontSize: "15px",
-                        lineHeight: "22px",
-                        borderRadius: "24px",
-                        border: "1px solid #323232",
-                        backgroundColor: "white",
-                        width: "100%",
-                        boxSizing: "border-box",
-                        fontFamily: "inherit",
-                        resize: "vertical",
-                        outline: "none",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = "#F45314";
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = "#323232";
-                      }}
-                    />
-                    <HelperText>
-                      Be honest and detailed. Mention any wear, included
-                      accessories, and why you&apos;re selling.
-                    </HelperText>
-                  </Column>
-
                   {/* Category */}
                   <Column gap="$xs" width="100%">
                     <FormLabel required>Category</FormLabel>
@@ -629,6 +661,133 @@ export default function SellPage() {
                       ))}
                     </select>
                   </Column>
+
+                  {/* Description */}
+                  <Column gap="$xs" width="100%">
+                    <FormLabel required>Describe your item</FormLabel>
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. only used for one season, minor scratches on the shaft..."
+                      required
+                      rows={3}
+                      style={{
+                        padding: "12px 18px",
+                        fontSize: "15px",
+                        lineHeight: "22px",
+                        borderRadius: "24px",
+                        border: "1px solid #323232",
+                        backgroundColor: "white",
+                        width: "100%",
+                        boxSizing: "border-box",
+                        fontFamily: "inherit",
+                        resize: "vertical",
+                        outline: "none",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = "#F45314";
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = "#323232";
+                      }}
+                    />
+                    <HelperText>
+                      Be honest and detailed. Mention any wear, included
+                      accessories, and why you&apos;re selling.
+                    </HelperText>
+                  </Column>
+
+                  {/* Flex - Conditional (Woods & Irons) */}
+                  {shouldShowFlex() && (
+                    <Column gap="$xs" width="100%">
+                      <FormLabel>Shaft Flex</FormLabel>
+                      <select
+                        value={formData.flex}
+                        onChange={(e) =>
+                          setFormData({ ...formData, flex: e.target.value })
+                        }
+                        style={{
+                          padding: "12px 18px",
+                          fontSize: "15px",
+                          borderRadius: "24px",
+                          border: "1px solid #323232",
+                          backgroundColor: "white",
+                          width: "100%",
+                          cursor: "pointer",
+                          outline: "none",
+                          appearance: "none",
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                          backgroundPosition: "right 18px center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundSize: "20px",
+                          paddingRight: "48px",
+                          transition: "border-color 0.2s",
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.borderColor = "#F45314";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.borderColor = "#323232";
+                        }}
+                      >
+                        {FLEX_OPTIONS.map((flex) => (
+                          <option key={flex.value} value={flex.value}>
+                            {flex.label}
+                          </option>
+                        ))}
+                      </select>
+                      <HelperText>Select the shaft flex rating</HelperText>
+                    </Column>
+                  )}
+
+                  {/* Loft - Conditional (Woods & Wedges) */}
+                  {shouldShowLoft() && (
+                    <Column gap="$xs" width="100%">
+                      <FormLabel>Loft</FormLabel>
+                      <select
+                        value={formData.loft}
+                        onChange={(e) =>
+                          setFormData({ ...formData, loft: e.target.value })
+                        }
+                        style={{
+                          padding: "12px 18px",
+                          fontSize: "15px",
+                          borderRadius: "24px",
+                          border: "1px solid #323232",
+                          backgroundColor: "white",
+                          width: "100%",
+                          cursor: "pointer",
+                          outline: "none",
+                          appearance: "none",
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                          backgroundPosition: "right 18px center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundSize: "20px",
+                          paddingRight: "48px",
+                          transition: "border-color 0.2s",
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.borderColor = "#F45314";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.borderColor = "#323232";
+                        }}
+                      >
+                        {getLoftOptions().map((loft) => (
+                          <option key={loft.value} value={loft.value}>
+                            {loft.label}
+                          </option>
+                        ))}
+                      </select>
+                      <HelperText>Select the loft angle</HelperText>
+                    </Column>
+                  )}
 
                   {/* Price */}
                   <Column gap="$xs" width="100%">
