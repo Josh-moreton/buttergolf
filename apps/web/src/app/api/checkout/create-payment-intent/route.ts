@@ -86,13 +86,13 @@ export async function POST(request: Request) {
     }
 
     // Calculate shipping rates if not provided
-    let shippingAmount = 999; // Fallback to $9.99
+    let shippingAmount = 499; // Fallback to £4.99 (in pence)
     const selectedRate = null;
 
     if (selectedRateId) {
-      // If a specific rate was selected, recalculate using the service directly
+      // If a specific rate was selected, recalculate using ShipEngine
       try {
-        const { calculateShippingRates } = await import("@/lib/shipping");
+        const { calculateShippingRates } = await import("@/lib/shipengine");
         const shippingData = await calculateShippingRates({
           productId,
           toAddress: shippingAddress,
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     // Create PaymentIntent with Connect routing
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalAmount,
-      currency: "usd",
+      currency: "gbp", // UK: Use British Pounds
       automatic_payment_methods: {
         enabled: true,
       },

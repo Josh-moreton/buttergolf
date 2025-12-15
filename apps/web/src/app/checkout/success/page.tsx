@@ -169,7 +169,7 @@ function CheckoutSuccessContent() {
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Total Paid</Text>
                 <Text weight="bold" size="$6" color="$primary">
-                  ${order.amountTotal.toFixed(2)}
+                  £{order.amountTotal.toFixed(2)}
                 </Text>
               </Row>
 

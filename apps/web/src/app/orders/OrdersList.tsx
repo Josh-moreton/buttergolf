@@ -191,7 +191,7 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-lg">
-                        ${order.amountTotal.toFixed(2)}
+                        £{order.amountTotal.toFixed(2)}
                       </p>
                       <span
                         className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${

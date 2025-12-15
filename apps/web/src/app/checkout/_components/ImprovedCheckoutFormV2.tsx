@@ -44,14 +44,32 @@ interface ShippingRate {
 }
 
 interface ShippingAddress {
-  name: string;
+  firstName: string;
+  lastName: string;
   street1: string;
   street2?: string;
   city: string;
-  state: string;
-  zip: string;
+  county: string; // UK: county instead of state
+  postcode: string; // UK: postcode instead of zip
   country: string;
   phone?: string;
+}
+
+// UK postcode validation regex
+const UK_POSTCODE_REGEX = /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i;
+
+function isValidUKPostcode(postcode: string): boolean {
+  return UK_POSTCODE_REGEX.test(postcode.trim());
+}
+
+function formatUKPostcode(postcode: string): string {
+  // Remove all spaces and convert to uppercase
+  const cleaned = postcode.replace(/\s/g, "").toUpperCase();
+  // Insert space before last 3 characters (UK format: SW1A 1AA)
+  if (cleaned.length > 3) {
+    return `${cleaned.slice(0, -3)} ${cleaned.slice(-3)}`;
+  }
+  return cleaned;
 }
 
 // Form Label component
@@ -164,7 +182,7 @@ function PaymentForm({
         >
           {isProcessing
             ? "Processing payment..."
-            : `Pay $${calculateTotal().toFixed(2)}`}
+            : `Pay £${calculateTotal().toFixed(2)}`}
         </Button>
 
         <Text size="$3" color="$textMuted" textAlign="center">
@@ -184,15 +202,19 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
 
   // Address state
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
-    name: "",
+    firstName: "",
+    lastName: "",
     street1: "",
     street2: "",
     city: "",
-    state: "",
-    zip: "",
-    country: "US",
+    county: "",
+    postcode: "",
+    country: "GB",
     phone: "",
   });
+
+  // Postcode validation state
+  const [postcodeError, setPostcodeError] = useState<string | null>(null);
 
   // Shipping rates
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
@@ -203,17 +225,33 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
   const handleAddressSubmit = async () => {
     // Validate required fields
     if (
-      !shippingAddress.name ||
+      !shippingAddress.firstName ||
+      !shippingAddress.lastName ||
       !shippingAddress.street1 ||
       !shippingAddress.city ||
-      !shippingAddress.state ||
-      !shippingAddress.zip
+      !shippingAddress.postcode
     ) {
       setErrorMessage("Please fill in all required address fields");
       return;
     }
 
+    // Validate UK postcode format
+    if (!isValidUKPostcode(shippingAddress.postcode)) {
+      setPostcodeError("Please enter a valid UK postcode (e.g., SW1A 1AA)");
+      return;
+    }
+
+    // Format postcode correctly
+    const formattedPostcode = formatUKPostcode(shippingAddress.postcode);
+    const addressToSubmit = {
+      ...shippingAddress,
+      postcode: formattedPostcode,
+      // Combine first and last name for API (legacy support)
+      name: `${shippingAddress.firstName} ${shippingAddress.lastName}`.trim(),
+    };
+
     setErrorMessage(null);
+    setPostcodeError(null);
     setLoadingRates(true);
 
     try {
@@ -223,7 +261,12 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: product.id,
-          toAddress: shippingAddress,
+          toAddress: {
+            ...addressToSubmit,
+            // Map UK fields to API expected fields for backward compatibility
+            state: shippingAddress.county,
+            zip: formattedPostcode,
+          },
         }),
       });
 
@@ -317,7 +360,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
               </Text>
               <Row gap="$md" justifyContent="space-between">
                 <Text color="$textSecondary">Product</Text>
-                <Text weight="medium">${product.price.toFixed(2)}</Text>
+                <Text weight="medium">£{product.price.toFixed(2)}</Text>
               </Row>
               {selectedRate && (
                 <Row gap="$md" justifyContent="space-between">
@@ -337,7 +380,7 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                 >
                   <Text weight="semibold">Total</Text>
                   <Text weight="bold" size="$6" color="$primary">
-                    ${calculateTotal().toFixed(2)}
+                    £{calculateTotal().toFixed(2)}
                   </Text>
                 </Row>
               )}
@@ -352,78 +395,103 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
               <Heading level={4}>Shipping Address</Heading>
 
               <Column gap="$md">
-                \n {/* Full Name */}
-                <Column gap="$xs">
-                  <FormLabel required>Full Name</FormLabel>
-                  <Input
-                    value={shippingAddress.name}
-                    onChangeText={(value) =>
-                      setShippingAddress({ ...shippingAddress, name: value })
-                    }
-                    placeholder="John Doe"
-                    size="$4"
-                  />
-                </Column>
+                {/* Name Row - First and Last */}
+                <Row gap="$md" flexWrap="wrap">
+                  <Column gap="$xs" flex={1} minWidth={150}>
+                    <FormLabel required>First Name</FormLabel>
+                    <Input
+                      value={shippingAddress.firstName}
+                      onChangeText={(value) =>
+                        setShippingAddress({ ...shippingAddress, firstName: value })
+                      }
+                      placeholder="John"
+                      size="$4"
+                      autoComplete="given-name"
+                    />
+                  </Column>
+                  <Column gap="$xs" flex={1} minWidth={150}>
+                    <FormLabel required>Last Name</FormLabel>
+                    <Input
+                      value={shippingAddress.lastName}
+                      onChangeText={(value) =>
+                        setShippingAddress({ ...shippingAddress, lastName: value })
+                      }
+                      placeholder="Smith"
+                      size="$4"
+                      autoComplete="family-name"
+                    />
+                  </Column>
+                </Row>
                 {/* Street Address 1 */}
                 <Column gap="$xs">
-                  <FormLabel required>Street Address</FormLabel>
+                  <FormLabel required>Address Line 1</FormLabel>
                   <Input
                     value={shippingAddress.street1}
                     onChangeText={(value) =>
                       setShippingAddress({ ...shippingAddress, street1: value })
                     }
-                    placeholder="123 Main St"
+                    placeholder="10 Downing Street"
                     size="$4"
+                    autoComplete="address-line1"
                   />
                 </Column>
                 {/* Street Address 2 */}
                 <Column gap="$xs">
-                  <FormLabel>Apartment, suite, etc.</FormLabel>
+                  <FormLabel>Address Line 2</FormLabel>
                   <Input
                     value={shippingAddress.street2}
                     onChangeText={(value) =>
                       setShippingAddress({ ...shippingAddress, street2: value })
                     }
-                    placeholder="Apt 4B"
+                    placeholder="Flat 2B"
                     size="$4"
+                    autoComplete="address-line2"
                   />
                 </Column>
-                {/* City, State, ZIP Row */}
+                {/* City and County Row */}
                 <Row gap="$md" flexWrap="wrap">
                   <Column gap="$xs" flex={2} minWidth={200}>
-                    <FormLabel required>City</FormLabel>
+                    <FormLabel required>Town/City</FormLabel>
                     <Input
                       value={shippingAddress.city}
                       onChangeText={(value) =>
                         setShippingAddress({ ...shippingAddress, city: value })
                       }
-                      placeholder="San Francisco"
+                      placeholder="London"
                       size="$4"
+                      autoComplete="address-level2"
                     />
                   </Column>
-                  <Column gap="$xs" flex={1} minWidth={120}>
-                    <FormLabel required>State</FormLabel>
+                  <Column gap="$xs" flex={1} minWidth={150}>
+                    <FormLabel>County</FormLabel>
                     <Input
-                      value={shippingAddress.state}
+                      value={shippingAddress.county}
                       onChangeText={(value) =>
-                        setShippingAddress({ ...shippingAddress, state: value })
+                        setShippingAddress({ ...shippingAddress, county: value })
                       }
-                      placeholder="CA"
+                      placeholder="Greater London"
                       size="$4"
-                    />
-                  </Column>
-                  <Column gap="$xs" flex={1} minWidth={120}>
-                    <FormLabel required>ZIP Code</FormLabel>
-                    <Input
-                      value={shippingAddress.zip}
-                      onChangeText={(value) =>
-                        setShippingAddress({ ...shippingAddress, zip: value })
-                      }
-                      placeholder="94102"
-                      size="$4"
+                      autoComplete="address-level1"
                     />
                   </Column>
                 </Row>
+                {/* Postcode */}
+                <Column gap="$xs">
+                  <FormLabel required>Postcode</FormLabel>
+                  <Input
+                    value={shippingAddress.postcode}
+                    onChangeText={(value) => {
+                      setShippingAddress({ ...shippingAddress, postcode: value });
+                      setPostcodeError(null);
+                    }}
+                    placeholder="SW1A 1AA"
+                    size="$4"
+                    autoComplete="postal-code"
+                  />
+                  {postcodeError && (
+                    <Text size="$3" color="$error">{postcodeError}</Text>
+                  )}
+                </Column>
                 {/* Phone */}
                 <Column gap="$xs">
                   <FormLabel>Phone Number</FormLabel>
@@ -432,9 +500,10 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                     onChangeText={(value) =>
                       setShippingAddress({ ...shippingAddress, phone: value })
                     }
-                    placeholder="(555) 123-4567"
+                    placeholder="+44 7700 900000"
                     size="$4"
                     inputMode="tel"
+                    autoComplete="tel"
                   />
                 </Column>
               </Column>
@@ -476,15 +545,16 @@ export function CheckoutForm({ product }: Readonly<CheckoutFormProps>) {
                 borderRadius="$md"
               >
                 <Text size="$3" weight="semibold">
-                  {shippingAddress.name}
+                  {shippingAddress.firstName} {shippingAddress.lastName}
                 </Text>
                 <Text size="$3" color="$textSecondary">
                   {shippingAddress.street1}
                   {shippingAddress.street2 && `, ${shippingAddress.street2}`}
                 </Text>
                 <Text size="$3" color="$textSecondary">
-                  {shippingAddress.city}, {shippingAddress.state}{" "}
-                  {shippingAddress.zip}
+                  {shippingAddress.city}
+                  {shippingAddress.county && `, ${shippingAddress.county}`}{" "}
+                  {shippingAddress.postcode}
                 </Text>
               </Column>
 

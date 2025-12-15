@@ -49,20 +49,31 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       name,
+      firstName,
+      lastName,
       street1,
       street2,
       city,
-      state,
-      zip,
-      country = "US",
+      state, // county for UK
+      zip, // postcode for UK
+      country = "GB", // UK default
       phone,
       isDefault,
     } = body;
 
-    // Validate required fields
-    if (!name || !street1 || !city || !state || !zip) {
+    // Validate required fields (state/county is optional for UK)
+    if (!street1 || !city || !zip) {
       return NextResponse.json(
         { error: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
+    // Validate name - either combined name or first+last required
+    const fullName = name || `${firstName || ""} ${lastName || ""}`.trim();
+    if (!fullName) {
+      return NextResponse.json(
+        { error: "Name is required" },
         { status: 400 },
       );
     }
@@ -88,11 +99,13 @@ export async function POST(request: NextRequest) {
     const address = await prisma.address.create({
       data: {
         userId: user.id,
-        name,
+        name: fullName,
+        firstName: firstName || null,
+        lastName: lastName || null,
         street1,
         street2: street2 || null,
         city,
-        state,
+        state: state || null, // Optional for UK addresses
         zip,
         country,
         phone: phone || null,

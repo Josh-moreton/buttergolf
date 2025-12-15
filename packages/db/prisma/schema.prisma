@@ -193,13 +193,18 @@ model Address {
     id         String   @id @default(cuid())
     userId     String
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    name       String // Full name for shipping
+    // Name fields - support both combined and split names
+    name       String // Full name for shipping (legacy + combined)
+    firstName  String? // First name (UK format)
+    lastName   String? // Last name (UK format)
     street1    String
     street2    String?
     city       String
-    state      String
-    zip        String
-    country    String   @default("US")
+    // UK: county is optional, US: state is required - keeping as 'state' for DB compatibility
+    state      String? // County (UK) / State (US) - now optional for UK
+    // UK: postcode, US: zip - keeping as 'zip' for DB compatibility
+    zip        String // Postcode (UK) / ZIP Code (US)
+    country    String   @default("GB") // UK default
     phone      String?
     isDefault  Boolean  @default(false)
     createdAt  DateTime @default(now())

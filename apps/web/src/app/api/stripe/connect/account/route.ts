@@ -49,7 +49,7 @@ export async function POST() {
           display_name: user.name || "ButterGolf Seller",
           dashboard: "none", // Fully embedded - no Stripe Dashboard access
           identity: {
-            country: "US", // Default to US, user can change during onboarding
+            country: "GB", // UK default for sellers
           },
           configuration: {
             merchant: {
@@ -59,12 +59,12 @@ export async function POST() {
             },
           },
           defaults: {
-            currency: "usd",
+            currency: "gbp", // UK: British Pounds
             responsibilities: {
               fees_collector: "stripe", // Stripe owns pricing - collects fees from sellers
               losses_collector: "stripe", // Stripe manages fraud/risk
             },
-            locales: ["en-US"],
+            locales: ["en-GB"], // UK English
           },
           metadata: {
             userId: user.id,

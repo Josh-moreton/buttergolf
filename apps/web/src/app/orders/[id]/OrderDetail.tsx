@@ -301,15 +301,15 @@ export function OrderDetail({ order }: OrderDetailProps) {
         <div className="space-y-2">
           <div className="flex justify-between">
             <span>Product Price</span>
-            <span>${order.product.price.toFixed(2)}</span>
+            <span>£{order.product.price.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
             <span>Shipping</span>
-            <span>${order.shippingCost.toFixed(2)}</span>
+            <span>£{order.shippingCost.toFixed(2)}</span>
           </div>
           <div className="border-t pt-2 flex justify-between font-bold text-lg">
             <span>Total</span>
-            <span>${order.amountTotal.toFixed(2)}</span>
+            <span>£{order.amountTotal.toFixed(2)}</span>
           </div>
         </div>
 
