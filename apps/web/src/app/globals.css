@@ -4,6 +4,13 @@
  * These CSS variables provide fallbacks for non-Tamagui elements
  */
 
+/* Universal box-sizing reset for consistent layout calculations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   /* Light theme - Pure Butter Brand */
   --background: #ffffff;

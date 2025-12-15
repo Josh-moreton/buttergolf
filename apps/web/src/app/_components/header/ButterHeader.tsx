@@ -88,6 +88,7 @@ export function ButterHeader() {
     <>
       {/* Combined Header - Main + Category Nav */}
       <Column
+        width="100%"
         style={{ position: "sticky" } as React.CSSProperties}
         top={0}
         zIndex={999}
