@@ -46,9 +46,9 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // Scripts: Allow self, Clerk, Cloudflare (including CDN), Vercel Live, and necessary inline scripts
+      // Scripts: Allow self, Clerk, Cloudflare (including CDN), Vercel Live, Stripe, and necessary inline scripts
       // blob: is required for Cloudflare Turnstile dynamic script loading
-      "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://cdn.cloudflare.com https://static.cloudflare.com https://vercel.live blob:",
+      "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://cdn.cloudflare.com https://static.cloudflare.com https://vercel.live https://js.stripe.com blob:",
       // Styles: Allow self, inline styles, Google Fonts, and Cloudflare
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://challenges.cloudflare.com",
       // Images: Allow self, data URIs, Cloudinary, Vercel Blob Storage, and common image sources
