@@ -440,6 +440,7 @@ export default function SellPage() {
                         border: "1px solid #323232",
                         backgroundColor: "white",
                         width: "100%",
+                        boxSizing: "border-box",
                         fontFamily: "inherit",
                         resize: "vertical",
                         outline: "none",
