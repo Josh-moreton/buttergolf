@@ -1,0 +1,123 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@buttergolf/db";
+import { stripe } from "@/lib/stripe";
+
+/**
+ * Get order details by Stripe Checkout Session ID
+ * Used by the success page to display order confirmation
+ */
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ sessionId: string }> },
+) {
+  try {
+    const { sessionId } = await params;
+
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "Session ID is required" },
+        { status: 400 },
+      );
+    }
+
+    // First, try to find order by checkout session ID
+    const order = await prisma.order.findFirst({
+      where: { stripeCheckoutId: sessionId },
+      include: {
+        product: {
+          include: {
+            images: {
+              orderBy: { sortOrder: "asc" },
+              take: 1,
+            },
+            brand: true,
+          },
+        },
+        toAddress: true,
+        seller: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    // If not found, the webhook might not have processed yet
+    // Fetch session from Stripe and check if payment is complete
+    if (!order) {
+      try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (session.status === "complete" && session.payment_status === "paid") {
+          // Payment is complete but order not yet created
+          // This means webhook is still processing
+          // Return a "pending" status for the client to poll
+          return NextResponse.json({
+            status: "processing",
+            message: "Your order is being processed. Please wait a moment.",
+            sessionId,
+          });
+        } else if (session.status === "open") {
+          // Session is still open, checkout not completed
+          return NextResponse.json(
+            { error: "Checkout not completed" },
+            { status: 400 },
+          );
+        } else if (session.status === "expired") {
+          return NextResponse.json(
+            { error: "Checkout session expired" },
+            { status: 400 },
+          );
+        }
+      } catch (stripeError) {
+        console.error("Error fetching session from Stripe:", stripeError);
+        return NextResponse.json(
+          { error: "Invalid session ID" },
+          { status: 404 },
+        );
+      }
+
+      return NextResponse.json(
+        { error: "Order not found" },
+        { status: 404 },
+      );
+    }
+
+    // Return order details
+    return NextResponse.json({
+      status: "complete",
+      order: {
+        id: order.id,
+        productTitle: order.product.title,
+        productImage: order.product.images[0]?.url || null,
+        productBrand: order.product.brand?.name || null,
+        amountTotal: order.amountTotal,
+        shippingCost: order.shippingCost,
+        trackingCode: order.trackingCode,
+        trackingUrl: order.trackingUrl,
+        carrier: order.carrier,
+        service: order.service,
+        orderStatus: order.status,
+        shipmentStatus: order.shipmentStatus,
+        sellerName: order.seller.name,
+        shippingAddress: {
+          name: order.toAddress.name,
+          street1: order.toAddress.street1,
+          street2: order.toAddress.street2,
+          city: order.toAddress.city,
+          state: order.toAddress.state,
+          zip: order.toAddress.zip,
+          country: order.toAddress.country,
+        },
+        createdAt: order.createdAt.toISOString(),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching order by session:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch order" },
+      { status: 500 },
+    );
+  }
+}
