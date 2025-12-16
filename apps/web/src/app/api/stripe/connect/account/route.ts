@@ -34,9 +34,9 @@ export async function POST() {
 
     // 3. Create Stripe Connect account if it doesn't exist (using V1 API)
     if (!stripeAccountId) {
-      // Use V1 API with controller settings for fully embedded experience
+      // Use controller settings for fully embedded experience
+      // Note: Do NOT use `type` when using `controller` - they are mutually exclusive
       const account = await stripe.accounts.create({
-        type: "custom",
         country: "GB",
         email: user.email || undefined,
         capabilities: {
@@ -55,6 +55,8 @@ export async function POST() {
           losses: {
             payments: "application",
           },
+          // Platform is responsible for requirement collection
+          requirement_collection: "application",
         },
         business_type: "individual",
         business_profile: {
