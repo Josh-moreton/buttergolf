@@ -15,6 +15,12 @@ export async function POST(request: Request) {
     // This ensures user exists even if webhook hasn't fired yet
     let user = await prisma.user.findUnique({
       where: { clerkId },
+      select: {
+        id: true,
+        stripeConnectId: true,
+        stripeOnboardingComplete: true,
+        stripeAccountStatus: true,
+      },
     });
 
     if (!user) {
@@ -44,7 +50,7 @@ export async function POST(request: Request) {
         userName = "Golf Enthusiast";
       }
 
-      user = await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           clerkId,
           email:
@@ -53,7 +59,55 @@ export async function POST(request: Request) {
           name: userName,
           imageUrl: clerkUser.imageUrl || null,
         },
+        select: {
+          id: true,
+          stripeConnectId: true,
+          stripeOnboardingComplete: true,
+          stripeAccountStatus: true,
+        },
       });
+
+      user = createdUser;
+    }
+
+    // ============================================================
+    // SELLER ONBOARDING GUARD
+    // Ensure user has completed Stripe Connect onboarding before
+    // allowing them to create product listings
+    // ============================================================
+    if (!user.stripeConnectId) {
+      return NextResponse.json(
+        {
+          error: "Seller setup required",
+          code: "SELLER_SETUP_REQUIRED",
+          message:
+            "Please complete your seller setup before listing products. Visit /sell to get started.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (!user.stripeOnboardingComplete) {
+      return NextResponse.json(
+        {
+          error: "Seller onboarding incomplete",
+          code: "ONBOARDING_INCOMPLETE",
+          message:
+            "Please complete your seller onboarding before listing products. Visit /sell to continue setup.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (user.stripeAccountStatus !== "active") {
+      return NextResponse.json(
+        {
+          error: "Seller account not active",
+          code: "ACCOUNT_NOT_ACTIVE",
+          message: `Your seller account is currently ${user.stripeAccountStatus || "pending"}. Please complete any outstanding requirements.`,
+        },
+        { status: 403 },
+      );
     }
 
     // Parse request body

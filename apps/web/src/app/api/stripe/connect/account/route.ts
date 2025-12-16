@@ -94,10 +94,18 @@ export async function POST() {
 
     // 4. Create AccountSession for embedded onboarding
     // AccountSession provides a client_secret for the frontend embedded component
+    // Using incremental onboarding: collect eventually_due requirements for minimal friction
     const accountSession = await stripe.accountSessions.create({
       account: stripeAccountId,
       components: {
-        account_onboarding: { enabled: true },
+        account_onboarding: {
+          enabled: true,
+          features: {
+            // Collect eventually_due requirements for incremental onboarding
+            // This provides a smoother UX - only collect what's needed now
+            external_account_collection: true,
+          },
+        },
       },
     });
 
