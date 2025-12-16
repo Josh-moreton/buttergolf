@@ -96,7 +96,7 @@ function CheckoutSuccessContent() {
   }, [sessionId]);
 
   useEffect(() => {
-    let pollInterval: NodeJS.Timeout | null = null;
+    let pollInterval: ReturnType<typeof setTimeout> | null = null;
 
     const startFetching = async () => {
       const done = await fetchOrder();
@@ -171,8 +171,8 @@ function CheckoutSuccessContent() {
         paddingVertical="$3xl"
         paddingHorizontal="$lg"
       >
-        <Card variant="elevated" padding="$lg" maxWidth={500}>
-          <Column gap="$md" alignItems="center">
+        <Card variant="elevated" padding="$xl" maxWidth={500}>
+          <Column gap="$lg" alignItems="center">
             <Column
               backgroundColor="$successLight"
               borderRadius="$full"
@@ -184,17 +184,19 @@ function CheckoutSuccessContent() {
             >
               <Text size="$7">✓</Text>
             </Column>
-            <Heading level={3}>Payment Successful!</Heading>
-            <Text color="$textSecondary" textAlign="center">
-              Your payment was processed successfully. You should receive an
-              order confirmation email shortly.
-            </Text>
+            <Column gap="$sm" alignItems="center">
+              <Heading level={3}>Payment Successful!</Heading>
+              <Text color="$textSecondary" textAlign="center" lineHeight="$5">
+                Your payment was processed successfully. You should receive an
+                order confirmation email shortly.
+              </Text>
+            </Column>
             {error && (
-              <Text color="$textMuted" size="$3" textAlign="center">
+              <Text color="$textMuted" size="$3" textAlign="center" lineHeight="$3">
                 {error}
               </Text>
             )}
-            <Row gap="$md" marginTop="$lg">
+            <Row gap="$md" marginTop="$md" flexWrap="wrap" justifyContent="center">
               <Link href="/orders" style={{ textDecoration: "none" }}>
                 <Button
                   size="$5"

@@ -150,22 +150,28 @@ export function Autocomplete({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Extract onFocus and onKeyDown from inputProps to avoid type conflicts
+  const { onFocus: _onFocus, ...restInputProps } = inputProps as {
+    onFocus?: unknown;
+    [key: string]: unknown;
+  };
+
   return (
-    <Column ref={containerRef} position="relative" width="100%">
-      <Input
-        value={value}
-        onChangeText={handleInputChange}
-        {...({
-          onKeyDown: handleKeyDown,
-          onFocus: handleFocus,
-        } as {
-          onKeyDown: React.KeyboardEventHandler;
-          onFocus: React.FocusEventHandler;
-        })}
-        placeholder={placeholder}
-        autoComplete="off"
-        {...inputProps}
-      />
+    <Column
+      ref={containerRef}
+      position="relative"
+      width="100%"
+    >
+      <div onKeyDown={handleKeyDown}>
+        <Input
+          value={value}
+          onChangeText={handleInputChange}
+          onFocus={handleFocus}
+          placeholder={placeholder}
+          autoComplete="off"
+          {...restInputProps}
+        />
+      </div>
 
       {/* Dropdown suggestions */}
       {isOpen && (

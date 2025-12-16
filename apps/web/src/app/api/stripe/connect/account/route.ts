@@ -51,7 +51,8 @@ export async function POST() {
         console.log(`[Stripe Connect] Verified existing account ${stripeAccountId} for user ${user.id}`);
         
         // Check if account was deleted from Stripe
-        if ((existingAccount as { deleted?: boolean }).deleted) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((existingAccount as any).deleted) {
           console.log(`[Stripe Connect] Account ${stripeAccountId} was deleted in Stripe, clearing from database`);
           stripeAccountId = null;
           await prisma.user.update({

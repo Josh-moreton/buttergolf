@@ -131,7 +131,19 @@ export async function POST(req: Request) {
       }
 
       // Get shipping details from the session
-      const shippingDetails = session.shipping_details;
+      // Note: shipping_details is available on the Session object for payment mode
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const shippingDetails = (session as any).shipping_details as {
+        address?: {
+          line1?: string;
+          line2?: string;
+          city?: string;
+          state?: string;
+          postal_code?: string;
+          country?: string;
+        };
+        name?: string;
+      } | undefined;
       const customerDetails = session.customer_details;
 
       if (!shippingDetails?.address) {

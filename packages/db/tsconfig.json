@@ -4,6 +4,7 @@
         "outDir": "./dist",
         "rootDir": ".",
         "composite": true,
+        "incremental": true,
         "declarationMap": true
     },
     "include": [

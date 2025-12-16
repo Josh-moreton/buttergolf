@@ -93,11 +93,6 @@ export const Radio = styled(TamaguiRadioGroup.Item, {
   // Remove default focus outline, use border instead
   outlineWidth: 0,
 
-  // Checked indicator (inner circle)
-  "$group-item-checked": {
-    borderColor: "$primary",
-  },
-
   // Hover styles
   hoverStyle: {
     borderColor: "$fieldBorderHover",
