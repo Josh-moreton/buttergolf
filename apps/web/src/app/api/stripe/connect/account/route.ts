@@ -48,13 +48,6 @@ export async function POST() {
           stripe_dashboard: {
             type: "none",
           },
-          // Stripe handles fees and losses (simpler for V1, can change later)
-          fees: {
-            payer: "stripe",
-          },
-          losses: {
-            payments: "stripe",
-          },
           // Platform is responsible for requirement collection
           requirement_collection: "application",
         },
