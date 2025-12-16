@@ -48,8 +48,18 @@ export async function POST() {
           stripe_dashboard: {
             type: "none",
           },
-          // Platform is responsible for requirement collection
+          // Platform controls requirement collection via embedded components
           requirement_collection: "application",
+          // Platform is liable for negative balances (chargebacks, fraud)
+          // Required when requirement_collection is "application"
+          losses: {
+            payments: "application",
+          },
+          // Platform pays Stripe fees and charges sellers via application_fee
+          // Required when requirement_collection is "application"
+          fees: {
+            payer: "application",
+          },
         },
         business_type: "individual",
         business_profile: {
