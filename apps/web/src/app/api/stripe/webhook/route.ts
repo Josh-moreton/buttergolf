@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { sendOrderConfirmationEmail, sendNewSaleEmail } from "@/lib/email";
 
 // Disable body parsing for webhook
 export const runtime = "nodejs";
@@ -108,6 +109,10 @@ export async function POST(req: Request) {
                 take: 1,
               },
             },
+          },
+          images: {
+            orderBy: { sortOrder: "asc" },
+            take: 1,
           },
         },
       });
@@ -228,8 +233,35 @@ export async function POST(req: Request) {
 
       console.log("Order created successfully:", order.id);
 
-      // TODO: Send notification emails to buyer and seller
-      // TODO: Generate shipping label via ShipEngine when seller confirms
+      // Send notification emails (async, don't block webhook response)
+      const buyerName = `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email;
+      const sellerName = `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email;
+
+      // Send order confirmation to buyer
+      sendOrderConfirmationEmail({
+        buyerEmail: buyer.email,
+        buyerName,
+        orderId: order.id,
+        productTitle: product.title,
+        productImage: product.images?.[0]?.url,
+        amountTotal,
+        sellerName,
+      }).catch((err) => console.error("Failed to send buyer email:", err));
+
+      // Send new sale notification to seller
+      sendNewSaleEmail({
+        sellerEmail: product.user.email,
+        sellerName,
+        orderId: order.id,
+        productTitle: product.title,
+        buyerName,
+        amountTotal,
+        sellerPayout,
+        shippingAddress: {
+          city: shippingDetails.address.city || "",
+          zip: shippingDetails.address.postal_code || "",
+        },
+      }).catch((err) => console.error("Failed to send seller email:", err));
 
       return NextResponse.json({
         received: true,

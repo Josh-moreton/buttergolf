@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { OrderMessages } from "./OrderMessages";
+import { OrderRating } from "./OrderRating";
 
 type OrderStatus =
   | "PAYMENT_CONFIRMED"
@@ -38,6 +40,7 @@ interface Order {
   shippedAt: Date | null;
   labelGeneratedAt: Date | null;
   userRole: "buyer" | "seller";
+  currentUserId: string;
   product: {
     id: string;
     title: string;
@@ -394,6 +397,30 @@ export function OrderDetail({ order }: OrderDetailProps) {
           </div>
         </div>
       </div>
+
+      {/* Rating Section - shown after delivery for buyers */}
+      <OrderRating
+        orderId={order.id}
+        isDelivered={order.shipmentStatus === "DELIVERED"}
+        isBuyer={order.userRole === "buyer"}
+        sellerName={`${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()}
+      />
+
+      {/* Messages Section */}
+      <OrderMessages
+        orderId={order.id}
+        currentUserId={order.currentUserId}
+        otherUserName={
+          order.userRole === "buyer"
+            ? `${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()
+            : `${order.buyer.firstName || ""} ${order.buyer.lastName || ""}`.trim()
+        }
+        otherUserImage={
+          order.userRole === "buyer"
+            ? order.seller.imageUrl
+            : order.buyer.imageUrl
+        }
+      />
     </div>
   );
 }

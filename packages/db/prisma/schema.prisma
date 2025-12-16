@@ -30,6 +30,7 @@ model User {
   stripeRequirementsDue      Json?
   addresses                  Address[]
   favourites                 Favourite[]
+  messages                   Message[]
   buyerOffers                Offer[]        @relation("BuyerOffers")
   sellerOffers               Offer[]        @relation("SellerOffers")
   ordersPurchased            Order[]        @relation("BuyerOrders")
@@ -175,43 +176,46 @@ model Address {
 }
 
 model Order {
-  id                 String         @id @default(cuid())
-  stripePaymentId    String?        @unique
-  stripeCheckoutId   String?
-  amountTotal        Float
-  shippingCost       Float
-  sellerId           String
-  buyerId            String
-  productId          String
-  fromAddressId      String
-  toAddressId        String
-  easypostShipmentId String?
-  labelUrl           String?
-  labelFormat        String?
-  trackingCode       String?
-  trackingUrl        String?
-  carrier            String?
-  service            String?
-  shipmentStatus     ShipmentStatus @default(PENDING)
-  estimatedDelivery  DateTime?
-  actualDelivery     DateTime?
-  status             OrderStatus    @default(PAYMENT_CONFIRMED)
-  labelGeneratedAt   DateTime?
-  shippedAt          DateTime?
-  deliveredAt        DateTime?
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  stripePayoutDate   DateTime?
-  stripePayoutStatus String?
-  stripePlatformFee  Float?
-  stripeSellerPayout Float?
-  stripeTransferId   String?
-  buyer              User           @relation("BuyerOrders", fields: [buyerId], references: [id])
-  fromAddress        Address        @relation("FromAddress", fields: [fromAddressId], references: [id])
-  product            Product        @relation(fields: [productId], references: [id])
-  seller             User           @relation("SellerOrders", fields: [sellerId], references: [id])
-  toAddress          Address        @relation("ToAddress", fields: [toAddressId], references: [id])
-  sellerRating       SellerRating?
+  id                   String         @id @default(cuid())
+  stripePaymentId      String?        @unique
+  stripeCheckoutId     String?
+  amountTotal          Float
+  shippingCost         Float
+  sellerId             String
+  buyerId              String
+  productId            String
+  fromAddressId        String
+  toAddressId          String
+  easypostShipmentId   String?
+  shipEngineShipmentId String?
+  shipEngineRateId     String?
+  labelUrl             String?
+  labelFormat          String?
+  trackingCode         String?
+  trackingUrl          String?
+  carrier              String?
+  service              String?
+  shipmentStatus       ShipmentStatus @default(PENDING)
+  estimatedDelivery    DateTime?
+  actualDelivery       DateTime?
+  status               OrderStatus    @default(PAYMENT_CONFIRMED)
+  labelGeneratedAt     DateTime?
+  shippedAt            DateTime?
+  deliveredAt          DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  stripePayoutDate     DateTime?
+  stripePayoutStatus   String?
+  stripePlatformFee    Float?
+  stripeSellerPayout   Float?
+  stripeTransferId     String?
+  buyer                User           @relation("BuyerOrders", fields: [buyerId], references: [id])
+  fromAddress          Address        @relation("FromAddress", fields: [fromAddressId], references: [id])
+  product              Product        @relation(fields: [productId], references: [id])
+  seller               User           @relation("SellerOrders", fields: [sellerId], references: [id])
+  toAddress            Address        @relation("ToAddress", fields: [toAddressId], references: [id])
+  sellerRating         SellerRating?
+  messages             Message[]
 
   @@index([sellerId])
   @@index([buyerId])
@@ -219,6 +223,23 @@ model Order {
   @@index([shipmentStatus])
   @@index([status])
   @@map("orders")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  orderId   String
+  senderId  String
+  content   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([senderId])
+  @@index([createdAt])
+  @@map("messages")
 }
 
 model SellerRating {
