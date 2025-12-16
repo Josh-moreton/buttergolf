@@ -48,12 +48,12 @@ export async function POST() {
           stripe_dashboard: {
             type: "none",
           },
-          // Stripe handles fees and losses
+          // Stripe handles fees and losses (simpler for V1, can change later)
           fees: {
-            payer: "application",
+            payer: "stripe",
           },
           losses: {
-            payments: "application",
+            payments: "stripe",
           },
           // Platform is responsible for requirement collection
           requirement_collection: "application",
@@ -98,6 +98,9 @@ export async function POST() {
           features: {
             // Enable external account collection for payouts
             external_account_collection: true,
+            // Disable Stripe user authentication - keeps everything inline/embedded
+            // This is allowed because controller.requirement_collection = "application"
+            disable_stripe_user_authentication: true,
           },
         },
       },
