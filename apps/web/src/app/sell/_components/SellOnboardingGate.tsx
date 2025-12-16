@@ -104,11 +104,11 @@ export function SellOnboardingGate({
         appearance: {
           variables: {
             colorPrimary: "#F45314", // $spicedClementine
-            colorBackground: "#FFFAD2", // $vanillaCream
+            colorBackground: "#FFFFFF", // White background for form
             colorText: "#323232", // $ironstone
             colorDanger: "#dc2626", // Error red
             fontFamily: "system-ui, -apple-system, sans-serif",
-            spacingUnit: "4px",
+            spacingUnit: "12px", // Stripe requires 8px-20px
             borderRadius: "10px",
           },
         },
@@ -257,9 +257,9 @@ export function SellOnboardingGate({
       width="100%"
     >
       <Column
-        maxWidth={800}
-        paddingHorizontal="$8"
-        paddingVertical="$10"
+        maxWidth={960}
+        paddingHorizontal="$6"
+        paddingVertical="$8"
         width="100%"
         gap="$lg"
       >
@@ -299,9 +299,10 @@ export function SellOnboardingGate({
         {/* Embedded Stripe Onboarding */}
         <Card
           variant="elevated"
-          padding="$0"
+          padding="$lg"
           backgroundColor="$surface"
           overflow="hidden"
+          width="100%"
         >
           <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
             <ConnectAccountOnboarding
