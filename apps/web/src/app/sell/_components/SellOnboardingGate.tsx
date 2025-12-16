@@ -75,30 +75,32 @@ export function SellOnboardingGate({
       setLoading(true);
       setError(null);
 
-      // Call our API which creates account if needed and returns client secret
-      const response = await fetch("/api/stripe/connect/account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to initialize onboarding");
-      }
-
-      const { clientSecret } = await response.json();
-
       const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
       if (!publishableKey) {
         throw new Error("Stripe publishable key not configured");
       }
 
       // Initialize Stripe Connect.js with ButterGolf branding
+      // fetchClientSecret is called by Connect.js when it needs a new session
       const instance = loadConnectAndInitialize({
         publishableKey,
-        fetchClientSecret: async () => clientSecret,
+        fetchClientSecret: async () => {
+          // Call our API which creates account if needed and returns client secret
+          const response = await fetch("/api/stripe/connect/account", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to initialize onboarding");
+          }
+
+          const { clientSecret } = await response.json();
+          return clientSecret;
+        },
         appearance: {
           variables: {
             colorPrimary: "#F45314", // $spicedClementine

@@ -5,10 +5,10 @@ import { prisma } from "@buttergolf/db";
 
 /**
  * POST /api/stripe/connect/account
- * Creates or retrieves a Stripe Connect Fully Embedded account for the authenticated user
+ * Creates or retrieves a Stripe Connect account for the authenticated user
  * Returns an account session client_secret for embedded onboarding
  *
- * Fully Embedded accounts have:
+ * Uses V1 API with controller settings for fully embedded experience:
  * - controller.stripe_dashboard.type = "none" (no Stripe Dashboard access)
  * - Stripe manages risk and compliance
  * - All account management through embedded components
@@ -32,57 +32,51 @@ export async function POST() {
 
     let stripeAccountId = user.stripeConnectId;
 
-    // 3. Create Stripe Connect account if it doesn't exist (using Accounts V2 API)
+    // 3. Create Stripe Connect account if it doesn't exist (using V1 API)
     if (!stripeAccountId) {
-      // Use Stripe V2 API to create Fully Embedded account
-      // - dashboard: "none" means no Stripe Dashboard access
-      // - All seller management happens through embedded components
-      const response = await fetch("https://api.stripe.com/v2/core/accounts", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-          "Content-Type": "application/json",
-          "Stripe-Version": "2025-04-30.preview",
+      // Use V1 API with controller settings for fully embedded experience
+      const account = await stripe.accounts.create({
+        type: "custom",
+        country: "GB",
+        email: user.email || undefined,
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
         },
-        body: JSON.stringify({
-          contact_email: user.email,
-          display_name: user.name || "ButterGolf Seller",
-          dashboard: "none", // Fully embedded - no Stripe Dashboard access
-          identity: {
-            country: "GB", // UK default for sellers
+        controller: {
+          // Fully embedded - no Stripe Dashboard access for connected accounts
+          stripe_dashboard: {
+            type: "none",
           },
-          configuration: {
-            merchant: {
-              capabilities: {
-                card_payments: { requested: true },
-              },
+          // Stripe handles fees and losses
+          fees: {
+            payer: "application",
+          },
+          losses: {
+            payments: "application",
+          },
+        },
+        business_type: "individual",
+        business_profile: {
+          mcc: "5941", // Sporting goods
+          product_description: "Golf equipment marketplace seller",
+        },
+        settings: {
+          payouts: {
+            schedule: {
+              interval: "daily",
             },
           },
-          defaults: {
-            currency: "gbp", // UK: British Pounds
-            responsibilities: {
-              fees_collector: "stripe", // Stripe owns pricing - collects fees from sellers
-              losses_collector: "stripe", // Stripe manages fraud/risk
-            },
-            locales: ["en-GB"], // UK English
-          },
-          metadata: {
-            userId: user.id,
-            clerkId: userId,
-          },
-          include: ["configuration.merchant", "identity", "requirements"],
-        }),
+        },
+        metadata: {
+          userId: user.id,
+          clerkId: userId,
+        },
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Stripe V2 API error: ${JSON.stringify(error)}`);
-      }
-
-      const account = await response.json();
       stripeAccountId = account.id;
 
-      // Save to database with fully_embedded account type
+      // Save to database
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -94,15 +88,13 @@ export async function POST() {
 
     // 4. Create AccountSession for embedded onboarding
     // AccountSession provides a client_secret for the frontend embedded component
-    // Using incremental onboarding: collect eventually_due requirements for minimal friction
     const accountSession = await stripe.accountSessions.create({
       account: stripeAccountId,
       components: {
         account_onboarding: {
           enabled: true,
           features: {
-            // Collect eventually_due requirements for incremental onboarding
-            // This provides a smoother UX - only collect what's needed now
+            // Enable external account collection for payouts
             external_account_collection: true,
           },
         },
@@ -151,35 +143,16 @@ export async function GET() {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // If user has Connect account, fetch latest status from Stripe V2 API
+    // If user has Connect account, fetch latest status from Stripe
     if (user.stripeConnectId) {
-      const response = await fetch(
-        `https://api.stripe.com/v2/core/accounts/${user.stripeConnectId}?include=configuration.merchant&include=identity&include=requirements`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-            "Stripe-Version": "2025-04-30.preview",
-          },
-        },
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Stripe V2 API error: ${JSON.stringify(error)}`);
-      }
-
-      const account = await response.json();
+      const account = await stripe.accounts.retrieve(user.stripeConnectId);
 
       return NextResponse.json({
         hasAccount: true,
         accountId: user.stripeConnectId,
-        onboardingComplete: account.requirements?.currently_due?.length === 0,
-        chargesEnabled:
-          account.configuration?.merchant?.capabilities?.card_payments
-            ?.status === "active",
-        payoutsEnabled:
-          account.configuration?.merchant?.capabilities?.card_payments
-            ?.status === "active", // V2 API: payouts are automatic with card_payments
+        onboardingComplete: account.details_submitted,
+        chargesEnabled: account.charges_enabled,
+        payoutsEnabled: account.payouts_enabled,
         requirements: account.requirements,
       });
     }
