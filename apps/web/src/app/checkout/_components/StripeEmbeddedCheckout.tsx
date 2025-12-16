@@ -85,9 +85,16 @@ export function StripeEmbeddedCheckout({
               ✕
             </Text>
           </Column>
-          <Column gap="$sm" alignItems="center">
-            <Heading level={4}>Unable to Load Checkout</Heading>
-            <Text color="$textSecondary" textAlign="center">
+          <Column gap="$sm" alignItems="center" flexShrink={1} width="100%">
+            <Heading level={4} textAlign="center">
+              Unable to Load Checkout
+            </Heading>
+            <Text
+              color="$textSecondary"
+              textAlign="center"
+              flexShrink={1}
+              flexWrap="wrap"
+            >
               {error}
             </Text>
           </Column>

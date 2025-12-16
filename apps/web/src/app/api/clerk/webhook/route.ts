@@ -96,6 +96,19 @@ export async function POST(req: Request) {
       // Soft delete: mark user as deleted and anonymize PII
       const clerkId: string = evt.data.id;
 
+      // First, find the user to get their ID for product deletion
+      const user = await prisma.user.findUnique({
+        where: { clerkId },
+        select: { id: true },
+      });
+
+      if (user) {
+        // Delete all active product listings for this user
+        await prisma.product.deleteMany({
+          where: { userId: user.id },
+        });
+      }
+
       // Use updateMany to avoid errors if user doesn't exist in database
       // (e.g., if deleted from Clerk before user.created webhook fired)
       await prisma.user.updateMany({
