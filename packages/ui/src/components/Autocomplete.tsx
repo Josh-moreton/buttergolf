@@ -83,6 +83,17 @@ export function Autocomplete({
     fetchSuggestionsDebounced(newValue);
   };
 
+  // Handle focus - show suggestions immediately
+  const handleFocus = () => {
+    // Fetch suggestions on focus, even with empty/short value
+    if (value.length >= minChars) {
+      fetchSuggestionsDebounced(value);
+    } else if (minChars === 0) {
+      // If minChars is 0, fetch with empty string to show all options
+      fetchSuggestionsDebounced("");
+    }
+  };
+
   // Handle suggestion selection
   const handleSelectSuggestion = (suggestion: AutocompleteSuggestion) => {
     onValueChange(suggestion.name);
@@ -144,8 +155,12 @@ export function Autocomplete({
       <Input
         value={value}
         onChangeText={handleInputChange}
-        {...({ onKeyDown: handleKeyDown } as {
+        {...({
+          onKeyDown: handleKeyDown,
+          onFocus: handleFocus,
+        } as {
           onKeyDown: React.KeyboardEventHandler;
+          onFocus: React.FocusEventHandler;
         })}
         placeholder={placeholder}
         autoComplete="off"

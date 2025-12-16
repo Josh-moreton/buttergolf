@@ -185,6 +185,10 @@ export async function POST() {
 /**
  * GET /api/stripe/connect/account
  * Returns the current user's Connect account status
+ *
+ * IMPORTANT: This endpoint syncs the database with Stripe's current status.
+ * This is critical because webhooks may be delayed or missed, so we can't
+ * rely solely on webhook-driven updates for accurate seller status.
  */
 export async function GET() {
   try {
@@ -196,6 +200,7 @@ export async function GET() {
     const user = await prisma.user.findUnique({
       where: { clerkId: userId },
       select: {
+        id: true,
         stripeConnectId: true,
         stripeOnboardingComplete: true,
         stripeAccountStatus: true,
@@ -213,12 +218,44 @@ export async function GET() {
     if (user.stripeConnectId) {
       const account = await stripe.accounts.retrieve(user.stripeConnectId);
 
+      // Calculate the current status from Stripe's live data
+      const onboardingComplete = account.details_submitted ?? false;
+      const chargesEnabled = account.charges_enabled ?? false;
+      const payoutsEnabled = account.payouts_enabled ?? false;
+
+      // Determine account status
+      let accountStatus = "pending";
+      if (onboardingComplete && chargesEnabled && payoutsEnabled) {
+        accountStatus = "active";
+      } else if (onboardingComplete) {
+        accountStatus = "restricted";
+      }
+
+      // CRITICAL: Sync database with Stripe's current status
+      // This ensures the database is always up-to-date, even if webhooks are delayed
+      const dbNeedsUpdate =
+        user.stripeOnboardingComplete !== onboardingComplete ||
+        user.stripeAccountStatus !== accountStatus;
+
+      if (dbNeedsUpdate) {
+        console.log(
+          `[Stripe Connect] Syncing database for user ${user.id}: onboardingComplete=${onboardingComplete}, status=${accountStatus}`
+        );
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            stripeOnboardingComplete: onboardingComplete,
+            stripeAccountStatus: accountStatus,
+          },
+        });
+      }
+
       return NextResponse.json({
         hasAccount: true,
         accountId: user.stripeConnectId,
-        onboardingComplete: account.details_submitted,
-        chargesEnabled: account.charges_enabled,
-        payoutsEnabled: account.payouts_enabled,
+        onboardingComplete,
+        chargesEnabled,
+        payoutsEnabled,
         requirements: account.requirements,
       });
     }

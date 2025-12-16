@@ -557,14 +557,14 @@ export function SellFormClient() {
                             metadata: { slug: b.slug, logoUrl: b.logoUrl },
                           }));
                         }}
-                        placeholder="Search brands (e.g., TaylorMade)"
+                        placeholder="Select or search brands"
                         size="$4"
                         width="100%"
-                        minChars={1}
+                        minChars={0}
                         allowCustom={false}
                       />
                       <HelperText>
-                        Start typing to search golf brands
+                        Click to see all brands or start typing to search
                       </HelperText>
                     </Column>
 
@@ -598,7 +598,7 @@ export function SellFormClient() {
                         }}
                         placeholder={
                           formData.brandId
-                            ? "e.g., Stealth 2"
+                            ? "Select or search models"
                             : "Select a brand first"
                         }
                         size="$4"
@@ -608,7 +608,7 @@ export function SellFormClient() {
                         disabled={!formData.brandId}
                       />
                       <HelperText>
-                        Type your model or select from suggestions
+                        Click to see models or type your own
                       </HelperText>
                     </Column>
                   </Row>
