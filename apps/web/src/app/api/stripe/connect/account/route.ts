@@ -21,18 +21,65 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 2. Get user from database
-    const user = await prisma.user.findUnique({
+    // 2. Get user from database (or create if webhook hasn't fired yet)
+    let user = await prisma.user.findUnique({
       where: { clerkId: userId },
     });
 
+    // If user doesn't exist, the Clerk webhook hasn't fired yet
+    // Create a minimal user record so they can proceed with onboarding
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      console.log(`[Stripe Connect] User not found for clerkId ${userId}, creating minimal record`);
+      user = await prisma.user.create({
+        data: {
+          clerkId: userId,
+          email: "", // Will be updated by webhook when it fires
+          firstName: "",
+          lastName: "",
+        },
+      });
+      console.log(`[Stripe Connect] Created user record ${user.id} for clerkId ${userId}`);
     }
 
     let stripeAccountId = user.stripeConnectId;
 
-    // 3. Create Stripe Connect account if it doesn't exist (using V1 API)
+    // 3. Verify existing account still exists in Stripe, or create new one
+    if (stripeAccountId) {
+      try {
+        // Verify the account exists in Stripe
+        const existingAccount = await stripe.accounts.retrieve(stripeAccountId);
+        console.log(`[Stripe Connect] Verified existing account ${stripeAccountId} for user ${user.id}`);
+        
+        // Check if account was deleted from Stripe
+        if ((existingAccount as { deleted?: boolean }).deleted) {
+          console.log(`[Stripe Connect] Account ${stripeAccountId} was deleted in Stripe, clearing from database`);
+          stripeAccountId = null;
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              stripeConnectId: null,
+              stripeOnboardingComplete: false,
+              stripeAccountStatus: null,
+            },
+          });
+        }
+      } catch (error) {
+        // Account doesn't exist in Stripe (404) or other error
+        console.error(`[Stripe Connect] Error retrieving account ${stripeAccountId}:`, error);
+        console.log(`[Stripe Connect] Clearing invalid stripeConnectId from database for user ${user.id}`);
+        stripeAccountId = null;
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            stripeConnectId: null,
+            stripeOnboardingComplete: false,
+            stripeAccountStatus: null,
+          },
+        });
+      }
+    }
+
+    // 4. Create NEW Stripe Connect account if needed (using V1 API)
     if (!stripeAccountId) {
       // Use controller settings for fully embedded experience
       // Note: Do NOT use `type` when using `controller` - they are mutually exclusive
@@ -99,7 +146,7 @@ export async function POST() {
       console.log(`[Stripe Connect] Saved stripeConnectId to database for user ${user.id}`);
     }
 
-    // 4. Create AccountSession for embedded onboarding
+    // 5. Create AccountSession for embedded onboarding
     // AccountSession provides a client_secret for the frontend embedded component
     const accountSession = await stripe.accountSessions.create({
       account: stripeAccountId,
@@ -117,7 +164,7 @@ export async function POST() {
       },
     });
 
-    // 5. Return the client secret for the embedded component
+    // 6. Return the client secret for the embedded component
     return NextResponse.json({
       clientSecret: accountSession.client_secret,
       accountId: stripeAccountId,
@@ -155,8 +202,11 @@ export async function GET() {
       },
     });
 
+    // If user doesn't exist yet (webhook race condition), return no account
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({
+        hasAccount: false,
+      });
     }
 
     // If user has Connect account, fetch latest status from Stripe
