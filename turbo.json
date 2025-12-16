@@ -32,6 +32,7 @@
         "BLOB_READ_WRITE_TOKEN",
         "EASYPOST_API_KEY",
         "SHIPENGINE_API_KEY",
+        "RESEND_API_KEY",
         "CLOUDINARY_API_KEY",
         "CLOUDINARY_API_SECRET",
         "TAMAGUI_DEBUG",
