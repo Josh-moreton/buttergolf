@@ -73,7 +73,7 @@ export default function RootLayout({
         <NextTamaguiProvider>
           <FavouritesProvider>
             <CartProvider>
-              {/* Cleanup old service workers from previous versions */}
+              <ConditionalLayout excludeRoutes={["/coming-soon"]}>
                 <ButterHeader />
                 <AppPromoBanner />
               </ConditionalLayout>
