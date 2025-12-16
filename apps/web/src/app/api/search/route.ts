@@ -55,7 +55,8 @@ export async function GET(request: NextRequest) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             averageRating: true,
             ratingCount: true,
           },
@@ -86,7 +87,8 @@ export async function GET(request: NextRequest) {
         category: product.category.name,
         seller: {
           id: product.user.id,
-          name: product.user.name,
+          firstName: product.user.firstName,
+          lastName: product.user.lastName,
           averageRating: product.user.averageRating,
           ratingCount: product.user.ratingCount,
         },

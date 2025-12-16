@@ -38,7 +38,8 @@ export default async function OrdersPage() {
       seller: {
         select: {
           id: true,
-          name: true,
+          firstName: true,
+          lastName: true,
           email: true,
           imageUrl: true,
         },
@@ -46,7 +47,8 @@ export default async function OrdersPage() {
       buyer: {
         select: {
           id: true,
-          name: true,
+          firstName: true,
+          lastName: true,
           email: true,
           imageUrl: true,
         },

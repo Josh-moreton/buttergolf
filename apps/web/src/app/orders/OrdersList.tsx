@@ -47,13 +47,15 @@ interface Order {
   };
   seller: {
     id: string;
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
   buyer: {
     id: string;
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
@@ -181,8 +183,8 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
                       </h3>
                       <p className="text-sm text-gray-600">
                         {order.userRole === "buyer"
-                          ? `Sold by ${order.seller.name || order.seller.email}`
-                          : `Purchased by ${order.buyer.name || order.buyer.email}`}
+                          ? `Sold by ${`${order.seller.firstName} ${order.seller.lastName}`.trim() || order.seller.email}`
+                          : `Purchased by ${`${order.buyer.firstName} ${order.buyer.lastName}`.trim() || order.buyer.email}`}
                       </p>
                       <p className="text-sm text-gray-500 mt-1">
                         Order #{order.id.slice(0, 8)} •{" "}

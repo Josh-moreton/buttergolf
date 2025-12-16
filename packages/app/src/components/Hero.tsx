@@ -310,33 +310,41 @@ export function Hero({
         minHeight={minHeight}
         maxHeight={maxHeight}
         borderRadius="$2xl"
-        overflow="hidden"
         position="relative"
       >
-        {/* Background Image - Absolute positioned with 70% opacity */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundImage: "url(/_assets/images/butter-background.webp)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.7,
-            zIndex: 0,
-          }}
-        />
-
-        {/* Content Container - Absolute positioned on top */}
-        <Row
-          width="100%"
-          height="100%"
+        {/* Background Container - Clipped for rounded corners */}
+        <View
           position="absolute"
           top={0}
           left={0}
+          width="100%"
+          height="100%"
+          borderRadius="$2xl"
+          overflow="hidden"
+          zIndex={0}
+        >
+          {/* Background Image - with 70% opacity */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: "url(/_assets/images/butter-background.webp)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              opacity: 0.7,
+            }}
+          />
+        </View>
+
+        {/* Content Container - NOT clipped, allows image overflow */}
+        <Row
+          width="100%"
+          height="100%"
+          position="relative"
           zIndex={1}
           flexWrap="wrap"
         >

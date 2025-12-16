@@ -40,7 +40,8 @@ export async function GET(
         seller: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             email: true,
             imageUrl: true,
           },
@@ -48,7 +49,8 @@ export async function GET(
         buyer: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             email: true,
             imageUrl: true,
           },

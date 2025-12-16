@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { prisma } from "@buttergolf/db";
 import { NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
 
 type WebhookEvent = {
   type: string;
@@ -61,8 +62,8 @@ export async function POST(req: Request) {
       const clerkId: string = data.id;
       const email: string | undefined =
         data.email_addresses?.[0]?.email_address;
-      const first = data.first_name ?? "";
-      const last = data.last_name ?? "";
+      const firstName = data.first_name || "";
+      const lastName = data.last_name || "";
       const imageUrl: string | undefined = data.image_url;
 
       if (!email) {
@@ -70,31 +71,66 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
-      // Build user name with fallback chain
-      // Priority: firstName + lastName > email prefix > fallback
-      let userName = [first, last].filter(Boolean).join(" ");
-      if (!userName) {
-        // Use email prefix as fallback
-        userName = email.split("@")[0];
-      }
+      // Use email prefix as fallback if no name provided
+      const fallbackName = email.split("@")[0];
 
       await prisma.user.upsert({
         where: { clerkId },
         update: {
           email,
-          name: userName,
+          firstName: firstName || fallbackName,
+          lastName: lastName || "",
           imageUrl,
         },
         create: {
           clerkId,
           email,
-          name: userName,
+          firstName: firstName || fallbackName,
+          lastName: lastName || "",
           imageUrl,
         },
       });
     } else if (eventType === "user.deleted") {
       // Soft delete: mark user as deleted and anonymize PII
       const clerkId: string = evt.data.id;
+      console.log(`[Clerk Webhook] Processing user.deleted for clerkId: ${clerkId}`);
+
+      // First, find the user to get their ID and Stripe account
+      const user = await prisma.user.findUnique({
+        where: { clerkId },
+        select: { id: true, stripeConnectId: true },
+      });
+
+      console.log(`[Clerk Webhook] Found user:`, user);
+
+      if (user) {
+        // Delete all active product listings for this user
+        const deletedProducts = await prisma.product.deleteMany({
+          where: { userId: user.id },
+        });
+        console.log(`[Clerk Webhook] Deleted ${deletedProducts.count} products`);
+
+        // Delete Stripe Connect account if exists
+        if (user.stripeConnectId) {
+          console.log(`[Clerk Webhook] Attempting to delete Stripe account: ${user.stripeConnectId}`);
+          try {
+            await stripe.accounts.del(user.stripeConnectId);
+            console.log(
+              `[Clerk Webhook] Successfully deleted Stripe Connect account ${user.stripeConnectId}`,
+            );
+          } catch (stripeError) {
+            // Log but don't fail - account may already be deleted or invalid
+            console.error(
+              `[Clerk Webhook] Failed to delete Stripe Connect account ${user.stripeConnectId}:`,
+              stripeError,
+            );
+          }
+        } else {
+          console.log(`[Clerk Webhook] No stripeConnectId found for user`);
+        }
+      } else {
+        console.log(`[Clerk Webhook] User not found in database for clerkId: ${clerkId}`);
+      }
 
       // Use updateMany to avoid errors if user doesn't exist in database
       // (e.g., if deleted from Clerk before user.created webhook fired)
@@ -105,8 +141,10 @@ export async function POST(req: Request) {
           deletedAt: new Date(),
           // Anonymize PII while preserving referential integrity
           email: `deleted_${clerkId}@deleted.local`,
-          name: "Deleted User",
+          firstName: "Deleted",
+          lastName: "User",
           imageUrl: null,
+          stripeConnectId: null, // Clear the Stripe account reference
         },
       });
     }

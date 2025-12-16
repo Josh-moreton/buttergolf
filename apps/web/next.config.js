@@ -40,35 +40,9 @@ const plugins = [
   }),
 ];
 
-// Security headers for Clerk authentication with Cloudflare Turnstile bot protection
+// Security headers (CSP removed - adds maintenance burden with minimal security benefit
+// given we use 'unsafe-inline' and trusted third-parties like Clerk/Stripe)
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      // Scripts: Allow self, Clerk, Cloudflare (including CDN), Vercel Live, Stripe, and necessary inline scripts
-      // blob: is required for Cloudflare Turnstile dynamic script loading
-      "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://cdn.cloudflare.com https://static.cloudflare.com https://vercel.live https://js.stripe.com blob:",
-      // Styles: Allow self, inline styles, Google Fonts, and Cloudflare
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://challenges.cloudflare.com",
-      // Images: Allow self, data URIs, Cloudinary, Vercel Blob Storage, and common image sources
-      "img-src 'self' data: blob: https://res.cloudinary.com https://img.clerk.com https://*.clerk.accounts.dev https://images.unsplash.com https://*.public.blob.vercel-storage.com",
-      // Fonts: Allow self and Google Fonts
-      "font-src 'self' https://fonts.gstatic.com",
-      // Connect: Allow API calls to self, Clerk, Cloudflare, Vercel, and Stripe
-      "connect-src 'self' https://*.clerk.accounts.dev https://clerk.buttergolf.com https://clerk-telemetry.com https://challenges.cloudflare.com https://cdn.cloudflare.com https://api.stripe.com https://m.stripe.com https://r.stripe.com https://m.stripe.network https://merchant-ui-api.stripe.com https://vercel.live wss://*.clerk.accounts.dev wss://ws-us3.pusher.com",
-      // Frames: Allow Clerk, Cloudflare challenge iframes, Vercel Live, and Stripe
-      "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com https://js.stripe.com https://m.stripe.network https://vercel.live",
-      // Workers: Allow blob for service workers
-      "worker-src 'self' blob:",
-      // Child sources: Allow blob for Cloudflare Turnstile
-      "child-src 'self' blob: https://challenges.cloudflare.com",
-      // Form actions
-      "form-action 'self'",
-      // Frame ancestors
-      "frame-ancestors 'self'",
-    ].join("; "),
-  },
   {
     key: "X-Frame-Options",
     value: "SAMEORIGIN",

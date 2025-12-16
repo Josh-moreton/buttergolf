@@ -13,7 +13,8 @@ async function main() {
     update: {},
     create: {
       email: "sarah.johnson@example.com",
-      name: "Sarah Johnson",
+      firstName: "Sarah",
+      lastName: "Johnson",
       clerkId: "user_sarah_clerk_id",
       averageRating: 4.8,
       ratingCount: 47,
@@ -25,7 +26,8 @@ async function main() {
     update: {},
     create: {
       email: "mike.chen@example.com",
-      name: "Mike Chen",
+      firstName: "Mike",
+      lastName: "Chen",
       clerkId: "user_mike_clerk_id",
       averageRating: 4.2,
       ratingCount: 23,
@@ -37,14 +39,15 @@ async function main() {
     update: {},
     create: {
       email: "emma.williams@example.com",
-      name: "Emma Williams",
+      firstName: "Emma",
+      lastName: "Williams",
       clerkId: "user_emma_clerk_id",
       averageRating: 0,
       ratingCount: 0,
     },
   });
 
-  console.log("✅ Created users:", [user1.name, user2.name, user3.name]);
+  console.log("✅ Created users:", [`${user1.firstName} ${user1.lastName}`, `${user2.firstName} ${user2.lastName}`, `${user3.firstName} ${user3.lastName}`]);
 
   // Create categories from centralized constants
   const categories = await Promise.all(

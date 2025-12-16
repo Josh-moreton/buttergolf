@@ -10,8 +10,8 @@ interface ConversationThreadProps {
     amount: number;
     message?: string | null;
     createdAt: Date | string;
-    buyer: { id: string; name: string };
-    seller: { id: string; name: string };
+    buyer: { id: string; firstName: string; lastName: string };
+    seller: { id: string; firstName: string; lastName: string };
   };
   counterOffers: Array<{
     id: string;
@@ -59,6 +59,10 @@ export function ConversationThread({
 
   const isCurrentUserSeller = currentUserId === initialOffer.seller.id;
 
+  // Compute display names
+  const buyerName = `${initialOffer.buyer.firstName} ${initialOffer.buyer.lastName}`.trim() || "Buyer";
+  const sellerName = `${initialOffer.seller.firstName} ${initialOffer.seller.lastName}`.trim() || "Seller";
+
   return (
     <Column
       gap="$lg"
@@ -76,14 +80,14 @@ export function ConversationThread({
         createdAt={initialOffer.createdAt}
         fromSeller={false} // Initial offer is always from buyer
         isInitialOffer={true}
-        senderName={initialOffer.buyer.name}
+        senderName={buyerName}
       />
 
       {/* Counter-offers */}
       {counterOffers.map((counterOffer) => {
         const senderName = counterOffer.fromSeller
-          ? initialOffer.seller.name
-          : initialOffer.buyer.name;
+          ? sellerName
+          : buyerName;
 
         return (
           <OfferMessage

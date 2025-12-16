@@ -15,6 +15,12 @@ export async function POST(request: Request) {
     // This ensures user exists even if webhook hasn't fired yet
     let user = await prisma.user.findUnique({
       where: { clerkId },
+      select: {
+        id: true,
+        stripeConnectId: true,
+        stripeOnboardingComplete: true,
+        stripeAccountStatus: true,
+      },
     });
 
     if (!user) {
@@ -29,31 +35,84 @@ export async function POST(request: Request) {
 
       // Build user name from Clerk profile
       // Priority: firstName + lastName > username > email prefix
-      let userName = "";
-      if (clerkUser.firstName || clerkUser.lastName) {
-        userName = [clerkUser.firstName, clerkUser.lastName]
-          .filter(Boolean)
-          .join(" ");
-      } else if (clerkUser.username) {
-        userName = clerkUser.username;
-      } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
-        // Use email prefix as fallback
-        userName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
-      } else {
-        // Last resort fallback
-        userName = "Golf Enthusiast";
+      let userFirstName = "";
+      let userLastName = "";
+      if (clerkUser.firstName) {
+        userFirstName = clerkUser.firstName;
+      }
+      if (clerkUser.lastName) {
+        userLastName = clerkUser.lastName;
+      }
+      // Fallback to username or email prefix for firstName
+      if (!userFirstName && !userLastName) {
+        if (clerkUser.username) {
+          userFirstName = clerkUser.username;
+        } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
+          userFirstName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
+        } else {
+          userFirstName = "Golf Enthusiast";
+        }
       }
 
-      user = await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           clerkId,
           email:
             clerkUser.emailAddresses?.[0]?.emailAddress ||
             `user-${clerkId}@temp.local`,
-          name: userName,
+          firstName: userFirstName,
+          lastName: userLastName,
           imageUrl: clerkUser.imageUrl || null,
         },
+        select: {
+          id: true,
+          stripeConnectId: true,
+          stripeOnboardingComplete: true,
+          stripeAccountStatus: true,
+        },
       });
+
+      user = createdUser;
+    }
+
+    // ============================================================
+    // SELLER ONBOARDING GUARD
+    // Ensure user has completed Stripe Connect onboarding before
+    // allowing them to create product listings
+    // ============================================================
+    if (!user.stripeConnectId) {
+      return NextResponse.json(
+        {
+          error: "Seller setup required",
+          code: "SELLER_SETUP_REQUIRED",
+          message:
+            "Please complete your seller setup before listing products. Visit /sell to get started.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (!user.stripeOnboardingComplete) {
+      return NextResponse.json(
+        {
+          error: "Seller onboarding incomplete",
+          code: "ONBOARDING_INCOMPLETE",
+          message:
+            "Please complete your seller onboarding before listing products. Visit /sell to continue setup.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (user.stripeAccountStatus !== "active") {
+      return NextResponse.json(
+        {
+          error: "Seller account not active",
+          code: "ACCOUNT_NOT_ACTIVE",
+          message: `Your seller account is currently ${user.stripeAccountStatus || "pending"}. Please complete any outstanding requirements.`,
+        },
+        { status: 403 },
+      );
     }
 
     // Parse request body
@@ -181,7 +240,8 @@ export async function POST(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -221,7 +281,8 @@ export async function GET(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },

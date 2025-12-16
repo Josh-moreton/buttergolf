@@ -12,7 +12,6 @@ if (process.env.NODE_ENV === "production") {
 }
 import { ButterHeader } from "./_components/header/ButterHeader";
 import { AppPromoBanner } from "./_components/AppPromoBanner";
-import { ServiceWorkerRegistration } from "./_components/ServiceWorkerRegistration";
 import { ConditionalLayout } from "./_components/ConditionalLayout";
 import { CartProvider } from "../context/CartContext";
 import { FavouritesProvider } from "../providers/FavouritesProvider";
@@ -74,7 +73,6 @@ export default function RootLayout({
         <NextTamaguiProvider>
           <FavouritesProvider>
             <CartProvider>
-              <ServiceWorkerRegistration />
               <ConditionalLayout excludeRoutes={["/coming-soon"]}>
                 <ButterHeader />
                 <AppPromoBanner />
