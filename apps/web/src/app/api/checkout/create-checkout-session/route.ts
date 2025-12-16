@@ -96,6 +96,15 @@ export async function POST(req: Request) {
       ui_mode: "embedded",
       mode: "payment",
 
+      // ButterGolf brand customization
+      branding_settings: {
+        display_name: "ButterGolf",
+        font_family: "roboto", // Clean sans-serif close to Urbanist
+        border_style: "rounded", // Matches our $full border radius aesthetic
+        background_color: "#FFFAD2", // Vanilla Cream - our primary background
+        button_color: "#F45314", // Spiced Clementine - our primary brand color
+      },
+
       // Line items - single product
       line_items: [
         {
@@ -215,9 +224,6 @@ export async function POST(req: Request) {
 
       // Customer email for receipt
       customer_email: buyer.email,
-
-      // Appearance customization for Butter brand
-      // Note: More detailed appearance customization can be done in the client
     });
 
     return NextResponse.json({
