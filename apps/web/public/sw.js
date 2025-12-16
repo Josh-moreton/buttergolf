@@ -1,7 +1,7 @@
 // Service Worker for PWA support
 // This is a minimal service worker to enable PWA installation
 
-const CACHE_NAME = 'buttergolf-v2';
+const CACHE_NAME = 'buttergolf-v3';
 const urlsToCache = [
   '/manifest.json',
 ];
@@ -19,6 +19,13 @@ self.addEventListener('install', (event) => {
 // Fetch event - network-first for navigation, cache for assets
 self.addEventListener('fetch', (event) => {
   const request = event.request;
+  const url = new URL(request.url);
+  
+  // Skip cross-origin requests entirely - let browser handle them
+  // This prevents issues with Stripe, Clerk, Cloudinary, and other external services
+  if (url.origin !== self.location.origin) {
+    return; // Don't call respondWith, let browser handle normally
+  }
   
   // For navigation requests (HTML pages), always go to network
   // This prevents issues with redirects (e.g., coming-soon redirect)
@@ -32,11 +39,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // For other requests, try cache first, then network
+  // For same-origin requests, try cache first, then network
   event.respondWith(
     caches.match(request)
       .then((response) => {
         return response || fetch(request);
+      })
+      .catch(() => {
+        // If both cache and network fail, just fail gracefully
+        return new Response('Network error', { status: 503 });
       })
   );
 });
