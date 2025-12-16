@@ -80,8 +80,9 @@ export async function POST() {
       });
 
       stripeAccountId = account.id;
+      console.log(`[Stripe Connect] Created new account ${stripeAccountId} for user ${user.id}`);
 
-      // Save to database
+      // Save to database IMMEDIATELY - so we can clean up even if onboarding is abandoned
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -89,6 +90,7 @@ export async function POST() {
           stripeAccountType: "fully_embedded",
         },
       });
+      console.log(`[Stripe Connect] Saved stripeConnectId to database for user ${user.id}`);
     }
 
     // 4. Create AccountSession for embedded onboarding

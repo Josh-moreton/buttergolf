@@ -96,6 +96,7 @@ export async function POST(req: Request) {
     } else if (eventType === "user.deleted") {
       // Soft delete: mark user as deleted and anonymize PII
       const clerkId: string = evt.data.id;
+      console.log(`[Clerk Webhook] Processing user.deleted for clerkId: ${clerkId}`);
 
       // First, find the user to get their ID and Stripe account
       const user = await prisma.user.findUnique({
@@ -103,27 +104,35 @@ export async function POST(req: Request) {
         select: { id: true, stripeConnectId: true },
       });
 
+      console.log(`[Clerk Webhook] Found user:`, user);
+
       if (user) {
         // Delete all active product listings for this user
-        await prisma.product.deleteMany({
+        const deletedProducts = await prisma.product.deleteMany({
           where: { userId: user.id },
         });
+        console.log(`[Clerk Webhook] Deleted ${deletedProducts.count} products`);
 
         // Delete Stripe Connect account if exists
         if (user.stripeConnectId) {
+          console.log(`[Clerk Webhook] Attempting to delete Stripe account: ${user.stripeConnectId}`);
           try {
             await stripe.accounts.del(user.stripeConnectId);
             console.log(
-              `Deleted Stripe Connect account ${user.stripeConnectId} for user ${clerkId}`,
+              `[Clerk Webhook] Successfully deleted Stripe Connect account ${user.stripeConnectId}`,
             );
           } catch (stripeError) {
             // Log but don't fail - account may already be deleted or invalid
             console.error(
-              `Failed to delete Stripe Connect account ${user.stripeConnectId}:`,
+              `[Clerk Webhook] Failed to delete Stripe Connect account ${user.stripeConnectId}:`,
               stripeError,
             );
           }
+        } else {
+          console.log(`[Clerk Webhook] No stripeConnectId found for user`);
         }
+      } else {
+        console.log(`[Clerk Webhook] User not found in database for clerkId: ${clerkId}`);
       }
 
       // Use updateMany to avoid errors if user doesn't exist in database
