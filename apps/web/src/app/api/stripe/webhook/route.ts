@@ -146,7 +146,7 @@ export async function POST(req: Request) {
       const toAddress = await prisma.address.create({
         data: {
           userId: buyerId,
-          name: shippingDetails.name || buyer.name || buyer.email,
+          name: shippingDetails.name || `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email,
           street1: shippingDetails.address.line1 || "",
           street2: shippingDetails.address.line2 || undefined,
           city: shippingDetails.address.city || "",
@@ -165,7 +165,7 @@ export async function POST(req: Request) {
         fromAddress = await prisma.address.create({
           data: {
             userId: sellerId,
-            name: product.user.name || product.user.email,
+            name: `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email,
             street1: "Address pending",
             city: "Pending",
             state: "",

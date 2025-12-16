@@ -62,6 +62,12 @@ export async function POST() {
           },
         },
         business_type: "individual",
+        // Pre-populate individual details from our database
+        individual: {
+          first_name: user.firstName || undefined,
+          last_name: user.lastName || undefined,
+          email: user.email || undefined,
+        },
         business_profile: {
           mcc: "5941", // Sporting goods
           product_description: "Golf equipment marketplace seller",

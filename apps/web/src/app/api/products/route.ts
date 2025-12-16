@@ -35,19 +35,23 @@ export async function POST(request: Request) {
 
       // Build user name from Clerk profile
       // Priority: firstName + lastName > username > email prefix
-      let userName = "";
-      if (clerkUser.firstName || clerkUser.lastName) {
-        userName = [clerkUser.firstName, clerkUser.lastName]
-          .filter(Boolean)
-          .join(" ");
-      } else if (clerkUser.username) {
-        userName = clerkUser.username;
-      } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
-        // Use email prefix as fallback
-        userName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
-      } else {
-        // Last resort fallback
-        userName = "Golf Enthusiast";
+      let userFirstName = "";
+      let userLastName = "";
+      if (clerkUser.firstName) {
+        userFirstName = clerkUser.firstName;
+      }
+      if (clerkUser.lastName) {
+        userLastName = clerkUser.lastName;
+      }
+      // Fallback to username or email prefix for firstName
+      if (!userFirstName && !userLastName) {
+        if (clerkUser.username) {
+          userFirstName = clerkUser.username;
+        } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
+          userFirstName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
+        } else {
+          userFirstName = "Golf Enthusiast";
+        }
       }
 
       const createdUser = await prisma.user.create({
@@ -56,7 +60,8 @@ export async function POST(request: Request) {
           email:
             clerkUser.emailAddresses?.[0]?.emailAddress ||
             `user-${clerkId}@temp.local`,
-          name: userName,
+          firstName: userFirstName,
+          lastName: userLastName,
           imageUrl: clerkUser.imageUrl || null,
         },
         select: {
@@ -235,7 +240,8 @@ export async function POST(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -275,7 +281,8 @@ export async function GET(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },

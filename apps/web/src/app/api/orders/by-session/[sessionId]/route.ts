@@ -37,7 +37,8 @@ export async function GET(
         seller: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
           },
         },
       },
@@ -100,7 +101,7 @@ export async function GET(
         service: order.service,
         orderStatus: order.status,
         shipmentStatus: order.shipmentStatus,
-        sellerName: order.seller.name,
+        sellerName: `${order.seller.firstName} ${order.seller.lastName}`.trim() || "Seller",
         shippingAddress: {
           name: order.toAddress.name,
           street1: order.toAddress.street1,

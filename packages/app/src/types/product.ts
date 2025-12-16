@@ -5,7 +5,8 @@ export interface ProductImage {
 
 export interface ProductUser {
   id: string;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
   imageUrl: string | null;
 }
 
@@ -45,7 +46,8 @@ export interface ProductCardData {
   category: string;
   seller: {
     id: string;
-    name: string;
+    firstName: string | null;
+    lastName: string | null;
     averageRating: number | null;
     ratingCount: number;
   };

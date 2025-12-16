@@ -21,10 +21,12 @@ async function getProduct(id: string): Promise<Product | null> {
           },
         },
         category: true,
+        brand: true,
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -43,7 +45,12 @@ async function getProduct(id: string): Promise<Product | null> {
       })
       .catch((err) => console.error("Failed to increment views:", err));
 
-    return product as Product;
+    // Transform to match Product interface
+    return {
+      ...product,
+      createdAt: product.createdAt.toISOString(),
+      brand: product.brand?.name || null,
+    } as Product;
   } catch (error) {
     console.error("Error fetching product:", error);
     return null;
@@ -102,7 +109,8 @@ async function getSimilarProducts(id: string): Promise<ProductCardData[]> {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -121,7 +129,8 @@ async function getSimilarProducts(id: string): Promise<ProductCardData[]> {
       category: prod.category.name,
       seller: {
         id: prod.user.id,
-        name: prod.user.name || "Unknown Seller",
+        firstName: prod.user.firstName,
+        lastName: prod.user.lastName,
         averageRating: null,
         ratingCount: 0,
       },

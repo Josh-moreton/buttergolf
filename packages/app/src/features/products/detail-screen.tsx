@@ -170,7 +170,7 @@ export function ProductDetailScreen({
                     borderRadius="$full"
                   />
                 )}
-                <Text size="$5">{product.user.name || "Anonymous"}</Text>
+                <Text size="$5">{`${product.user.firstName} ${product.user.lastName}`.trim() || "Anonymous"}</Text>
               </Row>
             </Column>
           </Card>

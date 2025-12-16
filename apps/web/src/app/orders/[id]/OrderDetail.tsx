@@ -52,12 +52,14 @@ interface Order {
     };
   };
   seller: {
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
   buyer: {
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
@@ -356,7 +358,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               {order.seller.imageUrl && (
                 <Image
                   src={order.seller.imageUrl}
-                  alt={order.seller.name || "Seller"}
+                  alt={`${order.seller.firstName} ${order.seller.lastName}`.trim() || "Seller"}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -364,7 +366,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               )}
               <div>
                 <p className="font-medium">
-                  {order.seller.name || order.seller.email}
+                  {`${order.seller.firstName} ${order.seller.lastName}`.trim() || order.seller.email}
                 </p>
                 <p className="text-sm text-gray-600">{order.seller.email}</p>
               </div>
@@ -376,7 +378,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               {order.buyer.imageUrl && (
                 <Image
                   src={order.buyer.imageUrl}
-                  alt={order.buyer.name || "Buyer"}
+                  alt={`${order.buyer.firstName} ${order.buyer.lastName}`.trim() || "Buyer"}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -384,7 +386,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               )}
               <div>
                 <p className="font-medium">
-                  {order.buyer.name || order.buyer.email}
+                  {`${order.buyer.firstName} ${order.buyer.lastName}`.trim() || order.buyer.email}
                 </p>
                 <p className="text-sm text-gray-600">{order.buyer.email}</p>
               </div>

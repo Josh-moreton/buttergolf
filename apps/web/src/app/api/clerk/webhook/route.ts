@@ -62,8 +62,8 @@ export async function POST(req: Request) {
       const clerkId: string = data.id;
       const email: string | undefined =
         data.email_addresses?.[0]?.email_address;
-      const first = data.first_name ?? "";
-      const last = data.last_name ?? "";
+      const firstName = data.first_name || "";
+      const lastName = data.last_name || "";
       const imageUrl: string | undefined = data.image_url;
 
       if (!email) {
@@ -71,25 +71,22 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
-      // Build user name with fallback chain
-      // Priority: firstName + lastName > email prefix > fallback
-      let userName = [first, last].filter(Boolean).join(" ");
-      if (!userName) {
-        // Use email prefix as fallback
-        userName = email.split("@")[0];
-      }
+      // Use email prefix as fallback if no name provided
+      const fallbackName = email.split("@")[0];
 
       await prisma.user.upsert({
         where: { clerkId },
         update: {
           email,
-          name: userName,
+          firstName: firstName || fallbackName,
+          lastName: lastName || "",
           imageUrl,
         },
         create: {
           clerkId,
           email,
-          name: userName,
+          firstName: firstName || fallbackName,
+          lastName: lastName || "",
           imageUrl,
         },
       });
@@ -144,7 +141,8 @@ export async function POST(req: Request) {
           deletedAt: new Date(),
           // Anonymize PII while preserving referential integrity
           email: `deleted_${clerkId}@deleted.local`,
-          name: "Deleted User",
+          firstName: "Deleted",
+          lastName: "User",
           imageUrl: null,
           stripeConnectId: null, // Clear the Stripe account reference
         },

@@ -110,7 +110,8 @@ async function getListings(searchParams: SearchParams) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             averageRating: true,
             ratingCount: true,
           },
@@ -151,7 +152,8 @@ async function getListings(searchParams: SearchParams) {
       category: product.category.name,
       seller: {
         id: product.user.id,
-        name: product.user.name,
+        firstName: product.user.firstName,
+        lastName: product.user.lastName,
         averageRating: product.user.averageRating,
         ratingCount: product.user.ratingCount,
       },

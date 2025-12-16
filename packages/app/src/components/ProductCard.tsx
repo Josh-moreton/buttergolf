@@ -189,7 +189,7 @@ export function ProductCard({
                 color="$textInverse"
                 opacity={0.85}
               >
-                {product.seller.name}
+                {`${product.seller.firstName} ${product.seller.lastName}`.trim() || "Unknown"}
               </Text>
               {product.seller.ratingCount > 0 ? (
                 <Row alignItems="center" gap={4}>

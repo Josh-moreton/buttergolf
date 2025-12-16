@@ -14,7 +14,8 @@ interface MobileProductBarProps {
     model: string | null;
     images: Array<{ id: string; url: string }>;
     user: {
-      name: string | null;
+      firstName: string | null;
+      lastName: string | null;
       averageRating: number | null;
       ratingCount: number;
     };
@@ -234,7 +235,7 @@ export function MobileProductBar({
                 </Text>
                 <Row gap="$xs" alignItems="center">
                   <Text size="$4" color="$textSecondary">
-                    {product.user.name}
+                    {`${product.user.firstName} ${product.user.lastName}`.trim() || "Unknown"}
                   </Text>
                   {product.user.ratingCount > 0 && (
                     <>

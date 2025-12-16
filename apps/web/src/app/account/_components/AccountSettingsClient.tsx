@@ -17,7 +17,8 @@ import { SellerOnboarding } from "../../_components/SellerOnboarding";
 interface AccountSettingsClientProps {
   readonly user: {
     readonly email: string;
-    readonly name?: string;
+    readonly firstName?: string;
+    readonly lastName?: string;
     readonly hasConnectAccount: boolean;
     readonly onboardingComplete: boolean;
     readonly accountStatus: string;
@@ -226,10 +227,10 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
               <Text weight="medium">Email</Text>
               <Text color="$textSecondary">{user.email}</Text>
             </Column>
-            {user.name && (
+            {(user.firstName || user.lastName) && (
               <Column gap="$xs">
                 <Text weight="medium">Name</Text>
-                <Text color="$textSecondary">{user.name}</Text>
+                <Text color="$textSecondary">{`${user.firstName || ''} ${user.lastName || ''}`.trim()}</Text>
               </Column>
             )}
           </Column>
