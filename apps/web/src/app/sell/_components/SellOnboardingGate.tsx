@@ -11,6 +11,7 @@ import {
   Card,
   Spinner,
 } from "@buttergolf/ui";
+import { brandColors } from "@buttergolf/config";
 import {
   ConnectAccountOnboarding,
   ConnectComponentsProvider,
@@ -103,10 +104,10 @@ export function SellOnboardingGate({
         },
         appearance: {
           variables: {
-            colorPrimary: "#F45314", // $spicedClementine
-            colorBackground: "#FFFFFF", // White background for form
-            colorText: "#323232", // $ironstone
-            colorDanger: "#dc2626", // Error red
+            colorPrimary: brandColors.spicedClementine,
+            colorBackground: brandColors.pureWhite,
+            colorText: brandColors.ironstone,
+            colorDanger: brandColors.error,
             fontFamily: "system-ui, -apple-system, sans-serif",
             spacingUnit: "12px", // Stripe requires 8px-20px
             borderRadius: "10px",
