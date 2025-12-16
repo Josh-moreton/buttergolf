@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { prisma } from "@buttergolf/db";
 import { NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
 
 type WebhookEvent = {
   type: string;
@@ -96,10 +97,10 @@ export async function POST(req: Request) {
       // Soft delete: mark user as deleted and anonymize PII
       const clerkId: string = evt.data.id;
 
-      // First, find the user to get their ID for product deletion
+      // First, find the user to get their ID and Stripe account
       const user = await prisma.user.findUnique({
         where: { clerkId },
-        select: { id: true },
+        select: { id: true, stripeConnectId: true },
       });
 
       if (user) {
@@ -107,6 +108,22 @@ export async function POST(req: Request) {
         await prisma.product.deleteMany({
           where: { userId: user.id },
         });
+
+        // Delete Stripe Connect account if exists
+        if (user.stripeConnectId) {
+          try {
+            await stripe.accounts.del(user.stripeConnectId);
+            console.log(
+              `Deleted Stripe Connect account ${user.stripeConnectId} for user ${clerkId}`,
+            );
+          } catch (stripeError) {
+            // Log but don't fail - account may already be deleted or invalid
+            console.error(
+              `Failed to delete Stripe Connect account ${user.stripeConnectId}:`,
+              stripeError,
+            );
+          }
+        }
       }
 
       // Use updateMany to avoid errors if user doesn't exist in database
@@ -120,6 +137,7 @@ export async function POST(req: Request) {
           email: `deleted_${clerkId}@deleted.local`,
           name: "Deleted User",
           imageUrl: null,
+          stripeConnectId: null, // Clear the Stripe account reference
         },
       });
     }
