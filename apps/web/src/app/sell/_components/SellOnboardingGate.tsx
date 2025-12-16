@@ -265,7 +265,7 @@ export function SellOnboardingGate({
         gap="$lg"
       >
         {/* Header */}
-        <Column gap="$sm" alignItems="center">
+        <Column gap="$xl" alignItems="center">
           <Heading level={2}>Complete quick setup to start selling</Heading>
           <Text color="$textSecondary" textAlign="center" size="$5">
             Before listing your first item, we need a few details for secure
