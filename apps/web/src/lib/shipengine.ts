@@ -1,4 +1,6 @@
 import { prisma } from "@buttergolf/db";
+import { PENDING_ADDRESS, SHIPENGINE_CARRIER_CODES } from "./constants";
+import { buildTrackingUrl } from "./utils/format";
 
 // ShipEngine API client for UK shipping
 const SHIPENGINE_API_KEY = process.env.SHIPENGINE_API_KEY;
@@ -425,7 +427,7 @@ export async function generateShippingLabel(params: {
   }
 
   // Validate seller address
-  if (order.fromAddress.street1 === "Address pending") {
+  if (order.fromAddress.street1 === PENDING_ADDRESS) {
     throw new Error("Seller must update their shipping address before generating a label");
   }
 
@@ -443,24 +445,7 @@ export async function generateShippingLabel(params: {
   const heightInches = dimensions.height / 2.54;
   const weightOunces = dimensions.weight / 28.3495;
 
-  // Determine carrier and service based on shipping cost paid
-  const shippingCostPence = order.shippingCost * 100;
-  let carrierCode = "stamps_com"; // Default carrier
-  let serviceCode = "usps_priority_mail"; // Default service
-  
-  // UK-specific carrier mapping based on price tier
-  if (shippingCostPence <= 499) {
-    carrierCode = "stamps_com";
-    serviceCode = "usps_first_class_mail";
-  } else if (shippingCostPence <= 699) {
-    carrierCode = "stamps_com";
-    serviceCode = "usps_priority_mail";
-  } else {
-    carrierCode = "stamps_com";
-    serviceCode = "usps_priority_mail_express";
-  }
-
-  // First, get rates to find the best matching rate for the shipping cost
+  // Get rates to find the best matching rate for the shipping cost
   const rateRequest = {
     rate_options: {
       carrier_ids: [],
@@ -546,8 +531,11 @@ export async function generateShippingLabel(params: {
     labelRequest,
   );
 
-  // Build tracking URL
-  const trackingUrl = `https://www.shipengine.com/tracking/${labelResponse.tracking_number}`;
+  // Build carrier-specific tracking URL
+  const trackingUrl = buildTrackingUrl(
+    selectedRate.carrier_friendly_name,
+    labelResponse.tracking_number
+  );
 
   // Update order in database
   await prisma.order.update({
@@ -606,16 +594,7 @@ export async function getOrderTracking(orderId: string): Promise<{
 
   try {
     // Map carrier name to ShipEngine carrier code
-    const carrierCodeMap: Record<string, string> = {
-      "Royal Mail": "royal_mail",
-      "Evri": "evri_uk",
-      "DPD": "dpd_uk",
-      "USPS": "stamps_com",
-      "UPS": "ups",
-      "FedEx": "fedex",
-    };
-
-    const carrierCode = carrierCodeMap[order.carrier] || "stamps_com";
+    const carrierCode = SHIPENGINE_CARRIER_CODES[order.carrier] || "stamps_com";
 
     const response = await shipEngineRequest<{
       tracking_number: string;

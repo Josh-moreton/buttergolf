@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { OrderMessages } from "./OrderMessages";
 import { OrderRating } from "./OrderRating";
+import { AnimationErrorBoundary } from "@/app/_components/ErrorBoundary";
+import { Card, Text } from "@buttergolf/ui";
+import { buildTrackingUrl } from "@/lib/utils/format";
 
 type OrderStatus =
   | "PAYMENT_CONFIRMED"
@@ -207,9 +210,9 @@ export function OrderDetail({ order }: OrderDetailProps) {
             {order.trackingCode && (
               <p className="text-sm text-blue-700 mt-1">
                 Tracking:{" "}
-                {order.trackingUrl ? (
+                {order.carrier ? (
                   <a
-                    href={order.trackingUrl}
+                    href={buildTrackingUrl(order.carrier, order.trackingCode)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline font-medium"
@@ -337,10 +340,10 @@ export function OrderDetail({ order }: OrderDetailProps) {
         )}
 
         {/* Buyer Tracking */}
-        {order.userRole === "buyer" && order.trackingUrl && (
+        {order.userRole === "buyer" && order.trackingCode && order.carrier && (
           <div className="mt-6">
             <a
-              href={order.trackingUrl}
+              href={buildTrackingUrl(order.carrier, order.trackingCode)}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full text-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
@@ -399,28 +402,48 @@ export function OrderDetail({ order }: OrderDetailProps) {
       </div>
 
       {/* Rating Section - shown after delivery for buyers */}
-      <OrderRating
-        orderId={order.id}
-        isDelivered={order.shipmentStatus === "DELIVERED"}
-        isBuyer={order.userRole === "buyer"}
-        sellerName={`${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()}
-      />
+      <AnimationErrorBoundary
+        fallback={
+          <Card variant="outlined" padding="$lg">
+            <Text color="$error">
+              Unable to load rating section. Please refresh the page.
+            </Text>
+          </Card>
+        }
+      >
+        <OrderRating
+          orderId={order.id}
+          isDelivered={order.shipmentStatus === "DELIVERED"}
+          isBuyer={order.userRole === "buyer"}
+          sellerName={`${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()}
+        />
+      </AnimationErrorBoundary>
 
       {/* Messages Section */}
-      <OrderMessages
-        orderId={order.id}
-        currentUserId={order.currentUserId}
-        otherUserName={
-          order.userRole === "buyer"
-            ? `${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()
-            : `${order.buyer.firstName || ""} ${order.buyer.lastName || ""}`.trim()
+      <AnimationErrorBoundary
+        fallback={
+          <Card variant="outlined" padding="$lg">
+            <Text color="$error">
+              Unable to load messages. Please refresh the page.
+            </Text>
+          </Card>
         }
-        otherUserImage={
-          order.userRole === "buyer"
-            ? order.seller.imageUrl
-            : order.buyer.imageUrl
-        }
-      />
+      >
+        <OrderMessages
+          orderId={order.id}
+          currentUserId={order.currentUserId}
+          otherUserName={
+            order.userRole === "buyer"
+              ? `${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()
+              : `${order.buyer.firstName || ""} ${order.buyer.lastName || ""}`.trim()
+          }
+          otherUserImage={
+            order.userRole === "buyer"
+              ? order.seller.imageUrl
+              : order.buyer.imageUrl
+          }
+        />
+      </AnimationErrorBoundary>
     </div>
   );
 }

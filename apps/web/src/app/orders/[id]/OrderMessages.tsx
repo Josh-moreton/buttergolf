@@ -1,7 +1,20 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
+import {
+  Card,
+  Column,
+  Row,
+  Text,
+  TextArea,
+  Button,
+  Spinner,
+  Image,
+  Heading,
+  Badge,
+} from "@buttergolf/ui";
+import { POLLING_INTERVALS, MESSAGE_LIMITS } from "@/lib/constants";
+import { formatDateTime } from "@/lib/utils/format";
 
 interface Message {
   id: string;
@@ -30,6 +43,9 @@ export function OrderMessages({
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [hasScrolledOnce, setHasScrolledOnce] = useState(false);
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -45,20 +61,67 @@ export function OrderMessages({
     }
   }, [orderId]);
 
-  // Fetch messages on mount and poll every 10 seconds
+  // Mark messages as read when they become visible
+  const markMessagesAsRead = useCallback(async () => {
+    try {
+      await fetch(`/api/orders/${orderId}/messages/mark-read`, {
+        method: "POST",
+      });
+    } catch (err) {
+      console.error("Failed to mark messages as read:", err);
+    }
+  }, [orderId]);
+
+  // Setup Intersection Observer for marking messages as read
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Message is visible, mark as read after a short delay
+            setTimeout(() => {
+              markMessagesAsRead();
+            }, 500);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [markMessagesAsRead]);
+
+  // Observe message list for visibility
+  useEffect(() => {
+    if (messageListRef.current && observerRef.current) {
+      observerRef.current.observe(messageListRef.current);
+    }
+  }, [messages]);
+
+  // Fetch messages on mount and poll
   useEffect(() => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, 10000);
+    const interval = setInterval(fetchMessages, POLLING_INTERVALS.MESSAGES);
     return () => clearInterval(interval);
   }, [fetchMessages]);
 
-  // Scroll to bottom when messages change
+  // Auto-scroll: instant on first load, smooth on updates
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (messages.length > 0) {
+      const behavior = hasScrolledOnce ? "smooth" : "auto";
+      messagesEndRef.current?.scrollIntoView({ behavior: behavior as ScrollBehavior });
+      if (!hasScrolledOnce) {
+        setHasScrolledOnce(true);
+      }
+    }
+  }, [messages, hasScrolledOnce]);
 
   const handleSend = async () => {
-    if (!newMessage.trim() || sending) return;
+    if (!newMessage.trim() || sending || newMessage.length > MESSAGE_LIMITS.MAX_LENGTH) {
+      return;
+    }
 
     setSending(true);
     setError(null);
@@ -91,90 +154,145 @@ export function OrderMessages({
     }
   };
 
+  const isOverLimit = newMessage.length > MESSAGE_LIMITS.MAX_LENGTH;
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold mb-4">Messages</h2>
+    <Card variant="elevated" padding="$lg">
+      <Card.Header noBorder>
+        <Heading level={2} size="$7">
+          Messages
+        </Heading>
+      </Card.Header>
 
-      {/* Messages List */}
-      <div className="border rounded-lg h-80 overflow-y-auto p-4 space-y-4 bg-gray-50">
-        {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-gray-500">Loading messages...</p>
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-gray-500">
-              No messages yet. Start a conversation with{" "}
-              {otherUserName || "the other party"}.
-            </p>
-          </div>
-        ) : (
-          messages.map((message) => {
-            const isOwnMessage = message.senderId === currentUserId;
-            return (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${isOwnMessage ? "flex-row-reverse" : ""}`}
-              >
-                {!isOwnMessage && otherUserImage && (
-                  <Image
-                    src={otherUserImage}
-                    alt={otherUserName}
-                    width={32}
-                    height={32}
-                    className="rounded-full flex-shrink-0"
-                  />
-                )}
-                <div
-                  className={`max-w-[70%] rounded-lg p-3 ${
-                    isOwnMessage
-                      ? "bg-blue-600 text-white"
-                      : "bg-white border border-gray-200"
-                  }`}
+      <Card.Body>
+        <Column
+          ref={messageListRef}
+          height={320}
+          overflow="auto"
+          backgroundColor="$background"
+          borderRadius="$md"
+          padding="$md"
+          gap="$md"
+          role="log"
+          aria-live="polite"
+          aria-label="Message history"
+        >
+          {loading ? (
+            <Column alignItems="center" justifyContent="center" height="100%">
+              <Spinner size="large" />
+              <Text size="$4" color="$textSecondary" marginTop="$sm">
+                Loading messages...
+              </Text>
+            </Column>
+          ) : messages.length === 0 ? (
+            <Column alignItems="center" justifyContent="center" height="100%">
+              <Text size="$4" color="$textSecondary" textAlign="center">
+                No messages yet. Start a conversation with{" "}
+                {otherUserName || "the other party"}.
+              </Text>
+            </Column>
+          ) : (
+            messages.map((message) => {
+              const isOwnMessage = message.senderId === currentUserId;
+              return (
+                <Row
+                  key={message.id}
+                  gap="$md"
+                  alignItems="flex-start"
+                  flexDirection={isOwnMessage ? "row-reverse" : "row"}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  <p
-                    className={`text-xs mt-1 ${
-                      isOwnMessage ? "text-blue-200" : "text-gray-400"
-                    }`}
+                  {!isOwnMessage && otherUserImage && (
+                    <Image
+                      source={{ uri: otherUserImage }}
+                      width={32}
+                      height={32}
+                      borderRadius={16}
+                      alt={`${otherUserName}'s avatar`}
+                    />
+                  )}
+                  <Column
+                    flex={1}
+                    maxWidth="70%"
+                    backgroundColor={isOwnMessage ? "$primary" : "$surface"}
+                    borderRadius="$lg"
+                    padding="$md"
+                    borderWidth={1}
+                    borderColor={isOwnMessage ? "$primary" : "$border"}
                   >
-                    {new Date(message.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            );
-          })
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+                    <Text
+                      size="$4"
+                      color={isOwnMessage ? "$textInverse" : "$text"}
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
+                      {message.content}
+                    </Text>
+                    <Text
+                      size="$2"
+                      color={isOwnMessage ? "$primaryLight" : "$textSecondary"}
+                      marginTop="$xs"
+                    >
+                      {formatDateTime(message.createdAt)}
+                    </Text>
+                  </Column>
+                </Row>
+              );
+            })
+          )}
+          <div ref={messagesEndRef} />
+        </Column>
+      </Card.Body>
 
-      {/* Message Input */}
-      <div className="mt-4">
-        {error && (
-          <p className="text-red-500 text-sm mb-2">{error}</p>
-        )}
-        <div className="flex gap-2">
-          <textarea
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
-            rows={2}
-            maxLength={2000}
-            className="flex-1 border rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={handleSend}
-            disabled={sending || !newMessage.trim()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium self-end"
-          >
-            {sending ? "Sending..." : "Send"}
-          </button>
-        </div>
-        <p className="text-xs text-gray-500 mt-1">
-          {newMessage.length}/2000 characters
-        </p>
-      </div>
-    </div>
+      <Card.Footer noBorder>
+        <Column gap="$sm" fullWidth>
+          {error && (
+            <Row alignItems="center" gap="$sm">
+              <Badge variant="error">Error</Badge>
+              <Text size="$3" color="$error">
+                {error}
+              </Text>
+            </Row>
+          )}
+
+          <Row gap="$md" alignItems="flex-end">
+            <Column flex={1} gap="$xs">
+              <TextArea
+                value={newMessage}
+                onChangeText={setNewMessage}
+                // @ts-ignore - TextArea expects different event types
+                onKeyDown={handleKeyDown}
+                placeholder="Type your message..."
+                size="md"
+                rows={2}
+                maxLength={MESSAGE_LIMITS.MAX_LENGTH + 100} // Allow typing over but show error
+                error={isOverLimit}
+                aria-label="Message input"
+                disabled={sending}
+              />
+              <Row justifyContent="space-between" alignItems="center">
+                <Text size="$2" color={isOverLimit ? "$error" : "$textTertiary"}>
+                  {newMessage.length}/{MESSAGE_LIMITS.MAX_LENGTH}
+                </Text>
+                {isOverLimit && (
+                  <Badge variant="error" size="sm">
+                    Over limit
+                  </Badge>
+                )}
+              </Row>
+            </Column>
+
+            <Button
+              backgroundColor="$primary"
+              color="$textInverse"
+              onPress={handleSend}
+              disabled={sending || !newMessage.trim() || isOverLimit}
+              size="$5"
+              aria-label="Send message"
+            >
+              {sending ? "Sending..." : "Send"}
+            </Button>
+          </Row>
+        </Column>
+      </Card.Footer>
+    </Card>
   );
 }

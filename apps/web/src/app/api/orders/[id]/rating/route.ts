@@ -1,6 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
+import { checkRateLimit, rateLimitResponse } from "@/middleware/rate-limit";
+import { RATE_LIMITS } from "@/lib/constants";
 
 /**
  * GET /api/orders/[id]/rating
@@ -88,6 +90,17 @@ export async function POST(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // Rate limiting: 5 ratings per hour
+    const rateLimit = checkRateLimit(user.id, {
+      maxRequests: RATE_LIMITS.RATINGS_PER_HOUR,
+      windowMs: 60 * 60 * 1000,
+      keyFn: (userId) => `ratings:${userId}`,
+    });
+
+    if (rateLimit.isLimited) {
+      return rateLimitResponse(rateLimit.resetAt);
+    }
+
     const { id: orderId } = await params;
     const body = await req.json();
     const { rating, comment } = body;
@@ -149,8 +162,9 @@ export async function POST(
     }
 
     // Create rating and update seller average in a transaction
-    const [newRating] = await prisma.$transaction([
-      prisma.sellerRating.create({
+    const result = await prisma.$transaction(async (tx) => {
+      // 1. Create rating
+      const newRating = await tx.sellerRating.create({
         data: {
           orderId,
           sellerId: order.sellerId,
@@ -158,24 +172,30 @@ export async function POST(
           rating,
           comment: comment?.trim() || null,
         },
-      }),
-      // Update seller's average rating
-      prisma.$executeRaw`
-        UPDATE users
-        SET 
-          "ratingCount" = "ratingCount" + 1,
-          "averageRating" = (
-            SELECT AVG(rating)::float
-            FROM seller_ratings
-            WHERE "sellerId" = ${order.sellerId}
-          )
-        WHERE id = ${order.sellerId}
-      `,
-    ]);
+      });
+
+      // 2. Calculate new average (includes rating just created)
+      const aggregation = await tx.sellerRating.aggregate({
+        where: { sellerId: order.sellerId },
+        _avg: { rating: true },
+        _count: { rating: true },
+      });
+
+      // 3. Update seller
+      await tx.user.update({
+        where: { id: order.sellerId },
+        data: {
+          ratingCount: aggregation._count.rating,
+          averageRating: aggregation._avg.rating || 0,
+        },
+      });
+
+      return newRating;
+    });
 
     return NextResponse.json({
       success: true,
-      rating: newRating,
+      rating: result,
     });
   } catch (error) {
     console.error("Error submitting rating:", error);

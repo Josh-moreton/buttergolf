@@ -1,6 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
+import { checkRateLimit, rateLimitResponse } from "@/middleware/rate-limit";
+import { RATE_LIMITS } from "@/lib/constants";
+import { sendNewMessageEmail } from "@/lib/email";
 
 /**
  * GET /api/orders/[id]/messages
@@ -62,16 +65,6 @@ export async function GET(
       orderBy: { createdAt: "asc" },
     });
 
-    // Mark unread messages as read for this user
-    await prisma.message.updateMany({
-      where: {
-        orderId,
-        senderId: { not: user.id },
-        isRead: false,
-      },
-      data: { isRead: true },
-    });
-
     // Add role info to messages
     const messagesWithRole = messages.map((msg) => ({
       ...msg,
@@ -113,6 +106,17 @@ export async function POST(
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Rate limiting: 10 messages per minute
+    const rateLimit = checkRateLimit(user.id, {
+      maxRequests: RATE_LIMITS.MESSAGES_PER_MINUTE,
+      windowMs: 60000,
+      keyFn: (userId) => `messages:${userId}`,
+    });
+
+    if (rateLimit.isLimited) {
+      return rateLimitResponse(rateLimit.resetAt);
     }
 
     const { id: orderId } = await params;
@@ -189,15 +193,23 @@ export async function POST(
       },
     });
 
-    // Determine recipient for email notification
+    // Send email notification (async, don't block response)
     const recipient = user.id === order.buyerId ? order.seller : order.buyer;
     const senderName = `${user.firstName} ${user.lastName}`.trim() || "A user";
 
-    // TODO: Send email notification via Resend
-    // This will be implemented in the email service
-    console.log(
-      `New message from ${senderName} to ${recipient.email} about order ${order.id}`
-    );
+    try {
+      await sendNewMessageEmail({
+        recipientEmail: recipient.email,
+        recipientName: `${recipient.firstName} ${recipient.lastName}`.trim() || recipient.email,
+        senderName,
+        orderId: order.id,
+        productTitle: order.product.title,
+        messagePreview: content.trim(),
+      });
+    } catch (emailError) {
+      console.error("Failed to send message notification email:", emailError);
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json({
       message: {

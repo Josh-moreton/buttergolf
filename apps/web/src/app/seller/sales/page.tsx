@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@buttergolf/db";
 import { SalesOrdersList } from "./SalesOrdersList";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // ISR: Revalidate every 60 seconds
 
 export default async function SellerSalesPage() {
   const { userId: clerkId } = await auth();
@@ -21,43 +21,55 @@ export default async function SellerSalesPage() {
     redirect("/sign-in");
   }
 
-  // Fetch seller's orders (orders where they are the seller)
-  const orders = await prisma.order.findMany({
-    where: {
-      sellerId: user.id,
-    },
-    include: {
-      product: {
-        include: {
-          images: {
-            orderBy: { sortOrder: "asc" },
-            take: 1,
+  // Fetch stats and orders in parallel for better performance
+  const [stats, orders] = await Promise.all([
+    // Database aggregation for stats (faster than in-memory filtering)
+    Promise.all([
+      prisma.order.count({ where: { sellerId: user.id } }),
+      prisma.order.count({
+        where: { sellerId: user.id, status: "PAYMENT_CONFIRMED" },
+      }),
+      prisma.order.count({ where: { sellerId: user.id, status: "SHIPPED" } }),
+      prisma.order.count({ where: { sellerId: user.id, status: "DELIVERED" } }),
+      prisma.order.aggregate({
+        where: { sellerId: user.id },
+        _sum: { stripeSellerPayout: true },
+      }),
+    ]).then(([total, awaitingLabel, shipped, delivered, revenueAgg]) => ({
+      total,
+      awaitingLabel,
+      shipped,
+      delivered,
+      revenue: revenueAgg._sum.stripeSellerPayout || 0,
+    })),
+
+    // Fetch full orders separately
+    prisma.order.findMany({
+      where: { sellerId: user.id },
+      include: {
+        product: {
+          include: {
+            images: {
+              orderBy: { sortOrder: "asc" },
+              take: 1,
+            },
           },
         },
-      },
-      buyer: {
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          imageUrl: true,
+        buyer: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            imageUrl: true,
+          },
         },
+        toAddress: true,
+        fromAddress: true,
       },
-      toAddress: true,
-      fromAddress: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
-
-  // Calculate stats
-  const stats = {
-    total: orders.length,
-    awaitingLabel: orders.filter((o) => o.status === "PAYMENT_CONFIRMED").length,
-    shipped: orders.filter((o) => o.status === "SHIPPED").length,
-    delivered: orders.filter((o) => o.status === "DELIVERED").length,
-    revenue: orders.reduce((sum, o) => sum + (o.stripeSellerPayout || 0), 0),
-  };
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
   return <SalesOrdersList orders={orders} stats={stats} />;
 }

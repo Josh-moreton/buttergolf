@@ -1,6 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  Card,
+  Column,
+  Row,
+  Text,
+  TextArea,
+  Button,
+  Heading,
+  Badge,
+} from "@buttergolf/ui";
+import { RATING_LIMITS } from "@/lib/constants";
+import { formatDate } from "@/lib/utils/format";
 
 interface Rating {
   id: string;
@@ -14,6 +26,14 @@ interface OrderRatingProps {
   isDelivered: boolean;
   isBuyer: boolean;
   sellerName: string;
+}
+
+/**
+ * Get rating label for a given score
+ */
+function getRatingLabel(rating: number): string {
+  const labels = ["", "Poor", "Fair", "Good", "Very Good", "Excellent"];
+  return labels[rating] || "";
 }
 
 export function OrderRating({
@@ -59,6 +79,11 @@ export function OrderRating({
       return;
     }
 
+    if (comment.length > RATING_LIMITS.COMMENT_MAX_LENGTH) {
+      setError("Comment is too long");
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
@@ -88,128 +113,177 @@ export function OrderRating({
     }
   };
 
-  // Don't show anything if loading
-  if (loading) {
+  const isOverLimit = comment.length > RATING_LIMITS.COMMENT_MAX_LENGTH;
+  const displayRating = hoverRating || selectedRating;
+
+  // Don't show anything while loading or if not delivered
+  if (loading || !isDelivered) {
     return null;
   }
 
-  // Don't show if not delivered yet
-  if (!isDelivered) {
-    return null;
-  }
-
-  // Show existing rating
+  // Show existing rating (read-only)
   if (rating) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Seller Rating</h2>
-        <div className="flex items-center gap-2 mb-2">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span
-              key={star}
-              className={`text-2xl ${
-                star <= rating.rating ? "text-yellow-400" : "text-gray-300"
-              }`}
-            >
-              ★
-            </span>
-          ))}
-          <span className="text-lg font-medium ml-2">{rating.rating}/5</span>
-        </div>
-        {rating.comment && (
-          <p className="text-gray-600 mt-2">&quot;{rating.comment}&quot;</p>
-        )}
-        <p className="text-sm text-gray-500 mt-2">
-          Rated on {new Date(rating.createdAt).toLocaleDateString()}
-        </p>
-      </div>
+      <Card variant="elevated" padding="$lg">
+        <Card.Header noBorder>
+          <Heading level={2} size="$7">
+            Seller Rating
+          </Heading>
+        </Card.Header>
+        <Card.Body>
+          <Row alignItems="center" gap="$md" marginBottom="$md">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Text
+                key={star}
+                size="$10"
+                color={star <= rating.rating ? "$warning" : "$textTertiary"}
+                aria-label={`${star} star${star > 1 ? "s" : ""}`}
+              >
+                ★
+              </Text>
+            ))}
+            <Text size="$6" fontWeight="600">
+              {rating.rating}/5
+            </Text>
+          </Row>
+          {rating.comment && (
+            <Text size="$4" color="$textSecondary" marginTop="$md">
+              "{rating.comment}"
+            </Text>
+          )}
+          <Text size="$3" color="$textTertiary" marginTop="$sm">
+            Rated on {formatDate(rating.createdAt)}
+          </Text>
+        </Card.Body>
+      </Card>
     );
   }
 
-  // Show rating form for buyer only
+  // Don't show rating form if not buyer or can't rate
   if (!isBuyer || !canRate) {
     return null;
   }
 
+  // Success state after submission
   if (success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-green-800 mb-2">Thank You!</h2>
-        <p className="text-green-700">
-          Your rating has been submitted. Thanks for helping build trust in our
-          marketplace!
-        </p>
-      </div>
+      <Card variant="elevated" backgroundColor="$successLight" padding="$lg">
+        <Column gap="$md" alignItems="center">
+          <Badge variant="success" size="lg">
+            ✓ Thank You!
+          </Badge>
+          <Heading level={2} size="$7" color="$success" textAlign="center">
+            Your rating has been submitted
+          </Heading>
+          <Text size="$4" color="$textSecondary" textAlign="center">
+            Thanks for helping build trust in our marketplace!
+          </Text>
+        </Column>
+      </Card>
     );
   }
 
+  // Interactive rating form
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold mb-4">Rate Your Experience</h2>
-      <p className="text-gray-600 mb-4">
-        How was your experience with {sellerName || "this seller"}?
-      </p>
+    <Card variant="elevated" padding="$lg">
+      <Card.Header noBorder>
+        <Heading level={2} size="$7">
+          Rate Your Experience
+        </Heading>
+        <Text size="$4" color="$textSecondary" marginTop="$sm">
+          How was your experience with {sellerName || "this seller"}?
+        </Text>
+      </Card.Header>
 
-      {/* Star Rating */}
-      <div className="flex items-center gap-1 mb-4">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            type="button"
-            onClick={() => setSelectedRating(star)}
-            onMouseEnter={() => setHoverRating(star)}
-            onMouseLeave={() => setHoverRating(0)}
-            className="text-3xl focus:outline-none transition-transform hover:scale-110"
-          >
-            <span
-              className={
-                star <= (hoverRating || selectedRating)
-                  ? "text-yellow-400"
-                  : "text-gray-300"
-              }
-            >
-              ★
-            </span>
-          </button>
-        ))}
-        {selectedRating > 0 && (
-          <span className="ml-2 text-gray-600">
-            {selectedRating === 1 && "Poor"}
-            {selectedRating === 2 && "Fair"}
-            {selectedRating === 3 && "Good"}
-            {selectedRating === 4 && "Very Good"}
-            {selectedRating === 5 && "Excellent"}
-          </span>
-        )}
-      </div>
+      <Card.Body>
+        <Column gap="$lg">
+          {/* Star Rating */}
+          <Column gap="$sm">
+            <Row alignItems="center" gap="$sm">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Button
+                  key={star}
+                  chromeless
+                  onPress={() => setSelectedRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  pressStyle={{ scale: 1.1 }}
+                  hoverStyle={{ scale: 1.05 }}
+                  aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
+                  size="$8"
+                  padding="$1"
+                >
+                  <Text
+                    size="$10"
+                    color={star <= displayRating ? "$warning" : "$borderPress"}
+                    style={{
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    ★
+                  </Text>
+                </Button>
+              ))}
+            </Row>
+            {selectedRating > 0 && (
+              <Text size="$4" color="$textSecondary" fontWeight="500">
+                {getRatingLabel(selectedRating)}
+              </Text>
+            )}
+          </Column>
 
-      {/* Comment */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Comment (optional)
-        </label>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Share your experience..."
-          rows={3}
-          maxLength={500}
-          className="w-full border rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <p className="text-xs text-gray-500 mt-1">{comment.length}/500 characters</p>
-      </div>
+          {/* Comment */}
+          <Column gap="$sm">
+            <Text size="$4" fontWeight="600">
+              Tell us more (optional)
+            </Text>
+            <TextArea
+              value={comment}
+              onChangeText={setComment}
+              placeholder="Share your experience with other buyers..."
+              size="md"
+              rows={4}
+              maxLength={RATING_LIMITS.COMMENT_MAX_LENGTH + 100} // Allow typing over but show error
+              error={isOverLimit}
+              aria-label="Rating comment"
+              disabled={submitting}
+            />
+            <Row justifyContent="space-between" alignItems="center">
+              <Text size="$2" color={isOverLimit ? "$error" : "$textTertiary"}>
+                {comment.length}/{RATING_LIMITS.COMMENT_MAX_LENGTH}
+              </Text>
+              {isOverLimit && (
+                <Badge variant="error" size="sm">
+                  Over limit
+                </Badge>
+              )}
+            </Row>
+          </Column>
 
-      {/* Error */}
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {/* Error */}
+          {error && (
+            <Row alignItems="center" gap="$sm">
+              <Badge variant="error">Error</Badge>
+              <Text size="$3" color="$error">
+                {error}
+              </Text>
+            </Row>
+          )}
+        </Column>
+      </Card.Body>
 
-      {/* Submit */}
-      <button
-        onClick={handleSubmit}
-        disabled={submitting || selectedRating === 0}
-        className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-      >
-        {submitting ? "Submitting..." : "Submit Rating"}
-      </button>
-    </div>
+      <Card.Footer align="right">
+        <Button
+          backgroundColor="$primary"
+          color="$textInverse"
+          onPress={handleSubmit}
+          disabled={submitting || selectedRating === 0 || isOverLimit}
+          size="$5"
+          aria-label="Submit rating"
+        >
+          {submitting ? "Submitting..." : "Submit Rating"}
+        </Button>
+      </Card.Footer>
+    </Card>
   );
 }
