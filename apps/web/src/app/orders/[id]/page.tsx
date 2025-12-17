@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@buttergolf/db";
+import { Container, Column } from "@buttergolf/ui";
 import { OrderDetail } from "./OrderDetail";
 
 export const dynamic = "force-dynamic";
@@ -85,8 +86,10 @@ export default async function OrderDetailPage({
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <OrderDetail order={orderWithRole} />
-    </div>
+    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
+      <Column gap="$lg">
+        <OrderDetail order={orderWithRole} />
+      </Column>
+    </Container>
   );
 }

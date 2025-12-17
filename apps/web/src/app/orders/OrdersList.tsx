@@ -1,9 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Row, Text } from "@buttergolf/ui";
+import {
+  Button,
+  Row,
+  Column,
+  Text,
+  Card,
+  Badge,
+  Heading,
+} from "@buttergolf/ui";
+import { View } from "tamagui";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  ShoppingBag,
+  Package,
+  Eye,
+  Download,
+  ExternalLink,
+} from "@tamagui/lucide-icons";
 
 type OrderStatus =
   | "PAYMENT_CONFIRMED"
@@ -65,15 +81,25 @@ interface OrdersListProps {
   orders: Order[];
 }
 
-const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  PENDING: "bg-gray-200 text-gray-700",
-  PRE_TRANSIT: "bg-blue-100 text-blue-700",
-  IN_TRANSIT: "bg-yellow-100 text-yellow-700",
-  OUT_FOR_DELIVERY: "bg-orange-100 text-orange-700",
-  DELIVERED: "bg-green-100 text-green-700",
-  RETURNED: "bg-red-100 text-red-700",
-  FAILED: "bg-red-100 text-red-700",
-  CANCELLED: "bg-gray-100 text-gray-600",
+type BadgeVariant =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "error"
+  | "warning"
+  | "info"
+  | "neutral"
+  | "outline";
+
+const STATUS_BADGE_VARIANT: Record<ShipmentStatus, BadgeVariant> = {
+  PENDING: "neutral",
+  PRE_TRANSIT: "info",
+  IN_TRANSIT: "warning",
+  OUT_FOR_DELIVERY: "primary",
+  DELIVERED: "success",
+  RETURNED: "error",
+  FAILED: "error",
+  CANCELLED: "neutral",
 };
 
 const STATUS_LABELS: Record<ShipmentStatus, string> = {
@@ -87,6 +113,14 @@ const STATUS_LABELS: Record<ShipmentStatus, string> = {
   CANCELLED: "Cancelled",
 };
 
+function formatDate(date: Date): string {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export function OrdersList({ orders }: Readonly<OrdersListProps>) {
   const [filter, setFilter] = useState<"all" | "buyer" | "seller">("all");
 
@@ -95,17 +129,21 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
     return order.userRole === filter;
   });
 
+  const purchasesCount = orders.filter((o) => o.userRole === "buyer").length;
+  const salesCount = orders.filter((o) => o.userRole === "seller").length;
+
   return (
-    <div className="space-y-6">
+    <Column gap="$lg">
       {/* Filter Tabs */}
-      <Row gap="$xs" borderBottomWidth={1} borderBottomColor="$border">
+      <Row gap="$sm" borderBottomWidth={1} borderBottomColor="$border">
         <Button
           chromeless
           onPress={() => setFilter("all")}
-          paddingHorizontal="$4"
-          paddingVertical="$xs"
+          paddingHorizontal="$md"
+          paddingVertical="$sm"
           borderBottomWidth={filter === "all" ? 2 : 0}
           borderBottomColor="$primary"
+          borderRadius={0}
         >
           <Text
             fontWeight="500"
@@ -117,146 +155,213 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
         <Button
           chromeless
           onPress={() => setFilter("buyer")}
-          paddingHorizontal="$4"
-          paddingVertical="$xs"
+          paddingHorizontal="$md"
+          paddingVertical="$sm"
           borderBottomWidth={filter === "buyer" ? 2 : 0}
           borderBottomColor="$primary"
+          borderRadius={0}
+          icon={<ShoppingBag size={16} color={filter === "buyer" ? "var(--color-primary)" : "var(--color-textSecondary)"} />}
         >
           <Text
             fontWeight="500"
             color={filter === "buyer" ? "$primary" : "$textSecondary"}
           >
-            Purchases ({orders.filter((o) => o.userRole === "buyer").length})
+            Purchases ({purchasesCount})
           </Text>
         </Button>
         <Button
           chromeless
           onPress={() => setFilter("seller")}
-          paddingHorizontal="$4"
-          paddingVertical="$xs"
+          paddingHorizontal="$md"
+          paddingVertical="$sm"
           borderBottomWidth={filter === "seller" ? 2 : 0}
           borderBottomColor="$primary"
+          borderRadius={0}
+          icon={<Package size={16} color={filter === "seller" ? "var(--color-primary)" : "var(--color-textSecondary)"} />}
         >
           <Text
             fontWeight="500"
             color={filter === "seller" ? "$primary" : "$textSecondary"}
           >
-            Sales ({orders.filter((o) => o.userRole === "seller").length})
+            Sales ({salesCount})
           </Text>
         </Button>
       </Row>
 
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">No orders found</div>
+        <Card variant="outlined" padding="$xl">
+          <Column alignItems="center" gap="$md" paddingVertical="$xl">
+            <Package size={48} color="var(--color-textMuted)" />
+            <Heading level={4} color="$textSecondary">
+              No orders found
+            </Heading>
+            <Text size="$4" color="$textMuted" textAlign="center">
+              {filter === "all"
+                ? "You haven't made any purchases or sales yet."
+                : filter === "buyer"
+                  ? "You haven't purchased anything yet."
+                  : "You haven't sold anything yet."}
+            </Text>
+            <Link href="/shop" style={{ textDecoration: "none" }}>
+              <Button
+                size="$4"
+                backgroundColor="$primary"
+                color="$textInverse"
+                paddingHorizontal="$lg"
+                borderRadius="$full"
+              >
+                Start Shopping
+              </Button>
+            </Link>
+          </Column>
+        </Card>
       ) : (
-        <div className="space-y-4">
+        <Column gap="$md">
           {filteredOrders.map((order) => (
-            <div
-              key={order.id}
-              className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-            >
-              <div className="flex gap-4">
-                {/* Product Image */}
-                <div className="flex-shrink-0">
-                  {order.product.images[0] ? (
-                    <Image
-                      src={order.product.images[0].url}
-                      alt={order.product.title}
-                      width={100}
-                      height={100}
-                      className="rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="w-[100px] h-[100px] bg-gray-200 rounded-lg flex items-center justify-center">
-                      <span className="text-gray-400 text-xs">No image</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Order Info */}
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-lg">
-                        {order.product.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {order.userRole === "buyer"
-                          ? `Sold by ${`${order.seller.firstName} ${order.seller.lastName}`.trim() || order.seller.email}`
-                          : `Purchased by ${`${order.buyer.firstName} ${order.buyer.lastName}`.trim() || order.buyer.email}`}
-                      </p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        Order #{order.id.slice(0, 8)} •{" "}
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-lg">
-                        £{order.amountTotal.toFixed(2)}
-                      </p>
-                      <span
-                        className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${
-                          STATUS_COLORS[order.shipmentStatus]
-                        }`}
-                      >
-                        {STATUS_LABELS[order.shipmentStatus]}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Shipping Info */}
-                  <div className="mt-4 space-y-2">
-                    {order.carrier && (
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Carrier:</span>{" "}
-                        {order.carrier} {order.service && `(${order.service})`}
-                      </p>
-                    )}
-                    {order.trackingCode && (
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Tracking:</span>{" "}
-                        {order.trackingUrl ? (
-                          <a
-                            href={order.trackingUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                          >
-                            {order.trackingCode}
-                          </a>
-                        ) : (
-                          order.trackingCode
-                        )}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="mt-4 flex gap-2">
-                    <Link
-                      href={`/orders/${order.id}`}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                    >
-                      View Details
-                    </Link>
-                    {order.userRole === "seller" && order.labelUrl && (
-                      <a
-                        href={order.labelUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
-                      >
-                        Download Label
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <OrderCard key={order.id} order={order} />
           ))}
-        </div>
+        </Column>
       )}
-    </div>
+    </Column>
+  );
+}
+
+function OrderCard({ order }: { order: Order }) {
+  const productImage = order.product.images[0]?.url;
+  const otherParty =
+    order.userRole === "buyer" ? order.seller : order.buyer;
+  const otherPartyName =
+    `${otherParty.firstName || ""} ${otherParty.lastName || ""}`.trim() ||
+    otherParty.email;
+  const roleLabel = order.userRole === "buyer" ? "Sold by" : "Purchased by";
+
+  return (
+    <Card variant="elevated" padding="$md" interactive>
+      <Row gap="$md" flexWrap="wrap">
+        {/* Product Image */}
+        <View
+          width={100}
+          height={100}
+          borderRadius="$md"
+          overflow="hidden"
+          backgroundColor="$surface"
+          flexShrink={0}
+        >
+          {productImage ? (
+            <Image
+              src={productImage}
+              alt={order.product.title}
+              width={100}
+              height={100}
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <View
+              width="100%"
+              height="100%"
+              alignItems="center"
+              justifyContent="center"
+              backgroundColor="$border"
+            >
+              <Text color="$textMuted" size="$3">
+                No image
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* Order Info */}
+        <Column flex={1} gap="$sm" minWidth={200}>
+          <Row justifyContent="space-between" alignItems="flex-start" flexWrap="wrap" gap="$sm">
+            <Column gap="$xs" flex={1}>
+              <Text size="$5" fontWeight="600" numberOfLines={1}>
+                {order.product.title}
+              </Text>
+              <Text size="$4" color="$textSecondary">
+                {roleLabel} {otherPartyName}
+              </Text>
+              <Text size="$3" color="$textMuted">
+                Order #{order.id.slice(0, 8)} • {formatDate(order.createdAt)}
+              </Text>
+            </Column>
+            <Column alignItems="flex-end" gap="$xs">
+              <Text size="$6" fontWeight="700">
+                £{order.amountTotal.toFixed(2)}
+              </Text>
+              <Badge
+                variant={STATUS_BADGE_VARIANT[order.shipmentStatus]}
+                size="sm"
+              >
+                {STATUS_LABELS[order.shipmentStatus]}
+              </Badge>
+            </Column>
+          </Row>
+
+          {/* Carrier Info */}
+          {order.carrier && (
+            <Row gap="$sm" alignItems="center" flexWrap="wrap">
+              <Text size="$4" color="$textSecondary">
+                {order.carrier}
+                {order.service && ` (${order.service})`}
+              </Text>
+              {order.trackingCode && order.trackingUrl && (
+                <a
+                  href={order.trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Row gap="$xs" alignItems="center">
+                    <Text size="$4" color="$primary" fontWeight="500">
+                      Track
+                    </Text>
+                    <ExternalLink size={14} color="var(--color-primary)" />
+                  </Row>
+                </a>
+              )}
+            </Row>
+          )}
+
+          {/* Actions */}
+          <Row gap="$sm" marginTop="$xs" flexWrap="wrap">
+            <Link
+              href={`/orders/${order.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                size="$3"
+                backgroundColor="$primary"
+                color="$textInverse"
+                paddingHorizontal="$md"
+                borderRadius="$md"
+                icon={<Eye size={14} color="white" />}
+              >
+                View Details
+              </Button>
+            </Link>
+            {order.userRole === "seller" && order.labelUrl && (
+              <a
+                href={order.labelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  size="$3"
+                  backgroundColor="$success"
+                  color="$textInverse"
+                  paddingHorizontal="$md"
+                  borderRadius="$md"
+                  icon={<Download size={14} color="white" />}
+                >
+                  Download Label
+                </Button>
+              </a>
+            )}
+          </Row>
+        </Column>
+      </Row>
+    </Card>
   );
 }

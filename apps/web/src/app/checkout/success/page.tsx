@@ -326,12 +326,9 @@ function CheckoutSuccessContent() {
                     {order.productBrand}
                   </Text>
                 )}
-                <Row gap="$sm" alignItems="center">
-                  <Text size="$4" color="$textSecondary">
-                    Sold by
-                  </Text>
-                  <Badge variant="secondary" size="sm">{order.sellerName}</Badge>
-                </Row>
+                <Text size="$4" color="$textSecondary">
+                  Sold by {order.sellerName}
+                </Text>
               </Column>
             </Row>
           </Card>
@@ -500,11 +497,11 @@ function CheckoutSuccessContent() {
             </Column>
           </Card>
 
-          {/* Action Buttons - Primary Row */}
-          <Row gap="$md" marginTop="$md" fullWidth>
+          {/* Action Buttons - All in one row */}
+          <Row gap="$md" marginTop="$md" fullWidth flexWrap="wrap">
             <Link
               href={`/orders/${order.id}`}
-              style={{ textDecoration: "none", flex: 1 }}
+              style={{ textDecoration: "none", flex: 1, minWidth: 180 }}
             >
               <Button
                 size="$5"
@@ -516,16 +513,12 @@ function CheckoutSuccessContent() {
                 View Order Details
               </Button>
             </Link>
-          </Row>
-
-          {/* Secondary Actions */}
-          <Row gap="$md" fullWidth>
             <Link
               href={`/orders/${order.id}#messages`}
-              style={{ textDecoration: "none", flex: 1 }}
+              style={{ textDecoration: "none", flex: 1, minWidth: 180 }}
             >
               <Button
-                size="$4"
+                size="$5"
                 width="100%"
                 borderWidth={2}
                 borderColor="$primary"
@@ -533,11 +526,19 @@ function CheckoutSuccessContent() {
                 color="$primary"
                 borderRadius="$full"
               >
-                💬 Message Seller
+                Message Seller
               </Button>
             </Link>
-            <Link href="/" style={{ textDecoration: "none", flex: 1 }}>
-              <Button butterVariant="secondary" size="$5" width="100%" height={56}>
+            <Link href="/" style={{ textDecoration: "none", flex: 1, minWidth: 180 }}>
+              <Button
+                size="$5"
+                width="100%"
+                borderWidth={2}
+                borderColor="$border"
+                backgroundColor="transparent"
+                color="$text"
+                borderRadius="$full"
+              >
                 Continue Shopping
               </Button>
             </Link>

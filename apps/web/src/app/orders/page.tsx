@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@buttergolf/db";
+import { Container, Column, Heading } from "@buttergolf/ui";
 import { OrdersList } from "./OrdersList";
 
 export const dynamic = "force-dynamic";
@@ -67,9 +68,11 @@ export default async function OrdersPage() {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
-      <OrdersList orders={ordersWithRole} />
-    </div>
+    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
+      <Column gap="$lg">
+        <Heading level={1}>My Orders</Heading>
+        <OrdersList orders={ordersWithRole} />
+      </Column>
+    </Container>
   );
 }
