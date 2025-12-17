@@ -14,10 +14,8 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Use Resend's testing email in dev, your domain in production
-const FROM_EMAIL = process.env.NODE_ENV === "production"
-  ? "ButterGolf <notifications@buttergolf.co.uk>"
-  : "ButterGolf <onboarding@resend.dev>";
+// Use verified Resend domain for sending emails
+const FROM_EMAIL = "ButterGolf <notifications@notifications.buttergolf.com>";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://buttergolf.co.uk";
 
