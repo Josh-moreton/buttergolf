@@ -57,6 +57,39 @@ const StoreIcon = () => (
   </svg>
 );
 
+const OrdersIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    width={16}
+    height={16}
+  >
+    <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z" />
+    <path
+      fillRule="evenodd"
+      d="m3.087 9 .54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087zm6.163 3.75A.75.75 0 0110 12h4a.75.75 0 010 1.5h-4a.75.75 0 01-.75-.75z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const MessageIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    width={16}
+    height={16}
+  >
+    <path
+      fillRule="evenodd"
+      d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
 // Category navigation items
 const NAV_CATEGORIES = [
   { name: "Shop all", href: "/listings" },
@@ -401,6 +434,16 @@ export function ButterHeader() {
                   }}
                 >
                   <UserButton.MenuItems>
+                    <UserButton.Link
+                      label="My Orders"
+                      labelIcon={<OrdersIcon />}
+                      href="/orders"
+                    />
+                    <UserButton.Link
+                      label="Messages"
+                      labelIcon={<MessageIcon />}
+                      href="/messages"
+                    />
                     <UserButton.Link
                       label="Favourites"
                       labelIcon={<HeartIcon />}

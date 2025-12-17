@@ -233,12 +233,19 @@ export async function POST(req: Request) {
 
       console.log("Order created successfully:", order.id);
 
-      // Send notification emails (async, don't block webhook response)
+      // Send notification emails with detailed logging
       const buyerName = `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email;
       const sellerName = `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email;
 
+      console.log("📧 Sending order notification emails...", {
+        orderId: order.id,
+        buyerEmail: buyer.email,
+        sellerEmail: product.user.email,
+        hasResendApiKey: !!process.env.RESEND_API_KEY,
+      });
+
       // Send order confirmation to buyer
-      sendOrderConfirmationEmail({
+      const buyerEmailResult = await sendOrderConfirmationEmail({
         buyerEmail: buyer.email,
         buyerName,
         orderId: order.id,
@@ -246,10 +253,24 @@ export async function POST(req: Request) {
         productImage: product.images?.[0]?.url,
         amountTotal,
         sellerName,
-      }).catch((err) => console.error("Failed to send buyer email:", err));
+      });
+
+      if (buyerEmailResult.success) {
+        console.log("✅ Buyer confirmation email sent successfully:", {
+          orderId: order.id,
+          emailId: buyerEmailResult.id,
+          recipient: buyer.email,
+        });
+      } else {
+        console.error("❌ Failed to send buyer confirmation email:", {
+          orderId: order.id,
+          recipient: buyer.email,
+          error: buyerEmailResult.error,
+        });
+      }
 
       // Send new sale notification to seller
-      sendNewSaleEmail({
+      const sellerEmailResult = await sendNewSaleEmail({
         sellerEmail: product.user.email,
         sellerName,
         orderId: order.id,
@@ -261,7 +282,21 @@ export async function POST(req: Request) {
           city: shippingDetails.address.city || "",
           zip: shippingDetails.address.postal_code || "",
         },
-      }).catch((err) => console.error("Failed to send seller email:", err));
+      });
+
+      if (sellerEmailResult.success) {
+        console.log("✅ Seller notification email sent successfully:", {
+          orderId: order.id,
+          emailId: sellerEmailResult.id,
+          recipient: product.user.email,
+        });
+      } else {
+        console.error("❌ Failed to send seller notification email:", {
+          orderId: order.id,
+          recipient: product.user.email,
+          error: sellerEmailResult.error,
+        });
+      }
 
       return NextResponse.json({
         received: true,

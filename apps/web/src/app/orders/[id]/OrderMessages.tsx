@@ -168,18 +168,15 @@ export function OrderMessages({
         <Column
           ref={messageListRef}
           height={320}
-          overflow="auto"
+          style={{ overflow: "auto" }}
           backgroundColor="$background"
           borderRadius="$md"
           padding="$md"
           gap="$md"
-          role="log"
-          aria-live="polite"
-          aria-label="Message history"
         >
           {loading ? (
             <Column alignItems="center" justifyContent="center" height="100%">
-              <Spinner size="large" />
+              <Spinner size="lg" />
               <Text size="$4" color="$textSecondary" marginTop="$sm">
                 Loading messages...
               </Text>
@@ -265,7 +262,6 @@ export function OrderMessages({
                 rows={2}
                 maxLength={MESSAGE_LIMITS.MAX_LENGTH + 100} // Allow typing over but show error
                 error={isOverLimit}
-                aria-label="Message input"
                 disabled={sending}
               />
               <Row justifyContent="space-between" alignItems="center">
@@ -286,7 +282,6 @@ export function OrderMessages({
               onPress={handleSend}
               disabled={sending || !newMessage.trim() || isOverLimit}
               size="$5"
-              aria-label="Send message"
             >
               {sending ? "Sending..." : "Send"}
             </Button>

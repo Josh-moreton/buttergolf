@@ -11,8 +11,10 @@ import {
   Spinner,
   Row,
   Image,
+  Badge,
 } from "@buttergolf/ui";
 import Link from "next/link";
+import confetti from "canvas-confetti";
 
 interface OrderDetails {
   id: string;
@@ -28,6 +30,7 @@ interface OrderDetails {
   orderStatus: string;
   shipmentStatus: string;
   sellerName: string;
+  sellerId: string;
   shippingAddress: {
     name: string;
     street1: string;
@@ -56,6 +59,39 @@ function CheckoutSuccessContent() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pollCount, setPollCount] = useState(0);
+  const [hasConfetti, setHasConfetti] = useState(false);
+
+  // Trigger confetti celebration when order loads
+  useEffect(() => {
+    if (order && !hasConfetti) {
+      setHasConfetti(true);
+      // Fire confetti!
+      const duration = 2 * 1000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ["#F45314", "#FFFAD2", "#3E3B2C"],
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ["#F45314", "#FFFAD2", "#3E3B2C"],
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+    }
+  }, [order, hasConfetti]);
 
   const fetchOrder = useCallback(async () => {
     if (!sessionId) {
@@ -230,30 +266,49 @@ function CheckoutSuccessContent() {
       justifyContent="center"
       paddingVertical="$3xl"
       paddingHorizontal="$lg"
+      minHeight="70vh"
     >
-      <Card variant="elevated" padding="$xl" maxWidth={600} fullWidth>
+      <Card variant="elevated" padding="$xl" maxWidth={640} fullWidth>
         <Column gap="$lg" alignItems="center">
-          {/* Success Icon */}
+          {/* Success Icon - Larger and more celebratory */}
           <Column
-            backgroundColor="$successLight"
+            backgroundColor="$success"
             borderRadius="$full"
             padding="$lg"
             alignItems="center"
             justifyContent="center"
-            width={80}
-            height={80}
+            width={100}
+            height={100}
+            animation="bouncy"
+            enterStyle={{ scale: 0.5, opacity: 0 }}
+            scale={1}
+            opacity={1}
           >
-            <Text size="$9">✓</Text>
+            <Text size="$11" color="$textInverse">✓</Text>
           </Column>
 
           {/* Success Message */}
           <Column gap="$sm" alignItems="center">
-            <Heading level={2}>Order Confirmed!</Heading>
-            <Text color="$textSecondary" textAlign="center">
-              Thank you for your purchase. Your order has been successfully
-              placed.
+            <Heading level={1} textAlign="center">Order Confirmed! 🎉</Heading>
+            <Text color="$textSecondary" textAlign="center" size="$5">
+              Thank you for your purchase. Your order has been successfully placed.
             </Text>
           </Column>
+
+          {/* Email Confirmation Notice */}
+          <Row
+            backgroundColor="$successLight"
+            borderRadius="$md"
+            padding="$md"
+            gap="$sm"
+            alignItems="center"
+            fullWidth
+          >
+            <Text size="$5">📧</Text>
+            <Text size="$4" color="$success" flex={1}>
+              A confirmation email has been sent to your inbox
+            </Text>
+          </Row>
 
           {/* Product Summary */}
           <Card variant="outlined" padding="$md" fullWidth>
@@ -261,35 +316,121 @@ function CheckoutSuccessContent() {
               {order.productImage && (
                 <Image
                   source={{ uri: order.productImage }}
-                  width={60}
-                  height={60}
+                  width={80}
+                  height={80}
                   borderRadius="$md"
                   alt={order.productTitle}
                 />
               )}
               <Column gap="$xs" flex={1}>
-                <Text weight="semibold" numberOfLines={2}>
+                <Text weight="bold" size="$5" numberOfLines={2}>
                   {order.productTitle}
                 </Text>
                 {order.productBrand && (
-                  <Text size="$3" color="$textSecondary">
+                  <Text size="$4" color="$textSecondary">
                     {order.productBrand}
                   </Text>
                 )}
-                <Text size="$3" color="$textSecondary">
-                  Sold by {order.sellerName}
-                </Text>
+                <Row gap="$sm" alignItems="center">
+                  <Text size="$4" color="$textSecondary">
+                    Sold by
+                  </Text>
+                  <Badge variant="secondary" size="sm">{order.sellerName}</Badge>
+                </Row>
               </Column>
             </Row>
           </Card>
+
+          {/* Order Progress Tracker */}
+          <Column gap="$md" fullWidth paddingVertical="$md">
+            <Text weight="semibold" size="$5">Order Status</Text>
+            <Row gap="$sm" alignItems="center" fullWidth>
+              {/* Step 1: Payment Confirmed */}
+              <Column alignItems="center" flex={1}>
+                <Column
+                  backgroundColor="$success"
+                  borderRadius="$full"
+                  width={32}
+                  height={32}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text color="$textInverse" size="$3">✓</Text>
+                </Column>
+                <Text size="$2" color="$success" textAlign="center" marginTop="$xs">
+                  Payment
+                </Text>
+              </Column>
+              
+              {/* Connector */}
+              <Column flex={1} height={2} backgroundColor="$border" marginTop={-16} />
+              
+              {/* Step 2: Preparing */}
+              <Column alignItems="center" flex={1}>
+                <Column
+                  backgroundColor="$primary"
+                  borderRadius="$full"
+                  width={32}
+                  height={32}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text color="$textInverse" size="$3">2</Text>
+                </Column>
+                <Text size="$2" color="$primary" weight="semibold" textAlign="center" marginTop="$xs">
+                  Preparing
+                </Text>
+              </Column>
+              
+              {/* Connector */}
+              <Column flex={1} height={2} backgroundColor="$border" marginTop={-16} />
+              
+              {/* Step 3: Shipped */}
+              <Column alignItems="center" flex={1}>
+                <Column
+                  backgroundColor="$border"
+                  borderRadius="$full"
+                  width={32}
+                  height={32}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text color="$textSecondary" size="$3">3</Text>
+                </Column>
+                <Text size="$2" color="$textSecondary" textAlign="center" marginTop="$xs">
+                  Shipped
+                </Text>
+              </Column>
+              
+              {/* Connector */}
+              <Column flex={1} height={2} backgroundColor="$border" marginTop={-16} />
+              
+              {/* Step 4: Delivered */}
+              <Column alignItems="center" flex={1}>
+                <Column
+                  backgroundColor="$border"
+                  borderRadius="$full"
+                  width={32}
+                  height={32}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text color="$textSecondary" size="$3">4</Text>
+                </Column>
+                <Text size="$2" color="$textSecondary" textAlign="center" marginTop="$xs">
+                  Delivered
+                </Text>
+              </Column>
+            </Row>
+          </Column>
 
           {/* Order Details */}
           <Card variant="outlined" padding="$lg" fullWidth>
             <Column gap="$md">
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Order ID</Text>
-                <Text weight="semibold" size="$3">
-                  {order.id.slice(0, 8).toUpperCase()}
+                <Text weight="bold" fontFamily="$body">
+                  #{order.id.slice(0, 8).toUpperCase()}
                 </Text>
               </Row>
 
@@ -312,44 +453,43 @@ function CheckoutSuccessContent() {
                 borderTopWidth={1}
                 borderTopColor="$border"
               >
-                <Text weight="semibold">Total Paid</Text>
-                <Text weight="bold" size="$6" color="$primary">
+                <Text weight="bold" size="$5">Total Paid</Text>
+                <Text weight="bold" size="$7" color="$primary">
                   £{order.amountTotal.toFixed(2)}
                 </Text>
               </Row>
 
-              {order.trackingCode && (
-                <>
-                  <Row
-                    justifyContent="space-between"
-                    alignItems="center"
-                    paddingTop="$sm"
-                    borderTopWidth={1}
-                    borderTopColor="$border"
-                  >
-                    <Text color="$textSecondary">Tracking</Text>
-                    <Text weight="semibold" size="$3">
-                      {order.trackingCode}
-                    </Text>
-                  </Row>
-
-                  {order.carrier && (
-                    <Row justifyContent="space-between" alignItems="center">
-                      <Text color="$textSecondary">Carrier</Text>
-                      <Text weight="semibold">
-                        {order.carrier} {order.service}
-                      </Text>
-                    </Row>
-                  )}
-                </>
-              )}
+              {/* Estimated Delivery */}
+              <Row
+                justifyContent="space-between"
+                alignItems="center"
+                paddingTop="$sm"
+                borderTopWidth={1}
+                borderTopColor="$border"
+              >
+                <Text color="$textSecondary">Est. Delivery</Text>
+                <Text weight="semibold" color="$info">
+                  {new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })} - {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </Text>
+              </Row>
             </Column>
           </Card>
 
           {/* Shipping Address */}
           <Card variant="outlined" padding="$lg" fullWidth>
             <Column gap="$sm">
-              <Text weight="semibold">Shipping To</Text>
+              <Row gap="$sm" alignItems="center">
+                <Text size="$5">📍</Text>
+                <Text weight="semibold">Shipping To</Text>
+              </Row>
               <Text color="$textSecondary">
                 {order.shippingAddress.name}
               </Text>
@@ -365,29 +505,8 @@ function CheckoutSuccessContent() {
             </Column>
           </Card>
 
-          {/* What's Next */}
-          <Column gap="$sm" paddingTop="$md" fullWidth>
-            <Text weight="semibold" size="$4">
-              What happens next?
-            </Text>
-            <Column gap="$xs" paddingLeft="$md">
-              <Text color="$textSecondary" size="$3">
-                • You&apos;ll receive an order confirmation email
-              </Text>
-              <Text color="$textSecondary" size="$3">
-                • The seller will prepare your item for shipping
-              </Text>
-              <Text color="$textSecondary" size="$3">
-                • You&apos;ll get tracking updates via email
-              </Text>
-              <Text color="$textSecondary" size="$3">
-                • Track your order anytime in &quot;My Orders&quot;
-              </Text>
-            </Column>
-          </Column>
-
-          {/* Action Buttons */}
-          <Row gap="$md" marginTop="$lg" fullWidth>
+          {/* Action Buttons - Primary Row */}
+          <Row gap="$md" marginTop="$md" fullWidth>
             <Link
               href={`/orders/${order.id}`}
               style={{ textDecoration: "none", flex: 1 }}
@@ -397,17 +516,39 @@ function CheckoutSuccessContent() {
                 width="100%"
                 backgroundColor="$primary"
                 color="$textInverse"
+                borderRadius="$full"
               >
                 View Order Details
               </Button>
             </Link>
+          </Row>
+
+          {/* Secondary Actions */}
+          <Row gap="$md" fullWidth>
+            <Link
+              href={`/orders/${order.id}#messages`}
+              style={{ textDecoration: "none", flex: 1 }}
+            >
+              <Button
+                size="$4"
+                width="100%"
+                borderWidth={2}
+                borderColor="$primary"
+                backgroundColor="transparent"
+                color="$primary"
+                borderRadius="$full"
+              >
+                💬 Message Seller
+              </Button>
+            </Link>
             <Link href="/" style={{ textDecoration: "none", flex: 1 }}>
               <Button
-                size="$5"
+                size="$4"
                 width="100%"
                 borderWidth={1}
                 borderColor="$border"
                 backgroundColor="transparent"
+                borderRadius="$full"
               >
                 Continue Shopping
               </Button>
