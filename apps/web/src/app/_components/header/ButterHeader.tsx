@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { MessageSquare } from "lucide-react";
 import {
   Row,
   Column,
@@ -211,22 +212,6 @@ export function ButterHeader() {
                   Selling
                 </Text>
               </Link>
-
-              <SignedIn>
-                <Link href="/messages" style={{ textDecoration: "none" }}>
-                  <Text
-                    size="$6"
-                    weight={isActive("/messages") ? "bold" : "normal"}
-                    color={isActive("/messages") ? "$primary" : "$text"}
-                    cursor="pointer"
-                    hoverStyle={{
-                      color: "$primary",
-                    }}
-                  >
-                    Messages
-                  </Text>
-                </Link>
-              </SignedIn>
             </Row>
 
             {/* Right Side: Auth Buttons - Desktop Only */}
@@ -255,6 +240,28 @@ export function ButterHeader() {
               </SignedOut>
 
               <SignedIn>
+                <Link
+                  href="/messages"
+                  style={{ textDecoration: "none" }}
+                  aria-label="Messages"
+                  title="Messages"
+                >
+                  <Row
+                    alignItems="center"
+                    justifyContent="center"
+                    padding="$2"
+                    minWidth={44}
+                    minHeight={44}
+                    borderRadius="$full"
+                    color={isActive("/messages") ? "$primary" : "$text"}
+                    hoverStyle={{
+                      backgroundColor: "$backgroundHover",
+                    }}
+                  >
+                    <MessageSquare size={20} color="currentColor" />
+                  </Row>
+                </Link>
+
                 <UserButton
                   appearance={{
                     elements: {
