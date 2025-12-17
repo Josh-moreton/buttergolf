@@ -243,12 +243,7 @@ function CheckoutSuccessContent() {
                 </Button>
               </Link>
               <Link href="/" style={{ textDecoration: "none" }}>
-                <Button
-                  size="$5"
-                  borderWidth={1}
-                  borderColor="$border"
-                  backgroundColor="transparent"
-                >
+                <Button butterVariant="secondary" size="$5" width="100%" height={56}>
                   Continue Shopping
                 </Button>
               </Link>
@@ -542,14 +537,7 @@ function CheckoutSuccessContent() {
               </Button>
             </Link>
             <Link href="/" style={{ textDecoration: "none", flex: 1 }}>
-              <Button
-                size="$4"
-                width="100%"
-                borderWidth={1}
-                borderColor="$border"
-                backgroundColor="transparent"
-                borderRadius="$full"
-              >
+              <Button butterVariant="secondary" size="$5" width="100%" height={56}>
                 Continue Shopping
               </Button>
             </Link>
