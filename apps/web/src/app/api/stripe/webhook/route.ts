@@ -213,8 +213,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Get shipping details from the session
+  // Note: Stripe API 2025-11-17+ puts shipping under collected_information.shipping_details
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const shippingDetails = (session as any).shipping_details as {
+  const sessionAny = session as any;
+  const shippingDetails = (
+    sessionAny.collected_information?.shipping_details ||  // New API location
+    sessionAny.shipping_details                            // Legacy fallback
+  ) as {
     address?: {
       line1?: string;
       line2?: string;
@@ -228,7 +233,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const customerDetails = session.customer_details;
 
   if (!shippingDetails?.address) {
-    console.error("Missing shipping details in session");
+    console.error("Missing shipping details in session. Available fields:", {
+      hasCollectedInfo: !!sessionAny.collected_information,
+      hasShippingDetails: !!sessionAny.shipping_details,
+      collectedInfoKeys: Object.keys(sessionAny.collected_information || {}),
+    });
     return NextResponse.json(
       { error: "Missing shipping details" },
       { status: 400 },
