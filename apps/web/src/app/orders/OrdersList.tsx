@@ -9,6 +9,7 @@ import {
   Card,
   Badge,
   Heading,
+  Container,
 } from "@buttergolf/ui";
 import { View } from "tamagui";
 import Link from "next/link";
@@ -133,9 +134,12 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
   const salesCount = orders.filter((o) => o.userRole === "seller").length;
 
   return (
-    <Column gap="$lg">
-      {/* Filter Tabs */}
-      <Row gap="$sm" borderBottomWidth={1} borderBottomColor="$border">
+    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
+      <Column gap="$lg">
+        <Heading level={1}>My Orders</Heading>
+
+        {/* Filter Tabs */}
+        <Row gap="$sm" borderBottomWidth={1} borderBottomColor="$border">
         <Button
           chromeless
           onPress={() => setFilter("all")}
@@ -223,7 +227,8 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
           ))}
         </Column>
       )}
-    </Column>
+      </Column>
+    </Container>
   );
 }
 

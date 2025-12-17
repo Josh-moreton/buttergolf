@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@buttergolf/db";
-import { Container, Column, Heading } from "@buttergolf/ui";
 import { OrdersList } from "./OrdersList";
 
 export const dynamic = "force-dynamic";
@@ -67,12 +66,6 @@ export default async function OrdersPage() {
       order.buyerId === user.id ? ("buyer" as const) : ("seller" as const),
   }));
 
-  return (
-    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
-      <Column gap="$lg">
-        <Heading level={1}>My Orders</Heading>
-        <OrdersList orders={ordersWithRole} />
-      </Column>
-    </Container>
-  );
+  // Client component handles all UI rendering including layout
+  return <OrdersList orders={ordersWithRole} />;
 }

@@ -14,6 +14,7 @@ import {
   Badge,
   Button,
   Separator,
+  Container,
 } from "@buttergolf/ui";
 import { View } from "tamagui";
 import { buildTrackingUrl } from "@/lib/utils/format";
@@ -287,7 +288,8 @@ export function OrderDetail({ order }: OrderDetailProps) {
   const productImage = order.product.images[0]?.url;
 
   return (
-    <Column gap="$lg">
+    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
+      <Column gap="$lg">
       {/* Back Link */}
       <Link href="/orders" style={{ textDecoration: "none" }}>
         <Row gap="$xs" alignItems="center" hoverStyle={{ opacity: 0.7 }}>
@@ -645,5 +647,6 @@ export function OrderDetail({ order }: OrderDetailProps) {
         />
       </AnimationErrorBoundary>
     </Column>
+    </Container>
   );
 }
