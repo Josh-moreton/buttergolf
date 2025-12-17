@@ -211,6 +211,22 @@ export function ButterHeader() {
                   Selling
                 </Text>
               </Link>
+
+              <SignedIn>
+                <Link href="/messages" style={{ textDecoration: "none" }}>
+                  <Text
+                    size="$6"
+                    weight={isActive("/messages") ? "bold" : "normal"}
+                    color={isActive("/messages") ? "$primary" : "$text"}
+                    cursor="pointer"
+                    hoverStyle={{
+                      color: "$primary",
+                    }}
+                  >
+                    Messages
+                  </Text>
+                </Link>
+              </SignedIn>
             </Row>
 
             {/* Right Side: Auth Buttons - Desktop Only */}
@@ -247,6 +263,16 @@ export function ButterHeader() {
                   }}
                 >
                   <UserButton.MenuItems>
+                    <UserButton.Link
+                      label="My Orders"
+                      labelIcon={<OrdersIcon />}
+                      href="/orders"
+                    />
+                    <UserButton.Link
+                      label="Messages"
+                      labelIcon={<MessageIcon />}
+                      href="/messages"
+                    />
                     <UserButton.Link
                       label="Favourites"
                       labelIcon={<HeartIcon />}
