@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { sendOrderConfirmationEmail, sendNewSaleEmail } from "@/lib/email";
 
 // Disable body parsing for webhook
 export const runtime = "nodejs";
@@ -108,6 +109,10 @@ export async function POST(req: Request) {
                 take: 1,
               },
             },
+          },
+          images: {
+            orderBy: { sortOrder: "asc" },
+            take: 1,
           },
         },
       });
@@ -228,8 +233,70 @@ export async function POST(req: Request) {
 
       console.log("Order created successfully:", order.id);
 
-      // TODO: Send notification emails to buyer and seller
-      // TODO: Generate shipping label via ShipEngine when seller confirms
+      // Send notification emails with detailed logging
+      const buyerName = `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email;
+      const sellerName = `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email;
+
+      console.log("📧 Sending order notification emails...", {
+        orderId: order.id,
+        buyerEmail: buyer.email,
+        sellerEmail: product.user.email,
+        hasResendApiKey: !!process.env.RESEND_API_KEY,
+      });
+
+      // Send order confirmation to buyer
+      const buyerEmailResult = await sendOrderConfirmationEmail({
+        buyerEmail: buyer.email,
+        buyerName,
+        orderId: order.id,
+        productTitle: product.title,
+        productImage: product.images?.[0]?.url,
+        amountTotal,
+        sellerName,
+      });
+
+      if (buyerEmailResult.success) {
+        console.log("✅ Buyer confirmation email sent successfully:", {
+          orderId: order.id,
+          emailId: buyerEmailResult.id,
+          recipient: buyer.email,
+        });
+      } else {
+        console.error("❌ Failed to send buyer confirmation email:", {
+          orderId: order.id,
+          recipient: buyer.email,
+          error: buyerEmailResult.error,
+        });
+      }
+
+      // Send new sale notification to seller
+      const sellerEmailResult = await sendNewSaleEmail({
+        sellerEmail: product.user.email,
+        sellerName,
+        orderId: order.id,
+        productTitle: product.title,
+        buyerName,
+        amountTotal,
+        sellerPayout,
+        shippingAddress: {
+          city: shippingDetails.address.city || "",
+          zip: shippingDetails.address.postal_code || "",
+        },
+      });
+
+      if (sellerEmailResult.success) {
+        console.log("✅ Seller notification email sent successfully:", {
+          orderId: order.id,
+          emailId: sellerEmailResult.id,
+          recipient: product.user.email,
+        });
+      } else {
+        console.error("❌ Failed to send seller notification email:", {
+          orderId: order.id,
+          recipient: product.user.email,
+          error: sellerEmailResult.error,
+        });
+      }
 
       return NextResponse.json({
         received: true,

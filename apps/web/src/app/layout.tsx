@@ -38,7 +38,10 @@ export const metadata: Metadata = {
   title: "ButterGolf",
   description: "P2P Marketplace for Golf Equipment",
   manifest: "/site.webmanifest",
-  // Icons are auto-detected from app directory: favicon.ico, apple-icon.png
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

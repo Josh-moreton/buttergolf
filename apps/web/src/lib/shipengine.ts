@@ -1,4 +1,6 @@
 import { prisma } from "@buttergolf/db";
+import { PENDING_ADDRESS, SHIPENGINE_CARRIER_CODES } from "./constants";
+import { buildTrackingUrl } from "./utils/format";
 
 // ShipEngine API client for UK shipping
 const SHIPENGINE_API_KEY = process.env.SHIPENGINE_API_KEY;
@@ -358,3 +360,273 @@ export async function estimateShippingRate(
     note: `Estimate to ${postcode}${county ? `, ${county}` : ""} only - actual rates calculated at checkout`,
   };
 }
+
+// ============================================================================
+// LABEL GENERATION
+// ============================================================================
+
+export interface LabelGenerationResult {
+  labelId: string;
+  shipmentId: string;
+  trackingNumber: string;
+  trackingUrl: string;
+  labelUrl: string;
+  carrier: string;
+  service: string;
+  estimatedDelivery?: string;
+}
+
+interface ShipEngineLabelResponse {
+  label_id: string;
+  shipment_id: string;
+  tracking_number: string;
+  carrier_code: string;
+  service_code: string;
+  label_download: {
+    pdf: string;
+    png: string;
+    zpl: string;
+    href: string;
+  };
+  tracking_status: string;
+  ship_date: string;
+  estimated_delivery_date?: string;
+}
+
+/**
+ * Generate a shipping label for an order using ShipEngine
+ * Uses the shipping amount already paid at checkout
+ */
+export async function generateShippingLabel(params: {
+  orderId: string;
+}): Promise<LabelGenerationResult> {
+  const { orderId } = params;
+
+  if (!SHIPENGINE_API_KEY) {
+    throw new Error("ShipEngine API key not configured");
+  }
+
+  // Get order with all required data
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
+      product: true,
+      fromAddress: true,
+      toAddress: true,
+      seller: true,
+      buyer: true,
+    },
+  });
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  if (order.labelUrl) {
+    throw new Error("Label already generated for this order");
+  }
+
+  // Validate seller address
+  if (order.fromAddress.street1 === PENDING_ADDRESS) {
+    throw new Error("Seller must update their shipping address before generating a label");
+  }
+
+  // Prepare dimensions
+  const dimensions = {
+    length: order.product.length || 30,
+    width: order.product.width || 20,
+    height: order.product.height || 10,
+    weight: order.product.weight || 500,
+  };
+
+  // Convert to imperial (ShipEngine prefers inches/ounces)
+  const lengthInches = dimensions.length / 2.54;
+  const widthInches = dimensions.width / 2.54;
+  const heightInches = dimensions.height / 2.54;
+  const weightOunces = dimensions.weight / 28.3495;
+
+  // Get rates to find the best matching rate for the shipping cost
+  const rateRequest = {
+    rate_options: {
+      carrier_ids: [],
+    },
+    shipment: {
+      ship_from: {
+        name: order.fromAddress.name || `${order.seller.firstName} ${order.seller.lastName}`.trim(),
+        address_line1: order.fromAddress.street1,
+        address_line2: order.fromAddress.street2 || undefined,
+        city_locality: order.fromAddress.city,
+        state_province: order.fromAddress.state || "",
+        postal_code: order.fromAddress.zip,
+        country_code: order.fromAddress.country || "GB",
+        phone: order.fromAddress.phone || undefined,
+      },
+      ship_to: {
+        name: order.toAddress.name || `${order.buyer.firstName} ${order.buyer.lastName}`.trim(),
+        address_line1: order.toAddress.street1,
+        address_line2: order.toAddress.street2 || undefined,
+        city_locality: order.toAddress.city,
+        state_province: order.toAddress.state || "",
+        postal_code: order.toAddress.zip,
+        country_code: order.toAddress.country || "GB",
+        phone: order.toAddress.phone || undefined,
+      },
+      packages: [
+        {
+          weight: {
+            value: weightOunces,
+            unit: "ounce",
+          },
+          dimensions: {
+            length: lengthInches,
+            width: widthInches,
+            height: heightInches,
+            unit: "inch",
+          },
+        },
+      ],
+    },
+  };
+
+  // Get available rates
+  const ratesResponse = await shipEngineRequest<ShipEngineRateResponse>(
+    "/v1/rates",
+    "POST",
+    rateRequest,
+  );
+
+  // Find a rate that fits within the shipping budget
+  const availableRates = ratesResponse.rate_response.rates
+    .filter((rate) => rate.shipping_amount.amount > 0)
+    .sort((a, b) => a.shipping_amount.amount - b.shipping_amount.amount);
+
+  if (availableRates.length === 0) {
+    throw new Error("No shipping rates available for this route");
+  }
+
+  // Select the best rate within budget, or the cheapest if all are over budget
+  const budgetInCurrency = order.shippingCost;
+  let selectedRate = availableRates.find(
+    (rate) => rate.shipping_amount.amount <= budgetInCurrency
+  );
+  
+  if (!selectedRate) {
+    // Use cheapest if nothing within budget (platform absorbs the difference)
+    selectedRate = availableRates[0];
+    console.warn(
+      `No rate within budget (£${budgetInCurrency}), using cheapest: £${selectedRate.shipping_amount.amount}`
+    );
+  }
+
+  // Create the label using the selected rate
+  const labelRequest = {
+    rate_id: selectedRate.rate_id,
+    label_format: "pdf",
+    label_layout: "4x6",
+  };
+
+  const labelResponse = await shipEngineRequest<ShipEngineLabelResponse>(
+    "/v1/labels",
+    "POST",
+    labelRequest,
+  );
+
+  // Build carrier-specific tracking URL
+  const trackingUrl = buildTrackingUrl(
+    selectedRate.carrier_friendly_name,
+    labelResponse.tracking_number
+  );
+
+  // Update order in database
+  await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      shipEngineShipmentId: labelResponse.shipment_id,
+      shipEngineRateId: selectedRate.rate_id,
+      labelUrl: labelResponse.label_download.pdf,
+      labelFormat: "pdf",
+      trackingCode: labelResponse.tracking_number,
+      trackingUrl: trackingUrl,
+      carrier: selectedRate.carrier_friendly_name,
+      service: selectedRate.service_type,
+      labelGeneratedAt: new Date(),
+      status: "LABEL_GENERATED",
+      shipmentStatus: "PRE_TRANSIT",
+      estimatedDelivery: selectedRate.estimated_delivery_date
+        ? new Date(selectedRate.estimated_delivery_date)
+        : undefined,
+    },
+  });
+
+  return {
+    labelId: labelResponse.label_id,
+    shipmentId: labelResponse.shipment_id,
+    trackingNumber: labelResponse.tracking_number,
+    trackingUrl,
+    labelUrl: labelResponse.label_download.pdf,
+    carrier: selectedRate.carrier_friendly_name,
+    service: selectedRate.service_type,
+    estimatedDelivery: selectedRate.estimated_delivery_date,
+  };
+}
+
+/**
+ * Get tracking information for an order
+ */
+export async function getOrderTracking(orderId: string): Promise<{
+  status: string;
+  statusDescription: string;
+  estimatedDelivery?: string;
+  actualDelivery?: string;
+  events: Array<{
+    date: string;
+    description: string;
+    location?: string;
+  }>;
+} | null> {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+  });
+
+  if (!order || !order.trackingCode || !order.carrier) {
+    return null;
+  }
+
+  try {
+    // Map carrier name to ShipEngine carrier code
+    const carrierCode = SHIPENGINE_CARRIER_CODES[order.carrier] || "stamps_com";
+
+    const response = await shipEngineRequest<{
+      tracking_number: string;
+      status_code: string;
+      status_description: string;
+      estimated_delivery_date?: string;
+      actual_delivery_date?: string;
+      events: Array<{
+        occurred_at: string;
+        description: string;
+        city_locality?: string;
+        state_province?: string;
+        country_code?: string;
+      }>;
+    }>(`/v1/tracking?carrier_code=${carrierCode}&tracking_number=${order.trackingCode}`);
+
+    return {
+      status: response.status_code,
+      statusDescription: response.status_description,
+      estimatedDelivery: response.estimated_delivery_date,
+      actualDelivery: response.actual_delivery_date,
+      events: response.events.map((event) => ({
+        date: event.occurred_at,
+        description: event.description,
+        location: [event.city_locality, event.state_province, event.country_code]
+          .filter(Boolean)
+          .join(", "),
+      })),
+    };
+  } catch (error) {
+    console.error("Error fetching tracking:", error);
+    return null;
+  }
+}
+

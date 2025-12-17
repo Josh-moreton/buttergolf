@@ -77,6 +77,7 @@ export default async function OrderDetailPage({
     ...order,
     userRole:
       order.buyerId === user.id ? ("buyer" as const) : ("seller" as const),
+    currentUserId: user.id,
     product: {
       ...order.product,
       brand: order.product.brand?.name || null,

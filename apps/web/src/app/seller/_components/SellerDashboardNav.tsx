@@ -10,6 +10,7 @@ import {
 import {
   LayoutDashboard,
   Package,
+  ShoppingBag,
   CreditCard,
   Wallet,
   FileText,
@@ -27,6 +28,11 @@ const navItems: NavItem[] = [
     href: "/seller",
     label: "Dashboard",
     icon: <LayoutDashboard size={20} />,
+  },
+  {
+    href: "/seller/sales",
+    label: "Sales",
+    icon: <ShoppingBag size={20} />,
   },
   {
     href: "/seller/listings",

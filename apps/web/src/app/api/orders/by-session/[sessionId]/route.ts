@@ -101,6 +101,7 @@ export async function GET(
         service: order.service,
         orderStatus: order.status,
         shipmentStatus: order.shipmentStatus,
+        sellerId: order.seller.id,
         sellerName: `${order.seller.firstName} ${order.seller.lastName}`.trim() || "Seller",
         shippingAddress: {
           name: order.toAddress.name,

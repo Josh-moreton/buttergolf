@@ -1,0 +1,31 @@
+-- AlterTable
+ALTER TABLE "orders" ADD COLUMN     "shipEngineRateId" TEXT,
+ADD COLUMN     "shipEngineShipmentId" TEXT;
+
+-- CreateTable
+CREATE TABLE "messages" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "senderId" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "isRead" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE INDEX "messages_orderId_idx" ON "messages"("orderId");
+
+-- CreateIndex
+CREATE INDEX "messages_senderId_idx" ON "messages"("senderId");
+
+-- CreateIndex
+CREATE INDEX "messages_createdAt_idx" ON "messages"("createdAt");
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -248,16 +248,12 @@ export function ProductInformation({
               : "Buy now"}
         </Button>
         <Button
+          butterVariant="secondary"
           size="$5"
           width="100%"
-          backgroundColor="$ironstone"
-          color="$vanillaCream"
-          borderRadius="$full"
           height={56}
           disabled={product.isSold || purchasing}
           onPress={onMakeOffer}
-          pressStyle={{ opacity: 0.8 }}
-          hoverStyle={{ opacity: 0.9 }}
         >
           Make an offer
         </Button>
