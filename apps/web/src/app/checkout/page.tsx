@@ -194,7 +194,7 @@ function CheckoutPageContent() {
                   </Text>
                 </Row>
 
-                <Text size="$2" color="$textMuted">
+                <Text size="$2" color="$textSecondary">
                   Shipping calculated at checkout
                 </Text>
 

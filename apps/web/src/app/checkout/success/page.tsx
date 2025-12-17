@@ -192,7 +192,7 @@ function CheckoutSuccessContent() {
               </Text>
             </Column>
             {error && (
-              <Text color="$textMuted" size="$3" textAlign="center" lineHeight="$3">
+              <Text color="$textSecondary" size="$3" textAlign="center" lineHeight="$3">
                 {error}
               </Text>
             )}
