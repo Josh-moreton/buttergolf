@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Column, Row } from "./Layout";
 import { Text } from "./Text";
