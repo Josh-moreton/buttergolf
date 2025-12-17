@@ -119,28 +119,29 @@ function CheckoutPageContent() {
       {/* Page Hero */}
       <PageHero />
 
-      {/* Main Content - Two Column Layout */}
-      <Container size="xl" paddingVertical="$2xl">
-        <Row
-          gap="$xl"
-          width="100%"
-          flexDirection="column-reverse"
-          $gtMd={{ flexDirection: "row", alignItems: "flex-start" }}
-          alignItems="stretch"
-        >
-          {/* Left Column - Stripe Embedded Checkout (wider on desktop) */}
-          <Column
-            flexBasis={0}
-            flexGrow={3}
-            flexShrink={1}
-            minWidth={0}
-            $gtMd={{ minWidth: 500 }}
+      {/* Main Content - Two Column Layout with White Background for Stripe */}
+      <div style={{ backgroundColor: "#FFFFFF" }}>
+        <Container size="xl" paddingVertical="$2xl">
+          <Row
+            gap="$xl"
+            width="100%"
+            flexDirection="column-reverse"
+            $gtMd={{ flexDirection: "row", alignItems: "flex-start" }}
+            alignItems="stretch"
           >
-            <StripeEmbeddedCheckout
-              productId={product.id}
-              onError={(err) => setError(err)}
-            />
-          </Column>
+            {/* Left Column - Stripe Embedded Checkout (wider on desktop) */}
+            <Column
+              flexBasis={0}
+              flexGrow={3}
+              flexShrink={1}
+              minWidth={0}
+              $gtMd={{ minWidth: 500 }}
+            >
+              <StripeEmbeddedCheckout
+                productId={product.id}
+                onError={(err) => setError(err)}
+              />
+            </Column>
 
           {/* Right Column - Product Summary (narrower on desktop) */}
           <Column
@@ -229,6 +230,7 @@ function CheckoutPageContent() {
           </Column>
         </Row>
       </Container>
+      </div>
 
       {/* Trust Section */}
       <TrustSection />

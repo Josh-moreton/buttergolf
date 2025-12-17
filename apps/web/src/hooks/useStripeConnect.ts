@@ -100,7 +100,7 @@ export function useStripeConnect(): UseStripeConnectReturn {
           variables: {
             // ButterGolf brand colors
             colorPrimary: "#F45314", // $spicedClementine
-            colorBackground: "#FFFAD2", // $vanillaCream
+            colorBackground: "#FFFFFF", // Pure White
             colorText: "#323232", // $ironstone
             colorDanger: "#dc2626", // Error red
             fontFamily: "system-ui, -apple-system, sans-serif",

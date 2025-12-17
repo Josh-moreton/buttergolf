@@ -376,7 +376,7 @@ const customTokens = createTokens({
     white: brandColors.pureWhite,
 
     // Backward compatibility (map old names to new colors)
-    bg: brandColors.vanillaCream,
+    bg: brandColors.pureWhite,
     bgGray: brandColors.cloudMist,
     bgCard: brandColors.pureWhite,
     cardBg: brandColors.pureWhite,

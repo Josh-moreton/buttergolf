@@ -101,7 +101,7 @@ export async function POST(req: Request) {
         display_name: "ButterGolf",
         font_family: "roboto", // Clean sans-serif close to Urbanist
         border_style: "rounded", // Matches our $full border radius aesthetic
-        background_color: "#FFFAD2", // Vanilla Cream - our primary background
+        background_color: "#FFFFFF", // Pure White - clean, professional background
         button_color: "#F45314", // Spiced Clementine - our primary brand color
       },
 

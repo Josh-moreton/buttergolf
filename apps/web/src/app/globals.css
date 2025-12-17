@@ -22,8 +22,8 @@
   --primary-foreground: #ffffff;
   --border: #d1d5db;
   --muted: #6b7280;
-  --card: #fefad6;
-  /* Cream for cards */
+  --card: #ffffff;
+  /* White for cards */
 
   /* Urbanist font family */
   --font-urbanist: var(--font-urbanist);

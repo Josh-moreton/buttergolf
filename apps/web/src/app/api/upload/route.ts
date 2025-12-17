@@ -114,8 +114,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
       const version = result.version; // e.g., 1765809012
       
-      // Simplified transformation: just background removal with vanilla cream background color
-      const transformations = "e_background_removal/b_rgb:FFFAD2";
+      // Background removal with branded "Butter Golf" tiled pattern as the new background
+      // Pattern must be pre-uploaded to Cloudinary at backgrounds/butter-pattern (see scripts/upload-background-pattern.ts)
+      const transformations = "e_background_removal/u_backgrounds:butter-pattern,w_iw,h_ih,fl_layer_apply.tiled";
       finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/v${version}/${result.public_id}.${result.format}`;
       
       console.log("🎨 Applied background removal transformation:", {
