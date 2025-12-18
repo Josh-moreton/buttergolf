@@ -2,6 +2,12 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { prisma, Prisma, ShipmentStatus, OrderStatus } from "@buttergolf/db";
 import crypto from "crypto";
+import {
+  sendLabelGeneratedEmail,
+  sendInTransitEmail,
+  sendOutForDeliveryEmail,
+  sendDeliveredEmail,
+} from "@/lib/email";
 
 // ShipEngine webhook events we care about
 type ShipEngineEvent =
@@ -201,9 +207,102 @@ export async function POST(req: Request) {
         orderStatus,
       });
 
-      // TODO: Send notification to buyer/seller about status update
-      // - Buyer: Package is in transit / delivered
-      // - Seller: Package was picked up
+      // Send email notifications based on status change
+      try {
+        // Fetch related data for emails
+        const buyer = await prisma.user.findUnique({
+          where: { id: order.buyerId },
+        });
+        const product = await prisma.product.findUnique({
+          where: { id: order.productId },
+          select: { title: true },
+        });
+
+        if (!buyer || !product) {
+          console.warn("Could not send email: missing buyer or product data");
+        } else {
+          const buyerName = `${buyer.firstName || ""} ${buyer.lastName || ""}`.trim() || buyer.email;
+
+          // PRE_TRANSIT: Label generated (only if this is first time)
+          if (shipmentStatus === "PRE_TRANSIT" && !order.labelGeneratedAt) {
+            await sendLabelGeneratedEmail({
+              buyerEmail: buyer.email,
+              buyerName,
+              orderId: order.id,
+              productTitle: product.title,
+              estimatedDelivery: trackingData.estimated_delivery_date,
+              carrier: order.carrier,
+            });
+            console.log("Sent label generated email to buyer");
+          }
+
+          // IN_TRANSIT: Package picked up and moving
+          else if (shipmentStatus === "IN_TRANSIT") {
+            const latestEvent = trackingData.events?.[0];
+            const currentLocation = latestEvent
+              ? `${latestEvent.city_locality}, ${latestEvent.state_province}`
+              : undefined;
+
+            await sendInTransitEmail({
+              buyerEmail: buyer.email,
+              buyerName,
+              orderId: order.id,
+              productTitle: product.title,
+              trackingCode: order.trackingCode,
+              trackingUrl: order.trackingUrl,
+              carrier: order.carrier,
+              currentLocation,
+              estimatedDelivery: trackingData.estimated_delivery_date,
+            });
+            console.log("Sent in transit email to buyer");
+          }
+
+          // OUT_FOR_DELIVERY: Package out for delivery today
+          else if (shipmentStatus === "OUT_FOR_DELIVERY") {
+            await sendOutForDeliveryEmail({
+              buyerEmail: buyer.email,
+              buyerName,
+              orderId: order.id,
+              productTitle: product.title,
+              trackingCode: order.trackingCode,
+              trackingUrl: order.trackingUrl,
+            });
+            console.log("Sent out for delivery email to buyer");
+          }
+
+          // DELIVERED: Package delivered (send to both buyer and seller)
+          else if (shipmentStatus === "DELIVERED") {
+            // Send to buyer
+            await sendDeliveredEmail({
+              email: buyer.email,
+              name: buyerName,
+              orderId: order.id,
+              productTitle: product.title,
+              isBuyer: true,
+            });
+            console.log("Sent delivered email to buyer");
+
+            // Send to seller
+            const seller = await prisma.user.findUnique({
+              where: { id: order.sellerId },
+            });
+            if (seller) {
+              const sellerName = `${seller.firstName || ""} ${seller.lastName || ""}`.trim() || seller.email;
+              await sendDeliveredEmail({
+                email: seller.email,
+                name: sellerName,
+                orderId: order.id,
+                productTitle: product.title,
+                isBuyer: false,
+              });
+              console.log("Sent delivered email to seller");
+            }
+          }
+        }
+      } catch (emailError) {
+        // Don't fail the webhook if email fails
+        console.error("Error sending email notification:", emailError);
+      }
 
       return NextResponse.json({
         received: true,

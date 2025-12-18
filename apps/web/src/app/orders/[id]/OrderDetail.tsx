@@ -1,10 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { OrderMessages } from "./OrderMessages";
 import { OrderRating } from "./OrderRating";
 import { AnimationErrorBoundary } from "@/app/_components/ErrorBoundary";
+import { TrackingTimeline } from "@/components/TrackingTimeline";
 import {
   Card,
   Text,
@@ -28,6 +30,7 @@ import {
   ArrowLeft,
   Download,
   ExternalLink,
+  RefreshCw,
 } from "@tamagui/lucide-icons";
 
 type OrderStatus =
@@ -284,8 +287,71 @@ function ParticipantCard({
   );
 }
 
+interface TrackingEvent {
+  occurred_at: string;
+  carrier_occurred_at: string;
+  description: string;
+  city_locality: string;
+  state_province: string;
+  postal_code: string;
+  country_code: string;
+  company_name?: string;
+  signer?: string;
+  event_code?: string;
+}
+
 export function OrderDetail({ order }: OrderDetailProps) {
   const productImage = order.product.images[0]?.url;
+  const [trackingEvents, setTrackingEvents] = useState<TrackingEvent[]>([]);
+  const [isLoadingTracking, setIsLoadingTracking] = useState(false);
+  const [trackingError, setTrackingError] = useState<string | null>(null);
+
+  // Fetch tracking events on mount
+  const fetchTrackingEvents = async () => {
+    if (!order.trackingCode) return;
+
+    setIsLoadingTracking(true);
+    setTrackingError(null);
+
+    try {
+      const response = await fetch(`/api/orders/${order.id}/tracking`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch tracking information");
+      }
+
+      const data = await response.json();
+      setTrackingEvents(data.events || []);
+    } catch (error) {
+      console.error("Error fetching tracking:", error);
+      setTrackingError(
+        error instanceof Error ? error.message : "Failed to load tracking"
+      );
+    } finally {
+      setIsLoadingTracking(false);
+    }
+  };
+
+  // Fetch tracking events on mount
+  useEffect(() => {
+    fetchTrackingEvents();
+  }, [order.id, order.trackingCode]);
+
+  // Poll for updates when shipment is active (IN_TRANSIT or OUT_FOR_DELIVERY)
+  useEffect(() => {
+    const isActiveShipment =
+      order.shipmentStatus === "IN_TRANSIT" ||
+      order.shipmentStatus === "OUT_FOR_DELIVERY";
+
+    if (!isActiveShipment || !order.trackingCode) return;
+
+    // Poll every 15 seconds
+    const interval = setInterval(() => {
+      fetchTrackingEvents();
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [order.shipmentStatus, order.trackingCode, order.id]);
 
   return (
     <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
@@ -474,34 +540,77 @@ export function OrderDetail({ order }: OrderDetailProps) {
             </View>
           )}
 
-          {/* Timeline */}
-          {(order.labelGeneratedAt ||
-            order.shippedAt ||
-            order.deliveredAt) && (
-            <Column gap="$md" marginTop="$sm">
-              {order.labelGeneratedAt && (
-                <TimelineItem
-                  label="Label Created"
-                  date={order.labelGeneratedAt}
-                  icon={Tag}
-                />
+          {/* Rich Tracking Timeline */}
+          {order.trackingCode && (
+            <Column gap="$sm" marginTop="$lg">
+              {/* Refresh button for active shipments */}
+              {(order.shipmentStatus === "IN_TRANSIT" ||
+                order.shipmentStatus === "OUT_FOR_DELIVERY") && (
+                <Row alignItems="center" justifyContent="space-between">
+                  <Text size="$4" color="$textSecondary">
+                    Auto-refreshing every 15 seconds
+                  </Text>
+                  <Button
+                    size="$3"
+                    variant="outlined"
+                    onPress={fetchTrackingEvents}
+                    disabled={isLoadingTracking}
+                    icon={
+                      <RefreshCw
+                        size={14}
+                        color="var(--color-primary)"
+                        style={{
+                          animation: isLoadingTracking
+                            ? "spin 1s linear infinite"
+                            : "none",
+                        }}
+                      />
+                    }
+                  >
+                    Refresh
+                  </Button>
+                </Row>
               )}
-              {order.shippedAt && (
-                <TimelineItem
-                  label="Package Shipped"
-                  date={order.shippedAt}
-                  icon={Truck}
-                />
+
+              {trackingError && (
+                <Text size="$4" color="$error">
+                  {trackingError}
+                </Text>
               )}
-              {order.deliveredAt && (
-                <TimelineItem
-                  label="Delivered"
-                  date={order.deliveredAt}
-                  icon={CheckCircle}
-                />
-              )}
+
+              <TrackingTimeline order={order} events={trackingEvents} />
             </Column>
           )}
+
+          {/* Basic timeline fallback (no tracking code) */}
+          {!order.trackingCode &&
+            (order.labelGeneratedAt ||
+              order.shippedAt ||
+              order.deliveredAt) && (
+              <Column gap="$md" marginTop="$sm">
+                {order.labelGeneratedAt && (
+                  <TimelineItem
+                    label="Label Created"
+                    date={order.labelGeneratedAt}
+                    icon={Tag}
+                  />
+                )}
+                {order.shippedAt && (
+                  <TimelineItem
+                    label="Package Shipped"
+                    date={order.shippedAt}
+                    icon={Truck}
+                  />
+                )}
+                {order.deliveredAt && (
+                  <TimelineItem
+                    label="Delivered"
+                    date={order.deliveredAt}
+                    icon={CheckCircle}
+                  />
+                )}
+              </Column>
+            )}
 
           <Separator marginVertical="$sm" />
 

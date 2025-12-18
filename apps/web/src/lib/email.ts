@@ -444,3 +444,274 @@ export async function sendDeliveredEmail(params: {
     return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 }
+
+/**
+ * Send label generated email to buyer (PRE_TRANSIT status)
+ */
+export async function sendLabelGeneratedEmail(params: {
+  buyerEmail: string;
+  buyerName: string;
+  orderId: string;
+  productTitle: string;
+  estimatedDelivery?: string;
+  carrier?: string | null;
+}): Promise<EmailResult> {
+  const { buyerEmail, buyerName, orderId, productTitle, estimatedDelivery, carrier } = params;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: buyerEmail,
+      subject: `📋 Shipping label created for: ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #F45314; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>📋 Shipping Label Created</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${buyerName},</p>
+              <p>Good news! The seller has created a shipping label for your order. Your package will be dropped off soon.</p>
+
+              <div class="info-box">
+                <h3 style="margin-top: 0;">Order Details</h3>
+                <p><strong>Product:</strong> ${productTitle}</p>
+                <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+                ${carrier ? `<p><strong>Carrier:</strong> ${carrier}</p>` : ""}
+                ${estimatedDelivery ? `<p><strong>Est. Delivery:</strong> ${new Date(estimatedDelivery).toLocaleDateString()}</p>` : ""}
+              </div>
+
+              <h3>What happens next?</h3>
+              <ul>
+                <li>The seller will drop off the package at ${carrier || "the carrier"}</li>
+                <li>Once it's scanned by the carrier, you'll receive tracking updates</li>
+                <li>You can track your package anytime in your order history</li>
+              </ul>
+
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/orders/${orderId}" class="button">View Order</a>
+              </p>
+            </div>
+            <div class="footer">
+              <p>Your package is on its way!</p>
+              <p>The ButterGolf Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
+ * Send in transit email to buyer (IN_TRANSIT status)
+ */
+export async function sendInTransitEmail(params: {
+  buyerEmail: string;
+  buyerName: string;
+  orderId: string;
+  productTitle: string;
+  trackingCode: string | null;
+  trackingUrl: string | null;
+  carrier: string | null;
+  currentLocation?: string;
+  estimatedDelivery?: string;
+}): Promise<EmailResult> {
+  const { buyerEmail, buyerName, orderId, productTitle, trackingCode, trackingUrl, carrier, currentLocation, estimatedDelivery } = params;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: buyerEmail,
+      subject: `📦 Your package is on the move! ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #F45314; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .tracking-box { background: #3c50e0; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+            .location-box { background: white; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #F45314; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>📦 Package In Transit!</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${buyerName},</p>
+              <p>Your package is on the move and heading your way!</p>
+
+              ${currentLocation ? `
+              <div class="location-box">
+                <p style="margin: 0; font-size: 14px; color: #545454;">Current Location</p>
+                <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: bold; color: #323232;">${currentLocation}</p>
+              </div>
+              ` : ""}
+
+              <div class="tracking-box">
+                <p style="margin: 0; font-size: 14px;">Tracking Number</p>
+                <p style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold;">${trackingCode || "N/A"}</p>
+                ${carrier ? `<p style="margin: 10px 0 0 0; font-size: 14px;">via ${carrier}</p>` : ""}
+                ${estimatedDelivery ? `<p style="margin: 10px 0 0 0; font-size: 14px;">Est. Delivery: ${new Date(estimatedDelivery).toLocaleDateString()}</p>` : ""}
+              </div>
+
+              <p><strong>Product:</strong> ${productTitle}</p>
+              <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+
+              ${trackingUrl ? `
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${trackingUrl}" class="button">Track Your Package</a>
+              </p>
+              ` : `
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/orders/${orderId}" class="button">View Order Details</a>
+              </p>
+              `}
+            </div>
+            <div class="footer">
+              <p>Tracking updates will continue as your package moves!</p>
+              <p>The ButterGolf Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
+ * Send out for delivery email to buyer (OUT_FOR_DELIVERY status)
+ */
+export async function sendOutForDeliveryEmail(params: {
+  buyerEmail: string;
+  buyerName: string;
+  orderId: string;
+  productTitle: string;
+  trackingCode: string | null;
+  trackingUrl: string | null;
+}): Promise<EmailResult> {
+  const { buyerEmail, buyerName, orderId, productTitle, trackingCode, trackingUrl } = params;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: buyerEmail,
+      subject: `🚚 Your package arrives TODAY! ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #02aaa4; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .alert-box { background: #02aaa4; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+            .checklist { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>🚚 Out for Delivery TODAY!</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${buyerName},</p>
+
+              <div class="alert-box">
+                <p style="margin: 0; font-size: 24px; font-weight: bold;">Your package arrives today!</p>
+                <p style="margin: 10px 0 0 0; font-size: 16px;">Keep an eye out for the delivery driver</p>
+              </div>
+
+              <p><strong>Product:</strong> ${productTitle}</p>
+              <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+              ${trackingCode ? `<p><strong>Tracking:</strong> ${trackingCode}</p>` : ""}
+
+              <div class="checklist">
+                <h3 style="margin-top: 0;">What to expect:</h3>
+                <ul style="margin-bottom: 0;">
+                  <li>Your package is currently with the delivery driver</li>
+                  <li>Delivery typically occurs during business hours</li>
+                  <li>You may receive a knock or doorbell ring</li>
+                  <li>Some carriers require a signature</li>
+                </ul>
+              </div>
+
+              ${trackingUrl ? `
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${trackingUrl}" class="button">Track in Real-Time</a>
+              </p>
+              ` : `
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/orders/${orderId}" class="button">View Order Details</a>
+              </p>
+              `}
+            </div>
+            <div class="footer">
+              <p>Almost there! Enjoy your new golf gear!</p>
+              <p>The ButterGolf Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}

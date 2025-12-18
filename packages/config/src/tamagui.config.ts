@@ -375,19 +375,7 @@ const customTokens = createTokens({
     // White token (referenced by themes)
     white: brandColors.pureWhite,
 
-    // Backward compatibility (map old names to new colors)
-    bg: brandColors.pureWhite,
-    bgGray: brandColors.cloudMist,
-    bgCard: brandColors.pureWhite,
-    cardBg: brandColors.pureWhite,
-    textDark: brandColors.ironstone,
-    muted: brandColors.slateSmoke,
-    blue: brandColors.infoBase,
-    blueLight: brandColors.infoLight,
-    teal: brandColors.successBase,
-    red: brandColors.errorBase,
-    cream: brandColors.vanillaCream,
-    creamDark: brandColors.lemonHaze,
+    // Backward compatibility aliases removed — use semantic tokens (e.g. "$background", "$textMuted")
   },
 
   size: {
