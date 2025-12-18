@@ -96,12 +96,18 @@ export async function POST(request: Request): Promise<NextResponse> {
         },
         {
           underlay: "backgrounds:butter-pattern",
-          width: "iw", // Match the uploaded (cropped) image width
-          height: "ih", // Match the uploaded (cropped) image height
           flags: "tiled",
         },
         {
           flags: "layer_apply",
+        },
+        {
+          // Crop the final result back to the original (cropped) image dimensions
+          // gravity: "center" ensures we crop equally from all sides, keeping the original image intact
+          crop: "crop",
+          width: "iw",
+          height: "ih",
+          gravity: "center",
         },
       ];
     }
