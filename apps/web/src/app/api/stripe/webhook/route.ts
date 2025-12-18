@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
 import { sendOrderConfirmationEmail, sendNewSaleEmail } from "@/lib/email";
+import { generateShippingLabel } from "@/lib/shipengine";
 
 // Disable body parsing for webhook
 export const runtime = "nodejs";
@@ -315,6 +316,32 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   });
 
   console.log("📦 Order created successfully:", order.id);
+
+  // Attempt to generate shipping label automatically
+  // (will fail gracefully if seller has no valid address)
+  try {
+    console.log("🏷️ Attempting to auto-generate shipping label for order:", order.id);
+
+    const labelResult = await generateShippingLabel({
+      orderId: order.id,
+    });
+
+    console.log("✅ Shipping label generated successfully:", {
+      orderId: order.id,
+      trackingNumber: labelResult.trackingNumber,
+      carrier: labelResult.carrier,
+    });
+
+    // Label generated email is sent by generateShippingLabel()
+  } catch (labelError) {
+    // Don't fail the order if label generation fails
+    // Seller will need to generate manually later
+    console.warn("⚠️ Could not auto-generate shipping label:", {
+      orderId: order.id,
+      error: labelError instanceof Error ? labelError.message : "Unknown error",
+      reason: "Seller may need to update their address first",
+    });
+  }
 
   // Send notification emails
   await sendOrderEmails(order.id, amountTotal, buyer, product, shippingDetails, sellerPayout);

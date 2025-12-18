@@ -1,6 +1,7 @@
 import { prisma } from "@buttergolf/db";
 import { PENDING_ADDRESS, SHIPENGINE_CARRIER_CODES } from "./constants";
 import { buildTrackingUrl } from "./utils/format";
+import { sendLabelGeneratedEmail } from "./email";
 
 // ShipEngine API client for UK shipping
 const SHIPENGINE_API_KEY = process.env.SHIPENGINE_API_KEY;
@@ -66,32 +67,71 @@ interface ShipEngineRateResponse {
 }
 
 /**
- * Call ShipEngine API
+ * Call ShipEngine API with timeout and retry logic
  */
 async function shipEngineRequest<T>(
   endpoint: string,
   method: "GET" | "POST" = "GET",
   body?: unknown,
+  retryCount = 0,
 ): Promise<T> {
   if (!SHIPENGINE_API_KEY) {
     throw new Error("ShipEngine API key not configured");
   }
 
-  const response = await fetch(`${SHIPENGINE_BASE_URL}${endpoint}`, {
-    method,
-    headers: {
-      "API-Key": SHIPENGINE_API_KEY,
-      "Content-Type": "application/json",
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  // Set up timeout controller (10 seconds)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`ShipEngine API error: ${response.status} - ${errorText}`);
+  try {
+    const response = await fetch(`${SHIPENGINE_BASE_URL}${endpoint}`, {
+      method,
+      headers: {
+        "API-Key": SHIPENGINE_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    // Handle rate limiting (429) with exponential backoff
+    if (response.status === 429 && retryCount < 3) {
+      const retryAfterHeader = response.headers.get("Retry-After");
+      const retryAfterSeconds = retryAfterHeader
+        ? parseInt(retryAfterHeader, 10)
+        : Math.pow(2, retryCount) * 2; // Exponential backoff: 2s, 4s, 8s
+
+      console.warn(
+        `ShipEngine rate limit hit. Retrying in ${retryAfterSeconds}s (attempt ${retryCount + 1}/3)`,
+      );
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, retryAfterSeconds * 1000),
+      );
+
+      return shipEngineRequest<T>(endpoint, method, body, retryCount + 1);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`ShipEngine API error: ${response.status} - ${errorText}`);
+      throw new Error(`ShipEngine API error: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+
+    // Handle timeout errors
+    if (error instanceof Error && error.name === "AbortError") {
+      console.error("ShipEngine API request timed out after 10 seconds");
+      throw new Error("ShipEngine API request timed out");
+    }
+
+    throw error;
   }
-
-  return response.json();
 }
 
 /**
@@ -557,6 +597,33 @@ export async function generateShippingLabel(params: {
         : undefined,
     },
   });
+
+  // Send email notification to buyer
+  try {
+    const buyer = await prisma.user.findUnique({
+      where: { id: order.buyerId },
+    });
+    const product = await prisma.product.findUnique({
+      where: { id: order.productId },
+      select: { title: true },
+    });
+
+    if (buyer && product) {
+      const buyerName = `${buyer.firstName || ""} ${buyer.lastName || ""}`.trim() || buyer.email;
+      await sendLabelGeneratedEmail({
+        buyerEmail: buyer.email,
+        buyerName,
+        orderId: order.id,
+        productTitle: product.title,
+        estimatedDelivery: selectedRate.estimated_delivery_date,
+        carrier: selectedRate.carrier_friendly_name,
+      });
+      console.log("Sent label generated email to buyer");
+    }
+  } catch (emailError) {
+    // Don't fail label generation if email fails
+    console.error("Error sending label generated email:", emailError);
+  }
 
   return {
     labelId: labelResponse.label_id,
