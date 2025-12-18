@@ -96,6 +96,8 @@ export async function POST(request: Request): Promise<NextResponse> {
         },
         {
           underlay: "backgrounds:butter-pattern",
+          width: "iw", // Match the uploaded (cropped) image width
+          height: "ih", // Match the uploaded (cropped) image height
           flags: "tiled",
         },
         {
