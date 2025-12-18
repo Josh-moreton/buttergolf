@@ -113,14 +113,14 @@ export async function POST(request: Request): Promise<NextResponse> {
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
       const version = result.version;
 
-      // FIXED: Correct URL syntax with separate transformation steps
-      // e_background_removal - removes background from cropped image
-      // u_backgrounds:butter-pattern,w_iw,h_ih,fl_tiled - applies tiled pattern sized to image dimensions
+      // FIXED: Correct URL syntax - fl_layer_apply must be part of same transformation
+      // e_background_removal - removes background from cropped image (separate step)
+      // u_backgrounds:butter-pattern,w_iw,h_ih,fl_tiled,fl_layer_apply - underlay transformation
       //   w_iw = width: image width (matches uploaded image)
       //   h_ih = height: image height (matches uploaded image)
       //   fl_tiled = tiles the pattern within those dimensions
-      // /fl_layer_apply - merges the underlay (must be separate step with /)
-      const transformations = "e_background_removal/u_backgrounds:butter-pattern,w_iw,h_ih,fl_tiled/fl_layer_apply";
+      //   fl_layer_apply = applies the underlay (must be comma-separated, not slash)
+      const transformations = "e_background_removal/u_backgrounds:butter-pattern,w_iw,h_ih,fl_tiled,fl_layer_apply";
       finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/v${version}/${result.public_id}.${result.format}`;
 
       console.log("🎨 Applied background removal transformation:", {
