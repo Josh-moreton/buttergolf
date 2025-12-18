@@ -229,6 +229,9 @@ async function handleAccountUpdated(account: Stripe.Account) {
     console.log(
       `Updated user ${user.id} Connect status: ${status}, requirements: ${currentlyDue.length} (V2 API)`
     );
+
+    // Sync address from Stripe to database
+    await syncAddressFromStripe(user.id, account);
   } catch (error) {
     console.error("Error updating user from webhook:", error);
     throw error;
@@ -259,4 +262,74 @@ async function handleV1AccountUpdate(userId: string, account: Stripe.Account) {
   });
 
   console.log(`Updated user ${userId} Connect status: ${status} (V1 fallback)`);
+
+  // Sync address from Stripe to database
+  await syncAddressFromStripe(userId, account);
+}
+
+/**
+ * Sync address from Stripe Connect account to database
+ * Extracts individual.address from Stripe account and creates/updates our Address record
+ */
+async function syncAddressFromStripe(userId: string, account: Stripe.Account) {
+  try {
+    // Check if account has individual address data
+    if (!account.individual?.address) {
+      console.log(`No individual address found for Stripe account ${account.id}`);
+      return;
+    }
+
+    const stripeAddress = account.individual.address;
+
+    // Validate that address has required fields
+    if (!stripeAddress.line1 || !stripeAddress.city || !stripeAddress.postal_code) {
+      console.warn(`Incomplete address data for account ${account.id}:`, stripeAddress);
+      return;
+    }
+
+    // Check if user already has an address in our database
+    const existingAddress = await prisma.address.findFirst({
+      where: {
+        userId,
+        isDefault: true
+      }
+    });
+
+    if (existingAddress) {
+      // Update existing address
+      await prisma.address.update({
+        where: { id: existingAddress.id },
+        data: {
+          street1: stripeAddress.line1,
+          street2: stripeAddress.line2 || "",
+          city: stripeAddress.city,
+          state: stripeAddress.state || "",
+          zip: stripeAddress.postal_code,
+          country: stripeAddress.country || "GB",
+        }
+      });
+      console.log(`✅ Updated address for user ${userId} from Stripe Connect`);
+    } else {
+      // Create new address from Stripe data
+      const name = `${account.individual.first_name || ""} ${account.individual.last_name || ""}`.trim() || "Seller";
+
+      await prisma.address.create({
+        data: {
+          userId,
+          name,
+          street1: stripeAddress.line1,
+          street2: stripeAddress.line2 || "",
+          city: stripeAddress.city,
+          state: stripeAddress.state || "",
+          zip: stripeAddress.postal_code,
+          country: stripeAddress.country || "GB",
+          isDefault: true,
+        }
+      });
+      console.log(`✅ Created address for user ${userId} from Stripe Connect`);
+    }
+  } catch (error) {
+    console.error(`Error syncing address for user ${userId}:`, error);
+    // Don't throw - we don't want address sync failures to break webhook processing
+  }
 }

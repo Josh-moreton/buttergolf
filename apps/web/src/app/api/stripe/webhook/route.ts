@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
-import { sendOrderConfirmationEmail, sendNewSaleEmail } from "@/lib/email";
+import { sendOrderConfirmationEmail, sendNewSaleEmail, sendEmail } from "@/lib/email";
 import { generateShippingLabel } from "@/lib/shipengine";
 
 // Disable body parsing for webhook
@@ -262,8 +262,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   // Get seller's default address (From Address)
   let fromAddress = product.user.addresses[0];
+  let sellerNeedsAddress = false;
+
   if (!fromAddress) {
-    // Create placeholder address - seller will need to update before shipping
+    // CRITICAL: Seller has no address - this should not happen if Stripe Connect onboarding is complete
+    // Create minimal placeholder so order can be created, but flag for manual intervention
+    console.error("⚠️ Seller has no address - this indicates incomplete Stripe Connect onboarding:", {
+      sellerId,
+      sellerEmail: product.user.email,
+      productId,
+    });
+
     fromAddress = await prisma.address.create({
       data: {
         userId: sellerId,
@@ -276,7 +285,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         isDefault: true,
       },
     });
-    console.warn("Seller has no address, created placeholder:", fromAddress.id);
+
+    sellerNeedsAddress = true;
   }
 
   // Calculate amounts from session
@@ -316,6 +326,43 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   });
 
   console.log("📦 Order created successfully:", order.id);
+
+  // Send email to seller if they need to complete their address
+  if (sellerNeedsAddress) {
+    try {
+      await sendEmail({
+        to: product.user.email,
+        subject: "Action Required: Complete Your Seller Profile",
+        html: `
+          <div style="font-family: 'Urbanist', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+            <div style="background-color: #F45314; padding: 24px; text-align: center;">
+              <h1 style="color: #FFFFFF; margin: 0; font-size: 24px;">Address Required</h1>
+            </div>
+            <div style="padding: 32px;">
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+                Hi ${product.user.firstName || "there"},
+              </p>
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+                Great news! Someone just purchased your item. However, we cannot generate a shipping label because your shipping address is not set up.
+              </p>
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+                Please complete your Stripe Connect profile to add your address. This address will be used as the return address on all shipping labels.
+              </p>
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}/sell" style="display: inline-block; background-color: #F45314; color: #FFFFFF; padding: 14px 28px; text-decoration: none; border-radius: 100px; font-weight: 600; font-size: 16px;">
+                Complete Your Profile
+              </a>
+              <p style="color: #545454; font-size: 14px; line-height: 1.6; margin-top: 24px;">
+                Order ID: <code style="background-color: #EDEDED; padding: 2px 6px; border-radius: 4px;">${order.id}</code>
+              </p>
+            </div>
+          </div>
+        `
+      });
+      console.log("📧 Sent address required email to seller:", product.user.email);
+    } catch (emailError) {
+      console.error("Failed to send address required email:", emailError);
+    }
+  }
 
   // Attempt to generate shipping label automatically
   // (will fail gracefully if seller has no valid address)
