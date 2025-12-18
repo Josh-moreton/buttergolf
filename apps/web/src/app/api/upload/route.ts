@@ -87,22 +87,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       resource_type: "image",
     };
 
-    // Apply background removal with tiled pattern ONLY to first image (cost optimization)
-    if (isFirstImage) {
-      uploadOptions.transformation = [
-        {
-          effect: "background_removal",
-        },
-        {
-          underlay: "backgrounds:butter-pattern",
-          flags: "tiled",
-        },
-        {
-          flags: "layer_apply",
-        },
-      ];
-    }
-
     // Debug: Log the image dimensions being uploaded
     console.log("📐 Uploading image data:", {
       base64Length: base64Image.length,
@@ -110,7 +94,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       isFirstImage,
     });
 
-    // Upload to Cloudinary (transformation applied during upload for first image)
+    // Upload the CROPPED image to Cloudinary as-is (no transformation during upload)
+    // This preserves the exact cropped dimensions from ImageCropModal
     const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
 
     console.log("✅ Cloudinary Upload Success:", {
@@ -121,9 +106,30 @@ export async function POST(request: Request): Promise<NextResponse> {
       bytes: result.bytes,
     });
 
-    // Transformation is already applied - use URL directly from Cloudinary
+    // For first image, apply background removal transformation via URL (on-the-fly)
+    // This ensures the CROPPED image is stored, and transformation is applied when accessed
+    let finalUrl = result.secure_url;
+    if (isFirstImage && result.public_id) {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const version = result.version;
+
+      // FIXED: Correct URL syntax with separate transformation steps
+      // e_background_removal - removes background from cropped image
+      // u_backgrounds:butter-pattern,fl_tiled - applies tiled pattern as underlay
+      // /fl_layer_apply - merges the underlay (must be separate step with /)
+      const transformations = "e_background_removal/u_backgrounds:butter-pattern,fl_tiled/fl_layer_apply";
+      finalUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/v${version}/${result.public_id}.${result.format}`;
+
+      console.log("🎨 Applied background removal transformation:", {
+        originalUrl: result.secure_url,
+        transformedUrl: finalUrl,
+        storedDimensions: `${result.width}x${result.height}`,
+        version,
+      });
+    }
+
     return NextResponse.json({
-      url: result.secure_url,
+      url: finalUrl,
       publicId: result.public_id,
       width: result.width,
       height: result.height,
