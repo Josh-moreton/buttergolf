@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, startTransition } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Column, Row, Text, Button, Badge } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
@@ -24,6 +24,27 @@ interface ListingsClientProps {
 }
 
 const STORAGE_KEY = "buttergolf-listings-filters";
+
+function areStringArraysEqual(a: readonly string[], b: readonly string[]) {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+function areFiltersEqual(a: FilterState | undefined, b: FilterState) {
+  if (!a) return false;
+  return (
+    a.category === b.category &&
+    a.minPrice === b.minPrice &&
+    a.maxPrice === b.maxPrice &&
+    a.showFavouritesOnly === b.showFavouritesOnly &&
+    areStringArraysEqual(a.conditions, b.conditions) &&
+    areStringArraysEqual(a.brands, b.brands)
+  );
+}
 
 export function ListingsClient({
   initialProducts,
@@ -91,6 +112,18 @@ export function ListingsClient({
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
 
+  // Track if component has mounted to prevent initial fetch
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Track previous filter values to detect actual changes
+  const prevFiltersRef = useRef<FilterState>(filters);
+  const prevSortRef = useRef<string>(sort);
+
+  // Set mounted flag on initial mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Save filters to localStorage
   useEffect(() => {
     if (globalThis.window !== undefined) {
@@ -152,21 +185,28 @@ export function ListingsClient({
         params.set("limit", "24");
 
         const response = await fetch(`/api/listings?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch listings: ${response.status}`);
+        }
         const data = await response.json();
 
-        setProducts(data.products);
-        setTotal(data.total);
-        setPage(newPage);
-        setAvailableFilters(data.filters);
+        // Batch non-urgent data updates together using startTransition
+        startTransition(() => {
+          setProducts(data.products);
+          setTotal(data.total);
+          setPage(newPage);
+          setAvailableFilters(data.filters);
+        });
 
-        // Update URL
-        router.push(buildURL(filters, sort, newPage), { scroll: false });
+        // Only update the URL once we have successfully updated the data.
+        router.replace(buildURL(filters, sort, newPage), { scroll: false });
 
         // Scroll to top of page smoothly
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
+        // Loading state should update synchronously for immediate feedback.
         setIsLoading(false);
       }
     },
@@ -175,21 +215,38 @@ export function ListingsClient({
 
   // Debounced fetch on filter change
   useEffect(() => {
+    // Skip on initial mount - we already have server-rendered data
+    if (!isMounted) return;
+
+    // Check if filters or sort actually changed
+    const filtersChanged = !areFiltersEqual(prevFiltersRef.current, filters);
+    const sortChanged = prevSortRef.current !== sort;
+
+    if (!filtersChanged && !sortChanged) {
+      return;
+    }
+
+    // Update refs
+    prevFiltersRef.current = filters;
+    prevSortRef.current = sort;
+
+    // Debounce the fetch to avoid excessive requests
     const timeoutId = setTimeout(() => {
       fetchProducts(1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sort]);
+  }, [filters, sort, isMounted, fetchProducts]);
 
   // Redirect to last valid page if current page exceeds total pages
   useEffect(() => {
+    // Skip on initial mount
+    if (!isMounted) return;
+
     if (!isLoading && totalPages > 0 && page > totalPages) {
       fetchProducts(totalPages);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, totalPages, isLoading]);
+  }, [page, totalPages, isLoading, isMounted, fetchProducts]);
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
@@ -244,7 +301,10 @@ export function ListingsClient({
         <Column
           maxWidth={1280}
           marginHorizontal="auto"
-          paddingHorizontal="$6"
+          paddingHorizontal="$md"
+          $gtSm={{ paddingHorizontal: "$lg" }}
+          $gtMd={{ paddingHorizontal: "$xl" }}
+          $gtLg={{ paddingHorizontal: "$2xl" }}
           width="100%"
           gap="$lg"
         >
@@ -359,7 +419,7 @@ export function ListingsClient({
           )}
 
           {/* Main content: Sidebar + Grid */}
-          <Row gap="$2xl" alignItems="flex-start">
+          <Row gap="$2xl" alignItems="flex-start" overflow="hidden" width="100%">
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
