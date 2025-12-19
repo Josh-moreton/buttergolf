@@ -68,8 +68,9 @@ export function ProductCard({
       borderRadius={20}
       cursor="pointer"
       onPress={onPress}
-      width={315}
-      height={365}
+      width="100%"
+      maxWidth={315}
+      aspectRatio={315 / 365}
       interactive
       overflow="visible"
       style={
@@ -85,7 +86,7 @@ export function ProductCard({
       }}
     >
       {/* Inner container for border radius clipping */}
-      <Column width="100%" height="100%" overflow="hidden" borderRadius={20}>
+      <Column width="100%" height="100%" minHeight={0} overflow="hidden" borderRadius={20}>
         {/* Container - full height with image */}
         <Column
           position="relative"
