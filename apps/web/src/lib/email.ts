@@ -37,6 +37,40 @@ interface EmailResult {
 }
 
 /**
+ * Generic email sending function for custom emails
+ */
+export async function sendEmail(params: {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+}): Promise<EmailResult> {
+  const { to, subject, html, from = FROM_EMAIL } = params;
+
+  try {
+    const { data, error } = await getResendClient().emails.send({
+      from,
+      to,
+      subject,
+      html,
+    });
+
+    if (error) {
+      console.error("Error sending email:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Exception sending email:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Unknown error",
+    };
+  }
+}
+
+/**
  * Send order confirmation email to buyer
  */
 export async function sendOrderConfirmationEmail(params: {

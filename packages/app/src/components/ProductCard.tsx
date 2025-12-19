@@ -126,6 +126,7 @@ export function ProductCard({
             hoverStyle={{ transform: "scale(1.1)" }}
             pressStyle={{ transform: "scale(0.85)", opacity: 0.8 }}
             animation="bouncy"
+            role="button"
             aria-label={
               isFavourited ? "Remove from favourites" : "Add to favourites"
             }
@@ -167,6 +168,7 @@ export function ProductCard({
               numberOfLines={2}
               marginBottom={10}
               height={44}
+              style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
             >
               {product.title}
             </Text>
@@ -177,6 +179,7 @@ export function ProductCard({
               fontWeight="600"
               color="$textInverse"
               marginBottom={8}
+              style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
             >
               £{product.price.toFixed(2)}
             </Text>
@@ -188,15 +191,16 @@ export function ProductCard({
                 fontWeight="400"
                 color="$textInverse"
                 opacity={0.85}
+                style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
               >
                 {`${product.seller.firstName} ${product.seller.lastName}`.trim() || "Unknown"}
               </Text>
               {product.seller.ratingCount > 0 ? (
                 <Row alignItems="center" gap={4}>
-                  <Text color="$primary" size="$6">
+                  <Text color="$primary" size="$6" style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}>
                     ★
                   </Text>
-                  <Text size="$6" fontWeight="600" color="$textInverse">
+                  <Text size="$6" fontWeight="600" color="$textInverse" style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}>
                     {product.seller.averageRating?.toFixed(1)} (
                     {product.seller.ratingCount})
                   </Text>

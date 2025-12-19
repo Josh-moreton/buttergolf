@@ -2,6 +2,12 @@ const {withTamagui} = require("@tamagui/next-plugin");
 const {join, resolve} = require("node:path");
 const {PrismaPlugin} = require("@prisma/nextjs-monorepo-workaround-plugin");
 
+// Bundle analyzer for debugging bundle sizes
+// Run with: ANALYZE=true pnpm build
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 const boolVals = {
   true: true,
   false: false,
@@ -182,5 +188,6 @@ module.exports = () => {
     };
   }
 
-  return config;
+  // Apply bundle analyzer last (wrap the entire config)
+  return withBundleAnalyzer(config);
 };
