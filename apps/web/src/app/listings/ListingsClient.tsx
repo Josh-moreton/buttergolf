@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, startTransition } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Column, Row, Text, Button, Badge } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
@@ -91,6 +91,18 @@ export function ListingsClient({
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
 
+  // Track if component has mounted to prevent initial fetch
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Track previous filter values to detect actual changes
+  const prevFiltersRef = useRef<FilterState>();
+  const prevSortRef = useRef<string>();
+
+  // Set mounted flag on initial mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Save filters to localStorage
   useEffect(() => {
     if (globalThis.window !== undefined) {
@@ -154,42 +166,73 @@ export function ListingsClient({
         const response = await fetch(`/api/listings?${params.toString()}`);
         const data = await response.json();
 
-        setProducts(data.products);
-        setTotal(data.total);
-        setPage(newPage);
-        setAvailableFilters(data.filters);
-
-        // Update URL
-        router.push(buildURL(filters, sort, newPage), { scroll: false });
+        // Batch all state updates together using startTransition
+        // This reduces re-renders from 4 separate updates to 1 batched update
+        startTransition(() => {
+          setProducts(data.products);
+          setTotal(data.total);
+          setPage(newPage);
+          setAvailableFilters(data.filters);
+          setIsLoading(false);
+        });
 
         // Scroll to top of page smoothly
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Failed to fetch products:", error);
-      } finally {
         setIsLoading(false);
       }
     },
-    [filters, sort, router, buildURL],
+    [filters, sort],
   );
 
   // Debounced fetch on filter change
   useEffect(() => {
+    // Skip on initial mount - we already have server-rendered data
+    if (!isMounted) return;
+
+    // Check if filters or sort actually changed
+    const filtersChanged =
+      JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);
+    const sortChanged = prevSortRef.current !== sort;
+
+    if (!filtersChanged && !sortChanged) {
+      return;
+    }
+
+    // Update refs
+    prevFiltersRef.current = filters;
+    prevSortRef.current = sort;
+
+    // Debounce the fetch to avoid excessive requests
     const timeoutId = setTimeout(() => {
       fetchProducts(1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sort]);
+  }, [filters, sort, isMounted]);
 
   // Redirect to last valid page if current page exceeds total pages
   useEffect(() => {
+    // Skip on initial mount
+    if (!isMounted) return;
+
     if (!isLoading && totalPages > 0 && page > totalPages) {
       fetchProducts(totalPages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, totalPages, isLoading]);
+  }, [page, totalPages, isLoading, isMounted]);
+
+  // Sync URL with current state (separate from data fetching)
+  useEffect(() => {
+    // Skip on initial mount
+    if (!isMounted) return;
+
+    const url = buildURL(filters, sort, page);
+    // Use replace instead of push to avoid adding to browser history
+    router.replace(url, { scroll: false });
+  }, [filters, sort, page, buildURL, router, isMounted]);
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
