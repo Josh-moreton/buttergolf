@@ -301,7 +301,10 @@ export function ListingsClient({
         <Column
           maxWidth={1280}
           marginHorizontal="auto"
-          paddingHorizontal="$6"
+          paddingHorizontal="$md"
+          $gtSm={{ paddingHorizontal: "$lg" }}
+          $gtMd={{ paddingHorizontal: "$xl" }}
+          $gtLg={{ paddingHorizontal: "$2xl" }}
           width="100%"
           gap="$lg"
         >
