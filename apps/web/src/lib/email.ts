@@ -12,7 +12,18 @@ import { Resend } from "resend";
  * Environment: RESEND_API_KEY
  */
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-initialize Resend client to avoid build-time errors when RESEND_API_KEY is not set
+let resend: Resend | null = null;
+
+function getResendClient(): Resend {
+  if (!resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is not set");
+    }
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 // Use verified Resend domain for sending emails
 const FROM_EMAIL = "ButterGolf <notifications@notifications.buttergolf.com>";
@@ -40,7 +51,7 @@ export async function sendOrderConfirmationEmail(params: {
   const { buyerEmail, buyerName, orderId, productTitle, amountTotal, sellerName } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: buyerEmail,
       subject: `Order Confirmed: ${productTitle}`,
@@ -128,7 +139,7 @@ export async function sendNewSaleEmail(params: {
   const { sellerEmail, sellerName, orderId, productTitle, buyerName, amountTotal, sellerPayout, shippingAddress } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: sellerEmail,
       subject: `🎉 You made a sale! ${productTitle}`,
@@ -220,7 +231,7 @@ export async function sendShippedEmail(params: {
   const { buyerEmail, buyerName, orderId, productTitle, trackingCode, trackingUrl, carrier, estimatedDelivery } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: buyerEmail,
       subject: `📦 Your order is on its way! ${productTitle}`,
@@ -302,7 +313,7 @@ export async function sendNewMessageEmail(params: {
   const { recipientEmail, recipientName, senderName, orderId, productTitle, messagePreview } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: recipientEmail,
       subject: `New message about your order: ${productTitle}`,
@@ -382,7 +393,7 @@ export async function sendDeliveredEmail(params: {
     : "Great news! The buyer has received their package.";
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: email,
       subject,
@@ -459,7 +470,7 @@ export async function sendLabelGeneratedEmail(params: {
   const { buyerEmail, buyerName, orderId, productTitle, estimatedDelivery, carrier } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: buyerEmail,
       subject: `📋 Shipping label created for: ${productTitle}`,
@@ -545,7 +556,7 @@ export async function sendInTransitEmail(params: {
   const { buyerEmail, buyerName, orderId, productTitle, trackingCode, trackingUrl, carrier, currentLocation, estimatedDelivery } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: buyerEmail,
       subject: `📦 Your package is on the move! ${productTitle}`,
@@ -637,7 +648,7 @@ export async function sendOutForDeliveryEmail(params: {
   const { buyerEmail, buyerName, orderId, productTitle, trackingCode, trackingUrl } = params;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to: buyerEmail,
       subject: `🚚 Your package arrives TODAY! ${productTitle}`,
