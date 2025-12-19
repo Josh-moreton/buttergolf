@@ -25,6 +25,27 @@ interface ListingsClientProps {
 
 const STORAGE_KEY = "buttergolf-listings-filters";
 
+function areStringArraysEqual(a: readonly string[], b: readonly string[]) {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+function areFiltersEqual(a: FilterState | undefined, b: FilterState) {
+  if (!a) return false;
+  return (
+    a.category === b.category &&
+    a.minPrice === b.minPrice &&
+    a.maxPrice === b.maxPrice &&
+    a.showFavouritesOnly === b.showFavouritesOnly &&
+    areStringArraysEqual(a.conditions, b.conditions) &&
+    areStringArraysEqual(a.brands, b.brands)
+  );
+}
+
 export function ListingsClient({
   initialProducts,
   initialTotal,
@@ -95,8 +116,8 @@ export function ListingsClient({
   const [isMounted, setIsMounted] = useState(false);
 
   // Track previous filter values to detect actual changes
-  const prevFiltersRef = useRef<FilterState>();
-  const prevSortRef = useRef<string>();
+  const prevFiltersRef = useRef<FilterState>(filters);
+  const prevSortRef = useRef<string>(sort);
 
   // Set mounted flag on initial mount
   useEffect(() => {
@@ -164,26 +185,32 @@ export function ListingsClient({
         params.set("limit", "24");
 
         const response = await fetch(`/api/listings?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch listings: ${response.status}`);
+        }
         const data = await response.json();
 
-        // Batch all state updates together using startTransition
-        // This reduces re-renders from 4 separate updates to 1 batched update
+        // Batch non-urgent data updates together using startTransition
         startTransition(() => {
           setProducts(data.products);
           setTotal(data.total);
           setPage(newPage);
           setAvailableFilters(data.filters);
-          setIsLoading(false);
         });
+
+        // Only update the URL once we have successfully updated the data.
+        router.replace(buildURL(filters, sort, newPage), { scroll: false });
 
         // Scroll to top of page smoothly
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Failed to fetch products:", error);
+      } finally {
+        // Loading state should update synchronously for immediate feedback.
         setIsLoading(false);
       }
     },
-    [filters, sort],
+    [filters, sort, router, buildURL],
   );
 
   // Debounced fetch on filter change
@@ -192,8 +219,7 @@ export function ListingsClient({
     if (!isMounted) return;
 
     // Check if filters or sort actually changed
-    const filtersChanged =
-      JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);
+    const filtersChanged = !areFiltersEqual(prevFiltersRef.current, filters);
     const sortChanged = prevSortRef.current !== sort;
 
     if (!filtersChanged && !sortChanged) {
@@ -210,8 +236,7 @@ export function ListingsClient({
     }, 300);
 
     return () => clearTimeout(timeoutId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sort, isMounted]);
+  }, [filters, sort, isMounted, fetchProducts]);
 
   // Redirect to last valid page if current page exceeds total pages
   useEffect(() => {
@@ -221,18 +246,7 @@ export function ListingsClient({
     if (!isLoading && totalPages > 0 && page > totalPages) {
       fetchProducts(totalPages);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, totalPages, isLoading, isMounted]);
-
-  // Sync URL with current state (separate from data fetching)
-  useEffect(() => {
-    // Skip on initial mount
-    if (!isMounted) return;
-
-    const url = buildURL(filters, sort, page);
-    // Use replace instead of push to avoid adding to browser history
-    router.replace(url, { scroll: false });
-  }, [filters, sort, page, buildURL, router, isMounted]);
+  }, [page, totalPages, isLoading, isMounted, fetchProducts]);
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
