@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef, startTransition } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Column, Row, Text, Button, Badge } from "@buttergolf/ui";
+import { Column, Row, Text, Button, Badge, View } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import { FilterSidebar, type FilterState } from "./_components/FilterSidebar";
 import { MobileFilterSheet } from "./_components/MobileFilterSheet";
@@ -383,64 +383,94 @@ export function ListingsClient({
                 Active filters:
               </Text>
               {filters.category && (
-                <Badge variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{filters.category}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() => handleFilterChange({ category: null })}
-                      aria-label="Remove category filter"
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{filters.category}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() => handleFilterChange({ category: null })}
+                    aria-label="Remove category filter"
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               )}
               {filters.conditions.map((condition) => (
-                <Badge key={condition} variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{condition.replace("_", " ")}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() =>
-                        handleFilterChange({
-                          conditions: filters.conditions.filter(
-                            (c) => c !== condition,
-                          ),
-                        })
-                      }
-                      aria-label={`Remove ${condition} filter`}
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  key={condition}
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{condition.replace("_", " ")}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() =>
+                      handleFilterChange({
+                        conditions: filters.conditions.filter(
+                          (c) => c !== condition,
+                        ),
+                      })
+                    }
+                    aria-label={`Remove ${condition} filter`}
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               ))}
               {filters.brands.map((brand) => (
-                <Badge key={brand} variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{brand}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() =>
-                        handleFilterChange({
-                          brands: filters.brands.filter((b) => b !== brand),
-                        })
-                      }
-                      aria-label={`Remove ${brand} filter`}
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  key={brand}
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{brand}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() =>
+                      handleFilterChange({
+                        brands: filters.brands.filter((b) => b !== brand),
+                      })
+                    }
+                    aria-label={`Remove ${brand} filter`}
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               ))}
-              <Button size="$4" chromeless onPress={handleClearAll}>
+              <Button
+                size="$4"
+                backgroundColor="$primary"
+                color="$textInverse"
+                borderRadius="$full"
+                paddingHorizontal="$4"
+                onPress={handleClearAll}
+              >
                 Clear all
               </Button>
             </Row>

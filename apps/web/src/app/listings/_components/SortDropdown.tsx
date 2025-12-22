@@ -1,39 +1,88 @@
 "use client";
 
+import { Check, ChevronDown } from "@tamagui/lucide-icons";
+import { Select, Adapt, Sheet } from "tamagui";
+import { useMemo } from "react";
+
 interface SortDropdownProps {
   value: string;
   onChange: (value: string) => void;
 }
 
+const SORT_OPTIONS = [
+  { value: "newest", label: "Newest First" },
+  { value: "price-asc", label: "Price: Low to High" },
+  { value: "price-desc", label: "Price: High to Low" },
+  { value: "popular", label: "Most Popular" },
+];
+
 export function SortDropdown({ value, onChange }: Readonly<SortDropdownProps>) {
+  const selectedLabel = useMemo(() => {
+    return SORT_OPTIONS.find((opt) => opt.value === value)?.label || "Sort by";
+  }, [value]);
+
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      style={{
-        minWidth: 200,
-        height: 40,
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingTop: 8,
-        paddingBottom: 8,
-        borderRadius: 10,
-        border: "1px solid #D1D5DB",
-        backgroundColor: "#FFFFFF",
-        color: "#1E1E1E",
-        fontSize: 14,
-        fontFamily: "system-ui, sans-serif",
-        cursor: "pointer",
-        outline: "none",
-        appearance: "none",
-        WebkitAppearance: "none",
-        MozAppearance: "none",
-      }}
-    >
-      <option value="newest">Newest First</option>
-      <option value="price-asc">Price: Low to High</option>
-      <option value="price-desc">Price: High to Low</option>
-      <option value="popular">Most Popular</option>
-    </select>
+    <Select value={value} onValueChange={onChange} disablePreventBodyScroll>
+      <Select.Trigger
+        minWidth={200}
+        height={40}
+        paddingHorizontal="$3"
+        borderRadius={10}
+        borderWidth={1}
+        borderColor="$border"
+        backgroundColor="$surface"
+        hoverStyle={{ borderColor: "$borderHover" }}
+        focusStyle={{ borderColor: "$primary", outlineWidth: 0 }}
+        iconAfter={ChevronDown}
+      >
+        <Select.Value placeholder="Sort by">{selectedLabel}</Select.Value>
+      </Select.Trigger>
+
+      <Adapt when="sm" platform="touch">
+        <Sheet
+          modal
+          dismissOnSnapToBottom
+          animationConfig={{
+            type: "spring",
+            damping: 20,
+            mass: 1.2,
+            stiffness: 250,
+          }}
+        >
+          <Sheet.Frame>
+            <Sheet.ScrollView>
+              <Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Adapt>
+
+      <Select.Content zIndex={200000}>
+        <Select.Viewport minWidth={200}>
+          <Select.Group>
+            {SORT_OPTIONS.map((option, index) => (
+              <Select.Item
+                key={option.value}
+                index={index}
+                value={option.value}
+                cursor="pointer"
+                hoverStyle={{ backgroundColor: "$backgroundHover" }}
+              >
+                <Select.ItemText>{option.label}</Select.ItemText>
+                <Select.ItemIndicator marginLeft="auto">
+                  <Check size={16} />
+                </Select.ItemIndicator>
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Viewport>
+      </Select.Content>
+    </Select>
   );
 }
+
