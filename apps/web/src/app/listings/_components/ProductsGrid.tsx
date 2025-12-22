@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 interface ProductsGridProps {
   readonly products: ProductCardData[];
   readonly isLoading: boolean;
+  readonly isPaginating?: boolean; // When paginating, keep products visible with fade transition
   readonly currentPage: number;
   readonly totalPages: number;
   readonly onPageChange: (page: number) => void;
@@ -30,18 +31,20 @@ function LoadingSkeleton() {
 
 /**
  * Dot-based pagination component
- * - Shows dots for each page
- * - Currently selected page has an elongated pill shape
- * - Smooth animation between circle and pill states
+ * - Matches the ProductCarousel pagination dots styling
+ * - Active dot is elongated pill (48px), inactive is circle (10px)
+ * - Uses CSS transitions for smooth animations (same as carousel)
  */
 function DotPagination({
   currentPage,
   totalPages,
   onPageChange,
+  disabled = false,
 }: Readonly<{
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  disabled?: boolean;
 }>) {
   // For many pages, show limited dots with the active one in context
   const getVisiblePages = (): number[] => {
@@ -49,7 +52,7 @@ function DotPagination({
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    // Show: first, ..., current-1, current, current+1, ..., last
+    // Show: current-2, current-1, current, current+1, current+2
     const pages: number[] = [];
     const start = Math.max(1, currentPage - 2);
     const end = Math.min(totalPages, currentPage + 2);
@@ -74,26 +77,27 @@ function DotPagination({
         const isActive = page === currentPage;
 
         return (
-          <View
+          <button
             key={page}
-            role="button"
+            onClick={() => !disabled && onPageChange(page)}
+            disabled={disabled}
             aria-label={`Go to page ${page}`}
             aria-current={isActive ? "page" : undefined}
-            onPress={() => onPageChange(page)}
-            cursor="pointer"
-            // Animate dimensions: circle (12x12) to pill (32x12)
-            width={isActive ? 32 : 12}
-            height={12}
-            borderRadius={6}
-            backgroundColor={isActive ? "$primary" : "$border"}
-            // Smooth spring animation for width transition
-            animation="medium"
-            hoverStyle={{
-              backgroundColor: isActive ? "$primary" : "$textSecondary",
-              scale: isActive ? 1 : 1.2,
-            }}
-            pressStyle={{
-              scale: 0.95,
+            style={{
+              // Match ProductCarousel dot styling exactly
+              width: isActive ? "48px" : "10px",
+              height: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: isActive 
+                ? "#F45314" 
+                : disabled 
+                  ? "rgba(244, 83, 20, 0.3)" 
+                  : "rgba(244, 83, 20, 0.5)",
+              cursor: disabled ? "wait" : "pointer",
+              transition: "all 0.3s ease",
+              padding: 0,
+              opacity: disabled && !isActive ? 0.6 : 1,
             }}
           />
         );
@@ -108,45 +112,44 @@ function DotPagination({
 function AnimatedGridContent({
   products,
   isLoading,
+  isPaginating,
   currentPage,
 }: Readonly<{
   products: ProductCardData[];
   isLoading: boolean;
+  isPaginating: boolean;
   currentPage: number;
 }>) {
   const router = useRouter();
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayProducts, setDisplayProducts] = useState(products);
   const prevPageRef = useRef(currentPage);
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Handle page transitions with animation
   useEffect(() => {
-    if (prevPageRef.current !== currentPage && !isLoading) {
+    // When paginating (not loading), animate the transition
+    if (isPaginating && prevPageRef.current !== currentPage) {
       // Determine slide direction based on page change
       setSlideDirection(currentPage > prevPageRef.current ? "left" : "right");
-      setIsTransitioning(true);
+      setIsAnimating(true);
+      prevPageRef.current = currentPage;
+    }
+  }, [isPaginating, currentPage]);
 
-      // After exit animation, update content
+  // When we get new products and we're done paginating, fade them in
+  useEffect(() => {
+    if (!isPaginating && !isLoading && products !== displayProducts) {
+      // Small delay to allow exit animation
       const timer = setTimeout(() => {
         setDisplayProducts(products);
-        prevPageRef.current = currentPage;
-        setIsTransitioning(false);
-      }, 150);
-
+        setIsAnimating(false);
+      }, isAnimating ? 200 : 0);
       return () => clearTimeout(timer);
-    } else if (!isLoading) {
-      setDisplayProducts(products);
     }
-  }, [products, currentPage, isLoading]);
+  }, [products, isPaginating, isLoading, displayProducts, isAnimating]);
 
-  // CSS for slide animation
-  const slideTransform = isTransitioning
-    ? slideDirection === "left"
-      ? "translateX(-20px)"
-      : "translateX(20px)"
-    : "translateX(0)";
-
+  // Show loading skeletons only for full loading (filter changes), not pagination
   if (isLoading) {
     return (
       <>
@@ -157,17 +160,23 @@ function AnimatedGridContent({
     );
   }
 
+  // During pagination, show current products with fade effect
+  const productsToShow = isPaginating ? displayProducts : products;
+
   return (
     <>
-      {displayProducts.map((product, index) => (
+      {productsToShow.map((product, index) => (
         <View
           key={product.id}
-          animation="quick"
-          opacity={isTransitioning ? 0 : 1}
           style={{
-            transform: slideTransform,
-            transition: "opacity 150ms ease-out, transform 150ms ease-out",
-            transitionDelay: `${index * 10}ms`,
+            opacity: isPaginating || isAnimating ? 0.5 : 1,
+            transform: isPaginating 
+              ? slideDirection === "left" 
+                ? "translateX(-8px)" 
+                : "translateX(8px)"
+              : "translateX(0)",
+            transition: "opacity 200ms ease-out, transform 200ms ease-out",
+            transitionDelay: `${Math.min(index * 8, 150)}ms`,
           }}
         >
           <ProductCard
@@ -183,11 +192,12 @@ function AnimatedGridContent({
 export function ProductsGrid({
   products,
   isLoading,
+  isPaginating = false,
   currentPage,
   totalPages,
   onPageChange,
 }: Readonly<ProductsGridProps>) {
-  if (!isLoading && products.length === 0) {
+  if (!isLoading && !isPaginating && products.length === 0) {
     return (
       <Column
         alignItems="center"
@@ -223,6 +233,7 @@ export function ProductsGrid({
         <AnimatedGridContent
           products={products}
           isLoading={isLoading}
+          isPaginating={isPaginating}
           currentPage={currentPage}
         />
       </Column>
@@ -233,6 +244,7 @@ export function ProductsGrid({
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}
+          disabled={isPaginating}
         />
       )}
     </Column>
