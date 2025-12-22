@@ -39,10 +39,10 @@ export default clerkMiddleware(async (auth, req) => {
     process.env.NEXT_PUBLIC_COMING_SOON_ENABLED === "true";
 
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
-    // Check if user is an authenticated admin who can bypass coming soon
+    // Check if user is authenticated as admin (josh@rwxt.org)
     const session = await auth();
-    const isAdmin =
-      (session?.sessionClaims?.metadata as { role?: string })?.role === "admin";
+    const userEmail = session?.sessionClaims?.email as string | undefined;
+    const isAdmin = userEmail === "josh@rwxt.org";
 
     if (!isAdmin) {
       return NextResponse.redirect(new URL("/coming-soon", req.url));
