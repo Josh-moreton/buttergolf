@@ -6,7 +6,6 @@ import type { ProductCardData } from "@buttergolf/app";
 import { useRouter } from "next/navigation";
 import { FooterSection } from "../../_components/marketplace/FooterSection";
 import { HorizontalProductCard } from "./HorizontalProductCard";
-import { MakeOfferModal } from "../../products/[id]/_components/MakeOfferModal";
 
 interface FavouritesResponse {
   products: Array<
@@ -27,9 +26,6 @@ export function FavouritesClient() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [offerModalProduct, setOfferModalProduct] = useState<
-    (ProductCardData & { description?: string; price: number }) | null
-  >(null);
 
   useEffect(() => {
     async function fetchFavourites() {
@@ -63,32 +59,9 @@ export function FavouritesClient() {
     fetchFavourites();
   }, [page, router]);
 
-  // Make Offer Handler
+  // Make Offer Handler - navigate to product page where offer modal exists
   const handleMakeOffer = (productId: string) => {
-    const product = products.find((p) => p.id === productId);
-    if (product) {
-      setOfferModalProduct(product);
-    }
-  };
-
-  const handleSubmitOffer = async (offerAmount: number) => {
-    if (!offerModalProduct) return;
-
-    const response = await fetch("/api/offers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        productId: offerModalProduct.id,
-        amount: offerAmount,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to create offer");
-    }
-
-    const { offerId } = await response.json();
-    router.push(`/offers/${offerId}`);
+    router.push(`/products/${productId}?action=offer`);
   };
 
   // Buy Now Handler
@@ -300,23 +273,6 @@ export function FavouritesClient() {
           </>
         )}
       </Column>
-
-      {/* Make Offer Modal */}
-      {offerModalProduct && (
-        <MakeOfferModal
-          product={
-            {
-              id: offerModalProduct.id,
-              title: offerModalProduct.title,
-              price: offerModalProduct.price,
-              images: [{ url: offerModalProduct.imageUrl }],
-            } as any
-          }
-          isOpen={!!offerModalProduct}
-          onClose={() => setOfferModalProduct(null)}
-          onSubmitOffer={handleSubmitOffer}
-        />
-      )}
 
       <FooterSection />
     </>
