@@ -10,9 +10,6 @@ import {
   Heading,
   Image,
   Sheet,
-  SheetOverlay,
-  SheetFrame,
-  SheetHandle,
 } from "@buttergolf/ui";
 import { StripePaymentForm } from "@/app/checkout/_components/StripePaymentForm";
 import type { Product } from "../ProductDetailClient";
@@ -86,20 +83,22 @@ export function BuyNowSheet({
       dismissOnSnapToBottom
       zIndex={100000}
       animation="medium"
+      forceRemoveScrollEnabled={false}
     >
-      <SheetOverlay
+      <Sheet.Overlay
         animation="lazy"
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
         backgroundColor="$overlayDark50"
       />
-      <SheetFrame
+      <Sheet.Frame
         backgroundColor="$surface"
         borderTopLeftRadius="$xl"
         borderTopRightRadius="$xl"
         paddingBottom="$xl"
+        style={{ position: 'relative' as const, zIndex: 1, pointerEvents: 'auto' as const }}
       >
-        <SheetHandle backgroundColor="$border" marginTop="$sm" />
+        <Sheet.Handle backgroundColor="$border" marginTop="$sm" />
 
         {/* Header */}
         <Row
@@ -228,7 +227,7 @@ export function BuyNowSheet({
             )
           )}
         </Column>
-      </SheetFrame>
+      </Sheet.Frame>
     </Sheet>
   );
 }
