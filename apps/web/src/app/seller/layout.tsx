@@ -71,7 +71,7 @@ export default function SellerLayout({
               {error}
             </Text>
             <Link href="/account">
-              <Button size="$4" backgroundColor="$primary" color="$textInverse">
+              <Button butterVariant="primary" size="$4">
                 Go to Account Settings
               </Button>
             </Link>
@@ -99,7 +99,7 @@ export default function SellerLayout({
               listing golf equipment.
             </Text>
             <Link href="/account">
-              <Button size="$5" backgroundColor="$primary" color="$textInverse">
+              <Button butterVariant="primary" size="$5">
                 Complete Seller Setup
               </Button>
             </Link>
@@ -123,7 +123,7 @@ export default function SellerLayout({
           Unable to initialize seller dashboard. Please try again.
         </Text>
         <Link href="/account">
-          <Button size="$4" backgroundColor="$primary" color="$textInverse">
+          <Button butterVariant="primary" size="$4">
             Go to Account Settings
           </Button>
         </Link>

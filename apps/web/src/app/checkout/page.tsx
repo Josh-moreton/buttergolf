@@ -105,7 +105,7 @@ function CheckoutPageContent() {
             </Text>
           </Column>
           <Link href="/" style={{ textDecoration: "none" }}>
-            <Button size="$5" backgroundColor="$primary" color="$textInverse">
+            <Button butterVariant="primary" size="$5">
               Back to Shop
             </Button>
           </Link>
