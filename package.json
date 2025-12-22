@@ -24,7 +24,8 @@
     "check-types": "turbo run check-types",
     "check-deps": "check-dependency-version-consistency .",
     "clean": "turbo run clean && rm -rf node_modules",
-    "clean-install": "pnpm clean && pnpm install"
+    "clean-install": "pnpm clean && pnpm install",
+    "lighthouse": "node scripts/lighthouse.js"
   },
   "devDependencies": {
     "@tamagui/cli": "catalog:",
