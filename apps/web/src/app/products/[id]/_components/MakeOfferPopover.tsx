@@ -9,12 +9,14 @@ import {
   Heading,
   Image,
   Popover,
-  PopoverAnchor,
+  PopoverTrigger,
   PopoverContent,
+  PopoverClose,
   Sheet,
   SheetOverlay,
   SheetFrame,
   SheetHandle,
+  Adapt,
 } from "@buttergolf/ui";
 import type { Product } from "../ProductDetailClient";
 
@@ -29,8 +31,8 @@ interface MakeOfferPopoverProps {
 /**
  * MakeOfferPopover component
  * 
- * Uses Tamagui Popover on desktop for a lightweight feel,
- * and Tamagui Sheet on mobile for better UX on small screens.
+ * Uses Tamagui Popover on desktop with Adapt for mobile Sheet.
+ * The parent controls open state via isOpen/onOpenChange for auth checks.
  */
 export function MakeOfferPopover({
   product,
@@ -42,18 +44,6 @@ export function MakeOfferPopover({
   const [offerAmount, setOfferAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile breakpoint
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Reset state when popover opens
   useEffect(() => {
@@ -112,23 +102,6 @@ export function MakeOfferPopover({
         <Heading level={4} color="$text">
           Make an offer
         </Heading>
-        {isMobile && (
-          <Button
-            chromeless
-            onPress={() => onOpenChange(false)}
-            backgroundColor="$surface"
-            borderRadius="$full"
-            width={36}
-            height={36}
-            alignItems="center"
-            justifyContent="center"
-            padding={0}
-          >
-            <Text size="$5" fontWeight="bold" color="$text">
-              ✕
-            </Text>
-          </Button>
-        )}
       </Row>
 
       {/* Product Info - Compact */}
@@ -229,79 +202,61 @@ export function MakeOfferPopover({
       </Column>
 
       {/* Submit Button */}
-      <Button
-        size="$4"
-        borderRadius="$full"
-        paddingHorizontal="$5"
-        backgroundColor="$primary"
-        color="$textInverse"
-        onPress={handleSubmit}
-        disabled={submitting || !offerAmount}
-        width="100%"
-      >
-        {submitting ? "Submitting..." : "Submit offer"}
-      </Button>
+      <PopoverClose asChild>
+        <Button
+          size="$4"
+          borderRadius="$full"
+          paddingHorizontal="$5"
+          backgroundColor="$primary"
+          color="$textInverse"
+          onPress={handleSubmit}
+          disabled={submitting || !offerAmount}
+          width="100%"
+        >
+          {submitting ? "Submitting..." : "Submit offer"}
+        </Button>
+      </PopoverClose>
     </Column>
   );
 
-  // Mobile: Use Sheet
-  if (isMobile) {
-    return (
-      <>
-        {/* Render trigger directly - the parent button's onPress handles opening via onMakeOffer */}
-        {children}
-        
-        <Sheet
-          modal
-          open={isOpen}
-          onOpenChange={onOpenChange}
-          snapPoints={[50]}
-          dismissOnSnapToBottom
-          zIndex={100000}
-          animation="medium"
-        >
-          <SheetOverlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-            backgroundColor="$overlayDark50"
-          />
-          <SheetFrame
-            backgroundColor="$surface"
-            borderTopLeftRadius="$xl"
-            borderTopRightRadius="$xl"
-            paddingBottom="$xl"
-          >
-            <SheetHandle backgroundColor="$border" marginTop="$sm" />
-            <OfferForm />
-          </SheetFrame>
-        </Sheet>
-      </>
-    );
-  }
-
-  // Desktop: Use Popover (controlled mode - button's onPress handles opening)
   return (
     <Popover
       open={isOpen}
       onOpenChange={onOpenChange}
       placement="top"
-      offset={{ mainAxis: 8 }}
+      offset={10}
+      allowFlip
+      stayInFrame
     >
-      <PopoverAnchor asChild>
-        <div style={{ display: 'contents' }}>
-          {children}
-        </div>
-      </PopoverAnchor>
+      <PopoverTrigger asChild>
+        {children}
+      </PopoverTrigger>
+
+      <Adapt when="sm" platform="touch">
+        <Sheet
+          modal
+          dismissOnSnapToBottom
+          snapPoints={[50]}
+          animation="medium"
+          zIndex={100000}
+        >
+          <Sheet.Frame padding="$4" backgroundColor="$surface" borderTopLeftRadius="$xl" borderTopRightRadius="$xl">
+            <Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay
+            backgroundColor="$overlayDark50"
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Adapt>
+
       <PopoverContent
         backgroundColor="$surface"
         borderRadius="$lg"
         borderWidth={1}
         borderColor="$border"
-        shadowColor="$shadowColor"
-        shadowRadius={16}
-        shadowOffset={{ width: 0, height: 4 }}
-        shadowOpacity={0.15}
         width={320}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}

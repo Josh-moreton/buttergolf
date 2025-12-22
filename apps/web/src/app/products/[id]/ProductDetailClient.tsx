@@ -308,9 +308,21 @@ export default function ProductDetailClient({
             <ProductInformation
               product={product}
               onBuyNow={handleBuyNow}
-              onMakeOffer={handleMakeOffer}
               makeOfferOpen={makeOfferOpen}
-              onMakeOfferOpenChange={setMakeOfferOpen}
+              onMakeOfferOpenChange={(open) => {
+                console.log("[MakeOffer] onMakeOfferOpenChange called", { open, isSignedIn });
+                // If trying to open and not signed in, redirect to login
+                if (open && !isSignedIn) {
+                  const redirectUrl =
+                    typeof globalThis !== "undefined" && globalThis.location
+                      ? globalThis.location.href
+                      : `/products/${product.id}`;
+                  console.log("[MakeOffer] Not signed in, redirecting to:", `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
+                  router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
+                  return;
+                }
+                setMakeOfferOpen(open);
+              }}
               onSubmitOffer={handleSubmitOffer}
             />
           </Row>

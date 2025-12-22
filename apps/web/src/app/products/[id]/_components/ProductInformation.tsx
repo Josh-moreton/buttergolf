@@ -17,7 +17,6 @@ interface User {
 interface ProductInformationProps {
   product: Product;
   onBuyNow: () => void;
-  onMakeOffer: () => void;
   makeOfferOpen: boolean;
   onMakeOfferOpenChange: (open: boolean) => void;
   onSubmitOffer: (amount: number) => Promise<void>;
@@ -26,7 +25,6 @@ interface ProductInformationProps {
 export function ProductInformation({
   product,
   onBuyNow,
-  onMakeOffer,
   makeOfferOpen,
   onMakeOfferOpenChange,
   onSubmitOffer,
@@ -248,7 +246,6 @@ export function ProductInformation({
             width="100%"
             height={56}
             disabled={product.isSold}
-            onPress={onMakeOffer}
           >
             Make an offer
           </Button>
