@@ -31,9 +31,9 @@ function LoadingSkeleton() {
 
 /**
  * Dot-based pagination component
- * - Shows dots for each page
- * - Currently selected page has an elongated pill shape
- * - Smooth animation between circle and pill states
+ * - Matches the ProductCarousel pagination dots styling
+ * - Active dot is elongated pill (48px), inactive is circle (10px)
+ * - Uses CSS transitions for smooth animations (same as carousel)
  */
 function DotPagination({
   currentPage,
@@ -52,7 +52,7 @@ function DotPagination({
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    // Show: first, ..., current-1, current, current+1, ..., last
+    // Show: current-2, current-1, current, current+1, current+2
     const pages: number[] = [];
     const start = Math.max(1, currentPage - 2);
     const end = Math.min(totalPages, currentPage + 2);
@@ -77,28 +77,27 @@ function DotPagination({
         const isActive = page === currentPage;
 
         return (
-          <View
+          <button
             key={page}
-            role="button"
+            onClick={() => !disabled && onPageChange(page)}
+            disabled={disabled}
             aria-label={`Go to page ${page}`}
             aria-current={isActive ? "page" : undefined}
-            aria-disabled={disabled}
-            onPress={() => !disabled && onPageChange(page)}
-            cursor={disabled ? "wait" : "pointer"}
-            opacity={disabled && !isActive ? 0.5 : 1}
-            // Animate dimensions: circle (12x12) to pill (32x12)
-            width={isActive ? 32 : 12}
-            height={12}
-            borderRadius={6}
-            backgroundColor={isActive ? "$primary" : "$border"}
-            // Smooth spring animation for width transition
-            animation="medium"
-            hoverStyle={disabled ? {} : {
-              backgroundColor: isActive ? "$primary" : "$textSecondary",
-              scale: isActive ? 1 : 1.2,
-            }}
-            pressStyle={disabled ? {} : {
-              scale: 0.95,
+            style={{
+              // Match ProductCarousel dot styling exactly
+              width: isActive ? "48px" : "10px",
+              height: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: isActive 
+                ? "#F45314" 
+                : disabled 
+                  ? "rgba(244, 83, 20, 0.3)" 
+                  : "rgba(244, 83, 20, 0.5)",
+              cursor: disabled ? "wait" : "pointer",
+              transition: "all 0.3s ease",
+              padding: 0,
+              opacity: disabled && !isActive ? 0.6 : 1,
             }}
           />
         );
