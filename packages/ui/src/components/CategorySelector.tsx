@@ -56,7 +56,8 @@ const CategorySelectorContainer = styled(Row, {
   position: "relative",
   gap: "$6",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "space-around",
+  width: "100%",
   paddingBottom: "$3", // Space for underline
 });
 
