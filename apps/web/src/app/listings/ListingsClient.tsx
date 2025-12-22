@@ -430,7 +430,7 @@ export function ListingsClient({
           )}
 
           {/* Main content: Sidebar + Grid */}
-          <Row gap="$2xl" alignItems="flex-start" overflow="hidden" width="100%">
+          <Row gap="$2xl" alignItems="flex-start" style={{ overflow: "visible" }} width="100%">
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
