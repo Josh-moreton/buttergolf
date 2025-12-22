@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // TODO: Remove this entire coming-soon block after launch - set NEXT_PUBLIC_COMING_SOON_ENABLED=false
@@ -46,9 +45,10 @@ export default clerkMiddleware(async (auth, req) => {
     process.env.NEXT_PUBLIC_COMING_SOON_ENABLED === "true";
 
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
-    // Check if user is the admin (by email)
-    const user = await currentUser();
-    const userEmail = user?.emailAddresses[0]?.emailAddress;
+    // Check if user is the admin (by email from Clerk JWT claims)
+    const session = await auth();
+    // Clerk includes email in the JWT claims as 'email'
+    const userEmail = session?.sessionClaims?.email as string | undefined;
     const isAdmin = userEmail && ADMIN_EMAILS.includes(userEmail);
 
     if (!isAdmin) {
