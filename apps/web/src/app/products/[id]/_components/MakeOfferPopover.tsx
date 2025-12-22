@@ -9,7 +9,7 @@ import {
   Heading,
   Image,
   Popover,
-  PopoverTrigger,
+  PopoverAnchor,
   PopoverContent,
   Sheet,
   SheetOverlay,
@@ -248,10 +248,8 @@ export function MakeOfferPopover({
   if (isMobile) {
     return (
       <>
-        {/* Render trigger directly */}
-        <div onClick={() => onOpenChange(true)}>
-          {children}
-        </div>
+        {/* Render trigger directly - the parent button's onPress handles opening via onMakeOffer */}
+        {children}
         
         <Sheet
           modal
@@ -282,17 +280,19 @@ export function MakeOfferPopover({
     );
   }
 
-  // Desktop: Use Popover
+  // Desktop: Use Popover (controlled mode - button's onPress handles opening)
   return (
     <Popover
       open={isOpen}
       onOpenChange={onOpenChange}
       placement="top"
-      offset={8}
+      offset={{ mainAxis: 8 }}
     >
-      <PopoverTrigger asChild>
-        {children}
-      </PopoverTrigger>
+      <PopoverAnchor asChild>
+        <div style={{ display: 'contents' }}>
+          {children}
+        </div>
+      </PopoverAnchor>
       <PopoverContent
         backgroundColor="$surface"
         borderRadius="$lg"

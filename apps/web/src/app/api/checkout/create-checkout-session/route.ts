@@ -99,8 +99,8 @@ export async function POST(req: Request) {
       // ButterGolf brand customization
       branding_settings: {
         display_name: "ButterGolf",
-        font_family: "roboto", // Clean sans-serif close to Urbanist
-        border_style: "rounded", // Matches our $full border radius aesthetic
+        font_family: "inter", // Clean sans-serif close to Urbanist
+        border_style: "rounded", // Matches our rounded aesthetic
         background_color: "#FFFFFF", // Pure White - clean, professional background
         button_color: "#F45314", // Spiced Clementine - our primary brand color
       },
