@@ -5,7 +5,10 @@ import { NextResponse } from "next/server";
 // and delete ADMIN_USER_IDS, isComingSoonAllowedRoute, and the coming-soon redirect logic below.
 
 // Admin user IDs - bypasses coming-soon redirect
-const ADMIN_USER_IDS = ["user_37DMusbbHBI1lrqN3spqQGThcyu"];
+const ADMIN_USER_IDS = [
+  "user_37DMusbbHBI1lrqN3spqQGThcyu",
+  "user_37Dahks6xMgGLMf3NSBBDCbLy7A",
+];
 
 // Define protected routes that require authentication
 const isProtectedRoute = createRouteMatcher([
