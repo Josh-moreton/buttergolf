@@ -1,4 +1,8 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import {
+  clerkClient,
+  clerkMiddleware,
+  createRouteMatcher,
+} from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // Define protected routes that require authentication
@@ -41,8 +45,21 @@ export default clerkMiddleware(async (auth, req) => {
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
     // Check if user is authenticated as admin (josh@rwxt.org)
     const session = await auth();
-    const userEmail = session?.sessionClaims?.email as string | undefined;
-    const isAdmin = userEmail === "josh@rwxt.org";
+
+    let isAdmin = false;
+    if (session?.userId) {
+      try {
+        const client = await clerkClient();
+        const user = await client.users.getUser(session.userId);
+        const userEmail = user.emailAddresses.find(
+          (e) => e.id === user.primaryEmailAddressId
+        )?.emailAddress;
+        isAdmin = userEmail === "josh@rwxt.org";
+      } catch {
+        // If we can't fetch user, they're not admin
+        isAdmin = false;
+      }
+    }
 
     if (!isAdmin) {
       return NextResponse.redirect(new URL("/coming-soon", req.url));
