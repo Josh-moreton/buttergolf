@@ -243,12 +243,12 @@ export function SellerHub() {
               size="$5"
               backgroundColor="$primary"
               color="$textInverse"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
+              borderRadius="$full"
+              paddingHorizontal="$6"
             >
               <Row gap="$sm" alignItems="center">
-                <Plus size={20} />
-                <Text>Create First Listing</Text>
+                <Plus size={20} color="$textInverse" />
+                <Text color="$textInverse">Create First Listing</Text>
               </Row>
             </Button>
           </Link>

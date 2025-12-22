@@ -22,10 +22,10 @@ export function NewsletterSection() {
           </Text>
         </Column>
         <Row
-          gap="$sm"
+          gap="$md"
           maxWidth={500}
           width="100%"
-          alignItems="stretch"
+          alignItems="center"
           $sm={{ flexDirection: "column" }}
           $md={{ flexDirection: "row" }}
         >
@@ -34,7 +34,7 @@ export function NewsletterSection() {
             size="$5"
             placeholder="you@example.com"
             borderRadius="$full"
-            paddingHorizontal="$5"
+            paddingHorizontal="$4"
           />
           <Button
             size="$5"
@@ -42,8 +42,9 @@ export function NewsletterSection() {
             color="$textInverse"
             borderRadius="$full"
             flexShrink={0}
-            width={180}
+            paddingHorizontal="$6"
             $sm={{ width: "100%" }}
+            $md={{ width: "auto" }}
           >
             Subscribe
           </Button>
