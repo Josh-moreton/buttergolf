@@ -101,47 +101,77 @@ export function ButterHeader() {
             <Row
               display="none"
               $gtMd={{ display: "flex" }}
-              gap="$8"
+              gap="$6"
               alignItems="center"
             >
               <Link href="/" style={{ textDecoration: "none" }}>
-                <Text
-                  size="$6"
-                  weight={isActive("/") ? "bold" : "normal"}
-                  color={isActive("/") ? "$primary" : "$text"}
+                <Row
+                  paddingHorizontal="$3"
+                  paddingVertical="$2"
+                  borderRadius="$md"
                   cursor="pointer"
+                  backgroundColor="transparent"
                   hoverStyle={{
-                    color: "$primary",
+                    backgroundColor: "rgba(244, 83, 20, 0.1)",
+                  }}
+                  style={{
+                    transition: "all 200ms ease-out",
                   }}
                 >
-                  Home
-                </Text>
+                  <Text
+                    size="$6"
+                    weight={isActive("/") ? "bold" : "normal"}
+                    color="$text"
+                  >
+                    Home
+                  </Text>
+                </Row>
               </Link>
               <Link href="/listings" style={{ textDecoration: "none" }}>
-                <Text
-                  size="$6"
-                  weight={isActive("/listings") ? "bold" : "normal"}
-                  color={isActive("/listings") ? "$primary" : "$text"}
+                <Row
+                  paddingHorizontal="$3"
+                  paddingVertical="$2"
+                  borderRadius="$md"
                   cursor="pointer"
+                  backgroundColor="transparent"
                   hoverStyle={{
-                    color: "$primary",
+                    backgroundColor: "rgba(244, 83, 20, 0.1)",
+                  }}
+                  style={{
+                    transition: "all 200ms ease-out",
                   }}
                 >
-                  Buying
-                </Text>
+                  <Text
+                    size="$6"
+                    weight={isActive("/listings") ? "bold" : "normal"}
+                    color="$text"
+                  >
+                    Buying
+                  </Text>
+                </Row>
               </Link>
               <Link href="/sell" style={{ textDecoration: "none" }}>
-                <Text
-                  size="$6"
-                  weight={isActive("/sell") ? "bold" : "normal"}
-                  color={isActive("/sell") ? "$primary" : "$text"}
+                <Row
+                  paddingHorizontal="$3"
+                  paddingVertical="$2"
+                  borderRadius="$md"
                   cursor="pointer"
+                  backgroundColor="transparent"
                   hoverStyle={{
-                    color: "$primary",
+                    backgroundColor: "rgba(244, 83, 20, 0.1)",
+                  }}
+                  style={{
+                    transition: "all 200ms ease-out",
                   }}
                 >
-                  Selling
-                </Text>
+                  <Text
+                    size="$6"
+                    weight={isActive("/sell") ? "bold" : "normal"}
+                    color="$text"
+                  >
+                    Selling
+                  </Text>
+                </Row>
               </Link>
             </Row>
 
