@@ -20,21 +20,13 @@ export function PageHero() {
     >
       <Column
         width="100%"
-        height={100}
+        height={105}
         borderRadius="$xl"
         overflow="hidden"
         position="relative"
         alignItems="center"
         justifyContent="center"
         padding="$4"
-        $gtMd={{
-          height: 150,
-          padding: "$6",
-        }}
-        $gtLg={{
-          height: 180,
-          padding: "$8",
-        }}
       >
         {/* Background image with 70% opacity */}
         <div

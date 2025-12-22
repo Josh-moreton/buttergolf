@@ -35,14 +35,14 @@ export function HomeScreen({
   const [buySellMode, setBuySellMode] = useState<BuySellMode>("buying");
 
   // Navigation links for categories
-  const driversLink = useLink({
-    href: routes.category.replace("[slug]", "drivers"),
+  const woodsLink = useLink({
+    href: routes.category.replace("[slug]", "woods"),
   });
   const ironsLink = useLink({
     href: routes.category.replace("[slug]", "irons"),
   });
   const shoesLink = useLink({
-    href: routes.category.replace("[slug]", "shoes"),
+    href: routes.category.replace("[slug]", "apparel"),
   });
   const accessoriesLink = useLink({
     href: routes.category.replace("[slug]", "accessories"),
@@ -147,9 +147,9 @@ export function HomeScreen({
 
         {/* Category Cards Grid */}
         <Column paddingHorizontal="$4" gap="$4">
-          {/* First row: Drivers & Irons */}
+          {/* First row: Woods & Irons */}
           <Row gap="$4">
-            {/* Drivers card */}
+            {/* Woods card */}
             <Column
               flex={1}
               height={180}
@@ -157,9 +157,9 @@ export function HomeScreen({
               borderRadius="$2xl"
               overflow="hidden"
               pressStyle={{ opacity: 0.9, scale: 0.98 }}
-              onPress={driversLink.onPress}
+              onPress={woodsLink.onPress}
               accessibilityRole="button"
-              accessibilityLabel="Browse drivers category"
+              accessibilityLabel="Browse woods category"
             >
               <Image
                 source={images.clubs.club1}
@@ -167,8 +167,8 @@ export function HomeScreen({
                 height="100%"
                 resizeMode="cover"
                 position="absolute"
-                alt="Drivers category"
-                accessibilityLabel="Drivers category"
+                alt="Woods category"
+                accessibilityLabel="Woods category"
               />
               <Column
                 flex={1}
@@ -177,7 +177,7 @@ export function HomeScreen({
                 backgroundColor="rgba(0, 0, 0, 0.3)"
               >
                 <Text size="$8" fontWeight="700" color="$vanillaCream">
-                  Drivers
+                  Woods
                 </Text>
               </Column>
             </Column>

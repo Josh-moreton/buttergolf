@@ -15,11 +15,11 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: "drivers",
-    name: "Drivers",
-    label: "DRIVERS ON SALE",
+    id: "woods",
+    name: "Woods",
+    label: "WOODS ON SALE",
     image: imagePaths.clubs.club1,
-    link: "/category/drivers",
+    link: "/category/woods",
   },
   {
     id: "irons",

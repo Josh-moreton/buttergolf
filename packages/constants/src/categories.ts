@@ -30,9 +30,9 @@ export interface CategoryDefinition {
  */
 export const CATEGORIES: readonly CategoryDefinition[] = [
   {
-    name: "Drivers",
-    slug: "drivers",
-    description: "Golf drivers and woods",
+    name: "Woods",
+    slug: "woods",
+    description: "Drivers, fairway woods, and hybrids",
     imageUrl: "/_assets/images/clubs-1.jpg",
     sortOrder: 1,
   },

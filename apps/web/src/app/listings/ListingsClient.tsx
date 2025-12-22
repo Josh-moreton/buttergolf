@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef, startTransition } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Column, Row, Text, Button, Badge } from "@buttergolf/ui";
+import { Column, Row, Text, Button, Badge, View } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
 import { FilterSidebar, type FilterState } from "./_components/FilterSidebar";
 import { MobileFilterSheet } from "./_components/MobileFilterSheet";
@@ -21,6 +21,8 @@ interface ListingsClientProps {
     priceRange: { min: number; max: number };
   };
   initialPage: number;
+  /** Category slug when viewing a specific category (from /category/[slug] route) */
+  initialCategory?: string | null;
 }
 
 const STORAGE_KEY = "buttergolf-listings-filters";
@@ -51,21 +53,26 @@ export function ListingsClient({
   initialTotal,
   initialFilters,
   initialPage,
+  initialCategory = null,
 }: Readonly<ListingsClientProps>) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Parse initial filters from URL
   const getInitialFilters = (): FilterState => {
+    // If we have an initialCategory from the route (e.g., /category/woods), use it
+    // This takes precedence over localStorage and URL params for category
+    const categoryFromRoute = initialCategory;
+    
     // Try to load from localStorage first
     if (globalThis.window !== undefined) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          // Merge URL params (they take precedence)
+          // Merge URL params (they take precedence), but route category wins for category
           return {
-            category: searchParams.get("category") || parsed.category || null,
+            category: categoryFromRoute || searchParams.get("category") || parsed.category || null,
             conditions:
               searchParams.getAll("condition") || parsed.conditions || [],
             minPrice:
@@ -88,9 +95,9 @@ export function ListingsClient({
       }
     }
 
-    // Parse from URL
+    // Parse from URL (route category takes precedence)
     return {
-      category: searchParams.get("category") || null,
+      category: categoryFromRoute || searchParams.get("category") || null,
       conditions: searchParams.getAll("condition") || [],
       minPrice:
         Number.parseFloat(searchParams.get("minPrice") || "") ||
@@ -132,12 +139,12 @@ export function ListingsClient({
     }
   }, [filters]);
 
-  // Build URL from filters
+  // Build URL from filters - uses clean category URLs for SEO
   const buildURL = useCallback(
     (newFilters: FilterState, newSort: string, newPage: number = 1) => {
       const params = new URLSearchParams();
 
-      if (newFilters.category) params.set("category", newFilters.category);
+      // Don't add category to params - it's in the URL path
       for (const c of newFilters.conditions) {
         params.append("condition", c);
       }
@@ -154,7 +161,17 @@ export function ListingsClient({
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
 
-      return `/listings?${params.toString()}`;
+      const queryString = params.toString();
+      
+      // Use clean category URL if a category is selected
+      if (newFilters.category) {
+        return queryString 
+          ? `/category/${newFilters.category}?${queryString}` 
+          : `/category/${newFilters.category}`;
+      }
+      
+      // No category = /listings
+      return queryString ? `/listings?${queryString}` : "/listings";
     },
     [initialFilters.priceRange],
   );
@@ -366,66 +383,97 @@ export function ListingsClient({
                 Active filters:
               </Text>
               {filters.category && (
-                <Badge variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{filters.category}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() => handleFilterChange({ category: null })}
-                      aria-label="Remove category filter"
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{filters.category}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() => handleFilterChange({ category: null })}
+                    aria-label="Remove category filter"
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               )}
               {filters.conditions.map((condition) => (
-                <Badge key={condition} variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{condition.replace("_", " ")}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() =>
-                        handleFilterChange({
-                          conditions: filters.conditions.filter(
-                            (c) => c !== condition,
-                          ),
-                        })
-                      }
-                      aria-label={`Remove ${condition} filter`}
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  key={condition}
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{condition.replace("_", " ")}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() =>
+                      handleFilterChange({
+                        conditions: filters.conditions.filter(
+                          (c) => c !== condition,
+                        ),
+                      })
+                    }
+                    aria-label={`Remove ${condition} filter`}
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               ))}
               {filters.brands.map((brand) => (
-                <Badge key={brand} variant="outline" size="md">
-                  <Row gap="$2" alignItems="center">
-                    <Text>{brand}</Text>
-                    <Button
-                      size="$2"
-                      chromeless
-                      padding="$0"
-                      onPress={() =>
-                        handleFilterChange({
-                          brands: filters.brands.filter((b) => b !== brand),
-                        })
-                      }
-                      aria-label={`Remove ${brand} filter`}
-                    >
-                      <Text>×</Text>
-                    </Button>
-                  </Row>
-                </Badge>
+                <Row
+                  key={brand}
+                  gap="$2"
+                  alignItems="center"
+                  backgroundColor="$surface"
+                  borderWidth={1}
+                  borderColor="$border"
+                  borderRadius="$full"
+                  paddingVertical="$1.5"
+                  paddingLeft="$3"
+                  paddingRight="$2"
+                >
+                  <Text size="$3">{brand}</Text>
+                  <View
+                    cursor="pointer"
+                    onPress={() =>
+                      handleFilterChange({
+                        brands: filters.brands.filter((b) => b !== brand),
+                      })
+                    }
+                    aria-label={`Remove ${brand} filter`}
+                    hoverStyle={{ opacity: 0.7 }}
+                  >
+                    <Text color="$textSecondary" size="$4">×</Text>
+                  </View>
+                </Row>
               ))}
-              <Button size="$4" chromeless onPress={handleClearAll}>
+              <Text
+                size="$3"
+                color="$primary"
+                cursor="pointer"
+                onPress={handleClearAll}
+                hoverStyle={{ textDecorationLine: "underline" }}
+                paddingVertical="$1.5"
+                paddingHorizontal="$2"
+              >
                 Clear all
-              </Button>
+              </Text>
             </Row>
           )}
 

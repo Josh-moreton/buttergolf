@@ -1,5 +1,5 @@
 import { PrismaClient, ProductCondition } from "../generated/client";
-import { CATEGORIES } from "../src/constants/categories";
+import { CATEGORIES } from "@buttergolf/constants";
 import { BRANDS } from "../src/constants/brands";
 
 const prisma = new PrismaClient();
