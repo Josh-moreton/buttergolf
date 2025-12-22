@@ -57,7 +57,7 @@ jobs:
           temporaryPublicStorage: true
 
       - name: Comment PR with Lighthouse results
-        if: github.event_name == 'pull_request'
+        if: "github.event_name == 'pull_request'"
         uses: actions/github-script@v7
         with:
           script: |
@@ -89,10 +89,10 @@ jobs:
 
 | Category | Score |
 |----------|-------|
-| ${getEmoji(scores.performance)} Performance | ${scores.performance} |
-| ${getEmoji(scores.accessibility)} Accessibility | ${scores.accessibility} |
-| ${getEmoji(scores.bestPractices)} Best Practices | ${scores.bestPractices} |
-| ${getEmoji(scores.seo)} SEO | ${scores.seo} |
+| 🟢 Performance | ${scores.performance} |
+| 🟢 Accessibility | ${scores.accessibility} |
+| 🟢 Best Practices | ${scores.bestPractices} |
+| 🟢 SEO | ${scores.seo} |
 
 _Commit ${context.sha.substring(0, 7)}_`;
             
@@ -102,4 +102,4 @@ _Commit ${context.sha.substring(0, 7)}_`;
               repo: context.repo.repo,
               body
             });
-        continue-on-error: true
+      - continue-on-error: true
