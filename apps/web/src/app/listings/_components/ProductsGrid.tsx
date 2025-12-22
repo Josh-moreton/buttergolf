@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Column, Row, Text } from "@buttergolf/ui";
+import { Column, Row, View, Text } from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,13 @@ function LoadingSkeleton() {
   );
 }
 
-function Pagination({
+/**
+ * Dot-based pagination component
+ * - Shows dots for each page
+ * - Currently selected page has an elongated pill shape
+ * - Smooth animation between circle and pill states
+ */
+function DotPagination({
   currentPage,
   totalPages,
   onPageChange,
@@ -36,119 +42,61 @@ function Pagination({
   totalPages: number;
   onPageChange: (page: number) => void;
 }>) {
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-
+  // For many pages, show limited dots with the active one in context
+  const getVisiblePages = (): number[] => {
     if (totalPages <= 7) {
-      // Show all pages if 7 or fewer
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Always show first page
-      pages.push(1);
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
 
-      if (currentPage > 3) {
-        pages.push("...");
-      }
+    // Show: first, ..., current-1, current, current+1, ..., last
+    const pages: number[] = [];
+    const start = Math.max(1, currentPage - 2);
+    const end = Math.min(totalPages, currentPage + 2);
 
-      // Show pages around current page
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push("...");
-      }
-
-      // Always show last page
-      pages.push(totalPages);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
     }
 
     return pages;
   };
+
+  const visiblePages = getVisiblePages();
 
   return (
     <Row
       alignItems="center"
       justifyContent="center"
       gap="$sm"
-      paddingVertical="$lg"
+      paddingVertical="$xl"
     >
-      {/* Previous arrow */}
-      <Button
-        chromeless
-        onPress={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        width={40}
-        height={40}
-        alignItems="center"
-        justifyContent="center"
-        opacity={currentPage === 1 ? 0.4 : 1}
-        cursor={currentPage === 1 ? "not-allowed" : "pointer"}
-      >
-        <Text size="$8" color="$primary">
-          ‹
-        </Text>
-      </Button>
-
-      {/* Page numbers */}
-      {getPageNumbers().map((page, index) => {
-        if (page === "...") {
-          return (
-            <Text
-              key={`ellipsis-${currentPage}-${index}`}
-              paddingHorizontal="$2"
-              color="$textSecondary"
-            >
-              …
-            </Text>
-          );
-        }
-
+      {visiblePages.map((page) => {
         const isActive = page === currentPage;
+
         return (
-          <Button
+          <View
             key={page}
-            chromeless
-            onPress={() => onPageChange(page as number)}
-            minWidth={40}
-            height={40}
-            paddingHorizontal="$3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Text
-              size="$6"
-              fontWeight={isActive ? "600" : "400"}
-              color={isActive ? "$primary" : "$text"}
-              textDecorationLine={isActive ? "underline" : "none"}
-            >
-              {page}
-            </Text>
-          </Button>
+            role="button"
+            aria-label={`Go to page ${page}`}
+            aria-current={isActive ? "page" : undefined}
+            onPress={() => onPageChange(page)}
+            cursor="pointer"
+            // Animate dimensions: circle (12x12) to pill (32x12)
+            width={isActive ? 32 : 12}
+            height={12}
+            borderRadius={6}
+            backgroundColor={isActive ? "$primary" : "$border"}
+            // Smooth spring animation for width transition
+            animation="medium"
+            hoverStyle={{
+              backgroundColor: isActive ? "$primary" : "$textSecondary",
+              scale: isActive ? 1 : 1.2,
+            }}
+            pressStyle={{
+              scale: 0.95,
+            }}
+          />
         );
       })}
-
-      {/* Next arrow */}
-      <Button
-        chromeless
-        onPress={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        width={40}
-        height={40}
-        alignItems="center"
-        justifyContent="center"
-        opacity={currentPage === totalPages ? 0.4 : 1}
-        cursor={currentPage === totalPages ? "not-allowed" : "pointer"}
-      >
-        <Text size="$8" color="$primary">
-          ›
-        </Text>
-      </Button>
     </Row>
   );
 }
@@ -208,7 +156,7 @@ export function ProductsGrid({
 
       {/* Pagination */}
       {!isLoading && totalPages > 1 && (
-        <Pagination
+        <DotPagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}
