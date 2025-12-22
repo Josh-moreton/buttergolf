@@ -80,19 +80,21 @@ export default function ProductDetailClient({
   }, []);
 
   const handleBuyNow = () => {
-    console.log("[BuyNow] handleBuyNow called", { isSold: product.isSold, productId: product.id });
-    if (product.isSold) {
-      console.log("[BuyNow] Product is sold, returning early");
-      return;
-    }
-    // Open the checkout sheet instead of navigating
-    console.log("[BuyNow] Opening checkout sheet");
+    if (product.isSold) return;
     setBuyNowSheetOpen(true);
   };
 
-
-
   const handleSubmitOffer = async (offerAmount: number) => {
+    // Auth check - redirect to sign-in if not authenticated
+    if (!isSignedIn) {
+      const redirectUrl =
+        typeof globalThis !== "undefined" && globalThis.location
+          ? globalThis.location.href
+          : `/products/${product.id}`;
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
+      return;
+    }
+
     try {
       const response = await fetch("/api/offers", {
         method: "POST",

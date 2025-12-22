@@ -61,14 +61,11 @@ export function BuyNowSheet({
   };
 
   const handleSuccess = useCallback((paymentIntentId: string) => {
-    console.log("[BuyNowSheet] Payment succeeded:", paymentIntentId);
     onOpenChange(false);
-    // Redirect to success page
     router.push(`/checkout/success?payment_intent=${paymentIntentId}`);
   }, [onOpenChange, router]);
 
   const handleError = useCallback((errorMessage: string) => {
-    console.error("[BuyNowSheet] Payment error:", errorMessage);
     setError(errorMessage);
   }, []);
 
