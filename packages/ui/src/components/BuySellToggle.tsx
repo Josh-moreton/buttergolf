@@ -2,7 +2,7 @@
  * BuySellToggle Component
  *
  * Cross-platform toggle for switching between Buying and Selling modes.
- * Matches Figma mockup with pill-shaped buttons and proper active/inactive states.
+ * Built with Tamagui Tabs for native animations and accessibility.
  *
  * Active (Spiced Clementine):
  * - Background: #F45314
@@ -34,9 +34,8 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Button } from "./Button";
-import { Row } from "./Layout";
+import { useMemo, useState } from "react";
+import { Tabs, SizableText, styled, AnimatePresence, View } from "tamagui";
 
 export type BuySellMode = "buying" | "selling";
 
@@ -49,132 +48,165 @@ export interface BuySellToggleProps {
   variant?: "mobile" | "desktop";
 }
 
+/**
+ * Styled Tabs.Tab (trigger) with pill styling matching AuthButton
+ */
+const StyledTab = styled(Tabs.Tab, {
+  name: "BuySellTab",
+  borderRadius: "$full",
+  paddingHorizontal: "$6",
+  paddingVertical: "$3",
+  cursor: "pointer",
+  borderWidth: 1,
+  fontWeight: "600",
+
+  // Default inactive state
+  backgroundColor: "$background",
+  borderColor: "$border",
+  color: "$text",
+
+  // Web shadows for inactive
+  // @ts-ignore - boxShadow only exists on web
+  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+
+  hoverStyle: {
+    opacity: 0.9,
+  },
+
+  pressStyle: {
+    scale: 0.98,
+    opacity: 0.9,
+  },
+
+  variants: {
+    active: {
+      true: {
+        backgroundColor: "$primary",
+        borderColor: "$primary",
+        color: "$textInverse",
+        // @ts-ignore - boxShadow only exists on web
+        boxShadow:
+          "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
+        hoverStyle: {
+          backgroundColor: "$primaryHover",
+        },
+      },
+      false: {
+        backgroundColor: "$background",
+        borderColor: "$border",
+        color: "$text",
+        // @ts-ignore - boxShadow only exists on web
+        boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+      },
+    },
+    layout: {
+      mobile: {
+        flex: 1,
+      },
+      desktop: {
+        width: "25%",
+        minWidth: 280,
+      },
+    },
+  } as const,
+});
+
+/**
+ * Styled Tabs.List as a row with proper spacing
+ */
+const StyledTabsList = styled(Tabs.List, {
+  name: "BuySellTabsList",
+  width: "100%",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "transparent",
+  borderBottomWidth: 0,
+
+  variants: {
+    layout: {
+      mobile: {
+        gap: "$4",
+      },
+      desktop: {
+        gap: "$lg",
+      },
+    },
+  } as const,
+});
+
+/**
+ * Active tab indicator that slides between tabs
+ */
+const TabIndicator = styled(View, {
+  name: "BuySellTabIndicator",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: 3,
+  backgroundColor: "$primary",
+  borderRadius: "$full",
+  animation: "medium",
+});
+
 export function BuySellToggle({
   activeMode,
   onModeChange,
   variant = "mobile",
 }: Readonly<BuySellToggleProps>) {
-  const [mounted, setMounted] = useState(false);
+  const [direction, setDirection] = useState<"left" | "right">("right");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Use mounted state instead of document check to avoid hydration mismatch
-  const isWebPlatform = mounted;
-  const isDesktop = variant === "desktop";
-
-  // Active button base props (Spiced Clementine)
-  const activeButtonProps = {
-    backgroundColor: "$primary" as const,
-    borderWidth: 1,
-    borderColor: "$primary" as const,
-    color: "$textInverse" as const,
+  const handleValueChange = (value: string) => {
+    const newMode = value as BuySellMode;
+    // Track direction for potential slide animations
+    setDirection(newMode === "selling" ? "right" : "left");
+    onModeChange(newMode);
   };
 
-  // Inactive button base props (Cream/White)
-  const inactiveButtonProps = {
-    backgroundColor: "$background" as const,
-    borderWidth: 1,
-    borderColor: "$border" as const,
-    color: "$text" as const,
-  };
-
-  // Memoize desktop style to prevent object recreation on every render
-  const desktopStyle = useMemo(
-    () => (isDesktop ? { width: "25%", minWidth: 280 } : undefined),
-    [isDesktop]
-  );
-
-  // Memoize web shadow styles to prevent object recreation
-  const activeBoxShadow = useMemo(
-    () => ({
-      boxShadow:
-        "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
-    }),
-    []
-  );
-
-  const inactiveStyle = useMemo(
-    () => ({
-      boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
-      background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)",
-    }),
-    []
-  );
-
-  // Compute button-specific web styles based on active state
-  const buyingWebStyle = isWebPlatform
-    ? activeMode === "buying"
-      ? activeBoxShadow
-      : inactiveStyle
-    : undefined;
-
-  const sellingWebStyle = isWebPlatform
-    ? activeMode === "selling"
-      ? activeBoxShadow
-      : inactiveStyle
-    : undefined;
-
-  // Hover styles to match header AuthButton (avoid default Tamagui hover fallbacks)
-  const buyingHoverStyle =
-    activeMode === "buying"
-      ? { backgroundColor: "$primaryHover" }
-      : { background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)", opacity: 0.95 };
-
-  const sellingHoverStyle =
-    activeMode === "selling"
-      ? { backgroundColor: "$primaryHover" }
-      : { background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)", opacity: 0.95 };
+  const layout = variant === "desktop" ? "desktop" : "mobile";
 
   return (
-    <Row
-      gap={isDesktop ? "$lg" : "$4"}
-      justifyContent="center"
-      alignItems="center"
+    <Tabs
+      value={activeMode}
+      onValueChange={handleValueChange}
+      orientation="horizontal"
       width="100%"
+      flexDirection="column"
+      activationMode="manual"
     >
-      {/* Buying Button */}
-      <Button
-        size="$5"
-        fontWeight={isDesktop ? "500" : "600"}
-        borderRadius="$full"
-        flex={isDesktop ? undefined : 1}
-        style={{ ...desktopStyle, ...buyingWebStyle }}
-        hoverStyle={buyingHoverStyle}
-        {...(activeMode === "buying" ? activeButtonProps : inactiveButtonProps)}
-        pressStyle={{
-          scale: 0.98,
-          opacity: 0.9,
-        }}
-        onPress={() => onModeChange("buying")}
-        aria-pressed={activeMode === "buying"}
-        aria-label="Switch to buying mode"
-      >
-        Buying
-      </Button>
+      <StyledTabsList layout={layout}>
+        <StyledTab
+          value="buying"
+          active={activeMode === "buying"}
+          layout={layout}
+          aria-label="Switch to buying mode"
+        >
+          <SizableText
+            size="$5"
+            fontWeight={activeMode === "buying" ? "600" : "500"}
+            color={activeMode === "buying" ? "$textInverse" : "$text"}
+          >
+            Buying
+          </SizableText>
+        </StyledTab>
 
-      {/* Selling Button */}
-      <Button
-        size="$5"
-        fontWeight={isDesktop ? "500" : "600"}
-        borderRadius="$full"
-        flex={isDesktop ? undefined : 1}
-        style={{ ...desktopStyle, ...sellingWebStyle }}
-        hoverStyle={sellingHoverStyle}
-        {...(activeMode === "selling"
-          ? activeButtonProps
-          : inactiveButtonProps)}
-        pressStyle={{
-          scale: 0.98,
-          opacity: 0.9,
-        }}
-        onPress={() => onModeChange("selling")}
-        aria-pressed={activeMode === "selling"}
-        aria-label="Switch to selling mode"
-      >
-        Selling
-      </Button>
-    </Row>
+        <StyledTab
+          value="selling"
+          active={activeMode === "selling"}
+          layout={layout}
+          aria-label="Switch to selling mode"
+        >
+          <SizableText
+            size="$5"
+            fontWeight={activeMode === "selling" ? "600" : "500"}
+            color={activeMode === "selling" ? "$textInverse" : "$text"}
+          >
+            Selling
+          </SizableText>
+        </StyledTab>
+      </StyledTabsList>
+
+      {/* No Tabs.Content needed - the parent handles content switching */}
+    </Tabs>
   );
 }
