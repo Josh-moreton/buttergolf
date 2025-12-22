@@ -75,10 +75,12 @@ const ButtonBase = styled(TamaguiButton, {
 
         hoverStyle: {
           backgroundColor: "$primaryHover",
+          borderColor: "$primaryBorder",
         },
 
         pressStyle: {
           backgroundColor: "$primaryPress",
+          borderColor: "$primaryBorder",
           scale: 0.98,
         },
 
@@ -97,11 +99,13 @@ const ButtonBase = styled(TamaguiButton, {
         ...getButtonShadow("secondary"),
 
         hoverStyle: {
-          backgroundColor: "$secondaryHover",
+           backgroundColor: "$secondaryHover",
+           borderColor: "$secondaryBorder",
         },
 
         pressStyle: {
-          backgroundColor: "$secondaryPress",
+           backgroundColor: "$secondaryPress",
+           borderColor: "$secondaryBorder",
           scale: 0.98,
         },
 
