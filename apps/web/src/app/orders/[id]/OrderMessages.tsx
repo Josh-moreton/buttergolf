@@ -250,7 +250,7 @@ export function OrderMessages({
             </Row>
           )}
 
-          <Row gap="$md" alignItems="flex-end">
+          <Row gap="$md" alignItems="flex-end" width="100%">
             <Column flex={1} gap="$xs">
               <TextArea
                 value={newMessage}
