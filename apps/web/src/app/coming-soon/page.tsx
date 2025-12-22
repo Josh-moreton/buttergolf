@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AnimatedLogo } from "./_components/AnimatedLogo";
 import { InstagramLink } from "./_components/InstagramLink";
 import { WaitlistForm } from "./_components/WaitlistForm";
@@ -38,6 +39,26 @@ export default function ComingSoonPage() {
         overflow: "auto",
       }}
     >
+      {/* Admin Sign In Button */}
+      <Link
+        href="/sign-in"
+        style={{
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          fontFamily:
+            'Urbanist, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "rgba(255, 250, 210, 0.6)", // Subtle Vanilla Cream
+          textDecoration: "none",
+          padding: "8px 16px",
+          borderRadius: "8px",
+          transition: "all 0.2s ease",
+        }}
+      >
+        Sign In
+      </Link>
       {/* Animated Logo */}
       <div style={{ marginBottom: "48px" }}>
         <AnimatedLogo />
