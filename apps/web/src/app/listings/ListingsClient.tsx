@@ -109,6 +109,7 @@ export function ListingsClient({
   const [page, setPage] = useState(initialPage);
   const [total, setTotal] = useState(initialTotal);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaginating, setIsPaginating] = useState(false); // Separate state for pagination (no skeleton flash)
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [availableFilters, setAvailableFilters] = useState(initialFilters);
 
@@ -162,9 +163,16 @@ export function ListingsClient({
   const totalPages = Math.max(1, Math.ceil(total / 24));
 
   // Fetch products with debouncing
+  // isPaginationOnly: when true, don't show loading skeletons or scroll
   const fetchProducts = useCallback(
-    async (newPage: number = 1) => {
-      setIsLoading(true);
+    async (newPage: number = 1, isPaginationOnly: boolean = false) => {
+      // For pagination, use isPaginating (keeps products visible)
+      // For filter changes, use isLoading (shows skeletons)
+      if (isPaginationOnly) {
+        setIsPaginating(true);
+      } else {
+        setIsLoading(true);
+      }
 
       try {
         const params = new URLSearchParams();
@@ -201,13 +209,16 @@ export function ListingsClient({
         // Only update the URL once we have successfully updated the data.
         router.replace(buildURL(filters, sort, newPage), { scroll: false });
 
-        // Scroll to top of page smoothly
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Only scroll to top for filter changes, not pagination
+        if (!isPaginationOnly) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
-        // Loading state should update synchronously for immediate feedback.
+        // Reset loading states
         setIsLoading(false);
+        setIsPaginating(false);
       }
     },
     [filters, sort, router, buildURL],
@@ -269,10 +280,10 @@ export function ListingsClient({
     }
   };
 
-  // Handle page change
+  // Handle page change - uses pagination mode (no skeleton flash, no scroll)
   const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages && !isLoading) {
-      fetchProducts(newPage);
+    if (newPage >= 1 && newPage <= totalPages && !isLoading && !isPaginating) {
+      fetchProducts(newPage, true); // true = pagination only mode
     }
   };
 
@@ -419,7 +430,7 @@ export function ListingsClient({
           )}
 
           {/* Main content: Sidebar + Grid */}
-          <Row gap="$2xl" alignItems="flex-start" overflow="hidden" width="100%">
+          <Row gap="$2xl" alignItems="flex-start" style={{ overflow: "visible" }} width="100%">
             {/* Desktop sidebar */}
             <FilterSidebar
               filters={filters}
@@ -436,6 +447,7 @@ export function ListingsClient({
               <ProductsGrid
                 products={products}
                 isLoading={isLoading}
+                isPaginating={isPaginating}
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}

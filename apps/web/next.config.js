@@ -85,6 +85,9 @@ module.exports = () => {
         './packages/db/generated/client/**/*',
       ],
     },
+    // Set tracing root to monorepo root for proper workspace resolution
+    // (moved out of `experimental.outputFileTracingRoot` — Next.js expects this at top-level)
+    outputFileTracingRoot: join(__dirname, '../../'),
     // Prevent Next.js from bundling Prisma Client (breaks native binaries)
     // Essential for monorepo setups with custom Prisma output paths
     serverExternalPackages: ['@buttergolf/db', '@prisma/client'],
@@ -134,8 +137,6 @@ module.exports = () => {
           "ttdr3bz5-3000.uks1.devtunnels.ms",
         ],
       },
-      // Set tracing root to monorepo root for proper workspace resolution
-      outputFileTracingRoot: join(__dirname, '../../'),
     },
     // Allow dev server access from local network devices (mobile testing, etc.)
     allowedDevOrigins: [
