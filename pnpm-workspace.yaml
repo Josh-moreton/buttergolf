@@ -8,7 +8,7 @@ catalog:
   '@prisma/client': 6.19.0
   '@tamagui/animations-css': 1.139.2
   '@tamagui/animations-react-native': 1.139.2
-  '@tamagui/babel-plugin': 1.139.2
+  '@tamagui/babel-plugin': 1.141.5
   '@tamagui/card': 1.139.2
   '@tamagui/cli': 1.139.2
   '@tamagui/config': 1.139.2
