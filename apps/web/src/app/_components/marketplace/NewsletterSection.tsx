@@ -37,10 +37,8 @@ export function NewsletterSection() {
             paddingHorizontal="$4"
           />
           <Button
+            butterVariant="primary"
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
-            borderRadius="$full"
             flexShrink={0}
             paddingHorizontal="$6"
             $sm={{ width: "100%" }}
