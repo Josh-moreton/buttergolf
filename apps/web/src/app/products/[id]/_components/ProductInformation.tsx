@@ -301,6 +301,16 @@ export function ProductInformation({
             shadowOffset={{ width: 0, height: 10 }}
             shadowOpacity={0.15}
             elevate
+            animation={[
+              "medium",
+              {
+                opacity: {
+                  overshootClamping: true,
+                },
+              },
+            ]}
+            enterStyle={{ y: -10, opacity: 0 }}
+            exitStyle={{ y: -10, opacity: 0 }}
           >
             <Column gap="$3" width={280}>
               <Text size="$5" fontWeight="600" color="$text">
