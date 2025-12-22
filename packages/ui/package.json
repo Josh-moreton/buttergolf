@@ -18,7 +18,9 @@
     "check-types": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
-    "@buttergolf/config": "workspace:*"
+    "@buttergolf/config": "workspace:*",
+    "@tamagui/slider": "^1.141.5",
+    "@tamagui/switch": "^1.141.5"
   },
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",

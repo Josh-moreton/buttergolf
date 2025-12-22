@@ -1,7 +1,18 @@
 "use client";
 
-import { useEffect, useId } from "react";
-import { Column, Row, Text, Button } from "@buttergolf/ui";
+import { useId } from "react";
+import {
+  Column,
+  Row,
+  Text,
+  Button,
+  SwitchWithLabel,
+  Sheet,
+  Handle,
+  Overlay,
+  Frame,
+  SheetScrollView,
+} from "@buttergolf/ui";
 import { FilterSection } from "./FilterSection";
 import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
@@ -32,64 +43,27 @@ export function MobileFilterSheet({
 }: Readonly<MobileFilterSheetProps>) {
   const headingId = useId();
 
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [open]);
-
-  if (!open) {
-    return null;
-  }
-
   return (
-    <>
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.45)",
-          zIndex: 1000,
-        }}
-        onClick={() => onOpenChange(false)}
-        aria-hidden="true"
+    <Sheet
+      modal
+      open={open}
+      onOpenChange={onOpenChange}
+      snapPoints={[85]}
+      dismissOnSnapToBottom
+    >
+      <Overlay
+        animation="lazy"
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
       />
-
-      <Column
+      <Frame
         aria-modal="true"
         aria-labelledby={headingId}
         backgroundColor="$surface"
         borderTopLeftRadius="$2xl"
         borderTopRightRadius="$2xl"
-        bottom={0}
-        left={0}
-        right={0}
-        zIndex={1001}
-        maxHeight="85vh"
-        style={{
-          position: "fixed",
-          boxShadow: "0 -20px 60px rgba(0, 0, 0, 0.25)",
-          paddingBottom: "env(safe-area-inset-bottom)",
-        }}
       >
-        {/* Handle */}
-        <Column alignItems="center" paddingTop="$2" paddingBottom="$1">
-          <div
-            style={{
-              width: 48,
-              height: 4,
-              borderRadius: 9999,
-              backgroundColor: "rgba(0, 0, 0, 0.2)",
-            }}
-          />
-        </Column>
+        <Handle backgroundColor="$border" />
 
         {/* Header */}
         <Column
@@ -114,7 +88,7 @@ export function MobileFilterSheet({
         </Column>
 
         {/* Body */}
-        <Column flex={1} style={{ overflow: "auto" }}>
+        <SheetScrollView>
           <Column padding="$4" gap="$lg">
             <FilterSection title="Category" defaultExpanded>
               <CategoryFilter
@@ -151,35 +125,17 @@ export function MobileFilterSheet({
             </FilterSection>
 
             <FilterSection title="Favourites" defaultExpanded>
-              <Row
-                alignItems="center"
-                gap="$2"
-                cursor="pointer"
-                userSelect="none"
-                onPress={() =>
-                  onChange({ showFavouritesOnly: !filters.showFavouritesOnly })
+              <SwitchWithLabel
+                label="Show favourites only"
+                checked={filters.showFavouritesOnly}
+                onCheckedChange={(checked) =>
+                  onChange({ showFavouritesOnly: checked })
                 }
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.showFavouritesOnly}
-                  onChange={(e) => {
-                    onChange({ showFavouritesOnly: e.target.checked });
-                  }}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    cursor: "pointer",
-                    accentColor: "var(--primary)",
-                  }}
-                />
-                <Text size="$4" color="$text">
-                  Show favourites only
-                </Text>
-              </Row>
+                size="$3"
+              />
             </FilterSection>
           </Column>
-        </Column>
+        </SheetScrollView>
 
         {/* Footer */}
         <Column
@@ -211,7 +167,7 @@ export function MobileFilterSheet({
             </Button>
           </Row>
         </Column>
-      </Column>
-    </>
+      </Frame>
+    </Sheet>
   );
 }

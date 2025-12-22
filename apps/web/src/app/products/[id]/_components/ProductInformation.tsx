@@ -8,9 +8,6 @@ import {
   Button,
   Heading,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverClose,
 } from "@buttergolf/ui";
 import type { Product } from "../ProductDetailClient";
 
@@ -279,7 +276,7 @@ export function ProductInformation({
             setOfferError("");
           }
         }}>
-          <PopoverTrigger asChild>
+          <Popover.Trigger asChild>
             <Button
               butterVariant="secondary"
               size="$5"
@@ -289,8 +286,8 @@ export function ProductInformation({
             >
               Make an offer
             </Button>
-          </PopoverTrigger>
-          <PopoverContent
+          </Popover.Trigger>
+          <Popover.Content
             backgroundColor="$surface"
             borderRadius="$lg"
             padding="$4"
@@ -384,7 +381,7 @@ export function ProductInformation({
               )}
 
               <Row gap="$2" justifyContent="flex-end">
-                <PopoverClose asChild>
+                <Popover.Close asChild>
                   <Button
                     size="$3"
                     backgroundColor="transparent"
@@ -394,7 +391,7 @@ export function ProductInformation({
                   >
                     Cancel
                   </Button>
-                </PopoverClose>
+                </Popover.Close>
                 <Button
                   size="$3"
                   backgroundColor="$primary"
@@ -408,7 +405,7 @@ export function ProductInformation({
                 </Button>
               </Row>
             </Column>
-          </PopoverContent>
+          </Popover.Content>
         </Popover>
       </Column>
 
