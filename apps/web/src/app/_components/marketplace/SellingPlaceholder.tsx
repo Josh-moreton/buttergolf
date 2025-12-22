@@ -52,15 +52,7 @@ export function SellingPlaceholder() {
             </Button>
           </Link>
           <Link href="/how-it-works" style={{ textDecoration: "none" }}>
-            <Button
-              size="$5"
-              backgroundColor="transparent"
-              color="$primary"
-              borderWidth={2}
-              borderColor="$primary"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
-            >
+            <Button size="$5" variant="secondary">
               Learn How It Works
             </Button>
           </Link>
