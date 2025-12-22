@@ -1,8 +1,15 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-// Admin user ID (josh@rwxt.org) - bypasses coming-soon redirect
-const ADMIN_USER_ID = "user_36w11UkIm2yC3uO4ziw84JFKII2";
+// TODO: Remove this entire coming-soon block after launch - set NEXT_PUBLIC_COMING_SOON_ENABLED=false
+// and delete ADMIN_USER_IDS, isComingSoonAllowedRoute, and the coming-soon redirect logic below.
+
+// Admin user IDs (josh@rwxt.org) - bypasses coming-soon redirect
+// Test: user_36w11UkIm2yC3uO4ziw84JFKII2, Production: user_37C3cUOQAouxuMfWZdKzysYgkli
+const ADMIN_USER_IDS = [
+  "user_36w11UkIm2yC3uO4ziw84JFKII2", // Test environment
+  "user_37C3cUOQAouxuMfWZdKzysYgkli", // Production environment
+];
 
 // Define protected routes that require authentication
 const isProtectedRoute = createRouteMatcher([
@@ -44,7 +51,7 @@ export default clerkMiddleware(async (auth, req) => {
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
     // Check if user is the admin (by userId)
     const session = await auth();
-    const isAdmin = session?.userId === ADMIN_USER_ID;
+    const isAdmin = session?.userId && ADMIN_USER_IDS.includes(session.userId);
 
     if (!isAdmin) {
       return NextResponse.redirect(new URL("/coming-soon", req.url));
