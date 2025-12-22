@@ -57,7 +57,7 @@ jobs:
           temporaryPublicStorage: true
 
       - name: Comment PR with Lighthouse results
-        if: github.event_name == 'pull_request'
+        if: "github.event_name == 'pull_request'"
         uses: actions/github-script@v7
         with:
           script: |
@@ -83,18 +83,12 @@ jobs:
               seo: Math.round(results.categories.seo.score * 100)
             };
             
-            const getEmoji = (score) => score >= 90 ? '🟢' : score >= 50 ? '🟠' : '🔴';
-            
-            const body = `## ⚡ Lighthouse Report
-
-| Category | Score |
-|----------|-------|
-| ${getEmoji(scores.performance)} Performance | ${scores.performance} |
-| ${getEmoji(scores.accessibility)} Accessibility | ${scores.accessibility} |
-| ${getEmoji(scores.bestPractices)} Best Practices | ${scores.bestPractices} |
-| ${getEmoji(scores.seo)} SEO | ${scores.seo} |
-
-_Commit ${context.sha.substring(0, 7)}_`;
+            const body = 'Lighthouse Report\n\n' +
+              'Performance: ' + scores.performance + '\n' +
+              'Accessibility: ' + scores.accessibility + '\n' +
+              'Best Practices: ' + scores.bestPractices + '\n' +
+              'SEO: ' + scores.seo + '\n\n' +
+              'Commit ' + context.sha.substring(0, 7);
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -102,4 +96,4 @@ _Commit ${context.sha.substring(0, 7)}_`;
               repo: context.repo.repo,
               body
             });
-        continue-on-error: true
+      - continue-on-error: true

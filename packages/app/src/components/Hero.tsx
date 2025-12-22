@@ -428,12 +428,16 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
     <Row gap="$md" flexWrap="wrap" marginTop="$4">
       {primaryCta && (
         <Link href={primaryCta.href} style={{ textDecoration: "none" }}>
-          <Button {...primaryButtonProps}>{primaryCta.label}</Button>
+          <Button butterVariant="primary" {...primaryButtonProps}>
+            {primaryCta.label}
+          </Button>
         </Link>
       )}
       {secondaryCta && (
         <Link href={secondaryCta.href} style={{ textDecoration: "none" }}>
-          <Button {...secondaryButtonProps}>{secondaryCta.label}</Button>
+          <Button butterVariant="secondary" {...secondaryButtonProps}>
+            {secondaryCta.label}
+          </Button>
         </Link>
       )}
     </Row>

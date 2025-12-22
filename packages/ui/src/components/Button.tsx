@@ -39,15 +39,21 @@ const getButtonShadow = (variant: "primary" | "secondary") => {
   };
 
   if (Platform.OS === "web") {
-    const innerShadow =
-      variant === "primary"
-        ? "inset 0px 2px 2px rgba(244, 83, 20, 0.3)" // Spiced Clementine glow ($primary with 30% opacity)
-        : "inset 0px 2px 2px rgba(50, 50, 50, 0.2)"; // Ironstone shadow ($ironstone with 20% opacity)
+    // Only the primary variant receives the inset glow on web.
+    // Secondary should not have an inner inset to avoid unwanted coloration.
+    if (variant === "primary") {
+      // @ts-ignore - boxShadow only exists on web
+      return {
+        ...baseShadow,
+        boxShadow: `0px 1px 5px rgba(0,0,0,0.25), inset 0px 2px 2px rgba(244, 83, 20, 0.3)`,
+      };
+    }
 
+    // Secondary: keep drop shadow only (no inset)
+    // @ts-ignore - boxShadow only exists on web
     return {
       ...baseShadow,
-      // @ts-ignore - boxShadow only exists on web
-      boxShadow: `0px 1px 5px rgba(0,0,0,0.25), ${innerShadow}`,
+      boxShadow: `0px 1px 5px rgba(0,0,0,0.25)`,
     };
   }
 
