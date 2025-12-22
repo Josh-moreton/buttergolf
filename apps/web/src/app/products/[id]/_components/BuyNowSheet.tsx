@@ -65,6 +65,7 @@ export function BuyNowSheet({
 
   // Fetch client secret from our API
   const fetchClientSecret = useCallback(async () => {
+    console.log("[BuyNowSheet] fetchClientSecret called for product:", product.id);
     try {
       const response = await fetch("/api/checkout/create-checkout-session", {
         method: "POST",
@@ -72,17 +73,28 @@ export function BuyNowSheet({
         body: JSON.stringify({ productId: product.id }),
       });
 
+      console.log("[BuyNowSheet] API response status:", response.status);
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData.error || "Failed to create checkout";
+        const errorText = await response.text();
+        console.error("[BuyNowSheet] API error response:", errorText);
+        let errorMessage = "Failed to create checkout";
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
         setError(errorMessage);
         throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log("[BuyNowSheet] Checkout session created, clientSecret received");
       setIsLoading(false);
       return data.clientSecret;
     } catch (err) {
+      console.error("[BuyNowSheet] fetchClientSecret error:", err);
       const errorMessage =
         err instanceof Error ? err.message : "Failed to initialize checkout";
       setError(errorMessage);

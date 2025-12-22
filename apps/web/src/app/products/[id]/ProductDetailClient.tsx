@@ -82,21 +82,29 @@ export default function ProductDetailClient({
   }, []);
 
   const handleBuyNow = () => {
-    if (product.isSold) return;
+    console.log("[BuyNow] handleBuyNow called", { isSold: product.isSold, productId: product.id });
+    if (product.isSold) {
+      console.log("[BuyNow] Product is sold, returning early");
+      return;
+    }
     // Open the checkout sheet instead of navigating
+    console.log("[BuyNow] Opening checkout sheet");
     setBuyNowSheetOpen(true);
   };
 
   const handleMakeOffer = () => {
+    console.log("[MakeOffer] handleMakeOffer called", { isSignedIn, productId: product.id });
     if (!isSignedIn) {
       // Redirect to sign-in page with return URL
       const redirectUrl =
         typeof globalThis !== "undefined" && globalThis.location
           ? globalThis.location.href
           : `/products/${product.id}`;
+      console.log("[MakeOffer] Not signed in, redirecting to:", `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
       router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
       return;
     }
+    console.log("[MakeOffer] User is signed in, setting makeOfferOpen to true");
     setMakeOfferOpen(true);
   };
 
