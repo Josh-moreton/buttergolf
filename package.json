@@ -49,9 +49,12 @@
       "@types/react-dom": "19.1.0",
       "jsdom": "false",
       "webidl-conversions": "5.0.0"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher"
+    ]
   },
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@10.26.1",
   "engines": {
     "node": ">=18"
   },

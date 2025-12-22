@@ -1,5 +1,12 @@
 const {withTamagui} = require("@tamagui/next-plugin");
 const {join, resolve} = require("node:path");
+const {PrismaPlugin} = require("@prisma/nextjs-monorepo-workaround-plugin");
+
+// Bundle analyzer for debugging bundle sizes
+// Run with: ANALYZE=true pnpm build
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const boolVals = {
   true: true,
@@ -39,6 +46,23 @@ const plugins = [
   }),
 ];
 
+// Security headers (CSP removed - adds maintenance burden with minimal security benefit
+// given we use 'unsafe-inline' and trusted third-parties like Clerk/Stripe)
+const securityHeaders = [
+  {
+    key: "X-Frame-Options",
+    value: "SAMEORIGIN",
+  },
+  {
+    key: "X-Content-Type-Options",
+    value: "nosniff",
+  },
+  {
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
+  },
+];
+
 module.exports = () => {
   /** @type {import('next').NextConfig} */
   let config = {
@@ -48,17 +72,36 @@ module.exports = () => {
       // This should be resolved when Tamagui updates its types for React 19
       ignoreBuildErrors: true,
     },
-    // Disable caching in development to avoid stale CSS issues
-    ...(process.env.NODE_ENV === "development" && {
-      headers: async () => [
-        {
-          source: "/:path*",
-          headers: [
-            {key: "Cache-Control", value: "no-store, must-revalidate"},
-          ],
-        },
+    // Explicitly trace Prisma binaries from custom monorepo location
+    // Required for Vercel deployment with custom Prisma output path
+    // Paths are relative to outputFileTracingRoot (monorepo root)
+    outputFileTracingIncludes: {
+      '/api/**': [
+        './packages/db/generated/client/**/*',
+        './packages/db/prisma/schema.prisma',
       ],
-    }),
+      // Include for all server-side code
+      '/**': [
+        './packages/db/generated/client/**/*',
+      ],
+    },
+    // Prevent Next.js from bundling Prisma Client (breaks native binaries)
+    // Essential for monorepo setups with custom Prisma output paths
+    serverExternalPackages: ['@buttergolf/db', '@prisma/client'],
+    // Security and caching headers
+    headers: async () => [
+      {
+        // Apply security headers to all routes
+        source: "/:path*",
+        headers: [
+          ...securityHeaders,
+          // Disable caching in development
+          ...(process.env.NODE_ENV === "development"
+            ? [{key: "Cache-Control", value: "no-store, must-revalidate"}]
+            : []),
+        ],
+      },
+    ],
     transpilePackages: [
       "@buttergolf/app",
       "@buttergolf/config",
@@ -80,6 +123,7 @@ module.exports = () => {
       "@tamagui/sheet",
       "@tamagui/portal",
       "@tamagui/polyfill-dev",
+      "@tamagui/form",
     ],
     experimental: {
       scrollRestoration: true,
@@ -90,6 +134,8 @@ module.exports = () => {
           "ttdr3bz5-3000.uks1.devtunnels.ms",
         ],
       },
+      // Set tracing root to monorepo root for proper workspace resolution
+      outputFileTracingRoot: join(__dirname, '../../'),
     },
     // Allow dev server access from local network devices (mobile testing, etc.)
     allowedDevOrigins: [
@@ -107,7 +153,13 @@ module.exports = () => {
         },
       ],
     },
-    webpack: (webpackConfig) => {
+    webpack: (webpackConfig, {isServer}) => {
+      // Add PrismaPlugin to copy Prisma binaries into serverless bundle
+      // Required for monorepo deployments on Vercel with custom Prisma output path
+      if (isServer) {
+        webpackConfig.plugins = [...webpackConfig.plugins, new PrismaPlugin()];
+      }
+
       // Map React Native to React Native Web for web builds
       webpackConfig.resolve.alias = {
         ...webpackConfig.resolve.alias,
@@ -115,6 +167,10 @@ module.exports = () => {
         // Enforce a single instance of 'tamagui' at runtime to avoid
         // "Haven't called createTamagui yet" errors caused by duplicate module instances
         tamagui: require.resolve("tamagui"),
+        // Enforce single instance of @tamagui/core to prevent "Missing theme" errors
+        // when @tamagui/form or other packages try to create their own context
+        "@tamagui/core": require.resolve("@tamagui/core"),
+        "@tamagui/web": require.resolve("@tamagui/web"),
         // Explicit alias for @tamagui/polyfill-dev to fix webpack resolution in pnpm monorepo
         "@tamagui/polyfill-dev": require.resolve("@tamagui/polyfill-dev"),
         // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules
@@ -132,5 +188,6 @@ module.exports = () => {
     };
   }
 
-  return config;
+  // Apply bundle analyzer last (wrap the entire config)
+  return withBundleAnalyzer(config);
 };

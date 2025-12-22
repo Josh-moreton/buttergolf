@@ -15,27 +15,47 @@ import {
 
 interface Address {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  name?: string; // Legacy field for backwards compatibility
   street1: string;
   street2?: string;
   city: string;
-  state: string;
-  zip: string;
+  county: string; // UK: county instead of state
+  state?: string; // Legacy field
+  postcode: string; // UK: postcode instead of zip
+  zip?: string; // Legacy field
   country: string;
   phone?: string;
   isDefault: boolean;
 }
 
 interface AddressFormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   street1: string;
   street2: string;
   city: string;
-  state: string;
-  zip: string;
+  county: string;
+  postcode: string;
   country: string;
   phone: string;
   isDefault: boolean;
+}
+
+// UK postcode validation regex
+const UK_POSTCODE_REGEX = /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i;
+
+function isValidUKPostcode(postcode: string): boolean {
+  return UK_POSTCODE_REGEX.test(postcode.trim());
+}
+
+function formatUKPostcode(postcode: string): string {
+  const cleaned = postcode.replace(/\s/g, "").toUpperCase();
+  if (cleaned.length > 3) {
+    return `${cleaned.slice(0, -3)} ${cleaned.slice(-3)}`;
+  }
+  return cleaned;
 }
 
 // Form Label component
@@ -62,14 +82,16 @@ export default function AddressesPage() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+  const [postcodeError, setPostcodeError] = useState<string | null>(null);
   const [formData, setFormData] = useState<AddressFormData>({
-    name: "",
+    firstName: "",
+    lastName: "",
     street1: "",
     street2: "",
     city: "",
-    state: "",
-    zip: "",
-    country: "US",
+    county: "",
+    postcode: "",
+    country: "GB",
     phone: "",
     isDefault: false,
   });
@@ -103,18 +125,28 @@ export default function AddressesPage() {
 
   const handleSubmit = async () => {
     setError(null);
+    setPostcodeError(null);
 
     // Validate required fields
     if (
-      !formData.name ||
+      !formData.firstName ||
+      !formData.lastName ||
       !formData.street1 ||
       !formData.city ||
-      !formData.state ||
-      !formData.zip
+      !formData.postcode
     ) {
       setError("Please fill in all required fields");
       return;
     }
+
+    // Validate UK postcode format
+    if (!isValidUKPostcode(formData.postcode)) {
+      setPostcodeError("Please enter a valid UK postcode (e.g., SW1A 1AA)");
+      return;
+    }
+
+    // Format postcode correctly
+    const formattedPostcode = formatUKPostcode(formData.postcode);
 
     try {
       const url = editingAddress
@@ -125,7 +157,15 @@ export default function AddressesPage() {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          postcode: formattedPostcode,
+          // Send combined name for backward compatibility with API
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          // Map UK fields to legacy API fields
+          state: formData.county,
+          zip: formattedPostcode,
+        }),
       });
 
       if (!response.ok) {
@@ -138,13 +178,14 @@ export default function AddressesPage() {
       setShowForm(false);
       setEditingAddress(null);
       setFormData({
-        name: "",
+        firstName: "",
+        lastName: "",
         street1: "",
         street2: "",
         city: "",
-        state: "",
-        zip: "",
-        country: "US",
+        county: "",
+        postcode: "",
+        country: "GB",
         phone: "",
         isDefault: false,
       });
@@ -155,13 +196,19 @@ export default function AddressesPage() {
 
   const handleEdit = (address: Address) => {
     setEditingAddress(address);
+    // Parse name into first/last if legacy name exists
+    const nameParts = (address.name || "").split(" ");
+    const firstName = address.firstName || nameParts[0] || "";
+    const lastName = address.lastName || nameParts.slice(1).join(" ") || "";
+    
     setFormData({
-      name: address.name,
+      firstName,
+      lastName,
       street1: address.street1,
       street2: address.street2 || "",
       city: address.city,
-      state: address.state,
-      zip: address.zip,
+      county: address.county || address.state || "",
+      postcode: address.postcode || address.zip || "",
       country: address.country,
       phone: address.phone || "",
       isDefault: address.isDefault,
@@ -278,86 +325,112 @@ export default function AddressesPage() {
                 </Row>
 
                 <Column gap="$md">
-                  {/* Full Name */}
-                  <Column gap="$xs">
-                    <FormLabel required>Full Name</FormLabel>
-                    <Input
-                      value={formData.name}
-                      onChangeText={(value) =>
-                        setFormData({ ...formData, name: value })
-                      }
-                      placeholder="John Doe"
-                      size="$4"
-                      required
-                    />
-                  </Column>
+                  {/* Name Row - First and Last */}
+                  <Row gap="$md" flexWrap="wrap">
+                    <Column gap="$xs" flex={1} minWidth={150}>
+                      <FormLabel required>First Name</FormLabel>
+                      <Input
+                        value={formData.firstName}
+                        onChangeText={(value) =>
+                          setFormData({ ...formData, firstName: value })
+                        }
+                        placeholder="John"
+                        size="$4"
+                        autoComplete="given-name"
+                        required
+                      />
+                    </Column>
+                    <Column gap="$xs" flex={1} minWidth={150}>
+                      <FormLabel required>Last Name</FormLabel>
+                      <Input
+                        value={formData.lastName}
+                        onChangeText={(value) =>
+                          setFormData({ ...formData, lastName: value })
+                        }
+                        placeholder="Smith"
+                        size="$4"
+                        autoComplete="family-name"
+                        required
+                      />
+                    </Column>
+                  </Row>
 
                   {/* Street Address 1 */}
                   <Column gap="$xs">
-                    <FormLabel required>Street Address</FormLabel>
+                    <FormLabel required>Address Line 1</FormLabel>
                     <Input
                       value={formData.street1}
                       onChangeText={(value) =>
                         setFormData({ ...formData, street1: value })
                       }
-                      placeholder="123 Main St"
+                      placeholder="10 Downing Street"
                       size="$4"
+                      autoComplete="address-line1"
                       required
                     />
                   </Column>
 
                   {/* Street Address 2 */}
                   <Column gap="$xs">
-                    <FormLabel>Street Address 2 (Optional)</FormLabel>
+                    <FormLabel>Address Line 2 (Optional)</FormLabel>
                     <Input
                       value={formData.street2}
                       onChangeText={(value) =>
                         setFormData({ ...formData, street2: value })
                       }
-                      placeholder="Apt, suite, unit, building, floor, etc."
+                      placeholder="Flat 2B"
                       size="$4"
+                      autoComplete="address-line2"
                     />
                   </Column>
 
-                  {/* City, State, ZIP Row */}
+                  {/* City and County Row */}
                   <Row gap="$md" flexWrap="wrap">
                     <Column gap="$xs" flex={2} minWidth={200}>
-                      <FormLabel required>City</FormLabel>
+                      <FormLabel required>Town/City</FormLabel>
                       <Input
                         value={formData.city}
                         onChangeText={(value) =>
                           setFormData({ ...formData, city: value })
                         }
-                        placeholder="San Francisco"
+                        placeholder="London"
                         size="$4"
+                        autoComplete="address-level2"
                         required
                       />
                     </Column>
-                    <Column gap="$xs" flex={1} minWidth={120}>
-                      <FormLabel required>State</FormLabel>
+                    <Column gap="$xs" flex={1} minWidth={150}>
+                      <FormLabel>County</FormLabel>
                       <Input
-                        value={formData.state}
+                        value={formData.county}
                         onChangeText={(value) =>
-                          setFormData({ ...formData, state: value })
+                          setFormData({ ...formData, county: value })
                         }
-                        placeholder="CA"
+                        placeholder="Greater London"
                         size="$4"
-                        required
-                      />
-                    </Column>
-                    <Column gap="$xs" flex={1} minWidth={120}>
-                      <FormLabel required>ZIP Code</FormLabel>
-                      <Input
-                        value={formData.zip}
-                        onChangeText={(value) =>
-                          setFormData({ ...formData, zip: value })
-                        }
-                        placeholder="94102"
-                        size="$4"
-                        required
+                        autoComplete="address-level1"
                       />
                     </Column>
                   </Row>
+
+                  {/* Postcode */}
+                  <Column gap="$xs">
+                    <FormLabel required>Postcode</FormLabel>
+                    <Input
+                      value={formData.postcode}
+                      onChangeText={(value) => {
+                        setFormData({ ...formData, postcode: value });
+                        setPostcodeError(null);
+                      }}
+                      placeholder="SW1A 1AA"
+                      size="$4"
+                      autoComplete="postal-code"
+                      required
+                    />
+                    {postcodeError && (
+                      <Text size="$3" color="$error">{postcodeError}</Text>
+                    )}
+                  </Column>
 
                   {/* Phone */}
                   <Column gap="$xs">
@@ -367,9 +440,10 @@ export default function AddressesPage() {
                       onChangeText={(value) =>
                         setFormData({ ...formData, phone: value })
                       }
-                      placeholder="(555) 123-4567"
+                      placeholder="+44 7700 900000"
                       size="$4"
                       inputMode="tel"
+                      autoComplete="tel"
                     />
                   </Column>
 
@@ -448,7 +522,9 @@ export default function AddressesPage() {
                     <Column gap="$sm" flex={1}>
                       <Row gap="$sm" alignItems="center">
                         <Text size="$6" weight="semibold">
-                          {address.name}
+                          {address.firstName && address.lastName 
+                            ? `${address.firstName} ${address.lastName}`
+                            : address.name}
                         </Text>
                         {address.isDefault && (
                           <Text
@@ -469,7 +545,9 @@ export default function AddressesPage() {
                           <Text color="$textSecondary">{address.street2}</Text>
                         )}
                         <Text color="$textSecondary">
-                          {address.city}, {address.state} {address.zip}
+                          {address.city}
+                          {(address.county || address.state) && `, ${address.county || address.state}`}{" "}
+                          {address.postcode || address.zip}
                         </Text>
                         {address.phone && (
                           <Text color="$textSecondary">{address.phone}</Text>

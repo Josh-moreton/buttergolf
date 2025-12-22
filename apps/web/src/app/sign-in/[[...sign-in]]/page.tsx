@@ -15,7 +15,11 @@ export default function Page() {
         boxSizing: "border-box",
       }}
     >
-      <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+      <SignIn
+        path="/sign-in"
+        routing="path"
+        signUpUrl="/sign-up"
+      />
     </div>
   );
 }

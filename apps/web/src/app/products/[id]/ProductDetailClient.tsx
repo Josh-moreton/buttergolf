@@ -31,7 +31,8 @@ interface Category {
 
 interface User {
   id: string;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
   imageUrl: string | null;
 }
 

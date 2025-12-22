@@ -79,7 +79,7 @@ export function SellerOnboarding({
         appearance: {
           variables: {
             colorPrimary: "#E25F2F", // Pure Butter orange
-            colorBackground: "#FEFAD6", // Pure Butter cream
+            colorBackground: "#FFFFFF", // Pure White
             colorText: "#1E1E1E", // Charcoal text
             colorDanger: "#dc2626", // Error red
             fontFamily: "system-ui, -apple-system, sans-serif",

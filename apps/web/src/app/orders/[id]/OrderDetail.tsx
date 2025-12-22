@@ -1,7 +1,37 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { OrderMessages } from "./OrderMessages";
+import { OrderRating } from "./OrderRating";
+import { AnimationErrorBoundary } from "@/app/_components/ErrorBoundary";
+import { TrackingTimeline } from "@/components/TrackingTimeline";
+import {
+  Card,
+  Text,
+  Column,
+  Row,
+  Heading,
+  Badge,
+  Button,
+  Separator,
+  Container,
+} from "@buttergolf/ui";
+import { View } from "tamagui";
+import { buildTrackingUrl } from "@/lib/utils/format";
+import {
+  Package,
+  Truck,
+  CheckCircle,
+  Tag,
+  MapPin,
+  User,
+  ArrowLeft,
+  Download,
+  ExternalLink,
+  RefreshCw,
+} from "@tamagui/lucide-icons";
 
 type OrderStatus =
   | "PAYMENT_CONFIRMED"
@@ -38,6 +68,7 @@ interface Order {
   shippedAt: Date | null;
   labelGeneratedAt: Date | null;
   userRole: "buyer" | "seller";
+  currentUserId: string;
   product: {
     id: string;
     title: string;
@@ -52,12 +83,14 @@ interface Order {
     };
   };
   seller: {
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
   buyer: {
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     email: string;
     imageUrl: string | null;
   };
@@ -87,15 +120,25 @@ interface OrderDetailProps {
   order: Order;
 }
 
-const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  PENDING: "bg-gray-200 text-gray-700",
-  PRE_TRANSIT: "bg-blue-100 text-blue-700",
-  IN_TRANSIT: "bg-yellow-100 text-yellow-700",
-  OUT_FOR_DELIVERY: "bg-orange-100 text-orange-700",
-  DELIVERED: "bg-green-100 text-green-700",
-  RETURNED: "bg-red-100 text-red-700",
-  FAILED: "bg-red-100 text-red-700",
-  CANCELLED: "bg-gray-100 text-gray-600",
+type BadgeVariant =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "error"
+  | "warning"
+  | "info"
+  | "neutral"
+  | "outline";
+
+const STATUS_BADGE_VARIANT: Record<ShipmentStatus, BadgeVariant> = {
+  PENDING: "neutral",
+  PRE_TRANSIT: "info",
+  IN_TRANSIT: "warning",
+  OUT_FOR_DELIVERY: "primary",
+  DELIVERED: "success",
+  RETURNED: "error",
+  FAILED: "error",
+  CANCELLED: "neutral",
 };
 
 const STATUS_LABELS: Record<ShipmentStatus, string> = {
@@ -109,289 +152,610 @@ const STATUS_LABELS: Record<ShipmentStatus, string> = {
   CANCELLED: "Cancelled",
 };
 
-export function OrderDetail({ order }: OrderDetailProps) {
+function formatDate(date: Date): string {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatDateTime(date: Date): string {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function TimelineItem({
+  label,
+  date,
+  icon: Icon,
+}: {
+  label: string;
+  date: Date;
+  icon: React.ComponentType<{ size: number; color: string }>;
+}) {
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <Row gap="$md" alignItems="flex-start">
+      <View
+        width={32}
+        height={32}
+        borderRadius={16}
+        backgroundColor="$success"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Icon size={16} color="white" />
+      </View>
+      <Column gap="$xs">
+        <Text fontWeight="600" size="$5">
+          {label}
+        </Text>
+        <Text size="$4" color="$textSecondary">
+          {formatDateTime(date)}
+        </Text>
+      </Column>
+    </Row>
+  );
+}
+
+function AddressBlock({
+  title,
+  address,
+}: {
+  title: string;
+  address: Order["fromAddress"];
+}) {
+  return (
+    <Column gap="$sm" flex={1} minWidth={200}>
+      <Row gap="$xs" alignItems="center">
+        <MapPin size={16} color="var(--color-textSecondary)" />
+        <Text fontWeight="600" size="$5">
+          {title}
+        </Text>
+      </Row>
+      <Column gap="$xs" paddingLeft="$lg">
+        <Text size="$4" color="$textSecondary">
+          {address.name}
+        </Text>
+        <Text size="$4" color="$textSecondary">
+          {address.street1}
+        </Text>
+        {address.street2 && (
+          <Text size="$4" color="$textSecondary">
+            {address.street2}
+          </Text>
+        )}
+        <Text size="$4" color="$textSecondary">
+          {address.city}, {address.state} {address.zip}
+        </Text>
+        <Text size="$4" color="$textSecondary">
+          {address.country}
+        </Text>
+        {address.phone && (
+          <Text size="$4" color="$textSecondary">
+            {address.phone}
+          </Text>
+        )}
+      </Column>
+    </Column>
+  );
+}
+
+function ParticipantCard({
+  title,
+  user,
+}: {
+  title: string;
+  user: Order["seller"];
+}) {
+  const fullName =
+    `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email;
+
+  return (
+    <Column gap="$sm" flex={1} minWidth={200}>
+      <Row gap="$xs" alignItems="center">
+        <User size={16} color="var(--color-textSecondary)" />
+        <Text fontWeight="600" size="$5">
+          {title}
+        </Text>
+      </Row>
+      <Row gap="$md" alignItems="center" paddingLeft="$lg">
+        {user.imageUrl && (
+          <Image
+            src={user.imageUrl}
+            alt={fullName}
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+        )}
+        <Column gap="$xs">
+          <Text fontWeight="500" size="$5">
+            {fullName}
+          </Text>
+          <Text size="$4" color="$textSecondary">
+            {user.email}
+          </Text>
+        </Column>
+      </Row>
+    </Column>
+  );
+}
+
+interface TrackingEvent {
+  occurred_at: string;
+  carrier_occurred_at: string;
+  description: string;
+  city_locality: string;
+  state_province: string;
+  postal_code: string;
+  country_code: string;
+  company_name?: string;
+  signer?: string;
+  event_code?: string;
+}
+
+export function OrderDetail({ order }: OrderDetailProps) {
+  const productImage = order.product.images[0]?.url;
+  const [trackingEvents, setTrackingEvents] = useState<TrackingEvent[]>([]);
+  const [isLoadingTracking, setIsLoadingTracking] = useState(false);
+  const [trackingError, setTrackingError] = useState<string | null>(null);
+
+  // Fetch tracking events on mount
+  const fetchTrackingEvents = async () => {
+    if (!order.trackingCode) return;
+
+    setIsLoadingTracking(true);
+    setTrackingError(null);
+
+    try {
+      const response = await fetch(`/api/orders/${order.id}/tracking`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch tracking information");
+      }
+
+      const data = await response.json();
+      setTrackingEvents(data.events || []);
+    } catch (error) {
+      console.error("Error fetching tracking:", error);
+      setTrackingError(
+        error instanceof Error ? error.message : "Failed to load tracking"
+      );
+    } finally {
+      setIsLoadingTracking(false);
+    }
+  };
+
+  // Fetch tracking events on mount
+  useEffect(() => {
+    fetchTrackingEvents();
+  }, [order.id, order.trackingCode]);
+
+  // Poll for updates when shipment is active (IN_TRANSIT or OUT_FOR_DELIVERY)
+  useEffect(() => {
+    const isActiveShipment =
+      order.shipmentStatus === "IN_TRANSIT" ||
+      order.shipmentStatus === "OUT_FOR_DELIVERY";
+
+    if (!isActiveShipment || !order.trackingCode) return;
+
+    // Poll every 15 seconds
+    const interval = setInterval(() => {
+      fetchTrackingEvents();
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [order.shipmentStatus, order.trackingCode, order.id]);
+
+  return (
+    <Container size="lg" paddingHorizontal="$md" paddingVertical="$xl">
+      <Column gap="$lg">
       {/* Back Link */}
-      <Link href="/orders" className="text-blue-600 hover:underline">
-        ← Back to Orders
+      <Link href="/orders" style={{ textDecoration: "none" }}>
+        <Row gap="$xs" alignItems="center" hoverStyle={{ opacity: 0.7 }}>
+          <ArrowLeft size={18} color="var(--color-primary)" />
+          <Text color="$primary" fontWeight="500">
+            Back to Orders
+          </Text>
+        </Row>
       </Link>
 
-      {/* Order Header */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">Order Details</h1>
-            <p className="text-gray-600">Order #{order.id}</p>
-            <p className="text-sm text-gray-500">
-              Placed on {new Date(order.createdAt).toLocaleString()}
-            </p>
-          </div>
-          <span
-            className={`px-4 py-2 rounded-full text-sm font-medium ${
-              STATUS_COLORS[order.shipmentStatus]
-            }`}
-          >
+      {/* Order Header Card */}
+      <Card variant="elevated" padding="$lg">
+        <Row
+          justifyContent="space-between"
+          alignItems="flex-start"
+          flexWrap="wrap"
+          gap="$md"
+        >
+          <Column gap="$xs">
+            <Heading level={2}>Order Details</Heading>
+            <Text size="$4" color="$textSecondary">
+              Order #{order.id}
+            </Text>
+            <Text size="$4" color="$textSecondary">
+              Placed on {formatDateTime(order.createdAt)}
+            </Text>
+          </Column>
+          <Badge variant={STATUS_BADGE_VARIANT[order.shipmentStatus]} size="lg">
             {STATUS_LABELS[order.shipmentStatus]}
-          </span>
-        </div>
-      </div>
+          </Badge>
+        </Row>
+      </Card>
 
-      {/* Product Info */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Product</h2>
-        <div className="flex gap-4">
-          <div className="flex-shrink-0">
-            {order.product.images[0] ? (
-              <Image
-                src={order.product.images[0].url}
-                alt={order.product.title}
-                width={150}
-                height={150}
-                className="rounded-lg object-cover"
-              />
-            ) : (
-              <div className="w-[150px] h-[150px] bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400">No image</span>
-              </div>
-            )}
-          </div>
-          <div className="flex-1">
-            <Link
-              href={`/products/${order.product.id}`}
-              className="text-xl font-semibold hover:text-blue-600"
+      {/* Product Info Card */}
+      <Card variant="elevated" padding="$lg">
+        <Column gap="$md">
+          <Row gap="$xs" alignItems="center">
+            <Package size={20} color="var(--color-text)" />
+            <Heading level={3}>Product</Heading>
+          </Row>
+
+          <Row gap="$lg" flexWrap="wrap">
+            {/* Product Image */}
+            <View
+              width={150}
+              height={150}
+              borderRadius="$md"
+              overflow="hidden"
+              backgroundColor="$surface"
             >
-              {order.product.title}
-            </Link>
-            <p className="text-gray-600 mt-1">{order.product.description}</p>
-            <div className="mt-2 space-y-1 text-sm">
-              <p>
-                <span className="font-medium">Category:</span>{" "}
-                {order.product.category.name}
-              </p>
-              <p>
-                <span className="font-medium">Condition:</span>{" "}
-                {order.product.condition.replace(/_/g, " ")}
-              </p>
-              {order.product.brand && (
-                <p>
-                  <span className="font-medium">Brand:</span>{" "}
-                  {order.product.brand}
-                </p>
+              {productImage ? (
+                <Image
+                  src={productImage}
+                  alt={order.product.title}
+                  width={150}
+                  height={150}
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <View
+                  width="100%"
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                  backgroundColor="$border"
+                >
+                  <Text color="$textMuted" size="$4">
+                    No image
+                  </Text>
+                </View>
               )}
-              {order.product.model && (
-                <p>
-                  <span className="font-medium">Model:</span>{" "}
-                  {order.product.model}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+            </View>
 
-      {/* Shipping Info */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
+            {/* Product Details */}
+            <Column gap="$sm" flex={1} minWidth={200}>
+              <Link
+                href={`/products/${order.product.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Text
+                  size="$6"
+                  fontWeight="600"
+                  color="$primary"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  {order.product.title}
+                </Text>
+              </Link>
+              <Text size="$4" color="$textSecondary" numberOfLines={2}>
+                {order.product.description}
+              </Text>
 
-        {order.carrier && (
-          <div className="mb-4 p-4 bg-blue-50 rounded-lg">
-            <p className="font-medium text-blue-900">
-              {order.carrier} {order.service && `- ${order.service}`}
-            </p>
-            {order.trackingCode && (
-              <p className="text-sm text-blue-700 mt-1">
-                Tracking:{" "}
-                {order.trackingUrl ? (
-                  <a
-                    href={order.trackingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline font-medium"
-                  >
-                    {order.trackingCode}
-                  </a>
-                ) : (
-                  <span className="font-medium">{order.trackingCode}</span>
+              <Column gap="$xs" marginTop="$sm">
+                <Row gap="$sm">
+                  <Text size="$4" fontWeight="500" width={80}>
+                    Category:
+                  </Text>
+                  <Text size="$4" color="$textSecondary">
+                    {order.product.category.name}
+                  </Text>
+                </Row>
+                <Row gap="$sm" alignItems="center">
+                  <Text size="$4" fontWeight="500" width={80}>
+                    Condition:
+                  </Text>
+                  <Badge variant="outline" size="sm">
+                    {order.product.condition.replace(/_/g, " ")}
+                  </Badge>
+                </Row>
+                {order.product.brand && (
+                  <Row gap="$sm">
+                    <Text size="$4" fontWeight="500" width={80}>
+                      Brand:
+                    </Text>
+                    <Text size="$4" color="$textSecondary">
+                      {order.product.brand}
+                    </Text>
+                  </Row>
                 )}
-              </p>
-            )}
-            {order.estimatedDelivery && (
-              <p className="text-sm text-blue-700 mt-1">
-                Estimated Delivery:{" "}
-                {new Date(order.estimatedDelivery).toLocaleDateString()}
-              </p>
-            )}
-          </div>
-        )}
+                {order.product.model && (
+                  <Row gap="$sm">
+                    <Text size="$4" fontWeight="500" width={80}>
+                      Model:
+                    </Text>
+                    <Text size="$4" color="$textSecondary">
+                      {order.product.model}
+                    </Text>
+                  </Row>
+                )}
+              </Column>
+            </Column>
+          </Row>
+        </Column>
+      </Card>
 
-        {/* Timeline */}
-        <div className="space-y-3">
-          {order.labelGeneratedAt && (
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-2" />
-              <div>
-                <p className="font-medium">Label Created</p>
-                <p className="text-sm text-gray-600">
-                  {new Date(order.labelGeneratedAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          )}
-          {order.shippedAt && (
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-2" />
-              <div>
-                <p className="font-medium">Package Shipped</p>
-                <p className="text-sm text-gray-600">
-                  {new Date(order.shippedAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          )}
-          {order.deliveredAt && (
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-2" />
-              <div>
-                <p className="font-medium">Delivered</p>
-                <p className="text-sm text-gray-600">
-                  {new Date(order.deliveredAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Shipping Information Card */}
+      <Card variant="elevated" padding="$lg">
+        <Column gap="$md">
+          <Row gap="$xs" alignItems="center">
+            <Truck size={20} color="var(--color-text)" />
+            <Heading level={3}>Shipping Information</Heading>
+          </Row>
 
-        {/* Addresses */}
-        <div className="mt-6 grid md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="font-medium mb-2">From (Seller)</h3>
-            <div className="text-sm text-gray-600">
-              <p>{order.fromAddress.name}</p>
-              <p>{order.fromAddress.street1}</p>
-              {order.fromAddress.street2 && <p>{order.fromAddress.street2}</p>}
-              <p>
-                {order.fromAddress.city}, {order.fromAddress.state}{" "}
-                {order.fromAddress.zip}
-              </p>
-              <p>{order.fromAddress.country}</p>
-              {order.fromAddress.phone && <p>{order.fromAddress.phone}</p>}
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium mb-2">To (Buyer)</h3>
-            <div className="text-sm text-gray-600">
-              <p>{order.toAddress.name}</p>
-              <p>{order.toAddress.street1}</p>
-              {order.toAddress.street2 && <p>{order.toAddress.street2}</p>}
-              <p>
-                {order.toAddress.city}, {order.toAddress.state}{" "}
-                {order.toAddress.zip}
-              </p>
-              <p>{order.toAddress.country}</p>
-              {order.toAddress.phone && <p>{order.toAddress.phone}</p>}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Order Summary */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <span>Product Price</span>
-            <span>${order.product.price.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Shipping</span>
-            <span>${order.shippingCost.toFixed(2)}</span>
-          </div>
-          <div className="border-t pt-2 flex justify-between font-bold text-lg">
-            <span>Total</span>
-            <span>${order.amountTotal.toFixed(2)}</span>
-          </div>
-        </div>
-
-        {/* Seller Actions */}
-        {order.userRole === "seller" && order.labelUrl && (
-          <div className="mt-6">
-            <a
-              href={order.labelUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+          {/* Carrier/Tracking Info Box */}
+          {order.carrier && (
+            <View
+              backgroundColor="$infoLight"
+              borderRadius="$md"
+              padding="$md"
             >
-              Download Shipping Label
-            </a>
-            <p className="text-sm text-gray-600 mt-2 text-center">
-              Print this label and attach it to your package. Drop it off at any{" "}
-              {order.carrier} location.
-            </p>
-          </div>
-        )}
+              <Column gap="$sm">
+                <Text fontWeight="600" size="$5">
+                  {order.carrier} {order.service && `- ${order.service}`}
+                </Text>
+                {order.trackingCode && (
+                  <Row gap="$xs" alignItems="center" flexWrap="wrap">
+                    <Text size="$4">Tracking:</Text>
+                    {order.carrier ? (
+                      <a
+                        href={buildTrackingUrl(order.carrier, order.trackingCode)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: "underline" }}
+                      >
+                        <Text size="$4" fontWeight="600" color="$primary">
+                          {order.trackingCode}
+                        </Text>
+                      </a>
+                    ) : (
+                      <Text size="$4" fontWeight="600">
+                        {order.trackingCode}
+                      </Text>
+                    )}
+                  </Row>
+                )}
+                {order.estimatedDelivery && (
+                  <Text size="$4">
+                    Estimated Delivery: {formatDate(order.estimatedDelivery)}
+                  </Text>
+                )}
+              </Column>
+            </View>
+          )}
 
-        {/* Buyer Tracking */}
-        {order.userRole === "buyer" && order.trackingUrl && (
-          <div className="mt-6">
-            <a
-              href={order.trackingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-            >
-              Track Package
-            </a>
-          </div>
-        )}
-      </div>
+          {/* Rich Tracking Timeline */}
+          {order.trackingCode && (
+            <Column gap="$sm" marginTop="$lg">
+              {/* Refresh button for active shipments */}
+              {(order.shipmentStatus === "IN_TRANSIT" ||
+                order.shipmentStatus === "OUT_FOR_DELIVERY") && (
+                <Row alignItems="center" justifyContent="space-between">
+                  <Text size="$4" color="$textSecondary">
+                    Auto-refreshing every 15 seconds
+                  </Text>
+                  <Button
+                    size="$3"
+                    variant="outlined"
+                    onPress={fetchTrackingEvents}
+                    disabled={isLoadingTracking}
+                    icon={
+                      <RefreshCw
+                        size={14}
+                        color="var(--color-primary)"
+                        style={{
+                          animation: isLoadingTracking
+                            ? "spin 1s linear infinite"
+                            : "none",
+                        }}
+                      />
+                    }
+                  >
+                    Refresh
+                  </Button>
+                </Row>
+              )}
 
-      {/* Participants */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Order Participants</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="font-medium mb-2">Seller</h3>
-            <div className="flex items-center gap-3">
-              {order.seller.imageUrl && (
-                <Image
-                  src={order.seller.imageUrl}
-                  alt={order.seller.name || "Seller"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
+              {trackingError && (
+                <Text size="$4" color="$error">
+                  {trackingError}
+                </Text>
               )}
-              <div>
-                <p className="font-medium">
-                  {order.seller.name || order.seller.email}
-                </p>
-                <p className="text-sm text-gray-600">{order.seller.email}</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium mb-2">Buyer</h3>
-            <div className="flex items-center gap-3">
-              {order.buyer.imageUrl && (
-                <Image
-                  src={order.buyer.imageUrl}
-                  alt={order.buyer.name || "Buyer"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              )}
-              <div>
-                <p className="font-medium">
-                  {order.buyer.name || order.buyer.email}
-                </p>
-                <p className="text-sm text-gray-600">{order.buyer.email}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+              <TrackingTimeline order={order} events={trackingEvents} />
+            </Column>
+          )}
+
+          {/* Basic timeline fallback (no tracking code) */}
+          {!order.trackingCode &&
+            (order.labelGeneratedAt ||
+              order.shippedAt ||
+              order.deliveredAt) && (
+              <Column gap="$md" marginTop="$sm">
+                {order.labelGeneratedAt && (
+                  <TimelineItem
+                    label="Label Created"
+                    date={order.labelGeneratedAt}
+                    icon={Tag}
+                  />
+                )}
+                {order.shippedAt && (
+                  <TimelineItem
+                    label="Package Shipped"
+                    date={order.shippedAt}
+                    icon={Truck}
+                  />
+                )}
+                {order.deliveredAt && (
+                  <TimelineItem
+                    label="Delivered"
+                    date={order.deliveredAt}
+                    icon={CheckCircle}
+                  />
+                )}
+              </Column>
+            )}
+
+          <Separator marginVertical="$sm" />
+
+          {/* Addresses */}
+          <Row gap="$lg" flexWrap="wrap">
+            <AddressBlock title="From (Seller)" address={order.fromAddress} />
+            <AddressBlock title="To (Buyer)" address={order.toAddress} />
+          </Row>
+        </Column>
+      </Card>
+
+      {/* Order Summary Card */}
+      <Card variant="elevated" padding="$lg">
+        <Column gap="$md">
+          <Heading level={3}>Order Summary</Heading>
+
+          <Column gap="$sm">
+            <Row justifyContent="space-between">
+              <Text size="$5">Product Price</Text>
+              <Text size="$5">£{order.product.price.toFixed(2)}</Text>
+            </Row>
+            <Row justifyContent="space-between">
+              <Text size="$5">Shipping</Text>
+              <Text size="$5">£{order.shippingCost.toFixed(2)}</Text>
+            </Row>
+            <Separator marginVertical="$xs" />
+            <Row justifyContent="space-between">
+              <Text size="$6" fontWeight="700">
+                Total
+              </Text>
+              <Text size="$6" fontWeight="700" color="$primary">
+                £{order.amountTotal.toFixed(2)}
+              </Text>
+            </Row>
+          </Column>
+
+          {/* Seller Actions */}
+          {order.userRole === "seller" && order.labelUrl && (
+            <Column gap="$sm" marginTop="$md">
+              <a
+                href={order.labelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  size="$5"
+                  backgroundColor="$success"
+                  color="$textInverse"
+                  width="100%"
+                  paddingVertical="$md"
+                  borderRadius="$md"
+                  icon={<Download size={18} color="white" />}
+                >
+                  Download Shipping Label
+                </Button>
+              </a>
+              <Text size="$4" color="$textSecondary" textAlign="center">
+                Print this label and attach it to your package. Drop it off at
+                any {order.carrier} location.
+              </Text>
+            </Column>
+          )}
+
+          {/* Buyer Tracking */}
+          {order.userRole === "buyer" &&
+            order.trackingCode &&
+            order.carrier && (
+              <a
+                href={buildTrackingUrl(order.carrier, order.trackingCode)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", marginTop: 16 }}
+              >
+                <Button
+                  size="$5"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                  width="100%"
+                  paddingVertical="$md"
+                  borderRadius="$md"
+                  icon={<ExternalLink size={18} color="white" />}
+                >
+                  Track Package
+                </Button>
+              </a>
+            )}
+        </Column>
+      </Card>
+
+      {/* Participants Card */}
+      <Card variant="elevated" padding="$lg">
+        <Column gap="$md">
+          <Heading level={3}>Order Participants</Heading>
+          <Row gap="$lg" flexWrap="wrap">
+            <ParticipantCard title="Seller" user={order.seller} />
+            <ParticipantCard title="Buyer" user={order.buyer} />
+          </Row>
+        </Column>
+      </Card>
+
+      {/* Rating Section - shown after delivery for buyers */}
+      <AnimationErrorBoundary
+        fallback={
+          <Card variant="outlined" padding="$lg">
+            <Text color="$error">
+              Unable to load rating section. Please refresh the page.
+            </Text>
+          </Card>
+        }
+      >
+        <OrderRating
+          orderId={order.id}
+          isDelivered={order.shipmentStatus === "DELIVERED"}
+          isBuyer={order.userRole === "buyer"}
+          sellerName={`${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()}
+        />
+      </AnimationErrorBoundary>
+
+      {/* Messages Section */}
+      <AnimationErrorBoundary
+        fallback={
+          <Card variant="outlined" padding="$lg">
+            <Text color="$error">
+              Unable to load messages. Please refresh the page.
+            </Text>
+          </Card>
+        }
+      >
+        <OrderMessages
+          orderId={order.id}
+          currentUserId={order.currentUserId}
+          otherUserName={
+            order.userRole === "buyer"
+              ? `${order.seller.firstName || ""} ${order.seller.lastName || ""}`.trim()
+              : `${order.buyer.firstName || ""} ${order.buyer.lastName || ""}`.trim()
+          }
+          otherUserImage={
+            order.userRole === "buyer"
+              ? order.seller.imageUrl
+              : order.buyer.imageUrl
+          }
+        />
+      </AnimationErrorBoundary>
+    </Column>
+    </Container>
   );
 }

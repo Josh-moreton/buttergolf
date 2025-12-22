@@ -24,7 +24,8 @@ export default async function AccountPage() {
     select: {
       id: true,
       email: true,
-      name: true,
+      firstName: true,
+      lastName: true,
       stripeConnectId: true,
       stripeOnboardingComplete: true,
       stripeAccountStatus: true,
@@ -39,7 +40,8 @@ export default async function AccountPage() {
     <AccountSettingsClient
       user={{
         email: user.email,
-        name: user.name || undefined,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
         hasConnectAccount: !!user.stripeConnectId,
         onboardingComplete: user.stripeOnboardingComplete || false,
         accountStatus: user.stripeAccountStatus || "none",

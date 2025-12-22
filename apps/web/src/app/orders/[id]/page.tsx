@@ -43,7 +43,8 @@ export default async function OrderDetailPage({
       seller: {
         select: {
           id: true,
-          name: true,
+          firstName: true,
+          lastName: true,
           email: true,
           imageUrl: true,
         },
@@ -51,7 +52,8 @@ export default async function OrderDetailPage({
       buyer: {
         select: {
           id: true,
-          name: true,
+          firstName: true,
+          lastName: true,
           email: true,
           imageUrl: true,
         },
@@ -75,15 +77,13 @@ export default async function OrderDetailPage({
     ...order,
     userRole:
       order.buyerId === user.id ? ("buyer" as const) : ("seller" as const),
+    currentUserId: user.id,
     product: {
       ...order.product,
       brand: order.product.brand?.name || null,
     },
   };
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <OrderDetail order={orderWithRole} />
-    </div>
-  );
+  // Client component handles all UI rendering
+  return <OrderDetail order={orderWithRole} />;
 }

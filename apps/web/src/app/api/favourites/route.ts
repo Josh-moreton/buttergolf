@@ -61,7 +61,8 @@ export async function GET(req: NextRequest) {
               user: {
                 select: {
                   id: true,
-                  name: true,
+                  firstName: true,
+                  lastName: true,
                   averageRating: true,
                   ratingCount: true,
                 },
@@ -96,7 +97,8 @@ export async function GET(req: NextRequest) {
       seller: fav.product.user
         ? {
             id: fav.product.user.id,
-            name: fav.product.user.name,
+            firstName: fav.product.user.firstName,
+            lastName: fav.product.user.lastName,
             averageRating: fav.product.user.averageRating,
             ratingCount: fav.product.user.ratingCount,
           }
@@ -163,7 +165,8 @@ export async function POST(req: NextRequest) {
       create: {
         clerkId,
         email: `temp-${clerkId}@buttergolf.app`, // Temporary email, will be updated by webhook
-        name: "User", // Placeholder name, will be updated by webhook
+        firstName: "User", // Placeholder, will be updated by webhook
+        lastName: "",
       },
     });
 

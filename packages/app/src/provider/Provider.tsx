@@ -1,7 +1,6 @@
 // Import config BEFORE importing TamaguiProvider to ensure createTamagui runs first
 import { config } from "@buttergolf/config";
 import type { PropsWithChildren } from "react";
-import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";
 
 export type ProviderProps = PropsWithChildren<
@@ -14,24 +13,27 @@ export type ProviderProps = PropsWithChildren<
 const VALID_THEMES = ["light", "dark"] as const;
 
 export function Provider({ defaultTheme, children, ...rest }: ProviderProps) {
-  // Use useColorScheme only as fallback - NextThemeProvider should handle theme via defaultTheme
-  // This is safe because useColorScheme is only called when defaultTheme is invalid (e.g. "system")
-  // and we're already on the client (server always gets "light" from the fallback)
-  const colorScheme = useColorScheme();
-
-  // Validate theme - NextThemeProvider can pass "system" which isn't a valid Tamagui theme
-  // Fallback logic:
-  // 1. If defaultTheme is valid ("light" or "dark"), use it
-  // 2. Otherwise, use colorScheme to detect device preference
-  // 3. If colorScheme is null (SSR), default to "light"
+  // CRITICAL: Do NOT use useColorScheme() here - it causes SSR hydration mismatch!
+  //
+  // The problem:
+  // 1. Server renders with theme="light" (useColorScheme returns null on server)
+  // 2. Client hydrates with theme="dark" (if device is in dark mode)
+  // 3. React detects mismatch, throws away DOM, tries to re-render
+  // 4. Re-render fails with "Missing theme" error
+  // 5. User sees: page loads → content vanishes after 0.5s → error
+  //
+  // Fix: Trust the defaultTheme prop exclusively. For web, NextTamaguiProvider
+  // passes defaultTheme="light" (hardcoded for v1). For mobile, the native app
+  // can pass whatever theme it wants based on device settings.
+  //
+  // Theme switching on web should be handled via NextThemeProvider when enabled,
+  // which properly handles SSR hydration via useRootTheme().
+  
+  // Validate theme - must be deterministic for SSR (no device preference reading)
   const isValidTheme =
     defaultTheme &&
     VALID_THEMES.includes(defaultTheme as (typeof VALID_THEMES)[number]);
-  const theme = isValidTheme
-    ? defaultTheme
-    : colorScheme === "dark"
-      ? "dark"
-      : "light";
+  const theme = isValidTheme ? defaultTheme : "light";
 
   return (
     <TamaguiProvider

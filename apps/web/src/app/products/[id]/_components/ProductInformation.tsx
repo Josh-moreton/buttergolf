@@ -5,7 +5,8 @@ import { Column, Row, Text, Button, Heading } from "@buttergolf/ui";
 
 interface User {
   id: string;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
   imageUrl: string | null;
   averageRating?: number | null;
   ratingCount?: number;
@@ -139,7 +140,7 @@ export function ProductInformation({
         <Row justifyContent="space-between" alignItems="center">
           <Column gap="$xs" flex={1}>
             <Text size="$3" color="$slateSmoke" weight="bold">
-              Posted by {product.user.name || "Unknown"}
+              Posted by {`${product.user.firstName} ${product.user.lastName}`.trim() || "Unknown"}
             </Text>
             <Text size="$2" color="$slateSmoke">
               Member for 3 years
@@ -247,16 +248,12 @@ export function ProductInformation({
               : "Buy now"}
         </Button>
         <Button
+          butterVariant="secondary"
           size="$5"
           width="100%"
-          backgroundColor="$ironstone"
-          color="$vanillaCream"
-          borderRadius="$full"
           height={56}
           disabled={product.isSold || purchasing}
           onPress={onMakeOffer}
-          pressStyle={{ opacity: 0.8 }}
-          hoverStyle={{ opacity: 0.9 }}
         >
           Make an offer
         </Button>

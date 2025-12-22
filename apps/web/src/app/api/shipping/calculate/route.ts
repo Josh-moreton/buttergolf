@@ -3,7 +3,7 @@ import {
   calculateShippingRates,
   estimateShippingRate,
   ShippingCalculationRequest,
-} from "@/lib/shipping";
+} from "@/lib/shipengine";
 
 // POST /api/shipping/calculate - Calculate shipping rates for a product
 export async function POST(request: NextRequest) {
@@ -27,22 +27,22 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET /api/shipping/calculate?productId=xxx&zip=12345 - Quick rate estimate (for product pages)
+// GET /api/shipping/calculate?productId=xxx&postcode=SW1A1AA - Quick rate estimate (for product pages)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const productId = searchParams.get("productId");
-    const zip = searchParams.get("zip");
-    const state = searchParams.get("state") || "CA"; // Default to CA if not provided
+    const postcode = searchParams.get("postcode") || searchParams.get("zip"); // Support both UK and legacy param
+    const county = searchParams.get("county") || searchParams.get("state") || ""; // Support both UK and legacy param
 
-    if (!productId || !zip) {
+    if (!productId || !postcode) {
       return NextResponse.json(
-        { error: "productId and zip are required" },
+        { error: "productId and postcode are required" },
         { status: 400 },
       );
     }
 
-    const result = await estimateShippingRate(productId, zip, state);
+    const result = await estimateShippingRate(productId, postcode, county);
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error estimating shipping rate:", error);

@@ -26,7 +26,7 @@ export default function MarketplaceHomeClient({
   const { isSignedIn } = useUser();
 
   return (
-    <Column>
+    <Column width="100%">
       {/* Hero - Immediate page load animation (no scroll trigger) */}
       <AnimatedView delay={0}>
         <HeroStatic />

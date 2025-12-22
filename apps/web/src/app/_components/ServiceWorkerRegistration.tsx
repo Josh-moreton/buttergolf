@@ -2,21 +2,21 @@
 
 import { useEffect } from "react";
 
+/**
+ * Unregisters any existing service workers from previous versions.
+ * We removed the service worker as it provided no real value for a marketplace
+ * app with dynamic content and a native mobile app already available.
+ */
 export function ServiceWorkerRegistration() {
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      // Register service worker
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope,
-          );
-        })
-        .catch((error) => {
-          console.log("Service Worker registration failed:", error);
+      // Unregister any existing service workers (cleanup from previous version)
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => {
+          registration.unregister();
+          console.log("Service Worker unregistered:", registration.scope);
         });
+      });
     }
   }, []);
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma, ProductCondition } from "@buttergolf/db";
 
 export async function POST(request: Request) {
@@ -15,19 +15,104 @@ export async function POST(request: Request) {
     // This ensures user exists even if webhook hasn't fired yet
     let user = await prisma.user.findUnique({
       where: { clerkId },
+      select: {
+        id: true,
+        stripeConnectId: true,
+        stripeOnboardingComplete: true,
+        stripeAccountStatus: true,
+      },
     });
 
     if (!user) {
       // Create user if not found (fallback for webhook delays)
       // In production, the webhook should handle this
-      user = await prisma.user.create({
+      // We need to fetch the full user profile to get the name
+      const clerkUser = await currentUser();
+
+      if (!clerkUser) {
+        return NextResponse.json({ error: "User not found" }, { status: 401 });
+      }
+
+      // Build user name from Clerk profile
+      // Priority: firstName + lastName > username > email prefix
+      let userFirstName = "";
+      let userLastName = "";
+      if (clerkUser.firstName) {
+        userFirstName = clerkUser.firstName;
+      }
+      if (clerkUser.lastName) {
+        userLastName = clerkUser.lastName;
+      }
+      // Fallback to username or email prefix for firstName
+      if (!userFirstName && !userLastName) {
+        if (clerkUser.username) {
+          userFirstName = clerkUser.username;
+        } else if (clerkUser.emailAddresses?.[0]?.emailAddress) {
+          userFirstName = clerkUser.emailAddresses[0].emailAddress.split("@")[0];
+        } else {
+          userFirstName = "Golf Enthusiast";
+        }
+      }
+
+      const createdUser = await prisma.user.create({
         data: {
           clerkId,
-          email: `user-${clerkId}@temp.local`, // Temporary email, will be updated by webhook
-          name: null,
-          imageUrl: null,
+          email:
+            clerkUser.emailAddresses?.[0]?.emailAddress ||
+            `user-${clerkId}@temp.local`,
+          firstName: userFirstName,
+          lastName: userLastName,
+          imageUrl: clerkUser.imageUrl || null,
+        },
+        select: {
+          id: true,
+          stripeConnectId: true,
+          stripeOnboardingComplete: true,
+          stripeAccountStatus: true,
         },
       });
+
+      user = createdUser;
+    }
+
+    // ============================================================
+    // SELLER ONBOARDING GUARD
+    // Ensure user has completed Stripe Connect onboarding before
+    // allowing them to create product listings
+    // ============================================================
+    if (!user.stripeConnectId) {
+      return NextResponse.json(
+        {
+          error: "Seller setup required",
+          code: "SELLER_SETUP_REQUIRED",
+          message:
+            "Please complete your seller setup before listing products. Visit /sell to get started.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (!user.stripeOnboardingComplete) {
+      return NextResponse.json(
+        {
+          error: "Seller onboarding incomplete",
+          code: "ONBOARDING_INCOMPLETE",
+          message:
+            "Please complete your seller onboarding before listing products. Visit /sell to continue setup.",
+        },
+        { status: 403 },
+      );
+    }
+
+    if (user.stripeAccountStatus !== "active") {
+      return NextResponse.json(
+        {
+          error: "Seller account not active",
+          code: "ACCOUNT_NOT_ACTIVE",
+          message: `Your seller account is currently ${user.stripeAccountStatus || "pending"}. Please complete any outstanding requirements.`,
+        },
+        { status: 403 },
+      );
     }
 
     // Parse request body
@@ -42,6 +127,9 @@ export async function POST(request: Request) {
       clubKind, // Optional: used for creating/updating ClubModel
       categoryId,
       images,
+      // Golf club specific fields
+      flex,
+      loft,
       // Shipping dimensions
       length,
       width,
@@ -130,6 +218,9 @@ export async function POST(request: Request) {
         model: model || null,
         userId: user.id,
         categoryId,
+        // Golf club specific fields
+        flex: flex || null,
+        loft: loft || null,
         // Shipping dimensions
         length: length ? Number(length) : null,
         width: width ? Number(width) : null,
@@ -149,7 +240,8 @@ export async function POST(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -189,7 +281,8 @@ export async function GET(request: Request) {
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },

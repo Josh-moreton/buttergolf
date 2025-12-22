@@ -23,7 +23,8 @@ interface ProductSummaryCardProps {
     images: Array<{ id: string; url: string; alt?: string | null }>;
     user: {
       id: string;
-      name: string | null;
+      firstName: string | null;
+      lastName: string | null;
       averageRating: number | null;
       ratingCount: number;
     };
@@ -150,7 +151,7 @@ export function ProductSummaryCard({
       {/* Seller Info */}
       <Column gap="$sm">
         <Text size="$3" color="$slateSmoke" weight="bold">
-          {isUserSeller ? "Your listing" : `Seller: ${product.user.name}`}
+          {isUserSeller ? "Your listing" : `Seller: ${`${product.user.firstName} ${product.user.lastName}`.trim() || "Unknown"}`}
         </Text>
         {ratingCount > 0 && (
           <Row gap="$xs" alignItems="center">

@@ -66,7 +66,8 @@ export async function GET(
         user: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             imageUrl: true,
           },
         },
@@ -88,7 +89,8 @@ export async function GET(
       category: prod.category.name,
       seller: {
         id: prod.user.id,
-        name: prod.user.name || "Unknown Seller",
+        firstName: prod.user.firstName,
+        lastName: prod.user.lastName,
         averageRating: null, // TODO: Calculate from ratings
         ratingCount: 0, // TODO: Get from ratings count
       },

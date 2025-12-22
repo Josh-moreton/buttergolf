@@ -34,7 +34,6 @@
  * ```
  */
 
-import { Platform } from "react-native";
 import {
   styled,
   GetProps,
@@ -61,10 +60,9 @@ export const Text = styled(TamaguiParagraph, {
   color: "$text",
   fontFamily: "$body",
   letterSpacing: 0, // Prevent tight/condensed letter spacing
-  // On web, lineHeight: 1.5 works as a multiplier (e.g., 1.5x fontSize)
-  // On React Native, unitless values are interpreted as pixels, causing invisible text
-  // Only apply lineHeight on web where it works correctly as a multiplier
-  ...(Platform.OS === "web" ? { lineHeight: 1.5 } : {}),
+  // LineHeight is now handled by Tamagui's font token system (bodyFont.lineHeight)
+  // The size prop (e.g., size="$5") automatically applies the correct lineHeight from tokens
+  // This fixes text overlap issues caused by unitless multipliers overriding token values
 
   variants: {
     weight: {
@@ -123,7 +121,9 @@ export const Heading = styled(TamaguiParagraph, {
   fontFamily: "$heading",
   fontWeight: "700",
   letterSpacing: 0, // Prevent tight/condensed letter spacing
-  lineHeight: 1.3, // Tighter line height for headings
+  // LineHeight is now handled by Tamagui's font token system (headingFont.lineHeight)
+  // The level variant sets fontSize which automatically applies the correct lineHeight from tokens
+  // This fixes text overlap issues caused by unitless multipliers overriding token values
 
   variants: {
     level: {

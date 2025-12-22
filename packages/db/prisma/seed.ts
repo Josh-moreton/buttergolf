@@ -13,7 +13,8 @@ async function main() {
     update: {},
     create: {
       email: "sarah.johnson@example.com",
-      name: "Sarah Johnson",
+      firstName: "Sarah",
+      lastName: "Johnson",
       clerkId: "user_sarah_clerk_id",
       averageRating: 4.8,
       ratingCount: 47,
@@ -25,7 +26,8 @@ async function main() {
     update: {},
     create: {
       email: "mike.chen@example.com",
-      name: "Mike Chen",
+      firstName: "Mike",
+      lastName: "Chen",
       clerkId: "user_mike_clerk_id",
       averageRating: 4.2,
       ratingCount: 23,
@@ -37,14 +39,15 @@ async function main() {
     update: {},
     create: {
       email: "emma.williams@example.com",
-      name: "Emma Williams",
+      firstName: "Emma",
+      lastName: "Williams",
       clerkId: "user_emma_clerk_id",
       averageRating: 0,
       ratingCount: 0,
     },
   });
 
-  console.log("✅ Created users:", [user1.name, user2.name, user3.name]);
+  console.log("✅ Created users:", [`${user1.firstName} ${user1.lastName}`, `${user2.firstName} ${user2.lastName}`, `${user3.firstName} ${user3.lastName}`]);
 
   // Create categories from centralized constants
   const categories = await Promise.all(
@@ -82,7 +85,7 @@ async function main() {
   console.log(`✅ Created ${brands.length} brands`);
 
   // Get category references
-  const driversCategory = categories.find((c) => c.slug === "drivers")!;
+  const woodsCategory = categories.find((c) => c.slug === "woods")!;
   const ironsCategory = categories.find((c) => c.slug === "irons")!;
   const wedgesCategory = categories.find((c) => c.slug === "wedges")!;
   const puttersCategory = categories.find((c) => c.slug === "putters")!;
@@ -120,7 +123,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth 2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -153,7 +156,7 @@ async function main() {
         brandId: callaway.id,
         model: "Rogue ST Max",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -186,7 +189,7 @@ async function main() {
         brandId: ping.id,
         model: "G430 Max",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -219,7 +222,7 @@ async function main() {
         brandId: titleist.id,
         model: "TSi3",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -252,7 +255,7 @@ async function main() {
         brandId: cobra.id,
         model: "LTDx LS",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -281,7 +284,7 @@ async function main() {
         brandId: mizuno.id,
         model: "ST-Z",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -310,7 +313,7 @@ async function main() {
         brandId: srixon.id,
         model: "ZX5",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -339,7 +342,7 @@ async function main() {
         brandId: wilson.id,
         model: "Launch Pad 2",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -370,7 +373,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth 2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -399,7 +402,7 @@ async function main() {
         brandId: callaway.id,
         model: "Rogue ST Max",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -428,7 +431,7 @@ async function main() {
         brandId: ping.id,
         model: "G425",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -457,7 +460,7 @@ async function main() {
         brandId: titleist.id,
         model: "TSi2",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -486,7 +489,7 @@ async function main() {
         brandId: callaway.id,
         model: "Apex",
         userId: user2.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -515,7 +518,7 @@ async function main() {
         brandId: taylorMade.id,
         model: "Stealth Rescue",
         userId: user1.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {
@@ -544,7 +547,7 @@ async function main() {
         brandId: ping.id,
         model: "G430",
         userId: user3.id,
-        categoryId: driversCategory.id,
+        categoryId: woodsCategory.id,
         images: {
           create: [
             {

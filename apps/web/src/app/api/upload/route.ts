@@ -70,6 +70,16 @@ export async function POST(request: Request): Promise<NextResponse> {
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = `data:${contentType};base64,${buffer.toString("base64")}`;
 
+    // Debug logging
+    console.log("📤 Cloudinary Upload:", {
+      filename,
+      contentType,
+      sizeBytes: buffer.length,
+      sizeMB: (buffer.length / (1024 * 1024)).toFixed(2),
+      isFirstImage,
+      userId,
+    });
+
     // Build upload options
     const uploadOptions: UploadApiOptions = {
       folder: "products",
@@ -77,25 +87,49 @@ export async function POST(request: Request): Promise<NextResponse> {
       resource_type: "image",
     };
 
-    // Apply background removal ONLY to first image (cost optimization)
+    // Apply background removal transformation ONLY to first image
+    // This transformation is applied to the ALREADY CROPPED image blob from ImageCropModal
     if (isFirstImage) {
       uploadOptions.transformation = [
         {
           effect: "background_removal",
         },
         {
-          // Use branded pattern background (uploaded to Cloudinary as 'backgrounds/butter-pattern')
           underlay: "backgrounds:butter-pattern",
-          flags: "tiled", // Tile the pattern across the entire image
+          flags: "tiled",
         },
         {
-          flags: "layer_apply", // Apply the tiled underlay
+          flags: "layer_apply",
+        },
+        {
+          // Crop the final result back to the original (cropped) image dimensions
+          // gravity: "center" ensures we crop equally from all sides, keeping the original image intact
+          crop: "crop",
+          width: "iw",
+          height: "ih",
+          gravity: "center",
         },
       ];
     }
 
-    // Upload to Cloudinary
+    // Debug: Log the image dimensions being uploaded
+    console.log("📐 Uploading image data:", {
+      base64Length: base64Image.length,
+      estimatedSizeKB: Math.round((base64Image.length * 0.75) / 1024),
+      isFirstImage,
+    });
+
+    // Upload the CROPPED image to Cloudinary with transformation
+    // The blob is already cropped by ImageCropModal, SDK applies background transformation to it
     const result = await cloudinary.uploader.upload(base64Image, uploadOptions);
+
+    console.log("✅ Cloudinary Upload Success:", {
+      publicId: result.public_id,
+      url: result.secure_url,
+      dimensions: `${result.width}x${result.height}`,
+      format: result.format,
+      bytes: result.bytes,
+    });
 
     return NextResponse.json({
       url: result.secure_url,

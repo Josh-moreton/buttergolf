@@ -5,13 +5,19 @@ import { prisma } from "@buttergolf/db";
 
 /**
  * POST /api/stripe/connect/account-session
- * Creates a new AccountSession for the embedded Connect component
+ * Creates a new AccountSession for the fully embedded Connect components
  *
  * AccountSessions are short-lived (expires in ~1 hour) and provide
- * access to embedded Connect components like account onboarding.
+ * access to all embedded Connect components for the seller dashboard.
  *
- * The frontend should call this endpoint to get a fresh client_secret
- * when initializing the embedded component.
+ * Required components for Fully Embedded integration:
+ * - account_onboarding: Initial seller onboarding
+ * - account_management: Edit account settings
+ * - notification_banner: Compliance/requirement notifications
+ * - documents: Tax documents (required when Stripe owns pricing)
+ * - payments: View transactions, handle disputes
+ * - balances: View balance, add funds
+ * - payouts: Manage payouts
  */
 export async function POST() {
   try {
@@ -34,15 +40,62 @@ export async function POST() {
       );
     }
 
-    // 3. Create AccountSession with embedded onboarding component enabled
+    // 3. Create AccountSession with ALL embedded components enabled
+    // This enables the full seller dashboard experience
     const accountSession = await stripe.accountSessions.create({
       account: user.stripeConnectId,
       components: {
+        // Onboarding - for initial account setup
         account_onboarding: { enabled: true },
+
+        // Account Management - for editing account settings
+        account_management: {
+          enabled: true,
+          features: {
+            external_account_collection: true, // Allow bank account changes
+          },
+        },
+
+        // Notification Banner - for compliance/requirement alerts
+        notification_banner: {
+          enabled: true,
+          features: {
+            external_account_collection: true,
+          },
+        },
+
+        // Documents - REQUIRED when Stripe owns pricing (fees_collector: "stripe")
+        documents: { enabled: true },
+
+        // Payments - view transactions, handle disputes/refunds
+        payments: {
+          enabled: true,
+          features: {
+            refund_management: true,
+            dispute_management: true,
+            capture_payments: true,
+          },
+        },
+
+        // Balances - view balance, add funds to avoid negative balance
+        balances: {
+          enabled: true,
+          features: {
+            instant_payouts: true,
+            standard_payouts: true,
+            edit_payout_schedule: true,
+          },
+        },
+
+        // Payouts - manage payout schedule and destination
+        payouts: { enabled: true },
+
+        // Payouts List - view payout history
+        payouts_list: { enabled: true },
       },
     });
 
-    // 4. Return client secret for embedded component
+    // 4. Return client secret for embedded components
     return NextResponse.json({
       clientSecret: accountSession.client_secret,
       accountId: user.stripeConnectId,

@@ -1,28 +1,30 @@
 "use client";
 
-import "@tamagui/core/reset.css";
+// Reset CSS is included in config.getCSS() output below
+// import "@tamagui/core/reset.css"; // Commented out - causes webpack resolution issues in Next.js
 import "@tamagui/polyfill-dev";
 
 import type { ReactNode } from "react";
 import { useServerInsertedHTML } from "next/navigation";
-import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
 import { config } from "@buttergolf/config";
 
 import { Provider } from "./Provider";
 
 /**
- * Inner component that consumes the theme context
- * MUST be rendered INSIDE NextThemeProvider to use useRootTheme() hook
- */
-function TamaguiThemeProvider({ children }: { children: ReactNode }) {
-  const [theme] = useRootTheme(); // ✅ Safe - inside provider tree
-
-  return <Provider defaultTheme={theme ?? "light"}>{children}</Provider>;
-}
-
-/**
- * Outer component that provides the theme context
- * Sets up NextThemeProvider and CSS injection for Tamagui
+ * Tamagui Provider for Next.js App Router
+ * Fixed to light theme for v1 - theme switching disabled
+ * 
+ * TODO: Properly design and test light/dark theme variants
+ * - Design dark theme colors in Figma matching brand identity
+ * - Update tamagui.config.ts with proper dark theme tokens
+ * - Test all components in both themes for readability/contrast
+ * - Re-enable NextThemeProvider with useRootTheme() pattern:
+ *   ```
+ *   <NextThemeProvider skipNextHead defaultTheme="system">
+ *     <TamaguiThemeProvider>{children}</TamaguiThemeProvider>
+ *   </NextThemeProvider>
+ *   ```
+ * - Add theme toggle UI component in header/settings
  */
 export function NextTamaguiProvider({
   children,
@@ -49,8 +51,12 @@ export function NextTamaguiProvider({
   });
 
   return (
-    <NextThemeProvider skipNextHead defaultTheme="system">
-      <TamaguiThemeProvider>{children}</TamaguiThemeProvider>
-    </NextThemeProvider>
+    <Provider
+      defaultTheme="light"
+      disableInjectCSS  // CSS already injected via useServerInsertedHTML
+      disableRootThemeClass  // Prevent hydration mismatch from theme class
+    >
+      {children}
+    </Provider>
   );
 }

@@ -40,9 +40,8 @@ export async function getOrCreateUser(clerkUserId: string) {
     data: {
       clerkId: clerkUserId,
       email: clerkUser.emailAddresses[0]?.emailAddress || "",
-      name: clerkUser.firstName
-        ? `${clerkUser.firstName} ${clerkUser.lastName || ""}`.trim()
-        : null,
+      firstName: clerkUser.firstName || "",
+      lastName: clerkUser.lastName || "",
       imageUrl: clerkUser.imageUrl,
     },
   });

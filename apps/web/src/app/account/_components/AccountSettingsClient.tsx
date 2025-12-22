@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Column,
   Row,
@@ -16,7 +17,8 @@ import { SellerOnboarding } from "../../_components/SellerOnboarding";
 interface AccountSettingsClientProps {
   readonly user: {
     readonly email: string;
-    readonly name?: string;
+    readonly firstName?: string;
+    readonly lastName?: string;
     readonly hasConnectAccount: boolean;
     readonly onboardingComplete: boolean;
     readonly accountStatus: string;
@@ -28,6 +30,7 @@ interface AccountSettingsClientProps {
  * Handles seller onboarding state and UI interactions
  */
 export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
+  const router = useRouter();
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Determine badge variant based on account status
@@ -77,14 +80,20 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Row gap="$md">
             <Button
               size="$4"
-              onPress={() => {
-                /* View dashboard */
-              }}
+              backgroundColor="$primary"
+              color="$textInverse"
+              onPress={() => router.push("/seller")}
             >
-              View Dashboard
+              View Seller Dashboard
             </Button>
-            <Button size="$4" onPress={() => setShowOnboarding(true)}>
-              Update Account
+            <Button
+              size="$4"
+              backgroundColor="$surface"
+              borderWidth={1}
+              borderColor="$border"
+              onPress={() => router.push("/seller/settings")}
+            >
+              Account Settings
             </Button>
           </Row>
         </>
@@ -102,9 +111,23 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             Your seller account has some restrictions. Please update your
             account information to enable full functionality.
           </Text>
-          <Row>
-            <Button size="$4" onPress={() => setShowOnboarding(true)}>
+          <Row gap="$md">
+            <Button
+              size="$4"
+              backgroundColor="$primary"
+              color="$textInverse"
+              onPress={() => router.push("/seller/settings")}
+            >
               Resolve Issues
+            </Button>
+            <Button
+              size="$4"
+              backgroundColor="$surface"
+              borderWidth={1}
+              borderColor="$border"
+              onPress={() => router.push("/seller")}
+            >
+              View Dashboard
             </Button>
           </Row>
         </>
@@ -118,8 +141,22 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             Your seller account is being reviewed. This usually takes 1-2
             business days.
           </Text>
-          <Row>
-            <Button size="$4" onPress={() => setShowOnboarding(true)}>
+          <Row gap="$md">
+            <Button
+              size="$4"
+              backgroundColor="$primary"
+              color="$textInverse"
+              onPress={() => router.push("/seller")}
+            >
+              View Dashboard
+            </Button>
+            <Button
+              size="$4"
+              backgroundColor="$surface"
+              borderWidth={1}
+              borderColor="$border"
+              onPress={() => router.push("/seller/settings")}
+            >
               View Status
             </Button>
           </Row>
@@ -190,10 +227,10 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
               <Text weight="medium">Email</Text>
               <Text color="$textSecondary">{user.email}</Text>
             </Column>
-            {user.name && (
+            {(user.firstName || user.lastName) && (
               <Column gap="$xs">
                 <Text weight="medium">Name</Text>
-                <Text color="$textSecondary">{user.name}</Text>
+                <Text color="$textSecondary">{`${user.firstName || ''} ${user.lastName || ''}`.trim()}</Text>
               </Column>
             )}
           </Column>

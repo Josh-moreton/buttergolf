@@ -375,19 +375,7 @@ const customTokens = createTokens({
     // White token (referenced by themes)
     white: brandColors.pureWhite,
 
-    // Backward compatibility (map old names to new colors)
-    bg: brandColors.vanillaCream,
-    bgGray: brandColors.cloudMist,
-    bgCard: brandColors.pureWhite,
-    cardBg: brandColors.pureWhite,
-    textDark: brandColors.ironstone,
-    muted: brandColors.slateSmoke,
-    blue: brandColors.infoBase,
-    blueLight: brandColors.infoLight,
-    teal: brandColors.successBase,
-    red: brandColors.errorBase,
-    cream: brandColors.vanillaCream,
-    creamDark: brandColors.lemonHaze,
+    // Backward compatibility aliases removed — use semantic tokens (e.g. "$background", "$textMuted")
   },
 
   size: {
@@ -443,86 +431,92 @@ const customTokens = createTokens({
 // - Web (Next.js): uses animations.ts with @tamagui/animations-css
 // - Mobile (Expo): uses animations.native.ts with @tamagui/animations-react-native
 
-// Light theme with semantic token mappings
+// Light theme with semantic token mappings (Pure White background)
 const lightTheme = {
-  // Background colors - reference tokens
-  background: "$background",
-  backgroundHover: "$backgroundHover",
-  backgroundPress: "$backgroundPress",
-  backgroundFocus: "$backgroundFocus",
-  backgroundStrong: "$backgroundStrong",
-  backgroundTransparent: "$backgroundTransparent",
+  // Background colors (Pure White base)
+  background: brandColors.pureWhite,
+  backgroundHover: brandColors.cloudMist,
+  backgroundPress: brandColors.cloudMistPress,
+  backgroundFocus: brandColors.lemonHaze,
+  backgroundStrong: brandColors.lemonHaze,
+  backgroundTransparent: "rgba(255, 255, 255, 0)",
 
-  // Text colors - reference tokens
-  color: "$color",
-  colorHover: "$colorHover",
-  colorPress: "$colorPress",
-  colorFocus: "$colorFocus",
-  colorTransparent: "$colorTransparent",
+  // Text colors (Ironstone on white)
+  color: brandColors.ironstone,
+  colorHover: brandColors.ironstoneHover,
+  colorPress: brandColors.ironstonePress,
+  colorFocus: brandColors.ironstone,
+  colorTransparent: "rgba(50, 50, 50, 0)",
 
-  // Semantic colors - reference tokens
-  primary: "$primary",
-  primaryHover: "$primaryHover",
-  primaryPress: "$primaryPress",
-  primaryFocus: "$primaryFocus",
-  primaryLight: "$primaryLight",
+  // Primary brand color (Spiced Clementine)
+  primary: brandColors.spicedClementine,
+  primaryHover: brandColors.spicedClementineHover,
+  primaryPress: brandColors.spicedClementinePress,
+  primaryFocus: brandColors.spicedClementine,
+  primaryLight: brandColors.vanillaCream,
 
-  secondary: "$secondary",
-  secondaryHover: "$secondaryHover",
-  secondaryPress: "$secondaryPress",
-  secondaryFocus: "$secondaryFocus",
-  secondaryLight: "$secondaryLight",
+  // Secondary brand color (Burnt Olive)
+  secondary: brandColors.burntOlive,
+  secondaryHover: brandColors.burntOliveHover,
+  secondaryPress: brandColors.burntOlivePress,
+  secondaryFocus: brandColors.burntOlive,
+  secondaryLight: brandColors.lemonHaze,
 
-  success: "$success",
-  successLight: "$successLight",
-  successDark: "$successDark",
+  // Success state colors
+  success: brandColors.successBase,
+  successLight: brandColors.successLight,
+  successDark: brandColors.successDark,
 
-  error: "$error",
-  errorLight: "$errorLight",
-  errorDark: "$errorDark",
+  // Error state colors
+  error: brandColors.errorBase,
+  errorLight: brandColors.errorLight,
+  errorDark: brandColors.errorDark,
 
-  warning: "$warning",
-  warningLight: "$warningLight",
-  warningDark: "$warningDark",
+  // Warning state colors
+  warning: brandColors.warningBase,
+  warningLight: brandColors.warningLight,
+  warningDark: brandColors.warningDark,
 
-  info: "$info",
-  infoLight: "$infoLight",
-  infoDark: "$infoDark",
+  // Info state colors
+  info: brandColors.infoBase,
+  infoLight: brandColors.infoLight,
+  infoDark: brandColors.infoDark,
 
-  // Text semantic colors - reference tokens
-  text: "$text",
-  textSecondary: "$textSecondary",
-  textTertiary: "$textTertiary",
-  textMuted: "$textMuted",
-  textInverse: "$textInverse",
+  // Text semantic colors
+  text: brandColors.ironstone,
+  textSecondary: brandColors.slateSmoke,
+  textTertiary: brandColors.cloudMist,
+  textMuted: brandColors.cloudMist,
+  textInverse: brandColors.pureWhite,
 
-  // Surface colors - reference tokens
-  surface: "$surface",
-  card: "$card",
-  cardHover: "$cardHover",
+  // Surface colors (Pure White cards)
+  surface: brandColors.pureWhite,
+  card: brandColors.pureWhite,
+  cardHover: brandColors.cloudMist,
 
-  // Border colors - reference tokens
-  border: "$border",
-  borderHover: "$borderHover",
-  borderFocus: "$borderFocus",
-  borderPress: "$borderPress",
+  // Border colors (Cloud Mist neutrals)
+  border: brandColors.cloudMist,
+  borderHover: brandColors.cloudMistHover,
+  borderFocus: brandColors.spicedClementine,
+  borderPress: brandColors.spicedClementinePress,
 
-  // Shadow colors - reference tokens
-  shadowColor: "$shadowColor",
-  shadowColorHover: "$shadowColorHover",
-  shadowColorPress: "$shadowColorPress",
-  shadowColorFocus: "$shadowColorFocus",
+  // Shadow colors
+  shadowColor: brandColors.overlayDark10,
+  shadowColorHover: brandColors.overlayDark20,
+  shadowColorPress: brandColors.overlayDark30,
+  shadowColorFocus: "rgba(244, 83, 20, 0.2)", // Spiced Clementine tint
 
-  inverseSurface: "$inverseSurface",
-  inverseSurfaceHover: "$inverseSurfaceHover",
-  inverseSurfacePress: "$inverseSurfacePress",
-  inverseBorder: "$inverseBorder",
-  inverseBorderHover: "$inverseBorderHover",
-  inverseBorderPress: "$inverseBorderPress",
+  // Inverse surface (for dark elements on light bg)
+  inverseSurface: brandColors.ironstone,
+  inverseSurfaceHover: brandColors.ironstoneHover,
+  inverseSurfacePress: brandColors.ironstonePress,
+  inverseBorder: brandColors.ironstone,
+  inverseBorderHover: brandColors.ironstoneHover,
+  inverseBorderPress: brandColors.ironstonePress,
 
-  // Utility colors - reference tokens
-  white: "$white",
-  cream: "$cream",
+  // Utility colors
+  white: brandColors.pureWhite,
+  cream: brandColors.vanillaCream,
 };
 
 // Dark theme with semantic token mappings (Burnt Olive becomes dominant)

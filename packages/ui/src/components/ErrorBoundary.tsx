@@ -12,6 +12,8 @@
  * ```
  */
 
+"use client";
+
 import {
   Component,
   type ReactNode,
