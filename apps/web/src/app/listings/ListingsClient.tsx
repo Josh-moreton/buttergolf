@@ -463,16 +463,17 @@ export function ListingsClient({
                   </View>
                 </Row>
               ))}
-              <Button
-                size="$4"
-                backgroundColor="$primary"
-                color="$textInverse"
-                borderRadius="$full"
-                paddingHorizontal="$4"
+              <Text
+                size="$3"
+                color="$primary"
+                cursor="pointer"
                 onPress={handleClearAll}
+                hoverStyle={{ textDecorationLine: "underline" }}
+                paddingVertical="$1.5"
+                paddingHorizontal="$2"
               >
                 Clear all
-              </Button>
+              </Text>
             </Row>
           )}
 
