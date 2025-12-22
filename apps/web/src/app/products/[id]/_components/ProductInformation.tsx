@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Column, Row, Text, Button, Heading } from "@buttergolf/ui";
-import { MakeOfferPopover } from "./MakeOfferPopover";
+import { MakeOfferModal } from "./MakeOfferPopover";
 import type { Product } from "../ProductDetailClient";
 
 interface User {
@@ -234,22 +234,22 @@ export function ProductInformation({
             ? "Sold Out"
             : "Buy now"}
         </Button>
-        <MakeOfferPopover
+        <Button
+          butterVariant="secondary"
+          size="$5"
+          width="100%"
+          height={56}
+          disabled={product.isSold}
+          onPress={() => onMakeOfferOpenChange(true)}
+        >
+          Make an offer
+        </Button>
+        <MakeOfferModal
           product={product}
           isOpen={makeOfferOpen}
           onOpenChange={onMakeOfferOpenChange}
           onSubmitOffer={onSubmitOffer}
-        >
-          <Button
-            butterVariant="secondary"
-            size="$5"
-            width="100%"
-            height={56}
-            disabled={product.isSold}
-          >
-            Make an offer
-          </Button>
-        </MakeOfferPopover>
+        />
       </Column>
 
       {/* View Price Breakdown Link */}

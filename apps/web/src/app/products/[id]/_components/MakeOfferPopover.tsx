@@ -1,25 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Popover } from "@tamagui/popover";
-import { Column, Text, Button, YStack } from "@buttergolf/ui";
+import { Column, Text, Button } from "@buttergolf/ui";
 import type { Product } from "../ProductDetailClient";
 
-interface MakeOfferPopoverProps {
+interface MakeOfferModalProps {
   product: Product;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmitOffer: (offerAmount: number) => Promise<void>;
-  children: React.ReactNode;
 }
 
-export function MakeOfferPopover({
+export function MakeOfferModal({
   product,
   isOpen,
   onOpenChange,
   onSubmitOffer,
-  children,
-}: MakeOfferPopoverProps) {
+}: MakeOfferModalProps) {
   const [offerAmount, setOfferAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -58,87 +55,115 @@ export function MakeOfferPopover({
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <Popover
-      open={isOpen}
-      onOpenChange={onOpenChange}
-      placement="top"
-      offset={8}
-      allowFlip
-    >
-      <Popover.Trigger asChild>
-        {children}
-      </Popover.Trigger>
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={() => onOpenChange(false)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 99999,
+        }}
+      />
 
-      <Popover.Content
-        backgroundColor="$surface"
-        borderRadius="$lg"
-        borderWidth={1}
-        borderColor="$border"
-        padding="$3"
-        width={280}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        animation="quick"
-        elevate
+      {/* Modal */}
+      <div
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "white",
+          borderRadius: "16px",
+          padding: "24px",
+          width: "320px",
+          maxWidth: "90vw",
+          zIndex: 100000,
+          boxShadow: "0 10px 40px rgba(0, 0, 0, 0.2)",
+        }}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$border" />
-        
-        <YStack gap="$3" width="100%">
-          <Column gap="$2">
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  left: 14,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  fontSize: "16px",
-                  color: "#323232",
-                  fontWeight: 500,
-                }}
-              >
-                £
-              </span>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                placeholder="Your offer"
-                value={offerAmount}
-                onChange={(e) => setOfferAmount(e.target.value)}
-                disabled={submitting}
-                autoFocus
-                style={{
-                  width: "100%",
-                  padding: "12px 14px 12px 30px",
-                  fontSize: "16px",
-                  border: "1px solid #EDEDED",
-                  borderRadius: "8px",
-                  outline: "none",
-                  fontFamily: "var(--font-urbanist)",
-                  backgroundColor: "white",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "#F45314";
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#EDEDED";
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !submitting) {
-                    handleSubmit();
-                  }
-                }}
-              />
-            </div>
+        <Column gap="$3" width="100%">
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Text size="$6" fontWeight="600" color="$text">
+              Make an offer
+            </Text>
+            <button
+              onClick={() => onOpenChange(false)}
+              style={{
+                background: "none",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+                padding: "4px",
+                color: "#666",
+              }}
+            >
+              ✕
+            </button>
+          </div>
 
-            {error && (
-              <Text size="$2" color="$error">
-                {error}
-              </Text>
-            )}
-          </Column>
+          {/* Input */}
+          <div style={{ position: "relative" }}>
+            <span
+              style={{
+                position: "absolute",
+                left: 14,
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: "16px",
+                color: "#323232",
+                fontWeight: 500,
+              }}
+            >
+              £
+            </span>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="Your offer"
+              value={offerAmount}
+              onChange={(e) => setOfferAmount(e.target.value)}
+              disabled={submitting}
+              autoFocus
+              style={{
+                width: "100%",
+                padding: "12px 14px 12px 30px",
+                fontSize: "16px",
+                border: "1px solid #EDEDED",
+                borderRadius: "8px",
+                outline: "none",
+                fontFamily: "var(--font-urbanist)",
+                backgroundColor: "white",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#F45314";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#EDEDED";
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !submitting) {
+                  handleSubmit();
+                }
+                if (e.key === "Escape") {
+                  onOpenChange(false);
+                }
+              }}
+            />
+          </div>
+
+          {error && (
+            <Text size="$2" color="$error">
+              {error}
+            </Text>
+          )}
 
           <Button
             size="$4"
@@ -151,8 +176,8 @@ export function MakeOfferPopover({
           >
             {submitting ? "Submitting..." : "Submit offer"}
           </Button>
-        </YStack>
-      </Popover.Content>
-    </Popover>
+        </Column>
+      </div>
+    </>
   );
 }
