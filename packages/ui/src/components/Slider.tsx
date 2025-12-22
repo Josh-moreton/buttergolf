@@ -38,7 +38,7 @@ const SliderFrame = styled(TamaguiSlider, {
 const SliderTrack = styled(TamaguiSlider.Track, {
   name: "SliderTrack",
   backgroundColor: "$border",
-  height: 4,
+  height: 3,
   borderRadius: "$full",
   overflow: "hidden",
 });
@@ -57,24 +57,29 @@ const SliderThumb = styled(TamaguiSlider.Thumb, {
   backgroundColor: "$primary",
   borderWidth: 2,
   borderColor: "$surface",
-  width: 20,
-  height: 20,
+  width: 14,
+  height: 14,
   borderRadius: "$full",
   cursor: "grab",
+  // Subtle shadow for depth
+  shadowColor: "$shadowColor",
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.15,
+  shadowRadius: 2,
 
   hoverStyle: {
-    scale: 1.1,
+    scale: 1.15,
     borderColor: "$primary",
   },
 
   pressStyle: {
     cursor: "grabbing",
-    scale: 1.15,
+    scale: 1.2,
   },
 
   focusStyle: {
     borderColor: "$primary",
-    scale: 1.15,
+    scale: 1.2,
   },
 });
 
