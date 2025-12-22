@@ -47,6 +47,15 @@ export default clerkMiddleware(async (auth, req) => {
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
     // Check if user is the admin (by email)
     const session = await auth();
+    
+    // DEBUG: Log the full session object to see what's available
+    console.log("=== CLERK SESSION DEBUG ===");
+    console.log("Full session object:", JSON.stringify(session, null, 2));
+    console.log("userId:", session?.userId);
+    console.log("sessionClaims:", session?.sessionClaims);
+    console.log("sessionClaims.email:", session?.sessionClaims?.email);
+    console.log("================================");
+    
     const isAdmin = session?.sessionClaims?.email && ADMIN_EMAILS.includes(session.sessionClaims.email as string);
 
     if (!isAdmin) {
