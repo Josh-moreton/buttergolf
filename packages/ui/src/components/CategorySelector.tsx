@@ -24,7 +24,7 @@ interface CategorySelectorProps {
   renderItem?: (category: Category, isActive: boolean, isHovered: boolean) => React.ReactNode;
 }
 
-// Animated underline indicator
+// Animated underline indicator (only for active state)
 const AnimatedUnderline = styled(Row, {
   name: "AnimatedUnderline",
   position: "absolute",
@@ -33,8 +33,21 @@ const AnimatedUnderline = styled(Row, {
   height: 3,
   backgroundColor: "$primary",
   borderRadius: "$full",
-  animation: "medium",
   pointerEvents: "none",
+});
+
+// Animated hover background box
+const AnimatedHoverBox = styled(Row, {
+  name: "AnimatedHoverBox",
+  position: "absolute",
+  top: -6,
+  left: 0,
+  backgroundColor: "rgba(244, 83, 20, 0.1)",
+  borderRadius: "$md",
+  animation: "fast",
+  pointerEvents: "none",
+  paddingHorizontal: "$2",
+  paddingVertical: "$1",
 });
 
 // Container for the category selector with relative positioning
@@ -93,6 +106,7 @@ export function CategorySelector({
   const itemRefs = useRef<Record<string, CategoryItemRef>>({});
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+  const [hoverBoxStyle, setHoverBoxStyle] = useState({ left: 0, width: 0, height: 0 });
 
   // Check if user prefers reduced motion
   const prefersReducedMotion = useMemo(() => {
@@ -103,7 +117,7 @@ export function CategorySelector({
   // Find active category index
   const activeIndex = categories.findIndex((cat) => cat.href === activeCategory);
 
-  // Update underline position
+  // Update underline position (only for active category)
   const updateUnderlinePosition = useCallback((index: number) => {
     if (!containerRef.current) return;
 
@@ -120,22 +134,38 @@ export function CategorySelector({
     }
   }, [categories]);
 
+  // Update hover box position
+  const updateHoverBoxPosition = useCallback((index: number) => {
+    if (!containerRef.current) return;
+
+    const category = categories[index];
+    if (!category) return;
+    
+    const ref = itemRefs.current[category.href];
+
+    if (ref && ref.element) {
+      const rect = ref.element.getBoundingClientRect();
+      setHoverBoxStyle({
+        left: ref.left,
+        width: ref.width,
+        height: rect.height,
+      });
+    }
+  }, [categories]);
+
   // Handle hover
   const handleHover = useCallback(
     (index: number) => {
       setHoveredIndex(index);
-      updateUnderlinePosition(index);
+      updateHoverBoxPosition(index);
     },
-    [updateUnderlinePosition],
+    [updateHoverBoxPosition],
   );
 
-  // Handle hover end - return to active state
+  // Handle hover end
   const handleHoverEnd = useCallback(() => {
     setHoveredIndex(null);
-    if (activeIndex >= 0) {
-      updateUnderlinePosition(activeIndex);
-    }
-  }, [activeIndex, updateUnderlinePosition]);
+  }, []);
 
   // Initialize refs and set initial underline position
   useEffect(() => {
@@ -166,10 +196,10 @@ export function CategorySelector({
 
   // Update underline when active category changes
   useEffect(() => {
-    if (hoveredIndex === null && activeIndex >= 0) {
+    if (activeIndex >= 0) {
       updateUnderlinePosition(activeIndex);
     }
-  }, [activeIndex, hoveredIndex, updateUnderlinePosition]);
+  }, [activeIndex, updateUnderlinePosition]);
 
   return (
     <CategorySelectorContainer ref={containerRef}>
@@ -230,13 +260,24 @@ export function CategorySelector({
         );
       })}
 
-      {/* Animated underline indicator */}
+      {/* Animated underline for active category (stays still) */}
       {!prefersReducedMotion && (
         <AnimatedUnderline
           style={{
             transform: `translateX(${underlineStyle.left}px)`,
             width: underlineStyle.width,
             opacity: underlineStyle.width > 0 ? 1 : 0,
+          } as React.CSSProperties}
+        />
+      )}
+
+      {/* Animated hover box */}
+      {!prefersReducedMotion && hoveredIndex !== null && (
+        <AnimatedHoverBox
+          style={{
+            transform: `translateX(${hoverBoxStyle.left - 8}px)`,
+            width: hoverBoxStyle.width + 16,
+            height: hoverBoxStyle.height + 12,
           } as React.CSSProperties}
         />
       )}
