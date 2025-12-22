@@ -3,7 +3,7 @@ packages:
   - packages/*
 
 catalog:
-  '@clerk/clerk-expo': 2.17.3
+  '@clerk/clerk-expo': 2.19.14
   '@clerk/nextjs': 6.34.1
   '@prisma/client': 6.19.0
   '@tamagui/animations-css': 1.139.2
