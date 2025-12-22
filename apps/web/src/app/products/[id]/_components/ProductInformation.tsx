@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Column, Row, Text, Button, Heading } from "@buttergolf/ui";
+import { MakeOfferPopover } from "./MakeOfferPopover";
+import type { Product } from "../ProductDetailClient";
 
 interface User {
   id: string;
@@ -13,32 +15,21 @@ interface User {
 }
 
 interface ProductInformationProps {
-  product: {
-    id: string;
-    title: string;
-    price: number;
-    condition: string;
-    brand: string | null;
-    model: string | null;
-    category: {
-      id: string;
-      name: string;
-      slug: string;
-    };
-    user: User;
-    description: string;
-    isSold: boolean;
-  };
+  product: Product;
   onBuyNow: () => void;
   onMakeOffer: () => void;
-  purchasing: boolean;
+  makeOfferOpen: boolean;
+  onMakeOfferOpenChange: (open: boolean) => void;
+  onSubmitOffer: (amount: number) => Promise<void>;
 }
 
 export function ProductInformation({
   product,
   onBuyNow,
   onMakeOffer,
-  purchasing,
+  makeOfferOpen,
+  onMakeOfferOpenChange,
+  onSubmitOffer,
 }: ProductInformationProps) {
   const [isFavourite, setIsFavourite] = useState(false);
 
@@ -236,27 +227,32 @@ export function ProductInformation({
           color="$vanillaCream"
           borderRadius="$full"
           height={56}
-          disabled={product.isSold || purchasing}
+          disabled={product.isSold}
           onPress={onBuyNow}
           pressStyle={{ backgroundColor: "$spicedClementinePress" }}
           hoverStyle={{ backgroundColor: "$spicedClementineHover" }}
         >
           {product.isSold
             ? "Sold Out"
-            : purchasing
-              ? "Processing..."
-              : "Buy now"}
+            : "Buy now"}
         </Button>
-        <Button
-          butterVariant="secondary"
-          size="$5"
-          width="100%"
-          height={56}
-          disabled={product.isSold || purchasing}
-          onPress={onMakeOffer}
+        <MakeOfferPopover
+          product={product}
+          isOpen={makeOfferOpen}
+          onOpenChange={onMakeOfferOpenChange}
+          onSubmitOffer={onSubmitOffer}
         >
-          Make an offer
-        </Button>
+          <Button
+            butterVariant="secondary"
+            size="$5"
+            width="100%"
+            height={56}
+            disabled={product.isSold}
+            onPress={onMakeOffer}
+          >
+            Make an offer
+          </Button>
+        </MakeOfferPopover>
       </Column>
 
       {/* View Price Breakdown Link */}
