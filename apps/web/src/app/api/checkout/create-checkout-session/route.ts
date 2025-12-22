@@ -8,16 +8,24 @@ import { stripe } from "@/lib/stripe";
  * Uses Stripe Connect for marketplace payouts (10% platform fee)
  */
 export async function POST(req: Request) {
+  console.log("[Checkout API] POST request received");
+  
   try {
+    console.log("[Checkout API] Checking auth...");
     const { userId: clerkUserId } = await auth();
+    console.log("[Checkout API] Clerk userId:", clerkUserId ? "present" : "missing");
+    
     if (!clerkUserId) {
+      console.log("[Checkout API] ERROR: No clerkUserId - returning 401");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
     const { productId } = body;
+    console.log("[Checkout API] productId:", productId);
 
     if (!productId) {
+      console.log("[Checkout API] ERROR: No productId - returning 400");
       return NextResponse.json(
         { error: "Product ID is required" },
         { status: 400 },
@@ -25,15 +33,19 @@ export async function POST(req: Request) {
     }
 
     // Get buyer from Clerk ID
+    console.log("[Checkout API] Looking up buyer with clerkId:", clerkUserId);
     const buyer = await prisma.user.findUnique({
       where: { clerkId: clerkUserId },
     });
+    console.log("[Checkout API] Buyer found:", buyer ? buyer.id : "NOT FOUND");
 
     if (!buyer) {
+      console.log("[Checkout API] ERROR: Buyer not found - returning 404");
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Get product with seller information
+    console.log("[Checkout API] Looking up product:", productId);
     const product = await prisma.product.findUnique({
       where: { id: productId },
       include: {
@@ -44,12 +56,16 @@ export async function POST(req: Request) {
         },
       },
     });
+    console.log("[Checkout API] Product found:", product ? product.title : "NOT FOUND");
 
     if (!product) {
+      console.log("[Checkout API] ERROR: Product not found - returning 404");
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
+    console.log("[Checkout API] Product isSold:", product.isSold);
     if (product.isSold) {
+      console.log("[Checkout API] ERROR: Product already sold - returning 400");
       return NextResponse.json(
         { error: "Product is already sold" },
         { status: 400 },
@@ -57,7 +73,9 @@ export async function POST(req: Request) {
     }
 
     // Prevent buying your own product
+    console.log("[Checkout API] Checking ownership - product.userId:", product.userId, "buyer.id:", buyer.id);
     if (product.userId === buyer.id) {
+      console.log("[Checkout API] ERROR: User trying to buy own product - returning 400");
       return NextResponse.json(
         { error: "Cannot purchase your own product" },
         { status: 400 },
@@ -66,7 +84,11 @@ export async function POST(req: Request) {
 
     // Get seller's Stripe Connect account
     const seller = product.user;
+    console.log("[Checkout API] Seller stripeConnectId:", seller.stripeConnectId ? "present" : "MISSING");
+    console.log("[Checkout API] Seller stripeOnboardingComplete:", seller.stripeOnboardingComplete);
+    
     if (!seller.stripeConnectId || !seller.stripeOnboardingComplete) {
+      console.log("[Checkout API] ERROR: Seller not set up for payments - returning 400");
       return NextResponse.json(
         { error: "Seller is not set up to receive payments" },
         { status: 400 },
@@ -220,11 +242,17 @@ export async function POST(req: Request) {
       customer_email: buyer.email,
     });
 
+    console.log("[Checkout API] SUCCESS - Session created:", session.id);
+    console.log("[Checkout API] clientSecret present:", !!session.client_secret);
+
     return NextResponse.json({
       clientSecret: session.client_secret,
     });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
+    console.error("[Checkout API] FATAL ERROR:", error);
+    console.error("[Checkout API] Error type:", error instanceof Error ? error.constructor.name : typeof error);
+    console.error("[Checkout API] Error message:", error instanceof Error ? error.message : String(error));
+    
     return NextResponse.json(
       {
         error:

@@ -46,6 +46,8 @@ export function BuyNowSheet({
   isOpen,
   onOpenChange,
 }: BuyNowSheetProps) {
+  console.log("[BuyNowSheet] Render - isOpen:", isOpen, "productId:", product.id);
+  
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [position, setPosition] = useState(0);
@@ -55,7 +57,9 @@ export function BuyNowSheet({
 
   // Reset state when sheet opens
   useEffect(() => {
+    console.log("[BuyNowSheet] useEffect triggered - isOpen:", isOpen);
     if (isOpen) {
+      console.log("[BuyNowSheet] Sheet opened - resetting state");
       setError(null);
       setIsLoading(true);
       // Start at 85% snap point (index 1) for checkout
@@ -65,43 +69,65 @@ export function BuyNowSheet({
 
   // Fetch client secret from our API
   const fetchClientSecret = useCallback(async () => {
-    console.log("[BuyNowSheet] fetchClientSecret called for product:", product.id);
+    console.log("[BuyNowSheet] ========== fetchClientSecret START ==========");
+    console.log("[BuyNowSheet] Product ID:", product.id);
+    console.log("[BuyNowSheet] Product title:", product.title);
+    console.log("[BuyNowSheet] Making POST to /api/checkout/create-checkout-session");
+    
     try {
+      const requestBody = JSON.stringify({ productId: product.id });
+      console.log("[BuyNowSheet] Request body:", requestBody);
+      
       const response = await fetch("/api/checkout/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: product.id }),
+        body: requestBody,
       });
 
-      console.log("[BuyNowSheet] API response status:", response.status);
+      console.log("[BuyNowSheet] Response received");
+      console.log("[BuyNowSheet] Response status:", response.status);
+      console.log("[BuyNowSheet] Response ok:", response.ok);
+      console.log("[BuyNowSheet] Response headers:", Object.fromEntries(response.headers.entries()));
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("[BuyNowSheet] API error response:", errorText);
+        console.error("[BuyNowSheet] ERROR: Non-OK response");
+        console.error("[BuyNowSheet] Error response body:", errorText);
+        
         let errorMessage = "Failed to create checkout";
         try {
           const errorData = JSON.parse(errorText);
           errorMessage = errorData.error || errorMessage;
+          console.error("[BuyNowSheet] Parsed error message:", errorMessage);
         } catch {
           errorMessage = errorText || errorMessage;
+          console.error("[BuyNowSheet] Raw error text:", errorMessage);
         }
         setError(errorMessage);
         throw new Error(errorMessage);
       }
 
       const data = await response.json();
-      console.log("[BuyNowSheet] Checkout session created, clientSecret received");
+      console.log("[BuyNowSheet] SUCCESS: Response parsed");
+      console.log("[BuyNowSheet] clientSecret present:", !!data.clientSecret);
+      console.log("[BuyNowSheet] clientSecret length:", data.clientSecret?.length || 0);
+      
       setIsLoading(false);
+      console.log("[BuyNowSheet] ========== fetchClientSecret END ==========");
       return data.clientSecret;
     } catch (err) {
-      console.error("[BuyNowSheet] fetchClientSecret error:", err);
+      console.error("[BuyNowSheet] ========== fetchClientSecret CATCH ==========");
+      console.error("[BuyNowSheet] Caught error:", err);
+      console.error("[BuyNowSheet] Error type:", err instanceof Error ? err.constructor.name : typeof err);
+      console.error("[BuyNowSheet] Error message:", err instanceof Error ? err.message : String(err));
+      
       const errorMessage =
         err instanceof Error ? err.message : "Failed to initialize checkout";
       setError(errorMessage);
       setIsLoading(false);
       throw err;
     }
-  }, [product.id]);
+  }, [product.id, product.title]);
 
   // Handle checkout completion
   const handleComplete = useCallback(() => {
