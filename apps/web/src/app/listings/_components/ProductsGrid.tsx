@@ -133,10 +133,11 @@ export function ProductsGrid({
       {/* Products Grid - Responsive: 2 col mobile, 3 col tablet+ */}
       <Column
         width="100%"
-        overflow="hidden"
-        style={{ display: "grid" }}
+        style={{ display: "grid", overflow: "visible" }}
         gridTemplateColumns="repeat(2, 1fr)"
         gap="$6"
+        padding="$2"
+        margin="$-2"
         $gtSm={{
           gridTemplateColumns: "repeat(3, 1fr)",
         }}
