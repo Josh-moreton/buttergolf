@@ -92,18 +92,12 @@ export async function POST(req: Request) {
       "http://localhost:3000";
 
     // Create Stripe Embedded Checkout Session
+    // NOTE: branding_settings is NOT allowed when ui_mode is "embedded"
+    // Branding for embedded checkout must be configured in Stripe Dashboard:
+    // Settings > Branding > Checkout appearance
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
       mode: "payment",
-
-      // ButterGolf brand customization
-      branding_settings: {
-        display_name: "ButterGolf",
-        font_family: "inter", // Clean sans-serif close to Urbanist
-        border_style: "rounded", // Matches our rounded aesthetic
-        background_color: "#FFFFFF", // Pure White - clean, professional background
-        button_color: "#F45314", // Spiced Clementine - our primary brand color
-      },
 
       // Line items - single product
       line_items: [
