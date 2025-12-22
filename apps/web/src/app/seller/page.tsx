@@ -90,7 +90,7 @@ export default function SellerDashboardPage() {
           </Text>
         </Column>
         <Link href="/sell">
-          <Button size="$4" backgroundColor="$primary" color="$textInverse">
+          <Button butterVariant="primary" size="$4">
             + New Listing
           </Button>
         </Link>
