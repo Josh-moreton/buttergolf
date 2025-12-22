@@ -10,7 +10,7 @@ catalog:
   '@tamagui/animations-react-native': 1.139.2
   '@tamagui/babel-plugin': 1.139.2
   '@tamagui/card': 1.139.2
-  '@tamagui/cli': 1.139.2
+  '@tamagui/cli': 1.141.5
   '@tamagui/config': 1.139.2
   '@tamagui/core': 1.139.2
   '@tamagui/font-inter': 1.139.2
