@@ -13,9 +13,9 @@ interface AuthLayoutProps {
  */
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="relative flex h-screen flex-col items-center justify-center lg:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Left Panel - Branding (hidden on mobile, visible on lg+) */}
-      <div className="relative hidden h-full flex-col bg-white p-10 lg:flex">
+      <div className="relative hidden h-full flex-col bg-white p-10 text-[#323232] lg:flex dark:border-r">
         {/* ButterGolf Logo */}
         <div className="relative z-20 flex items-center">
           <Link href="/" className="flex items-center">
