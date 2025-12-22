@@ -59,11 +59,13 @@ const StyledTab = styled(Tabs.Tab, {
   cursor: "pointer",
   borderWidth: 1,
   fontWeight: "600",
+  // Disable Tamagui's default tab unstyled prop
+  unstyled: true,
 
-  // Default inactive state
-  backgroundColor: "$background",
-  borderColor: "$border",
-  color: "$text",
+  // Default inactive state - use explicit colors to avoid conflicts
+  backgroundColor: "#FFFFFF",
+  borderColor: "#EDEDED",
+  color: "#323232",
 
   // Web shadows for inactive
   // @ts-ignore - boxShadow only exists on web
@@ -71,6 +73,7 @@ const StyledTab = styled(Tabs.Tab, {
 
   hoverStyle: {
     opacity: 0.9,
+    backgroundColor: "#FAFAFA",
   },
 
   pressStyle: {
@@ -78,25 +81,42 @@ const StyledTab = styled(Tabs.Tab, {
     opacity: 0.9,
   },
 
+  // Override Tamagui's built-in active/selected states
+  focusStyle: {
+    outlineWidth: 2,
+    outlineColor: "$primary",
+    outlineStyle: "solid",
+  },
+
   variants: {
     active: {
       true: {
-        backgroundColor: "$primary",
-        borderColor: "$primary",
-        color: "$textInverse",
+        // Spiced Clementine - explicit hex to override any defaults
+        backgroundColor: "#F45314",
+        borderColor: "#F04300",
+        color: "#FFFFFF",
         // @ts-ignore - boxShadow only exists on web
         boxShadow:
           "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
         hoverStyle: {
-          backgroundColor: "$primaryHover",
+          backgroundColor: "#E04A10",
+          opacity: 1,
+        },
+        pressStyle: {
+          backgroundColor: "#D04410",
+          scale: 0.98,
         },
       },
       false: {
-        backgroundColor: "$background",
-        borderColor: "$border",
-        color: "$text",
+        backgroundColor: "#FFFFFF",
+        borderColor: "#EDEDED",
+        color: "#323232",
         // @ts-ignore - boxShadow only exists on web
         boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
+        hoverStyle: {
+          backgroundColor: "#FAFAFA",
+          opacity: 0.95,
+        },
       },
     },
     layout: {
@@ -184,7 +204,7 @@ export function BuySellToggle({
           <SizableText
             size="$5"
             fontWeight={activeMode === "buying" ? "600" : "500"}
-            color={activeMode === "buying" ? "$textInverse" : "$text"}
+            color={activeMode === "buying" ? "#FFFFFF" : "#323232"}
           >
             Buying
           </SizableText>
@@ -199,7 +219,7 @@ export function BuySellToggle({
           <SizableText
             size="$5"
             fontWeight={activeMode === "selling" ? "600" : "500"}
-            color={activeMode === "selling" ? "$textInverse" : "$text"}
+            color={activeMode === "selling" ? "#FFFFFF" : "#323232"}
           >
             Selling
           </SizableText>
