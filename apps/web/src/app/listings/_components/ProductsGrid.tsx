@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { Column, Row, View, Text } from "@buttergolf/ui";
 import { ProductCard } from "@/components/ProductCard";
 import type { ProductCardData } from "@buttergolf/app";
@@ -101,6 +102,84 @@ function DotPagination({
   );
 }
 
+/**
+ * Animated wrapper for grid content with fade/slide transitions
+ */
+function AnimatedGridContent({
+  products,
+  isLoading,
+  currentPage,
+}: Readonly<{
+  products: ProductCardData[];
+  isLoading: boolean;
+  currentPage: number;
+}>) {
+  const router = useRouter();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayProducts, setDisplayProducts] = useState(products);
+  const prevPageRef = useRef(currentPage);
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+
+  // Handle page transitions with animation
+  useEffect(() => {
+    if (prevPageRef.current !== currentPage && !isLoading) {
+      // Determine slide direction based on page change
+      setSlideDirection(currentPage > prevPageRef.current ? "left" : "right");
+      setIsTransitioning(true);
+
+      // After exit animation, update content
+      const timer = setTimeout(() => {
+        setDisplayProducts(products);
+        prevPageRef.current = currentPage;
+        setIsTransitioning(false);
+      }, 150);
+
+      return () => clearTimeout(timer);
+    } else if (!isLoading) {
+      setDisplayProducts(products);
+    }
+  }, [products, currentPage, isLoading]);
+
+  // CSS for slide animation
+  const slideTransform = isTransitioning
+    ? slideDirection === "left"
+      ? "translateX(-20px)"
+      : "translateX(20px)"
+    : "translateX(0)";
+
+  if (isLoading) {
+    return (
+      <>
+        {Array.from({ length: 24 }, (_, i) => (
+          <LoadingSkeleton key={`loading-skeleton-${i}`} />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {displayProducts.map((product, index) => (
+        <View
+          key={product.id}
+          animation="quick"
+          opacity={isTransitioning ? 0 : 1}
+          style={{
+            transform: slideTransform,
+            transition: "opacity 150ms ease-out, transform 150ms ease-out",
+            transitionDelay: `${index * 10}ms`,
+          }}
+        >
+          <ProductCard
+            product={product}
+            onPress={() => router.push(`/products/${product.id}`)}
+          />
+        </View>
+      ))}
+    </>
+  );
+}
+
 export function ProductsGrid({
   products,
   isLoading,
@@ -108,8 +187,6 @@ export function ProductsGrid({
   totalPages,
   onPageChange,
 }: Readonly<ProductsGridProps>) {
-  const router = useRouter();
-
   if (!isLoading && products.length === 0) {
     return (
       <Column
@@ -131,28 +208,23 @@ export function ProductsGrid({
   return (
     <Column gap="$lg" width="100%">
       {/* Products Grid - Responsive: 2 col mobile, 3 col tablet+ */}
+      {/* Extra padding + negative margin allows shadows to overflow without clipping */}
       <Column
         width="100%"
         style={{ display: "grid", overflow: "visible" }}
         gridTemplateColumns="repeat(2, 1fr)"
         gap="$6"
-        padding="$2"
-        margin="$-2"
+        padding="$4"
+        margin="$-4"
         $gtSm={{
           gridTemplateColumns: "repeat(3, 1fr)",
         }}
       >
-        {isLoading
-          ? Array.from({ length: 24 }, (_, i) => (
-              <LoadingSkeleton key={`loading-skeleton-${i}`} />
-            ))
-          : products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onPress={() => router.push(`/products/${product.id}`)}
-              />
-            ))}
+        <AnimatedGridContent
+          products={products}
+          isLoading={isLoading}
+          currentPage={currentPage}
+        />
       </Column>
 
       {/* Pagination */}
