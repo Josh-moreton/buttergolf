@@ -1,25 +1,14 @@
-"use client";
-
 import { SignIn } from "@clerk/nextjs";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
-export default function Page() {
+export default function SignInPage() {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        padding: 24,
-        paddingTop: 160, // clear the sticky header (~140px) + spacing
-        minHeight: "100vh",
-        boxSizing: "border-box",
-      }}
-    >
+    <AuthLayout>
       <SignIn
         path="/sign-in"
         routing="path"
         signUpUrl="/sign-up"
       />
-    </div>
+    </AuthLayout>
   );
 }

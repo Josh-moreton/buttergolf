@@ -1,15 +1,14 @@
-"use client";
-
 import { SignUp } from "@clerk/nextjs";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
-export default function Page() {
+export default function SignUpPage() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: 24 }}>
+    <AuthLayout>
       <SignUp
         path="/sign-up"
         routing="path"
         signInUrl="/sign-in"
       />
-    </div>
+    </AuthLayout>
   );
 }

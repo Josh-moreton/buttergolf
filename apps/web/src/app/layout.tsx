@@ -76,7 +76,7 @@ export default function RootLayout({
         <NextTamaguiProvider>
           <FavouritesProvider>
             <CartProvider>
-              <ConditionalLayout excludeRoutes={["/coming-soon"]}>
+              <ConditionalLayout excludeRoutes={["/coming-soon", "/sign-in/*", "/sign-up/*"]}>
                 <ButterHeader />
                 <AppPromoBanner />
               </ConditionalLayout>
