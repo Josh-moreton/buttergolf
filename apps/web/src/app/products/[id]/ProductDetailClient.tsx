@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 import NextImage from "next/image";
 import {
   Column,
@@ -15,7 +14,7 @@ import {
   Image,
 } from "@buttergolf/ui";
 import { ProductInformation } from "./_components/ProductInformation";
-import { MakeOfferModal } from "./_components/MakeOfferModal";
+import { BuyNowSheet } from "./_components/BuyNowSheet";
 
 interface ProductImage {
   id: string;
@@ -60,12 +59,10 @@ export default function ProductDetailClient({
   product,
 }: ProductDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [purchasing, setPurchasing] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
-  const [makeOfferModalOpen, setMakeOfferModalOpen] = useState(false);
+  const [buyNowSheetOpen, setBuyNowSheetOpen] = useState(false);
   const router = useRouter();
-  const { isSignedIn } = useUser();
 
   const selectedImage = product.images[selectedImageIndex];
 
@@ -82,23 +79,7 @@ export default function ProductDetailClient({
 
   const handleBuyNow = () => {
     if (product.isSold) return;
-
-    setPurchasing(true);
-    // Navigate to embedded checkout page
-    router.push(`/checkout?productId=${product.id}`);
-  };
-
-  const handleMakeOffer = () => {
-    if (!isSignedIn) {
-      // Redirect to sign-in page with return URL
-      const redirectUrl =
-        typeof globalThis !== "undefined" && globalThis.location
-          ? globalThis.location.href
-          : `/products/${product.id}`;
-      router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-      return;
-    }
-    setMakeOfferModalOpen(true);
+    setBuyNowSheetOpen(true);
   };
 
   const handleSubmitOffer = async (offerAmount: number) => {
@@ -120,9 +101,6 @@ export default function ProductDetailClient({
 
       const result = await response.json();
       console.log("Offer submitted successfully:", result);
-
-      // Close modal
-      setMakeOfferModalOpen(false);
 
       // Redirect to offer detail page
       router.push(`/offers/${result.id}`);
@@ -301,8 +279,7 @@ export default function ProductDetailClient({
             <ProductInformation
               product={product}
               onBuyNow={handleBuyNow}
-              onMakeOffer={handleMakeOffer}
-              purchasing={purchasing}
+              onSubmitOffer={handleSubmitOffer}
             />
           </Row>
         </Column>
@@ -465,9 +442,9 @@ export default function ProductDetailClient({
           display="none"
           className="mobile-sticky-bar"
         >
-          <Row gap="$md" alignItems="center" justifyContent="space-between">
-            <Column gap="$xs">
-              <Text size="$2" color="$textMuted">
+          <Row gap="$md" alignItems="center" justifyContent="space-between" width="100%">
+            <Column gap="$xs" flex={1}>
+              <Text size="$2" color="$textMuted" numberOfLines={1}>
                 {product.title}
               </Text>
               <Text size="$6" fontWeight="bold" color="$primary">
@@ -479,7 +456,7 @@ export default function ProductDetailClient({
               backgroundColor="$primary"
               color="$textInverse"
               onPress={handleBuyNow}
-              disabled={product.isSold || purchasing}
+              disabled={product.isSold}
               paddingHorizontal="$6"
             >
               {product.isSold ? "Sold" : "Buy Now"}
@@ -508,12 +485,11 @@ export default function ProductDetailClient({
         }}
       />
 
-      {/* Make Offer Modal */}
-      <MakeOfferModal
+      {/* Buy Now Sheet */}
+      <BuyNowSheet
         product={product}
-        isOpen={makeOfferModalOpen}
-        onClose={() => setMakeOfferModalOpen(false)}
-        onSubmitOffer={handleSubmitOffer}
+        isOpen={buyNowSheetOpen}
+        onOpenChange={setBuyNowSheetOpen}
       />
     </>
   );

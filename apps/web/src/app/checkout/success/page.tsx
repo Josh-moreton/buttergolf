@@ -53,6 +53,7 @@ interface ApiResponse {
 function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const paymentIntentId = searchParams.get("payment_intent");
 
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,14 +95,20 @@ function CheckoutSuccessContent() {
   }, [order, hasConfetti]);
 
   const fetchOrder = useCallback(async () => {
-    if (!sessionId) {
-      setError("No session ID provided");
+    // Determine which API to call based on available params
+    if (!sessionId && !paymentIntentId) {
+      setError("No session or payment intent ID provided");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch(`/api/orders/by-session/${sessionId}`);
+      // Use appropriate API endpoint based on available identifier
+      const apiUrl = sessionId
+        ? `/api/orders/by-session/${sessionId}`
+        : `/api/orders/by-payment-intent/${paymentIntentId}`;
+      
+      const response = await fetch(apiUrl);
       const data: ApiResponse = await response.json();
 
       if (!response.ok) {
@@ -129,7 +136,7 @@ function CheckoutSuccessContent() {
       setLoading(false);
       return true; // Stop polling on error
     }
-  }, [sessionId]);
+  }, [sessionId, paymentIntentId]);
 
   useEffect(() => {
     let pollInterval: ReturnType<typeof setTimeout> | null = null;

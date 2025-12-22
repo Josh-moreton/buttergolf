@@ -501,7 +501,9 @@ function handleCheckoutExpired(session: Stripe.Checkout.Session) {
 
 /**
  * Handle payment_intent.succeeded
- * Fallback for direct API payments (non-checkout)
+ * This handles both:
+ * 1. Payments already processed by checkout.session.completed (idempotent)
+ * 2. PaymentElement flow payments (BuyNowSheet) - creates order here
  */
 async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   // Check if this was already handled by checkout.session.completed
@@ -514,15 +516,219 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
     return;
   }
 
-  // Payment intent without matching order - likely from legacy flow or direct API
-  console.log("💰 Payment intent succeeded without checkout session:", {
+  // Check if this is from our PaymentElement flow
+  const { productId, sellerId, buyerId, shippingOptionId, source } = paymentIntent.metadata;
+
+  if (source !== "payment_element") {
+    // Payment intent without matching order and not from PaymentElement - likely from legacy flow
+    console.log("💰 Payment intent succeeded without checkout session (legacy):", {
+      id: paymentIntent.id,
+      amount: paymentIntent.amount / 100,
+      currency: paymentIntent.currency,
+      metadata: paymentIntent.metadata,
+    });
+    return;
+  }
+
+  // This is from PaymentElement flow - create the order
+  console.log("💰 Payment intent succeeded from PaymentElement flow:", {
     id: paymentIntent.id,
     amount: paymentIntent.amount / 100,
-    currency: paymentIntent.currency,
-    metadata: paymentIntent.metadata,
+    productId,
+    buyerId,
+    sellerId,
   });
+
+  if (!productId || !sellerId || !buyerId) {
+    console.error("Missing required metadata in payment intent:", paymentIntent.metadata);
+    return;
+  }
+
+  // Get product details
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+    include: {
+      user: {
+        include: {
+          addresses: {
+            where: { isDefault: true },
+            take: 1,
+          },
+        },
+      },
+      images: {
+        orderBy: { sortOrder: "asc" },
+        take: 1,
+      },
+    },
+  });
+
+  if (!product) {
+    console.error("Product not found:", productId);
+    return;
+  }
+
+  // Get buyer information
+  const buyer = await prisma.user.findUnique({
+    where: { id: buyerId },
+  });
+
+  if (!buyer) {
+    console.error("Buyer not found:", buyerId);
+    return;
+  }
+
+  // Get shipping details from the payment intent
+  const shippingDetails = paymentIntent.shipping;
+
+  if (!shippingDetails?.address) {
+    console.error("Missing shipping details in payment intent");
+    return;
+  }
+
+  // Create buyer's shipping address (To Address)
+  const toAddress = await prisma.address.create({
+    data: {
+      userId: buyerId,
+      name: shippingDetails.name || `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email,
+      street1: shippingDetails.address.line1 || "",
+      street2: shippingDetails.address.line2 || undefined,
+      city: shippingDetails.address.city || "",
+      state: shippingDetails.address.state || "",
+      zip: shippingDetails.address.postal_code || "",
+      country: shippingDetails.address.country || "GB",
+      phone: shippingDetails.phone || undefined,
+    },
+  });
+
+  // Get seller's default address (From Address)
+  let fromAddress = product.user.addresses[0];
+  let sellerNeedsAddress = false;
+
+  if (!fromAddress) {
+    console.error("⚠️ Seller has no address:", { sellerId, productId });
+
+    fromAddress = await prisma.address.create({
+      data: {
+        userId: sellerId,
+        name: `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email,
+        street1: "Address pending",
+        city: "Pending",
+        state: "",
+        zip: "XX00 0XX",
+        country: "GB",
+        isDefault: true,
+      },
+    });
+
+    sellerNeedsAddress = true;
+  }
+
+  // Calculate amounts from payment intent
+  const amountTotal = paymentIntent.amount / 100;
+  const shippingAmount = parseInt(paymentIntent.metadata.shippingAmount || "0", 10);
+  const shippingCost = shippingAmount / 100;
   
-  // Could implement direct payment handling here if needed
+  // Calculate platform fee (10% of product price)
+  const platformFeePercent = 10;
+  const subtotal = amountTotal - shippingCost;
+  const platformFeeAmount = subtotal * (platformFeePercent / 100);
+  const sellerPayout = amountTotal - platformFeeAmount;
+
+  // Create the order
+  const order = await prisma.order.create({
+    data: {
+      stripePaymentId: paymentIntent.id,
+      stripeCheckoutId: null, // No checkout session for PaymentElement flow
+      amountTotal,
+      shippingCost,
+      stripePlatformFee: platformFeeAmount,
+      stripeSellerPayout: sellerPayout,
+      stripePayoutStatus: "pending",
+      sellerId,
+      buyerId,
+      productId,
+      fromAddressId: fromAddress.id,
+      toAddressId: toAddress.id,
+      shipmentStatus: "PENDING",
+      status: "PAYMENT_CONFIRMED",
+    },
+  });
+
+  // Mark product as sold
+  await prisma.product.update({
+    where: { id: productId },
+    data: { isSold: true },
+  });
+
+  console.log("📦 Order created successfully from PaymentElement flow:", order.id);
+
+  // Send email to seller if they need to complete their address
+  if (sellerNeedsAddress) {
+    try {
+      await sendEmail({
+        to: product.user.email,
+        subject: "Action Required: Complete Your Seller Profile",
+        html: `
+          <div style="font-family: 'Urbanist', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 8px; overflow: hidden;">
+            <div style="background-color: #F45314; padding: 24px; text-align: center;">
+              <h1 style="color: #FFFFFF; margin: 0; font-size: 24px;">Address Required</h1>
+            </div>
+            <div style="padding: 32px;">
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+                Hi ${product.user.firstName || "there"},
+              </p>
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+                Great news! Someone just purchased your item. However, we cannot generate a shipping label because your shipping address is not set up.
+              </p>
+              <p style="color: #323232; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+                Please complete your Stripe Connect profile to add your address. This address will be used as the return address on all shipping labels.
+              </p>
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}/sell" style="display: inline-block; background-color: #F45314; color: #FFFFFF; padding: 14px 28px; text-decoration: none; border-radius: 100px; font-weight: 600; font-size: 16px;">
+                Complete Your Profile
+              </a>
+              <p style="color: #545454; font-size: 14px; line-height: 1.6; margin-top: 24px;">
+                Order ID: <code style="background-color: #EDEDED; padding: 2px 6px; border-radius: 4px;">${order.id}</code>
+              </p>
+            </div>
+          </div>
+        `
+      });
+      console.log("📧 Sent address required email to seller:", product.user.email);
+    } catch (emailError) {
+      console.error("Failed to send address required email:", emailError);
+    }
+  }
+
+  // Attempt to generate shipping label automatically
+  try {
+    console.log("🏷️ Attempting to auto-generate shipping label for order:", order.id);
+
+    const labelResult = await generateShippingLabel({
+      orderId: order.id,
+    });
+
+    console.log("✅ Shipping label generated successfully:", {
+      orderId: order.id,
+      trackingNumber: labelResult.trackingNumber,
+      carrier: labelResult.carrier,
+    });
+  } catch (labelError) {
+    console.warn("⚠️ Could not auto-generate shipping label:", {
+      orderId: order.id,
+      error: labelError instanceof Error ? labelError.message : "Unknown error",
+    });
+  }
+
+  // Send notification emails
+  await sendOrderEmails(
+    order.id,
+    amountTotal,
+    buyer,
+    product,
+    { address: { city: shippingDetails.address.city, postal_code: shippingDetails.address.postal_code } },
+    sellerPayout,
+  );
 }
 
 /**

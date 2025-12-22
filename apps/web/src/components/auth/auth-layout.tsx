@@ -77,6 +77,8 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         backgroundColor="$pureWhite"
         $gtMd={{
           padding: "$xl",
+          alignItems: "flex-start",
+          paddingLeft: "$3xl",
         }}
       >
         <Column

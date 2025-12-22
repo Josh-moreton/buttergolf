@@ -18,6 +18,8 @@ catalog:
   '@tamagui/next-plugin': 1.139.2
   '@tamagui/next-theme': 1.139.2
   '@tamagui/polyfill-dev': 1.139.2
+  '@tamagui/popover': 1.139.2
+  '@tamagui/portal': 1.139.2
   '@tamagui/sheet': 1.139.2
   '@tamagui/shorthands': 1.139.2
   '@tamagui/themes': 1.139.2

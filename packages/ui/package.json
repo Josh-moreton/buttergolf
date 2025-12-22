@@ -27,6 +27,8 @@
     "@tamagui/config": "catalog:",
     "@tamagui/lucide-icons": "catalog:",
     "@tamagui/polyfill-dev": "catalog:",
+    "@tamagui/popover": "catalog:",
+    "@tamagui/portal": "catalog:",
     "@tamagui/shorthands": "catalog:",
     "@tamagui/themes": "catalog:",
     "@types/node": "catalog:",

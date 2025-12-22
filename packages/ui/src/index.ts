@@ -108,3 +108,31 @@ export type {
   ErrorBoundaryProps,
   ErrorBoundaryState,
 } from "./components/ErrorBoundary";
+
+// Sheet Components
+export {
+  Sheet,
+  Handle as SheetHandle,
+  Overlay as SheetOverlay,
+  Frame as SheetFrame,
+  SheetScrollView,
+} from "./components/Sheet";
+export type { SheetProps } from "./components/Sheet";
+
+// Popover Components
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverClose,
+  PopoverAdapt,
+  PopoverSheet,
+  PopoverSheetOverlay,
+  PopoverSheetFrame,
+  PopoverSheetHandle,
+  PopoverSheetScrollView,
+  AdaptContents,
+} from "./components/Popover";
+export type { PopoverProps, PopoverSheetProps } from "./components/Popover";

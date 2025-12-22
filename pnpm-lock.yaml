@@ -48,6 +48,12 @@ catalogs:
     '@tamagui/polyfill-dev':
       specifier: 1.139.2
       version: 1.139.2
+    '@tamagui/popover':
+      specifier: 1.139.2
+      version: 1.139.2
+    '@tamagui/portal':
+      specifier: 1.139.2
+      version: 1.139.2
     '@tamagui/sheet':
       specifier: 1.139.2
       version: 1.139.2
@@ -668,6 +674,12 @@ importers:
       '@tamagui/polyfill-dev':
         specifier: 'catalog:'
         version: 1.139.2
+      '@tamagui/popover':
+        specifier: 'catalog:'
+        version: 1.139.2(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
+      '@tamagui/portal':
+        specifier: 'catalog:'
+        version: 1.139.2(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
       '@tamagui/shorthands':
         specifier: 'catalog:'
         version: 1.139.2(react-dom@19.1.0(react@19.1.0))(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
