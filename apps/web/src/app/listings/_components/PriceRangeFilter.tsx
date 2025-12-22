@@ -53,16 +53,17 @@ export function PriceRangeFilter({
   };
 
   return (
-    <Column gap="$md">
+    <Column gap="$md" width="100%">
       <Slider
         min={minPrice}
         max={maxPrice}
         step={10}
         value={[localMin, localMax]}
         onChange={handleSliderChange}
+        width="100%"
       />
-      <Row gap="$sm" alignItems="center" justifyContent="space-between">
-        <Column gap="$xs" flex={1}>
+      <Row gap="$sm" alignItems="center" width="100%">
+        <Column gap="$xs" flex={1} minWidth={0}>
           <Text size="$2" color="$textSecondary">
             Min
           </Text>
@@ -72,12 +73,13 @@ export function PriceRangeFilter({
             value={localMin.toString()}
             onChange={(e) => handleMinInputChange(e.target.value)}
             placeholder="Min"
+            width="100%"
           />
         </Column>
-        <Text color="$textSecondary" paddingTop="$lg">
+        <Text color="$textSecondary" paddingTop="$lg" flexShrink={0}>
           −
         </Text>
-        <Column gap="$xs" flex={1}>
+        <Column gap="$xs" flex={1} minWidth={0}>
           <Text size="$2" color="$textSecondary">
             Max
           </Text>
@@ -87,6 +89,7 @@ export function PriceRangeFilter({
             value={localMax.toString()}
             onChange={(e) => handleMaxInputChange(e.target.value)}
             placeholder="Max"
+            width="100%"
           />
         </Column>
       </Row>
