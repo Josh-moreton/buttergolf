@@ -83,18 +83,12 @@ jobs:
               seo: Math.round(results.categories.seo.score * 100)
             };
             
-            const getEmoji = (score) => score >= 90 ? '🟢' : score >= 50 ? '🟠' : '🔴';
-            
-            const body = `## ⚡ Lighthouse Report
-
-| Category | Score |
-|----------|-------|
-| 🟢 Performance | ${scores.performance} |
-| 🟢 Accessibility | ${scores.accessibility} |
-| 🟢 Best Practices | ${scores.bestPractices} |
-| 🟢 SEO | ${scores.seo} |
-
-_Commit ${context.sha.substring(0, 7)}_`;
+            const body = 'Lighthouse Report\n\n' +
+              'Performance: ' + scores.performance + '\n' +
+              'Accessibility: ' + scores.accessibility + '\n' +
+              'Best Practices: ' + scores.bestPractices + '\n' +
+              'SEO: ' + scores.seo + '\n\n' +
+              'Commit ' + context.sha.substring(0, 7);
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
