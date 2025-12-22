@@ -35,7 +35,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "tamagui";
+import { Button } from "./Button";
 import { Row } from "./Layout";
 
 export type BuySellMode = "buying" | "selling";
@@ -116,6 +116,17 @@ export function BuySellToggle({
       : inactiveStyle
     : undefined;
 
+  // Hover styles to match header AuthButton (avoid default Tamagui hover fallbacks)
+  const buyingHoverStyle =
+    activeMode === "buying"
+      ? { backgroundColor: "$primaryHover" }
+      : { background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)", opacity: 0.95 };
+
+  const sellingHoverStyle =
+    activeMode === "selling"
+      ? { backgroundColor: "$primaryHover" }
+      : { background: "linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 100%)", opacity: 0.95 };
+
   return (
     <Row
       gap={isDesktop ? "$lg" : "$4"}
@@ -130,6 +141,7 @@ export function BuySellToggle({
         borderRadius="$full"
         flex={isDesktop ? undefined : 1}
         style={{ ...desktopStyle, ...buyingWebStyle }}
+        hoverStyle={buyingHoverStyle}
         {...(activeMode === "buying" ? activeButtonProps : inactiveButtonProps)}
         pressStyle={{
           scale: 0.98,
@@ -149,6 +161,7 @@ export function BuySellToggle({
         borderRadius="$full"
         flex={isDesktop ? undefined : 1}
         style={{ ...desktopStyle, ...sellingWebStyle }}
+        hoverStyle={sellingHoverStyle}
         {...(activeMode === "selling"
           ? activeButtonProps
           : inactiveButtonProps)}
