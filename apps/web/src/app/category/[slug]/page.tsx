@@ -221,6 +221,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         initialTotal={data.total}
         initialFilters={data.filters}
         initialPage={data.page}
+        initialCategory={resolvedParams.slug}
       />
     </Suspense>
   );

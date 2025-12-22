@@ -7,7 +7,7 @@ module.exports = {
 
       url: [
         'http://localhost:3000/',
-        'http://localhost:3000/category/drivers',
+        'http://localhost:3000/category/woods',
       ],
 
       numberOfRuns: 3,

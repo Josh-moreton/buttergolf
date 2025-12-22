@@ -96,6 +96,13 @@ export type { BadgeProps } from "./components/Badge";
 export { Spinner } from "./components/Spinner";
 export type { SpinnerProps } from "./components/Spinner";
 
+// Navigation Components
+export { CategorySelector } from "./components/CategorySelector";
+export type {
+  CategorySelectorProps_Type,
+  Category,
+} from "./components/CategorySelector";
+
 // Media Components
 export { Image } from "./components/Image";
 export type { ImageProps } from "./components/Image";

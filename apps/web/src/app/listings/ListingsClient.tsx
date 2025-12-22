@@ -21,6 +21,8 @@ interface ListingsClientProps {
     priceRange: { min: number; max: number };
   };
   initialPage: number;
+  /** Category slug when viewing a specific category (from /category/[slug] route) */
+  initialCategory?: string | null;
 }
 
 const STORAGE_KEY = "buttergolf-listings-filters";
@@ -51,21 +53,26 @@ export function ListingsClient({
   initialTotal,
   initialFilters,
   initialPage,
+  initialCategory = null,
 }: Readonly<ListingsClientProps>) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Parse initial filters from URL
   const getInitialFilters = (): FilterState => {
+    // If we have an initialCategory from the route (e.g., /category/woods), use it
+    // This takes precedence over localStorage and URL params for category
+    const categoryFromRoute = initialCategory;
+    
     // Try to load from localStorage first
     if (globalThis.window !== undefined) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          // Merge URL params (they take precedence)
+          // Merge URL params (they take precedence), but route category wins for category
           return {
-            category: searchParams.get("category") || parsed.category || null,
+            category: categoryFromRoute || searchParams.get("category") || parsed.category || null,
             conditions:
               searchParams.getAll("condition") || parsed.conditions || [],
             minPrice:
@@ -88,9 +95,9 @@ export function ListingsClient({
       }
     }
 
-    // Parse from URL
+    // Parse from URL (route category takes precedence)
     return {
-      category: searchParams.get("category") || null,
+      category: categoryFromRoute || searchParams.get("category") || null,
       conditions: searchParams.getAll("condition") || [],
       minPrice:
         Number.parseFloat(searchParams.get("minPrice") || "") ||
@@ -132,12 +139,12 @@ export function ListingsClient({
     }
   }, [filters]);
 
-  // Build URL from filters
+  // Build URL from filters - uses clean category URLs for SEO
   const buildURL = useCallback(
     (newFilters: FilterState, newSort: string, newPage: number = 1) => {
       const params = new URLSearchParams();
 
-      if (newFilters.category) params.set("category", newFilters.category);
+      // Don't add category to params - it's in the URL path
       for (const c of newFilters.conditions) {
         params.append("condition", c);
       }
@@ -154,7 +161,17 @@ export function ListingsClient({
       if (newSort !== "newest") params.set("sort", newSort);
       if (newPage > 1) params.set("page", newPage.toString());
 
-      return `/listings?${params.toString()}`;
+      const queryString = params.toString();
+      
+      // Use clean category URL if a category is selected
+      if (newFilters.category) {
+        return queryString 
+          ? `/category/${newFilters.category}?${queryString}` 
+          : `/category/${newFilters.category}`;
+      }
+      
+      // No category = /listings
+      return queryString ? `/listings?${queryString}` : "/listings";
     },
     [initialFilters.priceRange],
   );

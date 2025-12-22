@@ -11,29 +11,35 @@ import {
   Column,
   Text,
   AuthButton,
+  CategorySelector,
   GlassmorphismCard,
   getGlassmorphismStyles,
+  type Category,
 } from "@buttergolf/ui";
+import { CATEGORIES } from "@buttergolf/db";
 import { MenuIcon } from "./icons";
 
-// Category navigation items
-const NAV_CATEGORIES = [
+// Build navigation from single source of truth
+const NAV_CATEGORIES: Category[] = [
   { name: "Shop all", href: "/listings" },
-  { name: "Drivers", href: "/category/drivers" },
-  { name: "Irons", href: "/category/irons" },
-  { name: "Wedges", href: "/category/wedges" },
-  { name: "Putters", href: "/category/putters" },
-  { name: "Bags", href: "/category/bags" },
-  { name: "Balls", href: "/category/balls" },
-  { name: "Apparel", href: "/category/apparel" },
-  { name: "Accessories", href: "/category/accessories" },
-  { name: "GPS & Tech", href: "/category/gps-tech" },
+  ...CATEGORIES.map((cat) => ({ name: cat.name, href: `/category/${cat.slug}` })),
 ];
 
 export function ButterHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Determine active category from pathname
+  const getActiveCategory = (): string => {
+    if (pathname?.startsWith("/category/")) {
+      return pathname;
+    }
+    if (pathname === "/listings") {
+      return "/listings";
+    }
+    return ""; // No category selected on other pages (e.g., home)
+  };
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -214,7 +220,7 @@ export function ButterHeader() {
           </Row>
         </Row>
 
-        {/* Category Navigation Sub-header - iOS Liquid Glass Effect */}
+        {/* Category Navigation Sub-header - Animated Selector with Glassmorphism */}
         <Row
           paddingHorizontal="$4"
           paddingVertical="$3"
@@ -227,36 +233,20 @@ export function ButterHeader() {
             blur="medium"
             maxWidth={1280}
             width="100%"
-            paddingHorizontal="$6"
+            paddingHorizontal="$3"
             paddingVertical="$3"
-            justifyContent="space-between"
-            flexWrap="nowrap"
+            alignItems="center"
+            justifyContent="center"
             style={{
-              overflow: "auto",
-              display: "flex",
-              flexDirection: "row",
+              overflow: "visible",
               ...getGlassmorphismStyles("medium"),
             }}
           >
-            {NAV_CATEGORIES.map((category) => (
-              <Link
-                key={category.href}
-                href={category.href}
-                style={{ textDecoration: "none" }}
-              >
-                <Text
-                  size="$3"
-                  weight="normal"
-                  color="$text"
-                  cursor="pointer"
-                  hoverStyle={{
-                    fontWeight: "600",
-                  }}
-                >
-                  {category.name}
-                </Text>
-              </Link>
-            ))}
+            <CategorySelector
+              categories={NAV_CATEGORIES}
+              activeCategory={getActiveCategory()}
+              onCategoryChange={(href) => router.push(href)}
+            />
           </GlassmorphismCard>
         </Row>
       </Column>
