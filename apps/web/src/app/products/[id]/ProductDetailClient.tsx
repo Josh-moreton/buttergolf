@@ -16,7 +16,6 @@ import {
 } from "@buttergolf/ui";
 import { ProductInformation } from "./_components/ProductInformation";
 import { BuyNowSheet } from "./_components/BuyNowSheet";
-import { MakeOfferPopover } from "./_components/MakeOfferPopover";
 
 interface ProductImage {
   id: string;
@@ -64,7 +63,6 @@ export default function ProductDetailClient({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
   const [buyNowSheetOpen, setBuyNowSheetOpen] = useState(false);
-  const [makeOfferOpen, setMakeOfferOpen] = useState(false);
   const router = useRouter();
   const { isSignedIn } = useUser();
 
@@ -92,21 +90,7 @@ export default function ProductDetailClient({
     setBuyNowSheetOpen(true);
   };
 
-  const handleMakeOffer = () => {
-    console.log("[MakeOffer] handleMakeOffer called", { isSignedIn, productId: product.id });
-    if (!isSignedIn) {
-      // Redirect to sign-in page with return URL
-      const redirectUrl =
-        typeof globalThis !== "undefined" && globalThis.location
-          ? globalThis.location.href
-          : `/products/${product.id}`;
-      console.log("[MakeOffer] Not signed in, redirecting to:", `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-      router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-      return;
-    }
-    console.log("[MakeOffer] User is signed in, setting makeOfferOpen to true");
-    setMakeOfferOpen(true);
-  };
+
 
   const handleSubmitOffer = async (offerAmount: number) => {
     try {
@@ -127,9 +111,6 @@ export default function ProductDetailClient({
 
       const result = await response.json();
       console.log("Offer submitted successfully:", result);
-
-      // Close popover
-      setMakeOfferOpen(false);
 
       // Redirect to offer detail page
       router.push(`/offers/${result.id}`);
@@ -308,21 +289,6 @@ export default function ProductDetailClient({
             <ProductInformation
               product={product}
               onBuyNow={handleBuyNow}
-              makeOfferOpen={makeOfferOpen}
-              onMakeOfferOpenChange={(open) => {
-                console.log("[MakeOffer] onMakeOfferOpenChange called", { open, isSignedIn });
-                // If trying to open and not signed in, redirect to login
-                if (open && !isSignedIn) {
-                  const redirectUrl =
-                    typeof globalThis !== "undefined" && globalThis.location
-                      ? globalThis.location.href
-                      : `/products/${product.id}`;
-                  console.log("[MakeOffer] Not signed in, redirecting to:", `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-                  router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-                  return;
-                }
-                setMakeOfferOpen(open);
-              }}
               onSubmitOffer={handleSubmitOffer}
             />
           </Row>

@@ -10,10 +10,8 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverArrow,
   PopoverClose,
 } from "@buttergolf/ui";
-import { MakeOfferModal } from "./MakeOfferPopover";
 import type { Product } from "../ProductDetailClient";
 
 interface User {
@@ -28,19 +26,46 @@ interface User {
 interface ProductInformationProps {
   product: Product;
   onBuyNow: () => void;
-  makeOfferOpen: boolean;
-  onMakeOfferOpenChange: (open: boolean) => void;
   onSubmitOffer: (amount: number) => Promise<void>;
 }
 
 export function ProductInformation({
   product,
   onBuyNow,
-  makeOfferOpen,
-  onMakeOfferOpenChange,
   onSubmitOffer,
 }: ProductInformationProps) {
   const [isFavourite, setIsFavourite] = useState(false);
+  const [offerAmount, setOfferAmount] = useState("");
+  const [offerError, setOfferError] = useState("");
+  const [submittingOffer, setSubmittingOffer] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const handleSubmitOffer = async () => {
+    const amount = Number.parseFloat(offerAmount);
+
+    if (!offerAmount || Number.isNaN(amount) || amount <= 0) {
+      setOfferError("Please enter a valid amount");
+      return;
+    }
+
+    if (amount >= product.price) {
+      setOfferError(`Must be less than £${product.price.toFixed(2)}`);
+      return;
+    }
+
+    setOfferError("");
+    setSubmittingOffer(true);
+
+    try {
+      await onSubmitOffer(amount);
+      setPopoverOpen(false);
+      setOfferAmount("");
+    } catch {
+      setOfferError("Failed to submit. Try again.");
+    } finally {
+      setSubmittingOffer(false);
+    }
+  };
 
   const formatCondition = (condition: string) => {
     return condition.replace(/_/g, " ");
@@ -245,27 +270,24 @@ export function ProductInformation({
             ? "Sold Out"
             : "Buy now"}
         </Button>
-        <Button
-          butterVariant="secondary"
-          size="$5"
-          width="100%"
-          height={56}
-          disabled={product.isSold}
-          onPress={() => onMakeOfferOpenChange(true)}
-        >
-          Make an offer
-        </Button>
 
-        {/* Test Popover - Tamagui Popover Component Demo */}
-        <Popover placement="top">
+        {/* Make an Offer Popover */}
+        <Popover placement="top" open={popoverOpen} onOpenChange={(open) => {
+          setPopoverOpen(open);
+          if (!open) {
+            setOfferAmount("");
+            setOfferError("");
+          }
+        }}>
           <PopoverTrigger asChild>
             <Button
               butterVariant="secondary"
               size="$5"
               width="100%"
               height={56}
+              disabled={product.isSold}
             >
-              Test Popover
+              Make an offer
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -280,37 +302,104 @@ export function ProductInformation({
             shadowOpacity={0.15}
             elevate
           >
-            <PopoverArrow backgroundColor="$surface" borderColor="$border" />
-            <Column gap="$3" width={250}>
+            <Column gap="$3" width={280}>
               <Text size="$5" fontWeight="600" color="$text">
-                Tamagui Popover 🎉
+                Make an offer
               </Text>
-              <Text size="$4" color="$textSecondary">
-                This is a test of the Tamagui Popover component from @buttergolf/ui.
-              </Text>
+              
+              {/* Price Input */}
+              <div style={{ position: "relative" }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    left: 14,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    fontSize: "16px",
+                    color: "#323232",
+                    fontWeight: 500,
+                    zIndex: 1,
+                  }}
+                >
+                  £
+                </span>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="Your offer"
+                  value={offerAmount}
+                  onChange={(e) => {
+                    setOfferAmount(e.target.value);
+                    setOfferError("");
+                  }}
+                  disabled={submittingOffer}
+                  autoFocus
+                  style={{
+                    width: "100%",
+                    padding: "12px 14px 12px 30px",
+                    fontSize: "16px",
+                    border: `1px solid ${offerError ? "#dc2626" : "#EDEDED"}`,
+                    borderRadius: "8px",
+                    outline: "none",
+                    fontFamily: "var(--font-urbanist)",
+                    backgroundColor: "white",
+                    boxSizing: "border-box",
+                  }}
+                  onFocus={(e) => {
+                    if (!offerError) {
+                      e.target.style.borderColor = "#F45314";
+                    }
+                  }}
+                  onBlur={(e) => {
+                    if (!offerError) {
+                      e.target.style.borderColor = "#EDEDED";
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !submittingOffer) {
+                      handleSubmitOffer();
+                    }
+                    if (e.key === "Escape") {
+                      setPopoverOpen(false);
+                    }
+                  }}
+                />
+              </div>
+
+              {offerError && (
+                <Text size="$2" color="$error">
+                  {offerError}
+                </Text>
+              )}
+
               <Row gap="$2" justifyContent="flex-end">
                 <PopoverClose asChild>
                   <Button
                     size="$3"
-                    backgroundColor="$primary"
-                    color="$textInverse"
+                    backgroundColor="transparent"
+                    color="$textSecondary"
                     borderRadius="$full"
-                    paddingHorizontal="$4"
+                    paddingHorizontal="$3"
                   >
-                    Got it!
+                    Cancel
                   </Button>
                 </PopoverClose>
+                <Button
+                  size="$3"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                  borderRadius="$full"
+                  paddingHorizontal="$4"
+                  onPress={handleSubmitOffer}
+                  disabled={submittingOffer || !offerAmount}
+                >
+                  {submittingOffer ? "Submitting..." : "Submit"}
+                </Button>
               </Row>
             </Column>
           </PopoverContent>
         </Popover>
-
-        <MakeOfferModal
-          product={product}
-          isOpen={makeOfferOpen}
-          onOpenChange={onMakeOfferOpenChange}
-          onSubmitOffer={onSubmitOffer}
-        />
       </Column>
 
       {/* View Price Breakdown Link */}
