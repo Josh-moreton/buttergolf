@@ -127,4 +127,12 @@ export {
   PopoverAnchor,
   PopoverArrow,
   PopoverClose,
+  PopoverAdapt,
+  PopoverSheet,
+  PopoverSheetOverlay,
+  PopoverSheetFrame,
+  PopoverSheetHandle,
+  PopoverSheetScrollView,
+  AdaptContents,
 } from "./components/Popover";
+export type { PopoverProps, PopoverSheetProps } from "./components/Popover";
