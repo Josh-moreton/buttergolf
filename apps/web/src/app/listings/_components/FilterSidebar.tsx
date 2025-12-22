@@ -1,6 +1,6 @@
 "use client";
 
-import { Column, Row, Button, Text } from "@buttergolf/ui";
+import { Column, Row, Button, Text, SwitchWithLabel } from "@buttergolf/ui";
 import { FilterSection } from "./FilterSection";
 import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
@@ -83,30 +83,14 @@ export function FilterSidebar({
       </FilterSection>
 
       <FilterSection title="Favourites">
-        <Row
-          alignItems="center"
-          gap="$2"
-          cursor="pointer"
-          userSelect="none"
-          onPress={() =>
-            onChange({ showFavouritesOnly: !filters.showFavouritesOnly })
+        <SwitchWithLabel
+          label="Show favourites only"
+          checked={filters.showFavouritesOnly}
+          onCheckedChange={(checked) =>
+            onChange({ showFavouritesOnly: checked })
           }
-        >
-          <input
-            type="checkbox"
-            checked={filters.showFavouritesOnly}
-            onChange={(e) => onChange({ showFavouritesOnly: e.target.checked })}
-            style={{
-              width: 20,
-              height: 20,
-              cursor: "pointer",
-              accentColor: "var(--primary)",
-            }}
-          />
-          <Text size="$4" color="$text">
-            Show favourites only
-          </Text>
-        </Row>
+          size="$3"
+        />
       </FilterSection>
 
       <Button chromeless size="$4" onPress={onClearAll}>

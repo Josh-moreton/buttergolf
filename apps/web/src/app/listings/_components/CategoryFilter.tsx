@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Column, Row, Text } from "@buttergolf/ui";
+import { Column, Text, RadioGroup, Radio, RadioIndicator, Label, Row } from "@buttergolf/ui";
 import { CATEGORIES } from "@buttergolf/db";
 
 interface CategoryFilterProps {
@@ -34,7 +34,8 @@ export function CategoryFilter({
     return queryString ? `/category/${slug}?${queryString}` : `/category/${slug}`;
   };
 
-  const handleCategoryClick = (slug: string | null) => {
+  const handleCategoryChange = (value: string) => {
+    const slug = value === "all" ? null : value;
     // Navigate to the appropriate URL
     router.push(buildCategoryUrl(slug));
     // Also call onChange for local state (used by parent components)
@@ -42,48 +43,46 @@ export function CategoryFilter({
   };
 
   return (
-    <Column gap="$xs">
-      <Row
-        paddingVertical="$xs"
-        paddingHorizontal="$sm"
-        borderRadius="$sm"
-        cursor="pointer"
-        backgroundColor={
-          selectedCategory === null ? "$primaryLight" : "$surface"
-        }
-        hoverStyle={{ backgroundColor: "$backgroundHover" }}
-        onClick={() => handleCategoryClick(null)}
-      >
-        <Text
+    <RadioGroup
+      value={selectedCategory ?? "all"}
+      onValueChange={handleCategoryChange}
+      gap="$xs"
+    >
+      <Row alignItems="center" gap="$sm" paddingVertical="$xs">
+        <Radio value="all" size="$3">
+          <RadioIndicator />
+        </Radio>
+        <Label
+          htmlFor="all"
           size="$3"
+          cursor="pointer"
           color={selectedCategory === null ? "$primary" : "$text"}
-          weight={selectedCategory === null ? "semibold" : "normal"}
+          fontWeight={selectedCategory === null ? "600" : "400"}
         >
           All Categories
-        </Text>
+        </Label>
       </Row>
       {CATEGORIES.map((category) => (
         <Row
           key={category.slug}
+          alignItems="center"
+          gap="$sm"
           paddingVertical="$xs"
-          paddingHorizontal="$sm"
-          borderRadius="$sm"
-          cursor="pointer"
-          backgroundColor={
-            selectedCategory === category.slug ? "$primaryLight" : "$surface"
-          }
-          hoverStyle={{ backgroundColor: "$backgroundHover" }}
-          onClick={() => handleCategoryClick(category.slug)}
         >
-          <Text
+          <Radio value={category.slug} size="$3">
+            <RadioIndicator />
+          </Radio>
+          <Label
+            htmlFor={category.slug}
             size="$3"
+            cursor="pointer"
             color={selectedCategory === category.slug ? "$primary" : "$text"}
-            weight={selectedCategory === category.slug ? "semibold" : "normal"}
+            fontWeight={selectedCategory === category.slug ? "600" : "400"}
           >
             {category.name}
-          </Text>
+          </Label>
         </Row>
       ))}
-    </Column>
+    </RadioGroup>
   );
 }

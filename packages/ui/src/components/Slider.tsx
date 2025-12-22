@@ -1,52 +1,70 @@
 "use client";
 
-import { styled, GetProps, Stack } from "tamagui";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Slider as TamaguiSlider, styled, GetProps } from "tamagui";
 
-const SliderContainer = styled(Stack, {
-  name: "SliderContainer",
-  tag: "div" as const,
+/**
+ * Slider Component
+ *
+ * A range slider built on @tamagui/slider for selecting numeric values.
+ * Uses compound component pattern (Slider.Track, Slider.TrackActive, Slider.Thumb).
+ *
+ * @example
+ * // Single value slider
+ * <Slider defaultValue={[50]} max={100} step={1}>
+ *   <Slider.Track>
+ *     <Slider.TrackActive />
+ *   </Slider.Track>
+ *   <Slider.Thumb index={0} circular />
+ * </Slider>
+ *
+ * @example
+ * // Range slider (two thumbs)
+ * <Slider defaultValue={[25, 75]} max={100} step={1}>
+ *   <Slider.Track>
+ *     <Slider.TrackActive />
+ *   </Slider.Track>
+ *   <Slider.Thumb index={0} circular />
+ *   <Slider.Thumb index={1} circular />
+ * </Slider>
+ */
+
+// Styled Slider root with brand colours
+const SliderFrame = styled(TamaguiSlider, {
+  name: "Slider",
   width: "100%",
-  paddingVertical: "$3",
-  position: "relative",
 });
 
-const SliderTrack = styled(Stack, {
+// Styled Track with proper overflow handling
+const SliderTrack = styled(TamaguiSlider.Track, {
   name: "SliderTrack",
-  tag: "div" as const,
-  height: 4,
   backgroundColor: "$border",
+  height: 4,
   borderRadius: "$full",
-  position: "relative",
-  cursor: "pointer",
+  overflow: "hidden",
 });
 
-const SliderRange = styled(Stack, {
-  name: "SliderRange",
-  tag: "div" as const,
-  position: "absolute",
-  height: "100%",
+// Styled TrackActive with primary colour
+const SliderTrackActive = styled(TamaguiSlider.TrackActive, {
+  name: "SliderTrackActive",
   backgroundColor: "$primary",
+  height: "100%",
   borderRadius: "$full",
 });
 
-const SliderThumb = styled(Stack, {
+// Styled Thumb with brand colours and hover states
+const SliderThumb = styled(TamaguiSlider.Thumb, {
   name: "SliderThumb",
-  tag: "div" as const,
+  backgroundColor: "$primary",
+  borderWidth: 2,
+  borderColor: "$surface",
   width: 20,
   height: 20,
   borderRadius: "$full",
-  backgroundColor: "$primary",
-  position: "absolute",
-  top: "50%",
-  transform: "translate(-50%, -50%)",
   cursor: "grab",
-  borderWidth: 2,
-  borderColor: "$surface",
-  zIndex: 2,
 
   hoverStyle: {
     scale: 1.1,
+    borderColor: "$primary",
   },
 
   pressStyle: {
@@ -60,146 +78,68 @@ const SliderThumb = styled(Stack, {
   },
 });
 
-export interface SliderProps {
+// Main Slider component as compound component
+export const Slider = SliderFrame as typeof SliderFrame & {
+  Track: typeof SliderTrack;
+  TrackActive: typeof SliderTrackActive;
+  Thumb: typeof SliderThumb;
+};
+
+Slider.Track = SliderTrack;
+Slider.TrackActive = SliderTrackActive;
+Slider.Thumb = SliderThumb;
+
+// Export types
+export type SliderProps = GetProps<typeof Slider>;
+export type SliderTrackProps = GetProps<typeof SliderTrack>;
+export type SliderTrackActiveProps = GetProps<typeof SliderTrackActive>;
+export type SliderThumbProps = GetProps<typeof SliderThumb>;
+
+/**
+ * RangeSlider - Convenience wrapper for dual-thumb range selection
+ *
+ * @example
+ * <RangeSlider
+ *   min={0}
+ *   max={500}
+ *   value={[100, 400]}
+ *   onValueChange={([min, max]) => console.log(min, max)}
+ * />
+ */
+export interface RangeSliderProps {
   min?: number;
   max?: number;
   step?: number;
   value?: number[];
   defaultValue?: number[];
-  onChange?: (value: number[]) => void;
+  onValueChange?: (value: number[]) => void;
   disabled?: boolean;
 }
 
-export function Slider({
+export function RangeSlider({
   min = 0,
   max = 100,
   step = 1,
-  value: controlledValue,
-  defaultValue = [min, max],
-  onChange,
+  value,
+  defaultValue,
+  onValueChange,
   disabled = false,
-}: SliderProps) {
-  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [activeThumb, setActiveThumb] = useState<number | null>(null);
-
-  const isControlled = controlledValue !== undefined;
-  const value = isControlled ? controlledValue : uncontrolledValue;
-
-  const [minValue, maxValue] = value;
-
-  const getPercentage = (val: number) => {
-    return ((val - min) / (max - min)) * 100;
-  };
-
-  const getValueFromPosition = useCallback(
-    (clientX: number) => {
-      if (!trackRef.current) return min;
-
-      const rect = trackRef.current.getBoundingClientRect();
-      const percentage = Math.max(
-        0,
-        Math.min(1, (clientX - rect.left) / rect.width),
-      );
-      const rawValue = min + percentage * (max - min);
-      const steppedValue = Math.round(rawValue / step) * step;
-      return Math.max(min, Math.min(max, steppedValue));
-    },
-    [min, max, step],
-  );
-
-  const updateValue = useCallback(
-    (thumbIndex: number, newValue: number) => {
-      const newValues = [...value];
-
-      if (thumbIndex === 0) {
-        newValues[0] = Math.min(newValue, newValues[1] ?? max);
-      } else {
-        newValues[1] = Math.max(newValue, newValues[0] ?? min);
-      }
-
-      if (!isControlled) {
-        setUncontrolledValue(newValues);
-      }
-
-      onChange?.(newValues);
-    },
-    [value, max, min, isControlled, onChange],
-  );
-
-  const handleMouseDown = (thumbIndex: number) => (e: React.MouseEvent) => {
-    if (disabled) return;
-    e.preventDefault();
-    setActiveThumb(thumbIndex);
-  };
-
-  useEffect(() => {
-    if (activeThumb === null) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const newValue = getValueFromPosition(e.clientX);
-      updateValue(activeThumb, newValue);
-    };
-
-    const handleMouseUp = () => {
-      setActiveThumb(null);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [activeThumb, disabled, getValueFromPosition, updateValue]);
-
-  const handleTrackClick = (e: unknown) => {
-    if (disabled || activeThumb !== null) return;
-
-    // Cast to access clientX for web events
-    const mouseEvent = e as React.MouseEvent;
-    const newValue = getValueFromPosition(mouseEvent.clientX);
-    const distToMin = Math.abs(newValue - (minValue ?? min));
-    const distToMax = Math.abs(newValue - (maxValue ?? max));
-
-    const thumbIndex = distToMin < distToMax ? 0 : 1;
-    updateValue(thumbIndex, newValue);
-  };
-
-  const minPercentage = getPercentage(minValue ?? min);
-  const maxPercentage = getPercentage(maxValue ?? max);
-
+}: RangeSliderProps) {
   return (
-    <SliderContainer>
-      <SliderTrack ref={trackRef} onPress={handleTrackClick}>
-        <SliderRange
-          style={{
-            left: `${minPercentage}%`,
-            width: `${maxPercentage - minPercentage}%`,
-          }}
-        />
-        <SliderThumb
-          style={{ left: `${minPercentage}%` }}
-          onMouseDown={handleMouseDown(0)}
-          role="slider"
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={minValue}
-          tabIndex={disabled ? -1 : 0}
-        />
-        <SliderThumb
-          style={{ left: `${maxPercentage}%` }}
-          onMouseDown={handleMouseDown(1)}
-          role="slider"
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={maxValue}
-          tabIndex={disabled ? -1 : 0}
-        />
-      </SliderTrack>
-    </SliderContainer>
+    <Slider
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      defaultValue={defaultValue ?? [min, max]}
+      onValueChange={onValueChange}
+      disabled={disabled}
+    >
+      <Slider.Track>
+        <Slider.TrackActive />
+      </Slider.Track>
+      <Slider.Thumb index={0} circular />
+      <Slider.Thumb index={1} circular />
+    </Slider>
   );
 }
-
-export type SliderProps_2 = GetProps<typeof Slider>;

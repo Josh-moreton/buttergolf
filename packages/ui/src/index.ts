@@ -87,8 +87,20 @@ export type {
 } from "./components/Autocomplete";
 export { Checkbox } from "./components/Checkbox";
 export type { CheckboxProps } from "./components/Checkbox";
-export { Slider } from "./components/Slider";
-export type { SliderProps } from "./components/Slider";
+export { Slider, RangeSlider } from "./components/Slider";
+export type {
+  SliderProps,
+  SliderTrackProps,
+  SliderTrackActiveProps,
+  SliderThumbProps,
+  RangeSliderProps,
+} from "./components/Slider";
+export { Switch, SwitchWithLabel } from "./components/Switch";
+export type {
+  SwitchProps,
+  SwitchThumbProps,
+  SwitchWithLabelProps,
+} from "./components/Switch";
 
 // Feedback Components
 export { Badge } from "./components/Badge";

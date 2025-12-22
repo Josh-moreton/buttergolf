@@ -59,9 +59,15 @@ export function PriceRangeFilter({
         max={maxPrice}
         step={10}
         value={[localMin, localMax]}
-        onChange={handleSliderChange}
+        onValueChange={handleSliderChange}
         width="100%"
-      />
+      >
+        <Slider.Track>
+          <Slider.TrackActive />
+        </Slider.Track>
+        <Slider.Thumb index={0} circular />
+        <Slider.Thumb index={1} circular />
+      </Slider>
       <Row gap="$sm" alignItems="center" width="100%">
         <Column gap="$xs" flex={1} minWidth={0}>
           <Text size="$2" color="$textSecondary">
@@ -94,7 +100,7 @@ export function PriceRangeFilter({
         </Column>
       </Row>
       <Text size="$2" color="$textSecondary">
-        ${localMin} - ${localMax}
+        ${localMin.toFixed(2)} - ${localMax.toFixed(2)}
       </Text>
     </Column>
   );

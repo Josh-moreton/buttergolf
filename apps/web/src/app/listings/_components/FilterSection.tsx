@@ -23,7 +23,7 @@ export function FilterSection({
         justifyContent="space-between"
         paddingVertical="$xs"
         cursor="pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onPress={() => setIsExpanded(!isExpanded)}
       >
         <Text weight="semibold" size="$3">
           {title}
