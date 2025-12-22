@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 import NextImage from "next/image";
 import {
   Column,
@@ -64,7 +63,6 @@ export default function ProductDetailClient({
   const [showMobileBar, setShowMobileBar] = useState(false);
   const [buyNowSheetOpen, setBuyNowSheetOpen] = useState(false);
   const router = useRouter();
-  const { isSignedIn } = useUser();
 
   const selectedImage = product.images[selectedImageIndex];
 
@@ -85,16 +83,6 @@ export default function ProductDetailClient({
   };
 
   const handleSubmitOffer = async (offerAmount: number) => {
-    // Auth check - redirect to sign-in if not authenticated
-    if (!isSignedIn) {
-      const redirectUrl =
-        typeof globalThis !== "undefined" && globalThis.location
-          ? globalThis.location.href
-          : `/products/${product.id}`;
-      router.push(`/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`);
-      return;
-    }
-
     try {
       const response = await fetch("/api/offers", {
         method: "POST",
