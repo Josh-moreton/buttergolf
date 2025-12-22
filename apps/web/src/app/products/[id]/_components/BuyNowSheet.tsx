@@ -1,30 +1,21 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout,
-} from "@stripe/react-stripe-js";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   Column,
   Row,
   Text,
   Button,
   Heading,
-  Spinner,
   Image,
   Sheet,
   SheetOverlay,
   SheetFrame,
   SheetHandle,
 } from "@buttergolf/ui";
+import { StripePaymentForm } from "@/app/checkout/_components/StripePaymentForm";
 import type { Product } from "../ProductDetailClient";
-
-// Initialize Stripe outside component to avoid re-creating on every render
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-);
 
 interface BuyNowSheetProps {
   product: Product;
@@ -35,7 +26,10 @@ interface BuyNowSheetProps {
 /**
  * BuyNowSheet component
  * 
- * A Tamagui Sheet with embedded Stripe checkout experience.
+ * A Tamagui Sheet with Stripe PaymentElement checkout experience.
+ * Uses PaymentElement instead of EmbeddedCheckout to work properly
+ * inside a Portal/Sheet context.
+ * 
  * Uses multiple snap points:
  * - 40% - Product preview / order summary
  * - 85% - Full checkout form
@@ -46,10 +40,8 @@ export function BuyNowSheet({
   isOpen,
   onOpenChange,
 }: BuyNowSheetProps) {
-  console.log("[BuyNowSheet] Render - isOpen:", isOpen, "productId:", product.id);
-  
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [position, setPosition] = useState(0);
 
   // Snap points: 40% for preview, 85% for checkout, 100% for full
@@ -57,92 +49,31 @@ export function BuyNowSheet({
 
   // Reset state when sheet opens
   useEffect(() => {
-    console.log("[BuyNowSheet] useEffect triggered - isOpen:", isOpen);
     if (isOpen) {
-      console.log("[BuyNowSheet] Sheet opened - resetting state");
       setError(null);
-      setIsLoading(true);
       // Start at 85% snap point (index 1) for checkout
       setPosition(1);
     }
   }, [isOpen]);
 
-  // Fetch client secret from our API
-  const fetchClientSecret = useCallback(async () => {
-    console.log("[BuyNowSheet] ========== fetchClientSecret START ==========");
-    console.log("[BuyNowSheet] Product ID:", product.id);
-    console.log("[BuyNowSheet] Product title:", product.title);
-    console.log("[BuyNowSheet] Making POST to /api/checkout/create-checkout-session");
-    
-    try {
-      const requestBody = JSON.stringify({ productId: product.id });
-      console.log("[BuyNowSheet] Request body:", requestBody);
-      
-      const response = await fetch("/api/checkout/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: requestBody,
-      });
-
-      console.log("[BuyNowSheet] Response received");
-      console.log("[BuyNowSheet] Response status:", response.status);
-      console.log("[BuyNowSheet] Response ok:", response.ok);
-      console.log("[BuyNowSheet] Response headers:", Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("[BuyNowSheet] ERROR: Non-OK response");
-        console.error("[BuyNowSheet] Error response body:", errorText);
-        
-        let errorMessage = "Failed to create checkout";
-        try {
-          const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error || errorMessage;
-          console.error("[BuyNowSheet] Parsed error message:", errorMessage);
-        } catch {
-          errorMessage = errorText || errorMessage;
-          console.error("[BuyNowSheet] Raw error text:", errorMessage);
-        }
-        setError(errorMessage);
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      console.log("[BuyNowSheet] SUCCESS: Response parsed");
-      console.log("[BuyNowSheet] clientSecret present:", !!data.clientSecret);
-      console.log("[BuyNowSheet] clientSecret length:", data.clientSecret?.length || 0);
-      
-      setIsLoading(false);
-      console.log("[BuyNowSheet] ========== fetchClientSecret END ==========");
-      return data.clientSecret;
-    } catch (err) {
-      console.error("[BuyNowSheet] ========== fetchClientSecret CATCH ==========");
-      console.error("[BuyNowSheet] Caught error:", err);
-      console.error("[BuyNowSheet] Error type:", err instanceof Error ? err.constructor.name : typeof err);
-      console.error("[BuyNowSheet] Error message:", err instanceof Error ? err.message : String(err));
-      
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to initialize checkout";
-      setError(errorMessage);
-      setIsLoading(false);
-      throw err;
-    }
-  }, [product.id, product.title]);
-
-  // Handle checkout completion
-  const handleComplete = useCallback(() => {
-    console.log("Checkout completed");
-    // Close the sheet - the return_url redirect will happen
-    onOpenChange(false);
-  }, [onOpenChange]);
-
   const handleClose = () => {
     onOpenChange(false);
   };
 
+  const handleSuccess = useCallback((paymentIntentId: string) => {
+    console.log("[BuyNowSheet] Payment succeeded:", paymentIntentId);
+    onOpenChange(false);
+    // Redirect to success page
+    router.push(`/checkout/success?payment_intent=${paymentIntentId}`);
+  }, [onOpenChange, router]);
+
+  const handleError = useCallback((errorMessage: string) => {
+    console.error("[BuyNowSheet] Payment error:", errorMessage);
+    setError(errorMessage);
+  }, []);
+
   const handleRetry = () => {
     setError(null);
-    setIsLoading(true);
   };
 
   const productImageUrl = product.images[0]?.url || null;
@@ -254,9 +185,9 @@ export function BuyNowSheet({
         </Column>
 
         {/* Stripe Checkout Area */}
-        <Column flex={1} padding="$md">
+        <Column flex={1}>
           {error ? (
-            <Column gap="$lg" alignItems="center" paddingVertical="$xl">
+            <Column gap="$lg" alignItems="center" paddingVertical="$xl" paddingHorizontal="$md">
               <Column
                 backgroundColor="$errorLight"
                 borderRadius="$full"
@@ -272,7 +203,7 @@ export function BuyNowSheet({
               </Column>
               <Column gap="$sm" alignItems="center">
                 <Heading level={5} textAlign="center">
-                  Unable to Load Checkout
+                  Unable to Complete Payment
                 </Heading>
                 <Text color="$textSecondary" textAlign="center">
                   {error}
@@ -288,26 +219,16 @@ export function BuyNowSheet({
               </Button>
             </Column>
           ) : (
-            <>
-              {isLoading && (
-                <Column gap="$md" alignItems="center" paddingVertical="$xl">
-                  <Spinner size="lg" color="$primary" />
-                  <Text color="$textSecondary">Preparing secure checkout...</Text>
-                </Column>
-              )}
-
-              <div style={{ display: isLoading ? 'none' : 'block', width: '100%' }}>
-                <EmbeddedCheckoutProvider
-                  stripe={stripePromise}
-                  options={{
-                    fetchClientSecret,
-                    onComplete: handleComplete,
-                  }}
-                >
-                  <EmbeddedCheckout />
-                </EmbeddedCheckoutProvider>
-              </div>
-            </>
+            /* Only render the payment form when sheet is open to avoid premature API calls */
+            isOpen && (
+              <StripePaymentForm
+                productId={product.id}
+                productPrice={product.price}
+                onSuccess={handleSuccess}
+                onError={handleError}
+                onCancel={handleClose}
+              />
+            )
           )}
         </Column>
       </SheetFrame>
