@@ -1,7 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Column, Row, Text, Button, Heading } from "@buttergolf/ui";
+import {
+  Column,
+  Row,
+  Text,
+  Button,
+  Heading,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverClose,
+} from "@buttergolf/ui";
 import { MakeOfferModal } from "./MakeOfferPopover";
 import type { Product } from "../ProductDetailClient";
 
@@ -244,6 +255,56 @@ export function ProductInformation({
         >
           Make an offer
         </Button>
+
+        {/* Test Popover - Tamagui Popover Component Demo */}
+        <Popover placement="top">
+          <PopoverTrigger asChild>
+            <Button
+              butterVariant="secondary"
+              size="$5"
+              width="100%"
+              height={56}
+            >
+              Test Popover
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            backgroundColor="$surface"
+            borderRadius="$lg"
+            padding="$4"
+            borderWidth={1}
+            borderColor="$border"
+            shadowColor="$shadowColor"
+            shadowRadius={20}
+            shadowOffset={{ width: 0, height: 10 }}
+            shadowOpacity={0.15}
+            elevate
+          >
+            <PopoverArrow backgroundColor="$surface" borderColor="$border" />
+            <Column gap="$3" width={250}>
+              <Text size="$5" fontWeight="600" color="$text">
+                Tamagui Popover 🎉
+              </Text>
+              <Text size="$4" color="$textSecondary">
+                This is a test of the Tamagui Popover component from @buttergolf/ui.
+              </Text>
+              <Row gap="$2" justifyContent="flex-end">
+                <PopoverClose asChild>
+                  <Button
+                    size="$3"
+                    backgroundColor="$primary"
+                    color="$textInverse"
+                    borderRadius="$full"
+                    paddingHorizontal="$4"
+                  >
+                    Got it!
+                  </Button>
+                </PopoverClose>
+              </Row>
+            </Column>
+          </PopoverContent>
+        </Popover>
+
         <MakeOfferModal
           product={product}
           isOpen={makeOfferOpen}
