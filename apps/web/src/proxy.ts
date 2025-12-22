@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 // TODO: Remove this entire coming-soon block after launch - set NEXT_PUBLIC_COMING_SOON_ENABLED=false
 // and delete ADMIN_USER_IDS, isComingSoonAllowedRoute, and the coming-soon redirect logic below.
 
-// Admin emails (josh@rwxt.org) - bypasses coming-soon redirect
-const ADMIN_EMAILS = ["josh@rwxt.org"];
+// Admin user IDs - bypasses coming-soon redirect
+const ADMIN_USER_IDS = ["user_37DMusbbHBI1lrqN3spqQGThcyu"];
 
 // Define protected routes that require authentication
 const isProtectedRoute = createRouteMatcher([
@@ -45,11 +45,9 @@ export default clerkMiddleware(async (auth, req) => {
     process.env.NEXT_PUBLIC_COMING_SOON_ENABLED === "true";
 
   if (isComingSoonEnabled && !isComingSoonAllowedRoute(req)) {
-    // Check if user is the admin (by email from Clerk JWT claims)
+    // Check if user is the admin (by userId)
     const session = await auth();
-    // Clerk includes email in the JWT claims as 'email'
-    const userEmail = session?.sessionClaims?.email as string | undefined;
-    const isAdmin = userEmail && ADMIN_EMAILS.includes(userEmail);
+    const isAdmin = session?.userId && ADMIN_USER_IDS.includes(session.userId);
 
     if (!isAdmin) {
       return NextResponse.redirect(new URL("/coming-soon", req.url));
