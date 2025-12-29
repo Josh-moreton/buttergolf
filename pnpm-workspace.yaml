@@ -11,7 +11,7 @@ catalog:
   '@tamagui/babel-plugin': 1.139.2
   '@tamagui/card': 1.139.2
   '@tamagui/cli': 1.139.2
-  '@tamagui/config': 1.139.2
+  '@tamagui/config': 1.142.0
   '@tamagui/core': 1.139.2
   '@tamagui/font-inter': 1.139.2
   '@tamagui/lucide-icons': 1.139.2
