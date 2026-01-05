@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 // Admin user IDs - bypasses coming-soon redirect
 const ADMIN_USER_IDS = [
   "user_37DMusbbHBI1lrqN3spqQGThcyu",
+  "user_37pn5LOWh6yBO0JdP61nc1dU1sV",
   "user_37Dahks6xMgGLMf3NSBBDCbLy7A",
 ];
 
