@@ -10,6 +10,7 @@ import {
   Button,
   View,
   Image,
+  useMedia,
 } from "@buttergolf/ui";
 import { images } from "@buttergolf/assets";
 import { Link } from "solito/link";
@@ -125,10 +126,10 @@ function getImageSource(image: ImageSource): { uri: string } | number | null {
 
 // Shared heading style - scales with viewport width
 const headingStyle = {
-  fontSize: "clamp(24px, 4vw, 56px)",
+  fontSize: "clamp(36px, 5.5vw, 80px)",
   color: "#323232",
   fontWeight: 700,
-  lineHeight: 1.1,
+  lineHeight: 1.15,
   whiteSpace: "normal" as const,
   wordBreak: "keep-all" as const,
 };
@@ -148,8 +149,12 @@ function HeroHeading({
 }: HeroHeadingProps) {
   const text = getHeadingText(heading);
   const lines = getHeadingLines(heading);
+  const media = useMedia();
+  
+  // On mobile (below $gtSm breakpoint), skip animation and use responsive Tamagui Heading
+  const isMobile = !media.gtSm;
 
-  if (animationVariant === "fade-up") {
+  if (animationVariant === "fade-up" && !isMobile) {
     return (
       <FadeUpText text={text} delay={animationDelay} style={headingStyle} />
     );
@@ -180,10 +185,14 @@ function HeroHeading({
     <Heading
       level={1}
       size="$9"
-      $md={{ fontSize: "$11" }}
-      $lg={{ fontSize: "$14" }}
+      lineHeight="$9"
+      $gtSm={{ fontSize: "$9", lineHeight: "$9" }}
+      $md={{ fontSize: "$11", lineHeight: "$11" }}
+      $lg={{ fontSize: "$14", lineHeight: "$14" }}
       color="$ironstone"
       fontWeight="700"
+      textAlign="center"
+      $gtSm={{ textAlign: "left" }}
       style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
     >
       {text}
@@ -353,12 +362,13 @@ export function Hero({
           <Column
             width="100%"
             justifyContent="center"
+            alignItems="center"
             paddingLeft="$6"
             paddingRight="$6"
-            $gtSm={{ width: "55%", paddingLeft: "$8", paddingRight: "$2" }}
+            $gtSm={{ width: "55%", paddingLeft: "$8", paddingRight: "$2", alignItems: "flex-start" }}
             $gtMd={{ width: "60%", paddingLeft: "$12", paddingRight: "$4" }}
           >
-            <Column gap="$4" $gtSm={{ gap: "$5" }} $gtMd={{ gap: "$6" }} maxWidth={700}>
+            <Column gap="$4" $gtSm={{ gap: "$5", maxWidth: 700 }} $gtMd={{ gap: "$6" }} width="100%" maxWidth="none">
               {/* Heading */}
               <HeroHeading
                 heading={heading}
@@ -369,10 +379,14 @@ export function Hero({
               {/* Subtitle */}
               {subtitle && (
                 <Text
-                  size="$6"
+                  size="$7"
+                  $gtSm={{ fontSize: "$8" }}
+                  $md={{ fontSize: "$9" }}
                   color="$slateSmoke"
                   fontWeight="500"
                   marginTop="$2"
+                  textAlign="center"
+                  $gtSm={{ textAlign: "left" }}
                 >
                   {subtitle}
                 </Text>
@@ -406,9 +420,12 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
 
   // Define button styling inline to avoid butterVariant prop warning
   const primaryButtonProps = {
-    size: "$4" as const,
-    paddingHorizontal: "$3" as const,
-    paddingVertical: "$2" as const,
+    size: "$5" as const,
+    $gtSm: { size: "$4" as const },
+    paddingHorizontal: "$4" as const,
+    $gtSm: { paddingHorizontal: "$3" as const },
+    paddingVertical: "$3" as const,
+    $gtSm: { paddingVertical: "$2" as const },
     backgroundColor: "$primary" as const,
     borderWidth: 1,
     borderColor: "$primaryBorder" as const,
@@ -416,9 +433,12 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
   };
 
   const secondaryButtonProps = {
-    size: "$4" as const,
-    paddingHorizontal: "$3" as const,
-    paddingVertical: "$2" as const,
+    size: "$5" as const,
+    $gtSm: { size: "$4" as const },
+    paddingHorizontal: "$4" as const,
+    $gtSm: { paddingHorizontal: "$3" as const },
+    paddingVertical: "$3" as const,
+    $gtSm: { paddingVertical: "$2" as const },
     backgroundColor: "$secondary" as const,
     borderWidth: 1,
     borderColor: "$secondaryBorder" as const,
@@ -426,7 +446,7 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
   };
 
   return (
-    <Row gap="$md" flexWrap="wrap" marginTop="$4">
+    <Row gap="$md" flexWrap="wrap" marginTop="$4" justifyContent="center" $gtSm={{ justifyContent: "flex-start" }}>
       {primaryCta && (
         <Link href={primaryCta.href} style={{ textDecoration: "none" }}>
           <Button butterVariant="primary" {...primaryButtonProps}>
