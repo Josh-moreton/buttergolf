@@ -11,13 +11,14 @@ import { Card, Text } from "@buttergolf/ui";
 export interface ProductCardProps {
   readonly product: ProductCardData;
   readonly onPress?: () => void;
+  readonly showHoverActions?: boolean;
 }
 
 /**
  * Web-specific ProductCard wrapper that adds favourite functionality
  * Uses useFavouriteToggle hook to persist favourites to database
  */
-export function ProductCard({ product, onPress }: ProductCardProps) {
+export function ProductCard({ product, onPress, showHoverActions = true }: ProductCardProps) {
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const { isFavourited, toggleFavourite } = useFavouriteToggle(product.id);
@@ -45,6 +46,11 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
     }
   };
 
+  const handleQuickView = (productId: string) => {
+    // Navigate to product page
+    router.push(`/products/${productId}`);
+  };
+
   return (
     <>
       <SharedProductCard
@@ -52,6 +58,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
         onPress={onPress}
         onFavourite={handleFavourite}
         isFavourited={isFavourited}
+        onQuickView={showHoverActions ? handleQuickView : undefined}
       />
       {showAuthMessage && (
         <div

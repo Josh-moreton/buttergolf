@@ -217,17 +217,18 @@ export function ProductsGrid({
 
   return (
     <Column gap="$lg" width="100%">
-      {/* Products Grid - Responsive: 2 col mobile, 3 col tablet+ */}
-      {/* Extra padding + negative margin allows shadows to overflow without clipping */}
+      {/* Products Grid - Responsive: 2 col mobile, 3 col tablet, 4 col desktop */}
       <Column
         width="100%"
-        style={{ display: "grid", overflow: "visible" }}
+        style={{ display: "grid" }}
         gridTemplateColumns="repeat(2, 1fr)"
-        gap="$6"
-        padding="$4"
-        margin="$-4"
+        gap="$md"
         $gtSm={{
           gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "$lg",
+        }}
+        $gtMd={{
+          gridTemplateColumns: "repeat(4, 1fr)",
         }}
       >
         <AnimatedGridContent

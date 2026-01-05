@@ -51,14 +51,15 @@ export function RecentlyListedSectionClient({
           </Text>
         </Column>
 
-        {/* 5-column Grid */}
+        {/* 5-column Grid - Responsive breakpoints */}
         <Column
           width="100%"
           style={{ display: "grid" }}
           gridTemplateColumns="repeat(2, 1fr)"
-          gap="$6"
+          gap="$md"
           $gtSm={{
             gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "$lg",
           }}
           $gtMd={{
             gridTemplateColumns: "repeat(4, 1fr)",
