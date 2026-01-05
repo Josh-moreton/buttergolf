@@ -252,13 +252,16 @@ export function ButterHeader() {
 
         {/* Category Navigation Sub-header - Animated Selector with Glassmorphism (Desktop Only) */}
         <Row
-          display="none"
-          $gtMd={{ display: "flex" }}
           paddingHorizontal="$4"
           paddingVertical="$3"
-          $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
           justifyContent="center"
           backgroundColor="transparent"
+          display="none"
+          $gtMd={{ 
+            display: "flex",
+            paddingHorizontal: "$6", 
+            paddingVertical: "$4" 
+          }}
         >
           <GlassmorphismCard
             intensity="medium"
