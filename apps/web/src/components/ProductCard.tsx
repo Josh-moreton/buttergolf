@@ -47,13 +47,8 @@ export function ProductCard({ product, onPress, showHoverActions = true }: Produ
   };
 
   const handleQuickView = (productId: string) => {
-    // Navigate to product page - could be enhanced with modal in future
+    // Navigate to product page
     router.push(`/products/${productId}`);
-  };
-
-  const handleMakeOffer = (productId: string) => {
-    // Navigate to product page with offer modal
-    router.push(`/products/${productId}?offer=true`);
   };
 
   return (
@@ -64,7 +59,6 @@ export function ProductCard({ product, onPress, showHoverActions = true }: Produ
         onFavourite={handleFavourite}
         isFavourited={isFavourited}
         onQuickView={showHoverActions ? handleQuickView : undefined}
-        onMakeOffer={showHoverActions ? handleMakeOffer : undefined}
       />
       {showAuthMessage && (
         <div

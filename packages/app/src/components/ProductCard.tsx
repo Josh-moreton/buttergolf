@@ -21,7 +21,6 @@ export interface ProductCardProps {
   onFavourite?: (productId: string) => void;
   isFavourited?: boolean;
   onQuickView?: (productId: string) => void;
-  onMakeOffer?: (productId: string) => void;
 }
 
 // Heart icon component that works on both platforms
@@ -63,7 +62,6 @@ export function ProductCard({
   onFavourite,
   isFavourited = false,
   onQuickView,
-  onMakeOffer,
 }: Readonly<ProductCardProps>) {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -113,24 +111,6 @@ export function ProductCard({
           borderTopRightRadius={16}
         />
 
-        {/* Condition Badge - Top Left (if condition exists) */}
-        {product.condition && (
-          <View
-            position="absolute"
-            top={10}
-            left={10}
-            backgroundColor="$surface"
-            paddingHorizontal={8}
-            paddingVertical={4}
-            borderRadius={6}
-            style={isWeb ? { boxShadow: "0 1px 3px rgba(0,0,0,0.12)" } : undefined}
-          >
-            <Text size="$3" fontWeight="600" color="$text">
-              {product.condition.replace(/_/g, " ")}
-            </Text>
-          </View>
-        )}
-
         {/* Favourite Heart Button - Top Right with Glassmorphism */}
         <GlassmorphismCard
           intensity="medium"
@@ -169,58 +149,39 @@ export function ProductCard({
         </GlassmorphismCard>
 
         {/* Hover Actions Overlay - Desktop only */}
-        {isWeb && (onQuickView || onMakeOffer) && (
+        {isWeb && onQuickView && (
           <View
             position="absolute"
             bottom={0}
             left={0}
             right={0}
             paddingHorizontal={12}
-            paddingVertical={10}
+            paddingVertical={12}
             zIndex={3}
             style={{
-              background: "linear-gradient(transparent, rgba(0,0,0,0.6))",
+              background: "linear-gradient(transparent, rgba(0,0,0,0.5))",
               opacity: isHovered ? 1 : 0,
               transform: isHovered ? "translateY(0)" : "translateY(8px)",
               transition: "opacity 0.2s ease, transform 0.2s ease",
               pointerEvents: isHovered ? "auto" : "none",
             }}
           >
-            <Row gap={8} justifyContent="center">
-              {onQuickView && (
-                <Button
-                  size="$3"
-                  backgroundColor="$surface"
-                  color="$text"
-                  borderRadius={8}
-                  paddingHorizontal={12}
-                  paddingVertical={6}
-                  onPress={(e) => {
-                    e?.stopPropagation?.();
-                    onQuickView(product.id);
-                  }}
-                  hoverStyle={{ backgroundColor: "$backgroundHover" }}
-                >
-                  Quick View
-                </Button>
-              )}
-              {onMakeOffer && (
-                <Button
-                  size="$3"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                  borderRadius={8}
-                  paddingHorizontal={12}
-                  paddingVertical={6}
-                  onPress={(e) => {
-                    e?.stopPropagation?.();
-                    onMakeOffer(product.id);
-                  }}
-                  hoverStyle={{ opacity: 0.9 }}
-                >
-                  Make Offer
-                </Button>
-              )}
+            <Row justifyContent="center">
+              <Button
+                size="$4"
+                backgroundColor="$primary"
+                color="$textInverse"
+                borderRadius="$full"
+                paddingHorizontal="$6"
+                onPress={(e) => {
+                  e?.stopPropagation?.();
+                  onQuickView(product.id);
+                }}
+                hoverStyle={{ opacity: 0.9 }}
+                pressStyle={{ opacity: 0.8 }}
+              >
+                View
+              </Button>
             </Row>
           </View>
         )}
