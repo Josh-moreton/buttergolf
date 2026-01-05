@@ -220,7 +220,7 @@ export function SellerProductCard({
               disabled={isDeleting || isUpdating}
             >
               <Row gap="$xs" alignItems="center">
-                <Edit3 size={14} color="var(--color-primary)" />
+                <Edit3 size={14} color="$primary" />
                 <Text color="$primary" weight="semibold">Edit</Text>
               </Row>
             </Button>
