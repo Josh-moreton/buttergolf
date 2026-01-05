@@ -14,7 +14,7 @@ function mapSlidersToConditionEnum(
   if (avg >= 6) return ProductCondition.GOOD;
   if (avg >= 4) return ProductCondition.FAIR;
   if (avg >= 2) return ProductCondition.POOR;
-  return ProductCondition.NEW;
+  return ProductCondition.POOR;
 }
 
 export async function POST(request: Request) {
