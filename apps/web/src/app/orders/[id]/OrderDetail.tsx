@@ -559,11 +559,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
                       <RefreshCw
                         size={14}
                         color="var(--color-primary)"
-                        style={{
-                          animation: isLoadingTracking
-                            ? "spin 1s linear infinite"
-                            : "none",
-                        }}
+                        style={
+                          {
+                            animation: isLoadingTracking
+                              ? "spin 1s linear infinite"
+                              : "none",
+                          } as any
+                        }
                       />
                     }
                   >

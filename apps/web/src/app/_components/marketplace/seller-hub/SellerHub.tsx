@@ -11,6 +11,8 @@ import {
   Button,
   Card,
   Spinner,
+  ToggleGroup,
+  Select,
 } from "@buttergolf/ui";
 import { Plus, Package, Eye, Heart, Tag } from "@tamagui/lucide-icons";
 import Link from "next/link";
@@ -279,15 +281,12 @@ export function SellerHub() {
           </Column>
           <Link href="/sell" style={{ textDecoration: "none" }}>
             <Button
+              butterVariant="primary"
               size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
             >
               <Row gap="$sm" alignItems="center">
-                <Plus size={20} />
-                <Text>New Listing</Text>
+                <Plus size={20} color="white" />
+                <Text color="$textInverse" weight="semibold">New Listing</Text>
               </Row>
             </Button>
           </Link>
@@ -370,61 +369,34 @@ export function SellerHub() {
             {/* Status Filter */}
             <Row gap="$sm" alignItems="center" flexWrap="wrap">
               <Text weight="medium">Status:</Text>
-              <Row gap="$xs">
-                <Button
-                  size="$3"
-                  backgroundColor={
-                    statusFilter === "all" ? "$primary" : "transparent"
-                  }
-                  color={statusFilter === "all" ? "$textInverse" : "$text"}
-                  onPress={() => setStatusFilter("all")}
-                >
-                  All
-                </Button>
-                <Button
-                  size="$3"
-                  backgroundColor={
-                    statusFilter === "active" ? "$primary" : "transparent"
-                  }
-                  color={statusFilter === "active" ? "$textInverse" : "$text"}
-                  onPress={() => setStatusFilter("active")}
-                >
-                  Active
-                </Button>
-                <Button
-                  size="$3"
-                  backgroundColor={
-                    statusFilter === "sold" ? "$primary" : "transparent"
-                  }
-                  color={statusFilter === "sold" ? "$textInverse" : "$text"}
-                  onPress={() => setStatusFilter("sold")}
-                >
-                  Sold
-                </Button>
-              </Row>
+              <ToggleGroup
+                value={statusFilter}
+                onValueChange={(value) => setStatusFilter(value as "all" | "active" | "sold")}
+                options={[
+                  { value: "all", label: "All" },
+                  { value: "active", label: "Active" },
+                  { value: "sold", label: "Sold" },
+                ]}
+                size="$3"
+              />
             </Row>
 
             {/* Sort */}
             <Row gap="$sm" alignItems="center">
               <Text weight="medium">Sort:</Text>
-              <select
+              <Select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                style={{
-                  padding: "8px 12px",
-                  fontSize: "14px",
-                  borderRadius: "16px",
-                  border: "1px solid var(--color-cloudMist)",
-                  backgroundColor: "white",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="views">Most Viewed</option>
-              </select>
+                onValueChange={(value) => setSortBy(value as typeof sortBy)}
+                options={[
+                  { value: "newest", label: "Newest First" },
+                  { value: "oldest", label: "Oldest First" },
+                  { value: "price-desc", label: "Price: High to Low" },
+                  { value: "price-asc", label: "Price: Low to High" },
+                  { value: "views", label: "Most Viewed" },
+                ]}
+                placeholder="Sort by"
+                size="sm"
+              />
             </Row>
           </Row>
         </Card>
@@ -454,6 +426,7 @@ export function SellerHub() {
             {data.pagination.totalPages > 1 && (
               <Row gap="$sm" alignItems="center" justifyContent="center">
                 <Button
+                  butterVariant="outline"
                   size="$4"
                   disabled={currentPage === 1}
                   onPress={() => fetchListings(currentPage - 1)}
@@ -464,6 +437,7 @@ export function SellerHub() {
                   Page {currentPage} of {data.pagination.totalPages}
                 </Text>
                 <Button
+                  butterVariant="outline"
                   size="$4"
                   disabled={!data.pagination.hasMore}
                   onPress={() => fetchListings(currentPage + 1)}

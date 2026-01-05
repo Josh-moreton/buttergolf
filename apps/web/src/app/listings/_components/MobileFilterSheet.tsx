@@ -57,7 +57,7 @@ export function MobileFilterSheet({
         exitStyle={{ opacity: 0 }}
       />
       <Frame
-        aria-modal="true"
+        aria-modal={true}
         aria-labelledby={headingId}
         backgroundColor="$surface"
         borderTopLeftRadius="$2xl"

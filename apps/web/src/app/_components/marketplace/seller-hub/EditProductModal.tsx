@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Card,
+  Select,
 } from "@buttergolf/ui";
 import type { SellerProduct } from "./SellerProductCard";
 
@@ -236,57 +237,36 @@ export function EditProductModal({
 
                 <Column gap="$xs" flex={1} minWidth={200}>
                   <Text weight="medium">Condition *</Text>
-                  <select
+                  <Select
                     value={formData.condition}
-                    onChange={(e) =>
-                      setFormData({ ...formData, condition: e.target.value })
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, condition: value })
                     }
-                    required
-                    style={{
-                      padding: "12px 18px",
-                      fontSize: "15px",
-                      borderRadius: "24px",
-                      border: "1px solid var(--color-ironstone)",
-                      backgroundColor: "white",
-                      width: "100%",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {CONDITIONS.map((cond) => (
-                      <option key={cond.value} value={cond.value}>
-                        {cond.label}
-                      </option>
-                    ))}
-                  </select>
+                    options={CONDITIONS.map((cond) => ({
+                      value: cond.value,
+                      label: cond.label,
+                    }))}
+                    placeholder="Select condition"
+                    size="md"
+                  />
                 </Column>
               </Row>
 
               {/* Brand */}
               <Column gap="$xs">
                 <Text weight="medium">Brand *</Text>
-                <select
+                <Select
                   value={formData.brandId}
-                  onChange={(e) =>
-                    setFormData({ ...formData, brandId: e.target.value })
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, brandId: value })
                   }
-                  required
-                  style={{
-                    padding: "12px 18px",
-                    fontSize: "15px",
-                    borderRadius: "24px",
-                    border: "1px solid var(--color-ironstone)",
-                    backgroundColor: "white",
-                    width: "100%",
-                    cursor: "pointer",
-                  }}
-                >
-                  <option value="">Select a brand</option>
-                  {brands.map((brand) => (
-                    <option key={brand.id} value={brand.id}>
-                      {brand.name}
-                    </option>
-                  ))}
-                </select>
+                  options={brands.map((brand) => ({
+                    value: brand.id,
+                    label: brand.name,
+                  }))}
+                  placeholder="Select a brand"
+                  size="md"
+                />
               </Column>
 
               {/* Model */}
@@ -305,29 +285,18 @@ export function EditProductModal({
               {/* Category */}
               <Column gap="$xs">
                 <Text weight="medium">Category *</Text>
-                <select
+                <Select
                   value={formData.categoryId}
-                  onChange={(e) =>
-                    setFormData({ ...formData, categoryId: e.target.value })
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, categoryId: value })
                   }
-                  required
-                  style={{
-                    padding: "12px 18px",
-                    fontSize: "15px",
-                    borderRadius: "24px",
-                    border: "1px solid var(--color-ironstone)",
-                    backgroundColor: "white",
-                    width: "100%",
-                    cursor: "pointer",
-                  }}
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                  options={categories.map((category) => ({
+                    value: category.id,
+                    label: category.name,
+                  }))}
+                  placeholder="Select a category"
+                  size="md"
+                />
               </Column>
 
               {/* Error Message */}
@@ -353,19 +322,16 @@ export function EditProductModal({
             >
               <Row gap="$sm" justifyContent="flex-end">
                 <Button
+                  butterVariant="ghost"
                   size="$4"
-                  chromeless
                   onPress={onClose}
                   disabled={loading}
                 >
                   Cancel
                 </Button>
                 <Button
+                  butterVariant="primary"
                   size="$4"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                  paddingHorizontal="$4"
-                  paddingVertical="$3"
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Changes"}

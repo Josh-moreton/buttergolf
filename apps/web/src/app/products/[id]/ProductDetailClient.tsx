@@ -33,6 +33,8 @@ interface User {
   firstName: string | null;
   lastName: string | null;
   imageUrl: string | null;
+  averageRating?: number | null;
+  ratingCount?: number;
 }
 
 export interface Product {

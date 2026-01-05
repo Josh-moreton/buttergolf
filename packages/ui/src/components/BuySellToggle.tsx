@@ -58,14 +58,12 @@ const StyledTab = styled(Tabs.Tab, {
   paddingVertical: "$3",
   cursor: "pointer",
   borderWidth: 1,
-  fontWeight: "600",
   // Disable Tamagui's default tab unstyled prop
   unstyled: true,
 
   // Default inactive state - use explicit colors to avoid conflicts
   backgroundColor: "#FFFFFF",
   borderColor: "#EDEDED",
-  color: "#323232",
 
   // Web shadows for inactive
   // @ts-ignore - boxShadow only exists on web
@@ -94,7 +92,6 @@ const StyledTab = styled(Tabs.Tab, {
         // Spiced Clementine - explicit hex to override any defaults
         backgroundColor: "#F45314",
         borderColor: "#F04300",
-        color: "#FFFFFF",
         // @ts-ignore - boxShadow only exists on web
         boxShadow:
           "0px 1px 5px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 2px 0px #FF7E4C",
@@ -110,7 +107,6 @@ const StyledTab = styled(Tabs.Tab, {
       false: {
         backgroundColor: "#FFFFFF",
         borderColor: "#EDEDED",
-        color: "#323232",
         // @ts-ignore - boxShadow only exists on web
         boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.1)",
         hoverStyle: {
