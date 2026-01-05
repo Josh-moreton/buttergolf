@@ -29,7 +29,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         backgroundColor="$pureWhite"
         justifyContent="space-between"
         display="none"
-        $gtMd={{
+        $gtLg={{
           display: "flex",
         }}
         style={{ position: "relative", overflow: "hidden" }}
@@ -75,7 +75,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         justifyContent="center"
         padding="$lg"
         backgroundColor="$pureWhite"
-        $gtMd={{
+        $gtLg={{
           padding: "$xl",
           alignItems: "flex-start",
           paddingLeft: "$3xl",
@@ -92,7 +92,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           <Row
             marginBottom="$md"
             display="flex"
-            $gtMd={{
+            $gtLg={{
               display: "none",
             }}
           >
