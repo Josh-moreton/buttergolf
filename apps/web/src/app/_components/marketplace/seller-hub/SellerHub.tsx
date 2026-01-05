@@ -373,6 +373,11 @@ export function SellerHub() {
                       borderRadius="$full"
                       paddingHorizontal="$md"
                       paddingVertical="$sm"
+                      shadowColor="transparent"
+                      shadowOffset={{ width: 0, height: 0 }}
+                      shadowOpacity={0}
+                      shadowRadius={0}
+                      elevation={0}
                       onPress={() => setStatusFilter(status)}
                     >
                       {status.charAt(0).toUpperCase() + status.slice(1)}
