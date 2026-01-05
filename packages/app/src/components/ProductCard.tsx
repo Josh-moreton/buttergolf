@@ -186,11 +186,11 @@ export function ProductCard({
 
       {/* Content Area - Fixed height for consistent grid alignment */}
       <Column
-        paddingHorizontal={12}
-        paddingVertical={10}
-        gap={4}
+        paddingHorizontal={16}
+        paddingVertical={14}
+        gap={6}
         minHeight={96}
-        justifyContent="space-between"
+        justifyContent="flex-start"
       >
         {/* Title - 2 lines max with line-clamp */}
         <Text
