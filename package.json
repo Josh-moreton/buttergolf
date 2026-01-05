@@ -31,7 +31,7 @@
     "@tamagui/cli": "catalog:",
     "@testing-library/react-native": "^13.3.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "@vitest/ui": "^4.0.13",
+    "@vitest/ui": "^4.0.16",
     "check-dependency-version-consistency": "^5.0.1",
     "dotenv": "^17.2.3",
     "prettier": "^3.6.2",
