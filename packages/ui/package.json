@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@buttergolf/config": "workspace:*",
-    "@tamagui/slider": "^1.141.5",
-    "@tamagui/switch": "^1.141.5"
+    "@tamagui/slider": "^1.143.0",
+    "@tamagui/switch": "^1.143.0"
   },
   "devDependencies": {
     "@buttergolf/eslint-config": "workspace:*",
