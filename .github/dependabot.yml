@@ -4,7 +4,9 @@
 
 version: 2
 updates:
-  # Root workspace dependencies
+  # Root workspace dependencies (pnpm catalog)
+  # CRITICAL: This is where the pnpm catalog lives, so grouping here
+  # ensures related packages are updated together in a single PR
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -12,15 +14,54 @@ updates:
       day: "monday"
     open-pull-requests-limit: 10
     groups:
+      # CRITICAL: Group ALL Tamagui packages together
+      # All 18 @tamagui/* packages must be the same version
+      tamagui:
+        patterns:
+          - "tamagui"
+          - "@tamagui/*"
+      # Group entire React ecosystem together
+      # These are pinned via pnpm overrides and must match
       react:
         patterns:
           - "react"
           - "react-dom"
+          - "react-native"
+          - "react-native-*"
+          - "@types/react"
+          - "@types/react-dom"
+          - "react-test-renderer"
+          - "react-is"
+      # Group Prisma together (client + CLI must match)
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+      # Group Expo together
+      expo:
+        patterns:
+          - "expo"
+          - "expo-*"
+          - "@expo/*"
+      # Group Solito (cross-platform navigation)
+      solito:
+        patterns:
+          - "solito"
+      # Group testing tools
+      testing:
+        patterns:
+          - "vitest"
+          - "@testing-library/*"
+      # Group build tools
       dev-dependencies:
         patterns:
           - "prettier"
           - "turbo"
           - "typescript"
+          - "tsx"
+          - "eslint"
+          - "eslint-*"
+          - "@types/node"
 
   # Web app (Next.js)
   - package-ecosystem: "npm"
