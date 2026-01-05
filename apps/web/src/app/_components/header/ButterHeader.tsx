@@ -250,8 +250,10 @@ export function ButterHeader() {
           </Row>
         </Row>
 
-        {/* Category Navigation Sub-header - Animated Selector with Glassmorphism */}
+        {/* Category Navigation Sub-header - Animated Selector with Glassmorphism (Desktop Only) */}
         <Row
+          display="none"
+          $gtMd={{ display: "flex" }}
           paddingHorizontal="$4"
           paddingVertical="$3"
           $md={{ paddingHorizontal: "$6", paddingVertical: "$4" }}
@@ -285,7 +287,7 @@ export function ButterHeader() {
       {mobileMenuOpen && (
         <Column
           style={{ position: "fixed" }}
-          top={110}
+          top={72}
           left={0}
           right={0}
           bottom={0}
@@ -338,6 +340,43 @@ export function ButterHeader() {
               Selling
             </Text>
           </Link>
+
+          {/* Visual Divider */}
+          <Row
+            height={1}
+            backgroundColor="$border"
+            marginVertical="$4"
+            width="100%"
+          />
+
+          {/* Category Navigation - Mobile Only */}
+          <Column gap="$4">
+            <Text size="$5" weight="semibold" color="$textSecondary">
+              Shop by Category
+            </Text>
+            {NAV_CATEGORIES.map((category) => (
+              <Link
+                key={category.href}
+                href={category.href}
+                style={{ textDecoration: "none" }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Row
+                  minHeight={44}
+                  alignItems="center"
+                  paddingVertical="$2"
+                >
+                  <Text
+                    size="$6"
+                    weight={isActive(category.href) ? "bold" : "normal"}
+                    color={isActive(category.href) ? "$primary" : "$text"}
+                  >
+                    {category.name}
+                  </Text>
+                </Row>
+              </Link>
+            ))}
+          </Column>
 
           {/* Mobile Auth Buttons */}
           <Column gap="$3" marginTop="$6">
