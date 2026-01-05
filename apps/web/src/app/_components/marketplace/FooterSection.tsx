@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Text, Row, Column } from "@buttergolf/ui";
 
 export function FooterSection() {
@@ -68,69 +69,83 @@ export function FooterSection() {
           <Row gap="$3xl" alignItems="flex-start" zIndex={1}>
             {/* Column 1 */}
             <Column gap="$xs" alignItems="flex-start">
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                weight="bold"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Home
-              </Text>
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                weight="bold"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Buying
-              </Text>
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                weight="bold"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Selling
-              </Text>
+              <Link href="/" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  weight="bold"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Home
+                </Text>
+              </Link>
+              <Link href="/listings" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  weight="bold"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Buying
+                </Text>
+              </Link>
+              <Link href="/sell" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  weight="bold"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Selling
+                </Text>
+              </Link>
             </Column>
 
             {/* Column 2 */}
             <Column gap="$xs" alignItems="flex-start">
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Blog
-              </Text>
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Terms of Service
-              </Text>
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Privacy Policy
-              </Text>
-              <Text
-                color="$vanillaCream"
-                size="$4"
-                cursor="pointer"
-                hoverStyle={{ opacity: 0.8 }}
-              >
-                Help Centre
-              </Text>
+              <Link href="/coming-soon" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Blog
+                </Text>
+              </Link>
+              <Link href="/terms-of-service" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Terms of Service
+                </Text>
+              </Link>
+              <Link href="/privacy-policy" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Privacy Policy
+                </Text>
+              </Link>
+              <Link href="/help-centre" style={{ textDecoration: "none" }}>
+                <Text
+                  color="$vanillaCream"
+                  size="$4"
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                >
+                  Help Centre
+                </Text>
+              </Link>
             </Column>
           </Row>
         </Row>
