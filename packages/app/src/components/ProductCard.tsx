@@ -168,7 +168,7 @@ export function ProductCard({
               color="$textInverse"
               numberOfLines={2}
               marginBottom={10}
-              height={44}
+              height={48}
               style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
             >
               {product.title}

@@ -53,7 +53,18 @@
     },
     "ignoredBuiltDependencies": [
       "@clerk/shared",
-      "@parcel/watcher"
+      "@parcel/watcher",
+      "nodent-runtime"
+    ],
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "browser-tabs-lock",
+      "core-js",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
     ]
   },
   "packageManager": "pnpm@10.26.1",
