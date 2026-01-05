@@ -2,6 +2,21 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma, ProductCondition } from "@buttergolf/db";
 
+// Map slider values to ProductCondition enum for backwards compatibility
+function mapSlidersToConditionEnum(
+  grip: number,
+  head: number,
+  shaft: number,
+): ProductCondition {
+  const avg = (grip + head + shaft) / 3;
+  if (avg >= 9.5) return ProductCondition.LIKE_NEW;
+  if (avg >= 8) return ProductCondition.EXCELLENT;
+  if (avg >= 6) return ProductCondition.GOOD;
+  if (avg >= 4) return ProductCondition.FAIR;
+  if (avg >= 2) return ProductCondition.POOR;
+  return ProductCondition.NEW;
+}
+
 export async function POST(request: Request) {
   try {
     // Authenticate user
@@ -121,7 +136,6 @@ export async function POST(request: Request) {
       title,
       description,
       price,
-      condition,
       brandId,
       model,
       clubKind, // Optional: used for creating/updating ClubModel
@@ -130,15 +144,64 @@ export async function POST(request: Request) {
       // Golf club specific fields
       flex,
       loft,
+      woodsSubcategory,
+      headCoverIncluded,
+      gripCondition,
+      headCondition,
+      shaftCondition,
       // Shipping dimensions
       length,
       width,
       height,
       weight,
+      // Idempotency key to prevent duplicate submissions
+      requestId,
+      // Draft flag
+      isDraft,
     } = body;
 
+    // ============================================================
+    // IDEMPOTENCY CHECK
+    // Prevent duplicate product creation from double-submissions
+    // ============================================================
+    if (requestId) {
+      const existingProduct = await prisma.product.findFirst({
+        where: {
+          requestId,
+          userId: user.id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (existingProduct) {
+        console.log(
+          `[Products API] Duplicate request detected: ${requestId} - returning existing product ${existingProduct.id}`,
+        );
+        // Return the existing product instead of creating a duplicate
+        const product = await prisma.product.findUnique({
+          where: { id: existingProduct.id },
+          include: {
+            images: true,
+            category: true,
+            brand: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                imageUrl: true,
+              },
+            },
+          },
+        });
+        return NextResponse.json(product, { status: 200 });
+      }
+    }
+
     // Validate required fields
-    if (!title || !description || !price || !categoryId || !condition) {
+    if (!title || !description || !price || !categoryId) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -152,10 +215,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate condition enum
-    if (!Object.values(ProductCondition).includes(condition)) {
+    // Validate slider ranges if provided
+    if (gripCondition && (gripCondition < 1 || gripCondition > 10)) {
       return NextResponse.json(
-        { error: "Invalid condition value" },
+        { error: "Grip condition must be between 1 and 10" },
+        { status: 400 },
+      );
+    }
+    if (headCondition && (headCondition < 1 || headCondition > 10)) {
+      return NextResponse.json(
+        { error: "Head condition must be between 1 and 10" },
+        { status: 400 },
+      );
+    }
+    if (shaftCondition && (shaftCondition < 1 || shaftCondition > 10)) {
+      return NextResponse.json(
+        { error: "Shaft condition must be between 1 and 10" },
         { status: 400 },
       );
     }
@@ -213,7 +288,11 @@ export async function POST(request: Request) {
         title,
         description,
         price: Number(price),
-        condition,
+        condition: mapSlidersToConditionEnum(
+          gripCondition || 7,
+          headCondition || 7,
+          shaftCondition || 7,
+        ),
         brandId: brandId || null,
         model: model || null,
         userId: user.id,
@@ -221,11 +300,20 @@ export async function POST(request: Request) {
         // Golf club specific fields
         flex: flex || null,
         loft: loft || null,
+        woodsSubcategory: woodsSubcategory || null,
+        headCoverIncluded: headCoverIncluded || false,
+        gripCondition: gripCondition || 7,
+        headCondition: headCondition || 7,
+        shaftCondition: shaftCondition || 7,
         // Shipping dimensions
         length: length ? Number(length) : null,
         width: width ? Number(width) : null,
         height: height ? Number(height) : null,
         weight: weight ? Number(weight) : null,
+        // Idempotency key for duplicate prevention
+        requestId: requestId || null,
+        // Draft status
+        isDraft: isDraft || false,
         images: {
           create: images.map((url: string, index: number) => ({
             url,

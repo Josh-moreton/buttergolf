@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 import {
   Column,
   Row,
@@ -11,6 +12,11 @@ import {
   Input,
   Card,
   Autocomplete,
+  RadioGroup,
+  Radio,
+  RadioIndicator,
+  Checkbox,
+  Slider,
 } from "@buttergolf/ui";
 import { ImageUpload } from "@/components/ImageUpload";
 import { PhotoTipsCard } from "./PhotoTipsCard";
@@ -40,24 +46,19 @@ interface FormData {
   title: string;
   description: string;
   price: string;
-  condition: string;
   brandId: string;
   brandName: string; // For display
   model: string;
   categoryId: string;
   flex: string; // Shaft flex for woods/irons
   loft: string; // Loft angle for woods/wedges
+  woodsSubcategory: string; // Driver, Fairway Wood, Hybrid
+  headCoverIncluded: boolean; // Head cover included for woods/putters
+  gripCondition: number; // Grip condition rating 1-10
+  headCondition: number; // Head condition rating 1-10
+  shaftCondition: number; // Shaft condition rating 1-10
   images: string[];
 }
-
-const CONDITIONS = [
-  { value: "NEW", label: "Brand New" },
-  { value: "LIKE_NEW", label: "Like New" },
-  { value: "EXCELLENT", label: "Excellent" },
-  { value: "GOOD", label: "Good" },
-  { value: "FAIR", label: "Fair" },
-  { value: "POOR", label: "Poor" },
-];
 
 const FLEX_OPTIONS = [
   { value: "", label: "Select flex (optional)" },
@@ -103,6 +104,25 @@ const LOFT_OPTIONS_WEDGES = [
   { value: "64°", label: "64°" },
 ];
 
+const WOODS_SUBCATEGORIES = [
+  { value: "Driver", label: "Driver" },
+  { value: "Fairway Wood", label: "Fairway Wood" },
+  { value: "Hybrid", label: "Hybrid" },
+];
+
+const CONDITION_LABELS: Record<number, string> = {
+  1: "Poor",
+  2: "Poor",
+  3: "Fair",
+  4: "Fair",
+  5: "Good",
+  6: "Good",
+  7: "Good",
+  8: "Excellent",
+  9: "Excellent",
+  10: "Like New",
+};
+
 // Label component for form fields
 const FormLabel = ({
   children,
@@ -130,6 +150,11 @@ export function SellFormClient() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Synchronous ref to prevent duplicate submissions (React state is async)
+  const isSubmittingRef = useRef(false);
+  // Request ID for server-side idempotency
+  const requestIdRef = useRef<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [userAddedText, setUserAddedText] = useState<string>(""); // Track any manual additions
   const [isEditingTitle, setIsEditingTitle] = useState(false); // Track if user is manually editing
@@ -137,13 +162,17 @@ export function SellFormClient() {
     title: "",
     description: "",
     price: "",
-    condition: "GOOD",
     brandId: "",
     brandName: "",
     model: "",
     categoryId: "",
     flex: "",
     loft: "",
+    woodsSubcategory: "",
+    headCoverIncluded: false,
+    gripCondition: 7,
+    headCondition: 7,
+    shaftCondition: 7,
     images: [],
   });
 
@@ -153,7 +182,7 @@ export function SellFormClient() {
     const pluralMap: Record<string, string> = {
       Woods: "Wood",
       Hybrids: "Hybrid",
-      Irons: "Iron",
+      Irons: "Irons", // Keep as "Irons" in title
       Wedges: "Wedge",
       Putters: "Putter",
       Balls: "Ball",
@@ -200,25 +229,8 @@ export function SellFormClient() {
       }
     }
 
-    // Only add condition if we have at least one other field filled
-    if (parts.length > 0 && formData.condition) {
-      const conditionLabel = CONDITIONS.find(
-        (c) => c.value === formData.condition,
-      )?.label;
-      if (conditionLabel) {
-        const baseTitle = parts.join(" ");
-        return `${baseTitle} - ${conditionLabel}`;
-      }
-    }
-
     return parts.join(" ");
-  }, [
-    formData.brandName,
-    formData.model,
-    formData.categoryId,
-    formData.condition,
-    categories,
-  ]);
+  }, [formData.brandName, formData.model, formData.categoryId, categories]);
 
   // Auto-generate title when relevant fields change
   useEffect(() => {
@@ -236,7 +248,6 @@ export function SellFormClient() {
     formData.brandName,
     formData.model,
     formData.categoryId,
-    formData.condition,
     userAddedText,
     categories,
     generateTitle,
@@ -292,8 +303,36 @@ export function SellFormClient() {
       : LOFT_OPTIONS_WOODS;
   };
 
+  const shouldShowWoodsSubcategory = (): boolean => {
+    if (!formData.categoryId) return false;
+    const category = categories.find((c) => c.id === formData.categoryId);
+    return category?.slug === "woods";
+  };
+
+  const shouldShowHeadCover = (): boolean => {
+    if (!formData.categoryId) return false;
+    const category = categories.find((c) => c.id === formData.categoryId);
+    return category?.slug === "woods" || category?.slug === "putters";
+  };
+
+  const getConditionLabel = (value: number): string => {
+    return CONDITION_LABELS[value] || "Good";
+  };
+
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
+    
+    // Synchronous guard to prevent duplicate submissions
+    // (React state updates are async, so we need a ref for immediate check)
+    if (isSubmittingRef.current) {
+      console.log("[SellForm] Duplicate submission blocked by ref guard");
+      return;
+    }
+    isSubmittingRef.current = true;
+    
+    // Generate unique request ID for server-side idempotency
+    requestIdRef.current = uuidv4();
+    
     setLoading(true);
     setError(null);
 
@@ -307,12 +346,14 @@ export function SellFormClient() {
     ) {
       setError("Please fill in all required fields");
       setLoading(false);
+      isSubmittingRef.current = false;
       return;
     }
 
     if (formData.images.length === 0) {
       setError("Please upload at least one image");
       setLoading(false);
+      isSubmittingRef.current = false;
       return;
     }
 
@@ -327,6 +368,8 @@ export function SellFormClient() {
           price: Number.parseFloat(formData.price),
           // Don't send brandName (display only)
           brandName: undefined,
+          // Request ID for server-side idempotency
+          requestId: requestIdRef.current,
         }),
       });
 
@@ -337,9 +380,58 @@ export function SellFormClient() {
 
       const product = await response.json();
       router.push(`/products/${product.id}`);
+      // Note: Don't reset isSubmittingRef here - we're navigating away
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create listing");
       setLoading(false);
+      isSubmittingRef.current = false;
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    // Synchronous guard to prevent duplicate submissions
+    if (isSubmittingRef.current) {
+      console.log("[SellForm] Duplicate draft save blocked by ref guard");
+      return;
+    }
+    isSubmittingRef.current = true;
+    
+    // Generate unique request ID for server-side idempotency
+    requestIdRef.current = uuidv4();
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          price: formData.price ? Number.parseFloat(formData.price) : 0,
+          // Don't send brandName (display only)
+          brandName: undefined,
+          // Request ID for server-side idempotency
+          requestId: requestIdRef.current,
+          // Mark as draft
+          isDraft: true,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save draft");
+      }
+
+      // Navigate to profile/listings page after saving draft
+      router.push("/profile");
+      // Note: Don't reset isSubmittingRef here - we're navigating away
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save draft");
+      setLoading(false);
+      isSubmittingRef.current = false;
     }
   };
 
@@ -613,45 +705,172 @@ export function SellFormClient() {
                     </Column>
                   </Row>
 
-                  {/* Condition */}
-                  <Column gap="$xs" width="100%">
-                    <FormLabel required>Condition</FormLabel>
-                    <select
-                      value={formData.condition}
-                      onChange={(e) =>
-                        setFormData({ ...formData, condition: e.target.value })
-                      }
-                      required
-                      style={{
-                        padding: "12px 18px",
-                        fontSize: "15px",
-                        borderRadius: "24px",
-                        border: "1px solid #323232",
-                        backgroundColor: "white",
-                        width: "100%",
-                        cursor: "pointer",
-                        outline: "none",
-                        appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23F45314' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 18px center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "20px",
-                        paddingRight: "48px",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.borderColor = "#F45314";
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.borderColor = "#323232";
-                      }}
-                    >
-                      {CONDITIONS.map((cond) => (
-                        <option key={cond.value} value={cond.value}>
-                          {cond.label}
-                        </option>
-                      ))}
-                    </select>
+                  {/* Woods Sub-category - Conditional (Woods only) */}
+                  {shouldShowWoodsSubcategory() && (
+                    <Column gap="$xs" width="100%">
+                      <FormLabel>Type</FormLabel>
+                      <RadioGroup
+                        value={formData.woodsSubcategory}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, woodsSubcategory: value })
+                        }
+                        orientation="horizontal"
+                      >
+                        {WOODS_SUBCATEGORIES.map((sub) => (
+                          <Row key={sub.value} gap="$xs" alignItems="center">
+                            <Radio value={sub.value}>
+                              <RadioIndicator />
+                            </Radio>
+                            <Text
+                              size="$4"
+                              color="$text"
+                              onPress={() =>
+                                setFormData({
+                                  ...formData,
+                                  woodsSubcategory: sub.value,
+                                })
+                              }
+                              cursor="pointer"
+                            >
+                              {sub.label}
+                            </Text>
+                          </Row>
+                        ))}
+                      </RadioGroup>
+                      <HelperText>Select the type of wood</HelperText>
+                    </Column>
+                  )}
+
+                  {/* Head Cover Included - Conditional (Woods & Putters) */}
+                  {shouldShowHeadCover() && (
+                    <Column gap="$xs" width="100%">
+                      <Row gap="$sm" alignItems="center">
+                        <Checkbox
+                          checked={formData.headCoverIncluded}
+                          onChange={(checked) =>
+                            setFormData({
+                              ...formData,
+                              headCoverIncluded: checked,
+                            })
+                          }
+                          size="md"
+                        />
+                        <Text
+                          size="$4"
+                          color="$text"
+                          onPress={() =>
+                            setFormData({
+                              ...formData,
+                              headCoverIncluded: !formData.headCoverIncluded,
+                            })
+                          }
+                          cursor="pointer"
+                        >
+                          Head cover included?
+                        </Text>
+                      </Row>
+                    </Column>
+                  )}
+
+                  {/* Condition Sliders - Always Visible (Replaces Dropdown) */}
+                  <Column gap="$lg" width="100%">
+                    <FormLabel required>Condition Rating</FormLabel>
+                    <Text size="$3" color="$textSecondary" marginBottom="$sm">
+                      Rate each component from 1 (Poor) to 10 (Like New)
+                    </Text>
+
+                    {/* Grip Condition */}
+                    <Column gap="$xs" width="100%">
+                      <Row
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text size="$4" weight="medium" color="$text">
+                          Grip
+                        </Text>
+                        <Text size="$4" color="$primary" weight="semibold">
+                          {formData.gripCondition} -{" "}
+                          {getConditionLabel(formData.gripCondition)}
+                        </Text>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={10}
+                        step={1}
+                        value={[formData.gripCondition]}
+                        onValueChange={(values) =>
+                          setFormData({ ...formData, gripCondition: values[0] })
+                        }
+                      >
+                        <Slider.Track>
+                          <Slider.TrackActive />
+                        </Slider.Track>
+                        <Slider.Thumb index={0} circular />
+                      </Slider>
+                    </Column>
+
+                    {/* Head Condition */}
+                    <Column gap="$xs" width="100%">
+                      <Row
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text size="$4" weight="medium" color="$text">
+                          Head
+                        </Text>
+                        <Text size="$4" color="$primary" weight="semibold">
+                          {formData.headCondition} -{" "}
+                          {getConditionLabel(formData.headCondition)}
+                        </Text>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={10}
+                        step={1}
+                        value={[formData.headCondition]}
+                        onValueChange={(values) =>
+                          setFormData({ ...formData, headCondition: values[0] })
+                        }
+                      >
+                        <Slider.Track>
+                          <Slider.TrackActive />
+                        </Slider.Track>
+                        <Slider.Thumb index={0} circular />
+                      </Slider>
+                    </Column>
+
+                    {/* Shaft Condition */}
+                    <Column gap="$xs" width="100%">
+                      <Row
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text size="$4" weight="medium" color="$text">
+                          Shaft
+                        </Text>
+                        <Text size="$4" color="$primary" weight="semibold">
+                          {formData.shaftCondition} -{" "}
+                          {getConditionLabel(formData.shaftCondition)}
+                        </Text>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={10}
+                        step={1}
+                        value={[formData.shaftCondition]}
+                        onValueChange={(values) =>
+                          setFormData({
+                            ...formData,
+                            shaftCondition: values[0],
+                          })
+                        }
+                      >
+                        <Slider.Track>
+                          <Slider.TrackActive />
+                        </Slider.Track>
+                        <Slider.Thumb index={0} circular />
+                      </Slider>
+                    </Column>
                   </Column>
 
                   {/* Description */}
@@ -828,16 +1047,18 @@ export function SellFormClient() {
                   <Row gap="$sm" justifyContent="space-between" width="100%">
                     <Button
                       size="$5"
-                      onPress={() => router.push("/")}
+                      onPress={handleSaveDraft}
                       disabled={loading}
                       flex={1}
                     >
-                      Save draft
+                      {loading ? "Saving..." : "Save draft"}
                     </Button>
+                    {/* Use type="submit" for native form submission only - no onPress to prevent dual submission */}
                     <Button
                       size="$5"
                       disabled={loading}
-                      onPress={() => handleSubmit()}
+                      // @ts-expect-error - Tamagui Button accepts type prop for web
+                      type="submit"
                       flex={1}
                     >
                       {loading ? "Uploading..." : "Upload"}
