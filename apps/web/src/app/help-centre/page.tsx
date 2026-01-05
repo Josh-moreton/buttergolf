@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Column, Container, Heading, Text, Card, Row } from "@buttergolf/ui";
-import { Mail, MessageCircle, Clock, HelpCircle } from "@tamagui/lucide-icons";
+import { Mail, MessageCircle, Clock, HelpCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Help Centre | ButterGolf",
