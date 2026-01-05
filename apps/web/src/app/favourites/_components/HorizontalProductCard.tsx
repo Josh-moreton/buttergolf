@@ -93,7 +93,7 @@ export function HorizontalProductCard({
         {/* Seller Info */}
         <Row gap="$xs" alignItems="center">
           <Text size="$3" color="$textSecondary">
-            Sold by {`${product.seller.firstName} ${product.seller.lastName}`.trim() || "Unknown"}
+            Sold by {product.seller.firstName || "Unknown"}
           </Text>
           {product.seller.ratingCount > 0 && (
             <>

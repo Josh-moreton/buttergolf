@@ -70,7 +70,7 @@ export function ProductCard({
   };
 
   const isWeb = Platform.OS === "web";
-  const sellerName = `${product.seller.firstName ?? ""} ${product.seller.lastName ?? ""}`.trim() || "Seller";
+  const sellerName = product.seller.firstName || "Seller";
   const isNewSeller = product.seller.ratingCount === 0;
 
   return (
