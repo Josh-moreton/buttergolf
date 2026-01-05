@@ -216,6 +216,12 @@ export function SellerProductCard({
               paddingHorizontal="$3"
               paddingVertical="$2"
               flex={1}
+              shadowColor="transparent"
+              shadowOffset={{ width: 0, height: 0 }}
+              shadowOpacity={0}
+              shadowRadius={0}
+              elevation={0}
+              style={{ boxShadow: 'none' }}
               onPress={() => onEdit(product)}
               disabled={isDeleting || isUpdating}
             >
@@ -226,7 +232,7 @@ export function SellerProductCard({
             </Button>
             <Button
               size="$3"
-              backgroundColor={product.isSold ? "$secondary" : "$success"}
+              backgroundColor={product.isSold ? "$secondary" : "$primary"}
               color="$textInverse"
               borderRadius="$full"
               paddingHorizontal="$3"

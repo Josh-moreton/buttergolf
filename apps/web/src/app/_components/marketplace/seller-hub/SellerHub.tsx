@@ -378,6 +378,7 @@ export function SellerHub() {
                       shadowOpacity={0}
                       shadowRadius={0}
                       elevation={0}
+                      style={{ boxShadow: 'none' }}
                       onPress={() => setStatusFilter(status)}
                     >
                       {status.charAt(0).toUpperCase() + status.slice(1)}
