@@ -99,6 +99,7 @@ model Product {
   userId      String
   categoryId  String
   isSold      Boolean          @default(false)
+  isDraft     Boolean          @default(false)
   views       Int              @default(0)
   length      Float?
   width       Float?
@@ -107,8 +108,14 @@ model Product {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   brandId     String?
-  flex        String?
-  loft        String?
+  flex                 String?
+  loft                 String?
+  requestId            String?  // Idempotency key to prevent duplicate submissions
+  woodsSubcategory     String?  // Driver, Fairway Wood, Hybrid
+  headCoverIncluded    Boolean? @default(false)
+  gripCondition        Int?     @default(7)
+  headCondition        Int?     @default(7)
+  shaftCondition       Int?     @default(7)
   favourites  Favourite[]
   offers      Offer[]
   orders      Order[]
@@ -122,6 +129,7 @@ model Product {
   @@index([brandId])
   @@index([isSold])
   @@index([views])
+  @@index([requestId])
   @@map("products")
 }
 
