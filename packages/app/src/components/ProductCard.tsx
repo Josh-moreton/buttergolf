@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Platform } from "react-native";
 import {
   Card,
@@ -10,6 +11,7 @@ import {
   Text,
   Image,
   View,
+  Button,
 } from "@buttergolf/ui";
 import type { ProductCardData } from "../types/product";
 
@@ -18,6 +20,8 @@ export interface ProductCardProps {
   onPress?: () => void;
   onFavourite?: (productId: string) => void;
   isFavourited?: boolean;
+  onQuickView?: (productId: string) => void;
+  onMakeOffer?: (productId: string) => void;
 }
 
 // Heart icon component that works on both platforms
@@ -25,8 +29,8 @@ function HeartIcon({ filled }: Readonly<{ filled: boolean }>) {
   if (Platform.OS === "web") {
     return (
       <svg
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         viewBox="0 0 24 24"
         fill={filled ? "#F45314" : "none"}
         stroke="#F45314"
@@ -40,187 +44,247 @@ function HeartIcon({ filled }: Readonly<{ filled: boolean }>) {
   }
   // For native, use Text with heart character
   return (
-    <Text fontSize={18} color="$primary">
+    <Text fontSize={16} color="$primary">
       {filled ? "♥" : "♡"}
     </Text>
   );
 }
 
+/**
+ * ProductCard - Shopify/Airbnb style layout
+ * 
+ * Layout: Image on top (4:3 aspect ratio), content area below (96px)
+ * Only overlays on image: favourite heart (top-right), optional condition badge (top-left)
+ * Desktop hover: reveals quick action buttons at bottom of image
+ */
 export function ProductCard({
   product,
   onPress,
   onFavourite,
   isFavourited = false,
+  onQuickView,
+  onMakeOffer,
 }: Readonly<ProductCardProps>) {
+  const [isHovered, setIsHovered] = useState(false);
+  
   const handleFavouriteClick = () => {
     onFavourite?.(product.id);
   };
 
   const isWeb = Platform.OS === "web";
+  const sellerName = `${product.seller.firstName ?? ""} ${product.seller.lastName ?? ""}`.trim() || "Seller";
+  const isNewSeller = product.seller.ratingCount === 0;
 
   return (
     <Card
       variant="elevated"
       padding={0}
-      animation="bouncy"
       backgroundColor="$surface"
       borderColor="$border"
-      borderRadius={20}
+      borderWidth={1}
+      borderRadius={16}
       cursor="pointer"
       onPress={onPress}
       width="100%"
-      maxWidth={315}
-      aspectRatio={315 / 365}
-      interactive
-      overflow="visible"
+      overflow="hidden"
+      onMouseEnter={isWeb ? () => setIsHovered(true) : undefined}
+      onMouseLeave={isWeb ? () => setIsHovered(false) : undefined}
       style={
         isWeb
           ? {
-              boxShadow:
-                "0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06)",
+              transition: "box-shadow 0.2s ease, transform 0.2s ease",
             }
           : undefined
       }
       hoverStyle={{
-        transform: "scale(1.02)",
+        borderColor: "$borderHover",
       }}
     >
-      {/* Inner container for border radius clipping */}
-      <Column width="100%" height="100%" minHeight={0} overflow="hidden" borderRadius={20}>
-        {/* Container - full height with image */}
-        <Column
-          position="relative"
+      {/* Image Area - 4:3 aspect ratio */}
+      <Column position="relative" width="100%" aspectRatio={4 / 3} overflow="hidden">
+        <Image
+          source={{ uri: product.imageUrl }}
+          alt={product.title}
           width="100%"
           height="100%"
-          overflow="hidden"
-        >
-          {/* Background Image - Full Card */}
-          <Image
-            source={{ uri: product.imageUrl }}
-            alt={product.title}
-            position="absolute"
-            top={0}
-            left={0}
-            width="100%"
-            height="100%"
-            objectFit="cover"
-          />
+          objectFit="cover"
+          borderTopLeftRadius={16}
+          borderTopRightRadius={16}
+        />
 
-          {/* Favourite Heart Button - Top Right with Glassmorphism */}
-          <GlassmorphismCard
-            intensity="medium"
-            blur="medium"
+        {/* Condition Badge - Top Left (if condition exists) */}
+        {product.condition && (
+          <View
             position="absolute"
-            top={12}
-            right={12}
-            width={40}
-            height={40}
-            borderRadius="$full"
-            alignItems="center"
-            justifyContent="center"
-            zIndex={2}
-            cursor="pointer"
-            onPress={(e) => {
-              e?.stopPropagation?.();
-              handleFavouriteClick();
-            }}
-            hoverStyle={{ transform: "scale(1.1)" }}
-            pressStyle={{ transform: "scale(0.85)", opacity: 0.8 }}
-            animation="bouncy"
-            role="button"
-            aria-label={
-              isFavourited ? "Remove from favourites" : "Add to favourites"
-            }
-            style={
-              isWeb
-                ? {
-                    ...getGlassmorphismStyles("medium"),
-                    transition:
-                      "transform 0.15s ease-out, opacity 0.15s ease-out",
-                  }
-                : undefined
-            }
+            top={10}
+            left={10}
+            backgroundColor="$surface"
+            paddingHorizontal={8}
+            paddingVertical={4}
+            borderRadius={6}
+            style={isWeb ? { boxShadow: "0 1px 3px rgba(0,0,0,0.12)" } : undefined}
           >
-            <HeartIcon filled={isFavourited} />
-          </GlassmorphismCard>
+            <Text size="$3" fontWeight="600" color="$text">
+              {product.condition.replace(/_/g, " ")}
+            </Text>
+          </View>
+        )}
 
-          {/* iOS Liquid Glass Info Card - Bottom */}
-          <GlassmorphismCard
-            intensity="strong"
-            blur="medium"
-            paddingHorizontal={16}
-            paddingVertical={12}
+        {/* Favourite Heart Button - Top Right with Glassmorphism */}
+        <GlassmorphismCard
+          intensity="medium"
+          blur="medium"
+          position="absolute"
+          top={10}
+          right={10}
+          width={36}
+          height={36}
+          borderRadius="$full"
+          alignItems="center"
+          justifyContent="center"
+          zIndex={2}
+          cursor="pointer"
+          onPress={(e) => {
+            e?.stopPropagation?.();
+            handleFavouriteClick();
+          }}
+          hoverStyle={{ transform: "scale(1.1)" }}
+          pressStyle={{ transform: "scale(0.9)", opacity: 0.8 }}
+          animation="quick"
+          role="button"
+          aria-label={
+            isFavourited ? "Remove from favourites" : "Add to favourites"
+          }
+          style={
+            isWeb
+              ? {
+                  ...getGlassmorphismStyles("medium"),
+                  transition: "transform 0.15s ease-out, opacity 0.15s ease-out",
+                }
+              : undefined
+          }
+        >
+          <HeartIcon filled={isFavourited} />
+        </GlassmorphismCard>
+
+        {/* Hover Actions Overlay - Desktop only */}
+        {isWeb && (onQuickView || onMakeOffer) && (
+          <View
             position="absolute"
             bottom={0}
             left={0}
             right={0}
-            height={130}
-            borderTopWidth={0}
-            zIndex={1}
-            overflow="hidden"
-            justifyContent="center"
-            style={isWeb ? getGlassmorphismStyles("medium") : undefined}
+            paddingHorizontal={12}
+            paddingVertical={10}
+            zIndex={3}
+            style={{
+              background: "linear-gradient(transparent, rgba(0,0,0,0.6))",
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity 0.2s ease, transform 0.2s ease",
+              pointerEvents: isHovered ? "auto" : "none",
+            }}
           >
-            {/* Product Title - Bold, fixed height for 2 lines */}
-            <Text
-              size="$6"
-              fontWeight="700"
-              color="$textInverse"
-              numberOfLines={2}
-              marginBottom={10}
-              height={48}
-              style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
-            >
-              {product.title}
-            </Text>
-
-            {/* Price */}
-            <Text
-              size="$6"
-              fontWeight="600"
-              color="$textInverse"
-              marginBottom={8}
-              style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
-            >
-              £{product.price.toFixed(2)}
-            </Text>
-
-            {/* Seller Info with Rating */}
-            <Row alignItems="center" gap={8} flexWrap="wrap">
-              <Text
-                size="$6"
-                fontWeight="400"
-                color="$textInverse"
-                opacity={0.85}
-                style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}
-              >
-                {`${product.seller.firstName} ${product.seller.lastName}`.trim() || "Unknown"}
-              </Text>
-              {product.seller.ratingCount > 0 ? (
-                <Row alignItems="center" gap={4}>
-                  <Text color="$primary" size="$6" style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}>
-                    ★
-                  </Text>
-                  <Text size="$6" fontWeight="600" color="$textInverse" style={isWeb ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : undefined}>
-                    {product.seller.averageRating?.toFixed(1)} (
-                    {product.seller.ratingCount})
-                  </Text>
-                </Row>
-              ) : (
-                <View
-                  backgroundColor="$primary"
-                  paddingHorizontal={10}
-                  paddingVertical={4}
-                  borderRadius={12}
+            <Row gap={8} justifyContent="center">
+              {onQuickView && (
+                <Button
+                  size="$3"
+                  backgroundColor="$surface"
+                  color="$text"
+                  borderRadius={8}
+                  paddingHorizontal={12}
+                  paddingVertical={6}
+                  onPress={(e) => {
+                    e?.stopPropagation?.();
+                    onQuickView(product.id);
+                  }}
+                  hoverStyle={{ backgroundColor: "$backgroundHover" }}
                 >
-                  <Text size="$4" fontWeight="600" color="$textInverse">
-                    NEW SELLER
-                  </Text>
-                </View>
+                  Quick View
+                </Button>
+              )}
+              {onMakeOffer && (
+                <Button
+                  size="$3"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                  borderRadius={8}
+                  paddingHorizontal={12}
+                  paddingVertical={6}
+                  onPress={(e) => {
+                    e?.stopPropagation?.();
+                    onMakeOffer(product.id);
+                  }}
+                  hoverStyle={{ opacity: 0.9 }}
+                >
+                  Make Offer
+                </Button>
               )}
             </Row>
-          </GlassmorphismCard>
-        </Column>
+          </View>
+        )}
+      </Column>
+
+      {/* Content Area - Fixed height for consistent grid alignment */}
+      <Column
+        paddingHorizontal={12}
+        paddingVertical={10}
+        gap={4}
+        minHeight={96}
+        justifyContent="space-between"
+      >
+        {/* Title - 2 lines max with line-clamp */}
+        <Text
+          size="$5"
+          fontWeight="600"
+          color="$text"
+          numberOfLines={2}
+          height={40}
+          style={
+            isWeb
+              ? {
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }
+              : undefined
+          }
+        >
+          {product.title}
+        </Text>
+
+        {/* Price Row */}
+        <Text size="$6" fontWeight="700" color="$text">
+          £{product.price.toFixed(2)}
+        </Text>
+
+        {/* Seller + Rating Row */}
+        <Row alignItems="center" gap={6} flexWrap="wrap">
+          <Text size="$4" color="$textSecondary" numberOfLines={1} flexShrink={1}>
+            {sellerName}
+          </Text>
+          {product.seller.ratingCount > 0 ? (
+            <Row alignItems="center" gap={3}>
+              <Text color="$primary" size="$4">★</Text>
+              <Text size="$4" fontWeight="500" color="$textSecondary">
+                {product.seller.averageRating?.toFixed(1)}
+              </Text>
+            </Row>
+          ) : isNewSeller ? (
+            <View
+              backgroundColor="$primary"
+              paddingHorizontal={8}
+              paddingVertical={2}
+              borderRadius={10}
+            >
+              <Text size="$2" fontWeight="600" color="$textInverse">
+                NEW SELLER
+              </Text>
+            </View>
+          ) : null}
+        </Row>
       </Column>
     </Card>
   );
