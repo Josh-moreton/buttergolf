@@ -30,13 +30,10 @@ export function SearchBar({
         }}
       />
       <Button
+        butterVariant="primary"
         size="$4"
         icon={Search}
         borderRadius="$10"
-        backgroundColor="$primary"
-        color="$textInverse"
-        hoverStyle={{ backgroundColor: "$primaryHover" }}
-        pressStyle={{ backgroundColor: "$primaryPress" }}
         onPress={() => onSearch?.("")}
       >
         Search

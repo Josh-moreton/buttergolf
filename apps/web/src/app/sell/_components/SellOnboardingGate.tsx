@@ -207,9 +207,8 @@ export function SellOnboardingGate({
             <Text color="$textSecondary">{error}</Text>
             <Row gap="$md">
               <Button
+                butterVariant="primary"
                 size="$4"
-                backgroundColor="$primary"
-                color="$textInverse"
                 onPress={() => initializeOnboarding()}
               >
                 Try Again

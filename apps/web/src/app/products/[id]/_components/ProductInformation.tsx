@@ -393,11 +393,8 @@ export function ProductInformation({
                   </Button>
                 </Popover.Close>
                 <Button
+                  butterVariant="primary"
                   size="$3"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                  borderRadius="$full"
-                  paddingHorizontal="$4"
                   onPress={handleSubmitOffer}
                   disabled={submittingOffer || !offerAmount}
                 >

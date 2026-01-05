@@ -79,9 +79,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row gap="$md">
             <Button
+              butterVariant="primary"
               size="$4"
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={() => router.push("/seller")}
             >
               View Seller Dashboard
@@ -113,9 +112,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row gap="$md">
             <Button
+              butterVariant="primary"
               size="$4"
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={() => router.push("/seller/settings")}
             >
               Resolve Issues
@@ -143,9 +141,8 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           </Text>
           <Row gap="$md">
             <Button
+              butterVariant="primary"
               size="$4"
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={() => router.push("/seller")}
             >
               View Dashboard

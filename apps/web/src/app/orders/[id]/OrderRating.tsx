@@ -274,11 +274,10 @@ export function OrderRating({
 
       <Card.Footer align="right">
         <Button
-          backgroundColor="$primary"
-          color="$textInverse"
+          butterVariant="primary"
+          size="$5"
           onPress={handleSubmit}
           disabled={submitting || selectedRating === 0 || isOverLimit}
-          size="$5"
           aria-label="Submit rating"
         >
           {submitting ? "Submitting..." : "Submit Rating"}

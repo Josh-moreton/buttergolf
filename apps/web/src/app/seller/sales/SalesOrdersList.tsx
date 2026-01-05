@@ -313,9 +313,8 @@ function OrderCard({ order }: { order: Order }) {
                 </Link>
               ) : (
                 <Button
+                  butterVariant="primary"
                   size="$4"
-                  backgroundColor="$primary"
-                  color="$textInverse"
                   width="100%"
                   onPress={handleGenerateLabel}
                   disabled={generating}

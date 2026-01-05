@@ -187,12 +187,8 @@ export function FavouritesClient() {
               your favourites here for easy access.
             </Text>
             <Button
+              butterVariant="primary"
               size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$6"
-              paddingVertical="$3"
-              borderRadius="$full"
               marginTop="$md"
               onPress={() => router.push("/listings")}
             >

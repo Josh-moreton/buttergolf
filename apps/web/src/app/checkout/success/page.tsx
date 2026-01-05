@@ -241,11 +241,7 @@ function CheckoutSuccessContent() {
             )}
             <Row gap="$md" marginTop="$md" flexWrap="wrap" justifyContent="center">
               <Link href="/orders" style={{ textDecoration: "none" }}>
-                <Button
-                  size="$5"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                >
+                <Button butterVariant="primary" size="$5">
                   View My Orders
                 </Button>
               </Link>
@@ -510,13 +506,7 @@ function CheckoutSuccessContent() {
               href={`/orders/${order.id}`}
               style={{ textDecoration: "none", flex: 1, minWidth: 180 }}
             >
-              <Button
-                size="$5"
-                width="100%"
-                backgroundColor="$primary"
-                color="$textInverse"
-                borderRadius="$full"
-              >
+              <Button butterVariant="primary" size="$5" width="100%">
                 View Order Details
               </Button>
             </Link>

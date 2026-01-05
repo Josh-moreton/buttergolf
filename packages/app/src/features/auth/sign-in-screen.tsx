@@ -242,9 +242,8 @@ export function SignInScreen({
 
           {/* Sign In Button */}
           <Button
+            butterVariant="primary"
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
             borderRadius="$full"
             fontWeight="600"
             onPress={handleSubmit}

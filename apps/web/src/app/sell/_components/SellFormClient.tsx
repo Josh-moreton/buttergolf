@@ -1057,7 +1057,6 @@ export function SellFormClient() {
                     <Button
                       size="$5"
                       disabled={loading}
-                      // @ts-expect-error - Tamagui Button accepts type prop for web
                       type="submit"
                       flex={1}
                     >

@@ -241,17 +241,28 @@ export function EditProductModal({
                     onChange={(e) =>
                       setFormData({ ...formData, condition: e.target.value })
                     }
-                    required
                     style={{
-                      padding: "12px 18px",
-                      fontSize: "15px",
-                      borderRadius: "24px",
+                      height: 40,
+                      paddingLeft: 16,
+                      paddingRight: 40,
+                      fontSize: 15,
+                      fontFamily: "inherit",
+                      fontWeight: 500,
+                      borderRadius: 24,
                       border: "1px solid var(--color-ironstone)",
                       backgroundColor: "white",
-                      width: "100%",
+                      color: "var(--color-ironstone)",
                       cursor: "pointer",
+                      width: "100%",
+                      outline: "none",
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 16px center",
                     }}
                   >
+                    <option value="" disabled selected>Select condition</option>
                     {CONDITIONS.map((cond) => (
                       <option key={cond.value} value={cond.value}>
                         {cond.label}
@@ -269,18 +280,28 @@ export function EditProductModal({
                   onChange={(e) =>
                     setFormData({ ...formData, brandId: e.target.value })
                   }
-                  required
                   style={{
-                    padding: "12px 18px",
-                    fontSize: "15px",
-                    borderRadius: "24px",
+                    height: 40,
+                    paddingLeft: 16,
+                    paddingRight: 40,
+                    fontSize: 15,
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    borderRadius: 24,
                     border: "1px solid var(--color-ironstone)",
                     backgroundColor: "white",
-                    width: "100%",
+                    color: "var(--color-ironstone)",
                     cursor: "pointer",
+                    width: "100%",
+                    outline: "none",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
                   }}
                 >
-                  <option value="">Select a brand</option>
+                  <option value="" disabled selected>Select a brand</option>
                   {brands.map((brand) => (
                     <option key={brand.id} value={brand.id}>
                       {brand.name}
@@ -310,18 +331,28 @@ export function EditProductModal({
                   onChange={(e) =>
                     setFormData({ ...formData, categoryId: e.target.value })
                   }
-                  required
                   style={{
-                    padding: "12px 18px",
-                    fontSize: "15px",
-                    borderRadius: "24px",
+                    height: 40,
+                    paddingLeft: 16,
+                    paddingRight: 40,
+                    fontSize: 15,
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    borderRadius: 24,
                     border: "1px solid var(--color-ironstone)",
                     backgroundColor: "white",
-                    width: "100%",
+                    color: "var(--color-ironstone)",
                     cursor: "pointer",
+                    width: "100%",
+                    outline: "none",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
                   }}
                 >
-                  <option value="">Select a category</option>
+                  <option value="" disabled selected>Select a category</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
@@ -361,11 +392,8 @@ export function EditProductModal({
                   Cancel
                 </Button>
                 <Button
+                  butterVariant="primary"
                   size="$4"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                  paddingHorizontal="$4"
-                  paddingVertical="$3"
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Changes"}

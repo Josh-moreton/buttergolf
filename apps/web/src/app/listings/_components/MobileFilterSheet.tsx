@@ -57,7 +57,7 @@ export function MobileFilterSheet({
         exitStyle={{ opacity: 0 }}
       />
       <Frame
-        aria-modal="true"
+        aria-modal={true}
         aria-labelledby={headingId}
         backgroundColor="$surface"
         borderTopLeftRadius="$2xl"
@@ -154,10 +154,9 @@ export function MobileFilterSheet({
               Cancel
             </Button>
             <Button
+              butterVariant="primary"
               size="$4"
               flex={1}
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={() => {
                 onApply();
                 onOpenChange(false);

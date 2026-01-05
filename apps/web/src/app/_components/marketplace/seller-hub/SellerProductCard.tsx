@@ -208,19 +208,29 @@ export function SellerProductCard({
           <Row gap="$sm" marginTop="$sm">
             <Button
               size="$3"
+              backgroundColor="transparent"
+              color="$primary"
+              borderWidth={2}
+              borderColor="$primary"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               flex={1}
               onPress={() => onEdit(product)}
               disabled={isDeleting || isUpdating}
             >
               <Row gap="$xs" alignItems="center">
-                <Edit3 size={14} />
-                <Text>Edit</Text>
+                <Edit3 size={14} color="$primary" />
+                <Text color="$primary" weight="semibold">Edit</Text>
               </Row>
             </Button>
             <Button
               size="$3"
               backgroundColor={product.isSold ? "$secondary" : "$success"}
               color="$textInverse"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               flex={1}
               onPress={handleMarkSold}
               disabled={isDeleting || isUpdating}
@@ -229,11 +239,16 @@ export function SellerProductCard({
             </Button>
             <Button
               size="$3"
+              backgroundColor="$error"
+              color="$textInverse"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               onPress={handleDelete}
               disabled={isDeleting || isUpdating}
               aria-label="Delete listing"
             >
-              <Trash2 size={14} color="$error" />
+              <Trash2 size={14} color="white" />
             </Button>
           </Row>
         </Column>

@@ -289,8 +289,7 @@ export default function AddressesPage() {
               </Text>
             </Column>
             <Button
-              backgroundColor="$primary"
-              color="$white"
+              butterVariant="primary"
               size="$4"
               onPress={() => setShowForm(true)}
             >
@@ -476,8 +475,7 @@ export default function AddressesPage() {
                 </Column>
 
                 <Button
-                  backgroundColor="$primary"
-                  color="$white"
+                  butterVariant="primary"
                   size="$5"
                   onPress={handleSubmit}
                 >
@@ -501,8 +499,7 @@ export default function AddressesPage() {
                     </Text>
                   </Column>
                   <Button
-                    backgroundColor="$primary"
-                    color="$white"
+                    butterVariant="primary"
                     size="$4"
                     onPress={() => setShowForm(true)}
                   >

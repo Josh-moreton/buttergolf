@@ -41,18 +41,12 @@ export function SellingPlaceholder() {
 
         <Row gap="$md" flexWrap="wrap" justifyContent="center" marginTop="$md">
           <Link href="/sell" style={{ textDecoration: "none" }}>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
-            >
+            <Button butterVariant="primary" size="$5">
               Start Selling Now
             </Button>
           </Link>
           <Link href="/how-it-works" style={{ textDecoration: "none" }}>
-            <Button size="$5" variant="secondary">
+            <Button butterVariant="secondary" size="$5">
               Learn How It Works
             </Button>
           </Link>

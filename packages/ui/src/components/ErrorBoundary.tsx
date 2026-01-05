@@ -141,9 +141,8 @@ export class ErrorBoundary extends Component<
             <Row gap="$md" width="100%">
               <Button
                 flex={1}
+                butterVariant="primary"
                 size="$5"
-                backgroundColor="$primary"
-                color="$textInverse"
                 onPress={this.handleReset}
               >
                 Try Again

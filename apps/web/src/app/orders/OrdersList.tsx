@@ -208,13 +208,7 @@ export function OrdersList({ orders }: Readonly<OrdersListProps>) {
                   : "You haven't sold anything yet."}
             </Text>
             <Link href="/shop" style={{ textDecoration: "none" }}>
-              <Button
-                size="$4"
-                backgroundColor="$primary"
-                color="$textInverse"
-                paddingHorizontal="$lg"
-                borderRadius="$full"
-              >
+              <Button butterVariant="primary" size="$4">
                 Start Shopping
               </Button>
             </Link>
@@ -335,11 +329,8 @@ function OrderCard({ order }: { order: Order }) {
               style={{ textDecoration: "none" }}
             >
               <Button
+                butterVariant="primary"
                 size="$3"
-                backgroundColor="$primary"
-                color="$textInverse"
-                paddingHorizontal="$md"
-                borderRadius="$md"
                 icon={<Eye size={14} color="white" />}
               >
                 View Details

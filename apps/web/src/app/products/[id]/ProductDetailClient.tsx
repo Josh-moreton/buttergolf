@@ -33,6 +33,8 @@ interface User {
   firstName: string | null;
   lastName: string | null;
   imageUrl: string | null;
+  averageRating?: number | null;
+  ratingCount?: number;
 }
 
 export interface Product {
@@ -452,12 +454,10 @@ export default function ProductDetailClient({
               </Text>
             </Column>
             <Button
+              butterVariant="primary"
               size="$4"
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={handleBuyNow}
               disabled={product.isSold}
-              paddingHorizontal="$6"
             >
               {product.isSold ? "Sold" : "Buy Now"}
             </Button>

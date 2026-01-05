@@ -2,7 +2,15 @@
 
 import { Column, Row, Text, View, Badge } from "@buttergolf/ui";
 import { Package, Truck, MapPin, CheckCircle, Circle } from "@tamagui/lucide-icons";
-import type { Order, ShipmentStatus } from "@buttergolf/db";
+import type { ShipmentStatus } from "@buttergolf/db";
+
+interface OrderTracking {
+  trackingCode: string | null;
+  carrier: string | null;
+  service: string | null;
+  estimatedDelivery: Date | null;
+  shipmentStatus: ShipmentStatus;
+}
 
 interface TrackingEvent {
   occurred_at: string;
@@ -18,7 +26,7 @@ interface TrackingEvent {
 }
 
 interface TrackingTimelineProps {
-  order: Order;
+  order: OrderTracking;
   events: TrackingEvent[];
 }
 

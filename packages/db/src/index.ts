@@ -63,6 +63,7 @@ export type {
   ShipmentStatus,
   OrderStatus,
   OfferStatus,
+  Order,
 } from "../generated/client";
 // Re-export enums as values (not type-only) so they can be used at runtime
 export { ProductCondition } from "../generated/client";

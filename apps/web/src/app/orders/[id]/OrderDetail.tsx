@@ -559,11 +559,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
                       <RefreshCw
                         size={14}
                         color="var(--color-primary)"
-                        style={{
-                          animation: isLoadingTracking
-                            ? "spin 1s linear infinite"
-                            : "none",
-                        }}
+                        style={
+                          {
+                            animation: isLoadingTracking
+                              ? "spin 1s linear infinite"
+                              : "none",
+                          } as any
+                        }
                       />
                     }
                   >
@@ -686,12 +688,9 @@ export function OrderDetail({ order }: OrderDetailProps) {
                 style={{ textDecoration: "none", marginTop: 16 }}
               >
                 <Button
+                  butterVariant="primary"
                   size="$5"
-                  backgroundColor="$primary"
-                  color="$textInverse"
                   width="100%"
-                  paddingVertical="$md"
-                  borderRadius="$md"
                   icon={<ExternalLink size={18} color="white" />}
                 >
                   Track Package

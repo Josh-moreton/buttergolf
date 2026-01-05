@@ -89,14 +89,6 @@ const CategoryText = styled(Text, {
   },
 });
 
-// Wrapper div for category items that accepts click handlers
-const CategoryItemWrapper = styled("div", {
-  name: "CategoryItemWrapper",
-  position: "relative",
-  cursor: "pointer",
-  userSelect: "none",
-});
-
 export function CategorySelector({
   categories,
   activeCategory,

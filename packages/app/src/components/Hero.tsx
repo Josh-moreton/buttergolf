@@ -369,7 +369,7 @@ export function Hero({
               {/* Subtitle */}
               {subtitle && (
                 <Text
-                  fontSize="clamp(14px, 2vw, 22px)"
+                  size="$6"
                   color="$slateSmoke"
                   fontWeight="500"
                   marginTop="$2"

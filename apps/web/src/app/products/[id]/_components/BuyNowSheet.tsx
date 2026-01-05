@@ -229,9 +229,8 @@ const SheetContents = memo(function SheetContents({
               </Text>
             </Column>
             <Button
+              butterVariant="primary"
               size="$4"
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={onRetry}
             >
               Try Again
