@@ -31,7 +31,7 @@ export function NewsletterSection() {
         >
           <Input
             flex={1}
-            size="$5"
+            size="lg"
             placeholder="you@example.com"
             borderRadius="$full"
             paddingHorizontal="$4"
