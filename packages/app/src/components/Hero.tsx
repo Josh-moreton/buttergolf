@@ -123,9 +123,9 @@ function getImageSource(image: ImageSource): { uri: string } | number | null {
   return image as { uri: string } | number;
 }
 
-// Shared heading style
+// Shared heading style - scales with viewport width
 const headingStyle = {
-  fontSize: "clamp(32px, 5vw, 72px)",
+  fontSize: "clamp(24px, 4vw, 56px)",
   color: "#323232",
   fontWeight: 700,
   lineHeight: 1.1,
@@ -306,7 +306,9 @@ export function Hero({
     >
       <View
         width="100%"
-        height="50vh"
+        height={320}
+        $gtSm={{ height: 350 }}
+        $gtMd={{ height: 400 }}
         minHeight={minHeight}
         maxHeight={maxHeight}
         borderRadius="$2xl"
@@ -346,18 +348,17 @@ export function Hero({
           height="100%"
           position="relative"
           zIndex={1}
-          flexWrap="wrap"
         >
           {/* Left Side - Text Content */}
           <Column
-            width="60%"
-            $md={{ width: "55%" }}
+            width="100%"
             justifyContent="center"
-            paddingLeft="$12"
-            paddingRight="$2"
-            $lg={{ paddingLeft: "$20", paddingRight: "$8" }}
+            paddingLeft="$6"
+            paddingRight="$6"
+            $gtSm={{ width: "55%", paddingLeft: "$8", paddingRight: "$2" }}
+            $gtMd={{ width: "60%", paddingLeft: "$12", paddingRight: "$4" }}
           >
-            <Column gap="$6" maxWidth={700}>
+            <Column gap="$4" $gtSm={{ gap: "$5" }} $gtMd={{ gap: "$6" }} maxWidth={700}>
               {/* Heading */}
               <HeroHeading
                 heading={heading}
@@ -368,7 +369,7 @@ export function Hero({
               {/* Subtitle */}
               {subtitle && (
                 <Text
-                  fontSize={25}
+                  fontSize="clamp(14px, 2vw, 22px)"
                   color="$slateSmoke"
                   fontWeight="500"
                   marginTop="$2"
@@ -453,18 +454,15 @@ function HeroImage({ source }: HeroImageProps) {
 
   return (
     <Column
-      width="40%"
+      display="none"
+      width="45%"
       height="100%"
-      $md={{
-        width: "50%",
-      }}
       backgroundColor="transparent"
       alignItems="center"
       justifyContent="flex-end"
       paddingRight="$4"
-      $lg={{
-        paddingRight: "$8",
-      }}
+      $gtSm={{ display: "flex", width: "45%" }}
+      $gtMd={{ width: "40%", paddingRight: "$8" }}
     >
       {isWeb ? (
         <img
@@ -472,9 +470,9 @@ function HeroImage({ source }: HeroImageProps) {
           alt="Premium golf club featured in hero section"
           style={{
             width: "auto",
-            height: "45vh",
-            maxHeight: "630px",
-            objectFit: "none",
+            height: "90%",
+            maxHeight: "100%",
+            objectFit: "contain",
             objectPosition: "center bottom",
             marginBottom: 0,
           }}

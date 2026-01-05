@@ -32,6 +32,8 @@ export function HeroStatic() {
       showHeroImage={true}
       animationVariant="fade-up"
       animationDelay={0.6}
+      minHeight={350}
+      maxHeight={500}
     />
   );
 }
