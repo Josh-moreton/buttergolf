@@ -262,7 +262,7 @@ export function EditProductModal({
                       backgroundPosition: "right 16px center",
                     }}
                   >
-                    <option value="" disabled>Select condition</option>
+                    <option value="" disabled selected>Select condition</option>
                     {CONDITIONS.map((cond) => (
                       <option key={cond.value} value={cond.value}>
                         {cond.label}
@@ -301,7 +301,7 @@ export function EditProductModal({
                     backgroundPosition: "right 16px center",
                   }}
                 >
-                  <option value="" disabled>Select a brand</option>
+                  <option value="" disabled selected>Select a brand</option>
                   {brands.map((brand) => (
                     <option key={brand.id} value={brand.id}>
                       {brand.name}
@@ -352,7 +352,7 @@ export function EditProductModal({
                     backgroundPosition: "right 16px center",
                   }}
                 >
-                  <option value="" disabled>Select a category</option>
+                  <option value="" disabled selected>Select a category</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
