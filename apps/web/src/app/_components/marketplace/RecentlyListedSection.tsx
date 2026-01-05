@@ -56,10 +56,10 @@ export function RecentlyListedSectionClient({
           width="100%"
           style={{ display: "grid" }}
           gridTemplateColumns="repeat(2, 1fr)"
-          gap={16}
+          gap="$md"
           $gtSm={{
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 20,
+            gap: "$lg",
           }}
           $gtMd={{
             gridTemplateColumns: "repeat(4, 1fr)",
