@@ -99,9 +99,8 @@ export function StripeEmbeddedCheckout({
             </Text>
           </Column>
           <Button
+            butterVariant="primary"
             size="$4"
-            backgroundColor="$primary"
-            color="$textInverse"
             onPress={() => {
               setError(null);
               setIsLoading(true);

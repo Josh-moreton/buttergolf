@@ -24,13 +24,7 @@ export default function CartPage() {
           Browse our marketplace to find great deals
         </Text>
         <Link href="/listings">
-          <Button
-            size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
-            paddingHorizontal="$5"
-            paddingVertical="$3"
-          >
+          <Button butterVariant="primary" size="$5">
             Browse Listings
           </Button>
         </Link>
@@ -149,27 +143,11 @@ export default function CartPage() {
                 £{totalPrice.toFixed(2)}
               </Text>
             </Row>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
-              width="100%"
-            >
+            <Button butterVariant="primary" size="$5" width="100%">
               Proceed to Checkout
             </Button>
             <Link href="/listings">
-              <Button
-                size="$4"
-                backgroundColor="transparent"
-                color="$primary"
-                borderWidth={2}
-                borderColor="$primary"
-                paddingHorizontal="$4"
-                paddingVertical="$3"
-                width="100%"
-              >
+              <Button butterVariant="secondary" size="$4" width="100%">
                 Continue Shopping
               </Button>
             </Link>

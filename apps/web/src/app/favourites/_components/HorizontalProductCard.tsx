@@ -127,12 +127,8 @@ export function HorizontalProductCard({
       >
         {/* Buy Now Button */}
         <Button
+          butterVariant="primary"
           size="$4"
-          backgroundColor="$primary"
-          color="$textInverse"
-          borderRadius="$full"
-          paddingHorizontal="$4"
-          paddingVertical="$2"
           disabled={isSold}
           onPress={() => onBuyNow(product.id)}
           minWidth={120}
@@ -146,12 +142,8 @@ export function HorizontalProductCard({
 
         {/* Make an Offer Button */}
         <Button
+          butterVariant="secondary"
           size="$4"
-          backgroundColor="$secondary"
-          color="$textInverse"
-          borderRadius="$full"
-          paddingHorizontal="$4"
-          paddingVertical="$2"
           disabled={isSold}
           onPress={() => onMakeOffer(product.id)}
           minWidth={120}

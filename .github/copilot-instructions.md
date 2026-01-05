@@ -638,7 +638,7 @@ function ThemedComponent() {
 
 We have **8 hardened component families** in `packages/ui` (~1,500 lines of production code):
 
-1. **Button** - Standard Tamagui Button with numeric size tokens ($1-$16) and direct prop styling
+1. **Button** - Custom styled Button with `butterVariant` prop (`primary` | `secondary`) + numeric size tokens ($1-$16)
 2. **Typography** - Text, Heading (h1-h6), Label with fontSize tokens
 3. **Layout** - Row, Column, Container, Spacer for flexible layouts
 4. **Card** - 4 variants (elevated, outlined, filled, ghost) with compound components
@@ -649,61 +649,66 @@ We have **8 hardened component families** in `packages/ui` (~1,500 lines of prod
 
 ### Critical Component Usage Patterns
 
-#### ✅ **ALWAYS Use Standard Tamagui Button (Never Custom Variants or Manual HTML Buttons)**
+#### ✅ **ALWAYS Use butterVariant for Styled Buttons**
+
+Our custom Button component uses `butterVariant` prop for brand-consistent styling with proper shadows and hover states.
 
 ```tsx
-// ✅ CORRECT - Use standard Tamagui Button with numeric size tokens and direct props
+// ✅ CORRECT - Use butterVariant for styled buttons
 import { Button } from "@buttergolf/ui";
 
-<Button size="$5" backgroundColor="$primary" color="$textInverse" paddingHorizontal="$6" paddingVertical="$3" borderRadius="$full">
-  View all listings
+// Primary button (Spiced Clementine with inner glow)
+<Button butterVariant="primary" size="$5">
+  Sell now
 </Button>
 
-<Button size="$4" backgroundColor="transparent" color="$primary" borderWidth={2} borderColor="$primary" paddingHorizontal="$4" paddingVertical="$3" borderRadius="$full" width="100%">
-  Secondary Action
+// Secondary button (Ironstone/dark with subtle shadow)
+<Button butterVariant="secondary" size="$4">
+  Shop now
 </Button>
 
-<Button size="$4" chromeless>
-  Ghost Button
+// Ghost/tab buttons use chromeless (no butterVariant needed)
+<Button chromeless size="$4">
+  Cancel
+</Button>
+
+// ❌ WRONG - Don't use inline backgroundColor/color for styled buttons
+<Button backgroundColor="$primary" color="$textInverse" size="$5">
+  Submit
 </Button>
 
 // ❌ WRONG - Never create manual HTML buttons with inline styles
 <button
   style={{
-    fontFamily: "var(--font-urbanist)",
-    fontSize: "16px",
-    fontWeight: 600,
-    color: "#FFFAD2",
     backgroundColor: "#F45314",
-    border: "none",
+    color: "#FFFAD2",
     borderRadius: "32px",
     padding: "14px 40px",
-    cursor: "pointer",
   }}
 >
   View all listings
 </button>
 
-// ❌ WRONG - Don't use custom variants (we removed them)
+// ❌ WRONG - Don't use non-existent variants
 <Button size="lg" tone="primary">
   Submit
 </Button>
-
-// ❌ WRONG - Don't use native button element even with Tamagui props
-<button backgroundColor="$primary" color="$textInverse">
-  Submit
-</button>
 ```
 
-**Why Standard Tamagui Button?**
+**Why butterVariant?**
 
-- Ensures cross-platform consistency (works on web and mobile)
-- Uses standard Tamagui numeric size tokens ($1-$16)
-- No abstraction layer - direct control over styling
-- Built-in hover/press/focus states
-- Accessible by default
-- Compiler-optimized for performance
-- Follows official Tamagui patterns
+- **Brand consistency** - Enforces Figma-designed button styles
+- **Cross-platform shadows** - Web gets inner glow + drop shadow, mobile gracefully degrades
+- **Built-in states** - Proper hover, press, and focus styles included
+- **Type-safe** - Only `primary` | `secondary` allowed
+- **Compiler-optimized** - Uses Tamagui `styled()` for performance
+- **Avoids conflicts** - Named `butterVariant` to avoid Tamagui's internal `variant` prop
+
+**When NOT to use butterVariant:**
+
+- Tab/filter buttons → Use `chromeless`
+- Icon-only buttons → Use `chromeless` with padding overrides
+- Custom one-off styling → Direct props are acceptable but avoid if possible
 
 #### ✅ **ALWAYS Use Semantic Color Tokens in App Code**
 
@@ -2520,13 +2525,13 @@ When `resolve-library-id` returns multiple matches:
    - ❌ WRONG: `<Text fontSize="$5">` → Use size prop, not fontSize
    - ✅ CORRECT: `<Text size="$5">` → Standard Tamagui pattern
    - ❌ WRONG: `<Button size="lg">` → Use numeric tokens
-   - ✅ CORRECT: `<Button size="$5" backgroundColor="$primary" color="$textInverse">` → Standard Tamagui Button
+   - ✅ CORRECT: `<Button butterVariant="primary" size="$5">` → Use butterVariant + numeric size
    - **See full documentation**: Official Tamagui docs confirm Text/Button use `size` prop
 
 ### Design System & Components
 
 1. **ALWAYS use semantic color tokens in app code** - PREFER `$primary`, `$text`, `$textSecondary`, `$textMuted`, `$border`, `$background`, `$surface` for automatic theme switching. Use brand tokens (`$ironstone`, `$spicedClementine`, `$vanillaCream`) only in `packages/ui` component definitions or when you need a specific color that won't change with themes. Never use raw hex values or numbered colors.
-2. **ALWAYS use standard Tamagui Button with numeric size tokens and direct props** - Use `<Button size="$5" backgroundColor="$primary" color="$textInverse">` with direct prop styling instead of manual HTML buttons. Button has NO tone/variant props in official Tamagui.
+2. **ALWAYS use butterVariant for styled buttons** - Use `<Button butterVariant="primary" size="$5">` for primary buttons and `<Button butterVariant="secondary" size="$4">` for secondary buttons. Use `chromeless` for ghost/tab buttons. Avoid inline `backgroundColor`/`color` props on buttons.
 3. **ALWAYS use Text size with numeric tokens** - Use `<Text size="$5">` for body text, `size="$3"` for small text. This is the standard Tamagui pattern (NOT fontSize).
 4. **ALWAYS use Text color with direct tokens** - Use `<Text color="$text">` or `<Text color="$textMuted">` (Text has NO color variants)
 5. **ALWAYS use compound components for Cards** - Use `<Card.Header>` instead of `<CardHeader>`

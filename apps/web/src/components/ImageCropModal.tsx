@@ -296,9 +296,8 @@ export function ImageCropModal({
             Cancel
           </Button>
           <Button
+            butterVariant="primary"
             size="$4"
-            backgroundColor="$primary"
-            color="$textInverse"
             borderRadius="$full"
             paddingHorizontal="$6"
             onPress={handleApplyCrop}

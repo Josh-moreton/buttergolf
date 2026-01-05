@@ -154,10 +154,9 @@ export function MobileFilterSheet({
               Cancel
             </Button>
             <Button
+              butterVariant="primary"
               size="$4"
               flex={1}
-              backgroundColor="$primary"
-              color="$textInverse"
               onPress={() => {
                 onApply();
                 onOpenChange(false);

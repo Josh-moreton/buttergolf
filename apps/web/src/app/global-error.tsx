@@ -28,14 +28,9 @@ export default function GlobalError({
           </Text>
 
           <Button
-            onPress={() => reset()}
+            butterVariant="primary"
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
-            paddingHorizontal="$2xl"
-            paddingVertical="$md"
-            borderRadius="$full"
-            cursor="pointer"
+            onPress={() => reset()}
           >
             Try again
           </Button>

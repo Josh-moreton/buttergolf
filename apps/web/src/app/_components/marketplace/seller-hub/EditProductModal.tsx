@@ -392,12 +392,8 @@ export function EditProductModal({
                   Cancel
                 </Button>
                 <Button
+                  butterVariant="primary"
                   size="$4"
-                  backgroundColor="$primary"
-                  color="$textInverse"
-                  paddingHorizontal="$4"
-                  paddingVertical="$3"
-                  borderRadius="$full"
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Changes"}

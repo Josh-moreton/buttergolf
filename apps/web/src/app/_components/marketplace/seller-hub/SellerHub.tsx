@@ -240,13 +240,7 @@ export function SellerHub() {
             in under 60 seconds.
           </Text>
           <Link href="/sell" style={{ textDecoration: "none" }}>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$6"
-              borderRadius="$full"
-            >
+            <Button butterVariant="primary" size="$5">
               <Row gap="$sm" alignItems="center">
                 <Plus size={20} />
                 <Text color="$textInverse">Create First Listing</Text>
@@ -281,14 +275,7 @@ export function SellerHub() {
             </Text>
           </Column>
           <Link href="/sell" style={{ textDecoration: "none" }}>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$5"
-              paddingVertical="$3"
-              borderRadius="$full"
-            >
+            <Button butterVariant="primary" size="$5">
               <Row gap="$sm" alignItems="center">
                 <Plus size={20} color="white" />
                 <Text color="$textInverse" weight="semibold">New Listing</Text>

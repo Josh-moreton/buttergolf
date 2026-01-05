@@ -85,14 +85,7 @@ export function RecentlyListedSectionClient({
           paddingTop="$sm"
         >
           <Link href="/listings" passHref style={{ textDecoration: "none" }}>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              borderRadius="$full"
-              paddingHorizontal="$6"
-              paddingVertical="$3"
-            >
+            <Button butterVariant="primary" size="$5">
               View all listings
             </Button>
           </Link>

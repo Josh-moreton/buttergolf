@@ -168,17 +168,14 @@ export function ProductCard({
           >
             <Row justifyContent="center">
               <Button
+                butterVariant="primary"
                 size="$4"
-                backgroundColor="$primary"
-                color="$textInverse"
                 borderRadius="$full"
                 paddingHorizontal="$6"
                 onPress={(e) => {
                   e?.stopPropagation?.();
                   onQuickView(product.id);
                 }}
-                hoverStyle={{ opacity: 0.9 }}
-                pressStyle={{ opacity: 0.8 }}
               >
                 View
               </Button>

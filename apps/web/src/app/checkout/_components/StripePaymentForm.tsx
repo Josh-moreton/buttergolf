@@ -198,10 +198,9 @@ export function StripePaymentForm({
             </Button>
           )}
           <Button
+            butterVariant="primary"
             flex={2}
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
             onPress={handleContinueToPayment}
             disabled={isCreatingIntent}
           >

@@ -155,9 +155,8 @@ export function CounterOfferForm({
 
           {/* Submit button */}
           <Button
+            butterVariant="primary"
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
             width="100%"
             disabled={submitting || !amount}
             onPress={handleSubmit as any}

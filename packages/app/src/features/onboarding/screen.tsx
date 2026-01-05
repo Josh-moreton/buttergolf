@@ -272,9 +272,8 @@ export function OnboardingScreen({
         <YStack gap={12} width="100%" paddingHorizontal={24}>
           {/* Primary Button - Pill-shaped with Spiced Clementine */}
           <Button
+            butterVariant="primary"
             size="$4"
-            backgroundColor="$primary"
-            color="$textInverse"
             borderRadius="$full"
             paddingHorizontal="$6"
             paddingVertical="$2"

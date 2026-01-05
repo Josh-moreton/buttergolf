@@ -199,9 +199,8 @@ export function ProductDetailScreen({
 
           {/* Contact Seller Button */}
           <Button
+            butterVariant="primary"
             size="$5"
-            backgroundColor="$primary"
-            color="$textInverse"
             width="100%"
           >
             Contact Seller

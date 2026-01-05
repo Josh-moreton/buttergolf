@@ -277,11 +277,10 @@ export function OrderMessages({
             </Column>
 
             <Button
-              backgroundColor="$primary"
-              color="$textInverse"
+              butterVariant="primary"
+              size="$5"
               onPress={handleSend}
               disabled={sending || !newMessage.trim() || isOverLimit}
-              size="$5"
             >
               {sending ? "Sending..." : "Send"}
             </Button>
