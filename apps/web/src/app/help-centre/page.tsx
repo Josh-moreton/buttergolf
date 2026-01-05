@@ -1,8 +1,16 @@
-"use client";
-
 import type { Metadata } from "next";
 import { Column, Container, Heading, Text, Card, Row } from "@buttergolf/ui";
 import { Mail, MessageCircle, Clock, HelpCircle } from "@tamagui/lucide-icons";
+
+export const metadata: Metadata = {
+  title: "Help Centre | ButterGolf",
+  description:
+    "Get help and answers to common questions about using the ButterGolf marketplace",
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function HelpCentrePage() {
   return (
