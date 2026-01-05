@@ -617,6 +617,42 @@ export function SellFormClient() {
                     </select>
                   </Column>
 
+                  {/* Woods Sub-category - Conditional (Woods only) */}
+                  {shouldShowWoodsSubcategory() && (
+                    <Column gap="$xs" width="100%">
+                      <FormLabel>Type</FormLabel>
+                      <RadioGroup
+                        value={formData.woodsSubcategory}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, woodsSubcategory: value })
+                        }
+                        orientation="horizontal"
+                      >
+                        {WOODS_SUBCATEGORIES.map((sub) => (
+                          <Row key={sub.value} gap="$xs" alignItems="center">
+                            <Radio value={sub.value}>
+                              <RadioIndicator />
+                            </Radio>
+                            <Text
+                              size="$4"
+                              color="$text"
+                              onPress={() =>
+                                setFormData({
+                                  ...formData,
+                                  woodsSubcategory: sub.value,
+                                })
+                              }
+                              cursor="pointer"
+                            >
+                              {sub.label}
+                            </Text>
+                          </Row>
+                        ))}
+                      </RadioGroup>
+                      <HelperText>Select the type of wood</HelperText>
+                    </Column>
+                  )}
+
                   {/* Brand & Model Row */}
                   <Row gap="$md" flexWrap="wrap">
                     <Column gap="$xs" flex={1} minWidth={200}>
@@ -704,42 +740,6 @@ export function SellFormClient() {
                       </HelperText>
                     </Column>
                   </Row>
-
-                  {/* Woods Sub-category - Conditional (Woods only) */}
-                  {shouldShowWoodsSubcategory() && (
-                    <Column gap="$xs" width="100%">
-                      <FormLabel>Type</FormLabel>
-                      <RadioGroup
-                        value={formData.woodsSubcategory}
-                        onValueChange={(value) =>
-                          setFormData({ ...formData, woodsSubcategory: value })
-                        }
-                        orientation="horizontal"
-                      >
-                        {WOODS_SUBCATEGORIES.map((sub) => (
-                          <Row key={sub.value} gap="$xs" alignItems="center">
-                            <Radio value={sub.value}>
-                              <RadioIndicator />
-                            </Radio>
-                            <Text
-                              size="$4"
-                              color="$text"
-                              onPress={() =>
-                                setFormData({
-                                  ...formData,
-                                  woodsSubcategory: sub.value,
-                                })
-                              }
-                              cursor="pointer"
-                            >
-                              {sub.label}
-                            </Text>
-                          </Row>
-                        ))}
-                      </RadioGroup>
-                      <HelperText>Select the type of wood</HelperText>
-                    </Column>
-                  )}
 
                   {/* Head Cover Included - Conditional (Woods & Putters) */}
                   {shouldShowHeadCover() && (
