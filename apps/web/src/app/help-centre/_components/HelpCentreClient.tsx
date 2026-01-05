@@ -26,7 +26,7 @@ export function HelpCentreClient() {
           <Column gap="$lg">
             <Heading level={2}>Get Support</Heading>
             <Row gap="$md" flexWrap="wrap">
-              <Card variant="elevated" padding="lg" flex={1} minWidth={250}>
+              <Card variant="elevated" padding="$lg" flex={1} minWidth={250}>
                 <Column gap="$md" alignItems="center">
                   <MessageCircle size={32} color="#F45314" />
                   <Column gap="$sm" alignItems="center">
@@ -41,7 +41,7 @@ export function HelpCentreClient() {
                 </Column>
               </Card>
 
-              <Card variant="elevated" padding="lg" flex={1} minWidth={250}>
+              <Card variant="elevated" padding="$lg" flex={1} minWidth={250}>
                 <Column gap="$md" alignItems="center">
                   <Mail size={32} color="#F45314" />
                   <Column gap="$sm" alignItems="center">
@@ -56,7 +56,7 @@ export function HelpCentreClient() {
                 </Column>
               </Card>
 
-              <Card variant="elevated" padding="lg" flex={1} minWidth={250}>
+              <Card variant="elevated" padding="$lg" flex={1} minWidth={250}>
                 <Column gap="$md" alignItems="center">
                   <Clock size={32} color="#F45314" />
                   <Column gap="$sm" alignItems="center">
@@ -77,7 +77,7 @@ export function HelpCentreClient() {
           <Column gap="$lg">
             <Heading level={2}>Frequently Asked Questions</Heading>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -93,7 +93,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -108,7 +108,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -123,7 +123,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -139,7 +139,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -157,7 +157,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -173,7 +173,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -189,7 +189,7 @@ export function HelpCentreClient() {
               </Column>
             </Card>
 
-            <Card variant="outlined" padding="lg">
+            <Card variant="outlined" padding="$lg">
               <Column gap="$md">
                 <Row gap="$sm" alignItems="center">
                   <HelpCircle size={24} color="#F45314" />
@@ -209,7 +209,7 @@ export function HelpCentreClient() {
           </Column>
 
           {/* Still Need Help */}
-          <Card variant="outlined" padding="xl">
+          <Card variant="outlined" padding="$xl">
             <Column gap="$md" alignItems="center">
               <Heading level={2}>Still need help?</Heading>
               <Text color="$textSecondary" textAlign="center">

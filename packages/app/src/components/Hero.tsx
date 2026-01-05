@@ -186,13 +186,12 @@ function HeroHeading({
       level={1}
       size="$9"
       lineHeight="$9"
-      $gtSm={{ fontSize: "$9", lineHeight: "$9" }}
       $md={{ fontSize: "$11", lineHeight: "$11" }}
       $lg={{ fontSize: "$14", lineHeight: "$14" }}
       color="$ironstone"
       fontWeight="700"
       textAlign="center"
-      $gtSm={{ textAlign: "left" }}
+      $gtSm={{ textAlign: "left", fontSize: "$9", lineHeight: "$9" }}
       style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
     >
       {text}
@@ -368,7 +367,7 @@ export function Hero({
             $gtSm={{ width: "55%", paddingLeft: "$8", paddingRight: "$2", alignItems: "flex-start" }}
             $gtMd={{ width: "60%", paddingLeft: "$12", paddingRight: "$4" }}
           >
-            <Column gap="$4" $gtSm={{ gap: "$5", maxWidth: 700 }} $gtMd={{ gap: "$6" }} width="100%" maxWidth="none">
+            <Column gap="$4" $gtSm={{ gap: "$5", maxWidth: 700 }} $gtMd={{ gap: "$6" }} width="100%">
               {/* Heading */}
               <HeroHeading
                 heading={heading}
@@ -380,13 +379,12 @@ export function Hero({
               {subtitle && (
                 <Text
                   size="$7"
-                  $gtSm={{ fontSize: "$8" }}
+                  $gtSm={{ fontSize: "$8", textAlign: "left" }}
                   $md={{ fontSize: "$9" }}
                   color="$slateSmoke"
                   fontWeight="500"
                   marginTop="$2"
                   textAlign="center"
-                  $gtSm={{ textAlign: "left" }}
                 >
                   {subtitle}
                 </Text>
@@ -421,11 +419,9 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
   // Define button styling inline to avoid butterVariant prop warning
   const primaryButtonProps = {
     size: "$5" as const,
-    $gtSm: { size: "$4" as const },
     paddingHorizontal: "$4" as const,
-    $gtSm: { paddingHorizontal: "$3" as const },
     paddingVertical: "$3" as const,
-    $gtSm: { paddingVertical: "$2" as const },
+    $gtSm: { size: "$4" as const, paddingHorizontal: "$3" as const, paddingVertical: "$2" as const },
     backgroundColor: "$primary" as const,
     borderWidth: 1,
     borderColor: "$primaryBorder" as const,
@@ -434,11 +430,9 @@ function HeroCTAButtons({ primaryCta, secondaryCta }: HeroCTAButtonsProps) {
 
   const secondaryButtonProps = {
     size: "$5" as const,
-    $gtSm: { size: "$4" as const },
     paddingHorizontal: "$4" as const,
-    $gtSm: { paddingHorizontal: "$3" as const },
     paddingVertical: "$3" as const,
-    $gtSm: { paddingVertical: "$2" as const },
+    $gtSm: { size: "$4" as const, paddingHorizontal: "$3" as const, paddingVertical: "$2" as const },
     backgroundColor: "$secondary" as const,
     borderWidth: 1,
     borderColor: "$secondaryBorder" as const,
