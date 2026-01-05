@@ -805,7 +805,7 @@ export function SellFormClient() {
                         <Slider.Track>
                           <Slider.TrackActive />
                         </Slider.Track>
-                        <Slider.Thumb index={0} circular />
+                        <Slider.Thumb index={0} />
                       </Slider>
                     </Column>
 
@@ -835,7 +835,7 @@ export function SellFormClient() {
                         <Slider.Track>
                           <Slider.TrackActive />
                         </Slider.Track>
-                        <Slider.Thumb index={0} circular />
+                        <Slider.Thumb index={0} />
                       </Slider>
                     </Column>
 
@@ -868,7 +868,7 @@ export function SellFormClient() {
                         <Slider.Track>
                           <Slider.TrackActive />
                         </Slider.Track>
-                        <Slider.Thumb index={0} circular />
+                        <Slider.Thumb index={0} />
                       </Slider>
                     </Column>
                   </Column>

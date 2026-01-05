@@ -65,8 +65,8 @@ export function PriceRangeFilter({
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb index={0} circular />
-        <Slider.Thumb index={1} circular />
+        <Slider.Thumb index={0} />
+        <Slider.Thumb index={1} />
       </Slider>
       <Row gap="$sm" alignItems="center" width="100%">
         <Column gap="$xs" flex={1} minWidth={0}>

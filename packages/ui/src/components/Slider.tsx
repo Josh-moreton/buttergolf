@@ -8,13 +8,16 @@ import { Slider as TamaguiSlider, styled, GetProps } from "tamagui";
  * A range slider built on @tamagui/slider for selecting numeric values.
  * Uses compound component pattern (Slider.Track, Slider.TrackActive, Slider.Thumb).
  *
+ * IMPORTANT: Do NOT use the `circular` prop on Slider.Thumb - our styled component
+ * already handles the circular appearance with proper sizing and brand colours.
+ *
  * @example
  * // Single value slider
  * <Slider defaultValue={[50]} max={100} step={1}>
  *   <Slider.Track>
  *     <Slider.TrackActive />
  *   </Slider.Track>
- *   <Slider.Thumb index={0} circular />
+ *   <Slider.Thumb index={0} />
  * </Slider>
  *
  * @example
@@ -23,8 +26,8 @@ import { Slider as TamaguiSlider, styled, GetProps } from "tamagui";
  *   <Slider.Track>
  *     <Slider.TrackActive />
  *   </Slider.Track>
- *   <Slider.Thumb index={0} circular />
- *   <Slider.Thumb index={1} circular />
+ *   <Slider.Thumb index={0} />
+ *   <Slider.Thumb index={1} />
  * </Slider>
  */
 
@@ -37,8 +40,8 @@ const SliderFrame = styled(TamaguiSlider, {
 // Styled Track with proper overflow handling
 const SliderTrack = styled(TamaguiSlider.Track, {
   name: "SliderTrack",
-  backgroundColor: "$border",
-  height: 3,
+  backgroundColor: "$cloudMist",
+  height: 4,
   borderRadius: "$full",
   overflow: "hidden",
 });
@@ -51,37 +54,79 @@ const SliderTrackActive = styled(TamaguiSlider.TrackActive, {
   borderRadius: "$full",
 });
 
-// Styled Thumb with brand colours and hover states
+// Styled Thumb with consistent brand colours - compact, clean design
+// NOTE: Do NOT use `circular` prop - it overrides our explicit sizing
 const SliderThumb = styled(TamaguiSlider.Thumb, {
   name: "SliderThumb",
+  
+  // Explicit sizing - must use !important pattern via size: undefined to prevent Tamagui size inheritance
+  size: undefined,
+  width: 20,
+  height: 20,
+  minWidth: 20,
+  minHeight: 20,
+  maxWidth: 20,
+  maxHeight: 20,
+  
+  // Circular shape
+  borderRadius: 10,
+  
+  // Primary colour - consistent across all states
   backgroundColor: "$primary",
+  
+  // White border for clean separation from track
   borderWidth: 2,
-  borderColor: "$surface",
-  width: 12,
-  height: 12,
-  borderRadius: "$full",
-  cursor: "grab",
-  // Subtle shadow for depth
-  shadowColor: "$shadowColor",
+  borderColor: "$pureWhite",
+  
+  // Subtle shadow for depth and visibility
+  shadowColor: "rgba(0,0,0,0.2)",
   shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.2,
-  shadowRadius: 2,
+  shadowOpacity: 1,
+  shadowRadius: 3,
+  elevation: 3,
+  
+  cursor: "grab",
 
+  // Hover - slight grow, deeper shadow
   hoverStyle: {
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+    width: 22,
+    height: 22,
+    minWidth: 22,
+    minHeight: 22,
+    maxWidth: 22,
+    maxHeight: 22,
+    borderRadius: 11,
+    shadowColor: "rgba(0,0,0,0.25)",
+    shadowRadius: 4,
   },
 
+  // Press/active - grabbing cursor
   pressStyle: {
     cursor: "grabbing",
-    shadowOpacity: 0.35,
-    shadowRadius: 3,
+    width: 22,
+    height: 22,
+    minWidth: 22,
+    minHeight: 22,
+    maxWidth: 22,
+    maxHeight: 22,
+    borderRadius: 11,
+    shadowColor: "rgba(0,0,0,0.3)",
+    shadowRadius: 5,
   },
 
+  // Focus - primary glow ring effect
   focusStyle: {
+    width: 22,
+    height: 22,
+    minWidth: 22,
+    minHeight: 22,
+    maxWidth: 22,
+    maxHeight: 22,
+    borderRadius: 11,
     borderColor: "$primary",
-    shadowOpacity: 0.35,
-    shadowRadius: 3,
+    borderWidth: 3,
+    shadowColor: "rgba(244,83,20,0.4)",
+    shadowRadius: 6,
   },
 });
 
@@ -145,8 +190,8 @@ export function RangeSlider({
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb index={0} circular />
-      <Slider.Thumb index={1} circular />
+      <Slider.Thumb index={0} />
+      <Slider.Thumb index={1} />
     </Slider>
   );
 }
