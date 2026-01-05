@@ -9,7 +9,6 @@ import {
   Button,
   Input,
   Card,
-  Select,
 } from "@buttergolf/ui";
 import type { SellerProduct } from "./SellerProductCard";
 
@@ -237,36 +236,78 @@ export function EditProductModal({
 
                 <Column gap="$xs" flex={1} minWidth={200}>
                   <Text weight="medium">Condition *</Text>
-                  <Select
+                  <select
                     value={formData.condition}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, condition: value })
+                    onChange={(e) =>
+                      setFormData({ ...formData, condition: e.target.value })
                     }
-                    options={CONDITIONS.map((cond) => ({
-                      value: cond.value,
-                      label: cond.label,
-                    }))}
-                    placeholder="Select condition"
-                    size="md"
-                  />
+                    style={{
+                      height: 40,
+                      paddingLeft: 16,
+                      paddingRight: 40,
+                      fontSize: 15,
+                      fontFamily: "inherit",
+                      fontWeight: 500,
+                      borderRadius: 24,
+                      border: "1px solid #323232",
+                      backgroundColor: "white",
+                      color: "#323232",
+                      cursor: "pointer",
+                      width: "100%",
+                      outline: "none",
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 16px center",
+                    }}
+                  >
+                    <option value="" disabled>Select condition</option>
+                    {CONDITIONS.map((cond) => (
+                      <option key={cond.value} value={cond.value}>
+                        {cond.label}
+                      </option>
+                    ))}
+                  </select>
                 </Column>
               </Row>
 
               {/* Brand */}
               <Column gap="$xs">
                 <Text weight="medium">Brand *</Text>
-                <Select
+                <select
                   value={formData.brandId}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, brandId: value })
+                  onChange={(e) =>
+                    setFormData({ ...formData, brandId: e.target.value })
                   }
-                  options={brands.map((brand) => ({
-                    value: brand.id,
-                    label: brand.name,
-                  }))}
-                  placeholder="Select a brand"
-                  size="md"
-                />
+                  style={{
+                    height: 40,
+                    paddingLeft: 16,
+                    paddingRight: 40,
+                    fontSize: 15,
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    borderRadius: 24,
+                    border: "1px solid #323232",
+                    backgroundColor: "white",
+                    color: "#323232",
+                    cursor: "pointer",
+                    width: "100%",
+                    outline: "none",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
+                  }}
+                >
+                  <option value="" disabled>Select a brand</option>
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </select>
               </Column>
 
               {/* Model */}
@@ -285,18 +326,39 @@ export function EditProductModal({
               {/* Category */}
               <Column gap="$xs">
                 <Text weight="medium">Category *</Text>
-                <Select
+                <select
                   value={formData.categoryId}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, categoryId: value })
+                  onChange={(e) =>
+                    setFormData({ ...formData, categoryId: e.target.value })
                   }
-                  options={categories.map((category) => ({
-                    value: category.id,
-                    label: category.name,
-                  }))}
-                  placeholder="Select a category"
-                  size="md"
-                />
+                  style={{
+                    height: 40,
+                    paddingLeft: 16,
+                    paddingRight: 40,
+                    fontSize: 15,
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    borderRadius: 24,
+                    border: "1px solid #323232",
+                    backgroundColor: "white",
+                    color: "#323232",
+                    cursor: "pointer",
+                    width: "100%",
+                    outline: "none",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
+                  }}
+                >
+                  <option value="" disabled>Select a category</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </Column>
 
               {/* Error Message */}
@@ -322,16 +384,20 @@ export function EditProductModal({
             >
               <Row gap="$sm" justifyContent="flex-end">
                 <Button
-                  butterVariant="ghost"
                   size="$4"
+                  chromeless
                   onPress={onClose}
                   disabled={loading}
                 >
                   Cancel
                 </Button>
                 <Button
-                  butterVariant="primary"
                   size="$4"
+                  backgroundColor="$primary"
+                  color="$textInverse"
+                  paddingHorizontal="$4"
+                  paddingVertical="$3"
+                  borderRadius="$full"
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Changes"}

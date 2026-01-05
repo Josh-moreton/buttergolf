@@ -207,8 +207,14 @@ export function SellerProductCard({
           {/* Actions */}
           <Row gap="$sm" marginTop="$sm">
             <Button
-              butterVariant="outline"
               size="$3"
+              backgroundColor="transparent"
+              color="$primary"
+              borderWidth={2}
+              borderColor="$primary"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               flex={1}
               onPress={() => onEdit(product)}
               disabled={isDeleting || isUpdating}
@@ -219,8 +225,12 @@ export function SellerProductCard({
               </Row>
             </Button>
             <Button
-              butterVariant={product.isSold ? "secondary" : "success"}
               size="$3"
+              backgroundColor={product.isSold ? "$secondary" : "$success"}
+              color="$textInverse"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               flex={1}
               onPress={handleMarkSold}
               disabled={isDeleting || isUpdating}
@@ -228,8 +238,12 @@ export function SellerProductCard({
               {isUpdating ? "..." : product.isSold ? "Relist" : "Mark Sold"}
             </Button>
             <Button
-              butterVariant="danger"
               size="$3"
+              backgroundColor="$error"
+              color="$textInverse"
+              borderRadius="$full"
+              paddingHorizontal="$3"
+              paddingVertical="$2"
               onPress={handleDelete}
               disabled={isDeleting || isUpdating}
               aria-label="Delete listing"

@@ -11,8 +11,7 @@ import {
   Button,
   Card,
   Spinner,
-  ToggleGroup,
-  Select,
+  Theme,
 } from "@buttergolf/ui";
 import { Plus, Package, Eye, Heart, Tag } from "@tamagui/lucide-icons";
 import Link from "next/link";
@@ -242,13 +241,15 @@ export function SellerHub() {
           </Text>
           <Link href="/sell" style={{ textDecoration: "none" }}>
             <Button
-              butterVariant="primary"
               size="$5"
+              backgroundColor="$primary"
+              color="$textInverse"
               paddingHorizontal="$6"
+              borderRadius="$full"
             >
               <Row gap="$sm" alignItems="center">
                 <Plus size={20} />
-                <Text>Create First Listing</Text>
+                <Text color="$textInverse">Create First Listing</Text>
               </Row>
             </Button>
           </Link>
@@ -281,8 +282,12 @@ export function SellerHub() {
           </Column>
           <Link href="/sell" style={{ textDecoration: "none" }}>
             <Button
-              butterVariant="primary"
               size="$5"
+              backgroundColor="$primary"
+              color="$textInverse"
+              paddingHorizontal="$5"
+              paddingVertical="$3"
+              borderRadius="$full"
             >
               <Row gap="$sm" alignItems="center">
                 <Plus size={20} color="white" />
@@ -369,34 +374,60 @@ export function SellerHub() {
             {/* Status Filter */}
             <Row gap="$sm" alignItems="center" flexWrap="wrap">
               <Text weight="medium">Status:</Text>
-              <ToggleGroup
-                value={statusFilter}
-                onValueChange={(value) => setStatusFilter(value as "all" | "active" | "sold")}
-                options={[
-                  { value: "all", label: "All" },
-                  { value: "active", label: "Active" },
-                  { value: "sold", label: "Sold" },
-                ]}
-                size="$3"
-              />
+              <Row gap="$xs">
+                {(["all", "active", "sold"] as const).map((status) => (
+                  <Theme key={status} name={statusFilter === status ? "active" : null}>
+                    <Button
+                      size="$3"
+                      backgroundColor={statusFilter === status ? "$primary" : "transparent"}
+                      color={statusFilter === status ? "$textInverse" : "$text"}
+                      borderWidth={1}
+                      borderColor={statusFilter === status ? "$primary" : "$border"}
+                      borderRadius="$full"
+                      paddingHorizontal="$md"
+                      paddingVertical="$sm"
+                      onPress={() => setStatusFilter(status)}
+                    >
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </Button>
+                  </Theme>
+                ))}
+              </Row>
             </Row>
 
             {/* Sort */}
             <Row gap="$sm" alignItems="center">
               <Text weight="medium">Sort:</Text>
-              <Select
+              <select
                 value={sortBy}
-                onValueChange={(value) => setSortBy(value as typeof sortBy)}
-                options={[
-                  { value: "newest", label: "Newest First" },
-                  { value: "oldest", label: "Oldest First" },
-                  { value: "price-desc", label: "Price: High to Low" },
-                  { value: "price-asc", label: "Price: Low to High" },
-                  { value: "views", label: "Most Viewed" },
-                ]}
-                placeholder="Sort by"
-                size="sm"
-              />
+                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                style={{
+                  height: 40,
+                  paddingLeft: 16,
+                  paddingRight: 40,
+                  fontSize: 15,
+                  fontFamily: "inherit",
+                  fontWeight: 500,
+                  borderRadius: 24,
+                  border: "1px solid #323232",
+                  backgroundColor: "white",
+                  color: "#323232",
+                  cursor: "pointer",
+                  minWidth: 180,
+                  outline: "none",
+                  appearance: "none",
+                  WebkitAppearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 16px center",
+                }}
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="views">Most Viewed</option>
+              </select>
             </Row>
           </Row>
         </Card>
@@ -426,8 +457,14 @@ export function SellerHub() {
             {data.pagination.totalPages > 1 && (
               <Row gap="$sm" alignItems="center" justifyContent="center">
                 <Button
-                  butterVariant="outline"
                   size="$4"
+                  backgroundColor="transparent"
+                  color="$primary"
+                  borderWidth={2}
+                  borderColor="$primary"
+                  borderRadius="$full"
+                  paddingHorizontal="$4"
+                  paddingVertical="$3"
                   disabled={currentPage === 1}
                   onPress={() => fetchListings(currentPage - 1)}
                 >
@@ -437,8 +474,14 @@ export function SellerHub() {
                   Page {currentPage} of {data.pagination.totalPages}
                 </Text>
                 <Button
-                  butterVariant="outline"
                   size="$4"
+                  backgroundColor="transparent"
+                  color="$primary"
+                  borderWidth={2}
+                  borderColor="$primary"
+                  borderRadius="$full"
+                  paddingHorizontal="$4"
+                  paddingVertical="$3"
                   disabled={!data.pagination.hasMore}
                   onPress={() => fetchListings(currentPage + 1)}
                 >
