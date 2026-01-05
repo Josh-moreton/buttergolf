@@ -4,6 +4,7 @@ import "./globals.css";
 import { NextTamaguiProvider } from "./NextTamaguiProvider";
 import { Urbanist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 
 // Load Tamagui CSS in production (compiled output)
 if (process.env.NODE_ENV === "production") {
@@ -86,6 +87,7 @@ export default function RootLayout({
           </FavouritesProvider>
         </NextTamaguiProvider>
         <Analytics />
+        <Script src="//code.tidio.co/ba25ralqm9iybtdmfwzusfi6xuyd2qag.js" strategy="afterInteractive" />
       </body>
     </html>
   );
