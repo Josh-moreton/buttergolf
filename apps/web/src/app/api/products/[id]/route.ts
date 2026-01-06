@@ -20,6 +20,7 @@ export async function GET(
           },
         },
         category: true,
+        brand: true,
         user: {
           select: {
             id: true,
