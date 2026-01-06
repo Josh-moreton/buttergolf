@@ -292,6 +292,7 @@ export function ListingStep({
                 size="$8"
                 fontWeight="600"
                 color="$ironstone"
+                focusStyle={{ borderWidth: 0, outlineWidth: 0 }}
               />
             </Row>
             <Text size="$3" color="$slateSmoke">

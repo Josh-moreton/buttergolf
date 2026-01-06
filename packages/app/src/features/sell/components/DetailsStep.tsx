@@ -11,7 +11,7 @@ import {
   ScrollView,
   Spinner,
   Slider,
-  Checkbox,
+  Switch,
 } from "@buttergolf/ui";
 import {
   ChevronDown,
@@ -486,11 +486,11 @@ export function DetailsStep({
         {/* Items List */}
         <ScrollView flex={1} keyboardShouldPersistTaps="handled">
           <Column paddingHorizontal="$4" paddingVertical="$2" gap="$2">
-            {items.map((item) => {
+            {items.map((item, index) => {
               const isSelected = selectedId === item.id;
               return (
                 <TouchableOpacity
-                  key={item.id}
+                  key={`${item.id}-${index}`}
                   onPress={() => onSelect(item)}
                   accessibilityLabel={`Select ${item.name}`}
                 >
@@ -669,18 +669,19 @@ export function DetailsStep({
                   paddingHorizontal="$4"
                   paddingVertical="$4"
                   alignItems="center"
-                  gap="$3"
+                  justifyContent="space-between"
                 >
-                  <Checkbox
+                  <Text size="$6" fontWeight="500" color="$ironstone">
+                    Head cover included?
+                  </Text>
+                  <Switch
                     checked={formData.headCoverIncluded}
                     onCheckedChange={(checked) =>
                       onUpdate({ headCoverIncluded: !!checked })
                     }
-                    size="$5"
-                  />
-                  <Text flex={1} size="$6" fontWeight="500" color="$ironstone">
-                    Head cover included?
-                  </Text>
+                  >
+                    <Switch.Thumb animation="quick" />
+                  </Switch>
                 </Row>
               </TouchableOpacity>
             </Column>
