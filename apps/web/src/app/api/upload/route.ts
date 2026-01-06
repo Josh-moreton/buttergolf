@@ -40,14 +40,42 @@ async function getUserId(request: Request): Promise<string | null> {
   return null;
 }
 
-export async function POST(request: Request): Promise<NextResponse> {
-  // Handle CORS for mobile requests
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter((origin) => origin.length > 0);
+
+function getAllowedOrigin(request: Request): string | null {
   const origin = request.headers.get("origin");
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": origin || "*",
+
+  // React Native requests generally don't send Origin, and same-origin requests don't need CORS.
+  if (!origin) return null;
+
+  if (ALLOWED_ORIGINS.length === 0) {
+    return null;
+  }
+
+  return ALLOWED_ORIGINS.includes(origin) ? origin : null;
+}
+
+function getCorsHeaders(request: Request): Record<string, string> {
+  const allowedOrigin = getAllowedOrigin(request);
+
+  const headers: Record<string, string> = {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
+
+  if (allowedOrigin) {
+    headers["Access-Control-Allow-Origin"] = allowedOrigin;
+    headers["Vary"] = "Origin";
+  }
+
+  return headers;
+}
+
+export async function POST(request: Request): Promise<NextResponse> {
+  const corsHeaders = getCorsHeaders(request);
 
   // Check if Cloudinary is configured
   if (
@@ -215,14 +243,21 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 // Handle CORS preflight requests
 export async function OPTIONS(request: Request): Promise<NextResponse> {
-  const origin = request.headers.get("origin");
+  const allowedOrigin = getAllowedOrigin(request);
+
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": "86400",
+  };
+
+  if (allowedOrigin) {
+    headers["Access-Control-Allow-Origin"] = allowedOrigin;
+    headers["Vary"] = "Origin";
+  }
+
   return new NextResponse(null, {
     status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": origin || "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Max-Age": "86400",
-    },
+    headers,
   });
 }

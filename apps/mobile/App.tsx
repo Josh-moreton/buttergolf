@@ -291,7 +291,10 @@ async function searchModels(brandId: string, query: string): Promise<Model[]> {
 }
 
 // Function to submit a listing
-async function submitListing(data: SellFormData): Promise<{ id: string }> {
+async function submitListingToApi(
+  data: SellFormData,
+  token: string | null,
+): Promise<{ id: string }> {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   if (!apiUrl) throw new Error("API URL not configured");
 
@@ -300,6 +303,7 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({
       title: data.title,
@@ -319,6 +323,11 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
   }
 
   return await response.json();
+}
+
+// Legacy non-auth submit (kept for parity with existing call sites)
+async function submitListing(data: SellFormData): Promise<{ id: string }> {
+  return submitListingToApi(data, null);
 }
 
 // Function to pick images from gallery
@@ -535,6 +544,12 @@ function SellScreenWrapper({
     return uploadImageToCloudinary(image, isFirstImage, getToken);
   };
 
+  const handleSubmitListing = async (data: SellFormData): Promise<{ id: string }> => {
+    const token = await getToken();
+    if (!token) throw new Error("Not authenticated");
+    return submitListingToApi(data, token);
+  };
+
   return (
     <SellScreen
       isAuthenticated={true}
@@ -544,7 +559,7 @@ function SellScreenWrapper({
       onUploadImage={handleUploadImage}
       onPickImages={pickImages}
       onTakePhoto={takePhoto}
-      onSubmitListing={submitListing}
+      onSubmitListing={handleSubmitListing}
       onClose={() => navigation.goBack()}
       onSuccess={(productId) => {
         navigation.navigate("ProductDetail", { id: productId });

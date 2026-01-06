@@ -75,9 +75,11 @@ export function PhotoStep({
       setUploading(true);
       
       try {
-        // Upload each image, first image in the list gets background removal
+        // Upload each image, first image in the listing gets background removal.
+        // Preserve successful uploads even if some uploads fail.
         const uploadedImages: ImageData[] = [];
         const currentImageCount = images.length;
+        let failedUploads = 0;
         
         for (let i = 0; i < newImages.length && currentImageCount + uploadedImages.length < MAX_IMAGES; i++) {
           const image = newImages[i];
@@ -85,15 +87,26 @@ export function PhotoStep({
           
           // First image in the entire listing (not just this batch) gets background removal
           const isFirstImage = currentImageCount === 0 && uploadedImages.length === 0;
-          
-          const uploaded = await uploadImage(image, isFirstImage);
-          if (uploaded) {
-            uploadedImages.push(uploaded);
+
+          try {
+            const uploaded = await uploadImage(image, isFirstImage);
+            if (uploaded) {
+              uploadedImages.push(uploaded);
+            } else {
+              failedUploads += 1;
+            }
+          } catch (error) {
+            failedUploads += 1;
+            console.error("Failed to upload image", error);
           }
         }
         
         if (uploadedImages.length > 0) {
           onImagesChange([...images, ...uploadedImages]);
+        }
+
+        if (failedUploads > 0) {
+          setUploadError("Some images failed to upload. Please try again.");
         }
       } catch (error) {
         setUploadError(error instanceof Error ? error.message : "Upload failed");
