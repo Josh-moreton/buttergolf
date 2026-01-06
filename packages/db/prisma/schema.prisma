@@ -38,6 +38,7 @@ model User {
   products                   Product[]
   ratingsGiven               SellerRating[] @relation("RatingsGiven")
   ratingsReceived            SellerRating[] @relation("SellerRatings")
+  promotions                 ProductPromotion[]
 
   @@index([isDeleted])
   @@map("users")
@@ -120,6 +121,7 @@ model Product {
   offers      Offer[]
   orders      Order[]
   images      ProductImage[]
+  promotions  ProductPromotion[]
   brand       Brand?           @relation(fields: [brandId], references: [id])
   category    Category         @relation(fields: [categoryId], references: [id])
   user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -217,6 +219,15 @@ model Order {
   stripePlatformFee    Float?
   stripeSellerPayout   Float?
   stripeTransferId     String?
+  // Vinted-style payment hold (escrow) fields
+  paymentHoldStatus    PaymentHoldStatus @default(HELD)
+  paymentHeldAt        DateTime?
+  paymentReleasedAt    DateTime?
+  autoReleaseAt        DateTime?
+  buyerConfirmedAt     DateTime?
+  // Buyer protection fee tracking
+  buyerProtectionFee   Float?
+  stripeChargeId       String?
   buyer                User           @relation("BuyerOrders", fields: [buyerId], references: [id])
   fromAddress          Address        @relation("FromAddress", fields: [fromAddressId], references: [id])
   product              Product        @relation(fields: [productId], references: [id])
@@ -230,6 +241,8 @@ model Order {
   @@index([productId])
   @@index([shipmentStatus])
   @@index([status])
+  @@index([paymentHoldStatus])
+  @@index([autoReleaseAt])
   @@map("orders")
 }
 
@@ -315,6 +328,29 @@ model Waitlist {
   @@map("waitlist")
 }
 
+model ProductPromotion {
+  id              String          @id @default(cuid())
+  productId       String
+  userId          String
+  type            PromotionType
+  status          PromotionStatus @default(PENDING)
+  stripePaymentId String?
+  amountPaid      Float
+  startsAt        DateTime?
+  expiresAt       DateTime?
+  purchasedAt     DateTime        @default(now())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  product         Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("product_promotions")
+}
+
 enum ClubKind {
   DRIVER
   FAIRWAY_WOOD
@@ -364,4 +400,23 @@ enum OfferStatus {
   REJECTED
   COUNTERED
   EXPIRED
+}
+
+enum PaymentHoldStatus {
+  HELD
+  RELEASED
+  DISPUTED
+  REFUNDED
+}
+
+enum PromotionType {
+  BUMP
+  WARDROBE_SPOTLIGHT
+}
+
+enum PromotionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
 }

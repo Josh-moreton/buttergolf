@@ -1,0 +1,177 @@
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { prisma } from "@buttergolf/db";
+import { stripe } from "@/lib/stripe";
+
+/**
+ * POST /api/orders/[id]/confirm-receipt
+ *
+ * Buyer confirms they've received the item and are satisfied.
+ * This releases the held payment to the seller.
+ *
+ * Vinted-style flow:
+ * 1. Buyer receives item
+ * 2. Buyer clicks "Confirm Receipt"
+ * 3. Platform transfers funds to seller's Stripe Connect account
+ * 4. Order status updated to RELEASED
+ */
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { userId: clerkUserId } = await auth();
+
+    if (!clerkUserId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id: orderId } = await params;
+
+    // Get buyer from Clerk ID
+    const buyer = await prisma.user.findUnique({
+      where: { clerkId: clerkUserId },
+    });
+
+    if (!buyer) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Get the order with seller details
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        seller: true,
+        product: true,
+      },
+    });
+
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    // Verify buyer owns this order
+    if (order.buyerId !== buyer.id) {
+      return NextResponse.json(
+        { error: "You can only confirm receipt for your own orders" },
+        { status: 403 }
+      );
+    }
+
+    // Verify order is in HELD status
+    if (order.paymentHoldStatus !== "HELD") {
+      const statusMessages: Record<string, string> = {
+        RELEASED: "Payment has already been released to the seller",
+        DISPUTED: "This order is currently under dispute",
+        REFUNDED: "This order has been refunded",
+      };
+
+      return NextResponse.json(
+        {
+          error:
+            statusMessages[order.paymentHoldStatus] ||
+            "Order is not in a valid state for confirmation",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Verify seller has a Stripe Connect account
+    if (!order.seller.stripeConnectId) {
+      console.error("Seller missing Stripe Connect ID:", {
+        orderId,
+        sellerId: order.sellerId,
+      });
+      return NextResponse.json(
+        { error: "Seller payment account not configured" },
+        { status: 500 }
+      );
+    }
+
+    // Calculate transfer amount (seller receives 100% of product + shipping)
+    const transferAmountInPence = Math.round(
+      (order.stripeSellerPayout || 0) * 100
+    );
+
+    if (transferAmountInPence <= 0) {
+      console.error("Invalid transfer amount:", {
+        orderId,
+        sellerPayout: order.stripeSellerPayout,
+      });
+      return NextResponse.json(
+        { error: "Invalid payout amount" },
+        { status: 500 }
+      );
+    }
+
+    console.log("Creating transfer to seller:", {
+      orderId,
+      sellerId: order.sellerId,
+      sellerConnectId: order.seller.stripeConnectId,
+      amount: transferAmountInPence,
+    });
+
+    // Create transfer to seller's Stripe Connect account
+    const transfer = await stripe.transfers.create({
+      amount: transferAmountInPence,
+      currency: "gbp",
+      destination: order.seller.stripeConnectId,
+      transfer_group: order.id,
+      metadata: {
+        orderId: order.id,
+        productId: order.productId,
+        buyerId: buyer.id,
+        sellerId: order.sellerId,
+        reason: "buyer_confirmed_receipt",
+      },
+    });
+
+    console.log("Transfer created successfully:", {
+      transferId: transfer.id,
+      amount: transfer.amount,
+      destination: transfer.destination,
+    });
+
+    // Update order status
+    const updatedOrder = await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        paymentHoldStatus: "RELEASED",
+        paymentReleasedAt: new Date(),
+        buyerConfirmedAt: new Date(),
+        stripeTransferId: transfer.id,
+        stripePayoutStatus: "completed",
+      },
+    });
+
+    console.log("Order updated to RELEASED:", {
+      orderId: updatedOrder.id,
+      paymentReleasedAt: updatedOrder.paymentReleasedAt,
+    });
+
+    // TODO: Send confirmation emails to buyer and seller
+
+    return NextResponse.json({
+      success: true,
+      orderId: order.id,
+      transferId: transfer.id,
+      amountTransferred: transferAmountInPence / 100,
+      paymentHoldStatus: "RELEASED",
+    });
+  } catch (error) {
+    console.error("Error confirming receipt:", error);
+
+    // Handle Stripe-specific errors
+    if (error instanceof Error && error.message.includes("stripe")) {
+      return NextResponse.json(
+        { error: "Payment transfer failed. Please try again or contact support." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Failed to confirm receipt" },
+      { status: 500 }
+    );
+  }
+}

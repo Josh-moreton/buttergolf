@@ -3,8 +3,13 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
-import { sendOrderConfirmationEmail, sendNewSaleEmail, sendEmail } from "@/lib/email";
+import {
+  sendOrderConfirmationEmail,
+  sendNewSaleEmail,
+  sendEmail,
+} from "@/lib/email";
 import { generateShippingLabel } from "@/lib/shipengine";
+import { calculateAutoReleaseDate } from "@/lib/pricing";
 
 // Disable body parsing for webhook
 export const runtime = "nodejs";
@@ -289,26 +294,57 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     sellerNeedsAddress = true;
   }
 
-  // Calculate amounts from session
+  // Calculate amounts from session and metadata
   const amountTotal = (session.amount_total || 0) / 100; // Convert from pence
   const shippingCost = (session.shipping_cost?.amount_total || 0) / 100;
-  
-  // Calculate platform fee (10%)
-  const platformFeePercent = 10;
-  const subtotal = (session.amount_subtotal || 0) / 100;
-  const platformFeeAmount = subtotal * (platformFeePercent / 100);
-  const sellerPayout = amountTotal - platformFeeAmount;
 
-  // Create the order
+  // Vinted-style pricing: extract buyer protection fee from metadata
+  // Seller receives 100% of product price + shipping (0% platform fee)
+  const buyerProtectionFeeInPence = parseInt(
+    session.metadata?.buyerProtectionFeeInPence || "0",
+    10
+  );
+  const productPriceInPence = parseInt(
+    session.metadata?.productPriceInPence || "0",
+    10
+  );
+  const buyerProtectionFee = buyerProtectionFeeInPence / 100;
+
+  // Seller gets 100% of product + shipping
+  const sellerPayout = productPriceInPence / 100 + shippingCost;
+
+  // Get charge ID from payment intent for later transfer
+  let stripeChargeId: string | null = null;
+  try {
+    const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+    stripeChargeId =
+      typeof pi.latest_charge === "string"
+        ? pi.latest_charge
+        : pi.latest_charge?.id || null;
+  } catch {
+    console.warn("Could not retrieve charge ID from payment intent");
+  }
+
+  // Calculate auto-release date (14 days from now, will be updated when delivered)
+  const autoReleaseAt = calculateAutoReleaseDate();
+
+  // Create the order with HELD status (escrow-style)
   const order = await prisma.order.create({
     data: {
       stripePaymentId: paymentIntentId,
       stripeCheckoutId: session.id,
+      stripeChargeId,
       amountTotal,
       shippingCost,
-      stripePlatformFee: platformFeeAmount,
+      // Vinted-style: buyer protection fee as platform revenue
+      buyerProtectionFee,
+      stripePlatformFee: buyerProtectionFee, // For backwards compatibility
       stripeSellerPayout: sellerPayout,
       stripePayoutStatus: "pending",
+      // Payment hold (escrow) - seller paid after buyer confirms
+      paymentHoldStatus: "HELD",
+      paymentHeldAt: new Date(),
+      autoReleaseAt,
       sellerId,
       buyerId,
       productId,
@@ -485,7 +521,7 @@ async function sendOrderEmails(
  */
 function handleCheckoutExpired(session: Stripe.Checkout.Session) {
   const { productId } = session.metadata || {};
-  
+
   console.log("⏰ Checkout session expired:", {
     sessionId: session.id,
     productId: productId || "none",
@@ -496,16 +532,85 @@ function handleCheckoutExpired(session: Stripe.Checkout.Session) {
 }
 
 // ============================================================================
+// PROMOTION HANDLERS
+// ============================================================================
+
+/**
+ * Handle promotion payment succeeded
+ * Activates the pending promotion when payment completes
+ */
+async function handlePromotionPayment(paymentIntent: Stripe.PaymentIntent) {
+  const { productId, promotionType, durationMs } = paymentIntent.metadata;
+
+  console.log("🎯 Promotion payment succeeded:", {
+    paymentIntentId: paymentIntent.id,
+    productId,
+    promotionType,
+  });
+
+  if (!productId || !promotionType) {
+    console.error("Missing promotion metadata:", paymentIntent.metadata);
+    return;
+  }
+
+  // Find the pending promotion
+  const promotion = await prisma.productPromotion.findFirst({
+    where: {
+      stripePaymentId: paymentIntent.id,
+      status: "PENDING",
+    },
+  });
+
+  if (!promotion) {
+    console.error("Pending promotion not found for payment:", paymentIntent.id);
+    return;
+  }
+
+  // Calculate promotion timing
+  const now = new Date();
+  const durationMsNum = parseInt(durationMs || "86400000", 10); // Default 24 hours
+  const expiresAt = new Date(now.getTime() + durationMsNum);
+
+  // Activate the promotion
+  await prisma.productPromotion.update({
+    where: { id: promotion.id },
+    data: {
+      status: "ACTIVE",
+      startsAt: now,
+      expiresAt,
+    },
+  });
+
+  console.log("✅ Promotion activated:", {
+    promotionId: promotion.id,
+    productId,
+    type: promotionType,
+    expiresAt,
+  });
+
+  // TODO: Send confirmation email to seller
+}
+
+// ============================================================================
 // PAYMENT INTENT HANDLERS
 // ============================================================================
 
 /**
  * Handle payment_intent.succeeded
- * This handles both:
+ * This handles:
  * 1. Payments already processed by checkout.session.completed (idempotent)
  * 2. PaymentElement flow payments (BuyNowSheet) - creates order here
+ * 3. Promotion purchases - activates the promotion
  */
 async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+  const { source } = paymentIntent.metadata;
+
+  // Handle promotion purchases
+  if (source === "promotion_purchase") {
+    await handlePromotionPayment(paymentIntent);
+    return;
+  }
+
   // Check if this was already handled by checkout.session.completed
   const existingOrder = await prisma.order.findFirst({
     where: { stripePaymentId: paymentIntent.id },
@@ -517,7 +622,7 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
   }
 
   // Check if this is from our PaymentElement flow
-  const { productId, sellerId, buyerId, shippingOptionId, source } = paymentIntent.metadata;
+  const { productId, sellerId, buyerId } = paymentIntent.metadata;
 
   if (source !== "payment_element") {
     // Payment intent without matching order and not from PaymentElement - likely from legacy flow
@@ -624,27 +729,52 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
     sellerNeedsAddress = true;
   }
 
-  // Calculate amounts from payment intent
+  // Calculate amounts from payment intent metadata (Vinted-style pricing)
   const amountTotal = paymentIntent.amount / 100;
-  const shippingAmount = parseInt(paymentIntent.metadata.shippingAmount || "0", 10);
-  const shippingCost = shippingAmount / 100;
-  
-  // Calculate platform fee (10% of product price)
-  const platformFeePercent = 10;
-  const subtotal = amountTotal - shippingCost;
-  const platformFeeAmount = subtotal * (platformFeePercent / 100);
-  const sellerPayout = amountTotal - platformFeeAmount;
+  const shippingAmountInPence = parseInt(
+    paymentIntent.metadata.shippingAmountInPence || "0",
+    10
+  );
+  const shippingCost = shippingAmountInPence / 100;
 
-  // Create the order
+  // Vinted-style pricing: extract buyer protection fee from metadata
+  const buyerProtectionFeeInPence = parseInt(
+    paymentIntent.metadata.buyerProtectionFeeInPence || "0",
+    10
+  );
+  const sellerPayoutInPence = parseInt(
+    paymentIntent.metadata.sellerPayoutInPence || "0",
+    10
+  );
+  const buyerProtectionFee = buyerProtectionFeeInPence / 100;
+  const sellerPayout = sellerPayoutInPence / 100;
+
+  // Get charge ID for later transfer
+  const stripeChargeId =
+    typeof paymentIntent.latest_charge === "string"
+      ? paymentIntent.latest_charge
+      : paymentIntent.latest_charge?.id || null;
+
+  // Calculate auto-release date (14 days from now, will be updated when delivered)
+  const autoReleaseAt = calculateAutoReleaseDate();
+
+  // Create the order with HELD status (escrow-style)
   const order = await prisma.order.create({
     data: {
       stripePaymentId: paymentIntent.id,
       stripeCheckoutId: null, // No checkout session for PaymentElement flow
+      stripeChargeId,
       amountTotal,
       shippingCost,
-      stripePlatformFee: platformFeeAmount,
+      // Vinted-style: buyer protection fee as platform revenue
+      buyerProtectionFee,
+      stripePlatformFee: buyerProtectionFee, // For backwards compatibility
       stripeSellerPayout: sellerPayout,
       stripePayoutStatus: "pending",
+      // Payment hold (escrow) - seller paid after buyer confirms
+      paymentHoldStatus: "HELD",
+      paymentHeldAt: new Date(),
+      autoReleaseAt,
       sellerId,
       buyerId,
       productId,

@@ -66,5 +66,10 @@ export type {
   Order,
 } from "../generated/client";
 // Re-export enums as values (not type-only) so they can be used at runtime
-export { ProductCondition } from "../generated/client";
+export {
+  ProductCondition,
+  PaymentHoldStatus,
+  PromotionType,
+  PromotionStatus,
+} from "../generated/client";
 export * from "@buttergolf/constants";
