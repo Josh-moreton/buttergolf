@@ -288,8 +288,8 @@ export function ListingStep({
                 borderWidth={0}
                 backgroundColor="transparent"
                 paddingHorizontal="$4"
-                paddingVertical="$4"
-                size="$8"
+                paddingVertical="$3"
+                size="$6"
                 fontWeight="600"
                 color="$ironstone"
                 focusStyle={{ borderWidth: 0, outlineWidth: 0 }}
