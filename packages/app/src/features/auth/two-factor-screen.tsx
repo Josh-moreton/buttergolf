@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
   Column,
   Row,
@@ -11,12 +11,14 @@ import {
   Spinner,
 } from "@buttergolf/ui";
 import { Button as TamaguiButton } from "tamagui";
-import { ArrowLeft, ShieldCheck, Smartphone } from "@tamagui/lucide-icons";
+import { ArrowLeft, ShieldCheck, Smartphone, Mail } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { TextInput } from "react-native";
 import { AuthErrorDisplay } from "./components";
 import { mapClerkErrorToMessage } from "./utils";
+
+type TwoFactorStrategy = "totp" | "email_code" | "phone_code";
 
 interface TwoFactorScreenProps {
   onSuccess?: () => void;
@@ -25,7 +27,7 @@ interface TwoFactorScreenProps {
 
 /**
  * Two-factor authentication screen
- * User enters 6-digit TOTP code from their authenticator app
+ * Supports TOTP (authenticator app) and email code strategies
  */
 export function TwoFactorScreen({
   onSuccess,
@@ -36,10 +38,16 @@ export function TwoFactorScreen({
 
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSendingCode, setIsSendingCode] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [strategy, setStrategy] = useState<TwoFactorStrategy | null>(null);
+  const [emailHint, setEmailHint] = useState<string | null>(null);
+  const [codeSent, setCodeSent] = useState(false);
 
   // Refs for each input to handle focus
   const inputRefs = useRef<(TextInput | null)[]>([]);
+  // Ref to prevent multiple code sends
+  const hasInitialized = useRef(false);
 
   const handleDigitChange = useCallback(
     (index: number, value: string) => {
@@ -94,6 +102,102 @@ export function TwoFactorScreen({
 
   const fullCode = code.join("");
 
+  // Detect available 2FA strategy and send email code if needed
+  useEffect(() => {
+    // Guard against multiple initializations (React Strict Mode, etc.)
+    if (hasInitialized.current) return;
+    if (!isLoaded || !signIn) return;
+
+    async function detectAndPrepare() {
+      try {
+        const factors = signIn.supportedSecondFactors;
+        console.log("[TwoFactor] Available factors:", factors);
+
+        if (!factors || factors.length === 0) {
+          setError("No two-factor authentication methods available.");
+          return;
+        }
+
+        // Check for email_code first (most common for Clerk default setup)
+        const emailFactor = factors.find(
+          (f: { strategy: string }) => f.strategy === "email_code",
+        );
+        const totpFactor = factors.find(
+          (f: { strategy: string }) => f.strategy === "totp",
+        );
+        const phoneFactor = factors.find(
+          (f: { strategy: string }) => f.strategy === "phone_code",
+        );
+
+        if (emailFactor) {
+          console.log("[TwoFactor] Using email_code strategy");
+          setStrategy("email_code");
+          // Extract email hint if available
+          if ("safeIdentifier" in emailFactor) {
+            setEmailHint(emailFactor.safeIdentifier as string);
+          }
+          // Automatically send the email code (inline to avoid race condition)
+          hasInitialized.current = true;
+          setIsSendingCode(true);
+          try {
+            console.log("[TwoFactor] Sending initial email code...");
+            await signIn.prepareSecondFactor({
+              strategy: "email_code",
+            });
+            console.log("[TwoFactor] Initial email code sent successfully");
+            setCodeSent(true);
+          } catch (sendErr) {
+            console.error("[TwoFactor] Error sending initial email code:", sendErr);
+            const sendErrMsg = sendErr instanceof Error ? sendErr.message : String(sendErr);
+            setError(`Failed to send verification code: ${sendErrMsg}`);
+          } finally {
+            setIsSendingCode(false);
+          }
+        } else if (totpFactor) {
+          console.log("[TwoFactor] Using totp strategy");
+          setStrategy("totp");
+          hasInitialized.current = true;
+          // TOTP doesn't need to send anything - user has authenticator app
+        } else if (phoneFactor) {
+          console.log("[TwoFactor] Using phone_code strategy");
+          setStrategy("phone_code");
+          hasInitialized.current = true;
+          // Could implement phone code sending here
+          setError("Phone verification is not yet supported.");
+        } else {
+          setError("No supported two-factor method found.");
+        }
+      } catch (err) {
+        console.error("[TwoFactor] Error detecting strategy:", err);
+      }
+    }
+
+    detectAndPrepare();
+  }, [isLoaded, signIn]);
+
+  // Function to send email verification code
+  const sendEmailCode = useCallback(async () => {
+    if (!isLoaded || !signIn) return;
+
+    setIsSendingCode(true);
+    setError(null);
+
+    try {
+      console.log("[TwoFactor] Sending email code...");
+      await signIn.prepareSecondFactor({
+        strategy: "email_code",
+      });
+      console.log("[TwoFactor] Email code sent successfully");
+      setCodeSent(true);
+    } catch (err) {
+      console.error("[TwoFactor] Error sending email code:", err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      setError(`Failed to send verification code: ${errorMessage}`);
+    } finally {
+      setIsSendingCode(false);
+    }
+  }, [isLoaded, signIn]);
+
   const handleVerify = useCallback(async () => {
     setError(null);
 
@@ -107,12 +211,17 @@ export function TwoFactorScreen({
       return;
     }
 
+    if (!strategy) {
+      setError("Two-factor strategy not detected. Please go back and try again.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      console.log("[TwoFactor] Attempting verification");
+      console.log("[TwoFactor] Attempting verification with strategy:", strategy);
       const result = await signIn.attemptSecondFactor({
-        strategy: "totp",
+        strategy: strategy,
         code: fullCode,
       });
       console.log("[TwoFactor] Status:", result.status);
@@ -146,7 +255,7 @@ export function TwoFactorScreen({
     } finally {
       setIsSubmitting(false);
     }
-  }, [fullCode, isLoaded, signIn, setActive, onSuccess]);
+  }, [fullCode, isLoaded, signIn, setActive, onSuccess, strategy]);
 
   return (
     <Column flex={1} backgroundColor="$background">
@@ -179,7 +288,11 @@ export function TwoFactorScreen({
               padding="$5"
               borderRadius="$full"
             >
-              <ShieldCheck size={48} color="$primary" />
+              {strategy === "email_code" ? (
+                <Mail size={48} color="$primary" />
+              ) : (
+                <ShieldCheck size={48} color="$primary" />
+              )}
             </Column>
           </Column>
 
@@ -192,11 +305,20 @@ export function TwoFactorScreen({
               color="$text"
               textAlign="center"
             >
-              Two-Factor Authentication
+              {strategy === "email_code" ? "Check Your Email" : "Two-Factor Authentication"}
             </Heading>
             <Text size="$5" color="$textSecondary" textAlign="center">
-              Enter the 6-digit code from your authenticator app
+              {strategy === "email_code" 
+                ? `Enter the 6-digit code we sent to ${emailHint || "your email"}`
+                : "Enter the 6-digit code from your authenticator app"
+              }
             </Text>
+            {isSendingCode && (
+              <Row gap="$2" alignItems="center" marginTop="$2">
+                <Spinner size="sm" color="$primary" />
+                <Text size="$4" color="$textMuted">Sending code...</Text>
+              </Row>
+            )}
           </Column>
 
           {/* Error Display */}
@@ -256,13 +378,22 @@ export function TwoFactorScreen({
               ))}
             </Row>
 
-            {/* Authenticator App Hint */}
-            <Row gap="$2" alignItems="center" opacity={0.7}>
-              <Smartphone size={16} color="$textSecondary" />
-              <Text size="$3" color="$textSecondary">
-                Open your authenticator app to view your code
-              </Text>
-            </Row>
+            {/* Strategy-specific hint */}
+            {strategy === "email_code" ? (
+              <Row gap="$2" alignItems="center" opacity={0.7}>
+                <Mail size={16} color="$textSecondary" />
+                <Text size="$3" color="$textSecondary">
+                  Check your email inbox and spam folder
+                </Text>
+              </Row>
+            ) : (
+              <Row gap="$2" alignItems="center" opacity={0.7}>
+                <Smartphone size={16} color="$textSecondary" />
+                <Text size="$3" color="$textSecondary">
+                  Open your authenticator app to view your code
+                </Text>
+              </Row>
+            )}
           </Column>
 
           {/* Verify Button */}
@@ -272,8 +403,8 @@ export function TwoFactorScreen({
             borderRadius="$full"
             fontWeight="600"
             onPress={handleVerify}
-            disabled={isSubmitting || fullCode.length !== 6}
-            opacity={isSubmitting || fullCode.length !== 6 ? 0.7 : 1}
+            disabled={isSubmitting || fullCode.length !== 6 || isSendingCode}
+            opacity={isSubmitting || fullCode.length !== 6 || isSendingCode ? 0.7 : 1}
           >
             {isSubmitting ? (
               <Spinner size="sm" color="$textInverse" />
@@ -282,20 +413,40 @@ export function TwoFactorScreen({
             )}
           </Button>
 
-          {/* Help Text */}
+          {/* Help Text / Resend Code */}
           <Column alignItems="center" gap="$3" marginTop="$4">
-            <Text size="$4" color="$textSecondary" textAlign="center">
-              {"Can't access your authenticator?"}
-            </Text>
-            <Text
-              size="$3"
-              color="$textMuted"
-              textAlign="center"
-              paddingHorizontal="$4"
-            >
-              Contact support if you've lost access to your two-factor
-              authentication device
-            </Text>
+            {strategy === "email_code" ? (
+              <>
+                <Text size="$4" color="$textSecondary" textAlign="center">
+                  {"Didn't receive the code?"}
+                </Text>
+                <TamaguiButton
+                  chromeless
+                  size="$4"
+                  color="$primary"
+                  onPress={sendEmailCode}
+                  disabled={isSendingCode}
+                  opacity={isSendingCode ? 0.5 : 1}
+                >
+                  {isSendingCode ? "Sending..." : "Resend Code"}
+                </TamaguiButton>
+              </>
+            ) : (
+              <>
+                <Text size="$4" color="$textSecondary" textAlign="center">
+                  {"Can't access your authenticator?"}
+                </Text>
+                <Text
+                  size="$3"
+                  color="$textMuted"
+                  textAlign="center"
+                  paddingHorizontal="$4"
+                >
+                  Contact support if you've lost access to your two-factor
+                  authentication device
+                </Text>
+              </>
+            )}
           </Column>
         </Column>
       </ScrollView>
