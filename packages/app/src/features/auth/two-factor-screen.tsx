@@ -46,6 +46,8 @@ export function TwoFactorScreen({
 
   // Refs for each input to handle focus
   const inputRefs = useRef<(TextInput | null)[]>([]);
+  // Ref to prevent multiple code sends
+  const hasInitialized = useRef(false);
 
   const handleDigitChange = useCallback(
     (index: number, value: string) => {
@@ -102,9 +104,11 @@ export function TwoFactorScreen({
 
   // Detect available 2FA strategy and send email code if needed
   useEffect(() => {
-    async function detectAndPrepare() {
-      if (!isLoaded || !signIn) return;
+    // Guard against multiple initializations (React Strict Mode, etc.)
+    if (hasInitialized.current) return;
+    if (!isLoaded || !signIn) return;
 
+    async function detectAndPrepare() {
       try {
         const factors = signIn.supportedSecondFactors;
         console.log("[TwoFactor] Available factors:", factors);
@@ -132,15 +136,32 @@ export function TwoFactorScreen({
           if ("safeIdentifier" in emailFactor) {
             setEmailHint(emailFactor.safeIdentifier as string);
           }
-          // Automatically send the email code
-          await sendEmailCode();
+          // Automatically send the email code (inline to avoid race condition)
+          hasInitialized.current = true;
+          setIsSendingCode(true);
+          try {
+            console.log("[TwoFactor] Sending initial email code...");
+            await signIn.prepareSecondFactor({
+              strategy: "email_code",
+            });
+            console.log("[TwoFactor] Initial email code sent successfully");
+            setCodeSent(true);
+          } catch (sendErr) {
+            console.error("[TwoFactor] Error sending initial email code:", sendErr);
+            const sendErrMsg = sendErr instanceof Error ? sendErr.message : String(sendErr);
+            setError(`Failed to send verification code: ${sendErrMsg}`);
+          } finally {
+            setIsSendingCode(false);
+          }
         } else if (totpFactor) {
           console.log("[TwoFactor] Using totp strategy");
           setStrategy("totp");
+          hasInitialized.current = true;
           // TOTP doesn't need to send anything - user has authenticator app
         } else if (phoneFactor) {
           console.log("[TwoFactor] Using phone_code strategy");
           setStrategy("phone_code");
+          hasInitialized.current = true;
           // Could implement phone code sending here
           setError("Phone verification is not yet supported.");
         } else {
