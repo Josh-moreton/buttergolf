@@ -22,7 +22,25 @@ interface AuthFormInputProps {
   editable?: boolean;
   multiline?: boolean;
   numberOfLines?: number;
-  textContentType?: "emailAddress" | "password" | "newPassword" | "none";
+  textContentType?:
+    | "emailAddress"
+    | "password"
+    | "newPassword"
+    | "givenName"
+    | "familyName"
+    | "name"
+    | "username"
+    | "oneTimeCode"
+    | "none";
+  autoComplete?:
+    | "email"
+    | "password"
+    | "password-new"
+    | "name"
+    | "name-given"
+    | "name-family"
+    | "username"
+    | "off";
 }
 
 /**
@@ -42,6 +60,7 @@ export function AuthFormInput({
   multiline = false,
   numberOfLines,
   textContentType,
+  autoComplete,
 }: Readonly<AuthFormInputProps>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -70,6 +89,7 @@ export function AuthFormInput({
           error={!!error}
           paddingRight={isPassword ? "$10" : "$4"}
           textContentType={textContentType}
+          autoComplete={autoComplete}
         />
 
         {isPassword && (

@@ -213,6 +213,8 @@ export function SignInScreen({
               keyboardType="email-address"
               error={fieldErrors.email}
               editable={!isSubmitting}
+              textContentType="emailAddress"
+              autoComplete="email"
             />
 
             <AuthFormInput
@@ -223,6 +225,8 @@ export function SignInScreen({
               secureTextEntry
               error={fieldErrors.password}
               editable={!isSubmitting}
+              textContentType="password"
+              autoComplete="password"
             />
 
             {/* Forgot Password Link */}

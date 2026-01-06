@@ -42,6 +42,7 @@ export function SignUpScreen({
 
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -85,6 +86,20 @@ export function SignUpScreen({
     [fieldErrors],
   );
 
+  const handleLastNameChange = useCallback(
+    (lastName: string) => {
+      setFormData((prev) => ({ ...prev, lastName }));
+      if (fieldErrors.lastName) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.lastName;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
+
   const handleEmailChange = useCallback(
     (email: string) => {
       setFormData((prev) => ({ ...prev, email }));
@@ -119,6 +134,7 @@ export function SignUpScreen({
     // Validate form
     const validation = validateSignUpForm(
       formData.firstName,
+      formData.lastName,
       formData.email,
       formData.password,
       formData.confirmPassword,
@@ -142,6 +158,7 @@ export function SignUpScreen({
         emailAddress: formData.email,
         password: formData.password,
         firstName: formData.firstName,
+        lastName: formData.lastName,
       });
 
       // Prepare email verification
@@ -237,8 +254,23 @@ export function SignUpScreen({
               value={formData.firstName}
               onChangeText={handleFirstNameChange}
               placeholder="John"
+              autoCapitalize="words"
               error={fieldErrors.firstName}
               editable={!isSubmitting}
+              textContentType="givenName"
+              autoComplete="name-given"
+            />
+
+            <AuthFormInput
+              label="Last Name"
+              value={formData.lastName}
+              onChangeText={handleLastNameChange}
+              placeholder="Smith"
+              autoCapitalize="words"
+              error={fieldErrors.lastName}
+              editable={!isSubmitting}
+              textContentType="familyName"
+              autoComplete="name-family"
             />
 
             <AuthFormInput
@@ -250,6 +282,7 @@ export function SignUpScreen({
               error={fieldErrors.email}
               editable={!isSubmitting}
               textContentType="emailAddress"
+              autoComplete="email"
             />
 
             <Column gap="$2">
@@ -262,6 +295,7 @@ export function SignUpScreen({
                 error={fieldErrors.password}
                 editable={!isSubmitting}
                 textContentType="newPassword"
+                autoComplete="password-new"
               />
 
               {/* Password Strength Indicator */}
@@ -313,6 +347,8 @@ export function SignUpScreen({
               secureTextEntry
               error={fieldErrors.confirmPassword}
               editable={!isSubmitting}
+              textContentType="newPassword"
+              autoComplete="password-new"
             />
           </Column>
 
