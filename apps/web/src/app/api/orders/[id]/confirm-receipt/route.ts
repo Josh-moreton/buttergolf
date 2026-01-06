@@ -77,6 +77,18 @@ export async function POST(
       );
     }
 
+    // Prevent duplicate transfers - verify no transfer has already been created
+    if (order.stripeTransferId) {
+      console.warn("Duplicate confirm-receipt attempt - transfer already exists:", {
+        orderId,
+        existingTransferId: order.stripeTransferId,
+      });
+      return NextResponse.json(
+        { error: "Payment has already been released to the seller" },
+        { status: 400 }
+      );
+    }
+
     // Verify seller has a Stripe Connect account
     if (!order.seller.stripeConnectId) {
       console.error("Seller missing Stripe Connect ID:", {

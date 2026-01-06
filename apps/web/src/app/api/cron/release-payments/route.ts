@@ -86,28 +86,8 @@ export async function GET(request: NextRequest) {
     // Process each order with optimistic locking to prevent duplicate transfers
     for (const order of ordersToRelease) {
       try {
-        // Use transaction with optimistic locking - only proceed if order is still HELD
-        // This prevents duplicate transfers if cron runs concurrently
-        const lockedOrder = await prisma.order.updateMany({
-          where: {
-            id: order.id,
-            paymentHoldStatus: "HELD", // Optimistic lock - only update if still HELD
-          },
-          data: {
-            paymentHoldStatus: "RELEASED", // Claim it immediately
-          },
-        });
-
-        if (lockedOrder.count === 0) {
-          // Another process already claimed this order
-          console.log("Order already being processed or released:", order.id);
-          results.push({
-            orderId: order.id,
-            status: "failed",
-            error: "Order already processed by another instance",
-          });
-          continue;
-        }
+        // STEP 1: Verify all preconditions BEFORE claiming the order
+        // This prevents setting RELEASED status for orders that will fail processing
 
         // Verify seller has Stripe Connect account
         if (!order.seller.stripeConnectId) {
@@ -123,7 +103,7 @@ export async function GET(request: NextRequest) {
           continue;
         }
 
-        // Calculate transfer amount
+        // Calculate and verify transfer amount
         const transferAmountInPence = Math.round(
           (order.stripeSellerPayout || 0) * 100
         );
@@ -141,27 +121,91 @@ export async function GET(request: NextRequest) {
           continue;
         }
 
+        // Verify no transfer has already been created (double-check)
+        if (order.stripeTransferId) {
+          console.warn("Order already has transfer ID:", {
+            orderId: order.id,
+            existingTransferId: order.stripeTransferId,
+          });
+          results.push({
+            orderId: order.id,
+            status: "failed",
+            error: "Transfer already exists",
+          });
+          continue;
+        }
+
+        // STEP 2: All preconditions verified - now use transaction to atomically:
+        // 1. Claim the order (optimistic lock)
+        // 2. Create the Stripe transfer
+        // 3. Update with transfer details
+        // If any step fails, the status remains HELD
+
         console.log("Creating auto-release transfer:", {
           orderId: order.id,
           sellerId: order.sellerId,
           amount: transferAmountInPence,
         });
 
-        // Create transfer to seller
-        const transfer = await stripe.transfers.create({
-          amount: transferAmountInPence,
-          currency: "gbp",
-          destination: order.seller.stripeConnectId,
-          transfer_group: order.id,
-          metadata: {
-            orderId: order.id,
-            productId: order.productId,
-            sellerId: order.sellerId,
-            reason: "auto_release_14_days",
+        // Use optimistic locking - only proceed if still HELD and no transfer exists
+        const lockedOrder = await prisma.order.updateMany({
+          where: {
+            id: order.id,
+            paymentHoldStatus: "HELD", // Must still be HELD
+            stripeTransferId: null,     // Must not have existing transfer
+          },
+          data: {
+            paymentHoldStatus: "RELEASED", // Claim it
           },
         });
 
-        // Update order with transfer details (status already set to RELEASED by lock)
+        if (lockedOrder.count === 0) {
+          // Another process already claimed this order or it's no longer eligible
+          console.log("Order already being processed or released:", order.id);
+          results.push({
+            orderId: order.id,
+            status: "failed",
+            error: "Order already processed by another instance",
+          });
+          continue;
+        }
+
+        // STEP 3: Create the Stripe transfer (order is now locked as RELEASED)
+        let transfer;
+        try {
+          transfer = await stripe.transfers.create({
+            amount: transferAmountInPence,
+            currency: "gbp",
+            destination: order.seller.stripeConnectId,
+            transfer_group: order.id,
+            metadata: {
+              orderId: order.id,
+              productId: order.productId,
+              sellerId: order.sellerId,
+              reason: "auto_release_14_days",
+            },
+          });
+        } catch (stripeError) {
+          // Transfer failed - rollback status to HELD
+          console.error("Stripe transfer failed, rolling back status:", {
+            orderId: order.id,
+            error: stripeError instanceof Error ? stripeError.message : "Unknown Stripe error",
+          });
+
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { paymentHoldStatus: "HELD" },
+          });
+
+          results.push({
+            orderId: order.id,
+            status: "failed",
+            error: stripeError instanceof Error ? stripeError.message : "Stripe transfer failed",
+          });
+          continue;
+        }
+
+        // STEP 4: Update order with transfer details
         await prisma.order.update({
           where: { id: order.id },
           data: {
