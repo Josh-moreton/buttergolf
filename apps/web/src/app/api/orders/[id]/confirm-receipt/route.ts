@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { sendPaymentReleasedEmail } from "@/lib/email";
 
 /**
  * POST /api/orders/[id]/confirm-receipt
@@ -149,7 +150,21 @@ export async function POST(
       paymentReleasedAt: updatedOrder.paymentReleasedAt,
     });
 
-    // TODO: Send confirmation emails to buyer and seller
+    // Send confirmation email to seller
+    try {
+      await sendPaymentReleasedEmail({
+        sellerEmail: order.seller.email,
+        sellerName: order.seller.firstName || "Seller",
+        orderId: order.id,
+        productTitle: order.product.title,
+        payoutAmount: transferAmountInPence / 100,
+        releaseReason: "buyer_confirmed",
+      });
+      console.log("Payment released email sent to seller:", order.seller.email);
+    } catch (emailError) {
+      // Log but don't fail the request if email fails
+      console.error("Failed to send payment released email:", emailError);
+    }
 
     return NextResponse.json({
       success: true,

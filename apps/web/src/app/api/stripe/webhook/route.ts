@@ -7,6 +7,7 @@ import {
   sendOrderConfirmationEmail,
   sendNewSaleEmail,
   sendEmail,
+  sendPaymentOnHoldEmail,
 } from "@/lib/email";
 import { generateShippingLabel } from "@/lib/shipengine";
 import { calculateAutoReleaseDate } from "@/lib/pricing";
@@ -427,7 +428,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Send notification emails
-  await sendOrderEmails(order.id, amountTotal, buyer, product, shippingDetails, sellerPayout);
+  await sendOrderEmails(order.id, amountTotal, buyer, product, shippingDetails, sellerPayout, autoReleaseAt);
 
   return NextResponse.json({
     received: true,
@@ -449,6 +450,7 @@ async function sendOrderEmails(
   },
   shippingDetails: { address?: { city?: string; postal_code?: string } },
   sellerPayout: number,
+  autoReleaseAt: Date,
 ) {
   const buyerName = `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email;
   const sellerName = `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email;
@@ -512,6 +514,22 @@ async function sendOrderEmails(
       recipient: product.user.email,
       error: sellerEmailResult.error,
     });
+  }
+
+  // Send buyer protection / payment on hold email to buyer
+  // This explains how their payment is protected until they confirm receipt
+  try {
+    await sendPaymentOnHoldEmail({
+      buyerEmail: buyer.email,
+      buyerName,
+      orderId,
+      productTitle: product.title,
+      autoReleaseDate: autoReleaseAt,
+    });
+    console.log("✅ Payment on-hold email sent to buyer:", buyer.email);
+  } catch (holdEmailError) {
+    // Log but don't fail - this is a secondary email
+    console.error("Failed to send payment on-hold email:", holdEmailError);
   }
 }
 
@@ -858,6 +876,7 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
     product,
     { address: { city: shippingDetails.address.city, postal_code: shippingDetails.address.postal_code } },
     sellerPayout,
+    autoReleaseAt,
   );
 }
 

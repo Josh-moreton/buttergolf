@@ -19,6 +19,8 @@ import {
   Card,
   Heading,
 } from "@buttergolf/ui";
+import { calculateBuyerProtectionFee, formatPrice } from "@/lib/pricing";
+import { Info } from "@tamagui/lucide-icons";
 
 // Initialize Stripe outside component to avoid re-creating on every render
 const stripePromise = loadStripe(
@@ -69,7 +71,8 @@ export function StripePaymentForm({
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
   const selectedShipping = SHIPPING_OPTIONS.find((o) => o.id === shippingOption)!;
-  const totalPrice = productPrice + selectedShipping.price / 100;
+  const buyerProtectionFee = calculateBuyerProtectionFee(productPrice);
+  const totalPrice = productPrice + selectedShipping.price / 100 + buyerProtectionFee;
 
   // Create payment intent when user confirms shipping
   const handleContinueToPayment = useCallback(async () => {
@@ -168,6 +171,18 @@ export function StripePaymentForm({
               <Text color="$textSecondary">Shipping</Text>
               <Text fontWeight="500">£{(selectedShipping.price / 100).toFixed(2)}</Text>
             </Row>
+            <Row justifyContent="space-between" alignItems="center">
+              <Row gap="$xs" alignItems="center">
+                <Text color="$textSecondary">Buyer Protection</Text>
+                <div
+                  title="Your payment is held securely until you confirm receipt. Includes purchase protection for damaged or missing items."
+                  style={{ cursor: "help" }}
+                >
+                  <Info size={14} color="var(--color-textSecondary)" />
+                </div>
+              </Row>
+              <Text fontWeight="500">{formatPrice(buyerProtectionFee)}</Text>
+            </Row>
             <Row
               justifyContent="space-between"
               paddingTop="$sm"
@@ -180,6 +195,19 @@ export function StripePaymentForm({
               </Text>
             </Row>
           </Column>
+        </Card>
+
+        {/* Payment Hold Info Banner */}
+        <Card variant="outlined" padding="$sm" borderColor="$info" backgroundColor="$infoLight">
+          <Row gap="$sm" alignItems="center">
+            <Text size="$4">🔒</Text>
+            <Column gap="$xs" flex={1}>
+              <Text size="$3" color="$info" fontWeight="600">Payment held securely</Text>
+              <Text size="$2" color="$textSecondary">
+                Your money is protected until you confirm you&apos;ve received your item.
+              </Text>
+            </Column>
+          </Row>
         </Card>
 
         {/* Action Buttons */}
@@ -294,7 +322,8 @@ function CheckoutForm({
   const [isAddressComplete, setIsAddressComplete] = useState(false);
   const [isPaymentComplete, setIsPaymentComplete] = useState(false);
 
-  const totalPrice = productPrice + shippingOption.price / 100;
+  const buyerProtectionFee = calculateBuyerProtectionFee(productPrice);
+  const totalPrice = productPrice + shippingOption.price / 100 + buyerProtectionFee;
   const canSubmit = stripe && elements && isEmailComplete && isAddressComplete && isPaymentComplete && !isProcessing;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -449,6 +478,18 @@ function CheckoutForm({
               </Text>
               <Text fontWeight="500">£{(shippingOption.price / 100).toFixed(2)}</Text>
             </Row>
+            <Row justifyContent="space-between" alignItems="center">
+              <Row gap="$xs" alignItems="center">
+                <Text color="$textSecondary">Buyer Protection</Text>
+                <div
+                  title="Your payment is held securely until you confirm receipt. Includes purchase protection for damaged or missing items."
+                  style={{ cursor: "help" }}
+                >
+                  <Info size={14} color="var(--color-textSecondary)" />
+                </div>
+              </Row>
+              <Text fontWeight="500">{formatPrice(buyerProtectionFee)}</Text>
+            </Row>
             <Row
               justifyContent="space-between"
               paddingTop="$sm"
@@ -496,7 +537,13 @@ function CheckoutForm({
           <Row gap="$xs" alignItems="center">
             <Text size="$3">🔒</Text>
             <Text size="$2" color="$textSecondary">
-              Secure payment
+              Payment held until receipt
+            </Text>
+          </Row>
+          <Row gap="$xs" alignItems="center">
+            <Text size="$3">🛡️</Text>
+            <Text size="$2" color="$textSecondary">
+              Buyer protection
             </Text>
           </Row>
           <Row gap="$xs" alignItems="center">

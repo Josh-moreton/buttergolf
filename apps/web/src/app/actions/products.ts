@@ -36,6 +36,17 @@ export async function getRecentProducts(
             ratingCount: true,
           },
         },
+        // Include active promotions
+        promotions: {
+          where: {
+            status: "ACTIVE",
+            expiresAt: { gt: new Date() },
+          },
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
 
@@ -75,6 +86,10 @@ export async function getRecentProducts(
             averageRating: product.user.averageRating,
             ratingCount: product.user.ratingCount,
           },
+          activePromotion: product.promotions[0] ? {
+            type: product.promotions[0].type,
+            expiresAt: product.promotions[0].expiresAt,
+          } : null,
         };
       });
   } catch (error) {

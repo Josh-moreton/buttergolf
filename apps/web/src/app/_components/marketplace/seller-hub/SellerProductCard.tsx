@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Column, Row, Text, Button, Badge, Card } from "@buttergolf/ui";
-import { Eye, Heart, Tag, Edit3, Trash2 } from "@tamagui/lucide-icons";
+import { Eye, Heart, Tag, Edit3, Trash2, Zap } from "@tamagui/lucide-icons";
+import { PromotionPurchaseSheet } from "./PromotionPurchaseSheet";
 
 export interface SellerProduct {
   id: string;
@@ -57,6 +58,7 @@ export function SellerProductCard({
 }: SellerProductCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showPromotionSheet, setShowPromotionSheet] = useState(false);
 
   const handleDelete = async () => {
     if (
@@ -205,7 +207,25 @@ export function SellerProductCard({
           </Row>
 
           {/* Actions */}
-          <Row gap="$sm" marginTop="$sm">
+          <Row gap="$sm" marginTop="$sm" flexWrap="wrap">
+            {/* Boost Button - Only show for active listings */}
+            {!product.isSold && (
+              <Button
+                size="$3"
+                backgroundColor="#FFFAD2"
+                color="$primary"
+                borderRadius="$full"
+                paddingHorizontal="$3"
+                paddingVertical="$2"
+                onPress={() => setShowPromotionSheet(true)}
+                disabled={isDeleting || isUpdating}
+              >
+                <Row gap="$xs" alignItems="center">
+                  <Zap size={14} color="#F45314" />
+                  <Text color="$primary" weight="semibold">Boost</Text>
+                </Row>
+              </Button>
+            )}
             <Button
               size="$3"
               backgroundColor="transparent"
@@ -259,6 +279,20 @@ export function SellerProductCard({
           </Row>
         </Column>
       </Column>
+
+      {/* Promotion Purchase Sheet */}
+      {showPromotionSheet && (
+        <PromotionPurchaseSheet
+          productId={product.id}
+          productTitle={product.title}
+          onClose={() => setShowPromotionSheet(false)}
+          onSuccess={() => {
+            setShowPromotionSheet(false);
+            // Optionally refresh the page or update local state
+            window.location.reload();
+          }}
+        />
+      )}
     </Card>
   );
 }

@@ -31,6 +31,9 @@ import {
   Download,
   ExternalLink,
   RefreshCw,
+  Clock,
+  Shield,
+  DollarSign,
 } from "@tamagui/lucide-icons";
 
 type OrderStatus =
@@ -50,6 +53,8 @@ type ShipmentStatus =
   | "FAILED"
   | "CANCELLED";
 
+type PaymentHoldStatus = "HELD" | "RELEASED" | "DISPUTED" | "REFUNDED";
+
 interface Order {
   id: string;
   createdAt: Date;
@@ -58,6 +63,12 @@ interface Order {
   shipmentStatus: ShipmentStatus;
   amountTotal: number;
   shippingCost: number;
+  buyerProtectionFee: number | null;
+  paymentHoldStatus: PaymentHoldStatus;
+  autoReleaseAt: Date | null;
+  paymentReleasedAt: Date | null;
+  buyerConfirmedAt: Date | null;
+  stripeSellerPayout: number | null;
   trackingCode: string | null;
   trackingUrl: string | null;
   labelUrl: string | null;
@@ -300,11 +311,65 @@ interface TrackingEvent {
   event_code?: string;
 }
 
-export function OrderDetail({ order }: OrderDetailProps) {
+export function OrderDetail({ order: initialOrder }: OrderDetailProps) {
+  const [order, setOrder] = useState(initialOrder);
   const productImage = order.product.images[0]?.url;
   const [trackingEvents, setTrackingEvents] = useState<TrackingEvent[]>([]);
   const [isLoadingTracking, setIsLoadingTracking] = useState(false);
   const [trackingError, setTrackingError] = useState<string | null>(null);
+  
+  // Confirm receipt state
+  const [isConfirmingReceipt, setIsConfirmingReceipt] = useState(false);
+  const [confirmReceiptError, setConfirmReceiptError] = useState<string | null>(null);
+  const [confirmReceiptSuccess, setConfirmReceiptSuccess] = useState(false);
+
+  // Handle confirm receipt
+  const handleConfirmReceipt = async () => {
+    if (!confirm("Confirm you have received your item? This will release the payment to the seller.")) {
+      return;
+    }
+
+    setIsConfirmingReceipt(true);
+    setConfirmReceiptError(null);
+
+    try {
+      const response = await fetch(`/api/orders/${order.id}/confirm-receipt`, {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to confirm receipt");
+      }
+
+      setConfirmReceiptSuccess(true);
+      // Update local order state
+      setOrder(prev => ({
+        ...prev,
+        paymentHoldStatus: "RELEASED" as const,
+        paymentReleasedAt: new Date(),
+        buyerConfirmedAt: new Date(),
+      }));
+    } catch (error) {
+      console.error("Error confirming receipt:", error);
+      setConfirmReceiptError(
+        error instanceof Error ? error.message : "Failed to confirm receipt"
+      );
+    } finally {
+      setIsConfirmingReceipt(false);
+    }
+  };
+
+  // Calculate days until auto-release
+  const getDaysUntilAutoRelease = () => {
+    if (!order.autoReleaseAt) return null;
+    const now = new Date();
+    const autoRelease = new Date(order.autoReleaseAt);
+    const diffTime = autoRelease.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
 
   // Fetch tracking events on mount
   const fetchTrackingEvents = async () => {
@@ -638,6 +703,15 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <Text size="$5">Shipping</Text>
               <Text size="$5">£{order.shippingCost.toFixed(2)}</Text>
             </Row>
+            {order.buyerProtectionFee && order.buyerProtectionFee > 0 && (
+              <Row justifyContent="space-between">
+                <Row gap="$xs" alignItems="center">
+                  <Text size="$5">Buyer Protection</Text>
+                  <Shield size={14} color="var(--color-textSecondary)" />
+                </Row>
+                <Text size="$5">£{order.buyerProtectionFee.toFixed(2)}</Text>
+              </Row>
+            )}
             <Separator marginVertical="$xs" />
             <Row justifyContent="space-between">
               <Text size="$6" fontWeight="700">
@@ -697,6 +771,208 @@ export function OrderDetail({ order }: OrderDetailProps) {
                 </Button>
               </a>
             )}
+        </Column>
+      </Card>
+
+      {/* Payment Status Card */}
+      <Card variant="elevated" padding="$lg">
+        <Column gap="$md">
+          <Row gap="$xs" alignItems="center">
+            <DollarSign size={20} color="var(--color-text)" />
+            <Heading level={3}>Payment Status</Heading>
+          </Row>
+
+          {/* Payment Hold Status Badge */}
+          <Row gap="$md" alignItems="center" flexWrap="wrap">
+            <Badge 
+              variant={
+                order.paymentHoldStatus === "RELEASED" ? "success" :
+                order.paymentHoldStatus === "HELD" ? "warning" :
+                order.paymentHoldStatus === "DISPUTED" ? "error" :
+                "neutral"
+              } 
+              size="lg"
+            >
+              {order.paymentHoldStatus === "HELD" && "🔒 Payment Held"}
+              {order.paymentHoldStatus === "RELEASED" && "✓ Payment Released"}
+              {order.paymentHoldStatus === "DISPUTED" && "⚠ Disputed"}
+              {order.paymentHoldStatus === "REFUNDED" && "↩ Refunded"}
+            </Badge>
+
+            {order.paymentReleasedAt && (
+              <Text size="$4" color="$textSecondary">
+                Released on {formatDateTime(order.paymentReleasedAt)}
+              </Text>
+            )}
+          </Row>
+
+          {/* Payment Hold Information - for buyers when HELD */}
+          {order.userRole === "buyer" && order.paymentHoldStatus === "HELD" && (
+            <Column gap="$md">
+              <View
+                backgroundColor="$infoLight"
+                borderRadius="$md"
+                padding="$md"
+                borderLeftWidth={4}
+                borderLeftColor="$info"
+              >
+                <Column gap="$sm">
+                  <Text fontWeight="600" color="$info">
+                    Your payment is protected
+                  </Text>
+                  <Text size="$4" color="$textSecondary">
+                    Your money is held securely until you confirm you&apos;ve received your item. 
+                    If there&apos;s a problem, we&apos;ll help resolve it.
+                  </Text>
+                  {order.autoReleaseAt && (
+                    <Row gap="$xs" alignItems="center">
+                      <Clock size={14} color="var(--color-textSecondary)" />
+                      <Text size="$3" color="$textMuted">
+                        Auto-releases in {getDaysUntilAutoRelease()} days 
+                        ({new Date(order.autoReleaseAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })})
+                      </Text>
+                    </Row>
+                  )}
+                </Column>
+              </View>
+
+              {/* Confirm Receipt Button - only for DELIVERED orders */}
+              {order.shipmentStatus === "DELIVERED" && (
+                <Column gap="$sm">
+                  {confirmReceiptError && (
+                    <View
+                      backgroundColor="$errorLight"
+                      borderRadius="$md"
+                      padding="$md"
+                    >
+                      <Text color="$error" size="$4">{confirmReceiptError}</Text>
+                    </View>
+                  )}
+                  
+                  {confirmReceiptSuccess ? (
+                    <View
+                      backgroundColor="$successLight"
+                      borderRadius="$md"
+                      padding="$md"
+                    >
+                      <Row gap="$sm" alignItems="center">
+                        <CheckCircle size={20} color="var(--color-success)" />
+                        <Column gap="$xs">
+                          <Text fontWeight="600" color="$success">Receipt Confirmed!</Text>
+                          <Text size="$4" color="$textSecondary">
+                            Payment has been released to the seller.
+                          </Text>
+                        </Column>
+                      </Row>
+                    </View>
+                  ) : (
+                    <Button
+                      butterVariant="primary"
+                      size="$5"
+                      width="100%"
+                      onPress={handleConfirmReceipt}
+                      disabled={isConfirmingReceipt}
+                      icon={isConfirmingReceipt ? undefined : <CheckCircle size={18} color="white" />}
+                    >
+                      {isConfirmingReceipt ? "Processing..." : "Confirm Receipt & Release Payment"}
+                    </Button>
+                  )}
+                  
+                  <Text size="$3" color="$textMuted" textAlign="center">
+                    Only confirm once you&apos;ve received and inspected your item.
+                  </Text>
+                </Column>
+              )}
+
+              {/* Waiting for delivery message */}
+              {order.shipmentStatus !== "DELIVERED" && (
+                <View
+                  backgroundColor="$background"
+                  borderRadius="$md"
+                  padding="$md"
+                  borderWidth={1}
+                  borderColor="$border"
+                >
+                  <Row gap="$sm" alignItems="center">
+                    <Package size={20} color="var(--color-textSecondary)" />
+                    <Text size="$4" color="$textSecondary">
+                      You can confirm receipt once your package is delivered.
+                    </Text>
+                  </Row>
+                </View>
+              )}
+            </Column>
+          )}
+
+          {/* Seller Payment Information */}
+          {order.userRole === "seller" && (
+            <Column gap="$sm">
+              {order.paymentHoldStatus === "HELD" && (
+                <View
+                  backgroundColor="$warningLight"
+                  borderRadius="$md"
+                  padding="$md"
+                  borderLeftWidth={4}
+                  borderLeftColor="$warning"
+                >
+                  <Column gap="$sm">
+                    <Text fontWeight="600" color="$warning">
+                      Payment pending release
+                    </Text>
+                    <Text size="$4" color="$textSecondary">
+                      Payment will be released when the buyer confirms receipt or automatically 
+                      14 days after delivery.
+                    </Text>
+                    {order.stripeSellerPayout && (
+                      <Row gap="$xs" alignItems="center">
+                        <DollarSign size={14} color="var(--color-success)" />
+                        <Text size="$5" fontWeight="600" color="$success">
+                          You&apos;ll receive: £{order.stripeSellerPayout.toFixed(2)}
+                        </Text>
+                      </Row>
+                    )}
+                    {order.autoReleaseAt && (
+                      <Row gap="$xs" alignItems="center">
+                        <Clock size={14} color="var(--color-textSecondary)" />
+                        <Text size="$3" color="$textMuted">
+                          Auto-releases: {new Date(order.autoReleaseAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                        </Text>
+                      </Row>
+                    )}
+                  </Column>
+                </View>
+              )}
+
+              {order.paymentHoldStatus === "RELEASED" && (
+                <View
+                  backgroundColor="$successLight"
+                  borderRadius="$md"
+                  padding="$md"
+                  borderLeftWidth={4}
+                  borderLeftColor="$success"
+                >
+                  <Column gap="$sm">
+                    <Row gap="$sm" alignItems="center">
+                      <CheckCircle size={20} color="var(--color-success)" />
+                      <Text fontWeight="600" color="$success">
+                        Payment released
+                      </Text>
+                    </Row>
+                    {order.stripeSellerPayout && (
+                      <Text size="$5" fontWeight="600">
+                        £{order.stripeSellerPayout.toFixed(2)} transferred to your account
+                      </Text>
+                    )}
+                    {order.buyerConfirmedAt && (
+                      <Text size="$3" color="$textMuted">
+                        Buyer confirmed receipt on {formatDateTime(order.buyerConfirmedAt)}
+                      </Text>
+                    )}
+                  </Column>
+                </View>
+              )}
+            </Column>
+          )}
         </Column>
       </Card>
 

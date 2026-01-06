@@ -20,6 +20,8 @@ import {
   Download,
   ExternalLink,
   AlertCircle,
+  DollarSign,
+  Shield,
 } from "lucide-react";
 
 type OrderStatus =
@@ -40,6 +42,8 @@ type ShipmentStatus =
   | "FAILED"
   | "CANCELLED";
 
+type PaymentHoldStatus = "HELD" | "RELEASED" | "DISPUTED" | "REFUNDED";
+
 interface Order {
   id: string;
   createdAt: Date;
@@ -52,6 +56,8 @@ interface Order {
   trackingUrl: string | null;
   labelUrl: string | null;
   carrier: string | null;
+  paymentHoldStatus: PaymentHoldStatus | null;
+  autoReleaseAt: Date | null;
   product: {
     id: string;
     title: string;
@@ -119,6 +125,33 @@ const STATUS_CONFIG = {
   },
 } as const;
 
+const PAYMENT_STATUS_CONFIG = {
+  HELD: {
+    label: "Payment Held",
+    color: "#F45314",
+    bgColor: "#FFFAD2",
+    icon: Clock,
+  },
+  RELEASED: {
+    label: "Payment Released",
+    color: "#02aaa4",
+    bgColor: "#e5f7f6",
+    icon: CheckCircle,
+  },
+  DISPUTED: {
+    label: "Disputed",
+    color: "#dc2626",
+    bgColor: "#fce8e8",
+    icon: AlertCircle,
+  },
+  REFUNDED: {
+    label: "Refunded",
+    color: "#545454",
+    bgColor: "#EDEDED",
+    icon: AlertCircle,
+  },
+} as const;
+
 function getStatusIcon(status: OrderStatus) {
   switch (status) {
     case "PAYMENT_CONFIRMED":
@@ -173,6 +206,19 @@ function OrderCard({ order }: { order: Order }) {
 
   const statusConfig = STATUS_CONFIG[status];
   const needsAddressUpdate = order.fromAddress.street1 === "Address pending";
+  const paymentStatusConfig = order.paymentHoldStatus ? PAYMENT_STATUS_CONFIG[order.paymentHoldStatus] : null;
+  const PaymentIcon = paymentStatusConfig?.icon || Clock;
+
+  const getDaysUntilAutoRelease = () => {
+    if (!order.autoReleaseAt) return null;
+    const now = new Date();
+    const releaseDate = new Date(order.autoReleaseAt);
+    const diffTime = releaseDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  const daysUntilRelease = getDaysUntilAutoRelease();
 
   const handleGenerateLabel = async () => {
     setGenerating(true);
@@ -282,9 +328,36 @@ function OrderCard({ order }: { order: Order }) {
               <Text size="$2" color="$textMuted">
                 Your Payout
               </Text>
-              <Text size="$3" fontWeight="600" color="$success">
+              <Text size="$3" fontWeight="600" color={order.paymentHoldStatus === "RELEASED" ? "$success" : "$text"}>
                 £{(order.stripeSellerPayout || 0).toFixed(2)}
               </Text>
+              {paymentStatusConfig && (
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    paddingLeft: "6px",
+                    paddingRight: "6px",
+                    paddingTop: "2px",
+                    paddingBottom: "2px",
+                    borderRadius: "9999px",
+                    backgroundColor: paymentStatusConfig.bgColor,
+                    color: paymentStatusConfig.color,
+                    marginTop: "4px",
+                  }}
+                >
+                  <PaymentIcon size={12} />
+                  <span style={{ fontSize: "11px", fontWeight: 500 }}>
+                    {paymentStatusConfig.label}
+                  </span>
+                </div>
+              )}
+              {order.paymentHoldStatus === "HELD" && daysUntilRelease !== null && (
+                <Text size="$2" color="$textMuted">
+                  Auto-releases in {daysUntilRelease} days
+                </Text>
+              )}
             </Column>
           </Row>
 

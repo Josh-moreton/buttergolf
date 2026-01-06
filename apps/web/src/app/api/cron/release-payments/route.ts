@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { sendPaymentReleasedEmail } from "@/lib/email";
 
 // Vercel Cron configuration
 // Schedule: Run daily at 3:00 AM UTC
@@ -151,7 +152,21 @@ export async function GET(request: NextRequest) {
           transferId: transfer.id,
         });
 
-        // TODO: Send email notification to buyer and seller about auto-release
+        // Send email notification to seller about payment release
+        try {
+          await sendPaymentReleasedEmail({
+            sellerEmail: order.seller.email,
+            sellerName: order.seller.firstName || "Seller",
+            orderId: order.id,
+            productTitle: order.product.title,
+            payoutAmount: order.stripeSellerPayout || 0,
+            releaseReason: "auto_released",
+          });
+          console.log("Payment released email sent to seller:", order.seller.email);
+        } catch (emailError) {
+          console.error("Failed to send payment released email:", emailError);
+          // Don't fail the release if email fails
+        }
       } catch (orderError) {
         console.error("Error processing order:", {
           orderId: order.id,

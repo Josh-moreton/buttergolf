@@ -374,13 +374,34 @@ export async function GET(request: Request) {
             imageUrl: true,
           },
         },
+        // Include active promotions
+        promotions: {
+          where: {
+            status: "ACTIVE",
+            expiresAt: { gt: new Date() },
+          },
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return NextResponse.json(products);
+    // Transform promotions to match the ProductCardData interface
+    const transformedProducts = products.map((product) => ({
+      ...product,
+      activePromotion: product.promotions[0] ? {
+        type: product.promotions[0].type,
+        expiresAt: product.promotions[0].expiresAt,
+      } : null,
+      promotions: undefined, // Remove the raw promotions array
+    }));
+
+    return NextResponse.json(transformedProducts);
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return NextResponse.json(

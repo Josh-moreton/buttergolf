@@ -23,6 +23,9 @@ interface OrderDetails {
   productBrand: string | null;
   amountTotal: number;
   shippingCost: number;
+  buyerProtectionFee: number | null;
+  paymentHoldStatus: string;
+  autoReleaseAt: string | null;
   trackingCode: string | null;
   trackingUrl: string | null;
   carrier: string | null;
@@ -430,9 +433,9 @@ function CheckoutSuccessContent() {
               </Row>
 
               <Row justifyContent="space-between" alignItems="center">
-                <Text color="$textSecondary">Subtotal</Text>
+                <Text color="$textSecondary">Item Price</Text>
                 <Text weight="medium">
-                  £{(order.amountTotal - order.shippingCost).toFixed(2)}
+                  £{(order.amountTotal - order.shippingCost - (order.buyerProtectionFee || 0)).toFixed(2)}
                 </Text>
               </Row>
 
@@ -440,6 +443,16 @@ function CheckoutSuccessContent() {
                 <Text color="$textSecondary">Shipping</Text>
                 <Text weight="medium">£{order.shippingCost.toFixed(2)}</Text>
               </Row>
+
+              {order.buyerProtectionFee && order.buyerProtectionFee > 0 && (
+                <Row justifyContent="space-between" alignItems="center">
+                  <Row gap="$xs" alignItems="center">
+                    <Text color="$textSecondary">Buyer Protection</Text>
+                    <Text size="$3">🛡️</Text>
+                  </Row>
+                  <Text weight="medium">£{order.buyerProtectionFee.toFixed(2)}</Text>
+                </Row>
+              )}
 
               <Row
                 justifyContent="space-between"
@@ -477,6 +490,27 @@ function CheckoutSuccessContent() {
               </Row>
             </Column>
           </Card>
+
+          {/* Payment Hold Information */}
+          {order.paymentHoldStatus === "HELD" && (
+            <Card variant="outlined" padding="$md" borderColor="$info" backgroundColor="$infoLight" fullWidth>
+              <Column gap="$sm">
+                <Row gap="$sm" alignItems="center">
+                  <Text size="$5">🔒</Text>
+                  <Text fontWeight="600" color="$info">Payment Held Securely</Text>
+                </Row>
+                <Text size="$4" color="$textSecondary">
+                  Your payment is being held safely until you confirm you&apos;ve received your item. 
+                  Once delivered, you&apos;ll have 14 days to confirm receipt or report any issues.
+                </Text>
+                {order.autoReleaseAt && (
+                  <Text size="$3" color="$textMuted">
+                    Payment auto-releases to seller on {new Date(order.autoReleaseAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} if no action taken.
+                  </Text>
+                )}
+              </Column>
+            </Card>
+          )}
 
           {/* Shipping Address */}
           <Card variant="outlined" padding="$lg" fullWidth>
