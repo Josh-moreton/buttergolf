@@ -198,7 +198,7 @@ export function VerifyEmailScreen({
               chromeless
               size="$4"
               icon={<ArrowLeft size={20} />}
-              color="$text"
+              color="$textInverse"
               alignSelf="flex-start"
               onPress={onNavigateBack}
               paddingHorizontal={0}

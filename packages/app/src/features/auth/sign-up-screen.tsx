@@ -207,7 +207,7 @@ export function SignUpScreen({
               chromeless
               size="$4"
               icon={<ArrowLeft size={20} />}
-              color="$text"
+              color="$textInverse"
               alignSelf="flex-start"
               onPress={onNavigateBack}
               paddingHorizontal={0}
@@ -344,13 +344,13 @@ export function SignUpScreen({
             </Text>
             <Button
               chromeless
-              size="$4"
+              size="$5"
               color="$primary"
               fontWeight="600"
               onPress={onNavigateToSignIn}
               disabled={isSubmitting}
-              paddingVertical={0}
-              paddingHorizontal="$2"
+              paddingVertical="$2"
+              paddingHorizontal="$3"
             >
               Sign In
             </Button>
