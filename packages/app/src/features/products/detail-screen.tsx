@@ -70,8 +70,8 @@ export function ProductDetailScreen({
         alignItems="center"
         justifyContent="center"
       >
-        <Spinner size="lg" color="$primary" />
-        <Text color="$textSecondary" marginTop="$3">
+        <Spinner size="lg" color="$pureWhite" />
+        <Text color="$textInverse" marginTop="$3">
           Loading product...
         </Text>
       </Column>

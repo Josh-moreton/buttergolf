@@ -147,6 +147,7 @@ export function SellScreen({
       case 3:
         return (
           formData.title.trim() !== "" &&
+          formData.description.trim() !== "" &&
           formData.price !== "" &&
           Number.parseFloat(formData.price) > 0
         );
