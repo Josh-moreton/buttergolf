@@ -1,6 +1,7 @@
 import { v2 as cloudinary, UploadApiOptions } from "cloudinary";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { verifyToken } from "@clerk/backend";
 
 // Cloudinary configuration
 cloudinary.config({
@@ -9,7 +10,73 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * Get user ID from either Clerk session (web) or Bearer token (mobile).
+ * Mobile apps send Authorization: Bearer <token> header.
+ */
+async function getUserId(request: Request): Promise<string | null> {
+  // First try Clerk's built-in auth (works for web with cookies)
+  const { userId } = await auth();
+  if (userId) {
+    return userId;
+  }
+
+  // If no session, try to verify Bearer token (for mobile apps)
+  const authHeader = request.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.replace(/^Bearer\s+/i, "").trim();
+    try {
+      const secretKey = process.env.CLERK_SECRET_KEY;
+      if (!secretKey) return null;
+
+      const payload = await verifyToken(token, { secretKey });
+      return payload.sub; // sub is the user ID
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      return null;
+    }
+  }
+
+  return null;
+}
+
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter((origin) => origin.length > 0);
+
+function getAllowedOrigin(request: Request): string | null {
+  const origin = request.headers.get("origin");
+
+  // React Native requests generally don't send Origin, and same-origin requests don't need CORS.
+  if (!origin) return null;
+
+  if (ALLOWED_ORIGINS.length === 0) {
+    return null;
+  }
+
+  return ALLOWED_ORIGINS.includes(origin) ? origin : null;
+}
+
+function getCorsHeaders(request: Request): Record<string, string> {
+  const allowedOrigin = getAllowedOrigin(request);
+
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+
+  if (allowedOrigin) {
+    headers["Access-Control-Allow-Origin"] = allowedOrigin;
+    headers["Vary"] = "Origin";
+  }
+
+  return headers;
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
+  const corsHeaders = getCorsHeaders(request);
+
   // Check if Cloudinary is configured
   if (
     !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
@@ -24,15 +91,18 @@ export async function POST(request: Request): Promise<NextResponse> {
         details:
           "Required: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET",
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   }
 
-  // Authenticate user
-  const { userId } = await auth();
+  // Authenticate user (supports both web cookies and mobile Bearer token)
+  const userId = await getUserId(request);
 
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401, headers: corsHeaders },
+    );
   }
 
   // Get the file from the request
@@ -43,7 +113,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!filename) {
     return NextResponse.json(
       { error: "Filename is required" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -60,7 +130,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!contentType || !allowedTypes.includes(contentType)) {
     return NextResponse.json(
       { error: "Invalid file type. Only images are allowed." },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -131,13 +201,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       bytes: result.bytes,
     });
 
-    return NextResponse.json({
-      url: result.secure_url,
-      publicId: result.public_id,
-      width: result.width,
-      height: result.height,
-      format: result.format,
-    });
+    return NextResponse.json(
+      {
+        url: result.secure_url,
+        publicId: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+      },
+      { headers: corsHeaders },
+    );
   } catch (error) {
     console.error("Upload error:", error);
 
@@ -154,7 +227,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             "The image may not be suitable for automatic background removal. Please try a different image or contact support.",
           fallback: "Upload will proceed without background removal",
         },
-        { status: 500 },
+        { status: 500, headers: corsHeaders },
       );
     }
 
@@ -163,7 +236,28 @@ export async function POST(request: Request): Promise<NextResponse> {
         error: "Failed to upload image",
         details: errorMessage,
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   }
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS(request: Request): Promise<NextResponse> {
+  const allowedOrigin = getAllowedOrigin(request);
+
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": "86400",
+  };
+
+  if (allowedOrigin) {
+    headers["Access-Control-Allow-Origin"] = allowedOrigin;
+    headers["Vary"] = "Origin";
+  }
+
+  return new NextResponse(null, {
+    status: 200,
+    headers,
+  });
 }

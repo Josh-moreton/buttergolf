@@ -17,12 +17,12 @@ const ADMIN_USER_IDS = [
 ];
 
 // Define protected routes that require authentication
+// Note: /api/upload handles its own auth to support mobile Bearer tokens
 const isProtectedRoute = createRouteMatcher([
   "/sell(.*)",
   "/seller(.*)", // Seller dashboard with Stripe Connect components
   "/dashboard(.*)",
   "/profile(.*)",
-  "/api/upload(.*)",
 ]);
 
 // Routes that should be accessible even when coming soon mode is enabled

@@ -291,7 +291,10 @@ async function searchModels(brandId: string, query: string): Promise<Model[]> {
 }
 
 // Function to submit a listing
-async function submitListing(data: SellFormData): Promise<{ id: string }> {
+async function submitListingToApi(
+  data: SellFormData,
+  token: string | null,
+): Promise<{ id: string }> {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   if (!apiUrl) throw new Error("API URL not configured");
 
@@ -300,6 +303,7 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({
       title: data.title,
@@ -319,6 +323,11 @@ async function submitListing(data: SellFormData): Promise<{ id: string }> {
   }
 
   return await response.json();
+}
+
+// Legacy non-auth submit (kept for parity with existing call sites)
+async function submitListing(data: SellFormData): Promise<{ id: string }> {
+  return submitListingToApi(data, null);
 }
 
 // Function to pick images from gallery
@@ -396,6 +405,167 @@ async function takePhoto(): Promise<ImageData | null> {
     console.error("Failed to take photo:", error);
     return null;
   }
+}
+
+/**
+ * Upload an image to Cloudinary via the API with background removal for first image.
+ * This function needs to be called within a component that has access to useAuth.
+ */
+async function uploadImageToCloudinary(
+  image: ImageData,
+  isFirstImage: boolean,
+  getToken: () => Promise<string | null>,
+): Promise<string> {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  if (!apiUrl) throw new Error("API URL not configured");
+
+  // Get the auth token for the request
+  const token = await getToken();
+  if (!token) throw new Error("Not authenticated");
+
+  // Generate a unique filename
+  const timestamp = Date.now();
+  const randomStr = Math.random().toString(36).substring(2, 8);
+  const extension = image.uri.split(".").pop() || "jpg";
+  const filename = `${timestamp}-${randomStr}.${extension}`;
+
+  console.log("📤 Uploading image to Cloudinary:", {
+    uri: image.uri.substring(0, 50) + "...",
+    isFirstImage,
+    filename,
+  });
+
+  // Read the image file as blob
+  const response = await fetch(image.uri);
+  const blob = await response.blob();
+
+  // Determine content type
+  const contentType = blob.type || "image/jpeg";
+
+  console.log("📦 Image blob:", {
+    size: blob.size,
+    sizeKB: Math.round(blob.size / 1024),
+    type: contentType,
+  });
+
+  // Upload to the API endpoint
+  const uploadUrl = `${apiUrl}/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`;
+  const uploadResponse = await fetch(uploadUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": contentType,
+      Authorization: `Bearer ${token}`,
+    },
+    body: blob,
+  });
+
+  if (!uploadResponse.ok) {
+    const responseContentType = uploadResponse.headers.get("content-type") ?? "";
+    const clerkAuthReason = uploadResponse.headers.get("x-clerk-auth-reason");
+    const matchedPath = uploadResponse.headers.get("x-matched-path");
+
+    let errorMessage = `Upload failed: ${uploadResponse.status}`;
+    let errorBodyText: string | undefined;
+
+    try {
+      const errorData: unknown = await uploadResponse.json();
+      if (errorData && typeof errorData === "object") {
+        const possibleError =
+          (errorData as { error?: unknown }).error ??
+          (errorData as { message?: unknown }).message;
+
+        if (typeof possibleError === "string" && possibleError.trim().length > 0) {
+          errorMessage = possibleError;
+        } else {
+          try {
+            errorBodyText = JSON.stringify(errorData);
+          } catch {
+            // ignore JSON stringify errors
+          }
+        }
+      }
+    } catch {
+      try {
+        errorBodyText = await uploadResponse.text();
+      } catch {
+        // ignore secondary errors when reading response text
+      }
+    }
+
+    if (errorBodyText) {
+      console.error("Photo upload failed with non-JSON response", {
+        uploadUrl,
+        status: uploadResponse.status,
+        statusText: uploadResponse.statusText,
+        responseContentType,
+        clerkAuthReason,
+        matchedPath,
+        body: errorBodyText.slice(0, 1000),
+      });
+
+      const snippet = errorBodyText.trim().slice(0, 200);
+      if (snippet.length > 0) {
+        errorMessage = `${errorMessage} - ${snippet}`;
+      }
+    } else {
+      console.error("Photo upload failed", {
+        uploadUrl,
+        status: uploadResponse.status,
+        statusText: uploadResponse.statusText,
+        responseContentType,
+        clerkAuthReason,
+        matchedPath,
+      });
+    }
+
+    const headerHint = clerkAuthReason ? ` (${clerkAuthReason})` : "";
+    throw new Error(`${errorMessage}${headerHint}`);
+  }
+
+  const result = await uploadResponse.json();
+  console.log("✅ Upload success:", result.url);
+
+  return result.url;
+}
+
+/**
+ * Wrapper component for SellScreen that provides the image upload function
+ * with access to Clerk authentication.
+ */
+function SellScreenWrapper({
+  navigation,
+}: {
+  navigation: any;
+}) {
+  const { getToken } = useAuth();
+
+  // Create the upload function that uses the auth token
+  const handleUploadImage = async (image: ImageData, isFirstImage: boolean): Promise<string> => {
+    return uploadImageToCloudinary(image, isFirstImage, getToken);
+  };
+
+  const handleSubmitListing = async (data: SellFormData): Promise<{ id: string }> => {
+    const token = await getToken();
+    if (!token) throw new Error("Not authenticated");
+    return submitListingToApi(data, token);
+  };
+
+  return (
+    <SellScreen
+      isAuthenticated={true}
+      onFetchCategories={fetchCategories}
+      onSearchBrands={searchBrands}
+      onSearchModels={searchModels}
+      onUploadImage={handleUploadImage}
+      onPickImages={pickImages}
+      onTakePhoto={takePhoto}
+      onSubmitListing={handleSubmitListing}
+      onClose={() => navigation.goBack()}
+      onSuccess={(productId) => {
+        navigation.navigate("ProductDetail", { id: productId });
+      }}
+    />
+  );
 }
 
 export default function App() {
@@ -561,19 +731,7 @@ export default function App() {
                   }}
                 >
                   {({ navigation }: { navigation: any }) => (
-                    <SellScreen
-                      isAuthenticated={true}
-                      onFetchCategories={fetchCategories}
-                      onSearchBrands={searchBrands}
-                      onSearchModels={searchModels}
-                      onPickImages={pickImages}
-                      onTakePhoto={takePhoto}
-                      onSubmitListing={submitListing}
-                      onClose={() => navigation.goBack()}
-                      onSuccess={(productId) => {
-                        navigation.navigate("ProductDetail", { id: productId });
-                      }}
-                    />
+                    <SellScreenWrapper navigation={navigation} />
                   )}
                 </Stack.Screen>
               </Stack.Navigator>

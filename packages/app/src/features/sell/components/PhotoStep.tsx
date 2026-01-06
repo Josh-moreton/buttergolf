@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Column, Row, Text, View, Image, ScrollView } from "@buttergolf/ui";
+import { Column, Row, Text, View, Image, ScrollView, Spinner } from "@buttergolf/ui";
 import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
 
 import type { ImageData } from "../types";
@@ -12,7 +12,8 @@ const MAX_IMAGES = 5;
 interface PhotoStepProps {
   images: ImageData[];
   onImagesChange: (images: ImageData[]) => void;
-  onUploadImage?: (image: ImageData) => Promise<string>;
+  /** Called to upload an image to CDN. isFirstImage triggers background removal. */
+  onUploadImage?: (image: ImageData, isFirstImage: boolean) => Promise<string>;
   direction: "forward" | "backward";
   /** Platform-specific function to pick images from gallery */
   onPickImages?: () => Promise<ImageData[]>;
@@ -23,23 +24,97 @@ interface PhotoStepProps {
 export function PhotoStep({
   images,
   onImagesChange,
-  onUploadImage: _onUploadImage,
+  onUploadImage,
   direction,
   onPickImages,
   onTakePhoto,
 }: Readonly<PhotoStepProps>) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  /**
+   * Upload a single image to CDN.
+   * Returns the image with the uploaded URL, or null if upload failed.
+   */
+  const uploadImage = useCallback(
+    async (image: ImageData, isFirstImage: boolean): Promise<ImageData | null> => {
+      if (!onUploadImage) {
+        // If no upload function provided, just return the local image
+        console.warn("onUploadImage not provided - using local URI");
+        return image;
+      }
+
+      try {
+        console.log("📤 PhotoStep: Uploading image...", { isFirstImage });
+        const uploadedUrl = await onUploadImage(image, isFirstImage);
+        console.log("✅ PhotoStep: Upload complete:", uploadedUrl);
+        return {
+          ...image,
+          uri: uploadedUrl,
+          uploaded: true,
+          isFirstImage,
+        };
+      } catch (error) {
+        console.error("❌ PhotoStep: Upload failed:", error);
+        throw error;
+      }
+    },
+    [onUploadImage],
+  );
+
   const pickImage = useCallback(async () => {
     if (!onPickImages) {
       console.warn("onPickImages not provided to PhotoStep");
       return;
     }
 
+    setUploadError(null);
     const newImages = await onPickImages();
+    
     if (newImages.length > 0) {
-      const updatedImages = [...images, ...newImages].slice(0, MAX_IMAGES);
-      onImagesChange(updatedImages);
+      setUploading(true);
+      
+      try {
+        // Upload each image, first image in the listing gets background removal.
+        // Preserve successful uploads even if some uploads fail.
+        const uploadedImages: ImageData[] = [];
+        const currentImageCount = images.length;
+        let failedUploads = 0;
+        
+        for (let i = 0; i < newImages.length && currentImageCount + uploadedImages.length < MAX_IMAGES; i++) {
+          const image = newImages[i];
+          if (!image) continue;
+          
+          // First image in the entire listing (not just this batch) gets background removal
+          const isFirstImage = currentImageCount === 0 && uploadedImages.length === 0;
+
+          try {
+            const uploaded = await uploadImage(image, isFirstImage);
+            if (uploaded) {
+              uploadedImages.push(uploaded);
+            } else {
+              failedUploads += 1;
+            }
+          } catch (error) {
+            failedUploads += 1;
+            console.error("Failed to upload image", error);
+          }
+        }
+        
+        if (uploadedImages.length > 0) {
+          onImagesChange([...images, ...uploadedImages]);
+        }
+
+        if (failedUploads > 0) {
+          setUploadError("Some images failed to upload. Please try again.");
+        }
+      } catch (error) {
+        setUploadError(error instanceof Error ? error.message : "Upload failed");
+      } finally {
+        setUploading(false);
+      }
     }
-  }, [images, onImagesChange, onPickImages]);
+  }, [images, onImagesChange, onPickImages, uploadImage]);
 
   const takePhoto = useCallback(async () => {
     if (!onTakePhoto) {
@@ -47,12 +122,27 @@ export function PhotoStep({
       return;
     }
 
+    setUploadError(null);
     const newImage = await onTakePhoto();
+    
     if (newImage) {
-      const updatedImages = [...images, newImage].slice(0, MAX_IMAGES);
-      onImagesChange(updatedImages);
+      setUploading(true);
+      
+      try {
+        // First image gets background removal
+        const isFirstImage = images.length === 0;
+        const uploaded = await uploadImage(newImage, isFirstImage);
+        
+        if (uploaded) {
+          onImagesChange([...images, uploaded].slice(0, MAX_IMAGES));
+        }
+      } catch (error) {
+        setUploadError(error instanceof Error ? error.message : "Upload failed");
+      } finally {
+        setUploading(false);
+      }
     }
-  }, [images, onImagesChange, onTakePhoto]);
+  }, [images, onImagesChange, onTakePhoto, uploadImage]);
 
   const removeImage = useCallback(
     (index: number) => {
@@ -90,11 +180,11 @@ export function PhotoStep({
             fontFamily="$heading"
             size="$10"
             fontWeight="800"
-            color="$ironstone"
+            color="$text"
           >
             Add your photos
           </Text>
-          <Text size="$5" fontWeight="400" color="$slateSmoke">
+          <Text size="$5" fontWeight="400" color="$textSecondary">
             Great photos help your item sell faster. Add up to {MAX_IMAGES}{" "}
             photos.
           </Text>
@@ -102,19 +192,19 @@ export function PhotoStep({
 
         {/* Photo Tips Card */}
         <Column
-          backgroundColor="$lemonHaze"
+          backgroundColor="$primaryLight"
           borderRadius="$xl"
           padding="$4"
           marginBottom="$5"
           gap="$3"
         >
           <Row alignItems="center" gap="$2">
-            <Sparkles size={18} color="$burntOlive" />
+            <Sparkles size={18} color="$secondary" />
             <Text
               fontFamily="$heading"
               size="$5"
               fontWeight="700"
-              color="$burntOlive"
+              color="$text"
             >
               Tips for great photos
             </Text>
@@ -125,13 +215,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Use a clean, uncluttered background
               </Text>
             </Row>
@@ -140,13 +230,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Use natural lighting for best results
               </Text>
             </Row>
@@ -155,13 +245,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Include multiple angles and any imperfections
               </Text>
             </Row>
@@ -193,12 +283,12 @@ export function PhotoStep({
                     position="absolute"
                     bottom={8}
                     left={8}
-                    backgroundColor="$spicedClementine"
+                    backgroundColor="$primary"
                     paddingHorizontal="$2"
                     paddingVertical="$1"
                     borderRadius="$md"
                   >
-                    <Text size="$1" fontWeight="700" color="$pureWhite">
+                    <Text size="$1" fontWeight="700" color="$textInverse">
                       Cover
                     </Text>
                   </View>
@@ -236,10 +326,10 @@ export function PhotoStep({
               >
                 <Column
                   flex={1}
-                  backgroundColor="$gray100"
+                  backgroundColor="$surface"
                   borderRadius="$xl"
                   borderWidth={2}
-                  borderColor="$cloudMist"
+                  borderColor="$border"
                   borderStyle="dashed"
                   alignItems="center"
                   justifyContent="center"
@@ -249,13 +339,13 @@ export function PhotoStep({
                     width={44}
                     height={44}
                     borderRadius="$full"
-                    backgroundColor="$cloudMist"
+                    backgroundColor="$border"
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <ImagePlus size={22} color="$slateSmoke" />
+                    <ImagePlus size={22} color="$textSecondary" />
                   </View>
-                  <Text size="$2" fontWeight="600" color="$slateSmoke">
+                  <Text size="$2" fontWeight="600" color="$textSecondary">
                     Add Photo
                   </Text>
                 </Column>
@@ -268,17 +358,17 @@ export function PhotoStep({
         <Row gap="$3" marginBottom="$4">
           <TouchableOpacity
             onPress={pickImage}
-            disabled={!canAddMore}
+            disabled={!canAddMore || uploading}
             style={{
               flex: 1,
-              opacity: canAddMore ? 1 : 0.5,
+              opacity: canAddMore && !uploading ? 1 : 0.5,
             }}
             accessibilityLabel="Choose from gallery"
           >
             <Row
-              backgroundColor="$pureWhite"
+              backgroundColor="$surface"
               borderWidth={2}
-              borderColor="$cloudMist"
+              borderColor="$border"
               borderRadius="$xl"
               paddingVertical="$3"
               paddingHorizontal="$4"
@@ -286,8 +376,8 @@ export function PhotoStep({
               justifyContent="center"
               gap="$2"
             >
-              <ImagePlus size={20} color="$ironstone" />
-              <Text size="$5" fontWeight="600" color="$ironstone">
+              <ImagePlus size={20} color="$text" />
+              <Text size="$5" fontWeight="600" color="$text">
                 Gallery
               </Text>
             </Row>
@@ -295,17 +385,17 @@ export function PhotoStep({
 
           <TouchableOpacity
             onPress={takePhoto}
-            disabled={!canAddMore}
+            disabled={!canAddMore || uploading}
             style={{
               flex: 1,
-              opacity: canAddMore ? 1 : 0.5,
+              opacity: canAddMore && !uploading ? 1 : 0.5,
             }}
             accessibilityLabel="Take a photo"
           >
             <Row
-              backgroundColor="$pureWhite"
+              backgroundColor="$surface"
               borderWidth={2}
-              borderColor="$cloudMist"
+              borderColor="$border"
               borderRadius="$xl"
               paddingVertical="$3"
               paddingHorizontal="$4"
@@ -313,23 +403,62 @@ export function PhotoStep({
               justifyContent="center"
               gap="$2"
             >
-              <Camera size={20} color="$ironstone" />
-              <Text size="$5" fontWeight="600" color="$ironstone">
+              <Camera size={20} color="$text" />
+              <Text size="$5" fontWeight="600" color="$text">
                 Camera
               </Text>
             </Row>
           </TouchableOpacity>
         </Row>
 
+        {/* Upload Status */}
+        {uploading && (
+          <Column
+            backgroundColor="$primaryLight"
+            borderRadius="$xl"
+            padding="$4"
+            marginBottom="$4"
+            alignItems="center"
+            gap="$3"
+          >
+            <Spinner size="sm" color="$primary" />
+            <Text size="$4" fontWeight="600" color="$text" textAlign="center">
+              Uploading and processing your photo...
+            </Text>
+            <Text size="$3" fontWeight="400" color="$textSecondary" textAlign="center">
+              AI is removing the background for your cover photo
+            </Text>
+          </Column>
+        )}
+
+        {/* Upload Error */}
+        {uploadError && (
+          <Column
+            backgroundColor="$errorLight"
+            borderRadius="$xl"
+            padding="$4"
+            marginBottom="$4"
+            borderWidth={1}
+            borderColor="$error"
+          >
+            <Text size="$4" fontWeight="600" color="$error">
+              Upload failed
+            </Text>
+            <Text size="$3" fontWeight="400" color="$error">
+              {uploadError}
+            </Text>
+          </Column>
+        )}
+
         {/* Image count indicator */}
         <Row justifyContent="center">
           <View
-            backgroundColor="$gray100"
+            backgroundColor="$surface"
             paddingHorizontal="$4"
             paddingVertical="$2"
             borderRadius="$full"
           >
-            <Text size="$3" fontWeight="600" color="$slateSmoke">
+            <Text size="$3" fontWeight="600" color="$textSecondary">
               {images.length} of {MAX_IMAGES} photos
             </Text>
           </View>

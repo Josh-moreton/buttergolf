@@ -108,9 +108,12 @@ export function TwoFactorScreen({
     if (hasInitialized.current) return;
     if (!isLoaded || !signIn) return;
 
+    // Capture signIn reference to satisfy TypeScript (we've already checked it's defined)
+    const currentSignIn = signIn;
+
     async function detectAndPrepare() {
       try {
-        const factors = signIn.supportedSecondFactors;
+        const factors = currentSignIn.supportedSecondFactors;
         console.log("[TwoFactor] Available factors:", factors);
 
         if (!factors || factors.length === 0) {
@@ -141,7 +144,7 @@ export function TwoFactorScreen({
           setIsSendingCode(true);
           try {
             console.log("[TwoFactor] Sending initial email code...");
-            await signIn.prepareSecondFactor({
+            await currentSignIn.prepareSecondFactor({
               strategy: "email_code",
             });
             console.log("[TwoFactor] Initial email code sent successfully");
