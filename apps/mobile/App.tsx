@@ -440,21 +440,48 @@ async function uploadImageToCloudinary(
   });
 
   // Upload to the API endpoint
-  const uploadResponse = await fetch(
-    `${apiUrl}/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": contentType,
-        Authorization: `Bearer ${token}`,
-      },
-      body: blob,
+  const uploadUrl = `${apiUrl}/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`;
+  const uploadResponse = await fetch(uploadUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": contentType,
+      Authorization: `Bearer ${token}`,
     },
-  );
+    body: blob,
+  });
 
   if (!uploadResponse.ok) {
-    const errorData = await uploadResponse.json().catch(() => ({}));
-    throw new Error(errorData.error || `Upload failed: ${uploadResponse.status}`);
+    const responseContentType = uploadResponse.headers.get("content-type") ?? "";
+    const clerkAuthReason = uploadResponse.headers.get("x-clerk-auth-reason");
+    const matchedPath = uploadResponse.headers.get("x-matched-path");
+
+    let errorMessage = "";
+
+    if (responseContentType.includes("application/json")) {
+      const errorData = await uploadResponse.json().catch(() => null);
+      if (typeof errorData?.error === "string") {
+        errorMessage = errorData.error;
+      } else if (errorData) {
+        errorMessage = JSON.stringify(errorData).slice(0, 300);
+      }
+    } else {
+      const errorText = await uploadResponse.text().catch(() => "");
+      errorMessage = errorText.slice(0, 300);
+    }
+
+    console.error("Photo upload failed", {
+      uploadUrl,
+      status: uploadResponse.status,
+      responseContentType,
+      clerkAuthReason,
+      matchedPath,
+      errorMessage,
+    });
+
+    const headerHint = clerkAuthReason ? ` (${clerkAuthReason})` : "";
+    throw new Error(
+      errorMessage || `Upload failed: ${uploadResponse.status}${headerHint}`,
+    );
   }
 
   const result = await uploadResponse.json();
