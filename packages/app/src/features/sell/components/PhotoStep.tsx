@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { TouchableOpacity, ActivityIndicator } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Column, Row, Text, View, Image, ScrollView, Spinner } from "@buttergolf/ui";
 import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
 
@@ -167,11 +167,11 @@ export function PhotoStep({
             fontFamily="$heading"
             size="$10"
             fontWeight="800"
-            color="$ironstone"
+            color="$text"
           >
             Add your photos
           </Text>
-          <Text size="$5" fontWeight="400" color="$slateSmoke">
+          <Text size="$5" fontWeight="400" color="$textSecondary">
             Great photos help your item sell faster. Add up to {MAX_IMAGES}{" "}
             photos.
           </Text>
@@ -179,19 +179,19 @@ export function PhotoStep({
 
         {/* Photo Tips Card */}
         <Column
-          backgroundColor="$lemonHaze"
+          backgroundColor="$primaryLight"
           borderRadius="$xl"
           padding="$4"
           marginBottom="$5"
           gap="$3"
         >
           <Row alignItems="center" gap="$2">
-            <Sparkles size={18} color="$burntOlive" />
+            <Sparkles size={18} color="$secondary" />
             <Text
               fontFamily="$heading"
               size="$5"
               fontWeight="700"
-              color="$burntOlive"
+              color="$text"
             >
               Tips for great photos
             </Text>
@@ -202,13 +202,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Use a clean, uncluttered background
               </Text>
             </Row>
@@ -217,13 +217,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Use natural lighting for best results
               </Text>
             </Row>
@@ -232,13 +232,13 @@ export function PhotoStep({
                 width={20}
                 height={20}
                 borderRadius="$full"
-                backgroundColor="$burntOlive"
+                backgroundColor="$secondary"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Check size={12} color="$pureWhite" />
+                <Check size={12} color="$textInverse" />
               </View>
-              <Text size="$4" fontWeight="500" color="$burntOlive" flex={1}>
+              <Text size="$4" fontWeight="500" color="$text" flex={1}>
                 Include multiple angles and any imperfections
               </Text>
             </Row>
@@ -270,12 +270,12 @@ export function PhotoStep({
                     position="absolute"
                     bottom={8}
                     left={8}
-                    backgroundColor="$spicedClementine"
+                    backgroundColor="$primary"
                     paddingHorizontal="$2"
                     paddingVertical="$1"
                     borderRadius="$md"
                   >
-                    <Text size="$1" fontWeight="700" color="$pureWhite">
+                    <Text size="$1" fontWeight="700" color="$textInverse">
                       Cover
                     </Text>
                   </View>
@@ -313,10 +313,10 @@ export function PhotoStep({
               >
                 <Column
                   flex={1}
-                  backgroundColor="$gray100"
+                  backgroundColor="$surface"
                   borderRadius="$xl"
                   borderWidth={2}
-                  borderColor="$cloudMist"
+                  borderColor="$border"
                   borderStyle="dashed"
                   alignItems="center"
                   justifyContent="center"
@@ -326,13 +326,13 @@ export function PhotoStep({
                     width={44}
                     height={44}
                     borderRadius="$full"
-                    backgroundColor="$cloudMist"
+                    backgroundColor="$border"
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <ImagePlus size={22} color="$slateSmoke" />
+                    <ImagePlus size={22} color="$textSecondary" />
                   </View>
-                  <Text size="$2" fontWeight="600" color="$slateSmoke">
+                  <Text size="$2" fontWeight="600" color="$textSecondary">
                     Add Photo
                   </Text>
                 </Column>
@@ -353,9 +353,9 @@ export function PhotoStep({
             accessibilityLabel="Choose from gallery"
           >
             <Row
-              backgroundColor="$pureWhite"
+              backgroundColor="$surface"
               borderWidth={2}
-              borderColor="$cloudMist"
+              borderColor="$border"
               borderRadius="$xl"
               paddingVertical="$3"
               paddingHorizontal="$4"
@@ -363,8 +363,8 @@ export function PhotoStep({
               justifyContent="center"
               gap="$2"
             >
-              <ImagePlus size={20} color="$ironstone" />
-              <Text size="$5" fontWeight="600" color="$ironstone">
+              <ImagePlus size={20} color="$text" />
+              <Text size="$5" fontWeight="600" color="$text">
                 Gallery
               </Text>
             </Row>
@@ -380,9 +380,9 @@ export function PhotoStep({
             accessibilityLabel="Take a photo"
           >
             <Row
-              backgroundColor="$pureWhite"
+              backgroundColor="$surface"
               borderWidth={2}
-              borderColor="$cloudMist"
+              borderColor="$border"
               borderRadius="$xl"
               paddingVertical="$3"
               paddingHorizontal="$4"
@@ -390,8 +390,8 @@ export function PhotoStep({
               justifyContent="center"
               gap="$2"
             >
-              <Camera size={20} color="$ironstone" />
-              <Text size="$5" fontWeight="600" color="$ironstone">
+              <Camera size={20} color="$text" />
+              <Text size="$5" fontWeight="600" color="$text">
                 Camera
               </Text>
             </Row>
@@ -401,18 +401,18 @@ export function PhotoStep({
         {/* Upload Status */}
         {uploading && (
           <Column
-            backgroundColor="$lemonHaze"
+            backgroundColor="$primaryLight"
             borderRadius="$xl"
             padding="$4"
             marginBottom="$4"
             alignItems="center"
             gap="$3"
           >
-            <Spinner size="sm" color="$spicedClementine" />
-            <Text size="$4" fontWeight="600" color="$burntOlive" textAlign="center">
+            <Spinner size="sm" color="$primary" />
+            <Text size="$4" fontWeight="600" color="$text" textAlign="center">
               Uploading and processing your photo...
             </Text>
-            <Text size="$3" fontWeight="400" color="$slateSmoke" textAlign="center">
+            <Text size="$3" fontWeight="400" color="$textSecondary" textAlign="center">
               AI is removing the background for your cover photo
             </Text>
           </Column>
@@ -440,12 +440,12 @@ export function PhotoStep({
         {/* Image count indicator */}
         <Row justifyContent="center">
           <View
-            backgroundColor="$gray100"
+            backgroundColor="$surface"
             paddingHorizontal="$4"
             paddingVertical="$2"
             borderRadius="$full"
           >
-            <Text size="$3" fontWeight="600" color="$slateSmoke">
+            <Text size="$3" fontWeight="600" color="$textSecondary">
               {images.length} of {MAX_IMAGES} photos
             </Text>
           </View>

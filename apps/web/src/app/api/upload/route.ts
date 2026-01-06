@@ -24,11 +24,12 @@ async function getUserId(request: Request): Promise<string | null> {
   // If no session, try to verify Bearer token (for mobile apps)
   const authHeader = request.headers.get("Authorization");
   if (authHeader?.startsWith("Bearer ")) {
-    const token = authHeader.slice(7);
+    const token = authHeader.replace(/^Bearer\s+/i, "").trim();
     try {
-      const payload = await verifyToken(token, {
-        secretKey: process.env.CLERK_SECRET_KEY!,
-      });
+      const secretKey = process.env.CLERK_SECRET_KEY;
+      if (!secretKey) return null;
+
+      const payload = await verifyToken(token, { secretKey });
       return payload.sub; // sub is the user ID
     } catch (error) {
       console.error("Token verification failed:", error);
@@ -84,7 +85,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!filename) {
     return NextResponse.json(
       { error: "Filename is required" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
