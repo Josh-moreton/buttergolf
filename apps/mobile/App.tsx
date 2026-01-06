@@ -298,6 +298,9 @@ async function submitListingToApi(
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   if (!apiUrl) throw new Error("API URL not configured");
 
+  // Generate a unique request ID for idempotency
+  const requestId = `mobile-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
   const response = await fetch(`${apiUrl}/api/products`, {
     method: "POST",
     headers: {
@@ -312,8 +315,19 @@ async function submitListingToApi(
       categoryId: data.categoryId,
       brandId: data.brandId,
       modelId: data.modelId || undefined,
-      condition: data.condition,
+      model: data.modelName || undefined,
       images: data.images.map((img) => img.uri),
+      // Golf-specific fields
+      flex: data.flex || undefined,
+      loft: data.loft || undefined,
+      woodsSubcategory: data.woodsSubcategory || undefined,
+      headCoverIncluded: data.headCoverIncluded,
+      // Condition ratings (1-10 scale)
+      gripCondition: data.gripCondition,
+      headCondition: data.headCondition,
+      shaftCondition: data.shaftCondition,
+      // Idempotency key
+      requestId,
     }),
   });
 

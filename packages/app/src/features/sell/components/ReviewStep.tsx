@@ -13,7 +13,13 @@ import {
 } from "@tamagui/lucide-icons";
 
 import type { SellFormData, SellStep } from "../types";
-import { CONDITION_OPTIONS } from "../types";
+import {
+  FLEX_OPTIONS,
+  getConditionLabel,
+  calculateAverageCondition,
+  mapConditionToEnum,
+  CONDITION_OPTIONS,
+} from "../types";
 
 interface ReviewStepProps {
   formData: SellFormData;
@@ -96,14 +102,25 @@ export function ReviewStep({
   onEdit,
   direction,
 }: Readonly<ReviewStepProps>) {
+  // Calculate overall condition from the 3 component ratings
+  const avgCondition = calculateAverageCondition(
+    formData.gripCondition,
+    formData.headCondition,
+    formData.shaftCondition,
+  );
+  const conditionEnum = mapConditionToEnum(avgCondition);
   const conditionLabel =
-    CONDITION_OPTIONS.find((c) => c.value === formData.condition)?.label || "";
+    CONDITION_OPTIONS.find((c) => c.value === conditionEnum)?.label ?? "Good";
 
   const formatPrice = (price: string) => {
     const num = Number.parseFloat(price);
     if (Number.isNaN(num)) return "£0.00";
     return `£${num.toFixed(2)}`;
   };
+
+  // Helper to check if a field has a value
+  const hasValue = (value: string | undefined | null): value is string =>
+    Boolean(value && value.trim() !== "");
 
   return (
     <Column
@@ -208,6 +225,22 @@ export function ReviewStep({
                   {formData.categoryName || "Not set"}
                 </Text>
               </Row>
+
+              {/* Woods Subcategory - only show if set */}
+              {hasValue(formData.woodsSubcategory) && (
+                <>
+                  <View height={1} backgroundColor="$cloudMist" />
+                  <Row justifyContent="space-between" alignItems="center">
+                    <Text size="$4" fontWeight="400" color="$slateSmoke">
+                      Type
+                    </Text>
+                    <Text size="$4" fontWeight="600" color="$ironstone">
+                      {formData.woodsSubcategory}
+                    </Text>
+                  </Row>
+                </>
+              )}
+
               <View height={1} backgroundColor="$cloudMist" />
               <Row justifyContent="space-between" alignItems="center">
                 <Text size="$4" fontWeight="400" color="$slateSmoke">
@@ -226,10 +259,77 @@ export function ReviewStep({
                   {formData.modelName || "—"}
                 </Text>
               </Row>
+
+              {/* Flex - only show if set */}
+              {hasValue(formData.flex) && (
+                <>
+                  <View height={1} backgroundColor="$cloudMist" />
+                  <Row justifyContent="space-between" alignItems="center">
+                    <Text size="$4" fontWeight="400" color="$slateSmoke">
+                      Shaft Flex
+                    </Text>
+                    <Text size="$4" fontWeight="600" color="$ironstone">
+                      {FLEX_OPTIONS.find((f) => f.value === formData.flex)
+                        ?.label ?? formData.flex}
+                    </Text>
+                  </Row>
+                </>
+              )}
+
+              {/* Loft - only show if set */}
+              {hasValue(formData.loft) && (
+                <>
+                  <View height={1} backgroundColor="$cloudMist" />
+                  <Row justifyContent="space-between" alignItems="center">
+                    <Text size="$4" fontWeight="400" color="$slateSmoke">
+                      Loft
+                    </Text>
+                    <Text size="$4" fontWeight="600" color="$ironstone">
+                      {formData.loft}
+                    </Text>
+                  </Row>
+                </>
+              )}
+
+              {/* Head Cover - only show if relevant category */}
+              {(formData.categorySlug === "woods" ||
+                formData.categorySlug === "putters") && (
+                <>
+                  <View height={1} backgroundColor="$cloudMist" />
+                  <Row justifyContent="space-between" alignItems="center">
+                    <Text size="$4" fontWeight="400" color="$slateSmoke">
+                      Head Cover
+                    </Text>
+                    <View
+                      backgroundColor={
+                        formData.headCoverIncluded ? "$success" : "$gray100"
+                      }
+                      paddingHorizontal="$3"
+                      paddingVertical="$1"
+                      borderRadius="$full"
+                    >
+                      <Text
+                        size="$3"
+                        fontWeight="600"
+                        color={
+                          formData.headCoverIncluded
+                            ? "$pureWhite"
+                            : "$slateSmoke"
+                        }
+                      >
+                        {formData.headCoverIncluded ? "Included" : "Not included"}
+                      </Text>
+                    </View>
+                  </Row>
+                </>
+              )}
+
               <View height={1} backgroundColor="$cloudMist" />
+              
+              {/* Overall Condition Badge */}
               <Row justifyContent="space-between" alignItems="center">
                 <Text size="$4" fontWeight="400" color="$slateSmoke">
-                  Condition
+                  Overall Condition
                 </Text>
                 <View
                   backgroundColor="$lemonHaze"
@@ -242,6 +342,43 @@ export function ReviewStep({
                   </Text>
                 </View>
               </Row>
+
+              {/* Detailed Condition Ratings */}
+              <Column
+                gap="$2"
+                marginTop="$2"
+                backgroundColor="$gray100"
+                borderRadius="$lg"
+                padding="$3"
+              >
+                <Text size="$3" fontWeight="600" color="$slateSmoke">
+                  Condition Breakdown
+                </Text>
+                <Row justifyContent="space-between">
+                  <Text size="$3" color="$slateSmoke">
+                    Grip
+                  </Text>
+                  <Text size="$3" fontWeight="600" color="$ironstone">
+                    {formData.gripCondition}/10 ({getConditionLabel(formData.gripCondition)})
+                  </Text>
+                </Row>
+                <Row justifyContent="space-between">
+                  <Text size="$3" color="$slateSmoke">
+                    Head
+                  </Text>
+                  <Text size="$3" fontWeight="600" color="$ironstone">
+                    {formData.headCondition}/10 ({getConditionLabel(formData.headCondition)})
+                  </Text>
+                </Row>
+                <Row justifyContent="space-between">
+                  <Text size="$3" color="$slateSmoke">
+                    Shaft
+                  </Text>
+                  <Text size="$3" fontWeight="600" color="$ironstone">
+                    {formData.shaftCondition}/10 ({getConditionLabel(formData.shaftCondition)})
+                  </Text>
+                </Row>
+              </Column>
             </Column>
           </ReviewSection>
 

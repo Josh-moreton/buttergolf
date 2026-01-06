@@ -50,11 +50,21 @@ const initialFormData: SellFormData = {
   images: [],
   categoryId: "",
   categoryName: "",
+  categorySlug: "",
   brandId: "",
   brandName: "",
   modelId: "",
   modelName: "",
-  condition: "GOOD",
+  // Golf-specific fields (conditional)
+  flex: "",
+  loft: "",
+  woodsSubcategory: "",
+  headCoverIncluded: false,
+  // Condition ratings (1-10 scale, default to 7 = Good)
+  gripCondition: 7,
+  headCondition: 7,
+  shaftCondition: 7,
+  // Listing info
   title: "",
   description: "",
   price: "",
@@ -132,11 +142,9 @@ export function SellScreen({
       case 1:
         return formData.images.length > 0;
       case 2:
-        return (
-          formData.categoryId !== "" &&
-          formData.brandId !== "" &&
-          formData.condition !== undefined
-        );
+        // Category and brand are required
+        // Condition sliders have default values so no explicit check needed
+        return formData.categoryId !== "" && formData.brandId !== "";
       case 3:
         return (
           formData.title.trim() !== "" &&

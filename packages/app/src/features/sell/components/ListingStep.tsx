@@ -6,7 +6,11 @@ import { Column, Row, Text, View, Input, ScrollView } from "@buttergolf/ui";
 import { Sparkles, Type, FileText, PoundSterling } from "@tamagui/lucide-icons";
 
 import type { SellFormData } from "../types";
-import { CONDITION_OPTIONS } from "../types";
+import {
+  calculateAverageCondition,
+  mapConditionToEnum,
+  CONDITION_OPTIONS,
+} from "../types";
 
 interface ListingStepProps {
   formData: SellFormData;
@@ -47,13 +51,19 @@ export function ListingStep({
     if (formData.categoryName) {
       parts.push(singularize(formData.categoryName));
     }
-    if (formData.condition) {
-      const conditionLabel = CONDITION_OPTIONS.find(
-        (c) => c.value === formData.condition,
-      )?.label;
-      if (conditionLabel && conditionLabel !== "New") {
-        parts.push(`(${conditionLabel})`);
-      }
+
+    // Calculate overall condition from the 3 ratings and add to title if not "New"
+    const avgCondition = calculateAverageCondition(
+      formData.gripCondition,
+      formData.headCondition,
+      formData.shaftCondition,
+    );
+    const conditionEnum = mapConditionToEnum(avgCondition);
+    const conditionLabel = CONDITION_OPTIONS.find(
+      (c) => c.value === conditionEnum,
+    )?.label;
+    if (conditionLabel && conditionLabel !== "New") {
+      parts.push(`(${conditionLabel})`);
     }
 
     return parts.join(" ");
@@ -61,7 +71,9 @@ export function ListingStep({
     formData.brandName,
     formData.modelName,
     formData.categoryName,
-    formData.condition,
+    formData.gripCondition,
+    formData.headCondition,
+    formData.shaftCondition,
   ]);
 
   // Update title when auto-generated title changes (if title is empty or matches previous auto-generated)
