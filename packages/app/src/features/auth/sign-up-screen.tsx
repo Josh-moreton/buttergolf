@@ -213,33 +213,34 @@ export function SignUpScreen({
       <ScrollView
         contentContainerStyle={{
           paddingTop: insets.top + 24,
-          paddingBottom: insets.bottom + 80,
+          paddingBottom: insets.bottom + 24,
           paddingHorizontal: 16,
           minHeight: "100%",
         }}
       >
         <Column gap="$6" flex={1}>
-          {/* Back Button */}
-          {onNavigateBack && (
-            <TamaguiButton
-              chromeless
-              size="$4"
-              icon={<ArrowLeft size={20} />}
-              color="$primary"
-              alignSelf="flex-start"
-              onPress={onNavigateBack}
-              paddingHorizontal={0}
-            />
-          )}
+          {/* Back Button and Header */}
+          <Column gap="$3">
+            {onNavigateBack && (
+              <TamaguiButton
+                chromeless
+                size="$4"
+                icon={<ArrowLeft size={20} />}
+                color="$primary"
+                alignSelf="flex-start"
+                onPress={onNavigateBack}
+                paddingHorizontal={0}
+              />
+            )}
 
-          {/* Header */}
-          <Column gap="$2">
-            <Heading level={1} size="$8" fontWeight="700" color="$text">
-              Create Account
-            </Heading>
-            <Text size="$5" color="$textSecondary">
-              Join ButterGolf to buy and sell golf gear
-            </Text>
+            <Column gap="$2">
+              <Heading level={1} size="$8" fontWeight="700" color="$text">
+                Create Account
+              </Heading>
+              <Text size="$5" color="$textSecondary">
+                Join ButterGolf to buy and sell golf gear
+              </Text>
+            </Column>
           </Column>
 
           {/* Error Display */}
@@ -352,46 +353,46 @@ export function SignUpScreen({
             />
           </Column>
 
-          {/* Sign Up Button */}
-          <Button
-            butterVariant="primary"
-            size="$5"
-            borderRadius="$full"
-            fontWeight="600"
-            onPress={handleSubmit}
-            disabled={isSubmitting || !isLoaded}
-            opacity={isSubmitting ? 0.7 : 1}
-          >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              "Create Account"
-            )}
-          </Button>
-
-          {/* Sign In Link */}
-          <Row
-            alignItems="center"
-            justifyContent="center"
-            gap="$2"
-            marginTop="$4"
-          >
-            <Text size="$4" color="$textSecondary">
-              Already have an account?
-            </Text>
-            <TamaguiButton
-              chromeless
+          {/* Sign Up Button and Sign In Link */}
+          <Column gap="$3">
+            <Button
+              butterVariant="primary"
               size="$5"
-              color="$primary"
+              borderRadius="$full"
               fontWeight="600"
-              onPress={onNavigateToSignIn}
-              disabled={isSubmitting}
-              paddingVertical="$2"
-              paddingHorizontal="$3"
+              onPress={handleSubmit}
+              disabled={isSubmitting || !isLoaded}
+              opacity={isSubmitting ? 0.7 : 1}
             >
-              Sign In
-            </TamaguiButton>
-          </Row>
+              {isSubmitting ? (
+                <Spinner size="sm" color="$textInverse" />
+              ) : (
+                "Create Account"
+              )}
+            </Button>
+
+            <Row
+              alignItems="center"
+              justifyContent="center"
+              gap="$2"
+            >
+              <Text size="$4" color="$textSecondary">
+                Already have an account?
+              </Text>
+              <TamaguiButton
+                chromeless
+                size="$5"
+                color="$primary"
+                fontWeight="600"
+                onPress={onNavigateToSignIn}
+                disabled={isSubmitting}
+                paddingVertical="$2"
+                paddingHorizontal="$3"
+              >
+                Sign In
+              </TamaguiButton>
+            </Row>
+          </Column>
         </Column>
       </ScrollView>
     </Column>
