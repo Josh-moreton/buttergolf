@@ -29,11 +29,19 @@ export const maxDuration = 300; // 5 minutes max for processing
  * Security: Protected by CRON_SECRET environment variable
  */
 export async function GET(request: NextRequest) {
-  // Verify cron secret for security
+  // Verify cron secret for security (MANDATORY)
   const authHeader = request.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    console.error("CRON_SECRET not configured - refusing to process payments");
+    return NextResponse.json(
+      { error: "Server misconfiguration" },
+      { status: 500 }
+    );
+  }
+
+  if (authHeader !== `Bearer ${cronSecret}`) {
     console.error("Unauthorized cron request - invalid or missing secret");
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -75,9 +83,32 @@ export async function GET(request: NextRequest) {
       error?: string;
     }> = [];
 
-    // Process each order
+    // Process each order with optimistic locking to prevent duplicate transfers
     for (const order of ordersToRelease) {
       try {
+        // Use transaction with optimistic locking - only proceed if order is still HELD
+        // This prevents duplicate transfers if cron runs concurrently
+        const lockedOrder = await prisma.order.updateMany({
+          where: {
+            id: order.id,
+            paymentHoldStatus: "HELD", // Optimistic lock - only update if still HELD
+          },
+          data: {
+            paymentHoldStatus: "RELEASED", // Claim it immediately
+          },
+        });
+
+        if (lockedOrder.count === 0) {
+          // Another process already claimed this order
+          console.log("Order already being processed or released:", order.id);
+          results.push({
+            orderId: order.id,
+            status: "failed",
+            error: "Order already processed by another instance",
+          });
+          continue;
+        }
+
         // Verify seller has Stripe Connect account
         if (!order.seller.stripeConnectId) {
           console.error("Seller missing Stripe Connect ID:", {
@@ -130,11 +161,10 @@ export async function GET(request: NextRequest) {
           },
         });
 
-        // Update order status
+        // Update order with transfer details (status already set to RELEASED by lock)
         await prisma.order.update({
           where: { id: order.id },
           data: {
-            paymentHoldStatus: "RELEASED",
             paymentReleasedAt: new Date(),
             stripeTransferId: transfer.id,
             stripePayoutStatus: "completed",
@@ -173,6 +203,16 @@ export async function GET(request: NextRequest) {
           error:
             orderError instanceof Error ? orderError.message : "Unknown error",
         });
+
+        // Rollback the status if transfer failed (we set RELEASED early for locking)
+        try {
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { paymentHoldStatus: "HELD" },
+          });
+        } catch (rollbackError) {
+          console.error("Failed to rollback order status:", rollbackError);
+        }
 
         results.push({
           orderId: order.id,

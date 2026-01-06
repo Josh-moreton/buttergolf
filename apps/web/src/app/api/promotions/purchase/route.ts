@@ -7,11 +7,11 @@ import { PROMOTION_PRICES, PROMOTION_DURATIONS } from "@/lib/pricing";
 /**
  * POST /api/promotions/purchase
  *
- * Purchase a promotion (Bump or Wardrobe Spotlight) for a product.
+ * Purchase a promotion (Bump or Pro Shop Feature) for a product.
  *
  * Vinted-style seller promotions:
  * - Bump (£0.99): 24-hour visibility boost - item appears higher in search/feed
- * - Wardrobe Spotlight (£4.99): 7-day featured placement for all seller's items
+ * - Pro Shop Feature (£4.99): 7-day featured placement in the pro shop section
  *
  * Flow:
  * 1. Seller selects promotion type and product
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { productId, promotionType } = body as {
       productId: string;
-      promotionType: "BUMP" | "WARDROBE_SPOTLIGHT";
+      promotionType: "BUMP" | "PRO_SHOP_FEATURE";
     };
 
     // Validate inputs
@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!promotionType || !["BUMP", "WARDROBE_SPOTLIGHT"].includes(promotionType)) {
+    if (!promotionType || !["BUMP", "PRO_SHOP_FEATURE"].includes(promotionType)) {
       return NextResponse.json(
-        { error: "Valid promotion type is required (BUMP or WARDROBE_SPOTLIGHT)" },
+        { error: "Valid promotion type is required (BUMP or PRO_SHOP_FEATURE)" },
         { status: 400 }
       );
     }
@@ -177,12 +177,12 @@ export async function GET() {
         durationFormatted: "24 hours",
       },
       {
-        type: "WARDROBE_SPOTLIGHT",
-        name: "Wardrobe Spotlight",
-        description: "7-day featured placement for all your items",
-        price: PROMOTION_PRICES.WARDROBE_SPOTLIGHT / 100,
-        priceFormatted: `£${(PROMOTION_PRICES.WARDROBE_SPOTLIGHT / 100).toFixed(2)}`,
-        durationHours: PROMOTION_DURATIONS.WARDROBE_SPOTLIGHT / (60 * 60 * 1000),
+        type: "PRO_SHOP_FEATURE",
+        name: "Pro Shop Feature",
+        description: "7-day featured placement - your item showcased in the pro shop section",
+        price: PROMOTION_PRICES.PRO_SHOP_FEATURE / 100,
+        priceFormatted: `£${(PROMOTION_PRICES.PRO_SHOP_FEATURE / 100).toFixed(2)}`,
+        durationHours: PROMOTION_DURATIONS.PRO_SHOP_FEATURE / (60 * 60 * 1000),
         durationFormatted: "7 days",
       },
     ],

@@ -37,7 +37,7 @@ export interface Product {
   updatedAt: Date;
 }
 
-export type PromotionType = "BUMP" | "WARDROBE_SPOTLIGHT";
+export type PromotionType = "BUMP" | "PRO_SHOP_FEATURE";
 
 export interface ProductCardData {
   id: string;

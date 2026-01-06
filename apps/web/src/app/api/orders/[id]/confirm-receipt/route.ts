@@ -105,6 +105,38 @@ export async function POST(
       );
     }
 
+    // Verify charge ID exists (required for transfer)
+    if (!order.stripeChargeId) {
+      console.error("Order missing charge ID:", { orderId });
+      return NextResponse.json(
+        { error: "Order payment details incomplete. Please contact support." },
+        { status: 500 }
+      );
+    }
+
+    // Verify the charge hasn't been refunded before transferring
+    try {
+      const charge = await stripe.charges.retrieve(order.stripeChargeId);
+      if (charge.refunded || (charge.amount_refunded && charge.amount_refunded > 0)) {
+        console.error("Cannot transfer - charge has been refunded:", {
+          orderId,
+          chargeId: order.stripeChargeId,
+          refunded: charge.refunded,
+          amountRefunded: charge.amount_refunded,
+        });
+        return NextResponse.json(
+          { error: "This order has been refunded and cannot be confirmed" },
+          { status: 400 }
+        );
+      }
+    } catch (chargeError) {
+      console.error("Failed to verify charge status:", chargeError);
+      return NextResponse.json(
+        { error: "Unable to verify payment status. Please try again." },
+        { status: 500 }
+      );
+    }
+
     console.log("Creating transfer to seller:", {
       orderId,
       sellerId: order.sellerId,

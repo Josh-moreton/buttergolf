@@ -125,7 +125,7 @@ export function ProductCard({
           >
             <Row alignItems="center" gap={4}>
               <Text size="$2" fontWeight="700" color="$textInverse">
-                {product.activePromotion.type === "BUMP" ? "🔥 BOOSTED" : "⭐ FEATURED"}
+                {product.activePromotion.type === "BUMP" ? "🔥 BOOSTED" : "⭐ PRO SHOP"}
               </Text>
             </Row>
           </View>

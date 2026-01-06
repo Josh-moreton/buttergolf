@@ -411,7 +411,7 @@ enum PaymentHoldStatus {
 
 enum PromotionType {
   BUMP
-  WARDROBE_SPOTLIGHT
+  PRO_SHOP_FEATURE
 }
 
 enum PromotionStatus {

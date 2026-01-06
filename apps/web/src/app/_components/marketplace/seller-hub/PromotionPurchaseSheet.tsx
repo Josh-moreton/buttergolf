@@ -24,7 +24,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-type PromotionType = "BUMP" | "WARDROBE_SPOTLIGHT";
+type PromotionType = "BUMP" | "PRO_SHOP_FEATURE";
 
 interface PromotionOption {
   type: PromotionType;
@@ -54,9 +54,9 @@ const PROMOTION_OPTIONS: PromotionOption[] = [
     icon: Zap,
   },
   {
-    type: "WARDROBE_SPOTLIGHT",
-    name: "Wardrobe Spotlight",
-    description: "7-day featured placement for all your items",
+    type: "PRO_SHOP_FEATURE",
+    name: "Pro Shop Feature",
+    description: "7-day featured placement - your item showcased in the pro shop section",
     price: 4.99,
     priceFormatted: "£4.99",
     durationFormatted: "7 days",

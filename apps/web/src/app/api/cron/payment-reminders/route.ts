@@ -31,11 +31,19 @@ const REMINDER_DAYS = [7, 3, 1];
  * Security: Protected by CRON_SECRET environment variable
  */
 export async function GET(request: NextRequest) {
-  // Verify cron secret for security
+  // Verify cron secret for security (MANDATORY)
   const authHeader = request.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    console.error("CRON_SECRET not configured - refusing to send reminders");
+    return NextResponse.json(
+      { error: "Server misconfiguration" },
+      { status: 500 }
+    );
+  }
+
+  if (authHeader !== `Bearer ${cronSecret}`) {
     console.error("Unauthorized cron request - invalid or missing secret");
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

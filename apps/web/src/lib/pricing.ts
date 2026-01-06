@@ -21,13 +21,13 @@ export const AUTO_RELEASE_DAYS = 14; // Days after delivery before auto-release
 // Promotion prices (in pence)
 export const PROMOTION_PRICES = {
   BUMP: 99, // £0.99
-  WARDROBE_SPOTLIGHT: 499, // £4.99
+  PRO_SHOP_FEATURE: 499, // £4.99
 } as const;
 
 // Promotion durations (in milliseconds)
 export const PROMOTION_DURATIONS = {
   BUMP: 24 * 60 * 60 * 1000, // 24 hours
-  WARDROBE_SPOTLIGHT: 7 * 24 * 60 * 60 * 1000, // 7 days
+  PRO_SHOP_FEATURE: 7 * 24 * 60 * 60 * 1000, // 7 days
 } as const;
 
 export interface PricingBreakdown {
@@ -52,7 +52,18 @@ export interface PricingBreakdownInPence {
 
 /**
  * Calculate buyer protection fee in pence
- * Formula: (productPrice * 5%) + £0.70, minimum £0.70
+ *
+ * IMPORTANT: Fee is calculated on PRODUCT PRICE ONLY, not including shipping.
+ * This is consistent across both checkout flows:
+ * - EmbeddedCheckout: Protection fee calculated before shipping is known
+ * - PaymentElement: Protection fee calculated with known shipping but excludes it
+ *
+ * This design decision ensures:
+ * 1. Fee is predictable for buyers regardless of shipping option chosen
+ * 2. Sellers aren't penalized for higher shipping costs
+ * 3. Calculation matches what's shown to buyers before checkout
+ *
+ * Formula: (productPrice × 5%) + £0.70, minimum £0.70
  */
 export function calculateBuyerProtectionFeeInPence(
   productPriceInPence: number

@@ -10,7 +10,6 @@ import {
   sendPaymentOnHoldEmail,
 } from "@/lib/email";
 import { generateShippingLabel } from "@/lib/shipengine";
-import { calculateAutoReleaseDate } from "@/lib/pricing";
 
 // Disable body parsing for webhook
 export const runtime = "nodejs";
@@ -326,10 +325,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.warn("Could not retrieve charge ID from payment intent");
   }
 
-  // Calculate auto-release date (14 days from now, will be updated when delivered)
-  const autoReleaseAt = calculateAutoReleaseDate();
+  // autoReleaseAt starts as null - will be set to 14 days after delivery
+  // when shipmentStatus changes to DELIVERED
+  const autoReleaseAt = null;
 
   // Create the order with HELD status (escrow-style)
+  // Note: paymentHoldStatus is explicitly set to HELD even though the schema has this as default.
+  // This is intentional for code clarity - makes the escrow intent obvious without needing
+  // to check the schema. The default serves as a safety net for any edge cases.
   const order = await prisma.order.create({
     data: {
       stripePaymentId: paymentIntentId,
@@ -342,7 +345,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       stripePlatformFee: buyerProtectionFee, // For backwards compatibility
       stripeSellerPayout: sellerPayout,
       stripePayoutStatus: "pending",
-      // Payment hold (escrow) - seller paid after buyer confirms
+      // Payment hold (escrow) - explicitly set for clarity (schema default is also HELD)
       paymentHoldStatus: "HELD",
       paymentHeldAt: new Date(),
       autoReleaseAt,
@@ -450,7 +453,7 @@ async function sendOrderEmails(
   },
   shippingDetails: { address?: { city?: string; postal_code?: string } },
   sellerPayout: number,
-  autoReleaseAt: Date,
+  autoReleaseAt: Date | null,
 ) {
   const buyerName = `${buyer.firstName} ${buyer.lastName}`.trim() || buyer.email;
   const sellerName = `${product.user.firstName} ${product.user.lastName}`.trim() || product.user.email;
@@ -517,19 +520,22 @@ async function sendOrderEmails(
   }
 
   // Send buyer protection / payment on hold email to buyer
-  // This explains how their payment is protected until they confirm receipt
-  try {
-    await sendPaymentOnHoldEmail({
-      buyerEmail: buyer.email,
-      buyerName,
-      orderId,
-      productTitle: product.title,
-      autoReleaseDate: autoReleaseAt,
-    });
-    console.log("✅ Payment on-hold email sent to buyer:", buyer.email);
-  } catch (holdEmailError) {
-    // Log but don't fail - this is a secondary email
-    console.error("Failed to send payment on-hold email:", holdEmailError);
+  // Only send if autoReleaseAt is set (meaning item has been delivered)
+  // For now, we skip this email at checkout since the countdown hasn't started
+  if (autoReleaseAt) {
+    try {
+      await sendPaymentOnHoldEmail({
+        buyerEmail: buyer.email,
+        buyerName,
+        orderId,
+        productTitle: product.title,
+        autoReleaseDate: autoReleaseAt,
+      });
+      console.log("✅ Payment on-hold email sent to buyer:", buyer.email);
+    } catch (holdEmailError) {
+      // Log but don't fail - this is a secondary email
+      console.error("Failed to send payment on-hold email:", holdEmailError);
+    }
   }
 }
 
@@ -571,16 +577,38 @@ async function handlePromotionPayment(paymentIntent: Stripe.PaymentIntent) {
     return;
   }
 
-  // Find the pending promotion
-  const promotion = await prisma.productPromotion.findFirst({
-    where: {
-      stripePaymentId: paymentIntent.id,
-      status: "PENDING",
-    },
-  });
+  // Find the pending promotion with retry logic
+  // The webhook may fire before the POST handler creates the promotion record
+  const maxAttempts = 5;
+  const baseDelayMs = 200;
+  let promotion: Awaited<ReturnType<typeof prisma.productPromotion.findFirst>> | null = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    promotion = await prisma.productPromotion.findFirst({
+      where: {
+        stripePaymentId: paymentIntent.id,
+        status: "PENDING",
+      },
+    });
+
+    if (promotion) {
+      break;
+    }
+
+    if (attempt < maxAttempts) {
+      const delay = baseDelayMs * Math.pow(2, attempt - 1);
+      console.warn("Pending promotion not found, retrying...", {
+        paymentIntentId: paymentIntent.id,
+        attempt,
+        maxAttempts,
+        delayMs: delay,
+      });
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
 
   if (!promotion) {
-    console.error("Pending promotion not found for payment:", paymentIntent.id);
+    console.error("Pending promotion not found after retries:", paymentIntent.id);
     return;
   }
 
@@ -773,8 +801,9 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
       ? paymentIntent.latest_charge
       : paymentIntent.latest_charge?.id || null;
 
-  // Calculate auto-release date (14 days from now, will be updated when delivered)
-  const autoReleaseAt = calculateAutoReleaseDate();
+  // autoReleaseAt starts as null - will be set to 14 days after delivery
+  // when shipmentStatus changes to DELIVERED
+  const autoReleaseAt = null;
 
   // Create the order with HELD status (escrow-style)
   const order = await prisma.order.create({
