@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Platform, Image as RNImage } from "react-native";
+import { Platform, Image as RNImage, Dimensions } from "react-native";
 import {
   Column,
   Row,
@@ -280,18 +280,21 @@ export function Hero({
             {showHeroImage && (HeroSvgComponent || heroImageSource) && (
               <Column
                 width="45%"
-                height="100%"
+                flex={1}
                 justifyContent="flex-end"
-                alignItems="center"
+                alignItems="flex-end"
+                overflow="visible"
               >
                 {HeroSvgComponent ? (
-                  <HeroSvgComponent width="100%" height="90%" />
+                  <HeroSvgComponent width="100%" height="95%" />
                 ) : heroImageSource ? (
                   <RNImage
                     source={heroImageSource as number}
                     style={{
-                      width: 160,
-                      height: minHeight * 0.85,
+                      width: minHeight * 0.95 * 1.68,
+                      height: minHeight * 0.95,
+                      marginRight: -95,
+                      marginBottom: 0,
                     }}
                     resizeMode="contain"
                   />
