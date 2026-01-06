@@ -301,6 +301,31 @@ async function submitListingToApi(
   // Generate a unique request ID for idempotency
   const requestId = `mobile-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
+  const payload = {
+    title: data.title,
+    description: data.description,
+    price: parseFloat(data.price),
+    categoryId: data.categoryId,
+    brandId: data.brandId,
+    modelId: data.modelId || undefined,
+    model: data.modelName || undefined,
+    images: data.images.map((img) => img.uri),
+    // Golf-specific fields
+    flex: data.flex || undefined,
+    loft: data.loft || undefined,
+    woodsSubcategory: data.woodsSubcategory || undefined,
+    headCoverIncluded: data.headCoverIncluded,
+    // Condition ratings (1-10 scale)
+    gripCondition: data.gripCondition,
+    headCondition: data.headCondition,
+    shaftCondition: data.shaftCondition,
+    // Idempotency key
+    requestId,
+  };
+
+  // Debug: log the payload being sent
+  console.log("[Submit Listing] Payload:", JSON.stringify(payload, null, 2));
+
   const response = await fetch(`${apiUrl}/api/products`, {
     method: "POST",
     headers: {
@@ -308,31 +333,12 @@ async function submitListingToApi(
       Accept: "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({
-      title: data.title,
-      description: data.description,
-      price: parseFloat(data.price),
-      categoryId: data.categoryId,
-      brandId: data.brandId,
-      modelId: data.modelId || undefined,
-      model: data.modelName || undefined,
-      images: data.images.map((img) => img.uri),
-      // Golf-specific fields
-      flex: data.flex || undefined,
-      loft: data.loft || undefined,
-      woodsSubcategory: data.woodsSubcategory || undefined,
-      headCoverIncluded: data.headCoverIncluded,
-      // Condition ratings (1-10 scale)
-      gripCondition: data.gripCondition,
-      headCondition: data.headCondition,
-      shaftCondition: data.shaftCondition,
-      // Idempotency key
-      requestId,
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
     const error = await response.text();
+    console.error("[Submit Listing] Error response:", error);
     throw new Error(error || "Failed to create listing");
   }
 
