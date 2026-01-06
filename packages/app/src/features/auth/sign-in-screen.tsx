@@ -10,6 +10,7 @@ import {
   Heading,
   Spinner,
 } from "@buttergolf/ui";
+import { Button as TamaguiButton } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -176,11 +177,11 @@ export function SignInScreen({
         <Column gap="$6" flex={1}>
           {/* Back Button */}
           {onNavigateBack && (
-            <Button
+            <TamaguiButton
               chromeless
               size="$4"
               icon={<ArrowLeft size={20} />}
-              color="$textInverse"
+              color="$primary"
               alignSelf="flex-start"
               onPress={onNavigateBack}
               paddingHorizontal={0}
@@ -225,7 +226,7 @@ export function SignInScreen({
             />
 
             {/* Forgot Password Link */}
-            <Button
+            <TamaguiButton
               chromeless
               size="$4"
               color="$primary"
@@ -237,7 +238,7 @@ export function SignInScreen({
               paddingHorizontal="$2"
             >
               Forgot password?
-            </Button>
+            </TamaguiButton>
           </Column>
 
           {/* Sign In Button */}
@@ -267,7 +268,7 @@ export function SignInScreen({
             <Text size="$4" color="$textSecondary">
               {"Don't have an account?"}
             </Text>
-            <Button
+            <TamaguiButton
               chromeless
               size="$5"
               color="$primary"
@@ -278,7 +279,7 @@ export function SignInScreen({
               paddingHorizontal="$3"
             >
               Sign Up
-            </Button>
+            </TamaguiButton>
           </Row>
         </Column>
       </ScrollView>

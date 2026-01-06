@@ -10,6 +10,7 @@ import {
   Heading,
   Spinner,
 } from "@buttergolf/ui";
+import { Button as TamaguiButton } from "tamagui";
 import { ArrowLeft, ShieldCheck, Smartphone } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -160,11 +161,11 @@ export function TwoFactorScreen({
         <Column gap="$6" flex={1}>
           {/* Back Button */}
           {onNavigateBack && (
-            <Button
+            <TamaguiButton
               chromeless
               size="$4"
               icon={<ArrowLeft size={20} />}
-              color="$textInverse"
+              color="$primary"
               alignSelf="flex-start"
               onPress={onNavigateBack}
               paddingHorizontal={0}
