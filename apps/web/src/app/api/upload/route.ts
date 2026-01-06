@@ -1,6 +1,7 @@
 import { v2 as cloudinary, UploadApiOptions } from "cloudinary";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { verifyToken } from "@clerk/backend";
 
 // Cloudinary configuration
 cloudinary.config({
@@ -9,7 +10,44 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * Get user ID from either Clerk session (web) or Bearer token (mobile).
+ * Mobile apps send Authorization: Bearer <token> header.
+ */
+async function getUserId(request: Request): Promise<string | null> {
+  // First try Clerk's built-in auth (works for web with cookies)
+  const { userId } = await auth();
+  if (userId) {
+    return userId;
+  }
+
+  // If no session, try to verify Bearer token (for mobile apps)
+  const authHeader = request.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.slice(7);
+    try {
+      const payload = await verifyToken(token, {
+        secretKey: process.env.CLERK_SECRET_KEY!,
+      });
+      return payload.sub; // sub is the user ID
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      return null;
+    }
+  }
+
+  return null;
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
+  // Handle CORS for mobile requests
+  const origin = request.headers.get("origin");
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": origin || "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+
   // Check if Cloudinary is configured
   if (
     !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
@@ -24,15 +62,18 @@ export async function POST(request: Request): Promise<NextResponse> {
         details:
           "Required: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET",
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   }
 
-  // Authenticate user
-  const { userId } = await auth();
+  // Authenticate user (supports both web cookies and mobile Bearer token)
+  const userId = await getUserId(request);
 
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401, headers: corsHeaders },
+    );
   }
 
   // Get the file from the request
@@ -60,7 +101,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!contentType || !allowedTypes.includes(contentType)) {
     return NextResponse.json(
       { error: "Invalid file type. Only images are allowed." },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -131,13 +172,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       bytes: result.bytes,
     });
 
-    return NextResponse.json({
-      url: result.secure_url,
-      publicId: result.public_id,
-      width: result.width,
-      height: result.height,
-      format: result.format,
-    });
+    return NextResponse.json(
+      {
+        url: result.secure_url,
+        publicId: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+      },
+      { headers: corsHeaders },
+    );
   } catch (error) {
     console.error("Upload error:", error);
 
@@ -154,7 +198,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             "The image may not be suitable for automatic background removal. Please try a different image or contact support.",
           fallback: "Upload will proceed without background removal",
         },
-        { status: 500 },
+        { status: 500, headers: corsHeaders },
       );
     }
 
@@ -163,7 +207,21 @@ export async function POST(request: Request): Promise<NextResponse> {
         error: "Failed to upload image",
         details: errorMessage,
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   }
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS(request: Request): Promise<NextResponse> {
+  const origin = request.headers.get("origin");
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": origin || "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Max-Age": "86400",
+    },
+  });
 }
