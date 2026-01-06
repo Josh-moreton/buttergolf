@@ -11,6 +11,7 @@ import {
   VerifyEmailScreen,
   ForgotPasswordScreen,
   ResetPasswordScreen,
+  TwoFactorScreen,
 } from "@buttergolf/app";
 import type {
   ProductCardData,
@@ -598,6 +599,7 @@ function OnboardingFlow() {
     | "verifyEmail"
     | "forgotPassword"
     | "resetPassword"
+    | "twoFactor"
     | "loggedOutHome"
   >("onboarding");
   const [resetPasswordEmail, setResetPasswordEmail] = useState<string>("");
@@ -682,6 +684,7 @@ function OnboardingFlow() {
               }}
               onNavigateToSignUp={() => setFlowState("signUp")}
               onNavigateToForgotPassword={() => setFlowState("forgotPassword")}
+              onNavigateToTwoFactor={() => setFlowState("twoFactor")}
               onNavigateBack={() => setFlowState("onboarding")}
             />
           )}
@@ -702,6 +705,23 @@ function OnboardingFlow() {
               }}
               onNavigateToSignIn={() => setFlowState("signIn")}
               onNavigateBack={() => setFlowState("onboarding")}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  if (flowState === "twoFactor") {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="TwoFactor">
+          {() => (
+            <TwoFactorScreen
+              onSuccess={() => {
+                // Auth successful, ClerkProvider handles session
+              }}
+              onNavigateBack={() => setFlowState("signIn")}
             />
           )}
         </Stack.Screen>

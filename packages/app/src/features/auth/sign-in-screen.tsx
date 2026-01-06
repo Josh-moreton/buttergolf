@@ -22,6 +22,7 @@ interface SignInScreenProps {
   onSuccess?: () => void;
   onNavigateToSignUp?: () => void;
   onNavigateToForgotPassword?: () => void;
+  onNavigateToTwoFactor?: () => void;
   onNavigateBack?: () => void;
 }
 
@@ -33,6 +34,7 @@ export function SignInScreen({
   onSuccess,
   onNavigateToSignUp,
   onNavigateToForgotPassword,
+  onNavigateToTwoFactor,
   onNavigateBack,
 }: Readonly<SignInScreenProps>) {
   const insets = useSafeAreaInsets();
@@ -101,10 +103,6 @@ export function SignInScreen({
         password: formData.password,
       });
       console.log("[SignIn] Status:", signInAttempt.status);
-      console.log(
-        "[SignIn] Full response:",
-        JSON.stringify(signInAttempt, null, 2),
-      );
 
       // Check status first - createdSessionId only exists when status is 'complete'
       if (signInAttempt.status === "complete") {
@@ -115,24 +113,15 @@ export function SignInScreen({
         await setActive({ session: signInAttempt.createdSessionId });
         onSuccess?.();
       } else if (signInAttempt.status === "needs_second_factor") {
-        // 2FA is enabled on this account but we don't support it
-        console.log("[SignIn] 2FA detected");
-        console.log(
-          "[SignIn] Available second factors:",
-          signInAttempt.supportedSecondFactors,
-        );
-        console.log("[SignIn] User data:", signInAttempt.userData);
-
-        // Log all available information to help debug
-        if (signInAttempt.supportedSecondFactors) {
-          signInAttempt.supportedSecondFactors.forEach((factor: any) => {
-            console.log("[SignIn] Second factor strategy:", factor.strategy);
-          });
+        // 2FA is enabled - navigate to 2FA screen
+        console.log("[SignIn] 2FA detected, navigating to 2FA screen");
+        if (onNavigateToTwoFactor) {
+          onNavigateToTwoFactor();
+        } else {
+          setError(
+            "Two-factor authentication is required but not configured. Please contact support.",
+          );
         }
-
-        setError(
-          "Two-factor authentication is currently not supported. Please disable 2FA on your account or contact support.",
-        );
       } else if (signInAttempt.status === "needs_first_factor") {
         // Need to provide first factor (shouldn't happen with password flow)
         setError("Authentication requires additional verification.");
