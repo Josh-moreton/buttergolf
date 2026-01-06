@@ -9,6 +9,7 @@ import {
   Heading,
   Spinner,
 } from "@buttergolf/ui";
+import { Button as TamaguiButton } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
 import { AuthFormInput, AuthErrorDisplay } from "./components";
@@ -149,7 +150,7 @@ export function ForgotPasswordScreen({
           </Button>
 
           {/* Back Button */}
-          <Button
+          <TamaguiButton
             chromeless
             size="$4"
             color="$primary"
@@ -161,7 +162,7 @@ export function ForgotPasswordScreen({
             paddingHorizontal="$2"
           >
             Back to Sign In
-          </Button>
+          </TamaguiButton>
         </Column>
       </ScrollView>
     </Column>

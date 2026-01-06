@@ -124,6 +124,21 @@ export function validateFirstName(firstName: string): string | null {
 }
 
 /**
+ * Validates last name
+ */
+export function validateLastName(lastName: string): string | null {
+  if (!lastName.trim()) {
+    return "Last name is required";
+  }
+
+  if (lastName.trim().length < 2) {
+    return "Last name must be at least 2 characters";
+  }
+
+  return null;
+}
+
+/**
  * Validates verification code format
  */
 export function validateVerificationCode(code: string): string | null {
@@ -195,6 +210,7 @@ export function validateSignInForm(
  */
 export function validateSignUpForm(
   firstName: string,
+  lastName: string,
   email: string,
   password: string,
   confirmPassword: string,
@@ -203,6 +219,9 @@ export function validateSignUpForm(
 
   const firstNameError = validateFirstName(firstName);
   if (firstNameError) errors.firstName = firstNameError;
+
+  const lastNameError = validateLastName(lastName);
+  if (lastNameError) errors.lastName = lastNameError;
 
   const emailError = validateEmail(email);
   if (emailError) errors.email = emailError;
