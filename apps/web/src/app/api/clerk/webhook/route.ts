@@ -2,7 +2,22 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { prisma } from "@buttergolf/db";
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import Stripe from "stripe";
+
+let stripeClient: Stripe | null = null;
+
+function getStripeClient(): Stripe | null {
+  if (stripeClient) return stripeClient;
+
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) return null;
+
+  stripeClient = new Stripe(secretKey, {
+    apiVersion: "2025-10-29.clover",
+  });
+
+  return stripeClient;
+}
 
 type WebhookEvent = {
   type: string;
@@ -114,7 +129,14 @@ export async function POST(req: Request) {
         if (user.stripeConnectId) {
           console.log(`[Clerk Webhook] Attempting to delete Stripe account: ${user.stripeConnectId}`);
           try {
-            await stripe.accounts.del(user.stripeConnectId);
+            const stripe = getStripeClient();
+            if (!stripe) {
+              console.warn(
+                "[Clerk Webhook] STRIPE_SECRET_KEY is not set; skipping Stripe Connect account deletion",
+              );
+            } else {
+              await stripe.accounts.del(user.stripeConnectId);
+            }
             console.log(
               `[Clerk Webhook] Successfully deleted Stripe Connect account ${user.stripeConnectId}`,
             );
