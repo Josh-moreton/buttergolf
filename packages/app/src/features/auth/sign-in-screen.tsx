@@ -10,6 +10,7 @@ import {
   Heading,
   Spinner,
 } from "@buttergolf/ui";
+import { Button as TamaguiButton } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -21,6 +22,7 @@ interface SignInScreenProps {
   onSuccess?: () => void;
   onNavigateToSignUp?: () => void;
   onNavigateToForgotPassword?: () => void;
+  onNavigateToTwoFactor?: () => void;
   onNavigateBack?: () => void;
 }
 
@@ -32,6 +34,7 @@ export function SignInScreen({
   onSuccess,
   onNavigateToSignUp,
   onNavigateToForgotPassword,
+  onNavigateToTwoFactor,
   onNavigateBack,
 }: Readonly<SignInScreenProps>) {
   const insets = useSafeAreaInsets();
@@ -100,10 +103,6 @@ export function SignInScreen({
         password: formData.password,
       });
       console.log("[SignIn] Status:", signInAttempt.status);
-      console.log(
-        "[SignIn] Full response:",
-        JSON.stringify(signInAttempt, null, 2),
-      );
 
       // Check status first - createdSessionId only exists when status is 'complete'
       if (signInAttempt.status === "complete") {
@@ -114,24 +113,15 @@ export function SignInScreen({
         await setActive({ session: signInAttempt.createdSessionId });
         onSuccess?.();
       } else if (signInAttempt.status === "needs_second_factor") {
-        // 2FA is enabled on this account but we don't support it
-        console.log("[SignIn] 2FA detected");
-        console.log(
-          "[SignIn] Available second factors:",
-          signInAttempt.supportedSecondFactors,
-        );
-        console.log("[SignIn] User data:", signInAttempt.userData);
-
-        // Log all available information to help debug
-        if (signInAttempt.supportedSecondFactors) {
-          signInAttempt.supportedSecondFactors.forEach((factor: any) => {
-            console.log("[SignIn] Second factor strategy:", factor.strategy);
-          });
+        // 2FA is enabled - navigate to 2FA screen
+        console.log("[SignIn] 2FA detected, navigating to 2FA screen");
+        if (onNavigateToTwoFactor) {
+          onNavigateToTwoFactor();
+        } else {
+          setError(
+            "Two-factor authentication is required but not configured. Please contact support.",
+          );
         }
-
-        setError(
-          "Two-factor authentication is currently not supported. Please disable 2FA on your account or contact support.",
-        );
       } else if (signInAttempt.status === "needs_first_factor") {
         // Need to provide first factor (shouldn't happen with password flow)
         setError("Authentication requires additional verification.");
@@ -176,11 +166,11 @@ export function SignInScreen({
         <Column gap="$6" flex={1}>
           {/* Back Button */}
           {onNavigateBack && (
-            <Button
+            <TamaguiButton
               chromeless
               size="$4"
               icon={<ArrowLeft size={20} />}
-              color="$text"
+              color="$primary"
               alignSelf="flex-start"
               onPress={onNavigateBack}
               paddingHorizontal={0}
@@ -212,6 +202,8 @@ export function SignInScreen({
               keyboardType="email-address"
               error={fieldErrors.email}
               editable={!isSubmitting}
+              textContentType="emailAddress"
+              autoComplete="email"
             />
 
             <AuthFormInput
@@ -222,10 +214,12 @@ export function SignInScreen({
               secureTextEntry
               error={fieldErrors.password}
               editable={!isSubmitting}
+              textContentType="password"
+              autoComplete="password"
             />
 
             {/* Forgot Password Link */}
-            <Button
+            <TamaguiButton
               chromeless
               size="$4"
               color="$primary"
@@ -237,7 +231,7 @@ export function SignInScreen({
               paddingHorizontal="$2"
             >
               Forgot password?
-            </Button>
+            </TamaguiButton>
           </Column>
 
           {/* Sign In Button */}
@@ -267,18 +261,18 @@ export function SignInScreen({
             <Text size="$4" color="$textSecondary">
               {"Don't have an account?"}
             </Text>
-            <Button
+            <TamaguiButton
               chromeless
-              size="$4"
+              size="$5"
               color="$primary"
               fontWeight="600"
               onPress={onNavigateToSignUp}
               disabled={isSubmitting}
-              paddingVertical={0}
-              paddingHorizontal="$2"
+              paddingVertical="$2"
+              paddingHorizontal="$3"
             >
               Sign Up
-            </Button>
+            </TamaguiButton>
           </Row>
         </Column>
       </ScrollView>

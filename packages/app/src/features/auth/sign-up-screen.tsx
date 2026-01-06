@@ -10,6 +10,7 @@ import {
   Heading,
   Spinner,
 } from "@buttergolf/ui";
+import { Button as TamaguiButton } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignUp } from "@clerk/clerk-expo";
@@ -41,6 +42,7 @@ export function SignUpScreen({
 
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -84,6 +86,20 @@ export function SignUpScreen({
     [fieldErrors],
   );
 
+  const handleLastNameChange = useCallback(
+    (lastName: string) => {
+      setFormData((prev) => ({ ...prev, lastName }));
+      if (fieldErrors.lastName) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.lastName;
+          return next;
+        });
+      }
+    },
+    [fieldErrors],
+  );
+
   const handleEmailChange = useCallback(
     (email: string) => {
       setFormData((prev) => ({ ...prev, email }));
@@ -118,6 +134,7 @@ export function SignUpScreen({
     // Validate form
     const validation = validateSignUpForm(
       formData.firstName,
+      formData.lastName,
       formData.email,
       formData.password,
       formData.confirmPassword,
@@ -141,6 +158,7 @@ export function SignUpScreen({
         emailAddress: formData.email,
         password: formData.password,
         firstName: formData.firstName,
+        lastName: formData.lastName,
       });
 
       // Prepare email verification
@@ -195,33 +213,34 @@ export function SignUpScreen({
       <ScrollView
         contentContainerStyle={{
           paddingTop: insets.top + 24,
-          paddingBottom: insets.bottom + 80,
+          paddingBottom: insets.bottom + 24,
           paddingHorizontal: 16,
           minHeight: "100%",
         }}
       >
         <Column gap="$6" flex={1}>
-          {/* Back Button */}
-          {onNavigateBack && (
-            <Button
-              chromeless
-              size="$4"
-              icon={<ArrowLeft size={20} />}
-              color="$text"
-              alignSelf="flex-start"
-              onPress={onNavigateBack}
-              paddingHorizontal={0}
-            />
-          )}
+          {/* Back Button and Header */}
+          <Column gap="$3">
+            {onNavigateBack && (
+              <TamaguiButton
+                chromeless
+                size="$4"
+                icon={<ArrowLeft size={20} />}
+                color="$primary"
+                alignSelf="flex-start"
+                onPress={onNavigateBack}
+                paddingHorizontal={0}
+              />
+            )}
 
-          {/* Header */}
-          <Column gap="$2">
-            <Heading level={1} size="$8" fontWeight="700" color="$text">
-              Create Account
-            </Heading>
-            <Text size="$5" color="$textSecondary">
-              Join ButterGolf to buy and sell golf gear
-            </Text>
+            <Column gap="$2">
+              <Heading level={1} size="$8" fontWeight="700" color="$text">
+                Create Account
+              </Heading>
+              <Text size="$5" color="$textSecondary">
+                Join ButterGolf to buy and sell golf gear
+              </Text>
+            </Column>
           </Column>
 
           {/* Error Display */}
@@ -236,8 +255,23 @@ export function SignUpScreen({
               value={formData.firstName}
               onChangeText={handleFirstNameChange}
               placeholder="John"
+              autoCapitalize="words"
               error={fieldErrors.firstName}
               editable={!isSubmitting}
+              textContentType="givenName"
+              autoComplete="name-given"
+            />
+
+            <AuthFormInput
+              label="Last Name"
+              value={formData.lastName}
+              onChangeText={handleLastNameChange}
+              placeholder="Smith"
+              autoCapitalize="words"
+              error={fieldErrors.lastName}
+              editable={!isSubmitting}
+              textContentType="familyName"
+              autoComplete="name-family"
             />
 
             <AuthFormInput
@@ -249,6 +283,7 @@ export function SignUpScreen({
               error={fieldErrors.email}
               editable={!isSubmitting}
               textContentType="emailAddress"
+              autoComplete="email"
             />
 
             <Column gap="$2">
@@ -261,6 +296,7 @@ export function SignUpScreen({
                 error={fieldErrors.password}
                 editable={!isSubmitting}
                 textContentType="newPassword"
+                autoComplete="password-new"
               />
 
               {/* Password Strength Indicator */}
@@ -312,49 +348,51 @@ export function SignUpScreen({
               secureTextEntry
               error={fieldErrors.confirmPassword}
               editable={!isSubmitting}
+              textContentType="newPassword"
+              autoComplete="password-new"
             />
           </Column>
 
-          {/* Sign Up Button */}
-          <Button
-            butterVariant="primary"
-            size="$5"
-            borderRadius="$full"
-            fontWeight="600"
-            onPress={handleSubmit}
-            disabled={isSubmitting || !isLoaded}
-            opacity={isSubmitting ? 0.7 : 1}
-          >
-            {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
-            ) : (
-              "Create Account"
-            )}
-          </Button>
-
-          {/* Sign In Link */}
-          <Row
-            alignItems="center"
-            justifyContent="center"
-            gap="$2"
-            marginTop="$4"
-          >
-            <Text size="$4" color="$textSecondary">
-              Already have an account?
-            </Text>
+          {/* Sign Up Button and Sign In Link */}
+          <Column gap="$3">
             <Button
-              chromeless
-              size="$4"
-              color="$primary"
+              butterVariant="primary"
+              size="$5"
+              borderRadius="$full"
               fontWeight="600"
-              onPress={onNavigateToSignIn}
-              disabled={isSubmitting}
-              paddingVertical={0}
-              paddingHorizontal="$2"
+              onPress={handleSubmit}
+              disabled={isSubmitting || !isLoaded}
+              opacity={isSubmitting ? 0.7 : 1}
             >
-              Sign In
+              {isSubmitting ? (
+                <Spinner size="sm" color="$textInverse" />
+              ) : (
+                "Create Account"
+              )}
             </Button>
-          </Row>
+
+            <Row
+              alignItems="center"
+              justifyContent="center"
+              gap="$2"
+            >
+              <Text size="$4" color="$textSecondary">
+                Already have an account?
+              </Text>
+              <TamaguiButton
+                chromeless
+                size="$5"
+                color="$primary"
+                fontWeight="600"
+                onPress={onNavigateToSignIn}
+                disabled={isSubmitting}
+                paddingVertical="$2"
+                paddingHorizontal="$3"
+              >
+                Sign In
+              </TamaguiButton>
+            </Row>
+          </Column>
         </Column>
       </ScrollView>
     </Column>
