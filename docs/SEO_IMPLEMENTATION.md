@@ -90,7 +90,7 @@ export default function MyPage() {
 
 Requirements:
 
-1. Update `YOUR_TEAM_ID` with actual Apple Team ID
+1. Ensure Apple Team ID is correct (now `7T43258YPH`)
 2. File must be accessible at `https://buttergolf.com/.well-known/apple-app-site-association`
 3. iOS app must include `associatedDomains` in `app.json`
 

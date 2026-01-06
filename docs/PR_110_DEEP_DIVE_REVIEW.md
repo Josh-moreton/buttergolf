@@ -191,13 +191,13 @@ The configuration is **correct and comprehensive**:
     "apps": [],
     "details": [
       {
-        "appID": "YOUR_TEAM_ID.com.buttergolf.app",
+        "appID": "7T43258YPH.com.buttergolf.app",
         "paths": ["/products/*", "/sell", "/rounds", "/"]
       }
     ]
   },
   "webcredentials": {
-    "apps": ["YOUR_TEAM_ID.com.buttergolf.app"]
+    "apps": ["7T43258YPH.com.buttergolf.app"]
   }
 }
 ```
@@ -879,7 +879,7 @@ The `.well-known` files include app identifiers:
 
 ```json
 "package_name": "com.buttergolf.app"  // Public info, acceptable
-"appID": "YOUR_TEAM_ID.com.buttergolf.app"  // Team ID is semi-public
+"appID": "7T43258YPH.com.buttergolf.app"  // Team ID is semi-public
 ```
 
 **Assessment:** ✅ This is standard practice and required for functionality

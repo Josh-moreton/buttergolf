@@ -150,13 +150,13 @@ Sitemap: https://buttergolf.com/server-sitemap.xml
     "apps": [],
     "details": [
       {
-        "appID": "YOUR_TEAM_ID.com.buttergolf.app",
+        "appID": "7T43258YPH.com.buttergolf.app",
         "paths": ["/products/*", "/sell", "/rounds", "/"]
       }
     ]
   },
   "webcredentials": {
-    "apps": ["YOUR_TEAM_ID.com.buttergolf.app"]
+    "apps": ["7T43258YPH.com.buttergolf.app"]
   }
 }
 ```
