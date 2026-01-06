@@ -455,33 +455,62 @@ async function uploadImageToCloudinary(
     const clerkAuthReason = uploadResponse.headers.get("x-clerk-auth-reason");
     const matchedPath = uploadResponse.headers.get("x-matched-path");
 
-    let errorMessage = "";
+    let errorMessage = `Upload failed: ${uploadResponse.status}`;
+    let errorBodyText: string | undefined;
 
-    if (responseContentType.includes("application/json")) {
-      const errorData = await uploadResponse.json().catch(() => null);
-      if (typeof errorData?.error === "string") {
-        errorMessage = errorData.error;
-      } else if (errorData) {
-        errorMessage = JSON.stringify(errorData).slice(0, 300);
+    try {
+      const errorData: unknown = await uploadResponse.json();
+      if (errorData && typeof errorData === "object") {
+        const possibleError =
+          (errorData as { error?: unknown }).error ??
+          (errorData as { message?: unknown }).message;
+
+        if (typeof possibleError === "string" && possibleError.trim().length > 0) {
+          errorMessage = possibleError;
+        } else {
+          try {
+            errorBodyText = JSON.stringify(errorData);
+          } catch {
+            // ignore JSON stringify errors
+          }
+        }
       }
-    } else {
-      const errorText = await uploadResponse.text().catch(() => "");
-      errorMessage = errorText.slice(0, 300);
+    } catch {
+      try {
+        errorBodyText = await uploadResponse.text();
+      } catch {
+        // ignore secondary errors when reading response text
+      }
     }
 
-    console.error("Photo upload failed", {
-      uploadUrl,
-      status: uploadResponse.status,
-      responseContentType,
-      clerkAuthReason,
-      matchedPath,
-      errorMessage,
-    });
+    if (errorBodyText) {
+      console.error("Photo upload failed with non-JSON response", {
+        uploadUrl,
+        status: uploadResponse.status,
+        statusText: uploadResponse.statusText,
+        responseContentType,
+        clerkAuthReason,
+        matchedPath,
+        body: errorBodyText.slice(0, 1000),
+      });
+
+      const snippet = errorBodyText.trim().slice(0, 200);
+      if (snippet.length > 0) {
+        errorMessage = `${errorMessage} - ${snippet}`;
+      }
+    } else {
+      console.error("Photo upload failed", {
+        uploadUrl,
+        status: uploadResponse.status,
+        statusText: uploadResponse.statusText,
+        responseContentType,
+        clerkAuthReason,
+        matchedPath,
+      });
+    }
 
     const headerHint = clerkAuthReason ? ` (${clerkAuthReason})` : "";
-    throw new Error(
-      errorMessage || `Upload failed: ${uploadResponse.status}${headerHint}`,
-    );
+    throw new Error(`${errorMessage}${headerHint}`);
   }
 
   const result = await uploadResponse.json();
