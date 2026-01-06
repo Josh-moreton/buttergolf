@@ -4,7 +4,6 @@ import React, { useState, useCallback } from "react";
 import { Column, Row, Text, Button, View } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ArrowLeft, X } from "@tamagui/lucide-icons";
-import { AnimatePresence } from "tamagui";
 
 import type {
   SellFormData,
@@ -50,11 +49,21 @@ const initialFormData: SellFormData = {
   images: [],
   categoryId: "",
   categoryName: "",
+  categorySlug: "",
   brandId: "",
   brandName: "",
   modelId: "",
   modelName: "",
-  condition: "GOOD",
+  // Golf-specific fields (conditional)
+  flex: "",
+  loft: "",
+  woodsSubcategory: "",
+  headCoverIncluded: false,
+  // Condition ratings (1-10 scale, default to 7 = Good)
+  gripCondition: 7,
+  headCondition: 7,
+  shaftCondition: 7,
+  // Listing info
   title: "",
   description: "",
   price: "",
@@ -132,11 +141,9 @@ export function SellScreen({
       case 1:
         return formData.images.length > 0;
       case 2:
-        return (
-          formData.categoryId !== "" &&
-          formData.brandId !== "" &&
-          formData.condition !== undefined
-        );
+        // Category and brand are required
+        // Condition sliders have default values so no explicit check needed
+        return formData.categoryId !== "" && formData.brandId !== "";
       case 3:
         return (
           formData.title.trim() !== "" &&
@@ -228,49 +235,47 @@ export function SellScreen({
 
       {/* Step Content */}
       <Column flex={1}>
-        <AnimatePresence>
-          {currentStep === 1 && (
-            <PhotoStep
-              key="photo"
-              images={formData.images}
-              onImagesChange={(images) => updateFormData({ images })}
-              onUploadImage={onUploadImage}
-              onPickImages={onPickImages}
-              onTakePhoto={onTakePhoto}
-              direction={direction}
-            />
-          )}
-          {currentStep === 2 && (
-            <DetailsStep
-              key="details"
-              formData={formData}
-              onUpdate={updateFormData}
-              onFetchCategories={onFetchCategories}
-              onSearchBrands={onSearchBrands}
-              onSearchModels={onSearchModels}
-              direction={direction}
-            />
-          )}
-          {currentStep === 3 && (
-            <ListingStep
-              key="listing"
-              formData={formData}
-              onUpdate={updateFormData}
-              direction={direction}
-            />
-          )}
-          {currentStep === 4 && (
-            <ReviewStep
-              key="review"
-              formData={formData}
-              onEdit={(step) => {
-                setDirection("backward");
-                setCurrentStep(step);
-              }}
-              direction={direction}
-            />
-          )}
-        </AnimatePresence>
+        {currentStep === 1 && (
+          <PhotoStep
+            key="photo"
+            images={formData.images}
+            onImagesChange={(images) => updateFormData({ images })}
+            onUploadImage={onUploadImage}
+            onPickImages={onPickImages}
+            onTakePhoto={onTakePhoto}
+            direction={direction}
+          />
+        )}
+        {currentStep === 2 && (
+          <DetailsStep
+            key="details"
+            formData={formData}
+            onUpdate={updateFormData}
+            onFetchCategories={onFetchCategories}
+            onSearchBrands={onSearchBrands}
+            onSearchModels={onSearchModels}
+            direction={direction}
+          />
+        )}
+        {currentStep === 3 && (
+          <ListingStep
+            key="listing"
+            formData={formData}
+            onUpdate={updateFormData}
+            direction={direction}
+          />
+        )}
+        {currentStep === 4 && (
+          <ReviewStep
+            key="review"
+            formData={formData}
+            onEdit={(step) => {
+              setDirection("backward");
+              setCurrentStep(step);
+            }}
+            direction={direction}
+          />
+        )}
       </Column>
 
       {/* Bottom Action Bar */}

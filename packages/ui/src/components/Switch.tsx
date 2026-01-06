@@ -26,11 +26,11 @@ import { Switch as TamaguiSwitch, styled, GetProps, Label, XStack } from "tamagu
 // Styled Switch frame with brand colours and proper sizing
 const SwitchFrame = styled(TamaguiSwitch, {
   name: "Switch",
-  backgroundColor: "$border",
-  borderRadius: "$full",
-  width: 44,
-  height: 24,
-  padding: 2,
+  backgroundColor: "$cloudMist",
+  borderRadius: 999,
+  width: 52,
+  height: 32,
+  padding: 3,
 
   variants: {
     checked: {
@@ -44,21 +44,16 @@ const SwitchFrame = styled(TamaguiSwitch, {
 // Styled Switch thumb with brand colours and proper positioning
 const SwitchThumb = styled(TamaguiSwitch.Thumb, {
   name: "SwitchThumb",
-  backgroundColor: "$surface",
-  borderRadius: "$full",
-  width: 20,
-  height: 20,
-  borderWidth: 1,
-  borderColor: "$border",
+  backgroundColor: "$pureWhite",
+  borderRadius: 999,
+  width: 26,
+  height: 26,
   // Ensure thumb shadows for depth
-  shadowColor: "$shadowColor",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.15,
-  shadowRadius: 2,
-
-  hoverStyle: {
-    borderColor: "$primary",
-  },
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  elevation: 3,
 });
 
 // Main Switch component as compound component

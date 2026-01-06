@@ -10,6 +10,8 @@ import {
   Input,
   ScrollView,
   Spinner,
+  Slider,
+  Switch,
 } from "@buttergolf/ui";
 import {
   ChevronDown,
@@ -19,17 +21,19 @@ import {
   Tag,
   Award,
   Layers,
-  Star,
+  Gauge,
+  CircleDot,
+  Crosshair,
 } from "@tamagui/lucide-icons";
 
-import type {
-  SellFormData,
-  Category,
-  Brand,
-  Model,
-  ProductCondition,
+import type { SellFormData, Category, Brand, Model } from "../types";
+import {
+  FLEX_OPTIONS,
+  LOFT_OPTIONS_WOODS,
+  LOFT_OPTIONS_WEDGES,
+  WOODS_SUBCATEGORIES,
+  getConditionLabel,
 } from "../types";
-import { CONDITION_OPTIONS } from "../types";
 
 interface DetailsStepProps {
   formData: SellFormData;
@@ -40,7 +44,14 @@ interface DetailsStepProps {
   direction: "forward" | "backward";
 }
 
-type ActivePicker = "category" | "brand" | "model" | "condition" | null;
+type ActivePicker =
+  | "category"
+  | "brand"
+  | "model"
+  | "flex"
+  | "loft"
+  | "woodsSubcategory"
+  | null;
 
 export function DetailsStep({
   formData,
@@ -96,6 +107,36 @@ export function DetailsStep({
     }
   }, [activePicker, formData.brandId, searchQuery, onSearchModels]);
 
+  // ============================================================================
+  // Conditional field logic - based on category slug
+  // ============================================================================
+
+  const shouldShowFlex = (): boolean => {
+    return formData.categorySlug === "woods" || formData.categorySlug === "irons";
+  };
+
+  const shouldShowLoft = (): boolean => {
+    return formData.categorySlug === "woods" || formData.categorySlug === "wedges";
+  };
+
+  const getLoftOptions = () => {
+    return formData.categorySlug === "wedges"
+      ? LOFT_OPTIONS_WEDGES
+      : LOFT_OPTIONS_WOODS;
+  };
+
+  const shouldShowWoodsSubcategory = (): boolean => {
+    return formData.categorySlug === "woods";
+  };
+
+  const shouldShowHeadCover = (): boolean => {
+    return formData.categorySlug === "woods" || formData.categorySlug === "putters";
+  };
+
+  // ============================================================================
+  // Picker handlers
+  // ============================================================================
+
   const openPicker = useCallback((picker: ActivePicker) => {
     Keyboard.dismiss();
     setSearchQuery("");
@@ -112,6 +153,12 @@ export function DetailsStep({
       onUpdate({
         categoryId: category.id,
         categoryName: category.name,
+        categorySlug: category.slug,
+        // Reset conditional fields when category changes
+        flex: "",
+        loft: "",
+        woodsSubcategory: "",
+        headCoverIncluded: false,
       });
       closePicker();
     },
@@ -142,9 +189,25 @@ export function DetailsStep({
     [onUpdate, closePicker],
   );
 
-  const selectCondition = useCallback(
-    (condition: ProductCondition) => {
-      onUpdate({ condition });
+  const selectFlex = useCallback(
+    (flex: string) => {
+      onUpdate({ flex });
+      closePicker();
+    },
+    [onUpdate, closePicker],
+  );
+
+  const selectLoft = useCallback(
+    (loft: string) => {
+      onUpdate({ loft });
+      closePicker();
+    },
+    [onUpdate, closePicker],
+  );
+
+  const selectWoodsSubcategory = useCallback(
+    (subcategory: string) => {
+      onUpdate({ woodsSubcategory: subcategory });
       closePicker();
     },
     [onUpdate, closePicker],
@@ -159,8 +222,12 @@ export function DetailsStep({
         return <Award size={size} color="$slateSmoke" />;
       case "model":
         return <Layers size={size} color="$slateSmoke" />;
-      case "condition":
-        return <Star size={size} color="$slateSmoke" />;
+      case "flex":
+        return <Gauge size={size} color="$slateSmoke" />;
+      case "loft":
+        return <Crosshair size={size} color="$slateSmoke" />;
+      case "woodsSubcategory":
+        return <CircleDot size={size} color="$slateSmoke" />;
       default:
         return null;
     }
@@ -172,15 +239,18 @@ export function DetailsStep({
     placeholder: string,
     pickerType: ActivePicker,
     disabled = false,
+    required = true,
   ) => (
     <Column gap="$2">
       <Row alignItems="center" gap="$1">
         <Text size="$4" fontWeight="600" color="$ironstone">
           {label}
         </Text>
-        <Text size="$4" fontWeight="600" color="$error">
-          *
-        </Text>
+        {required && (
+          <Text size="$4" fontWeight="600" color="$error">
+            *
+          </Text>
+        )}
       </Row>
       <TouchableOpacity
         onPress={() => !disabled && openPicker(pickerType)}
@@ -198,7 +268,7 @@ export function DetailsStep({
           alignItems="center"
           gap="$3"
         >
-          {getFieldIcon(pickerType || "")}
+          {getFieldIcon(pickerType ?? "")}
           <Text
             flex={1}
             color={value ? "$ironstone" : "$slateSmoke"}
@@ -210,6 +280,58 @@ export function DetailsStep({
           <ChevronDown size={20} color="$slateSmoke" />
         </Row>
       </TouchableOpacity>
+    </Column>
+  );
+
+  // ============================================================================
+  // Condition Slider Component
+  // ============================================================================
+
+  const renderConditionSlider = (
+    label: string,
+    value: number,
+    onChange: (val: number) => void,
+  ) => (
+    <Column gap="$2">
+      <Row justifyContent="space-between" alignItems="center">
+        <Text size="$4" fontWeight="600" color="$ironstone">
+          {label}
+        </Text>
+        <Row
+          backgroundColor="$lemonHaze"
+          paddingHorizontal="$3"
+          paddingVertical="$1"
+          borderRadius="$full"
+        >
+          <Text size="$4" fontWeight="600" color="$burntOlive">
+            {value} - {getConditionLabel(value)}
+          </Text>
+        </Row>
+      </Row>
+      <Slider
+        min={1}
+        max={10}
+        step={1}
+        value={[value]}
+        onValueChange={(values) => {
+          if (values[0] !== undefined) {
+            onChange(values[0]);
+          }
+        }}
+      >
+        <Slider.Track>
+          <Slider.TrackActive />
+        </Slider.Track>
+        <Slider.Thumb index={0} />
+      </Slider>
+      <Row justifyContent="space-between" paddingHorizontal="$1">
+        <Text size="$2" color="$slateSmoke">
+          Poor
+        </Text>
+        <Text size="$2" color="$slateSmoke">
+          Like New
+        </Text>
+      </Row>
     </Column>
   );
 
@@ -244,14 +366,34 @@ export function DetailsStep({
         showSearch = true;
         selectedId = formData.modelId;
         break;
-      case "condition":
-        title = "Condition";
-        items = CONDITION_OPTIONS.map((c) => ({
-          id: c.value,
-          name: c.label,
+      case "flex":
+        title = "Shaft Flex";
+        items = FLEX_OPTIONS.filter((f) => f.value !== "").map((f) => ({
+          id: f.value,
+          name: f.label,
         }));
-        onSelect = (item) => selectCondition(item.id as ProductCondition);
-        selectedId = formData.condition;
+        onSelect = (item) => selectFlex(item.id);
+        selectedId = formData.flex;
+        break;
+      case "loft":
+        title = "Loft";
+        items = getLoftOptions()
+          .filter((l) => l.value !== "")
+          .map((l) => ({
+            id: l.value,
+            name: l.label,
+          }));
+        onSelect = (item) => selectLoft(item.id);
+        selectedId = formData.loft;
+        break;
+      case "woodsSubcategory":
+        title = "Wood Type";
+        items = WOODS_SUBCATEGORIES.map((s) => ({
+          id: s.value,
+          name: s.label,
+        }));
+        onSelect = (item) => selectWoodsSubcategory(item.id);
+        selectedId = formData.woodsSubcategory;
         break;
     }
 
@@ -344,11 +486,11 @@ export function DetailsStep({
         {/* Items List */}
         <ScrollView flex={1} keyboardShouldPersistTaps="handled">
           <Column paddingHorizontal="$4" paddingVertical="$2" gap="$2">
-            {items.map((item) => {
+            {items.map((item, index) => {
               const isSelected = selectedId === item.id;
               return (
                 <TouchableOpacity
-                  key={item.id}
+                  key={`${item.id}-${index}`}
                   onPress={() => onSelect(item)}
                   accessibilityLabel={`Select ${item.name}`}
                 >
@@ -426,6 +568,7 @@ export function DetailsStep({
         flex={1}
         contentContainerStyle={{
           padding: 20,
+          paddingBottom: 40,
         }}
         keyboardShouldPersistTaps="handled"
       >
@@ -446,6 +589,7 @@ export function DetailsStep({
 
         {/* Form Fields */}
         <Column gap="$5">
+          {/* Category */}
           {renderPickerButton(
             "Category",
             formData.categoryName,
@@ -453,6 +597,18 @@ export function DetailsStep({
             "category",
           )}
 
+          {/* Woods Subcategory - Conditional (Woods only) */}
+          {shouldShowWoodsSubcategory() &&
+            renderPickerButton(
+              "Wood Type",
+              formData.woodsSubcategory,
+              "Driver, Fairway Wood, or Hybrid?",
+              "woodsSubcategory",
+              false,
+              false,
+            )}
+
+          {/* Brand */}
           {renderPickerButton(
             "Brand",
             formData.brandName,
@@ -460,32 +616,130 @@ export function DetailsStep({
             "brand",
           )}
 
+          {/* Model */}
           {renderPickerButton(
             "Model",
             formData.modelName,
             "Which model is it?",
             "model",
             !formData.brandId,
+            false,
           )}
 
-          {renderPickerButton(
-            "Condition",
-            CONDITION_OPTIONS.find((c) => c.value === formData.condition)
-              ?.label || "",
-            "How would you describe its condition?",
-            "condition",
+          {/* Flex - Conditional (Woods & Irons) */}
+          {shouldShowFlex() &&
+            renderPickerButton(
+              "Shaft Flex",
+              FLEX_OPTIONS.find((f) => f.value === formData.flex)?.label ?? "",
+              "Select shaft flex",
+              "flex",
+              false,
+              false,
+            )}
+
+          {/* Loft - Conditional (Woods & Wedges) */}
+          {shouldShowLoft() &&
+            renderPickerButton(
+              "Loft",
+              formData.loft,
+              "Select loft angle",
+              "loft",
+              false,
+              false,
+            )}
+
+          {/* Head Cover Included - Conditional (Woods & Putters) */}
+          {shouldShowHeadCover() && (
+            <Column gap="$2">
+              <TouchableOpacity
+                onPress={() =>
+                  onUpdate({ headCoverIncluded: !formData.headCoverIncluded })
+                }
+                accessibilityLabel="Toggle head cover included"
+              >
+                <Row
+                  backgroundColor="$pureWhite"
+                  borderWidth={2}
+                  borderColor={
+                    formData.headCoverIncluded
+                      ? "$spicedClementine"
+                      : "$cloudMist"
+                  }
+                  borderRadius="$xl"
+                  paddingHorizontal="$4"
+                  paddingVertical="$4"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Text size="$6" fontWeight="500" color="$ironstone">
+                    Head cover included?
+                  </Text>
+                  <Switch
+                    checked={formData.headCoverIncluded}
+                    onCheckedChange={(checked) =>
+                      onUpdate({ headCoverIncluded: !!checked })
+                    }
+                  >
+                    <Switch.Thumb animation="quick" />
+                  </Switch>
+                </Row>
+              </TouchableOpacity>
+            </Column>
           )}
+
+          {/* Condition Rating Section - 3 Sliders */}
+          <Column
+            gap="$4"
+            marginTop="$4"
+            backgroundColor="$gray100"
+            borderRadius="$xl"
+            padding="$4"
+          >
+            <Column gap="$1">
+              <Row alignItems="center" gap="$1">
+                <Text
+                  fontFamily="$heading"
+                  size="$6"
+                  fontWeight="700"
+                  color="$ironstone"
+                >
+                  Condition Rating
+                </Text>
+                <Text size="$4" fontWeight="600" color="$error">
+                  *
+                </Text>
+              </Row>
+              <Text size="$4" fontWeight="400" color="$slateSmoke">
+                Rate each component from 1 (Poor) to 10 (Like New)
+              </Text>
+            </Column>
+
+            {/* Grip Condition */}
+            {renderConditionSlider("Grip", formData.gripCondition, (val) =>
+              onUpdate({ gripCondition: val }),
+            )}
+
+            {/* Head Condition */}
+            {renderConditionSlider("Head", formData.headCondition, (val) =>
+              onUpdate({ headCondition: val }),
+            )}
+
+            {/* Shaft Condition */}
+            {renderConditionSlider("Shaft", formData.shaftCondition, (val) =>
+              onUpdate({ shaftCondition: val }),
+            )}
+          </Column>
         </Column>
 
         {/* Helper Text */}
         <Column marginTop="$6" gap="$2">
           <Row
-            backgroundColor="$gray100"
+            backgroundColor="$lemonHaze"
             borderRadius="$lg"
             padding="$3"
             gap="$2"
           >
-            <Text size="$3" color="$slateSmoke">
+            <Text size="$3" color="$burntOlive">
               💡 Accurate details help your item get discovered by the right
               buyers
             </Text>
