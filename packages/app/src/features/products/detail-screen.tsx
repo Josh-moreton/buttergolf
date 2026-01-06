@@ -142,22 +142,18 @@ export function ProductDetailScreen({
               left="$4"
               size="$4"
               circular
-              backgroundColor="$pureWhite"
-              icon={<ArrowLeft size={20} color="$ironstone" />}
+              backgroundColor="$primary"
+              pressStyle={{ backgroundColor: "$primaryPress" }}
+              icon={<ArrowLeft size={20} color="$pureWhite" />}
             />
             {/* Action buttons overlay */}
             <Row position="absolute" top="$4" right="$4" gap="$2">
               <Button
                 size="$4"
                 circular
-                backgroundColor="$pureWhite"
-                icon={<Heart size={20} color="$ironstone" />}
-              />
-              <Button
-                size="$4"
-                circular
-                backgroundColor="$pureWhite"
-                icon={<Share2 size={20} color="$ironstone" />}
+                backgroundColor="$primary"
+                pressStyle={{ backgroundColor: "$primaryPress" }}
+                icon={<Heart size={20} color="$pureWhite" />}
               />
             </Row>
             {/* Sold badge */}
