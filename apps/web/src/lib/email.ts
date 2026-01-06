@@ -760,3 +760,264 @@ export async function sendOutForDeliveryEmail(params: {
     return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 }
+
+/**
+ * Send auto-release reminder email to buyer
+ * Sent X days before payment is auto-released to seller
+ */
+export async function sendAutoReleaseReminderEmail(params: {
+  buyerEmail: string;
+  buyerName: string;
+  orderId: string;
+  productTitle: string;
+  daysUntilRelease: number;
+  autoReleaseDate: Date;
+  sellerPayout: number;
+}): Promise<EmailResult> {
+  const { buyerEmail, buyerName, orderId, productTitle, daysUntilRelease, autoReleaseDate, sellerPayout } = params;
+
+  try {
+    const { data, error } = await getResendClient().emails.send({
+      from: FROM_EMAIL,
+      to: buyerEmail,
+      subject: `⏰ ${daysUntilRelease} days left to confirm receipt: ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #F45314; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .alert-box { background: #F45314; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+            .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .button-secondary { display: inline-block; background: white; color: #F45314; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; border: 2px solid #F45314; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>⏰ Action Required</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${buyerName},</p>
+              
+              <div class="alert-box">
+                <p style="margin: 0; font-size: 24px; font-weight: bold;">${daysUntilRelease} days left</p>
+                <p style="margin: 10px 0 0 0; font-size: 14px;">to confirm you received your item</p>
+              </div>
+              
+              <p>Your order for <strong>${productTitle}</strong> was marked as delivered. If you've received it and are happy with your purchase, please confirm receipt.</p>
+              
+              <div class="info-box">
+                <h3 style="margin-top: 0;">What happens next?</h3>
+                <ul style="margin-bottom: 0;">
+                  <li><strong>If you confirm receipt:</strong> Payment of £${sellerPayout.toFixed(2)} is released to the seller</li>
+                  <li><strong>If you don't confirm:</strong> Payment will be automatically released on ${autoReleaseDate.toLocaleDateString()}</li>
+                  <li><strong>If there's an issue:</strong> Report a problem before the deadline to keep payment held</li>
+                </ul>
+              </div>
+              
+              <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+              
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/orders/${orderId}" class="button">Confirm Receipt</a>
+              </p>
+              <p style="text-align: center; margin-top: 15px;">
+                <a href="${BASE_URL}/orders/${orderId}#report" class="button-secondary">Report a Problem</a>
+              </p>
+            </div>
+            <div class="footer">
+              <p>Your payment is protected until you confirm receipt or the auto-release date.</p>
+              <p>The ButterGolf Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
+ * Send payment released notification to seller
+ */
+export async function sendPaymentReleasedEmail(params: {
+  sellerEmail: string;
+  sellerName: string;
+  orderId: string;
+  productTitle: string;
+  payoutAmount: number;
+  releaseReason: "buyer_confirmed" | "auto_released";
+}): Promise<EmailResult> {
+  const { sellerEmail, sellerName, orderId, productTitle, payoutAmount, releaseReason } = params;
+
+  const reasonText = releaseReason === "buyer_confirmed"
+    ? "The buyer confirmed they received their item."
+    : "The payment was automatically released after 14 days.";
+
+  try {
+    const { data, error } = await getResendClient().emails.send({
+      from: FROM_EMAIL,
+      to: sellerEmail,
+      subject: `💰 Payment released! £${payoutAmount.toFixed(2)} for ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #02aaa4; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .payout-box { background: #02aaa4; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+            .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>💰 Payment Released!</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${sellerName},</p>
+              
+              <div class="payout-box">
+                <p style="margin: 0; font-size: 14px;">Your Payout</p>
+                <p style="margin: 5px 0 0 0; font-size: 36px; font-weight: bold;">£${payoutAmount.toFixed(2)}</p>
+                <p style="margin: 10px 0 0 0; font-size: 14px;">is on its way to your bank</p>
+              </div>
+              
+              <p>${reasonText}</p>
+              
+              <div class="info-box">
+                <h3 style="margin-top: 0;">Order Details</h3>
+                <p><strong>Product:</strong> ${productTitle}</p>
+                <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+                <p><strong>Status:</strong> ✅ Payment Released</p>
+              </div>
+              
+              <p>The funds will be transferred to your bank account according to your Stripe payout schedule (usually 2-7 business days).</p>
+              
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/seller/payouts" class="button">View Payouts</a>
+              </p>
+            </div>
+            <div class="footer">
+              <p>Thanks for selling on ButterGolf!</p>
+              <p>Keep listing to keep earning 🏌️</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
+ * Send payment on hold notification to buyer (after purchase)
+ */
+export async function sendPaymentOnHoldEmail(params: {
+  buyerEmail: string;
+  buyerName: string;
+  orderId: string;
+  productTitle: string;
+  autoReleaseDate: Date;
+}): Promise<EmailResult> {
+  const { buyerEmail, buyerName, orderId, productTitle, autoReleaseDate } = params;
+
+  try {
+    const { data, error } = await getResendClient().emails.send({
+      from: FROM_EMAIL,
+      to: buyerEmail,
+      subject: `🔒 Your payment is protected: ${productTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #323232; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #3c50e0; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .content { background: #FFFAD2; padding: 30px; border-radius: 0 0 8px 8px; }
+            .protection-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3c50e0; }
+            .button { display: inline-block; background: #F45314; color: white; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 600; }
+            .footer { text-align: center; padding: 20px; color: #545454; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>🔒 Buyer Protection Active</h1>
+            </div>
+            <div class="content">
+              <p>Hi ${buyerName},</p>
+              <p>Your purchase is protected! We're holding the payment until you confirm you've received your item.</p>
+              
+              <div class="protection-box">
+                <h3 style="margin-top: 0;">How it works:</h3>
+                <ol style="margin-bottom: 0;">
+                  <li><strong>Payment is held securely</strong> - The seller doesn't receive the money yet</li>
+                  <li><strong>You receive your item</strong> - Wait for delivery and inspect it</li>
+                  <li><strong>Confirm receipt</strong> - Once you're happy, confirm and we release payment</li>
+                  <li><strong>Auto-release date:</strong> ${autoReleaseDate.toLocaleDateString()} - Payment releases automatically if you don't respond</li>
+                </ol>
+              </div>
+              
+              <p><strong>Product:</strong> ${productTitle}</p>
+              <p><strong>Order ID:</strong> ${orderId.slice(0, 8).toUpperCase()}</p>
+              
+              <p style="text-align: center; margin-top: 30px;">
+                <a href="${BASE_URL}/orders/${orderId}" class="button">View Order</a>
+              </p>
+            </div>
+            <div class="footer">
+              <p>Questions? Reply to this email for help.</p>
+              <p>The ButterGolf Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    console.error("Email send error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}

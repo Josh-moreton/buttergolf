@@ -115,7 +115,8 @@ export async function GET(request: NextRequest) {
         break;
     }
 
-    // Fetch products
+    // Fetch products with active promotions
+    // Products with active BUMP promotions appear first (boosted visibility)
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,
@@ -140,13 +141,41 @@ export async function GET(request: NextRequest) {
               ratingCount: true,
             },
           },
+          // Include active promotions for boost sorting
+          promotions: {
+            where: {
+              status: "ACTIVE",
+              expiresAt: { gt: new Date() },
+            },
+            select: {
+              id: true,
+              type: true,
+              expiresAt: true,
+            },
+          },
         },
+        // We can't directly sort by promotion count in Prisma
+        // So we fetch more and sort in memory, or use raw query
+        // For now, we'll use a simple approach and sort in memory
         orderBy,
         skip,
         take: limit,
       }),
       prisma.product.count({ where }),
     ]);
+
+    // Sort products: promoted items first, then by selected sort
+    const sortedProducts = [...products].sort((a, b) => {
+      const aHasPromo = a.promotions && a.promotions.length > 0;
+      const bHasPromo = b.promotions && b.promotions.length > 0;
+
+      // Promoted products come first
+      if (aHasPromo && !bHasPromo) return -1;
+      if (!aHasPromo && bHasPromo) return 1;
+
+      // If both have or don't have promotions, maintain original order
+      return 0;
+    });
 
     // Get filter options (available brands and price range)
     const [availableBrands, priceAgg] = await Promise.all([
@@ -166,8 +195,8 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    // Map to ProductCardData format
-    const productCards: ProductCardData[] = products
+    // Map to ProductCardData format (using sorted products with promotion boost)
+    const productCards: ProductCardData[] = sortedProducts
       .filter((product) => product.user) // Filter out products without users
       .map((product) => ({
         id: product.id,
@@ -183,6 +212,8 @@ export async function GET(request: NextRequest) {
           averageRating: product.user.averageRating,
           ratingCount: product.user.ratingCount,
         },
+        // Include promotion info for UI badge/styling
+        isPromoted: product.promotions && product.promotions.length > 0,
       }));
 
     return NextResponse.json({

@@ -37,6 +37,8 @@ export interface Product {
   updatedAt: Date;
 }
 
+export type PromotionType = "BUMP" | "PRO_SHOP_FEATURE";
+
 export interface ProductCardData {
   id: string;
   title: string;
@@ -51,4 +53,9 @@ export interface ProductCardData {
     averageRating: number | null;
     ratingCount: number;
   };
+  // Promotion fields
+  activePromotion?: {
+    type: PromotionType;
+    expiresAt: Date;
+  } | null;
 }

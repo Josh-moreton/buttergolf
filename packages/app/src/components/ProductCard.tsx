@@ -111,6 +111,26 @@ export function ProductCard({
           borderTopRightRadius={16}
         />
 
+        {/* Promotion Badge - Top Left */}
+        {product.activePromotion && (
+          <View
+            position="absolute"
+            top={10}
+            left={10}
+            backgroundColor={product.activePromotion.type === "BUMP" ? "$primary" : "#02aaa4"}
+            paddingHorizontal={10}
+            paddingVertical={4}
+            borderRadius={12}
+            zIndex={2}
+          >
+            <Row alignItems="center" gap={4}>
+              <Text size="$2" fontWeight="700" color="$textInverse">
+                {product.activePromotion.type === "BUMP" ? "🔥 BOOSTED" : "⭐ PRO SHOP"}
+              </Text>
+            </Row>
+          </View>
+        )}
+
         {/* Favourite Heart Button - Top Right with Glassmorphism */}
         <GlassmorphismCard
           intensity="medium"

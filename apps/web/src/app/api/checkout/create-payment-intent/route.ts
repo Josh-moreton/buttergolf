@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { calculatePricingBreakdownInPence } from "@/lib/pricing";
 
 // Shipping options with prices in pence
 const SHIPPING_OPTIONS = {
@@ -14,8 +15,12 @@ type ShippingOptionId = keyof typeof SHIPPING_OPTIONS;
 
 /**
  * Creates a Stripe Payment Intent for single-product purchase
- * Uses Stripe Connect for marketplace payouts (10% platform fee)
- * 
+ *
+ * Vinted-style pricing model:
+ * - Sellers pay 0% - receive 100% of product price + shipping
+ * - Buyers pay: product price + shipping + Buyer Protection Fee (5% + £0.70)
+ * - Payment is held on platform until buyer confirms receipt (escrow-style)
+ *
  * This is used by PaymentElement flow (BuyNowSheet)
  * For EmbeddedCheckout, see create-checkout-session/route.ts
  */
@@ -101,54 +106,67 @@ export async function POST(req: Request) {
       );
     }
 
-    // Calculate amounts
+    // Calculate Vinted-style pricing (0% seller fee, buyer pays protection fee)
     const productPriceInPence = Math.round(product.price * 100);
-    const shippingAmount = SHIPPING_OPTIONS[shippingOptionId].price;
-    const totalAmount = productPriceInPence + shippingAmount;
-    
-    // Platform fee (10% of product price only, not shipping)
-    const platformFeePercent = 10;
-    const applicationFeeAmount = Math.round(
-      productPriceInPence * (platformFeePercent / 100),
+    const shippingAmountInPence = SHIPPING_OPTIONS[shippingOptionId].price;
+    const pricing = calculatePricingBreakdownInPence(
+      productPriceInPence,
+      shippingAmountInPence
     );
+
+    // Total includes product + shipping + buyer protection
+    const totalAmountInPence =
+      productPriceInPence +
+      shippingAmountInPence +
+      pricing.buyerProtectionFeeInPence;
 
     console.log("[PaymentIntent API] Amounts:", {
       productPriceInPence,
-      shippingAmount,
-      totalAmount,
-      applicationFeeAmount,
+      shippingAmountInPence,
+      buyerProtectionFeeInPence: pricing.buyerProtectionFeeInPence,
+      totalAmountInPence,
+      sellerReceivesInPence: pricing.sellerReceivesInPence,
     });
 
-    // Create Payment Intent
+    // Create Payment Intent - payment stays on platform (escrow-style)
+    // NO transfer_data - we'll transfer to seller after buyer confirms receipt
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalAmount,
+      amount: totalAmountInPence,
       currency: "gbp",
       automatic_payment_methods: { enabled: true },
-      application_fee_amount: applicationFeeAmount,
-      transfer_data: {
-        destination: seller.stripeConnectId,
-      },
+      // NO application_fee_amount - sellers pay 0%
+      // NO transfer_data - payment stays on platform until buyer confirms
       metadata: {
         productId: product.id,
         sellerId: seller.id,
         buyerId: buyer.id,
+        // Store seller Connect ID for later transfer
+        sellerStripeConnectId: seller.stripeConnectId,
+        // Store amounts for order creation
+        productPriceInPence: productPriceInPence.toString(),
+        shippingAmountInPence: shippingAmountInPence.toString(),
+        buyerProtectionFeeInPence: pricing.buyerProtectionFeeInPence.toString(),
+        sellerPayoutInPence: pricing.sellerReceivesInPence.toString(),
+        // Shipping details
         shippingOptionId,
         shippingOptionName: SHIPPING_OPTIONS[shippingOptionId].name,
-        shippingAmount: shippingAmount.toString(),
-        platformFeePercent: platformFeePercent.toString(),
         source: "payment_element", // Distinguish from checkout session flow
       },
       receipt_email: buyer.email,
     });
 
-    console.log("[PaymentIntent API] SUCCESS - PaymentIntent created:", paymentIntent.id);
+    console.log(
+      "[PaymentIntent API] SUCCESS - PaymentIntent created:",
+      paymentIntent.id
+    );
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
-      totalAmount,
-      shippingAmount,
+      totalAmount: totalAmountInPence,
+      shippingAmount: shippingAmountInPence,
       productPriceInPence,
+      buyerProtectionFeeInPence: pricing.buyerProtectionFeeInPence,
     });
   } catch (error) {
     console.error("[PaymentIntent API] FATAL ERROR:", error);

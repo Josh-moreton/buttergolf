@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
+import { calculatePricingBreakdownInPence } from "@/lib/pricing";
 
 /**
  * Creates a Stripe Embedded Checkout Session for single-product purchase
- * Uses Stripe Connect for marketplace payouts (10% platform fee)
+ *
+ * Vinted-style pricing model:
+ * - Sellers pay 0% - receive 100% of product price + shipping
+ * - Buyers pay: product price + shipping + Buyer Protection Fee (5% + £0.70)
+ * - Payment is held on platform until buyer confirms receipt (escrow-style)
  */
 export async function POST(req: Request) {
   console.log("[Checkout API] POST request received");
@@ -95,12 +100,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // Calculate platform fee (10%)
+    // Calculate Vinted-style pricing (0% seller fee, buyer pays protection fee)
     const productPriceInPence = Math.round(product.price * 100);
-    const platformFeePercent = 10;
-    const applicationFeeAmount = Math.round(
-      productPriceInPence * (platformFeePercent / 100),
-    );
+    // Note: We don't know shipping cost yet - Stripe will add it based on buyer selection
+    // We calculate buyer protection fee based on product price only
+    const pricing = calculatePricingBreakdownInPence(productPriceInPence, 0);
 
     // Build product image URL for Stripe (use first image or placeholder)
     const productImages = product.images[0]?.url
@@ -121,7 +125,7 @@ export async function POST(req: Request) {
       ui_mode: "embedded",
       mode: "payment",
 
-      // Line items - single product
+      // Line items - product + buyer protection fee
       line_items: [
         {
           price_data: {
@@ -135,6 +139,18 @@ export async function POST(req: Request) {
               },
             },
             unit_amount: productPriceInPence,
+          },
+          quantity: 1,
+        },
+        {
+          price_data: {
+            currency: "gbp",
+            product_data: {
+              name: "Buyer Protection",
+              description:
+                "Secure payment held until you confirm receipt. Includes purchase protection and support.",
+            },
+            unit_amount: pricing.buyerProtectionFeeInPence,
           },
           quantity: 1,
         },
@@ -214,17 +230,19 @@ export async function POST(req: Request) {
         enabled: true,
       },
 
-      // Stripe Connect - route payment to seller with platform fee
+      // Payment stays on platform account (escrow-style)
+      // NO transfer_data - we'll transfer to seller after buyer confirms receipt
       payment_intent_data: {
-        application_fee_amount: applicationFeeAmount,
-        transfer_data: {
-          destination: seller.stripeConnectId,
-        },
         metadata: {
           productId: product.id,
           sellerId: seller.id,
           buyerId: buyer.id,
-          platformFeePercent: platformFeePercent.toString(),
+          // Store seller Connect ID for later transfer
+          sellerStripeConnectId: seller.stripeConnectId,
+          // Store calculated amounts for order creation
+          productPriceInPence: productPriceInPence.toString(),
+          buyerProtectionFeeInPence:
+            pricing.buyerProtectionFeeInPence.toString(),
         },
       },
 
@@ -233,6 +251,9 @@ export async function POST(req: Request) {
         productId: product.id,
         sellerId: seller.id,
         buyerId: buyer.id,
+        sellerStripeConnectId: seller.stripeConnectId,
+        productPriceInPence: productPriceInPence.toString(),
+        buyerProtectionFeeInPence: pricing.buyerProtectionFeeInPence.toString(),
       },
 
       // Return URL after checkout completes
