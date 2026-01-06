@@ -32,8 +32,8 @@ export interface SellScreenProps {
   onSearchBrands?: (query: string) => Promise<Brand[]>;
   /** Called to search models for a brand */
   onSearchModels?: (brandId: string, query: string) => Promise<Model[]>;
-  /** Called to upload an image, returns the URL */
-  onUploadImage?: (image: ImageData) => Promise<string>;
+  /** Called to upload an image to CDN, returns the URL. isFirstImage triggers background removal. */
+  onUploadImage?: (image: ImageData, isFirstImage: boolean) => Promise<string>;
   /** Platform-specific function to pick images from gallery */
   onPickImages?: () => Promise<ImageData[]>;
   /** Platform-specific function to take a photo with camera */

@@ -398,6 +398,105 @@ async function takePhoto(): Promise<ImageData | null> {
   }
 }
 
+/**
+ * Upload an image to Cloudinary via the API with background removal for first image.
+ * This function needs to be called within a component that has access to useAuth.
+ */
+async function uploadImageToCloudinary(
+  image: ImageData,
+  isFirstImage: boolean,
+  getToken: () => Promise<string | null>,
+): Promise<string> {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  if (!apiUrl) throw new Error("API URL not configured");
+
+  // Get the auth token for the request
+  const token = await getToken();
+  if (!token) throw new Error("Not authenticated");
+
+  // Generate a unique filename
+  const timestamp = Date.now();
+  const randomStr = Math.random().toString(36).substring(2, 8);
+  const extension = image.uri.split(".").pop() || "jpg";
+  const filename = `${timestamp}-${randomStr}.${extension}`;
+
+  console.log("📤 Uploading image to Cloudinary:", {
+    uri: image.uri.substring(0, 50) + "...",
+    isFirstImage,
+    filename,
+  });
+
+  // Read the image file as blob
+  const response = await fetch(image.uri);
+  const blob = await response.blob();
+
+  // Determine content type
+  const contentType = blob.type || "image/jpeg";
+
+  console.log("📦 Image blob:", {
+    size: blob.size,
+    sizeKB: Math.round(blob.size / 1024),
+    type: contentType,
+  });
+
+  // Upload to the API endpoint
+  const uploadResponse = await fetch(
+    `${apiUrl}/api/upload?filename=${encodeURIComponent(filename)}&isFirstImage=${isFirstImage}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": contentType,
+        Authorization: `Bearer ${token}`,
+      },
+      body: blob,
+    },
+  );
+
+  if (!uploadResponse.ok) {
+    const errorData = await uploadResponse.json().catch(() => ({}));
+    throw new Error(errorData.error || `Upload failed: ${uploadResponse.status}`);
+  }
+
+  const result = await uploadResponse.json();
+  console.log("✅ Upload success:", result.url);
+
+  return result.url;
+}
+
+/**
+ * Wrapper component for SellScreen that provides the image upload function
+ * with access to Clerk authentication.
+ */
+function SellScreenWrapper({
+  navigation,
+}: {
+  navigation: any;
+}) {
+  const { getToken } = useAuth();
+
+  // Create the upload function that uses the auth token
+  const handleUploadImage = async (image: ImageData, isFirstImage: boolean): Promise<string> => {
+    return uploadImageToCloudinary(image, isFirstImage, getToken);
+  };
+
+  return (
+    <SellScreen
+      isAuthenticated={true}
+      onFetchCategories={fetchCategories}
+      onSearchBrands={searchBrands}
+      onSearchModels={searchModels}
+      onUploadImage={handleUploadImage}
+      onPickImages={pickImages}
+      onTakePhoto={takePhoto}
+      onSubmitListing={submitListing}
+      onClose={() => navigation.goBack()}
+      onSuccess={(productId) => {
+        navigation.navigate("ProductDetail", { id: productId });
+      }}
+    />
+  );
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -561,19 +660,7 @@ export default function App() {
                   }}
                 >
                   {({ navigation }: { navigation: any }) => (
-                    <SellScreen
-                      isAuthenticated={true}
-                      onFetchCategories={fetchCategories}
-                      onSearchBrands={searchBrands}
-                      onSearchModels={searchModels}
-                      onPickImages={pickImages}
-                      onTakePhoto={takePhoto}
-                      onSubmitListing={submitListing}
-                      onClose={() => navigation.goBack()}
-                      onSuccess={(productId) => {
-                        navigation.navigate("ProductDetail", { id: productId });
-                      }}
-                    />
+                    <SellScreenWrapper navigation={navigation} />
                   )}
                 </Stack.Screen>
               </Stack.Navigator>

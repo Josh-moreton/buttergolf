@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useCallback } from "react";
-import { TouchableOpacity } from "react-native";
-import { Column, Row, Text, View, Image, ScrollView } from "@buttergolf/ui";
+import React, { useCallback, useState } from "react";
+import { TouchableOpacity, ActivityIndicator } from "react-native";
+import { Column, Row, Text, View, Image, ScrollView, Spinner } from "@buttergolf/ui";
 import { Camera, ImagePlus, X, Check, Sparkles } from "@tamagui/lucide-icons";
 
 import type { ImageData } from "../types";
@@ -12,7 +12,8 @@ const MAX_IMAGES = 5;
 interface PhotoStepProps {
   images: ImageData[];
   onImagesChange: (images: ImageData[]) => void;
-  onUploadImage?: (image: ImageData) => Promise<string>;
+  /** Called to upload an image to CDN. isFirstImage triggers background removal. */
+  onUploadImage?: (image: ImageData, isFirstImage: boolean) => Promise<string>;
   direction: "forward" | "backward";
   /** Platform-specific function to pick images from gallery */
   onPickImages?: () => Promise<ImageData[]>;
@@ -23,23 +24,84 @@ interface PhotoStepProps {
 export function PhotoStep({
   images,
   onImagesChange,
-  onUploadImage: _onUploadImage,
+  onUploadImage,
   direction,
   onPickImages,
   onTakePhoto,
 }: Readonly<PhotoStepProps>) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  /**
+   * Upload a single image to CDN.
+   * Returns the image with the uploaded URL, or null if upload failed.
+   */
+  const uploadImage = useCallback(
+    async (image: ImageData, isFirstImage: boolean): Promise<ImageData | null> => {
+      if (!onUploadImage) {
+        // If no upload function provided, just return the local image
+        console.warn("onUploadImage not provided - using local URI");
+        return image;
+      }
+
+      try {
+        console.log("📤 PhotoStep: Uploading image...", { isFirstImage });
+        const uploadedUrl = await onUploadImage(image, isFirstImage);
+        console.log("✅ PhotoStep: Upload complete:", uploadedUrl);
+        return {
+          ...image,
+          uri: uploadedUrl,
+          uploaded: true,
+          isFirstImage,
+        };
+      } catch (error) {
+        console.error("❌ PhotoStep: Upload failed:", error);
+        throw error;
+      }
+    },
+    [onUploadImage],
+  );
+
   const pickImage = useCallback(async () => {
     if (!onPickImages) {
       console.warn("onPickImages not provided to PhotoStep");
       return;
     }
 
+    setUploadError(null);
     const newImages = await onPickImages();
+    
     if (newImages.length > 0) {
-      const updatedImages = [...images, ...newImages].slice(0, MAX_IMAGES);
-      onImagesChange(updatedImages);
+      setUploading(true);
+      
+      try {
+        // Upload each image, first image in the list gets background removal
+        const uploadedImages: ImageData[] = [];
+        const currentImageCount = images.length;
+        
+        for (let i = 0; i < newImages.length && currentImageCount + uploadedImages.length < MAX_IMAGES; i++) {
+          const image = newImages[i];
+          if (!image) continue;
+          
+          // First image in the entire listing (not just this batch) gets background removal
+          const isFirstImage = currentImageCount === 0 && uploadedImages.length === 0;
+          
+          const uploaded = await uploadImage(image, isFirstImage);
+          if (uploaded) {
+            uploadedImages.push(uploaded);
+          }
+        }
+        
+        if (uploadedImages.length > 0) {
+          onImagesChange([...images, ...uploadedImages]);
+        }
+      } catch (error) {
+        setUploadError(error instanceof Error ? error.message : "Upload failed");
+      } finally {
+        setUploading(false);
+      }
     }
-  }, [images, onImagesChange, onPickImages]);
+  }, [images, onImagesChange, onPickImages, uploadImage]);
 
   const takePhoto = useCallback(async () => {
     if (!onTakePhoto) {
@@ -47,12 +109,27 @@ export function PhotoStep({
       return;
     }
 
+    setUploadError(null);
     const newImage = await onTakePhoto();
+    
     if (newImage) {
-      const updatedImages = [...images, newImage].slice(0, MAX_IMAGES);
-      onImagesChange(updatedImages);
+      setUploading(true);
+      
+      try {
+        // First image gets background removal
+        const isFirstImage = images.length === 0;
+        const uploaded = await uploadImage(newImage, isFirstImage);
+        
+        if (uploaded) {
+          onImagesChange([...images, uploaded].slice(0, MAX_IMAGES));
+        }
+      } catch (error) {
+        setUploadError(error instanceof Error ? error.message : "Upload failed");
+      } finally {
+        setUploading(false);
+      }
     }
-  }, [images, onImagesChange, onTakePhoto]);
+  }, [images, onImagesChange, onTakePhoto, uploadImage]);
 
   const removeImage = useCallback(
     (index: number) => {
@@ -268,10 +345,10 @@ export function PhotoStep({
         <Row gap="$3" marginBottom="$4">
           <TouchableOpacity
             onPress={pickImage}
-            disabled={!canAddMore}
+            disabled={!canAddMore || uploading}
             style={{
               flex: 1,
-              opacity: canAddMore ? 1 : 0.5,
+              opacity: canAddMore && !uploading ? 1 : 0.5,
             }}
             accessibilityLabel="Choose from gallery"
           >
@@ -295,10 +372,10 @@ export function PhotoStep({
 
           <TouchableOpacity
             onPress={takePhoto}
-            disabled={!canAddMore}
+            disabled={!canAddMore || uploading}
             style={{
               flex: 1,
-              opacity: canAddMore ? 1 : 0.5,
+              opacity: canAddMore && !uploading ? 1 : 0.5,
             }}
             accessibilityLabel="Take a photo"
           >
@@ -320,6 +397,45 @@ export function PhotoStep({
             </Row>
           </TouchableOpacity>
         </Row>
+
+        {/* Upload Status */}
+        {uploading && (
+          <Column
+            backgroundColor="$lemonHaze"
+            borderRadius="$xl"
+            padding="$4"
+            marginBottom="$4"
+            alignItems="center"
+            gap="$3"
+          >
+            <Spinner size="sm" color="$spicedClementine" />
+            <Text size="$4" fontWeight="600" color="$burntOlive" textAlign="center">
+              Uploading and processing your photo...
+            </Text>
+            <Text size="$3" fontWeight="400" color="$slateSmoke" textAlign="center">
+              AI is removing the background for your cover photo
+            </Text>
+          </Column>
+        )}
+
+        {/* Upload Error */}
+        {uploadError && (
+          <Column
+            backgroundColor="$errorLight"
+            borderRadius="$xl"
+            padding="$4"
+            marginBottom="$4"
+            borderWidth={1}
+            borderColor="$error"
+          >
+            <Text size="$4" fontWeight="600" color="$error">
+              Upload failed
+            </Text>
+            <Text size="$3" fontWeight="400" color="$error">
+              {uploadError}
+            </Text>
+          </Column>
+        )}
 
         {/* Image count indicator */}
         <Row justifyContent="center">

@@ -29,6 +29,10 @@ export interface ImageData {
   width?: number;
   height?: number;
   base64?: string;
+  /** Whether this image has been uploaded to CDN (vs local file URI) */
+  uploaded?: boolean;
+  /** True if this is the first/cover image (gets background removal) */
+  isFirstImage?: boolean;
 }
 
 export const CONDITION_OPTIONS: { value: ProductCondition; label: string }[] = [
