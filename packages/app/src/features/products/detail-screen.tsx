@@ -191,7 +191,7 @@ export function ProductDetailScreen({
               </Badge>
               {product.brand && (
                 <Badge variant="primary" size="sm">
-                  <Text size="$2" fontWeight="500">{product.brand.name}</Text>
+                  <Text size="$2" fontWeight="500" color="$textInverse">{product.brand.name}</Text>
                 </Badge>
               )}
               {product.model && (
