@@ -16,6 +16,9 @@ interface CategoryListScreenProps {
   onBack?: () => void;
   onFilter?: () => void;
   onSellPress?: () => void;
+  onLoginPress?: () => void;
+  onAccountPress?: () => void;
+  isAuthenticated?: boolean;
 }
 
 export function CategoryListScreen({
@@ -25,6 +28,9 @@ export function CategoryListScreen({
   onBack,
   onFilter,
   onSellPress,
+  onLoginPress,
+  onAccountPress,
+  isAuthenticated = false,
 }: Readonly<CategoryListScreenProps>) {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>([]);
@@ -129,11 +135,13 @@ export function CategoryListScreen({
       <Column position="absolute" bottom={0} left={0} right={0} zIndex={100}>
         <MobileBottomNav
           activeTab="home"
+          isAuthenticated={isAuthenticated}
           onHomePress={() => console.log("Home pressed")}
           onWishlistPress={() => console.log("Wishlist pressed")}
           onSellPress={onSellPress}
           onMessagesPress={() => console.log("Messages pressed")}
-          onLoginPress={() => console.log("Login pressed")}
+          onLoginPress={onLoginPress}
+          onAccountPress={onAccountPress}
         />
       </Column>
     </Column>

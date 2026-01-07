@@ -12,6 +12,7 @@ import {
   ForgotPasswordScreen,
   ResetPasswordScreen,
   TwoFactorScreen,
+  AccountScreen,
 } from "@buttergolf/app";
 import type {
   ProductCardData,
@@ -32,7 +33,7 @@ import {
   Alert,
   Platform,
 } from "react-native";
-import { ClerkProvider, SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
+import { ClerkProvider, SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
@@ -102,6 +103,9 @@ const linking = {
       },
       ResetPassword: {
         path: routes.resetPassword.slice(1), // 'reset-password'
+      },
+      Account: {
+        path: routes.account.slice(1), // 'account'
       },
     },
   },
@@ -594,6 +598,42 @@ function SellScreenWrapper({
   );
 }
 
+/**
+ * Wrapper component for AccountScreen that provides Clerk user data
+ * and sign-out functionality.
+ */
+function AccountScreenWrapper({
+  navigation,
+}: {
+  navigation: any;
+}) {
+  const { user } = useUser();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    // After signOut, Clerk will automatically switch to SignedOut state
+  };
+
+  return (
+    <AccountScreen
+      user={
+        user
+          ? {
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.primaryEmailAddress?.emailAddress,
+              imageUrl: user.imageUrl,
+            }
+          : null
+      }
+      onSignOut={handleSignOut}
+      onNavigateBack={() => navigation.goBack()}
+    />
+  );
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -694,6 +734,8 @@ export default function App() {
                     <HomeScreen
                       onFetchProducts={fetchProducts}
                       onSellPress={() => navigation.navigate("Sell")}
+                      isAuthenticated={true}
+                      onAccountPress={() => navigation.navigate("Account")}
                     />
                   )}
                 </Stack.Screen>
@@ -745,9 +787,19 @@ export default function App() {
                         onBack={() => navigation.goBack()}
                         onFilter={() => console.log("Filter pressed")}
                         onSellPress={() => navigation.navigate("Sell")}
+                        isAuthenticated={true}
+                        onAccountPress={() => navigation.navigate("Account")}
                       />
                     );
                   }}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="Account"
+                  options={{ headerShown: false }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <AccountScreenWrapper navigation={navigation} />
+                  )}
                 </Stack.Screen>
                 <Stack.Screen
                   name="Sell"
