@@ -851,6 +851,8 @@ function OnboardingFlow() {
             <HomeScreen
               onFetchProducts={fetchProducts}
               onSellPress={() => navigation.navigate("Sell")}
+              isAuthenticated={false}
+              onLoginPress={() => setFlowState("signIn")}
             />
           )}
         </Stack.Screen>
@@ -880,6 +882,8 @@ function OnboardingFlow() {
                 onBack={() => navigation.goBack()}
                 onFilter={() => console.log("Filter pressed")}
                 onSellPress={() => navigation.navigate("Sell")}
+                isAuthenticated={false}
+                onLoginPress={() => setFlowState("signIn")}
               />
             );
           }}
