@@ -736,6 +736,7 @@ export default function App() {
                       onSellPress={() => navigation.navigate("Sell")}
                       isAuthenticated={true}
                       onAccountPress={() => navigation.navigate("Account")}
+                      hideBuySellToggle={true}
                     />
                   )}
                 </Stack.Screen>
@@ -853,6 +854,7 @@ function OnboardingFlow() {
               onSellPress={() => navigation.navigate("Sell")}
               isAuthenticated={false}
               onLoginPress={() => setFlowState("signIn")}
+              hideBuySellToggle={true}
             />
           )}
         </Stack.Screen>

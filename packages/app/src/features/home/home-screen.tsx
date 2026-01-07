@@ -25,6 +25,8 @@ interface HomeScreenProps {
   onLoginPress?: () => void;
   onAccountPress?: () => void;
   isAuthenticated?: boolean;
+  /** Hide the buying/selling toggle (mobile uses bottom nav for selling) */
+  hideBuySellToggle?: boolean;
 }
 
 export function HomeScreen({
@@ -34,6 +36,7 @@ export function HomeScreen({
   onLoginPress,
   onAccountPress,
   isAuthenticated = false,
+  hideBuySellToggle = false,
 }: Readonly<HomeScreenProps>) {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
@@ -118,13 +121,15 @@ export function HomeScreen({
           maxHeight={300}
         />
 
-        {/* Buying/Selling Toggle Buttons */}
-        <Row paddingHorizontal="$4" paddingVertical="$4">
-          <BuySellToggle
-            activeMode={buySellMode}
-            onModeChange={setBuySellMode}
-          />
-        </Row>
+        {/* Buying/Selling Toggle Buttons - Hidden on mobile where selling is via bottom nav */}
+        {!hideBuySellToggle && (
+          <Row paddingHorizontal="$4" paddingVertical="$4">
+            <BuySellToggle
+              activeMode={buySellMode}
+              onModeChange={setBuySellMode}
+            />
+          </Row>
+        )}
 
         {/* Shop by Category Section */}
         <Column
