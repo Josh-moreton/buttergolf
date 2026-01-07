@@ -790,12 +790,13 @@ export default function App() {
                 />
                 <Stack.Screen
                   name="ProductDetail"
-                  options={{ title: "Product Details" }}
+                  options={{ title: "Product Details", headerShown: false }}
                 >
-                  {({ route }: { route: RouteParams<"ProductDetail"> }) => (
+                  {({ route, navigation }: { route: RouteParams<"ProductDetail">; navigation: any }) => (
                     <ProductDetailScreen
                       productId={route.params?.id || ""}
                       onFetchProduct={fetchProduct}
+                      onBack={() => navigation.goBack()}
                     />
                   )}
                 </Stack.Screen>

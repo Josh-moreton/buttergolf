@@ -40,18 +40,23 @@ function getConditionColor(rating: number): string {
 interface ProductDetailScreenProps {
   productId: string;
   onFetchProduct?: (id: string) => Promise<Product | null>;
+  /** Optional callback for back navigation (used on mobile for goBack) */
+  onBack?: () => void;
 }
 
 export function ProductDetailScreen({
   productId,
   onFetchProduct,
+  onBack,
 }: Readonly<ProductDetailScreenProps>) {
   const insets = useSafeAreaInsets();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Use Solito link for web, but prefer onBack prop for mobile navigation
   const backLink = useLink({ href: routes.products });
+  const handleBack = onBack ?? backLink.onPress;
 
   const fetchProduct = useCallback(async () => {
     if (!onFetchProduct || !productId) {
@@ -102,8 +107,8 @@ export function ProductDetailScreen({
   if (error || !product) {
     return (
       <Column flex={1} backgroundColor="$background" padding="$4" paddingTop={insets.top + 16} gap="$4">
-        <Button {...backLink} size="$4" icon={ArrowLeft}>
-          Back to Products
+        <Button onPress={handleBack} size="$4" icon={ArrowLeft}>
+          Back
         </Button>
         <Column alignItems="center" justifyContent="center" flex={1}>
           <Text color="$error" size="$6">
@@ -139,7 +144,7 @@ export function ProductDetailScreen({
             />
             {/* Back button overlay */}
             <Button
-              {...backLink}
+              onPress={handleBack}
               position="absolute"
               top="$4"
               left="$4"
