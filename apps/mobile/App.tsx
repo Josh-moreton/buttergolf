@@ -179,8 +179,12 @@ async function fetchProductsByCategory(
       "from:",
       apiUrl,
     );
+    // Use /api/listings endpoint which properly:
+    // - Supports category slug filtering
+    // - Returns ProductCardData format
+    // - Includes seller rating info
     const response = await fetch(
-      `${apiUrl}/api/products?category=${categorySlug}`,
+      `${apiUrl}/api/listings?category=${categorySlug}`,
       {
         headers: {
           Accept: "application/json",
@@ -192,7 +196,9 @@ async function fetchProductsByCategory(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    // /api/listings returns { products, total, page, limit, totalPages }
+    return data.products || [];
   } catch (error) {
     console.error("Failed to fetch category products:", error);
     return [];
