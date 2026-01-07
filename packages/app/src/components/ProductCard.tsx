@@ -70,8 +70,9 @@ export function ProductCard({
   };
 
   const isWeb = Platform.OS === "web";
-  const sellerName = product.seller.firstName || "Seller";
-  const isNewSeller = product.seller.ratingCount === 0;
+  const sellerName = product.seller?.firstName || "Seller";
+  const isNewSeller = product.seller?.ratingCount === 0;
+  const sellerRatingCount = product.seller?.ratingCount ?? 0;
 
   return (
     <Card
@@ -243,11 +244,11 @@ export function ProductCard({
           <Text size="$4" color="$textSecondary" numberOfLines={1} flexShrink={1}>
             {sellerName}
           </Text>
-          {product.seller.ratingCount > 0 ? (
+          {sellerRatingCount > 0 ? (
             <Row alignItems="center" gap={3}>
               <Text color="$primary" size="$4">★</Text>
               <Text size="$4" fontWeight="500" color="$textSecondary">
-                {product.seller.averageRating?.toFixed(1)}
+                {product.seller?.averageRating?.toFixed(1)}
               </Text>
             </Row>
           ) : isNewSeller ? (

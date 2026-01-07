@@ -32,8 +32,7 @@ export function CategoryListScreen({
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (onFetchProducts && !loading) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (onFetchProducts) {
       setLoading(true);
       onFetchProducts(categorySlug)
         .then((fetchedProducts) => {
@@ -47,7 +46,7 @@ export function CategoryListScreen({
         })
         .finally(() => setLoading(false));
     }
-  }, [categorySlug, onFetchProducts, loading]);
+  }, [categorySlug, onFetchProducts]);
 
   // Filter products based on search query
   const filteredProducts = searchQuery
