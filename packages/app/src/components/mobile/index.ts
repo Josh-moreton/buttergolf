@@ -9,3 +9,6 @@ export type { MobileBottomNavProps } from "./MobileBottomNav";
 
 export { MobileCategoryHeader } from "./MobileCategoryHeader";
 export type { MobileCategoryHeaderProps } from "./MobileCategoryHeader";
+
+export { MobileFilterSheet } from "./MobileFilterSheet";
+export type { MobileFilterSheetProps, FilterState } from "./MobileFilterSheet";

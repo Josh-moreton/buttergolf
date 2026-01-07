@@ -13,6 +13,7 @@ import {
   View,
   Button,
 } from "@buttergolf/ui";
+import { Heart } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../types/product";
 
 export interface ProductCardProps {
@@ -41,11 +42,14 @@ function HeartIcon({ filled }: Readonly<{ filled: boolean }>) {
       </svg>
     );
   }
-  // For native, use Text with heart character
+  // For native, use lucide Heart icon with proper styling
   return (
-    <Text fontSize={16} color="$primary">
-      {filled ? "♥" : "♡"}
-    </Text>
+    <Heart
+      size={18}
+      color="#F45314"
+      fill={filled ? "#F45314" : "transparent"}
+      strokeWidth={2.5}
+    />
   );
 }
 

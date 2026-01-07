@@ -26,6 +26,7 @@ import type {
 import { OnboardingScreen } from "@buttergolf/app/src/features/onboarding";
 import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
+import { useMobileFavourites } from "@buttergolf/app/src/hooks";
 import {
   View as RNView,
   Text as RNText,
@@ -634,6 +635,48 @@ function AccountScreenWrapper({
   );
 }
 
+/**
+ * Wrapper component for CategoryListScreen that provides favourites
+ * functionality with Clerk authentication.
+ */
+function CategoryListScreenWrapper({
+  navigation,
+  categorySlug,
+  categoryName,
+  isAuthenticated,
+  onLoginPress,
+}: {
+  navigation: any;
+  categorySlug: string;
+  categoryName: string;
+  isAuthenticated: boolean;
+  onLoginPress?: () => void;
+}) {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const { favourites, toggleFavourite } = useMobileFavourites({
+    apiUrl,
+    getToken,
+    isAuthenticated,
+  });
+
+  return (
+    <CategoryListScreen
+      categorySlug={categorySlug}
+      categoryName={categoryName}
+      onFetchProducts={fetchProductsByCategory}
+      onBack={() => navigation.goBack()}
+      onSellPress={() => navigation.navigate("Sell")}
+      isAuthenticated={isAuthenticated}
+      onAccountPress={isAuthenticated ? () => navigation.navigate("Account") : undefined}
+      onLoginPress={onLoginPress}
+      favourites={favourites}
+      onToggleFavourite={toggleFavourite}
+    />
+  );
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -777,19 +820,15 @@ export default function App() {
                   }) => {
                     const slug = route.params?.slug;
                     return (
-                      <CategoryListScreen
+                      <CategoryListScreenWrapper
+                        navigation={navigation}
                         categorySlug={slug || ""}
                         categoryName={
                           slug
                             ? slug.charAt(0).toUpperCase() + slug.slice(1)
                             : "Category"
                         }
-                        onFetchProducts={fetchProductsByCategory}
-                        onBack={() => navigation.goBack()}
-                        onFilter={() => console.log("Filter pressed")}
-                        onSellPress={() => navigation.navigate("Sell")}
                         isAuthenticated={true}
-                        onAccountPress={() => navigation.navigate("Account")}
                       />
                     );
                   }}
@@ -882,7 +921,6 @@ function OnboardingFlow() {
                 }
                 onFetchProducts={fetchProductsByCategory}
                 onBack={() => navigation.goBack()}
-                onFilter={() => console.log("Filter pressed")}
                 onSellPress={() => navigation.navigate("Sell")}
                 isAuthenticated={false}
                 onLoginPress={() => setFlowState("signIn")}
