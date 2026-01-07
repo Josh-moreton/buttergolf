@@ -18,6 +18,7 @@ export const routes = {
   verifyEmail: "/verify-email",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  account: "/account",
 } as const;
 
 export type AppRoutes = typeof routes;

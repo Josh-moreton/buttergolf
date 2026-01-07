@@ -18,6 +18,7 @@ import type { Product } from "../../types/product";
 import { useLink } from "solito/navigation";
 import { routes } from "../../navigation";
 import { ArrowLeft, Heart, Share2, Eye } from "@tamagui/lucide-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Helper to format condition rating (1-10) to label
 function getConditionLabel(rating: number): string {
@@ -45,6 +46,7 @@ export function ProductDetailScreen({
   productId,
   onFetchProduct,
 }: Readonly<ProductDetailScreenProps>) {
+  const insets = useSafeAreaInsets();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -87,6 +89,7 @@ export function ProductDetailScreen({
         backgroundColor="$primary"
         alignItems="center"
         justifyContent="center"
+        paddingTop={insets.top}
       >
         <Spinner size="lg" color="$pureWhite" />
         <Text color="$textInverse" marginTop="$3">
@@ -98,7 +101,7 @@ export function ProductDetailScreen({
 
   if (error || !product) {
     return (
-      <Column flex={1} backgroundColor="$background" padding="$4" gap="$4">
+      <Column flex={1} backgroundColor="$background" padding="$4" paddingTop={insets.top + 16} gap="$4">
         <Button {...backLink} size="$4" icon={ArrowLeft}>
           Back to Products
         </Button>
@@ -122,7 +125,7 @@ export function ProductDetailScreen({
     : null;
 
   return (
-    <ScrollView flex={1} backgroundColor="$background">
+    <ScrollView flex={1} backgroundColor="$background" contentContainerStyle={{ paddingTop: insets.top }}>
       <Column>
         {/* Product Image */}
         {primaryImage && (

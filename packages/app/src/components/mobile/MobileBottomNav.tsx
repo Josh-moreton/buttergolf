@@ -11,12 +11,14 @@ import {
 } from "@tamagui/lucide-icons";
 
 export interface MobileBottomNavProps {
-  activeTab?: "home" | "wishlist" | "sell" | "messages" | "login";
+  activeTab?: "home" | "wishlist" | "sell" | "messages" | "login" | "account";
   onHomePress?: () => void;
   onWishlistPress?: () => void;
   onSellPress?: () => void;
   onMessagesPress?: () => void;
   onLoginPress?: () => void;
+  onAccountPress?: () => void;
+  isAuthenticated?: boolean;
 }
 
 /**
@@ -30,7 +32,13 @@ export function MobileBottomNav({
   onSellPress,
   onMessagesPress,
   onLoginPress,
+  onAccountPress,
+  isAuthenticated = false,
 }: Readonly<MobileBottomNavProps>) {
+  // Determine if the user/account tab is active
+  const isUserTabActive = isAuthenticated
+    ? activeTab === "account"
+    : activeTab === "login";
   return (
     <Column
       backgroundColor="$background"
@@ -157,29 +165,29 @@ export function MobileBottomNav({
           </Text>
         </Column>
 
-        {/* Login */}
+        {/* Login / Account - Conditional based on auth state */}
         <Column
           gap="$1"
           alignItems="center"
           minWidth={60}
-          onPress={onLoginPress}
+          onPress={isAuthenticated ? onAccountPress : onLoginPress}
           cursor="pointer"
           accessibilityRole="button"
-          accessibilityLabel="Log in"
-          accessibilityState={{ selected: activeTab === "login" }}
+          accessibilityLabel={isAuthenticated ? "Account" : "Log in"}
+          accessibilityState={{ selected: isUserTabActive }}
         >
           <User
             size={24}
-            color={activeTab === "login" ? "$spicedClementine" : "$ironstone"}
-            opacity={activeTab === "login" ? 1 : 0.5}
+            color={isUserTabActive ? "$spicedClementine" : "$ironstone"}
+            opacity={isUserTabActive ? 1 : 0.5}
           />
           <Text
             fontSize={11}
             color="$ironstone"
-            opacity={activeTab === "login" ? 1 : 0.5}
-            fontWeight={activeTab === "login" ? "600" : "400"}
+            opacity={isUserTabActive ? 1 : 0.5}
+            fontWeight={isUserTabActive ? "600" : "400"}
           >
-            Log-in
+            {isAuthenticated ? "Account" : "Log-in"}
           </Text>
         </Column>
       </Row>

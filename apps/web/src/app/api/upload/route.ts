@@ -165,7 +165,9 @@ export async function POST(request: Request): Promise<NextResponse> {
           effect: "background_removal",
         },
         {
-          underlay: "backgrounds:butter-pattern",
+          // Use the ButterGolf brand tiles background pattern
+          // Uploaded from: packages/assets/images/image-backgrounds/Butter Golf_Website brand tiles_BI81_V1_AW-01.jpg
+          underlay: "backgrounds:butter-pattern-tiles",
           flags: "tiled",
         },
         {

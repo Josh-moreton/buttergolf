@@ -22,12 +22,18 @@ interface HomeScreenProps {
   products?: ProductCardData[];
   onFetchProducts?: () => Promise<ProductCardData[]>;
   onSellPress?: () => void;
+  onLoginPress?: () => void;
+  onAccountPress?: () => void;
+  isAuthenticated?: boolean;
 }
 
 export function HomeScreen({
   products: initialProducts = [],
   onFetchProducts,
   onSellPress,
+  onLoginPress,
+  onAccountPress,
+  isAuthenticated = false,
 }: Readonly<HomeScreenProps>) {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<ProductCardData[]>(initialProducts);
@@ -291,11 +297,13 @@ export function HomeScreen({
       <Column position="absolute" bottom={0} left={0} right={0} zIndex={100}>
         <MobileBottomNav
           activeTab="home"
+          isAuthenticated={isAuthenticated}
           onHomePress={() => console.log("Home pressed")}
           onWishlistPress={() => console.log("Wishlist pressed")}
           onSellPress={onSellPress}
           onMessagesPress={() => console.log("Messages pressed")}
-          onLoginPress={() => console.log("Login pressed")}
+          onLoginPress={onLoginPress}
+          onAccountPress={onAccountPress}
         />
       </Column>
     </Column>
