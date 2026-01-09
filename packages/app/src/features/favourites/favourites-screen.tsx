@@ -396,7 +396,9 @@ function FavouriteProductCard({
           </Column>
 
           <Text size="$3" color="$textSecondary">
-            {product.category || "Uncategorized"}
+            {typeof product.category === "string"
+              ? product.category
+              : product.category?.name || "Uncategorized"}
           </Text>
 
           <Text size="$6" fontWeight="700" color="$primary" marginTop="$1">

@@ -87,13 +87,7 @@ export async function GET(req: NextRequest) {
       price: fav.product.price,
       condition: fav.product.condition,
       imageUrl: fav.product.images[0]?.url || null,
-      category: fav.product.category
-        ? {
-            id: fav.product.category.id,
-            name: fav.product.category.name,
-            slug: fav.product.category.slug,
-          }
-        : null,
+      category: fav.product.category?.name || "Uncategorized",
       seller: fav.product.user
         ? {
             id: fav.product.user.id,
