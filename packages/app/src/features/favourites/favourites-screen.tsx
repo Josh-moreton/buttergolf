@@ -12,10 +12,8 @@ import {
   Image,
 } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useLink } from "solito/navigation";
-import { Heart, Trash2, ArrowLeft, ShoppingBag } from "@tamagui/lucide-icons";
+import { Heart, Trash2, ArrowLeft } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
-import { routes } from "../../navigation";
 import { MobileBottomNav } from "../../components/mobile";
 
 interface FavouriteProduct extends ProductCardData {
@@ -113,19 +111,26 @@ export function FavouritesScreen({
     async (productId: string) => {
       if (!onRemoveFavourite) return;
 
+      // Store the product before removal for potential rollback
+      const productToRemove = products.find((p) => p.id === productId);
+      
       try {
         setRemovingId(productId);
-        await onRemoveFavourite(productId);
-        // Optimistically remove from UI
+        // Optimistically remove from UI first
         setProducts((prev) => prev.filter((p) => p.id !== productId));
+        await onRemoveFavourite(productId);
       } catch (err) {
         console.error("Error removing favourite:", err);
+        // Restore the product on error
+        if (productToRemove) {
+          setProducts((prev) => [...prev, productToRemove]);
+        }
         setError("Failed to remove from favourites");
       } finally {
         setRemovingId(null);
       }
     },
-    [onRemoveFavourite],
+    [onRemoveFavourite, products],
   );
 
   // Not authenticated state
@@ -147,6 +152,8 @@ export function FavouritesScreen({
                 padding="$2"
                 borderRadius="$full"
                 pressStyle={{ opacity: 0.7 }}
+                accessibilityRole="button"
+                accessibilityLabel="Go back"
               >
                 <ArrowLeft size={24} color="$text" />
               </Column>
@@ -158,7 +165,7 @@ export function FavouritesScreen({
         </Column>
 
         <Column flex={1} alignItems="center" justifyContent="center" padding="$6" gap="$4">
-          <Heart size={64} color="$cloudMist" />
+          <Heart size={64} color="$border" />
           <Heading level={3} color="$text" textAlign="center">
             Sign in to view your favourites
           </Heading>
@@ -209,6 +216,8 @@ export function FavouritesScreen({
               padding="$2"
               borderRadius="$full"
               pressStyle={{ opacity: 0.7 }}
+              accessibilityRole="button"
+              accessibilityLabel="Go back"
             >
               <ArrowLeft size={24} color="$text" />
             </Column>
@@ -262,7 +271,7 @@ export function FavouritesScreen({
             paddingVertical="$8"
             gap="$4"
           >
-            <Heart size={80} color="$cloudMist" />
+            <Heart size={80} color="$border" />
             <Heading level={3} color="$text" textAlign="center">
               No favourites yet
             </Heading>
@@ -352,28 +361,39 @@ function FavouriteProductCard({
       {/* Image and Info Row */}
       <Row gap="$3" alignItems="flex-start">
         {/* Product Image */}
-        <Image
-          source={{ uri: product.imageUrl }}
-          alt={product.title}
-          width={100}
-          height={100}
-          borderRadius="$md"
-          style={{ objectFit: "cover" }}
+        <Column
           onPress={onView}
           pressStyle={{ opacity: 0.9 }}
-        />
+          accessibilityRole="button"
+          accessibilityLabel={`View ${product.title}`}
+        >
+          <Image
+            source={{ uri: product.imageUrl }}
+            alt={product.title}
+            width={100}
+            height={100}
+            borderRadius="$md"
+            style={{ objectFit: "cover" }}
+          />
+        </Column>
 
         {/* Product Info */}
         <Column flex={1} gap="$1">
-          <Text
-            size="$5"
-            fontWeight="600"
-            color="$text"
-            numberOfLines={2}
+          <Column
             onPress={onView}
+            pressStyle={{ opacity: 0.9 }}
+            accessibilityRole="button"
+            accessibilityLabel={`View ${product.title}`}
           >
-            {product.title}
-          </Text>
+            <Text
+              size="$5"
+              fontWeight="600"
+              color="$text"
+              numberOfLines={2}
+            >
+              {product.title}
+            </Text>
+          </Column>
 
           <Text size="$3" color="$textSecondary">
             {product.category || "Uncategorized"}
@@ -406,9 +426,11 @@ function FavouriteProductCard({
           onPress={onRemove}
           padding="$2"
           borderRadius="$full"
-          backgroundColor="$cloudMist"
+          backgroundColor="$border"
           pressStyle={{ opacity: 0.7, backgroundColor: "$errorLight" }}
           disabled={isRemoving}
+          accessibilityRole="button"
+          accessibilityLabel="Remove from favourites"
         >
           <Trash2 size={20} color="$error" />
         </Column>
