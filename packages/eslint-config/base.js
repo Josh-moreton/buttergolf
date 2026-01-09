@@ -72,4 +72,26 @@ export const config = [
   {
     ignores: ["dist/**"],
   },
+  // ========================================================================
+  // CIRCULAR DEPENDENCY PREVENTION FOR UI COMPONENTS
+  // Components in packages/ui/src/components should import siblings directly,
+  // not through the barrel index, to avoid circular dependencies.
+  // ========================================================================
+  {
+    files: ["**/packages/ui/src/components/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["../index", "../index.ts", "../index.tsx"],
+              message:
+                "Do not import from the barrel index inside components/ to avoid circular dependencies. Use direct sibling imports instead, e.g.: import { Button } from './Button'",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];

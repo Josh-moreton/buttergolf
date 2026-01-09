@@ -22,7 +22,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Column, Row, Text, Heading, Button } from "../index";
+import { Column, Row } from "./Layout";
+import { Text, Heading } from "./Text";
+import { Button } from "./Button";
 
 export interface ErrorBoundaryProps {
   children: ReactNode;
