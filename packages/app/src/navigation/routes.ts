@@ -9,6 +9,7 @@ export const routes = {
   products: "/products",
   productDetail: "/products/[id]",
   category: "/category/[slug]",
+  favourites: "/favourites",
   sell: "/sell",
   orders: "/orders",
   orderDetail: "/orders/[id]",
