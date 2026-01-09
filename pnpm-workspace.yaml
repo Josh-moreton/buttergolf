@@ -22,6 +22,8 @@ catalog:
   '@tamagui/portal': 1.139.2
   '@tamagui/sheet': 1.139.2
   '@tamagui/shorthands': 1.139.2
+  '@tamagui/slider': 1.139.2
+  '@tamagui/switch': 1.139.2
   '@tamagui/themes': 1.139.2
   '@tamagui/toast': 1.139.2
   '@testing-library/jest-dom': 6.9.1
