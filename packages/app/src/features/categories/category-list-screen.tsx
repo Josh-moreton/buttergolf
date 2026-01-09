@@ -18,6 +18,9 @@ interface CategoryListScreenProps {
   onSellPress?: () => void;
   onLoginPress?: () => void;
   onAccountPress?: () => void;
+  onHomePress?: () => void;
+  onWishlistPress?: () => void;
+  onMessagesPress?: () => void;
   isAuthenticated?: boolean;
   /** Favourites - Set of product IDs that are favourited */
   favourites?: Set<string>;
@@ -34,6 +37,9 @@ export function CategoryListScreen({
   onSellPress,
   onLoginPress,
   onAccountPress,
+  onHomePress,
+  onWishlistPress,
+  onMessagesPress,
   isAuthenticated = false,
   favourites = new Set(),
   onToggleFavourite,
@@ -285,10 +291,10 @@ export function CategoryListScreen({
         <MobileBottomNav
           activeTab="home"
           isAuthenticated={isAuthenticated}
-          onHomePress={() => console.log("Home pressed")}
-          onWishlistPress={() => console.log("Wishlist pressed")}
+          onHomePress={onHomePress}
+          onWishlistPress={onWishlistPress}
           onSellPress={onSellPress}
-          onMessagesPress={() => console.log("Messages pressed")}
+          onMessagesPress={onMessagesPress}
           onLoginPress={onLoginPress}
           onAccountPress={onAccountPress}
         />

@@ -2,6 +2,7 @@ export * from "./features/home";
 export * from "./features/rounds";
 export * from "./features/products";
 export * from "./features/categories";
+export * from "./features/favourites";
 export * from "./features/sell";
 export * from "./features/auth";
 export * from "./features/account";

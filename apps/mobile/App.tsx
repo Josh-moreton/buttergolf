@@ -5,6 +5,7 @@ import {
   RoundsScreen,
   ProductDetailScreen,
   SellScreen,
+  FavouritesScreen,
   routes,
   SignInScreen,
   SignUpScreen,
@@ -86,6 +87,9 @@ const linking = {
       },
       Category: {
         path: "category/:slug", // 'category/:slug' for category pages
+      },
+      Favourites: {
+        path: routes.favourites.slice(1), // 'favourites'
       },
       Sell: {
         path: routes.sell.slice(1), // 'sell'
@@ -673,6 +677,106 @@ function CategoryListScreenWrapper({
       onLoginPress={onLoginPress}
       favourites={favourites}
       onToggleFavourite={toggleFavourite}
+      onHomePress={() => navigation.navigate("Home")}
+      onWishlistPress={() => navigation.navigate("Favourites")}
+      onMessagesPress={() => console.log("Messages pressed")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for FavouritesScreen that provides data fetching
+ * and navigation handlers with Clerk authentication.
+ */
+function FavouritesScreenWrapper({
+  navigation,
+  isAuthenticated,
+  onLoginPress,
+}: {
+  navigation: any;
+  isAuthenticated: boolean;
+  onLoginPress?: () => void;
+}) {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const fetchFavourites = async () => {
+    const token = await getToken();
+    if (!token) {
+      return { products: [], pagination: { page: 1, limit: 24, total: 0, totalPages: 0 } };
+    }
+
+    const response = await fetch(`${apiUrl}/api/favourites?page=1&limit=100`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch favourites");
+    }
+
+    return response.json();
+  };
+
+  const removeFavourite = async (productId: string) => {
+    const token = await getToken();
+    if (!token) throw new Error("Not authenticated");
+
+    const response = await fetch(`${apiUrl}/api/favourites/${productId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to remove favourite");
+    }
+  };
+
+  return (
+    <FavouritesScreen
+      isAuthenticated={isAuthenticated}
+      onFetchFavourites={fetchFavourites}
+      onRemoveFavourite={removeFavourite}
+      onBack={() => navigation.goBack()}
+      onViewProduct={(id) => navigation.navigate("ProductDetail", { id })}
+      onBuyNow={(id) => navigation.navigate("ProductDetail", { id })}
+      onMakeOffer={(id) => navigation.navigate("ProductDetail", { id })}
+      onBrowseListings={() => navigation.navigate("Home")}
+      onHomePress={() => navigation.navigate("Home")}
+      onSellPress={() => navigation.navigate("Sell")}
+      onMessagesPress={() => console.log("Messages pressed")}
+      onLoginPress={onLoginPress}
+      onAccountPress={() => navigation.navigate("Account")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for HomeScreen that provides navigation handlers.
+ */
+function HomeScreenWrapper({
+  navigation,
+  isAuthenticated,
+  onLoginPress,
+}: {
+  navigation: any;
+  isAuthenticated: boolean;
+  onLoginPress?: () => void;
+}) {
+  return (
+    <HomeScreen
+      onFetchProducts={fetchProducts}
+      onSellPress={() => navigation.navigate("Sell")}
+      isAuthenticated={isAuthenticated}
+      onAccountPress={() => navigation.navigate("Account")}
+      onWishlistPress={() => navigation.navigate("Favourites")}
+      onLoginPress={onLoginPress}
+      hideBuySellToggle={true}
     />
   );
 }
@@ -774,12 +878,9 @@ export default function App() {
               <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Home">
                   {({ navigation }: { navigation: any }) => (
-                    <HomeScreen
-                      onFetchProducts={fetchProducts}
-                      onSellPress={() => navigation.navigate("Sell")}
+                    <HomeScreenWrapper
+                      navigation={navigation}
                       isAuthenticated={true}
-                      onAccountPress={() => navigation.navigate("Account")}
-                      hideBuySellToggle={true}
                     />
                   )}
                 </Stack.Screen>
@@ -853,6 +954,17 @@ export default function App() {
                     <SellScreenWrapper navigation={navigation} />
                   )}
                 </Stack.Screen>
+                <Stack.Screen
+                  name="Favourites"
+                  options={{ headerShown: false }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <FavouritesScreenWrapper
+                      navigation={navigation}
+                      isAuthenticated={true}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
@@ -894,6 +1006,7 @@ function OnboardingFlow() {
               onSellPress={() => navigation.navigate("Sell")}
               isAuthenticated={false}
               onLoginPress={() => setFlowState("signIn")}
+              onWishlistPress={() => setFlowState("signIn")}
               hideBuySellToggle={true}
             />
           )}
@@ -925,6 +1038,9 @@ function OnboardingFlow() {
                 onSellPress={() => navigation.navigate("Sell")}
                 isAuthenticated={false}
                 onLoginPress={() => setFlowState("signIn")}
+                onHomePress={() => navigation.navigate("LoggedOutHome")}
+                onWishlistPress={() => setFlowState("signIn")}
+                onMessagesPress={() => setFlowState("signIn")}
               />
             );
           }}
