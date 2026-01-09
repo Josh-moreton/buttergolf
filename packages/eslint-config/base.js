@@ -28,7 +28,9 @@ export const config = [
   },
   {
     rules: {
-      // Prevent importing Tamagui config from @buttergolf/ui (deprecated)
+      // ========================================================================
+      // IMPORT RESTRICTIONS - Enforce correct import paths in monorepo
+      // ========================================================================
       "no-restricted-imports": [
         "error",
         {
@@ -46,7 +48,28 @@ export const config = [
               message:
                 "Import Tamagui config from '@buttergolf/config' instead of '@buttergolf/ui'. Use: import { config } from '@buttergolf/config'",
             },
+            // ================================================================
+            // PRISMA CLIENT - Must import from @buttergolf/db
+            // Direct @prisma/client imports cause "Cannot find module
+            // '.prisma/client/default'" errors in pnpm monorepos due to
+            // symlink resolution. Our custom output path fixes this.
+            // ================================================================
+            {
+              name: "@prisma/client",
+              message:
+                "Import from '@buttergolf/db' instead of '@prisma/client'. Direct imports cause build failures in pnpm monorepos. Use: import { prisma, Prisma, ProductCondition } from '@buttergolf/db'",
+            },
           ],
+        },
+      ],
+      // ========================================================================
+      // CONSOLE STATEMENTS - Prevent debug logs in production code
+      // Allow console.error and console.warn for legitimate error handling
+      // ========================================================================
+      "no-console": [
+        "warn",
+        {
+          allow: ["warn", "error", "info"],
         },
       ],
       // ========================================================================
@@ -90,6 +113,47 @@ export const config = [
                 "Do not import from the barrel index inside components/ to avoid circular dependencies. Use direct sibling imports instead, e.g.: import { Button } from './Button'",
             },
           ],
+        },
+      ],
+    },
+  },
+  // ========================================================================
+  // CROSS-PACKAGE IMPORT RESTRICTIONS
+  // Enforce proper dependency direction in the monorepo:
+  // - packages/* cannot import from apps/*
+  // - packages/app can import from packages/ui but not vice versa
+  // ========================================================================
+  {
+    files: ["**/packages/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/apps/web/**", "**/apps/mobile/**"],
+              message:
+                "Packages cannot import from apps. Move shared code to a package (e.g., @buttergolf/app or @buttergolf/ui).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  // ========================================================================
+  // PRISMA SINGLETON ENFORCEMENT
+  // Only packages/db should create PrismaClient instances.
+  // All other code must import the singleton from @buttergolf/db.
+  // ========================================================================
+  {
+    files: ["**/apps/**/*.{ts,tsx}", "**/packages/app/**/*.{ts,tsx}", "**/packages/ui/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "NewExpression[callee.name='PrismaClient']",
+          message:
+            "Do not create new PrismaClient instances. Import the singleton from '@buttergolf/db': import { prisma } from '@buttergolf/db'",
         },
       ],
     },

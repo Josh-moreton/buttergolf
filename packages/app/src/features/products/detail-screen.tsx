@@ -29,12 +29,12 @@ function getConditionLabel(rating: number): string {
   return "Poor";
 }
 
-// Helper to get condition color
-function getConditionColor(rating: number): string {
-  if (rating >= 9) return "$success";
-  if (rating >= 7) return "$info";
-  if (rating >= 5) return "$warning";
-  return "$error";
+// Helper to get condition color - returns theme token
+function getConditionColor(rating: number) {
+  if (rating >= 9) return "$success" as const;
+  if (rating >= 7) return "$info" as const;
+  if (rating >= 5) return "$warning" as const;
+  return "$error" as const;
 }
 
 interface ProductDetailScreenProps {
