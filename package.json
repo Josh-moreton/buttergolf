@@ -36,7 +36,7 @@
     "dotenv": "^17.2.3",
     "prettier": "^3.6.2",
     "tsx": "catalog:",
-    "turbo": "^2.7.3",
+    "turbo": "^2.7.4",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
