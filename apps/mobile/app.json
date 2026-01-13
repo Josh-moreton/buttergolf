@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Buttergolf",
     "slug": "buttergolf",
     "scheme": "buttergolf",
     "version": "1.0.0",
@@ -18,8 +18,13 @@
       "bundleIdentifier": "com.buttergolf.app",
       "associatedDomains": [
         "applinks:buttergolf.com",
+        "applinks:www.buttergolf.com",
+        "applinks:buttergolf.com",
         "applinks:www.buttergolf.com"
-      ]
+      ],
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.buttergolf.app",
@@ -45,7 +50,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
