@@ -49,7 +49,11 @@
       "@types/react": "19.1.17",
       "@types/react-dom": "19.1.0",
       "jsdom": "false",
-      "webidl-conversions": "5.0.0"
+      "webidl-conversions": "5.0.0",
+      "react-native": "0.81.5",
+      "react-native-svg": "15.12.1",
+      "react-native-reanimated": "4.1.1",
+      "expo-constants": "18.0.13"
     },
     "ignoredBuiltDependencies": [
       "@clerk/shared",
