@@ -5,10 +5,7 @@
     "scheme": "buttergolf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": {
-      "light": "./assets/icon.png",
-      "dark": "./assets/icon-dark.png"
-    },
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
