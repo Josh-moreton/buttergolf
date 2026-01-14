@@ -69,7 +69,14 @@
     },
     "owner": "vortexalchemist",
     "plugins": [
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.buttergolf.app",
+          "enableGooglePay": true
+        }
+      ]
     ]
   }
 }
