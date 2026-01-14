@@ -6,39 +6,44 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
  * Web apps send cookies with Clerk session automatically.
  * Mobile apps send Authorization: Bearer <token> header.
  *
- * This function tries both methods to support cross-platform authentication.
- * Uses Clerk's modern authenticateRequest() API (not legacy JWT verification).
+ * Uses Clerk's authenticateRequest() API which validates the complete HTTP request,
+ * including session cookies, Bearer tokens, and request state.
  *
- * @param request - The NextRequest object containing headers
- * @returns The Clerk user ID (userId), or null if authentication fails
+ * Authentication Strategy:
+ * 1. If a Request is provided, authenticate it directly (handles both cookies and Bearer tokens)
+ * 2. Otherwise, fall back to Next.js ambient auth context (cookie-based web flows)
+ *
+ * Error Handling:
+ * - Returns null for expected authentication failures (invalid/expired tokens, no auth)
+ * - Throws exceptions for unexpected failures (network errors, config issues)
+ * - Calling code should handle exceptions and return appropriate HTTP error responses
+ *
+ * @param request - Optional Request object. If omitted, only cookie-based session
+ *                  authentication is attempted (suitable for server components).
+ *                  When provided, enables Bearer token authentication for mobile clients.
+ * @returns The Clerk user ID (userId), or null if user is not authenticated
+ * @throws Error if authentication system fails (network, config, etc.)
  */
 export async function getUserIdFromRequest(
   request?: Request,
 ): Promise<string | null> {
-  // First try Clerk's built-in auth (works for web with cookies)
-  const { userId } = await auth();
-  if (userId) {
-    return userId;
-  }
-
-  // If no session and no request provided, authentication failed
-  if (!request) {
-    return null;
-  }
-
-  // If no session, try to authenticate the request (for mobile Bearer tokens)
-  // This uses Clerk's modern authenticateRequest() API
-  try {
+  // If we have a concrete Request, authenticate *that* directly.
+  // authenticateRequest() handles both cookies and Authorization: Bearer tokens.
+  if (request) {
     const client = await clerkClient();
-    const requestState = await client.authenticateRequest(request);
+    const state = await client.authenticateRequest(request);
 
-    if (requestState.isAuthenticated) {
-      const authObject = requestState.toAuth();
-      return authObject.userId;
+    if (!state.isAuthenticated) {
+      // Expected case: user not authenticated or invalid token
+      return null;
     }
-  } catch (error) {
-    console.error("Request authentication failed:", error);
+
+    const authObject = state.toAuth();
+    return authObject.userId;
   }
 
-  return null;
+  // Otherwise fall back to Next.js ambient request auth (cookie-based web flows).
+  // This is used when no Request object is available (server components, edge cases).
+  const { userId } = await auth();
+  return userId ?? null;
 }

@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { getUserIdFromRequest } from "@/lib/auth";
+import {
+  logError,
+  logWarning,
+  FAV_DELETE_FAILED,
+  AUTH_USER_NOT_FOUND,
+} from "@buttergolf/constants";
 
 /**
  * DELETE /api/favourites/[productId]
@@ -11,14 +17,18 @@ export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ productId: string }> },
 ) {
+  let clerkId: string | null = null;
+  let productId: string | undefined;
+
   try {
-    const clerkId = await getUserIdFromRequest(req);
+    clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { productId } = await context.params;
+    const params = await context.params;
+    productId = params.productId;
 
     if (!productId) {
       return NextResponse.json(
@@ -34,7 +44,19 @@ export async function DELETE(
     });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      logWarning("User not found in database during favourite deletion", {
+        errorId: AUTH_USER_NOT_FOUND,
+        clerkId,
+        productId,
+      });
+
+      return NextResponse.json(
+        {
+          error: "User not found",
+          message: "Your account is not synced. Please try again later.",
+        },
+        { status: 404 },
+      );
     }
 
     // Delete favourite using unique constraint
@@ -56,24 +78,44 @@ export async function DELETE(
         { status: 200 },
       );
     } catch (error: unknown) {
-      // Handle case where favourite doesn't exist
+      // Handle case where favourite doesn't exist (P2025 = record not found)
       if (
         error &&
         typeof error === "object" &&
         "code" in error &&
         error.code === "P2025"
       ) {
+        // This is expected if user tries to unfavourite something that's not favourited
         return NextResponse.json(
           { error: "Favourite not found" },
           { status: 404 },
         );
       }
+
+      // Log unexpected database errors
+      logError("Failed to delete favourite record", error, {
+        errorId: FAV_DELETE_FAILED,
+        userId: clerkId,
+        productId,
+      });
+
       throw error;
     }
   } catch (error) {
-    console.error("Error removing favourite:", error);
+    // Catch-all for unexpected errors
+    logError("Unexpected error while removing favourite", error, {
+      errorId: FAV_DELETE_FAILED,
+      userId: clerkId,
+      productId,
+      endpoint: `/api/favourites/${productId}`,
+    });
+
     return NextResponse.json(
-      { error: "Failed to remove favourite" },
+      {
+        error: "Failed to remove favourite",
+        message:
+          "Unable to remove product from favourites. Please try again later.",
+      },
       { status: 500 },
     );
   }

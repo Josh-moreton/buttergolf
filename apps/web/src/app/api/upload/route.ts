@@ -1,6 +1,14 @@
 import { v2 as cloudinary, UploadApiOptions } from "cloudinary";
 import { NextResponse } from "next/server";
 import { getUserIdFromRequest } from "@/lib/auth";
+import {
+  logError,
+  logWarning,
+  UPLOAD_CLOUDINARY_CONFIG_MISSING,
+  UPLOAD_FAILED,
+  UPLOAD_BACKGROUND_REMOVAL_FAILED,
+  UPLOAD_CONVERSION_FAILED,
+} from "@buttergolf/constants";
 
 // Cloudinary configuration
 cloudinary.config({
@@ -45,6 +53,7 @@ function getCorsHeaders(request: Request): Record<string, string> {
 
 export async function POST(request: Request): Promise<NextResponse> {
   const corsHeaders = getCorsHeaders(request);
+  let userId: string | null = null;
 
   // Check if Cloudinary is configured
   if (
@@ -52,7 +61,19 @@ export async function POST(request: Request): Promise<NextResponse> {
     !process.env.CLOUDINARY_API_KEY ||
     !process.env.CLOUDINARY_API_SECRET
   ) {
-    console.error("Cloudinary is not configured");
+    logError(
+      "Cloudinary configuration missing",
+      new Error("Missing required environment variables"),
+      {
+        errorId: UPLOAD_CLOUDINARY_CONFIG_MISSING,
+        missingVars: {
+          cloudName: !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+          apiKey: !process.env.CLOUDINARY_API_KEY,
+          apiSecret: !process.env.CLOUDINARY_API_SECRET,
+        },
+      },
+    );
+
     return NextResponse.json(
       {
         error:
@@ -64,13 +85,29 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  // Authenticate user (supports both web cookies and mobile Bearer token)
-  const userId = await getUserIdFromRequest(request);
+  try {
+    // Authenticate user (supports both web cookies and mobile Bearer token)
+    userId = await getUserIdFromRequest(request);
 
-  if (!userId) {
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401, headers: corsHeaders },
+      );
+    }
+  } catch (authError) {
+    // Authentication system failure (not just "unauthorized")
+    logError("Authentication failed during upload", authError, {
+      errorId: UPLOAD_FAILED,
+      stage: "authentication",
+    });
+
     return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401, headers: corsHeaders },
+      {
+        error: "Authentication error",
+        message: "Unable to verify your identity. Please try again later.",
+      },
+      { status: 500, headers: corsHeaders },
     );
   }
 
@@ -105,9 +142,30 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     // Convert request body to base64 for Cloudinary upload
-    const arrayBuffer = await request.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const base64Image = `data:${contentType};base64,${buffer.toString("base64")}`;
+    let arrayBuffer: ArrayBuffer;
+    let buffer: Buffer;
+    let base64Image: string;
+
+    try {
+      arrayBuffer = await request.arrayBuffer();
+      buffer = Buffer.from(arrayBuffer);
+      base64Image = `data:${contentType};base64,${buffer.toString("base64")}`;
+    } catch (conversionError) {
+      logError("Failed to convert request body to base64", conversionError, {
+        errorId: UPLOAD_CONVERSION_FAILED,
+        userId,
+        filename,
+        contentType,
+      });
+
+      return NextResponse.json(
+        {
+          error: "Failed to process image",
+          message: "Unable to read image data. Please try again.",
+        },
+        { status: 400, headers: corsHeaders },
+      );
+    }
 
     // Debug logging
     console.log("📤 Cloudinary Upload:", {
@@ -183,29 +241,65 @@ export async function POST(request: Request): Promise<NextResponse> {
       { headers: corsHeaders },
     );
   } catch (error) {
-    console.error("Upload error:", error);
-
-    // Provide more specific error messages
     const errorMessage =
       error instanceof Error ? error.message : "Upload failed";
 
     // If background removal fails, provide helpful error
     if (errorMessage.includes("background_removal")) {
+      logError("Background removal failed during upload", error, {
+        errorId: UPLOAD_BACKGROUND_REMOVAL_FAILED,
+        userId,
+        filename,
+        isFirstImage,
+      });
+
       return NextResponse.json(
         {
           error: "Background removal failed",
-          details:
-            "The image may not be suitable for automatic background removal. Please try a different image or contact support.",
-          fallback: "Upload will proceed without background removal",
+          message:
+            "The image may not be suitable for automatic background removal. Please try a different image.",
         },
         { status: 500, headers: corsHeaders },
       );
     }
 
+    // Check for Cloudinary-specific errors
+    const isCloudinaryError =
+      errorMessage.includes("quota") ||
+      errorMessage.includes("rate limit") ||
+      errorMessage.includes("Invalid");
+
+    if (isCloudinaryError) {
+      logError("Cloudinary service error during upload", error, {
+        errorId: UPLOAD_FAILED,
+        userId,
+        filename,
+        errorType: "cloudinary_service",
+      });
+
+      return NextResponse.json(
+        {
+          error: "Upload service error",
+          message:
+            "The image upload service is experiencing issues. Please try again later.",
+        },
+        { status: 503, headers: corsHeaders },
+      );
+    }
+
+    // Generic upload failure
+    logError("Failed to upload image to Cloudinary", error, {
+      errorId: UPLOAD_FAILED,
+      userId,
+      filename,
+      contentType,
+      isFirstImage,
+    });
+
     return NextResponse.json(
       {
         error: "Failed to upload image",
-        details: errorMessage,
+        message: "Unable to upload your image. Please try again.",
       },
       { status: 500, headers: corsHeaders },
     );
