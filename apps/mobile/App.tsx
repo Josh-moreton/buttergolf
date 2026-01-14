@@ -36,6 +36,7 @@ import {
   Platform,
 } from "react-native";
 import { ClerkProvider, SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
+import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
@@ -854,9 +855,15 @@ export default function App() {
 
   // Debug: Verify Clerk publishable key is loaded
   const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const stripePublishableKey = process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  
   console.log(
     "[Clerk] Publishable key:",
     clerkPublishableKey ? "LOADED" : "MISSING",
+  );
+  console.log(
+    "[Stripe] Publishable key:",
+    stripePublishableKey ? "LOADED" : "MISSING",
   );
 
   if (!clerkPublishableKey) {
@@ -865,12 +872,19 @@ export default function App() {
     );
   }
 
+  if (!stripePublishableKey) {
+    console.error(
+      "[Stripe] EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.",
+    );
+  }
+
   return (
     <SafeAreaProvider>
-      <ClerkProvider
-        tokenCache={tokenCache}
-        publishableKey={clerkPublishableKey}
-      >
+      <StripeProvider publishableKey={stripePublishableKey || ""}>
+        <ClerkProvider
+          tokenCache={tokenCache}
+          publishableKey={clerkPublishableKey}
+        >
         {/* Wrap app content in Tamagui Provider so SignedOut onboarding can use UI components */}
         <Provider>
           <SignedIn>
@@ -976,6 +990,7 @@ export default function App() {
           </SignedOut>
         </Provider>
       </ClerkProvider>
+      </StripeProvider>
     </SafeAreaProvider>
   );
 }
