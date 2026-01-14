@@ -1,5 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
-import { verifyToken } from "@clerk/backend";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 /**
  * Get user ID from either Clerk session (web) or Bearer token (mobile).
@@ -8,7 +7,7 @@ import { verifyToken } from "@clerk/backend";
  * Mobile apps send Authorization: Bearer <token> header.
  *
  * This function tries both methods to support cross-platform authentication.
- * Uses CLERK_JWT_KEY for networkless verification (faster, no API call to Clerk).
+ * Uses Clerk's modern authenticateRequest() API (not legacy JWT verification).
  *
  * @param request - The NextRequest object containing headers
  * @returns The Clerk user ID (userId), or null if authentication fails
@@ -27,32 +26,18 @@ export async function getUserIdFromRequest(
     return null;
   }
 
-  // If no session, try to verify Bearer token (for mobile apps)
-  const authHeader = request.headers.get("Authorization");
-  if (authHeader?.startsWith("Bearer ")) {
-    const token = authHeader.replace(/^Bearer\s+/i, "").trim();
-    try {
-      // Use JWT key for networkless verification (faster than secretKey)
-      // Falls back to secretKey if jwtKey not available
-      const jwtKey = process.env.CLERK_JWT_KEY;
-      const secretKey = process.env.CLERK_SECRET_KEY;
+  // If no session, try to authenticate the request (for mobile Bearer tokens)
+  // This uses Clerk's modern authenticateRequest() API
+  try {
+    const client = await clerkClient();
+    const requestState = await client.authenticateRequest(request);
 
-      if (!jwtKey && !secretKey) {
-        console.error(
-          "Neither CLERK_JWT_KEY nor CLERK_SECRET_KEY is configured",
-        );
-        return null;
-      }
-
-      const payload = await verifyToken(token, {
-        // Prefer jwtKey for networkless verification, fall back to secretKey
-        ...(jwtKey ? { jwtKey } : { secretKey }),
-      });
-      return payload.sub; // sub is the user ID
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      return null;
+    if (requestState.isAuthenticated) {
+      const authObject = requestState.toAuth();
+      return authObject.userId;
     }
+  } catch (error) {
+    console.error("Request authentication failed:", error);
   }
 
   return null;
