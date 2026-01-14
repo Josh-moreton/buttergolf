@@ -5,8 +5,11 @@
     "scheme": "buttergolf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": {
+      "light": "./assets/icon.png",
+      "dark": "./assets/icon-dark.png"
+    },
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/logo-orange.png",
@@ -16,6 +19,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.buttergolf.app",
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/icon-dark.png"
+      },
       "associatedDomains": [
         "applinks:buttergolf.com",
         "applinks:www.buttergolf.com"
