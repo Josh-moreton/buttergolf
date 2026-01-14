@@ -44,7 +44,6 @@ export function logError(
 
   // Structured log output
   console.error(`[${context.errorId}] ${message}`, {
-    errorId: context.errorId,
     message: errorMessage,
     stack: errorStack,
     ...context,
