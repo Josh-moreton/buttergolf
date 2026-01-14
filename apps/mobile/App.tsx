@@ -866,21 +866,46 @@ export default function App() {
     stripePublishableKey ? "LOADED" : "MISSING",
   );
 
-  if (!clerkPublishableKey) {
-    console.error(
-      "[Clerk] EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.",
-    );
-  }
-
-  if (!stripePublishableKey) {
-    console.error(
-      "[Stripe] EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Check apps/mobile/.env file and restart Expo with --clear flag.",
+  // CRITICAL: If keys are missing, show error screen instead of crashing
+  // This prevents native module initialization with empty/invalid keys
+  if (!clerkPublishableKey || !stripePublishableKey) {
+    const missingKeys = [];
+    if (!clerkPublishableKey) missingKeys.push("EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
+    if (!stripePublishableKey) missingKeys.push("EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY");
+    
+    return (
+      <SafeAreaProvider>
+        <RNView
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#fbfbf9",
+            padding: 20,
+          }}
+        >
+          <RNText style={{ fontSize: 24, fontWeight: "bold", marginBottom: 16, color: "#dc2626" }}>
+            Configuration Error
+          </RNText>
+          <RNText style={{ fontSize: 16, marginBottom: 12, textAlign: "center" }}>
+            Missing required environment variables:
+          </RNText>
+          {missingKeys.map((key) => (
+            <RNText key={key} style={{ fontSize: 14, fontFamily: "monospace", marginBottom: 4, color: "#ef4444" }}>
+              • {key}
+            </RNText>
+          ))}
+          <RNText style={{ fontSize: 14, marginTop: 16, textAlign: "center", color: "#666" }}>
+            Please configure these in EAS secrets and rebuild the app.
+          </RNText>
+        </RNView>
+      </SafeAreaProvider>
     );
   }
 
   return (
     <SafeAreaProvider>
-      <StripeProvider publishableKey={stripePublishableKey || ""}>
+      <StripeProvider publishableKey={stripePublishableKey}>
         <ClerkProvider
           tokenCache={tokenCache}
           publishableKey={clerkPublishableKey}
