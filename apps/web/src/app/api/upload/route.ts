@@ -1,7 +1,6 @@
 import { v2 as cloudinary, UploadApiOptions } from "cloudinary";
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
-import { verifyToken } from "@clerk/backend";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 // Cloudinary configuration
 cloudinary.config({
@@ -9,36 +8,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-/**
- * Get user ID from either Clerk session (web) or Bearer token (mobile).
- * Mobile apps send Authorization: Bearer <token> header.
- */
-async function getUserId(request: Request): Promise<string | null> {
-  // First try Clerk's built-in auth (works for web with cookies)
-  const { userId } = await auth();
-  if (userId) {
-    return userId;
-  }
-
-  // If no session, try to verify Bearer token (for mobile apps)
-  const authHeader = request.headers.get("Authorization");
-  if (authHeader?.startsWith("Bearer ")) {
-    const token = authHeader.replace(/^Bearer\s+/i, "").trim();
-    try {
-      const secretKey = process.env.CLERK_SECRET_KEY;
-      if (!secretKey) return null;
-
-      const payload = await verifyToken(token, { secretKey });
-      return payload.sub; // sub is the user ID
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      return null;
-    }
-  }
-
-  return null;
-}
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "")
   .split(",")
@@ -96,7 +65,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   // Authenticate user (supports both web cookies and mobile Bearer token)
-  const userId = await getUserId(request);
+  const userId = await getUserIdFromRequest(request);
 
   if (!userId) {
     return NextResponse.json(

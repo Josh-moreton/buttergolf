@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * DELETE /api/favourites/[productId]
  * Remove a product from the authenticated user's favourites
+ * Supports both web (session cookies) and mobile (Bearer token) authentication
  */
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ productId: string }> },
 ) {
   try {
-    const { userId: clerkId } = await auth();
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

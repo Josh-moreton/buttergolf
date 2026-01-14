@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * GET /api/favourites
  * Fetch all products favourited by the authenticated user
  * Returns array of products with their details (images, category, seller info)
+ * Supports both web (session cookies) and mobile (Bearer token) authentication
  */
 export async function GET(req: NextRequest) {
   try {
-    const { userId: clerkId } = await auth();
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -123,10 +124,11 @@ export async function GET(req: NextRequest) {
  * POST /api/favourites
  * Add a product to the authenticated user's favourites
  * Body: { productId: string }
+ * Supports both web (session cookies) and mobile (Bearer token) authentication
  */
 export async function POST(req: NextRequest) {
   try {
-    const { userId: clerkId } = await auth();
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
