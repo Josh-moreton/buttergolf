@@ -1,4 +1,5 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { verifyToken } from "@clerk/backend";
 
 /**
  * Get user ID from either Clerk session (web) or Bearer token (mobile).
@@ -6,16 +7,13 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
  * Web apps send cookies with Clerk session automatically.
  * Mobile apps send Authorization: Bearer <token> header.
  *
- * Uses Clerk's authenticateRequest() API which validates the complete HTTP request,
- * including session cookies, Bearer tokens, and request state.
- *
  * Authentication Strategy:
- * 1. If a Request is provided, authenticate it directly (handles both cookies and Bearer tokens)
- * 2. Otherwise, fall back to Next.js ambient auth context (cookie-based web flows)
+ * 1. If Bearer token present → use verifyToken() for direct JWT validation (mobile)
+ * 2. If no Bearer token but Request provided → use authenticateRequest() for cookies (web API routes)
+ * 3. If no Request → use auth() for ambient context (server components)
  *
- * IMPORTANT: We pass an empty authorizedParties array to skip azp (authorized party) validation.
- * This is required for mobile apps where tokens don't have a web Origin, and maintains
- * compatibility with the original behavior before the authenticateRequest() migration.
+ * IMPORTANT: authenticateRequest() does NOT handle Bearer tokens - it only handles cookies.
+ * Mobile apps MUST use verifyToken() for Bearer token validation.
  *
  * @param request - Optional Request object. If omitted, only cookie-based session
  *                  authentication is attempted (suitable for server components).
@@ -25,27 +23,46 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 export async function getUserIdFromRequest(
   request?: Request,
 ): Promise<string | null> {
-  // If we have a concrete Request, authenticate *that* directly.
-  // authenticateRequest() handles both cookies and Authorization: Bearer tokens.
   if (request) {
-    const client = await clerkClient();
+    // Check for Bearer token (mobile apps)
+    const authHeader = request.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.slice(7).trim(); // Remove "Bearer " prefix
 
-    // Pass empty authorizedParties to skip azp validation.
-    // This is required for mobile apps (Bearer tokens) where the azp claim
-    // may be null or different from web URLs. Web requests (cookies) also
-    // work fine with this since Clerk still validates the session itself.
+      if (!token) {
+        console.log("[Auth] Empty Bearer token");
+        return null;
+      }
+
+      try {
+        // Use verifyToken for direct JWT validation (mobile apps)
+        // This is the correct method for Bearer tokens - authenticateRequest() only handles cookies
+        const payload = await verifyToken(token, {
+          secretKey: process.env.CLERK_SECRET_KEY,
+        });
+
+        console.log("[Auth] Bearer token verified successfully:", {
+          userId: payload.sub,
+        });
+
+        return payload.sub; // sub is the user ID
+      } catch (error) {
+        console.log("[Auth] Bearer token verification failed:", {
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+        return null;
+      }
+    }
+
+    // No Bearer token - try cookie-based authentication (web requests)
+    const client = await clerkClient();
     const state = await client.authenticateRequest(request, {
       authorizedParties: [],
     });
 
     if (!state.isAuthenticated) {
-      // Log for debugging authentication failures
-      const isBearerToken = request.headers
-        .get("Authorization")
-        ?.startsWith("Bearer ");
-      console.log("[Auth] Authentication failed:", {
+      console.log("[Auth] Cookie auth failed:", {
         reason: state.reason,
-        isBearerToken,
       });
       return null;
     }
@@ -53,8 +70,7 @@ export async function getUserIdFromRequest(
     return state.toAuth().userId;
   }
 
-  // Otherwise fall back to Next.js ambient request auth (cookie-based web flows).
-  // This is used when no Request object is available (server components, edge cases).
+  // No Request object - use ambient auth context (server components)
   const { userId } = await auth();
   return userId ?? null;
 }
