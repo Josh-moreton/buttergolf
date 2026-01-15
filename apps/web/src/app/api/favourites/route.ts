@@ -1,15 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
+import {
+  logError,
+  logWarning,
+  FAV_FETCH_FAILED,
+  FAV_USER_NOT_SYNCED,
+  FAV_CREATE_FAILED,
+  FAV_ALREADY_EXISTS,
+  FAV_PRODUCT_NOT_FOUND,
+  FAV_USER_UPSERT_FAILED,
+} from "@buttergolf/constants";
 
 /**
  * GET /api/favourites
  * Fetch all products favourited by the authenticated user
  * Returns array of products with their details (images, category, seller info)
+ * Supports both web (session cookies) and mobile (Bearer token) authentication
  */
 export async function GET(req: NextRequest) {
+  let clerkId: string | null = null;
+
   try {
-    const { userId: clerkId } = await auth();
+    clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -22,7 +35,12 @@ export async function GET(req: NextRequest) {
     });
 
     if (!user) {
-      // User not synced yet, return empty array
+      // User not synced yet - this is expected behavior (Clerk webhook hasn't fired yet)
+      logWarning("User not synced to database, returning empty favourites", {
+        errorId: FAV_USER_NOT_SYNCED,
+        clerkId,
+      });
+
       return NextResponse.json({
         products: [],
         pagination: {
@@ -111,9 +129,20 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching favourites:", error);
+    // Log with context for debugging
+    logError("Failed to fetch user favourites", error, {
+      errorId: FAV_FETCH_FAILED,
+      userId: clerkId,
+      endpoint: "/api/favourites",
+    });
+
+    // Provide user-friendly error message
     return NextResponse.json(
-      { error: "Failed to fetch favourites" },
+      {
+        error: "Failed to fetch favourites",
+        message:
+          "Unable to retrieve your favourites. Please try again later.",
+      },
       { status: 500 },
     );
   }
@@ -123,17 +152,21 @@ export async function GET(req: NextRequest) {
  * POST /api/favourites
  * Add a product to the authenticated user's favourites
  * Body: { productId: string }
+ * Supports both web (session cookies) and mobile (Bearer token) authentication
  */
 export async function POST(req: NextRequest) {
+  let clerkId: string | null = null;
+  let productId: string | undefined;
+
   try {
-    const { userId: clerkId } = await auth();
+    clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const { productId } = body;
+    productId = body.productId;
 
     if (!productId || typeof productId !== "string") {
       return NextResponse.json(
@@ -149,20 +182,43 @@ export async function POST(req: NextRequest) {
     });
 
     if (!product) {
+      logWarning("Attempt to favourite non-existent product", {
+        errorId: FAV_PRODUCT_NOT_FOUND,
+        clerkId,
+        productId,
+      });
+
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     // Ensure user exists in database (create if webhook hasn't synced yet)
-    const user = await prisma.user.upsert({
-      where: { clerkId },
-      update: {},
-      create: {
-        clerkId,
-        email: `temp-${clerkId}@buttergolf.app`, // Temporary email, will be updated by webhook
-        firstName: "User", // Placeholder, will be updated by webhook
-        lastName: "",
-      },
-    });
+    let user;
+    try {
+      user = await prisma.user.upsert({
+        where: { clerkId },
+        update: {},
+        create: {
+          clerkId,
+          email: `temp-${clerkId}@buttergolf.app`, // Temporary email, will be updated by webhook
+          firstName: "User", // Placeholder, will be updated by webhook
+          lastName: "",
+        },
+      });
+    } catch (upsertError) {
+      logError("Failed to upsert user during favourite creation", upsertError, {
+        errorId: FAV_USER_UPSERT_FAILED,
+        userId: clerkId,
+        productId,
+      });
+
+      return NextResponse.json(
+        {
+          error: "Failed to create user record",
+          message: "Please try again later.",
+        },
+        { status: 500 },
+      );
+    }
 
     // Create favourite (unique constraint prevents duplicates)
     try {
@@ -192,17 +248,36 @@ export async function POST(req: NextRequest) {
         "code" in error &&
         error.code === "P2002"
       ) {
+        // This is expected behavior when user tries to favourite twice
         return NextResponse.json(
           { error: "Product already in favourites" },
           { status: 409 },
         );
       }
+
+      // Log unexpected database errors
+      logError("Failed to create favourite record", error, {
+        errorId: FAV_CREATE_FAILED,
+        userId: clerkId,
+        productId,
+      });
+
       throw error;
     }
   } catch (error) {
-    console.error("Error adding favourite:", error);
+    // Catch-all for unexpected errors
+    logError("Unexpected error while adding favourite", error, {
+      errorId: FAV_CREATE_FAILED,
+      userId: clerkId,
+      productId,
+      endpoint: "/api/favourites",
+    });
+
     return NextResponse.json(
-      { error: "Failed to add favourite" },
+      {
+        error: "Failed to add favourite",
+        message: "Unable to add product to favourites. Please try again later.",
+      },
       { status: 500 },
     );
   }

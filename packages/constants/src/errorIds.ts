@@ -1,0 +1,42 @@
+/**
+ * Error ID Constants for Tracking and Monitoring
+ *
+ * These IDs are used to categorize errors for:
+ * - Sentry error grouping
+ * - Error rate monitoring
+ * - Debugging and support
+ *
+ * Format: [DOMAIN]_[CATEGORY]_[SPECIFIC_ERROR]
+ */
+
+// Authentication Errors (AUTH_*)
+export const AUTH_CLERK_REQUEST_FAILED = "AUTH_CLERK_REQUEST_FAILED";
+export const AUTH_CLERK_SESSION_FAILED = "AUTH_CLERK_SESSION_FAILED";
+export const AUTH_TOKEN_INVALID = "AUTH_TOKEN_INVALID";
+export const AUTH_USER_NOT_FOUND = "AUTH_USER_NOT_FOUND";
+
+// Favourites API Errors (FAV_*)
+export const FAV_FETCH_FAILED = "FAV_FETCH_FAILED";
+export const FAV_USER_NOT_SYNCED = "FAV_USER_NOT_SYNCED";
+export const FAV_CREATE_FAILED = "FAV_CREATE_FAILED";
+export const FAV_DELETE_FAILED = "FAV_DELETE_FAILED";
+export const FAV_PRODUCT_NOT_FOUND = "FAV_PRODUCT_NOT_FOUND";
+export const FAV_ALREADY_EXISTS = "FAV_ALREADY_EXISTS";
+export const FAV_USER_UPSERT_FAILED = "FAV_USER_UPSERT_FAILED";
+
+// Upload API Errors (UPLOAD_*)
+export const UPLOAD_CLOUDINARY_CONFIG_MISSING = "UPLOAD_CLOUDINARY_CONFIG_MISSING";
+export const UPLOAD_FAILED = "UPLOAD_FAILED";
+export const UPLOAD_BACKGROUND_REMOVAL_FAILED = "UPLOAD_BACKGROUND_REMOVAL_FAILED";
+export const UPLOAD_INVALID_FILE_TYPE = "UPLOAD_INVALID_FILE_TYPE";
+export const UPLOAD_CONVERSION_FAILED = "UPLOAD_CONVERSION_FAILED";
+
+// Database Errors (DB_*)
+export const DB_CONNECTION_FAILED = "DB_CONNECTION_FAILED";
+export const DB_QUERY_TIMEOUT = "DB_QUERY_TIMEOUT";
+export const DB_CONSTRAINT_VIOLATION = "DB_CONSTRAINT_VIOLATION";
+
+// General API Errors (API_*)
+export const API_INVALID_REQUEST = "API_INVALID_REQUEST";
+export const API_RATE_LIMIT_EXCEEDED = "API_RATE_LIMIT_EXCEEDED";
+export const API_INTERNAL_ERROR = "API_INTERNAL_ERROR";
