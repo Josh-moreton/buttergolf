@@ -7,7 +7,7 @@ import type { ISitemapField } from "next-sitemap";
 export const revalidate = 21600;
 
 export async function GET() {
-  const siteUrl = process.env.SITE_URL || "https://buttergolf.com";
+  const siteUrl = process.env.SITE_URL || "https://www.buttergolf.com";
 
   try {
     // Fetch all products from the database
