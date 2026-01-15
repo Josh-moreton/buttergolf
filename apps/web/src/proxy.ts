@@ -35,6 +35,21 @@ const isComingSoonAllowedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // DEBUG: Log incoming request headers for API routes to diagnose mobile auth
+  if (req.url.includes('/api/')) {
+    const authHeader = req.headers.get('Authorization');
+    console.log('[Proxy] API request headers:', {
+      url: req.url,
+      method: req.method,
+      hasAuthHeader: !!authHeader,
+      authHeaderPrefix: authHeader?.substring(0, 30),
+      authHeaderLength: authHeader?.length,
+      userAgent: req.headers.get('User-Agent')?.substring(0, 80),
+      origin: req.headers.get('Origin'),
+      host: req.headers.get('Host'),
+    });
+  }
+
   // Handle CORS preflight OPTIONS requests
   if (req.method === "OPTIONS") {
     const origin = req.headers.get("origin");
