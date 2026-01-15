@@ -5,7 +5,7 @@
     "scheme": "buttergolf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon-v2.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -17,8 +17,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.buttergolf.app",
       "icon": {
-        "light": "./assets/icon-v2.png",
-        "dark": "./assets/icon-dark-v2.png"
+        "light": "./assets/icon.png",
+        "dark": "./assets/icon-old.png"
       },
       "associatedDomains": [
         "applinks:buttergolf.com",
@@ -31,7 +31,7 @@
     "android": {
       "package": "com.buttergolf.app",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon-v2.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,

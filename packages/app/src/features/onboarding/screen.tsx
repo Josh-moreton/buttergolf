@@ -26,45 +26,82 @@ const CARD_WIDTH = SCREEN_W * 0.55; // 55% of screen width (reduced from 70%)
 const CARD_HEIGHT = CAROUSEL_HEIGHT * 0.42; // Each row is ~42% of carousel height
 const GAP = 16; // Gap between cards
 
-// Golf equipment images - simple list for two-row layout
-const carouselImages = [
+// Shuffle array using Fisher-Yates algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!];
+  }
+  return shuffled;
+}
+
+// Branded club images - premium golf equipment photos
+const brandedClubImages = [
   {
-    id: "clubs-1",
+    id: "branded-0",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-1.jpg"),
-    label: "Golf Clubs Set",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image.png"),
+    label: "Premium Golf Club",
   },
   {
-    id: "clubs-2",
+    id: "branded-1",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-2.webp"),
-    label: "Premium Irons",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image1.png"),
+    label: "Premium Golf Club",
   },
   {
-    id: "clubs-3",
+    id: "branded-2",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-3.webp"),
-    label: "Driver Collection",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image2.png"),
+    label: "Premium Golf Club",
   },
   {
-    id: "clubs-4",
+    id: "branded-3",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-4.jpg"),
-    label: "Vintage Woods",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image3.png"),
+    label: "Premium Golf Club",
   },
   {
-    id: "clubs-5",
+    id: "branded-4",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-5.webp"),
-    label: "Putter Selection",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image4.png"),
+    label: "Premium Golf Club",
   },
   {
-    id: "clubs-6",
+    id: "branded-5",
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/clubs-6.jpg"),
-    label: "Complete Set",
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image5.png"),
+    label: "Premium Golf Club",
   },
-] as const;
+  {
+    id: "branded-6",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image6.png"),
+    label: "Premium Golf Club",
+  },
+  {
+    id: "branded-7",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image7.png"),
+    label: "Premium Golf Club",
+  },
+  {
+    id: "branded-8",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image8.png"),
+    label: "Premium Golf Club",
+  },
+  {
+    id: "branded-9",
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    source: require("../../../../../apps/mobile/assets/branded_clubs/image9.png"),
+    label: "Premium Golf Club",
+  },
+];
+
+// Shuffle images once at module load for random order
+const carouselImages = shuffleArray(brandedClubImages);
 
 interface OnboardingScreenProps {
   onSkip?: () => void;
