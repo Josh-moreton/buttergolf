@@ -25,7 +25,25 @@ export async function getUserIdFromRequest(
 ): Promise<string | null> {
   if (request) {
     // Check for Bearer token (mobile apps)
-    const authHeader = request.headers.get("Authorization");
+    let authHeader = request.headers.get("Authorization");
+
+    // WORKAROUND: Vercel's Suspense Cache layer sometimes captures the Authorization header
+    // into x-vercel-sc-headers instead of passing it through as a regular header.
+    // This happens with production mobile app requests through Vercel's edge network.
+    if (!authHeader) {
+      const scHeaders = request.headers.get("x-vercel-sc-headers");
+      if (scHeaders) {
+        try {
+          const parsed = JSON.parse(scHeaders);
+          if (parsed.Authorization) {
+            authHeader = parsed.Authorization;
+            console.log("[Auth] Extracted Authorization from x-vercel-sc-headers");
+          }
+        } catch {
+          // Ignore JSON parse errors
+        }
+      }
+    }
 
     // Debug: Log ALL headers to understand what's arriving
     const allHeaders: Record<string, string> = {};
