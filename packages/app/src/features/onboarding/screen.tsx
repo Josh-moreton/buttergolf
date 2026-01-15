@@ -86,18 +86,6 @@ const brandedClubImages = [
     source: require("../../../../../apps/mobile/assets/branded_clubs/image7.png"),
     label: "Premium Golf Club",
   },
-  {
-    id: "branded-8",
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/branded_clubs/image8.png"),
-    label: "Premium Golf Club",
-  },
-  {
-    id: "branded-9",
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    source: require("../../../../../apps/mobile/assets/branded_clubs/image9.png"),
-    label: "Premium Golf Club",
-  },
 ];
 
 // Shuffle images once at module load for random order
