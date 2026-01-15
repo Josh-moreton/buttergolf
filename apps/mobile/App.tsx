@@ -703,16 +703,33 @@ function FavouritesScreenWrapper({
 
   const fetchFavourites = async () => {
     const token = await getToken();
+    
+    // Debug: Log token retrieval
+    console.log("[FavouritesScreenWrapper] Token retrieval:", {
+      hasToken: !!token,
+      tokenLength: token?.length,
+      tokenPrefix: token?.substring(0, 20),
+      apiUrl,
+    });
+    
     if (!token) {
+      console.log("[FavouritesScreenWrapper] No token, returning empty");
       return { products: [], pagination: { page: 1, limit: 24, total: 0, totalPages: 0 } };
     }
 
-    const response = await fetch(`${apiUrl}/api/favourites?page=1&limit=100`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
+    const url = `${apiUrl}/api/favourites?page=1&limit=100`;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    };
+    
+    console.log("[FavouritesScreenWrapper] Making request:", {
+      url,
+      hasAuthHeader: !!headers.Authorization,
+      authHeaderLength: headers.Authorization?.length,
     });
+    
+    const response = await fetch(url, { headers });
 
     if (!response.ok) {
       throw new Error("Failed to fetch favourites");

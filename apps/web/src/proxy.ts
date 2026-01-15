@@ -38,6 +38,11 @@ export default clerkMiddleware(async (auth, req) => {
   // Handle CORS preflight OPTIONS requests
   if (req.method === "OPTIONS") {
     const origin = req.headers.get("origin");
+    console.log("[Proxy] OPTIONS preflight request:", {
+      origin,
+      url: req.url,
+      requestedHeaders: req.headers.get("Access-Control-Request-Headers"),
+    });
     return new NextResponse(null, {
       status: 200,
       headers: {

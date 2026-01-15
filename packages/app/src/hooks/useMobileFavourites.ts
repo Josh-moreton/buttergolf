@@ -59,19 +59,36 @@ export function useMobileFavourites({
         setState((prev) => ({ ...prev, loading: true, error: null }));
 
         const token = await getTokenRef.current();
+        
+        // Debug: Log token retrieval
+        console.log("[useMobileFavourites] Token retrieval:", {
+          hasToken: !!token,
+          tokenLength: token?.length,
+          tokenPrefix: token?.substring(0, 20),
+          apiUrl: apiUrlRef.current,
+        });
+        
         if (!token || cancelled) {
+          console.log("[useMobileFavourites] No token, returning empty");
           if (!cancelled) {
             setState({ favourites: new Set(), loading: false, error: null });
           }
           return;
         }
 
-        const response = await fetch(`${apiUrlRef.current}/api/favourites?limit=1000`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
+        const url = `${apiUrlRef.current}/api/favourites?limit=1000`;
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        };
+        
+        console.log("[useMobileFavourites] Making request:", {
+          url,
+          hasAuthHeader: !!headers.Authorization,
+          authHeaderLength: headers.Authorization?.length,
         });
+        
+        const response = await fetch(url, { headers });
 
         if (cancelled) return;
 
