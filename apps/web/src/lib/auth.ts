@@ -27,11 +27,27 @@ export async function getUserIdFromRequest(
     // Check for Bearer token (mobile apps)
     const authHeader = request.headers.get("Authorization");
 
-    // Debug: Log what we're receiving
+    // Debug: Log ALL headers to understand what's arriving
+    const allHeaders: Record<string, string> = {};
+    request.headers.forEach((value, key) => {
+      // Redact sensitive values but show they exist
+      if (key.toLowerCase() === 'authorization') {
+        allHeaders[key] = value ? `Bearer [${value.length} chars]` : 'EMPTY';
+      } else if (key.toLowerCase().includes('cookie')) {
+        allHeaders[key] = `[${value.length} chars]`;
+      } else {
+        allHeaders[key] = value.substring(0, 100);
+      }
+    });
+    
     console.log("[Auth] Request headers debug:", {
       hasAuthHeader: !!authHeader,
       authHeaderPrefix: authHeader?.substring(0, 20),
       userAgent: request.headers.get("User-Agent")?.substring(0, 50),
+      url: request.url,
+      method: request.method,
+      allHeaderKeys: Object.keys(allHeaders),
+      allHeaders,
     });
 
     if (authHeader?.startsWith("Bearer ")) {
