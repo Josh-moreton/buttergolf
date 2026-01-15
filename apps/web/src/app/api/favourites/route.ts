@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { getUserIdFromRequest } from "@/lib/auth";
-
-// Force dynamic rendering to ensure Authorization headers pass through Vercel's edge
-export const dynamic = "force-dynamic";
 import {
   logError,
   logWarning,
@@ -14,6 +11,9 @@ import {
   FAV_PRODUCT_NOT_FOUND,
   FAV_USER_UPSERT_FAILED,
 } from "@buttergolf/constants";
+
+// Force dynamic rendering to ensure Authorization headers pass through Vercel's edge
+export const dynamic = "force-dynamic";
 
 /**
  * GET /api/favourites

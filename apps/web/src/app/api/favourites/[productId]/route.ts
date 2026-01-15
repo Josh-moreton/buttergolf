@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { getUserIdFromRequest } from "@/lib/auth";
-
-// Force dynamic rendering to ensure Authorization headers pass through Vercel's edge
-export const dynamic = "force-dynamic";
 import {
   logError,
   logWarning,
   FAV_DELETE_FAILED,
   AUTH_USER_NOT_FOUND,
 } from "@buttergolf/constants";
+
+// Force dynamic rendering to ensure Authorization headers pass through Vercel's edge
+export const dynamic = "force-dynamic";
 
 /**
  * DELETE /api/favourites/[productId]
