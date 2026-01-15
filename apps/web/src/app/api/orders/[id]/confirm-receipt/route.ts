@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
 import { sendPaymentReleasedEmail } from "@/lib/email";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * POST /api/orders/[id]/confirm-receipt
@@ -21,7 +21,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
 
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

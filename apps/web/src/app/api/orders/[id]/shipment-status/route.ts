@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma, ShipmentStatus } from "@buttergolf/db";
 import { calculateAutoReleaseDate } from "@/lib/pricing";
 import { sendPaymentOnHoldEmail } from "@/lib/email";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * PATCH /api/orders/[id]/shipment-status
@@ -22,7 +22,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
 
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

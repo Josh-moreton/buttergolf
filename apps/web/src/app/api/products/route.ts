@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { prisma, ProductCondition } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 // Map slider values to ProductCondition enum for backwards compatibility
 function mapSlidersToConditionEnum(
@@ -19,8 +20,8 @@ function mapSlidersToConditionEnum(
 
 export async function POST(request: Request) {
   try {
-    // Authenticate user
-    const { userId: clerkId } = await auth();
+    // Authenticate user - supports both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(request);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

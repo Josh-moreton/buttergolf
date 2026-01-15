@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * POST /api/stripe/connect/account-session
@@ -19,10 +19,10 @@ import { prisma } from "@buttergolf/db";
  * - balances: View balance, add funds
  * - payouts: Manage payouts
  */
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    // 1. Authenticate user
-    const { userId } = await auth();
+    // 1. Authenticate user - supports both web cookies and mobile Bearer tokens
+    const userId = await getUserIdFromRequest(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

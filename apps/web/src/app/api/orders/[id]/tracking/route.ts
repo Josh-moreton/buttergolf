@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { getOrderTracking } from "@/lib/shipengine";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +18,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    // Authenticate user
-    const { userId: clerkId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

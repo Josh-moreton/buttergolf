@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * GET /api/orders/by-payment-intent/[paymentIntentId]
@@ -14,7 +14,8 @@ export async function GET(
   { params }: { params: Promise<{ paymentIntentId: string }> },
 ) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

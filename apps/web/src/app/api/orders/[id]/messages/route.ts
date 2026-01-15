@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { checkRateLimit, rateLimitResponse } from "@/middleware/rate-limit";
 import { RATE_LIMITS } from "@/lib/constants";
 import { sendNewMessageEmail } from "@/lib/email";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * GET /api/orders/[id]/messages
@@ -14,7 +14,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -94,7 +95,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(req);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

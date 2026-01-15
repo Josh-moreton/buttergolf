@@ -1,6 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma, Prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * GET /api/seller/listings
@@ -14,7 +14,8 @@ import { prisma, Prisma } from "@buttergolf/db";
  */
 export async function GET(request: NextRequest) {
   try {
-    const { userId: clerkId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(request);
 
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

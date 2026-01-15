@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 // GET /api/addresses - Get user's addresses
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -41,7 +42,8 @@ export async function GET() {
 // POST /api/addresses - Create new address
 export async function POST(request: NextRequest) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

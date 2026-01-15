@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * POST /api/stripe/connect/account
@@ -13,10 +13,10 @@ import { prisma } from "@buttergolf/db";
  * - Stripe manages risk and compliance
  * - All account management through embedded components
  */
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    // 1. Authenticate user
-    const { userId } = await auth();
+    // 1. Authenticate user - supports both web cookies and mobile Bearer tokens
+    const userId = await getUserIdFromRequest(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -191,9 +191,10 @@ export async function POST() {
  * This is critical because webhooks may be delayed or missed, so we can't
  * rely solely on webhook-driven updates for accurate seller status.
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { userId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const userId = await getUserIdFromRequest(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
