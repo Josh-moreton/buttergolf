@@ -18,7 +18,8 @@
       "bundleIdentifier": "com.buttergolf.app",
       "icon": {
         "light": "./assets/icon.png",
-        "dark": "./assets/icon-dark.png"
+        "dark": "./assets/icon-dark.png",
+        "tinted": "./assets/icon.png"
       },
       "associatedDomains": [
         "applinks:buttergolf.com",
