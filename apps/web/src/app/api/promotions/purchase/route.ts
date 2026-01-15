@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma, PromotionType } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
 import { PROMOTION_PRICES, PROMOTION_DURATIONS } from "@/lib/pricing";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * POST /api/promotions/purchase
@@ -21,7 +21,8 @@ import { PROMOTION_PRICES, PROMOTION_DURATIONS } from "@/lib/pricing";
  */
 export async function POST(request: NextRequest) {
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(request);
 
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

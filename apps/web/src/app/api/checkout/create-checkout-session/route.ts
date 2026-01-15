@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
 import { calculatePricingBreakdownInPence } from "@/lib/pricing";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * Creates a Stripe Embedded Checkout Session for single-product purchase
@@ -17,7 +17,8 @@ export async function POST(req: Request) {
   
   try {
     console.log("[Checkout API] Checking auth...");
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(req);
     console.log("[Checkout API] Clerk userId:", clerkUserId ? "present" : "missing");
     
     if (!clerkUserId) {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma, Prisma, ProductCondition } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 import type { ProductCardData } from "@buttergolf/app";
 
 export async function GET(request: NextRequest) {
@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
     // Favourites filter (requires authentication)
     const showFavouritesOnly = searchParams.get("favourites") === "true";
     if (showFavouritesOnly) {
-      const { userId: clerkId } = await auth();
+      // Support both web cookies and mobile Bearer tokens
+      const clerkId = await getUserIdFromRequest(request);
 
       if (!clerkId) {
         return NextResponse.json(

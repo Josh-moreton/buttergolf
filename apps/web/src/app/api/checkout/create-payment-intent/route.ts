@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@buttergolf/db";
 import { stripe } from "@/lib/stripe";
 import { calculatePricingBreakdownInPence } from "@/lib/pricing";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 // Shipping options with prices in pence
 const SHIPPING_OPTIONS = {
@@ -28,7 +28,8 @@ export async function POST(req: Request) {
   console.log("[PaymentIntent API] POST request received");
 
   try {
-    const { userId: clerkUserId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkUserId = await getUserIdFromRequest(req);
 
     if (!clerkUserId) {
       console.log("[PaymentIntent API] ERROR: No clerkUserId - returning 401");

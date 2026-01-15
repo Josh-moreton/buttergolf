@@ -1,6 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 /**
  * GET /api/messages/unread-count
@@ -8,9 +8,10 @@ import { prisma } from "@buttergolf/db";
  * Returns the total count of unread messages for the current user across all orders.
  * Used for displaying unread badge in header/navigation.
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { userId: clerkId } = await auth();
+    // Support both web cookies and mobile Bearer tokens
+    const clerkId = await getUserIdFromRequest(request);
 
     if (!clerkId) {
       return NextResponse.json({ count: 0 });
