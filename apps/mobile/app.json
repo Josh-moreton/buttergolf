@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Buttergolf",
     "slug": "buttergolf",
     "scheme": "buttergolf",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/logo-orange.png",
@@ -16,10 +16,17 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.buttergolf.app",
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/icon-dark.png"
+      },
       "associatedDomains": [
         "applinks:buttergolf.com",
         "applinks:www.buttergolf.com"
-      ]
+      ],
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.buttergolf.app",
@@ -45,7 +52,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -57,6 +67,16 @@
         "projectId": "2d353b01-94f4-4a97-88fc-545e1faff923"
       }
     },
-    "owner": "vortexalchemist"
+    "owner": "vortexalchemist",
+    "plugins": [
+      "expo-web-browser",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.buttergolf.app",
+          "enableGooglePay": true
+        }
+      ]
+    ]
   }
 }

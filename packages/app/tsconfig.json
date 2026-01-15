@@ -10,7 +10,8 @@
             "@buttergolf/app/*": [
                 "src/*"
             ]
-        }
+        },
+        "typeRoots": ["./node_modules/@types"]
     },
     "include": [
         "src",

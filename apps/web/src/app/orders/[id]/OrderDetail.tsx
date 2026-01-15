@@ -188,7 +188,7 @@ function TimelineItem({
 }: {
   label: string;
   date: Date;
-  icon: React.ComponentType<{ size: number; color: string }>;
+  icon: React.ElementType;
 }) {
   return (
     <Row gap="$md" alignItems="flex-start">
