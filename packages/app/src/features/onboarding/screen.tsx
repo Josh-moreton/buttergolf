@@ -237,7 +237,7 @@ export function OnboardingScreen({
               marginRight={GAP}
               borderRadius={20}
               overflow="hidden"
-              backgroundColor="$gray200"
+              backgroundColor="$vanillaCream"
               style={{
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 4 },
@@ -250,7 +250,7 @@ export function OnboardingScreen({
                 source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "contain" }}
                 accessible={true}
                 accessibilityLabel={item.label}
               />
@@ -274,7 +274,7 @@ export function OnboardingScreen({
               marginLeft={GAP}
               borderRadius={20}
               overflow="hidden"
-              backgroundColor="$gray200"
+              backgroundColor="$vanillaCream"
               style={{
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 4 },
@@ -287,7 +287,7 @@ export function OnboardingScreen({
                 source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "contain" }}
                 accessible={true}
                 accessibilityLabel={item.label}
               />
