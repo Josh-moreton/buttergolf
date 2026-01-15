@@ -21,10 +21,10 @@ const { width: SCREEN_W } = Dimensions.get("window");
 // Two-row scrolling layout configuration
 const HORIZONTAL_PADDING = 16;
 const { height: SCREEN_H } = Dimensions.get("window");
-const CAROUSEL_HEIGHT = SCREEN_H * 0.35; // 35% of screen height (reduced from 45%)
-const CARD_WIDTH = SCREEN_W * 0.55; // 55% of screen width (reduced from 70%)
-const CARD_HEIGHT = CAROUSEL_HEIGHT * 0.42; // Each row is ~42% of carousel height
-const GAP = 16; // Gap between cards
+const CAROUSEL_HEIGHT = SCREEN_H * 0.32; // 32% of screen height
+const CARD_HEIGHT = CAROUSEL_HEIGHT * 0.46; // Each row is ~46% of carousel height
+const CARD_WIDTH = CARD_HEIGHT * 1.5; // 3:2 aspect ratio to match image dimensions (1536×1024)
+const GAP = 12; // Gap between cards
 
 // Shuffle array using Fisher-Yates algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -250,7 +250,7 @@ export function OnboardingScreen({
                 source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                style={{ objectFit: "contain" }}
+                resizeMode="contain"
                 accessible={true}
                 accessibilityLabel={item.label}
               />
@@ -287,7 +287,7 @@ export function OnboardingScreen({
                 source={item.source}
                 width={CARD_WIDTH}
                 height={CARD_HEIGHT}
-                style={{ objectFit: "contain" }}
+                resizeMode="contain"
                 accessible={true}
                 accessibilityLabel={item.label}
               />
