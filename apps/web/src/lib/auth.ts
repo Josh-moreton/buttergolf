@@ -26,6 +26,14 @@ export async function getUserIdFromRequest(
   if (request) {
     // Check for Bearer token (mobile apps)
     const authHeader = request.headers.get("Authorization");
+
+    // Debug: Log what we're receiving
+    console.log("[Auth] Request headers debug:", {
+      hasAuthHeader: !!authHeader,
+      authHeaderPrefix: authHeader?.substring(0, 20),
+      userAgent: request.headers.get("User-Agent")?.substring(0, 50),
+    });
+
     if (authHeader?.startsWith("Bearer ")) {
       const token = authHeader.slice(7).trim(); // Remove "Bearer " prefix
 
