@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@buttergolf/db";
 import { getUserIdFromRequest } from "@/lib/auth";
+
+// Force dynamic rendering to ensure Authorization headers pass through Vercel's edge
+export const dynamic = "force-dynamic";
 import {
   logError,
   logWarning,
