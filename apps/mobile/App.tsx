@@ -6,6 +6,8 @@ import {
   ProductDetailScreen,
   SellScreen,
   FavouritesScreen,
+  MessagesScreen,
+  MessageThreadScreen,
   routes,
   SignInScreen,
   SignUpScreen,
@@ -38,9 +40,14 @@ import {
 import { ClerkProvider, SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SecureStore from "expo-secure-store";
+import {
+  registerForPushNotificationsAsync,
+  registerPushTokenWithBackend,
+  setupNotificationHandlers,
+} from "./lib/notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -52,7 +59,6 @@ import {
   Urbanist_900Black,
 } from "@expo-google-fonts/urbanist";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
@@ -91,6 +97,12 @@ const linking = {
       },
       Favourites: {
         path: routes.favourites.slice(1), // 'favourites'
+      },
+      Messages: {
+        path: routes.messages.slice(1), // 'messages'
+      },
+      MessageThread: {
+        path: "orders/:orderId/messages",
       },
       Sell: {
         path: routes.sell.slice(1), // 'sell'
@@ -575,16 +587,16 @@ function SellScreenWrapper({
 }) {
   const { getToken } = useAuth();
 
-  // Create the upload function that uses the auth token
-  const handleUploadImage = async (image: ImageData, isFirstImage: boolean): Promise<string> => {
+  // Memoize handlers to prevent re-render issues during navigation
+  const handleUploadImage = useCallback(async (image: ImageData, isFirstImage: boolean): Promise<string> => {
     return uploadImageToCloudinary(image, isFirstImage, getToken);
-  };
+  }, [getToken]);
 
-  const handleSubmitListing = async (data: SellFormData): Promise<{ id: string }> => {
+  const handleSubmitListing = useCallback(async (data: SellFormData): Promise<{ id: string }> => {
     const token = await getToken();
     if (!token) throw new Error("Not authenticated");
     return submitListingToApi(data, token);
-  };
+  }, [getToken]);
 
   return (
     <SellScreen
@@ -616,10 +628,11 @@ function AccountScreenWrapper({
   const { user } = useUser();
   const { signOut } = useAuth();
 
-  const handleSignOut = async () => {
+  // Memoize handler to prevent re-render issues during navigation
+  const handleSignOut = useCallback(async () => {
     await signOut();
     // After signOut, Clerk will automatically switch to SignedOut state
-  };
+  }, [signOut]);
 
   return (
     <AccountScreen
@@ -680,7 +693,7 @@ function CategoryListScreenWrapper({
       onToggleFavourite={toggleFavourite}
       onHomePress={() => navigation.navigate("Home")}
       onWishlistPress={() => navigation.navigate("Favourites")}
-      onMessagesPress={() => console.log("Messages pressed")}
+      onMessagesPress={() => navigation.navigate("Messages")}
     />
   );
 }
@@ -701,7 +714,8 @@ function FavouritesScreenWrapper({
   const { getToken } = useAuth();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
 
-  const fetchFavourites = async () => {
+  // Memoize fetch functions to prevent re-render issues during navigation
+  const fetchFavourites = useCallback(async () => {
     const token = await getToken();
     
     // Debug: Log token retrieval
@@ -736,9 +750,9 @@ function FavouritesScreenWrapper({
     }
 
     return response.json();
-  };
+  }, [getToken, apiUrl]);
 
-  const removeFavourite = async (productId: string) => {
+  const removeFavourite = useCallback(async (productId: string) => {
     const token = await getToken();
     if (!token) throw new Error("Not authenticated");
 
@@ -753,7 +767,7 @@ function FavouritesScreenWrapper({
     if (!response.ok) {
       throw new Error("Failed to remove favourite");
     }
-  };
+  }, [getToken, apiUrl]);
 
   return (
     <FavouritesScreen
@@ -767,9 +781,186 @@ function FavouritesScreenWrapper({
       onBrowseListings={() => navigation.navigate("Home")}
       onHomePress={() => navigation.navigate("Home")}
       onSellPress={() => navigation.navigate("Sell")}
-      onMessagesPress={() => console.log("Messages pressed")}
+      onMessagesPress={() => navigation.navigate("Messages")}
       onLoginPress={onLoginPress}
       onAccountPress={() => navigation.navigate("Account")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for MessagesScreen that provides navigation handlers.
+ */
+function MessagesScreenWrapper({
+  navigation,
+  isAuthenticated,
+}: {
+  navigation: any;
+  isAuthenticated: boolean;
+}) {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  // Memoize fetchConversations to prevent re-renders from triggering useEffect loops
+  // and to avoid race conditions with screen transitions
+  const fetchConversations = useCallback(async () => {
+    const token = await getToken();
+
+    console.log("[MessagesScreenWrapper] Token retrieval:", {
+      hasToken: !!token,
+      apiUrl,
+    });
+
+    if (!token) {
+      console.log("[MessagesScreenWrapper] No token, returning empty");
+      return { conversations: [] };
+    }
+
+    const url = `${apiUrl}/api/messages`;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    };
+
+    console.log("[MessagesScreenWrapper] Making request:", { url });
+
+    const response = await fetch(url, { headers });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[MessagesScreenWrapper] API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText,
+      });
+      throw new Error(`Failed to fetch conversations: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  }, [getToken, apiUrl]);
+
+  return (
+    <MessagesScreen
+      isAuthenticated={isAuthenticated}
+      onFetchConversations={fetchConversations}
+      onConversationPress={(conversation) =>
+        navigation.navigate("MessageThread", {
+          orderId: conversation.orderId,
+          otherUserName: conversation.otherUserName,
+          otherUserImage: conversation.otherUserImage,
+          productTitle: conversation.productTitle,
+          userRole: conversation.userRole,
+        })
+      }
+      onBrowseListings={() => navigation.navigate("Home")}
+      onHomePress={() => navigation.navigate("Home")}
+      onWishlistPress={() => navigation.navigate("Favourites")}
+      onSellPress={() => navigation.navigate("Sell")}
+      onMessagesPress={() => {}} // Already on messages
+      onAccountPress={() => navigation.navigate("Account")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for MessageThreadScreen that provides navigation handlers.
+ */
+function MessageThreadScreenWrapper({
+  navigation,
+  orderId,
+  otherUserName,
+  otherUserImage,
+  productTitle,
+  userRole,
+}: {
+  navigation: any;
+  orderId: string;
+  otherUserName: string;
+  otherUserImage: string | null;
+  productTitle: string;
+  userRole: "buyer" | "seller";
+}) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  // Memoize all fetch functions to prevent re-render issues during navigation
+  const fetchMessages = useCallback(async (id: string) => {
+    const token = await getToken();
+
+    console.log("[MessageThreadScreenWrapper] Fetching messages:", { id });
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    const response = await fetch(`${apiUrl}/api/orders/${id}/messages`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch messages");
+    }
+
+    return response.json();
+  }, [getToken, apiUrl]);
+
+  const sendMessage = useCallback(async (id: string, content: string) => {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    const response = await fetch(`${apiUrl}/api/orders/${id}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to send message");
+    }
+
+    const data = await response.json();
+    return data.message;
+  }, [getToken, apiUrl]);
+
+  const markAsRead = useCallback(async (id: string) => {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    await fetch(`${apiUrl}/api/orders/${id}/messages/mark-read`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }, [getToken, apiUrl]);
+
+  return (
+    <MessageThreadScreen
+      orderId={orderId}
+      currentUserId={user?.id || ""}
+      userRole={userRole}
+      otherUserName={otherUserName}
+      otherUserImage={otherUserImage}
+      productTitle={productTitle}
+      onFetchMessages={fetchMessages}
+      onSendMessage={sendMessage}
+      onMarkAsRead={markAsRead}
+      onBack={() => navigation.goBack()}
     />
   );
 }
@@ -793,10 +984,54 @@ function HomeScreenWrapper({
       isAuthenticated={isAuthenticated}
       onAccountPress={() => navigation.navigate("Account")}
       onWishlistPress={() => navigation.navigate("Favourites")}
+      onMessagesPress={() => navigation.navigate("Messages")}
       onLoginPress={onLoginPress}
       hideBuySellToggle={true}
     />
   );
+}
+
+/**
+ * Component that handles push token registration for authenticated users
+ * Must be inside SignedIn to have access to useAuth hook
+ */
+function PushTokenRegistration() {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  useEffect(() => {
+    let mounted = true;
+
+    const registerPushToken = async () => {
+      try {
+        const authToken = await getToken();
+        if (!authToken) {
+          console.log("[PushToken] No auth token, skipping registration");
+          return;
+        }
+
+        // Register for push notifications
+        const pushToken = await registerForPushNotificationsAsync(authToken);
+
+        if (!pushToken || !mounted) {
+          return;
+        }
+
+        // Register the push token with the backend
+        await registerPushTokenWithBackend(pushToken, authToken, apiUrl);
+      } catch (error) {
+        console.error("[PushToken] Error registering push token:", error);
+      }
+    };
+
+    registerPushToken();
+
+    return () => {
+      mounted = false;
+    };
+  }, [getToken, apiUrl]);
+
+  return null; // This component doesn't render anything
 }
 
 export default function App() {
@@ -822,6 +1057,28 @@ export default function App() {
     }
     hideSplash();
   }, [fontsLoaded]);
+
+  // Setup push notifications on app load
+  useEffect(() => {
+    // Setup notification handlers
+    const unsubscribe = setupNotificationHandlers(
+      (notification) => {
+        console.log("[App] Notification received:", {
+          title: notification.request.content.title,
+        });
+      },
+      (response) => {
+        // Handle notification tap - navigate to message thread
+        const orderId = response.notification.request.content.data?.orderId;
+        if (orderId) {
+          console.log("[App] Navigating to message thread:", orderId);
+          // Note: Navigation will be handled by deep linking
+        }
+      }
+    );
+
+    return unsubscribe;
+  }, []);
 
   if (!fontsLoaded) return null;
 
@@ -930,6 +1187,7 @@ export default function App() {
         {/* Wrap app content in Tamagui Provider so SignedOut onboarding can use UI components */}
         <Provider>
           <SignedIn>
+            <PushTokenRegistration />
             <NavigationContainer linking={linking}>
               <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Home">
@@ -1021,6 +1279,46 @@ export default function App() {
                     />
                   )}
                 </Stack.Screen>
+                <Stack.Screen
+                  name="Messages"
+                  options={{ headerShown: false }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <MessagesScreenWrapper
+                      navigation={navigation}
+                      isAuthenticated={true}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="MessageThread"
+                  options={{ headerShown: false }}
+                >
+                  {({
+                    route,
+                    navigation,
+                  }: {
+                    route: {
+                      params?: {
+                        orderId?: string;
+                        otherUserName?: string;
+                        otherUserImage?: string | null;
+                        productTitle?: string;
+                        userRole?: "buyer" | "seller";
+                      };
+                    };
+                    navigation: any;
+                  }) => (
+                    <MessageThreadScreenWrapper
+                      navigation={navigation}
+                      orderId={route.params?.orderId || ""}
+                      otherUserName={route.params?.otherUserName || "User"}
+                      otherUserImage={route.params?.otherUserImage ?? null}
+                      productTitle={route.params?.productTitle || "Order"}
+                      userRole={route.params?.userRole || "buyer"}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
@@ -1060,7 +1358,7 @@ function OnboardingFlow() {
           {({ navigation }: { navigation: any }) => (
             <HomeScreen
               onFetchProducts={fetchProducts}
-              onSellPress={() => navigation.navigate("Sell")}
+              onSellPress={() => setFlowState("signIn")}
               isAuthenticated={false}
               onLoginPress={() => setFlowState("signIn")}
               onWishlistPress={() => setFlowState("signIn")}
@@ -1092,7 +1390,7 @@ function OnboardingFlow() {
                 }
                 onFetchProducts={fetchProductsByCategory}
                 onBack={() => navigation.goBack()}
-                onSellPress={() => navigation.navigate("Sell")}
+                onSellPress={() => setFlowState("signIn")}
                 isAuthenticated={false}
                 onLoginPress={() => setFlowState("signIn")}
                 onHomePress={() => navigation.navigate("LoggedOutHome")}

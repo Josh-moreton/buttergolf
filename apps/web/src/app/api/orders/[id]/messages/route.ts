@@ -4,6 +4,8 @@ import { checkRateLimit, rateLimitResponse } from "@/middleware/rate-limit";
 import { RATE_LIMITS } from "@/lib/constants";
 import { sendNewMessageEmail } from "@/lib/email";
 import { getUserIdFromRequest } from "@/lib/auth";
+import { getRedisPublisher } from "@/lib/redis";
+import { sendMessageNotification } from "@/lib/push-notifications";
 
 /**
  * GET /api/orders/[id]/messages
@@ -149,6 +151,7 @@ export async function POST(
             firstName: true,
             lastName: true,
             email: true,
+            pushTokens: true,
           },
         },
         seller: {
@@ -157,6 +160,7 @@ export async function POST(
             firstName: true,
             lastName: true,
             email: true,
+            pushTokens: true,
           },
         },
         product: {
@@ -211,6 +215,44 @@ export async function POST(
     } catch (emailError) {
       console.error("Failed to send message notification email:", emailError);
       // Don't fail the request if email fails
+    }
+
+    // Publish message to Redis for real-time SSE delivery (async, non-blocking)
+    const redis = getRedisPublisher();
+    const channel = `order:${orderId}:messages`;
+    const messageEvent = {
+      type: 'new_message',
+      message: {
+        id: message.id,
+        orderId: message.orderId,
+        senderId: message.senderId,
+        senderName,
+        senderImage: message.sender.imageUrl,
+        content: message.content,
+        createdAt: message.createdAt.toISOString(),
+        isRead: false,
+      },
+    };
+
+    redis.publish(channel, JSON.stringify(messageEvent)).catch((err) => {
+      console.error(`[Redis] Failed to publish message to ${channel}:`, err);
+      // Don't fail the request if Redis publish fails
+    });
+
+    // Send push notification to recipient (async, non-blocking)
+    // Note: 'recipient' was already defined above for email notification
+    const recipientPushTokens = recipient.pushTokens ?? [];
+    if (recipientPushTokens.length > 0) {
+      sendMessageNotification(
+        recipientPushTokens,
+        senderName,
+        order.product.title,
+        content.trim(),
+        orderId
+      ).catch((err) => {
+        console.error("[Push] Failed to send push notification:", err);
+        // Don't fail the request if push notification fails
+      });
     }
 
     return NextResponse.json({

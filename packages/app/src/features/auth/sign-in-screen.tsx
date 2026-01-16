@@ -264,7 +264,7 @@ export function SignInScreen({
                 justifyContent="center"
                 pointerEvents="none"
               >
-                <Spinner size="small" color="$textInverse" />
+                <Spinner size="sm" color="$textInverse" />
               </View>
             )}
           </View>
