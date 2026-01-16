@@ -1,6 +1,6 @@
 import { useState, useCallback, memo } from "react";
 import { Sheet } from "@tamagui/sheet";
-import { useStripe } from "@stripe/stripe-react-native";
+import { useStripe, CollectionMode, AddressCollectionMode } from "@stripe/stripe-react-native";
 import {
   Column,
   Row,
@@ -31,10 +31,11 @@ interface MobileCheckoutSheetProps {
   productTitle: string;
   productPrice: number; // In pounds
   productImageUrl?: string;
-  isOpen: boolean;
+  sellerId?: string; // Optional seller ID for the API
+  open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: (paymentIntentId: string) => void;
-  onError: (error: string) => void;
+  onError?: (error: string) => void;
   /** Function to get auth token for API calls */
   getToken: () => Promise<string | null>;
 }
@@ -50,7 +51,8 @@ export function MobileCheckoutSheet({
   productTitle,
   productPrice,
   productImageUrl,
-  isOpen,
+  sellerId,
+  open,
   onOpenChange,
   onSuccess,
   onError,
@@ -64,9 +66,9 @@ export function MobileCheckoutSheet({
 
   return (
     <Sheet
-      forceRemoveScrollEnabled={isOpen}
+      forceRemoveScrollEnabled={open}
       modal
-      open={isOpen}
+      open={open}
       onOpenChange={onOpenChange}
       snapPoints={[85, 50]}
       snapPointsMode="percent"
@@ -94,7 +96,7 @@ export function MobileCheckoutSheet({
           productTitle={productTitle}
           productPrice={productPrice}
           productImageUrl={productImageUrl}
-          isOpen={isOpen}
+          isOpen={open}
           onClose={handleClose}
           onSuccess={onSuccess}
           onError={onError}
@@ -114,7 +116,7 @@ interface SheetContentsProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (paymentIntentId: string) => void;
-  onError: (error: string) => void;
+  onError?: (error: string) => void;
   getToken: () => Promise<string | null>;
 }
 
@@ -180,10 +182,10 @@ const SheetContents = memo(function SheetContents({
         merchantDisplayName: "ButterGolf",
         // Enable address collection
         billingDetailsCollectionConfiguration: {
-          address: "full",
-          email: "always",
-          name: "always",
-          phone: "always",
+          address: AddressCollectionMode.FULL,
+          email: CollectionMode.ALWAYS,
+          name: CollectionMode.ALWAYS,
+          phone: CollectionMode.ALWAYS,
         },
         // Apple Pay / Google Pay
         applePay: {
@@ -237,7 +239,7 @@ const SheetContents = memo(function SheetContents({
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Payment failed";
       setError(errorMessage);
-      onError(errorMessage);
+      onError?.(errorMessage);
     } finally {
       setIsProcessing(false);
     }

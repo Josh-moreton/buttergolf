@@ -15,10 +15,10 @@ interface MakeOfferSheetProps {
   productId: string;
   productTitle: string;
   productPrice: number; // In pounds - the listing price
-  isOpen: boolean;
+  open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: (offerId: string) => void;
-  onError: (error: string) => void;
+  onSuccess: (offer: { id: string }) => void;
+  onError?: (error: string) => void;
   /** Function to get auth token for API calls */
   getToken: () => Promise<string | null>;
 }
@@ -33,7 +33,7 @@ export function MakeOfferSheet({
   productId,
   productTitle,
   productPrice,
-  isOpen,
+  open,
   onOpenChange,
   onSuccess,
   onError,
@@ -47,9 +47,9 @@ export function MakeOfferSheet({
 
   return (
     <Sheet
-      forceRemoveScrollEnabled={isOpen}
+      forceRemoveScrollEnabled={open}
       modal
-      open={isOpen}
+      open={open}
       onOpenChange={onOpenChange}
       snapPoints={[60, 40]}
       snapPointsMode="percent"
@@ -76,7 +76,7 @@ export function MakeOfferSheet({
           productId={productId}
           productTitle={productTitle}
           productPrice={productPrice}
-          isOpen={isOpen}
+          isOpen={open}
           onClose={handleClose}
           onSuccess={onSuccess}
           onError={onError}
@@ -93,8 +93,8 @@ interface SheetContentsProps {
   productPrice: number;
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (offerId: string) => void;
-  onError: (error: string) => void;
+  onSuccess: (offer: { id: string }) => void;
+  onError?: (error: string) => void;
   getToken: () => Promise<string | null>;
 }
 
@@ -161,12 +161,12 @@ const SheetContents = memo(function SheetContents({
       }
 
       // 3. Success - navigate to offer detail
-      onSuccess(data.id);
+      onSuccess({ id: data.id });
       onClose();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to submit offer";
       setError(errorMessage);
-      onError(errorMessage);
+      onError?.(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

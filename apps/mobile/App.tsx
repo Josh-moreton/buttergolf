@@ -31,6 +31,12 @@ import { HomeScreen } from "@buttergolf/app/src/features/home";
 import { CategoryListScreen } from "@buttergolf/app/src/features/categories";
 import { useMobileFavourites } from "@buttergolf/app/src/hooks";
 import {
+  MobileCheckoutSheet,
+  MakeOfferSheet,
+  OffersListScreen,
+  OfferDetailScreen,
+} from "./components";
+import {
   View as RNView,
   Text as RNText,
   Pressable as RNPressable,
@@ -67,6 +73,8 @@ SplashScreen.preventAutoHideAsync();
 type RootStackParamList = {
   ProductDetail: { id?: string };
   Category: { slug?: string };
+  Offers: undefined;
+  OfferDetail: { offerId?: string };
   [key: string]: undefined | Record<string, string | undefined>;
 };
 
@@ -103,6 +111,12 @@ const linking = {
       },
       MessageThread: {
         path: "orders/:orderId/messages",
+      },
+      Offers: {
+        path: "offers",
+      },
+      OfferDetail: {
+        path: "offers/:offerId",
       },
       Sell: {
         path: routes.sell.slice(1), // 'sell'
@@ -992,6 +1006,239 @@ function HomeScreenWrapper({
 }
 
 /**
+ * Wrapper component for ProductDetailScreen that provides checkout and offer sheet functionality.
+ */
+function ProductDetailScreenWrapper({
+  navigation,
+  productId,
+  isAuthenticated,
+}: {
+  navigation: any;
+  productId: string;
+  isAuthenticated: boolean;
+}) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+  
+  // State for checkout and offer sheets
+  const [checkoutSheetOpen, setCheckoutSheetOpen] = useState(false);
+  const [offerSheetOpen, setOfferSheetOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<{
+    id: string;
+    title: string;
+    price: number;
+    sellerId: string;
+  } | null>(null);
+
+  // Memoize getToken callback to avoid recreating every render
+  const getTokenCallback = useCallback(async () => {
+    return getToken();
+  }, [getToken]);
+
+  const handleBuyNow = useCallback((id: string, price: number) => {
+    // Fetch product details and open checkout sheet
+    fetchProduct(id).then((product) => {
+      if (product) {
+        setSelectedProduct({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          sellerId: product.user?.id || "",
+        });
+        setCheckoutSheetOpen(true);
+      }
+    });
+  }, []);
+
+  const handleMakeOffer = useCallback((id: string, price: number) => {
+    // Fetch product details and open offer sheet
+    fetchProduct(id).then((product) => {
+      if (product) {
+        setSelectedProduct({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          sellerId: product.user?.id || "",
+        });
+        setOfferSheetOpen(true);
+      }
+    });
+  }, []);
+
+  const handleCheckoutSuccess = useCallback((orderId: string) => {
+    setCheckoutSheetOpen(false);
+    setSelectedProduct(null);
+    // Navigate to order confirmation or messages
+    Alert.alert(
+      "Payment Successful!",
+      "Your order has been placed. You can track it in your messages.",
+      [
+        {
+          text: "View Messages",
+          onPress: () => navigation.navigate("Messages"),
+        },
+        { text: "OK" },
+      ]
+    );
+  }, [navigation]);
+
+  const handleOfferSuccess = useCallback((offer: { id: string }) => {
+    setOfferSheetOpen(false);
+    setSelectedProduct(null);
+    // Navigate to offer detail
+    Alert.alert(
+      "Offer Sent!",
+      "Your offer has been sent to the seller. You'll be notified when they respond.",
+      [
+        {
+          text: "View Offer",
+          onPress: () => navigation.navigate("OfferDetail", { offerId: offer.id }),
+        },
+        { text: "OK" },
+      ]
+    );
+  }, [navigation]);
+
+  return (
+    <>
+      <ProductDetailScreen
+        productId={productId}
+        onFetchProduct={fetchProduct}
+        onBack={() => navigation.goBack()}
+        onBuyNow={handleBuyNow}
+        onMakeOffer={handleMakeOffer}
+        isAuthenticated={isAuthenticated}
+      />
+      
+      {/* Checkout Sheet */}
+      {selectedProduct && (
+        <MobileCheckoutSheet
+          open={checkoutSheetOpen}
+          onOpenChange={setCheckoutSheetOpen}
+          productId={selectedProduct.id}
+          productTitle={selectedProduct.title}
+          productPrice={selectedProduct.price}
+          sellerId={selectedProduct.sellerId}
+          getToken={getTokenCallback}
+          onSuccess={handleCheckoutSuccess}
+        />
+      )}
+      
+      {/* Make Offer Sheet */}
+      {selectedProduct && (
+        <MakeOfferSheet
+          open={offerSheetOpen}
+          onOpenChange={setOfferSheetOpen}
+          productId={selectedProduct.id}
+          productTitle={selectedProduct.title}
+          productPrice={selectedProduct.price}
+          getToken={getTokenCallback}
+          onSuccess={handleOfferSuccess}
+        />
+      )}
+    </>
+  );
+}
+
+/**
+ * Wrapper component for OffersListScreen that provides data fetching.
+ */
+function OffersListScreenWrapper({
+  navigation,
+}: {
+  navigation: any;
+}) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const fetchOffers = useCallback(async () => {
+    const token = await getToken();
+    if (!token) throw new Error("Not authenticated");
+
+    const response = await fetch(`${apiUrl}/api/offers`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch offers");
+    }
+
+    const data = await response.json();
+    return data.offers || [];
+  }, [getToken, apiUrl]);
+
+  return (
+    <OffersListScreen
+      currentUserId={user?.id || ""}
+      onFetchOffers={fetchOffers}
+      onViewOffer={(offerId) => navigation.navigate("OfferDetail", { offerId })}
+      onBack={() => navigation.goBack()}
+      onBrowseListings={() => navigation.navigate("Home")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for OfferDetailScreen that provides data fetching and actions.
+ */
+function OfferDetailScreenWrapper({
+  navigation,
+  offerId,
+}: {
+  navigation: any;
+  offerId: string;
+}) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const fetchOffer = useCallback(async (id: string) => {
+    const token = await getToken();
+    if (!token) throw new Error("Not authenticated");
+
+    const response = await fetch(`${apiUrl}/api/offers/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch offer");
+    }
+
+    return response.json();
+  }, [getToken, apiUrl]);
+
+  const getTokenCallback = useCallback(async () => {
+    return getToken();
+  }, [getToken]);
+
+  return (
+    <OfferDetailScreen
+      offerId={offerId}
+      currentUserId={user?.id || ""}
+      getToken={getTokenCallback}
+      onFetchOffer={fetchOffer}
+      onBack={() => navigation.goBack()}
+      onOfferAccepted={() => {
+        // When buyer's offer is accepted, they may want to proceed to checkout
+        navigation.navigate("Messages");
+      }}
+      onOfferUpdated={() => {
+        // Refresh offers list when returning
+      }}
+      onViewProduct={(productId) => navigation.navigate("ProductDetail", { id: productId })}
+    />
+  );
+}
+
+/**
  * Component that handles push token registration for authenticated users
  * Must be inside SignedIn to have access to useAuth hook
  */
@@ -1208,10 +1455,10 @@ export default function App() {
                   options={{ title: "Product Details", headerShown: false }}
                 >
                   {({ route, navigation }: { route: RouteParams<"ProductDetail">; navigation: any }) => (
-                    <ProductDetailScreen
+                    <ProductDetailScreenWrapper
+                      navigation={navigation}
                       productId={route.params?.id || ""}
-                      onFetchProduct={fetchProduct}
-                      onBack={() => navigation.goBack()}
+                      isAuthenticated={true}
                     />
                   )}
                 </Stack.Screen>
@@ -1316,6 +1563,31 @@ export default function App() {
                       otherUserImage={route.params?.otherUserImage ?? null}
                       productTitle={route.params?.productTitle || "Order"}
                       userRole={route.params?.userRole || "buyer"}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="Offers"
+                  options={{ headerShown: false }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <OffersListScreenWrapper navigation={navigation} />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="OfferDetail"
+                  options={{ headerShown: false }}
+                >
+                  {({
+                    route,
+                    navigation,
+                  }: {
+                    route: { params?: { offerId?: string } };
+                    navigation: any;
+                  }) => (
+                    <OfferDetailScreenWrapper
+                      navigation={navigation}
+                      offerId={route.params?.offerId || ""}
                     />
                   )}
                 </Stack.Screen>
