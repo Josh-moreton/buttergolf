@@ -38,13 +38,11 @@ export async function GET(req: Request) {
       },
       include: {
         product: {
-          select: {
-            id: true,
-            title: true,
+          include: {
             images: {
               select: { url: true },
               take: 1,
-              orderBy: { position: "asc" },
+              orderBy: { sortOrder: "asc" },
             },
           },
         },
@@ -72,17 +70,7 @@ export async function GET(req: Request) {
             isRead: true,
             senderId: true,
           },
-          take: 1,
           orderBy: { createdAt: "desc" },
-        },
-        _count: {
-          select: {
-            messages: {
-              where: {
-                AND: [{ isRead: false }, { senderId: { not: user.id } }],
-              },
-            },
-          },
         },
       },
       orderBy: { updatedAt: "desc" },
@@ -106,6 +94,11 @@ export async function GET(req: Request) {
       const isBuyer = user.id === order.buyerId;
       const otherUser = isBuyer ? order.seller : order.buyer;
       const lastMessage = order.messages[0];
+      
+      // Count unread messages (messages not from current user that are unread)
+      const unreadCount = order.messages.filter(
+        (msg) => !msg.isRead && msg.senderId !== user.id
+      ).length;
 
       return {
         orderId: order.id,
@@ -117,7 +110,7 @@ export async function GET(req: Request) {
         lastMessageAt: lastMessage?.createdAt 
           ? lastMessage.createdAt.toISOString() 
           : order.updatedAt.toISOString(),
-        unreadCount: order._count.messages,
+        unreadCount,
         userRole: isBuyer ? "buyer" : "seller",
         orderStatus: order.status,
       };
@@ -126,6 +119,12 @@ export async function GET(req: Request) {
     return NextResponse.json({ conversations });
   } catch (error) {
     console.error("Error fetching messages:", error);
+    // Log more details for debugging
+    if (error instanceof Error) {
+      console.error("Error name:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
     return NextResponse.json(
       { error: "Failed to fetch messages" },
       { status: 500 }
