@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Platform } from 'react-native';
 
 interface Message {
   id: string;
@@ -35,6 +34,9 @@ export function useMessageStream(
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
+  // Store onMessage in a ref to avoid reconnections when callback changes
+  const onMessageRef = useRef(onMessage);
+  onMessageRef.current = onMessage;
 
   useEffect(() => {
     // Don't connect if missing required parameters
@@ -50,9 +52,11 @@ export function useMessageStream(
     }
 
     try {
-      const url = `/api/orders/${orderId}/messages/stream`;
+      // EventSource doesn't support custom headers, so pass token via query param
+      // The server-side route will validate this token
+      const url = `/api/orders/${orderId}/messages/stream?token=${encodeURIComponent(token)}`;
 
-      // Create EventSource with authentication header
+      // Create EventSource connection
       const eventSource = new EventSource(url);
       eventSourceRef.current = eventSource;
 
@@ -70,7 +74,7 @@ export function useMessageStream(
 
           // Handle new message events
           if (data.type === 'new_message' && data.message) {
-            onMessage({
+            onMessageRef.current({
               id: data.message.id,
               orderId: data.message.orderId,
               senderId: data.message.senderId,
@@ -105,7 +109,7 @@ export function useMessageStream(
       setError(err instanceof Error ? err.message : 'Failed to setup message stream');
       return;
     }
-  }, [orderId, token, onMessage]);
+  }, [orderId, token]);
 
   return { isConnected, error };
 }

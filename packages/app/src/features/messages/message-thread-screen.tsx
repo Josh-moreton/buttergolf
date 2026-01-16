@@ -6,7 +6,6 @@ import {
   Row,
   ScrollView,
   Text,
-  Heading,
   Spinner,
   Button,
   TextArea,
@@ -79,7 +78,8 @@ export function MessageThreadScreen({
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
+  // isConnected is tracked internally for SSE status but not currently displayed
+  const [, setIsConnected] = useState(false);
   const [sseError, setSSEError] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
@@ -226,13 +226,6 @@ export function MessageThreadScreen({
     }
   }, [newMessage, sending, isOverLimit, orderId, currentUserId, onSendMessage]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
   return (
     <Column width="100%" height="100%" paddingTop={insets.top} backgroundColor="$background">
       {/* Header */}
@@ -341,7 +334,7 @@ export function MessageThreadScreen({
                   <Text
                     size="$4"
                     color={message.isOwnMessage ? "$textInverse" : "$text"}
-                    style={{ whiteSpace: "pre-wrap" }}
+                    whiteSpace="pre-wrap"
                   >
                     {message.content}
                   </Text>

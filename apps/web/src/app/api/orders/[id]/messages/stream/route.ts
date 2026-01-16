@@ -62,6 +62,9 @@ export async function GET(
 
     const stream = new ReadableStream({
       async start(controller) {
+        // Declare heartbeat interval at outer scope for cleanup
+        let heartbeat: NodeJS.Timeout | undefined;
+
         try {
           // Create Redis subscriber (new instance for this SSE connection)
           const redis = createRedisSubscriber();
@@ -77,7 +80,7 @@ export async function GET(
 
           // Heartbeat every 30 seconds to keep connection alive
           // (some proxies/load balancers close idle connections)
-          const heartbeat = setInterval(() => {
+          heartbeat = setInterval(() => {
             const event = `:heartbeat\n\n`;
             controller.enqueue(encoder.encode(event));
           }, 30000);
@@ -99,19 +102,29 @@ export async function GET(
 
           redis.on('error', (err) => {
             console.error(`[SSE] Redis error for user ${user.id}:`, err);
+            // Clear heartbeat on error to prevent it continuing
+            if (heartbeat) {
+              clearInterval(heartbeat);
+            }
             controller.error(err);
           });
 
           // Cleanup when client disconnects
           req.signal.addEventListener('abort', () => {
             console.log(`[SSE] User ${user.id} disconnected from channel: ${channel}`);
-            clearInterval(heartbeat);
+            if (heartbeat) {
+              clearInterval(heartbeat);
+            }
             redis.unsubscribe();
             redis.disconnect();
             controller.close();
           });
         } catch (err) {
           console.error('[SSE] Error starting stream:', err);
+          // Clear heartbeat if it was set before error
+          if (heartbeat) {
+            clearInterval(heartbeat);
+          }
           controller.error(err);
         }
       },

@@ -40,7 +40,6 @@ import {
 import { ClerkProvider, SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SecureStore from "expo-secure-store";
-import * as Notifications from "expo-notifications";
 import {
   registerForPushNotificationsAsync,
   registerPushTokenWithBackend,

@@ -53,6 +53,13 @@ export async function registerForPushNotificationsAsync(
       tokenPrefix: pushToken.data?.substring(0, 20),
     });
 
+    // Check if token has changed before making API call
+    const storedToken = await SecureStore.getItemAsync("expo_push_token");
+    if (storedToken === pushToken.data) {
+      console.log("[Notifications] Push token unchanged, skipping registration");
+      return pushToken.data;
+    }
+
     // Store locally in secure store for later use
     await SecureStore.setItemAsync("expo_push_token", pushToken.data);
 

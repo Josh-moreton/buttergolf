@@ -114,7 +114,9 @@ export async function GET(req: Request) {
         otherUserName: `${otherUser.firstName} ${otherUser.lastName}`.trim() || "User",
         otherUserImage: otherUser.imageUrl,
         lastMessagePreview: lastMessage?.content || null,
-        lastMessageAt: lastMessage?.createdAt?.toISOString() || order.updatedAt.toISOString(),
+        lastMessageAt: lastMessage?.createdAt 
+          ? lastMessage.createdAt.toISOString() 
+          : order.updatedAt.toISOString(),
         unreadCount: order._count.messages,
         userRole: isBuyer ? "buyer" : "seller",
         orderStatus: order.status,

@@ -100,10 +100,13 @@ export function OrderMessages({
     }
   }, [messages]);
 
-  // Fetch messages on mount and setup SSE stream
+  // Fetch messages on mount
   useEffect(() => {
     fetchMessages();
+  }, [fetchMessages]);
 
+  // Setup SSE stream separately to avoid connection leak when fetchMessages changes
+  useEffect(() => {
     // Setup SSE connection for real-time messages
     const eventSource = new EventSource(`/api/orders/${orderId}/messages/stream`);
 
@@ -148,7 +151,7 @@ export function OrderMessages({
       console.log('[SSE] Disconnecting from message stream');
       eventSource.close();
     };
-  }, [orderId, fetchMessages]);
+  }, [orderId]); // Only orderId - not fetchMessages
 
   // Auto-scroll: instant on first load, smooth on updates
   useEffect(() => {
