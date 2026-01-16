@@ -47,7 +47,7 @@ import {
 } from "./lib/notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -587,16 +587,16 @@ function SellScreenWrapper({
 }) {
   const { getToken } = useAuth();
 
-  // Create the upload function that uses the auth token
-  const handleUploadImage = async (image: ImageData, isFirstImage: boolean): Promise<string> => {
+  // Memoize handlers to prevent re-render issues during navigation
+  const handleUploadImage = useCallback(async (image: ImageData, isFirstImage: boolean): Promise<string> => {
     return uploadImageToCloudinary(image, isFirstImage, getToken);
-  };
+  }, [getToken]);
 
-  const handleSubmitListing = async (data: SellFormData): Promise<{ id: string }> => {
+  const handleSubmitListing = useCallback(async (data: SellFormData): Promise<{ id: string }> => {
     const token = await getToken();
     if (!token) throw new Error("Not authenticated");
     return submitListingToApi(data, token);
-  };
+  }, [getToken]);
 
   return (
     <SellScreen
@@ -628,10 +628,11 @@ function AccountScreenWrapper({
   const { user } = useUser();
   const { signOut } = useAuth();
 
-  const handleSignOut = async () => {
+  // Memoize handler to prevent re-render issues during navigation
+  const handleSignOut = useCallback(async () => {
     await signOut();
     // After signOut, Clerk will automatically switch to SignedOut state
-  };
+  }, [signOut]);
 
   return (
     <AccountScreen
@@ -713,7 +714,8 @@ function FavouritesScreenWrapper({
   const { getToken } = useAuth();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
 
-  const fetchFavourites = async () => {
+  // Memoize fetch functions to prevent re-render issues during navigation
+  const fetchFavourites = useCallback(async () => {
     const token = await getToken();
     
     // Debug: Log token retrieval
@@ -748,9 +750,9 @@ function FavouritesScreenWrapper({
     }
 
     return response.json();
-  };
+  }, [getToken, apiUrl]);
 
-  const removeFavourite = async (productId: string) => {
+  const removeFavourite = useCallback(async (productId: string) => {
     const token = await getToken();
     if (!token) throw new Error("Not authenticated");
 
@@ -765,7 +767,7 @@ function FavouritesScreenWrapper({
     if (!response.ok) {
       throw new Error("Failed to remove favourite");
     }
-  };
+  }, [getToken, apiUrl]);
 
   return (
     <FavouritesScreen
@@ -799,7 +801,9 @@ function MessagesScreenWrapper({
   const { getToken } = useAuth();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
 
-  const fetchConversations = async () => {
+  // Memoize fetchConversations to prevent re-renders from triggering useEffect loops
+  // and to avoid race conditions with screen transitions
+  const fetchConversations = useCallback(async () => {
     const token = await getToken();
 
     console.log("[MessagesScreenWrapper] Token retrieval:", {
@@ -827,7 +831,7 @@ function MessagesScreenWrapper({
     }
 
     return response.json();
-  };
+  }, [getToken, apiUrl]);
 
   return (
     <MessagesScreen
@@ -860,7 +864,8 @@ function MessageThreadScreenWrapper({
   const { user } = useUser();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
 
-  const fetchMessages = async (id: string) => {
+  // Memoize all fetch functions to prevent re-render issues during navigation
+  const fetchMessages = useCallback(async (id: string) => {
     const token = await getToken();
 
     console.log("[MessageThreadScreenWrapper] Fetching messages:", { id });
@@ -881,9 +886,9 @@ function MessageThreadScreenWrapper({
     }
 
     return response.json();
-  };
+  }, [getToken, apiUrl]);
 
-  const sendMessage = async (id: string, content: string) => {
+  const sendMessage = useCallback(async (id: string, content: string) => {
     const token = await getToken();
 
     if (!token) {
@@ -907,9 +912,9 @@ function MessageThreadScreenWrapper({
 
     const data = await response.json();
     return data.message;
-  };
+  }, [getToken, apiUrl]);
 
-  const markAsRead = async (id: string) => {
+  const markAsRead = useCallback(async (id: string) => {
     const token = await getToken();
 
     if (!token) {
@@ -922,7 +927,7 @@ function MessageThreadScreenWrapper({
         Authorization: `Bearer ${token}`,
       },
     });
-  };
+  }, [getToken, apiUrl]);
 
   return (
     <MessageThreadScreen
