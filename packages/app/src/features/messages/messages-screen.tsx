@@ -209,43 +209,43 @@ export function MessagesScreen({
         </Row>
       </Column>
 
-      <ScrollView flex={1} showsVerticalScrollIndicator={false}>
-        {error && (
-          <Column paddingHorizontal="$md" paddingVertical="$md" gap="$md">
-            <Card backgroundColor="$error" opacity={0.1}>
-              <Text color="$error" size="$4">
-                {error}
-              </Text>
-            </Card>
-          </Column>
-        )}
-
-        {loading ? (
-          <Column alignItems="center" justifyContent="center" paddingVertical="$xl" gap="$md">
-            <Spinner size="lg" color="$primary" />
-            <Text color="$textSecondary">Loading messages...</Text>
-          </Column>
-        ) : conversations.length === 0 ? (
-          <Column alignItems="center" justifyContent="center" paddingVertical="$2xl" gap="$lg" paddingHorizontal="$lg">
-            <MessageCircle size={56} color="$textTertiary" />
-            <Heading level={2} textAlign="center">
-              No messages yet
-            </Heading>
-            <Text size="$5" color="$textSecondary" textAlign="center">
-              When you buy or sell items, you'll be able to message with the other party
+      {error && (
+        <Column paddingHorizontal="$md" paddingVertical="$md" gap="$md">
+          <Card backgroundColor="$error" opacity={0.1}>
+            <Text color="$error" size="$4">
+              {error}
             </Text>
-            <Button
-              size="$5"
-              backgroundColor="$primary"
-              color="$textInverse"
-              paddingHorizontal="$6"
-              borderRadius="$full"
-              onPress={onBrowseListings}
-            >
-              Browse Listings
-            </Button>
-          </Column>
-        ) : (
+          </Card>
+        </Column>
+      )}
+
+      {loading ? (
+        <Column flex={1} alignItems="center" justifyContent="center" gap="$md">
+          <Spinner size="lg" color="$primary" />
+          <Text color="$textSecondary">Loading messages...</Text>
+        </Column>
+      ) : conversations.length === 0 ? (
+        <Column flex={1} alignItems="center" justifyContent="center" gap="$lg" paddingHorizontal="$lg">
+          <MessageCircle size={56} color="$textTertiary" />
+          <Heading level={2} textAlign="center">
+            No messages yet
+          </Heading>
+          <Text size="$5" color="$textSecondary" textAlign="center">
+            When you buy or sell items, you'll be able to message with the other party
+          </Text>
+          <Button
+            size="$5"
+            backgroundColor="$primary"
+            color="$textInverse"
+            paddingHorizontal="$6"
+            borderRadius="$full"
+            onPress={onBrowseListings}
+          >
+            Browse Listings
+          </Button>
+        </Column>
+      ) : (
+        <ScrollView flex={1} showsVerticalScrollIndicator={false}>
           <Column gap="$md" paddingHorizontal="$md" paddingVertical="$md">
             {conversations.map((conversation) => (
               <Card
@@ -307,8 +307,8 @@ export function MessagesScreen({
               </Card>
             ))}
           </Column>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
 
       <MobileBottomNav
         activeTab="messages"
