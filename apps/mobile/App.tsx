@@ -843,8 +843,14 @@ function MessagesScreenWrapper({
     <MessagesScreen
       isAuthenticated={isAuthenticated}
       onFetchConversations={fetchConversations}
-      onConversationPress={(orderId) =>
-        navigation.navigate("MessageThread", { orderId })
+      onConversationPress={(conversation) =>
+        navigation.navigate("MessageThread", {
+          orderId: conversation.orderId,
+          otherUserName: conversation.otherUserName,
+          otherUserImage: conversation.otherUserImage,
+          productTitle: conversation.productTitle,
+          userRole: conversation.userRole,
+        })
       }
       onBrowseListings={() => navigation.navigate("Home")}
       onHomePress={() => navigation.navigate("Home")}
@@ -862,9 +868,17 @@ function MessagesScreenWrapper({
 function MessageThreadScreenWrapper({
   navigation,
   orderId,
+  otherUserName,
+  otherUserImage,
+  productTitle,
+  userRole,
 }: {
   navigation: any;
   orderId: string;
+  otherUserName: string;
+  otherUserImage: string | null;
+  productTitle: string;
+  userRole: "buyer" | "seller";
 }) {
   const { getToken } = useAuth();
   const { user } = useUser();
@@ -939,10 +953,10 @@ function MessageThreadScreenWrapper({
     <MessageThreadScreen
       orderId={orderId}
       currentUserId={user?.id || ""}
-      userRole="buyer"
-      otherUserName="User"
-      otherUserImage={null}
-      productTitle="Order"
+      userRole={userRole}
+      otherUserName={otherUserName}
+      otherUserImage={otherUserImage}
+      productTitle={productTitle}
       onFetchMessages={fetchMessages}
       onSendMessage={sendMessage}
       onMarkAsRead={markAsRead}
@@ -1284,12 +1298,24 @@ export default function App() {
                     route,
                     navigation,
                   }: {
-                    route: { params?: { orderId?: string } };
+                    route: {
+                      params?: {
+                        orderId?: string;
+                        otherUserName?: string;
+                        otherUserImage?: string | null;
+                        productTitle?: string;
+                        userRole?: "buyer" | "seller";
+                      };
+                    };
                     navigation: any;
                   }) => (
                     <MessageThreadScreenWrapper
                       navigation={navigation}
                       orderId={route.params?.orderId || ""}
+                      otherUserName={route.params?.otherUserName || "User"}
+                      otherUserImage={route.params?.otherUserImage ?? null}
+                      productTitle={route.params?.productTitle || "Order"}
+                      userRole={route.params?.userRole || "buyer"}
                     />
                   )}
                 </Stack.Screen>

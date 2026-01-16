@@ -78,8 +78,7 @@ export function MessageThreadScreen({
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // isConnected is tracked internally for SSE status but not currently displayed
-  const [, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [sseError, setSSEError] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
@@ -247,9 +246,25 @@ export function MessageThreadScreen({
           <ArrowLeft size={24} color="$text" />
         </Button>
         <Column flex={1} gap="$xs">
-          <Text size="$6" weight="bold" numberOfLines={1}>
-            {productTitle}
-          </Text>
+          <Row alignItems="center" gap="$sm">
+            <Text size="$6" weight="bold" numberOfLines={1} flex={1}>
+              {productTitle}
+            </Text>
+            {/* Real-time connection indicator (web only) */}
+            {typeof window !== 'undefined' && window.EventSource && (
+              <Row alignItems="center" gap="$xs">
+                <Column
+                  width={8}
+                  height={8}
+                  borderRadius="$full"
+                  backgroundColor={isConnected ? "$success" : "$warning"}
+                />
+                <Text size="$2" color="$textTertiary">
+                  {isConnected ? "Live" : "Offline"}
+                </Text>
+              </Row>
+            )}
+          </Row>
           <Text size="$4" color="$textSecondary" numberOfLines={1}>
             {otherUserName}
           </Text>

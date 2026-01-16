@@ -151,6 +151,7 @@ export async function POST(
             firstName: true,
             lastName: true,
             email: true,
+            pushTokens: true,
           },
         },
         seller: {
@@ -159,6 +160,7 @@ export async function POST(
             firstName: true,
             lastName: true,
             email: true,
+            pushTokens: true,
           },
         },
         product: {
@@ -238,8 +240,9 @@ export async function POST(
     });
 
     // Send push notification to recipient (async, non-blocking)
-    const recipientPushTokens = (user.id === order.buyerId ? order.seller : order.buyer).pushTokens || [];
-    if (recipientPushTokens && recipientPushTokens.length > 0) {
+    // Note: 'recipient' was already defined above for email notification
+    const recipientPushTokens = recipient.pushTokens ?? [];
+    if (recipientPushTokens.length > 0) {
       sendMessageNotification(
         recipientPushTokens,
         senderName,

@@ -27,7 +27,7 @@ export function getRedisPublisher(): Redis {
           console.error('Redis publisher connection failed after 3 retries');
           return null; // Stop retrying after 3 attempts
         }
-        // Linear backoff: 100ms, 200ms, 300ms, capped at 3000ms
+        // Linear backoff with 3s cap: 100ms, 200ms, 300ms, ... capped at 3000ms
         const delay = Math.min(times * 100, 3000);
         console.warn(`Redis publisher reconnecting in ${delay}ms (attempt ${times})`);
         return delay;

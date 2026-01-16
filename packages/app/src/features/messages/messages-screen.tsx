@@ -18,7 +18,7 @@ import { MessageCircle, ChevronRight } from "@tamagui/lucide-icons";
 import { MobileBottomNav } from "../../components/mobile";
 import { formatDistanceToNow } from "date-fns";
 
-interface Conversation {
+export interface Conversation {
   orderId: string;
   productTitle: string;
   productImage: string | null;
@@ -38,8 +38,8 @@ interface MessagesScreenProps {
   onFetchConversations?: () => Promise<{
     conversations: Conversation[];
   }>;
-  /** Callback when conversation is tapped */
-  onConversationPress?: (orderId: string) => void;
+  /** Callback when conversation is tapped - passes full conversation data */
+  onConversationPress?: (conversation: Conversation) => void;
   /** Navigate to browse listings */
   onBrowseListings?: () => void;
   /** Bottom nav handlers */
@@ -253,7 +253,7 @@ export function MessagesScreen({
                 variant="elevated"
                 paddingHorizontal="$md"
                 paddingVertical="$md"
-                onPress={() => onConversationPress?.(conversation.orderId)}
+                onPress={() => onConversationPress?.(conversation)}
                 pressStyle={{ opacity: 0.7 }}
                 cursor="pointer"
               >

@@ -25,7 +25,10 @@ export async function registerForPushNotificationsAsync(
     // Get the project ID from app.json
     const projectId = Constants.expoConfig?.extra?.eas?.projectId;
     if (!projectId) {
-      console.warn("[Notifications] No EAS project ID found");
+      console.warn(
+        "[Notifications] No EAS project ID found. " +
+        "Add 'extra.eas.projectId' to app.json or run 'eas build:configure' to set it up."
+      );
       return null;
     }
 
@@ -53,14 +56,18 @@ export async function registerForPushNotificationsAsync(
       tokenPrefix: pushToken.data?.substring(0, 20),
     });
 
-    // Check if token has changed before making API call
+    // Check if token has changed since last successful storage
+    // Note: This only optimizes local storage - caller should still register with backend
+    // if needed (e.g., after app reinstall or backend failure). The backend registration
+    // is handled separately by registerPushTokenWithBackend() which should be called
+    // regardless of whether this returns early.
     const storedToken = await SecureStore.getItemAsync("expo_push_token");
     if (storedToken === pushToken.data) {
-      console.log("[Notifications] Push token unchanged, skipping registration");
+      console.log("[Notifications] Push token unchanged in local storage");
       return pushToken.data;
     }
 
-    // Store locally in secure store for later use
+    // Store locally in secure store
     await SecureStore.setItemAsync("expo_push_token", pushToken.data);
 
     return pushToken.data;

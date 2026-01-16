@@ -47,7 +47,10 @@ export function useMessageStream(
     // EventSource not available on React Native (would need react-native-sse polyfill)
     // For now, this hook is web-only
     if (!window.EventSource) {
-      console.warn('[useMessageStream] EventSource not available on this platform');
+      console.warn(
+        '[useMessageStream] EventSource not available on this platform. ' +
+        'Real-time updates require web browser. Mobile uses polling fallback via useMessagePolling hook.'
+      );
       return;
     }
 

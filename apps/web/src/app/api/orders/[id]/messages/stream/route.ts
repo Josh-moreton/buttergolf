@@ -63,7 +63,7 @@ export async function GET(
     const stream = new ReadableStream({
       async start(controller) {
         // Declare heartbeat interval at outer scope for cleanup
-        let heartbeat: NodeJS.Timeout | undefined;
+        let heartbeat: ReturnType<typeof setInterval> | null = null;
 
         try {
           // Create Redis subscriber (new instance for this SSE connection)
@@ -115,7 +115,7 @@ export async function GET(
             if (heartbeat) {
               clearInterval(heartbeat);
             }
-            redis.unsubscribe();
+            redis.unsubscribe(channel);
             redis.disconnect();
             controller.close();
           });
