@@ -48,7 +48,7 @@ import {
 } from "./lib/notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
 import {
