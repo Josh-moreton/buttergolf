@@ -5,6 +5,7 @@ import { RATE_LIMITS } from "@/lib/constants";
 import { sendNewMessageEmail } from "@/lib/email";
 import { getUserIdFromRequest } from "@/lib/auth";
 import { getRedisPublisher } from "@/lib/redis";
+import { sendMessageNotification } from "@/lib/push-notifications";
 
 /**
  * GET /api/orders/[id]/messages
@@ -235,6 +236,21 @@ export async function POST(
       console.error(`[Redis] Failed to publish message to ${channel}:`, err);
       // Don't fail the request if Redis publish fails
     });
+
+    // Send push notification to recipient (async, non-blocking)
+    const recipientPushTokens = (user.id === order.buyerId ? order.seller : order.buyer).pushTokens || [];
+    if (recipientPushTokens && recipientPushTokens.length > 0) {
+      sendMessageNotification(
+        recipientPushTokens,
+        senderName,
+        order.product.title,
+        content.trim(),
+        orderId
+      ).catch((err) => {
+        console.error("[Push] Failed to send push notification:", err);
+        // Don't fail the request if push notification fails
+      });
+    }
 
     return NextResponse.json({
       message: {

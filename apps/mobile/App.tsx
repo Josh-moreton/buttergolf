@@ -40,6 +40,12 @@ import {
 import { ClerkProvider, SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SecureStore from "expo-secure-store";
+import * as Notifications from "expo-notifications";
+import {
+  registerForPushNotificationsAsync,
+  registerPushTokenWithBackend,
+  setupNotificationHandlers,
+} from "./lib/notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Button, Text } from "@buttergolf/ui";
 import { useState } from "react";
@@ -961,6 +967,49 @@ function HomeScreenWrapper({
   );
 }
 
+/**
+ * Component that handles push token registration for authenticated users
+ * Must be inside SignedIn to have access to useAuth hook
+ */
+function PushTokenRegistration() {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  useEffect(() => {
+    let mounted = true;
+
+    const registerPushToken = async () => {
+      try {
+        const authToken = await getToken();
+        if (!authToken) {
+          console.log("[PushToken] No auth token, skipping registration");
+          return;
+        }
+
+        // Register for push notifications
+        const pushToken = await registerForPushNotificationsAsync(authToken);
+
+        if (!pushToken || !mounted) {
+          return;
+        }
+
+        // Register the push token with the backend
+        await registerPushTokenWithBackend(pushToken, authToken, apiUrl);
+      } catch (error) {
+        console.error("[PushToken] Error registering push token:", error);
+      }
+    };
+
+    registerPushToken();
+
+    return () => {
+      mounted = false;
+    };
+  }, [getToken, apiUrl]);
+
+  return null; // This component doesn't render anything
+}
+
 export default function App() {
   const FORCE_MINIMAL = false; // back to normal app rendering
 
@@ -984,6 +1033,28 @@ export default function App() {
     }
     hideSplash();
   }, [fontsLoaded]);
+
+  // Setup push notifications on app load
+  useEffect(() => {
+    // Setup notification handlers
+    const unsubscribe = setupNotificationHandlers(
+      (notification) => {
+        console.log("[App] Notification received:", {
+          title: notification.request.content.title,
+        });
+      },
+      (response) => {
+        // Handle notification tap - navigate to message thread
+        const orderId = response.notification.request.content.data?.orderId;
+        if (orderId) {
+          console.log("[App] Navigating to message thread:", orderId);
+          // Note: Navigation will be handled by deep linking
+        }
+      }
+    );
+
+    return unsubscribe;
+  }, []);
 
   if (!fontsLoaded) return null;
 
@@ -1092,6 +1163,7 @@ export default function App() {
         {/* Wrap app content in Tamagui Provider so SignedOut onboarding can use UI components */}
         <Provider>
           <SignedIn>
+            <PushTokenRegistration />
             <NavigationContainer linking={linking}>
               <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Home">
