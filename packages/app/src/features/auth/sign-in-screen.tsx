@@ -9,9 +9,8 @@ import {
   Button,
   Heading,
   Spinner,
-  XStack,
 } from "@buttergolf/ui";
-import { Button as TamaguiButton } from "tamagui";
+import { Button as TamaguiButton, View } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -236,23 +235,39 @@ export function SignInScreen({
           </Column>
 
           {/* Sign In Button */}
-          <Button
-            butterVariant="primary"
-            size="$5"
-            borderRadius="$full"
-            fontWeight="600"
-            onPress={handleSubmit}
-            disabled={isSubmitting || !isLoaded}
-            opacity={isSubmitting ? 0.7 : 1}
-          >
-            {isSubmitting ? (
-              <XStack alignItems="center" justifyContent="center" height="100%">
-                <Spinner size="sm" color="$textInverse" />
-              </XStack>
-            ) : (
-              "Sign In"
+          <View position="relative">
+            <Button
+              butterVariant="primary"
+              size="$5"
+              borderRadius="$full"
+              fontWeight="600"
+              onPress={handleSubmit}
+              disabled={isSubmitting || !isLoaded}
+              opacity={isSubmitting ? 0.7 : 1}
+            >
+              <Text
+                color="$textInverse"
+                fontWeight="600"
+                opacity={isSubmitting ? 0 : 1}
+              >
+                Sign In
+              </Text>
+            </Button>
+            {isSubmitting && (
+              <View
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                alignItems="center"
+                justifyContent="center"
+                pointerEvents="none"
+              >
+                <Spinner size="small" color="$textInverse" />
+              </View>
             )}
-          </Button>
+          </View>
 
           {/* Sign Up Link */}
           <Row
