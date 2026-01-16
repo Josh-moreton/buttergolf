@@ -827,7 +827,13 @@ function MessagesScreenWrapper({
     const response = await fetch(url, { headers });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch conversations");
+      const errorText = await response.text();
+      console.error("[MessagesScreenWrapper] API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText,
+      });
+      throw new Error(`Failed to fetch conversations: ${response.status} - ${errorText}`);
     }
 
     return response.json();
