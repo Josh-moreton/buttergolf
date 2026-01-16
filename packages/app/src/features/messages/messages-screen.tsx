@@ -139,7 +139,7 @@ export function MessagesScreen({
 
   if (!isAuthenticated) {
     return (
-      <Column fullWidth height="100%" paddingTop={insets.top}>
+      <Column width="100%" height="100%" paddingTop={insets.top}>
         <Column flex={1} alignItems="center" justifyContent="center" gap="$lg" paddingHorizontal="$lg">
           <MessageCircle size={64} color="$primary" />
           <Heading level={2} textAlign="center">
@@ -174,7 +174,7 @@ export function MessagesScreen({
   }
 
   return (
-    <Column fullWidth height="100%" paddingTop={insets.top}>
+    <Column width="100%" height="100%" paddingTop={insets.top}>
       <Column
         flex={1}
         gap="$md"

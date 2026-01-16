@@ -234,7 +234,7 @@ export function MessageThreadScreen({
   };
 
   return (
-    <Column fullWidth height="100%" paddingTop={insets.top} backgroundColor="$background">
+    <Column width="100%" height="100%" paddingTop={insets.top} backgroundColor="$background">
       {/* Header */}
       <Row
         alignItems="center"
@@ -297,7 +297,7 @@ export function MessageThreadScreen({
         )}
 
         {loading ? (
-          <Column alignItems="center" justifyContent="center" height="$full" gap="$md">
+          <Column alignItems="center" justifyContent="center" flex={1} gap="$md">
             <Spinner size="lg" color="$primary" />
             <Text color="$textSecondary">Loading messages...</Text>
           </Column>

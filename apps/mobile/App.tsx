@@ -60,7 +60,6 @@ import {
   Urbanist_900Black,
 } from "@expo-google-fonts/urbanist";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 
 // Keep splash screen visible while fonts load
 SplashScreen.preventAutoHideAsync();
