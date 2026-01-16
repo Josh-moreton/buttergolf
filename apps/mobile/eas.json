@@ -9,20 +9,23 @@
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_API_URL": "http://localhost:3000"
-      }
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_URL": "https://buttergolf-preview.vercel.app"
-      }
+      },
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_URL": "https://www.buttergolf.com"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {

@@ -62,6 +62,12 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "updates": {
+      "url": "https://u.expo.dev/2d353b01-94f4-4a97-88fc-545e1faff923"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "extra": {
       "eas": {
         "projectId": "2d353b01-94f4-4a97-88fc-545e1faff923"
@@ -69,6 +75,7 @@
     },
     "owner": "vortexalchemist",
     "plugins": [
+      "expo-updates",
       "expo-web-browser",
       [
         "@stripe/stripe-react-native",

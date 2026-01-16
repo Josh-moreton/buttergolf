@@ -33,6 +33,7 @@
     "expo-secure-store": "catalog:",
     "expo-splash-screen": "catalog:",
     "expo-status-bar": "catalog:",
+    "expo-updates": "~29.0.16",
     "expo-web-browser": "~15.0.10",
     "react": "catalog:",
     "react-dom": "catalog:",
