@@ -312,9 +312,6 @@ export function OfferDetailScreen({
 
   const isSeller = offer.seller.id === currentUserId;
   const isBuyer = offer.buyer.id === currentUserId;
-  const otherParty = isSeller ? offer.buyer : offer.seller;
-  const otherPartyName =
-    `${otherParty.firstName || ""} ${otherParty.lastName || ""}`.trim() || "Unknown";
   const productImage = offer.product.images[0]?.url;
   const canRespond = isSeller && offer.status === "PENDING";
   const savings = offer.product.price - offer.amount;

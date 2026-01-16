@@ -1018,8 +1018,6 @@ function ProductDetailScreenWrapper({
   isAuthenticated: boolean;
 }) {
   const { getToken } = useAuth();
-  const { user } = useUser();
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
   
   // State for checkout and offer sheets
   const [checkoutSheetOpen, setCheckoutSheetOpen] = useState(false);
@@ -1038,35 +1036,51 @@ function ProductDetailScreenWrapper({
 
   const handleBuyNow = useCallback((id: string, price: number) => {
     // Fetch product details and open checkout sheet
-    fetchProduct(id).then((product) => {
-      if (product) {
-        setSelectedProduct({
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          sellerId: product.user?.id || "",
-        });
-        setCheckoutSheetOpen(true);
-      }
-    });
+    fetchProduct(id)
+      .then((product) => {
+        if (product) {
+          setSelectedProduct({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            sellerId: product.user?.id || "",
+          });
+          setCheckoutSheetOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch product for Buy Now:", error);
+        Alert.alert(
+          "Unable to load product",
+          "Something went wrong while loading this product. Please try again.",
+        );
+      });
   }, []);
 
   const handleMakeOffer = useCallback((id: string, price: number) => {
     // Fetch product details and open offer sheet
-    fetchProduct(id).then((product) => {
-      if (product) {
-        setSelectedProduct({
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          sellerId: product.user?.id || "",
-        });
-        setOfferSheetOpen(true);
-      }
-    });
+    fetchProduct(id)
+      .then((product) => {
+        if (product) {
+          setSelectedProduct({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            sellerId: product.user?.id || "",
+          });
+          setOfferSheetOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch product for Make Offer:", error);
+        Alert.alert(
+          "Unable to load product",
+          "Something went wrong while loading this product. Please try again.",
+        );
+      });
   }, []);
 
-  const handleCheckoutSuccess = useCallback((orderId: string) => {
+  const handleCheckoutSuccess = useCallback((paymentIntentId: string) => {
     setCheckoutSheetOpen(false);
     setSelectedProduct(null);
     // Navigate to order confirmation or messages
@@ -1169,7 +1183,7 @@ function OffersListScreenWrapper({
     }
 
     const data = await response.json();
-    return data.offers || [];
+    return data || [];
   }, [getToken, apiUrl]);
 
   return (

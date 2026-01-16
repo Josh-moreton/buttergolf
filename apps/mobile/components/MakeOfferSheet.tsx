@@ -227,7 +227,7 @@ const SheetContents = memo(function SheetContents({
             </Text>
             <Input
               flex={1}
-              size="lg"
+              size="md"
               placeholder="0.00"
               keyboardType="decimal-pad"
               value={offerAmount}
