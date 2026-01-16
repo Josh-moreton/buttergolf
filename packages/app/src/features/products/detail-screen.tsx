@@ -42,12 +42,21 @@ interface ProductDetailScreenProps {
   onFetchProduct?: (id: string) => Promise<Product | null>;
   /** Optional callback for back navigation (used on mobile for goBack) */
   onBack?: () => void;
+  /** Callback when user wants to buy now - receives productId and price */
+  onBuyNow?: (productId: string, price: number) => void;
+  /** Callback when user wants to make an offer - receives productId and price */
+  onMakeOffer?: (productId: string, price: number) => void;
+  /** Whether the user is authenticated (for showing proper auth prompts) */
+  isAuthenticated?: boolean;
 }
 
 export function ProductDetailScreen({
   productId,
   onFetchProduct,
   onBack,
+  onBuyNow,
+  onMakeOffer,
+  isAuthenticated = true,
 }: Readonly<ProductDetailScreenProps>) {
   const insets = useSafeAreaInsets();
   const [product, setProduct] = useState<Product | null>(null);
@@ -420,11 +429,23 @@ export function ProductDetailScreen({
           <Column gap="$3" marginTop="$2">
             {!product.isSold ? (
               <>
-                <Button butterVariant="primary" size="$5" width="100%">
-                  Make an Offer
+                <Button
+                  butterVariant="primary"
+                  size="$5"
+                  width="100%"
+                  onPress={() => onBuyNow?.(product.id, product.price)}
+                  disabled={!isAuthenticated}
+                >
+                  {isAuthenticated ? "Buy Now" : "Sign in to Buy"}
                 </Button>
-                <Button butterVariant="secondary" size="$5" width="100%">
-                  Message Seller
+                <Button
+                  butterVariant="secondary"
+                  size="$5"
+                  width="100%"
+                  onPress={() => onMakeOffer?.(product.id, product.price)}
+                  disabled={!isAuthenticated}
+                >
+                  {isAuthenticated ? "Make an Offer" : "Sign in to Make Offer"}
                 </Button>
               </>
             ) : (
