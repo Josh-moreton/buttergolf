@@ -11,6 +11,7 @@ import {
   Button,
   Image,
 } from "@buttergolf/ui";
+import { PLACEHOLDER_IMAGE_URL } from "@buttergolf/constants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Heart, Trash2, ArrowLeft } from "@tamagui/lucide-icons";
 import type { ProductCardData } from "../../types/product";
@@ -360,20 +361,24 @@ function FavouriteProductCard({
     >
       {/* Image and Info Row */}
       <Row gap="$3" alignItems="flex-start">
-        {/* Product Image */}
+        {/* Product Image - 4:3 aspect ratio (120x90) */}
         <Column
           onPress={onView}
           pressStyle={{ opacity: 0.9 }}
           accessibilityRole="button"
           accessibilityLabel={`View ${product.title}`}
+          width={120}
+          height={90}
+          borderRadius="$md"
+          overflow="hidden"
+          backgroundColor="$border"
         >
           <Image
-            source={{ uri: product.imageUrl }}
+            source={{ uri: product.imageUrl || PLACEHOLDER_IMAGE_URL }}
             alt={product.title}
-            width={100}
-            height={100}
-            borderRadius="$md"
-            style={{ objectFit: "cover" }}
+            width={120}
+            height={90}
+            resizeMode={product.imageUrl ? "cover" : "contain"}
           />
         </Column>
 

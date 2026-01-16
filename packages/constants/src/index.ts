@@ -7,4 +7,5 @@
 
 export * from "./categories";
 export * from "./errorIds";
+export * from "./images";
 export * from "./logging";
