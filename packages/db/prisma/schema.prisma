@@ -31,6 +31,7 @@ model User {
   addresses                  Address[]
   favourites                 Favourite[]
   messages                   Message[]
+  pushTokens                 String[]       @default([])
   buyerOffers                Offer[]        @relation("BuyerOffers")
   sellerOffers               Offer[]        @relation("SellerOffers")
   ordersPurchased            Order[]        @relation("BuyerOrders")

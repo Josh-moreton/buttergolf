@@ -25,6 +25,7 @@ interface HomeScreenProps {
   onLoginPress?: () => void;
   onAccountPress?: () => void;
   onWishlistPress?: () => void;
+  onMessagesPress?: () => void;
   isAuthenticated?: boolean;
   /** Hide the buying/selling toggle (mobile uses bottom nav for selling) */
   hideBuySellToggle?: boolean;
@@ -37,6 +38,7 @@ export function HomeScreen({
   onLoginPress,
   onAccountPress,
   onWishlistPress,
+  onMessagesPress,
   isAuthenticated = false,
   hideBuySellToggle = false,
 }: Readonly<HomeScreenProps>) {
@@ -308,7 +310,7 @@ export function HomeScreen({
           onHomePress={() => {}}
           onWishlistPress={onWishlistPress}
           onSellPress={onSellPress}
-          onMessagesPress={() => console.log("Messages pressed")}
+          onMessagesPress={onMessagesPress}
           onLoginPress={onLoginPress}
           onAccountPress={onAccountPress}
         />
