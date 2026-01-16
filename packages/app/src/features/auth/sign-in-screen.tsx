@@ -9,6 +9,7 @@ import {
   Button,
   Heading,
   Spinner,
+  XStack,
 } from "@buttergolf/ui";
 import { Button as TamaguiButton } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
@@ -245,7 +246,9 @@ export function SignInScreen({
             opacity={isSubmitting ? 0.7 : 1}
           >
             {isSubmitting ? (
-              <Spinner size="sm" color="$textInverse" />
+              <XStack alignItems="center" justifyContent="center" height="100%">
+                <Spinner size="sm" color="$textInverse" />
+              </XStack>
             ) : (
               "Sign In"
             )}
