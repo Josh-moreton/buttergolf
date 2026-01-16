@@ -6,6 +6,8 @@ import {
   ProductDetailScreen,
   SellScreen,
   FavouritesScreen,
+  MessagesScreen,
+  MessageThreadScreen,
   routes,
   SignInScreen,
   SignUpScreen,
@@ -91,6 +93,12 @@ const linking = {
       },
       Favourites: {
         path: routes.favourites.slice(1), // 'favourites'
+      },
+      Messages: {
+        path: routes.messages.slice(1), // 'messages'
+      },
+      MessageThread: {
+        path: "orders/:orderId/messages",
       },
       Sell: {
         path: routes.sell.slice(1), // 'sell'
@@ -680,7 +688,7 @@ function CategoryListScreenWrapper({
       onToggleFavourite={toggleFavourite}
       onHomePress={() => navigation.navigate("Home")}
       onWishlistPress={() => navigation.navigate("Favourites")}
-      onMessagesPress={() => console.log("Messages pressed")}
+      onMessagesPress={() => navigation.navigate("Messages")}
     />
   );
 }
@@ -767,9 +775,163 @@ function FavouritesScreenWrapper({
       onBrowseListings={() => navigation.navigate("Home")}
       onHomePress={() => navigation.navigate("Home")}
       onSellPress={() => navigation.navigate("Sell")}
-      onMessagesPress={() => console.log("Messages pressed")}
+      onMessagesPress={() => navigation.navigate("Messages")}
       onLoginPress={onLoginPress}
       onAccountPress={() => navigation.navigate("Account")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for MessagesScreen that provides navigation handlers.
+ */
+function MessagesScreenWrapper({
+  navigation,
+  isAuthenticated,
+}: {
+  navigation: any;
+  isAuthenticated: boolean;
+}) {
+  const { getToken } = useAuth();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const fetchConversations = async () => {
+    const token = await getToken();
+
+    console.log("[MessagesScreenWrapper] Token retrieval:", {
+      hasToken: !!token,
+      apiUrl,
+    });
+
+    if (!token) {
+      console.log("[MessagesScreenWrapper] No token, returning empty");
+      return { conversations: [] };
+    }
+
+    const url = `${apiUrl}/api/messages`;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    };
+
+    console.log("[MessagesScreenWrapper] Making request:", { url });
+
+    const response = await fetch(url, { headers });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch conversations");
+    }
+
+    return response.json();
+  };
+
+  return (
+    <MessagesScreen
+      isAuthenticated={isAuthenticated}
+      onFetchConversations={fetchConversations}
+      onConversationPress={(orderId) =>
+        navigation.navigate("MessageThread", { orderId })
+      }
+      onBrowseListings={() => navigation.navigate("Home")}
+      onHomePress={() => navigation.navigate("Home")}
+      onWishlistPress={() => navigation.navigate("Favourites")}
+      onSellPress={() => navigation.navigate("Sell")}
+      onMessagesPress={() => {}} // Already on messages
+      onAccountPress={() => navigation.navigate("Account")}
+    />
+  );
+}
+
+/**
+ * Wrapper component for MessageThreadScreen that provides navigation handlers.
+ */
+function MessageThreadScreenWrapper({
+  navigation,
+  orderId,
+}: {
+  navigation: any;
+  orderId: string;
+}) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  const fetchMessages = async (id: string) => {
+    const token = await getToken();
+
+    console.log("[MessageThreadScreenWrapper] Fetching messages:", { id });
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    const response = await fetch(`${apiUrl}/api/orders/${id}/messages`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch messages");
+    }
+
+    return response.json();
+  };
+
+  const sendMessage = async (id: string, content: string) => {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    const response = await fetch(`${apiUrl}/api/orders/${id}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to send message");
+    }
+
+    const data = await response.json();
+    return data.message;
+  };
+
+  const markAsRead = async (id: string) => {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Not authenticated");
+    }
+
+    await fetch(`${apiUrl}/api/orders/${id}/messages/mark-read`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
+  return (
+    <MessageThreadScreen
+      orderId={orderId}
+      currentUserId={user?.id || ""}
+      userRole="buyer"
+      otherUserName="User"
+      otherUserImage={null}
+      productTitle="Order"
+      onFetchMessages={fetchMessages}
+      onSendMessage={sendMessage}
+      onMarkAsRead={markAsRead}
+      onBack={() => navigation.goBack()}
     />
   );
 }
@@ -1021,6 +1183,34 @@ export default function App() {
                     />
                   )}
                 </Stack.Screen>
+                <Stack.Screen
+                  name="Messages"
+                  options={{ headerShown: false }}
+                >
+                  {({ navigation }: { navigation: any }) => (
+                    <MessagesScreenWrapper
+                      navigation={navigation}
+                      isAuthenticated={true}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="MessageThread"
+                  options={{ headerShown: false }}
+                >
+                  {({
+                    route,
+                    navigation,
+                  }: {
+                    route: { params?: { orderId?: string } };
+                    navigation: any;
+                  }) => (
+                    <MessageThreadScreenWrapper
+                      navigation={navigation}
+                      orderId={route.params?.orderId || ""}
+                    />
+                  )}
+                </Stack.Screen>
               </Stack.Navigator>
             </NavigationContainer>
           </SignedIn>
@@ -1060,7 +1250,7 @@ function OnboardingFlow() {
           {({ navigation }: { navigation: any }) => (
             <HomeScreen
               onFetchProducts={fetchProducts}
-              onSellPress={() => navigation.navigate("Sell")}
+              onSellPress={() => setFlowState("signIn")}
               isAuthenticated={false}
               onLoginPress={() => setFlowState("signIn")}
               onWishlistPress={() => setFlowState("signIn")}
@@ -1092,7 +1282,7 @@ function OnboardingFlow() {
                 }
                 onFetchProducts={fetchProductsByCategory}
                 onBack={() => navigation.goBack()}
-                onSellPress={() => navigation.navigate("Sell")}
+                onSellPress={() => setFlowState("signIn")}
                 isAuthenticated={false}
                 onLoginPress={() => setFlowState("signIn")}
                 onHomePress={() => navigation.navigate("LoggedOutHome")}

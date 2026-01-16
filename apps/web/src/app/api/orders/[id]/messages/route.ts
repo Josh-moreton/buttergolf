@@ -4,6 +4,7 @@ import { checkRateLimit, rateLimitResponse } from "@/middleware/rate-limit";
 import { RATE_LIMITS } from "@/lib/constants";
 import { sendNewMessageEmail } from "@/lib/email";
 import { getUserIdFromRequest } from "@/lib/auth";
+import { getRedisPublisher } from "@/lib/redis";
 
 /**
  * GET /api/orders/[id]/messages
@@ -212,6 +213,28 @@ export async function POST(
       console.error("Failed to send message notification email:", emailError);
       // Don't fail the request if email fails
     }
+
+    // Publish message to Redis for real-time SSE delivery (async, non-blocking)
+    const redis = getRedisPublisher();
+    const channel = `order:${orderId}:messages`;
+    const messageEvent = {
+      type: 'new_message',
+      message: {
+        id: message.id,
+        orderId: message.orderId,
+        senderId: message.senderId,
+        senderName,
+        senderImage: message.sender.imageUrl,
+        content: message.content,
+        createdAt: message.createdAt.toISOString(),
+        isRead: false,
+      },
+    };
+
+    redis.publish(channel, JSON.stringify(messageEvent)).catch((err) => {
+      console.error(`[Redis] Failed to publish message to ${channel}:`, err);
+      // Don't fail the request if Redis publish fails
+    });
 
     return NextResponse.json({
       message: {

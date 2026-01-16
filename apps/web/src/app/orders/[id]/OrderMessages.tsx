@@ -100,12 +100,55 @@ export function OrderMessages({
     }
   }, [messages]);
 
-  // Fetch messages on mount and poll
+  // Fetch messages on mount and setup SSE stream
   useEffect(() => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, POLLING_INTERVALS.MESSAGES);
-    return () => clearInterval(interval);
-  }, [fetchMessages]);
+
+    // Setup SSE connection for real-time messages
+    const eventSource = new EventSource(`/api/orders/${orderId}/messages/stream`);
+
+    eventSource.addEventListener('open', () => {
+      console.log('[SSE] Connected to message stream');
+      setError(null);
+    });
+
+    eventSource.addEventListener('message', (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        // Handle new message events
+        if (data.type === 'new_message' && data.message) {
+          setMessages((prev) => {
+            // Check if message already exists (avoid duplicates)
+            if (prev.some((m) => m.id === data.message.id)) {
+              return prev;
+            }
+            return [...prev, {
+              id: data.message.id,
+              orderId: data.message.orderId,
+              senderId: data.message.senderId,
+              content: data.message.content,
+              createdAt: data.message.createdAt,
+              isRead: data.message.isRead,
+            }];
+          });
+        }
+      } catch (err) {
+        console.error('[SSE] Failed to parse message:', err);
+      }
+    });
+
+    eventSource.addEventListener('error', (err) => {
+      console.error('[SSE] Connection error:', err);
+      setError('Connection lost. Attempting to reconnect...');
+      // EventSource will automatically try to reconnect
+    });
+
+    return () => {
+      console.log('[SSE] Disconnecting from message stream');
+      eventSource.close();
+    };
+  }, [orderId, fetchMessages]);
 
   // Auto-scroll: instant on first load, smooth on updates
   useEffect(() => {
