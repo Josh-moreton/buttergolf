@@ -713,8 +713,8 @@ function CategoryListScreenWrapper({
 }
 
 /**
- * Wrapper component for FavouritesScreen that provides data fetching
- * and navigation handlers with Clerk authentication.
+ * Wrapper component for FavouritesScreen that provides data fetching,
+ * navigation handlers, and checkout/offer sheet functionality.
  */
 function FavouritesScreenWrapper({
   navigation,
@@ -727,6 +727,21 @@ function FavouritesScreenWrapper({
 }) {
   const { getToken } = useAuth();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL || "";
+
+  // State for checkout and offer sheets
+  const [checkoutSheetOpen, setCheckoutSheetOpen] = useState(false);
+  const [offerSheetOpen, setOfferSheetOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<{
+    id: string;
+    title: string;
+    price: number;
+    sellerId: string;
+  } | null>(null);
+
+  // Memoize getToken callback for sheets
+  const getTokenCallback = useCallback(async () => {
+    return getToken();
+  }, [getToken]);
 
   // Memoize fetch functions to prevent re-render issues during navigation
   const fetchFavourites = useCallback(async () => {
@@ -783,22 +798,131 @@ function FavouritesScreenWrapper({
     }
   }, [getToken, apiUrl]);
 
+  // Handle Buy Now - fetch product and open checkout sheet
+  const handleBuyNow = useCallback((productId: string) => {
+    fetchProduct(productId)
+      .then((product) => {
+        if (product) {
+          setSelectedProduct({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            sellerId: product.user?.id || "",
+          });
+          setCheckoutSheetOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch product for Buy Now:", error);
+        Alert.alert(
+          "Unable to load product",
+          "Something went wrong while loading this product. Please try again.",
+        );
+      });
+  }, []);
+
+  // Handle Make Offer - fetch product and open offer sheet
+  const handleMakeOffer = useCallback((productId: string) => {
+    fetchProduct(productId)
+      .then((product) => {
+        if (product) {
+          setSelectedProduct({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            sellerId: product.user?.id || "",
+          });
+          setOfferSheetOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch product for Make Offer:", error);
+        Alert.alert(
+          "Unable to load product",
+          "Something went wrong while loading this product. Please try again.",
+        );
+      });
+  }, []);
+
+  // Handle checkout success
+  const handleCheckoutSuccess = useCallback((paymentIntentId: string) => {
+    setCheckoutSheetOpen(false);
+    setSelectedProduct(null);
+    Alert.alert(
+      "Payment Successful!",
+      "Your order has been placed. You can track it in your messages.",
+      [
+        {
+          text: "View Messages",
+          onPress: () => navigation.navigate("Messages"),
+        },
+        { text: "OK" },
+      ]
+    );
+  }, [navigation]);
+
+  // Handle offer success
+  const handleOfferSuccess = useCallback((offer: { id: string }) => {
+    setOfferSheetOpen(false);
+    setSelectedProduct(null);
+    Alert.alert(
+      "Offer Sent!",
+      "Your offer has been sent to the seller. You'll be notified when they respond.",
+      [
+        {
+          text: "View Offer",
+          onPress: () => navigation.navigate("OfferDetail", { offerId: offer.id }),
+        },
+        { text: "OK" },
+      ]
+    );
+  }, [navigation]);
+
   return (
-    <FavouritesScreen
-      isAuthenticated={isAuthenticated}
-      onFetchFavourites={fetchFavourites}
-      onRemoveFavourite={removeFavourite}
-      onBack={() => navigation.goBack()}
-      onViewProduct={(id) => navigation.navigate("ProductDetail", { id })}
-      onBuyNow={(id) => navigation.navigate("ProductDetail", { id })}
-      onMakeOffer={(id) => navigation.navigate("ProductDetail", { id })}
-      onBrowseListings={() => navigation.navigate("Home")}
-      onHomePress={() => navigation.navigate("Home")}
-      onSellPress={() => navigation.navigate("Sell")}
-      onMessagesPress={() => navigation.navigate("Messages")}
-      onLoginPress={onLoginPress}
-      onAccountPress={() => navigation.navigate("Account")}
-    />
+    <>
+      <FavouritesScreen
+        isAuthenticated={isAuthenticated}
+        onFetchFavourites={fetchFavourites}
+        onRemoveFavourite={removeFavourite}
+        onBack={() => navigation.goBack()}
+        onViewProduct={(id) => navigation.navigate("ProductDetail", { id })}
+        onBuyNow={handleBuyNow}
+        onMakeOffer={handleMakeOffer}
+        onBrowseListings={() => navigation.navigate("Home")}
+        onHomePress={() => navigation.navigate("Home")}
+        onSellPress={() => navigation.navigate("Sell")}
+        onMessagesPress={() => navigation.navigate("Messages")}
+        onLoginPress={onLoginPress}
+        onAccountPress={() => navigation.navigate("Account")}
+      />
+      
+      {/* Checkout Sheet */}
+      {selectedProduct && (
+        <MobileCheckoutSheet
+          open={checkoutSheetOpen}
+          onOpenChange={setCheckoutSheetOpen}
+          productId={selectedProduct.id}
+          productTitle={selectedProduct.title}
+          productPrice={selectedProduct.price}
+          sellerId={selectedProduct.sellerId}
+          getToken={getTokenCallback}
+          onSuccess={handleCheckoutSuccess}
+        />
+      )}
+      
+      {/* Make Offer Sheet */}
+      {selectedProduct && (
+        <MakeOfferSheet
+          open={offerSheetOpen}
+          onOpenChange={setOfferSheetOpen}
+          productId={selectedProduct.id}
+          productTitle={selectedProduct.title}
+          productPrice={selectedProduct.price}
+          getToken={getTokenCallback}
+          onSuccess={handleOfferSuccess}
+        />
+      )}
+    </>
   );
 }
 
