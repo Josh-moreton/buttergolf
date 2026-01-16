@@ -959,6 +959,7 @@ function HomeScreenWrapper({
       isAuthenticated={isAuthenticated}
       onAccountPress={() => navigation.navigate("Account")}
       onWishlistPress={() => navigation.navigate("Favourites")}
+      onMessagesPress={() => navigation.navigate("Messages")}
       onLoginPress={onLoginPress}
       hideBuySellToggle={true}
     />
