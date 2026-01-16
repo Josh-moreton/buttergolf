@@ -30,7 +30,7 @@
     "expo-auth-session": "catalog:",
     "expo-font": "catalog:",
     "expo-image-picker": "~17.0.10",
-    "expo-notifications": "~0.30.1",
+    "expo-notifications": "~0.32.16",
     "expo-secure-store": "catalog:",
     "expo-splash-screen": "catalog:",
     "expo-status-bar": "catalog:",

@@ -2,6 +2,7 @@
 
 import { Row, Column, Text, Button, Image } from "@buttergolf/ui";
 import type { ProductCardData } from "@buttergolf/app";
+import { PLACEHOLDER_IMAGE_URL } from "@buttergolf/constants";
 import { Trash2 } from "@tamagui/lucide-icons";
 
 interface HorizontalProductCardProps {
@@ -45,14 +46,18 @@ export function HorizontalProductCard({
         shadowRadius: 12,
       }}
     >
-      {/* Product Image - Left (clickable) */}
+      {/* Product Image - Left (clickable) - 4:3 aspect ratio */}
       <Image
-        source={{ uri: product.imageUrl }}
+        source={{ uri: product.imageUrl || PLACEHOLDER_IMAGE_URL }}
         alt={product.title}
-        width={150}
-        height={150}
+        width={160}
+        height={120}
         borderRadius="$md"
-        style={{ objectFit: "cover", cursor: "pointer" }}
+        backgroundColor={product.imageUrl ? "transparent" : "$border"}
+        style={{ 
+          objectFit: product.imageUrl ? "cover" : "contain", 
+          cursor: "pointer" 
+        }}
         onPress={() => onViewDetails(product.id)}
         $sm={{
           width: "100%",
