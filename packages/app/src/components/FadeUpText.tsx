@@ -82,17 +82,7 @@ export function FadeUpText(props: FadeUpTextProps) {
   // On native, just return static text - no web APIs used
   if (Platform.OS !== "web") {
     const fontWeightValue = (props.style?.fontWeight || "700") as
-      | 100
-      | 200
-      | 300
-      | 400
-      | 500
-      | 600
-      | 700
-      | 800
-      | 900
-      | "bold"
-      | "normal";
+      100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | "bold" | "normal";
 
     return (
       <TamaguiText

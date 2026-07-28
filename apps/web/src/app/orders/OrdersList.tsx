@@ -18,12 +18,7 @@ import Image from "next/image";
 import { ShoppingBag, Package, Eye, Download, ExternalLink } from "@tamagui/lucide-icons";
 
 type OrderStatus =
-  | "PAYMENT_CONFIRMED"
-  | "LABEL_GENERATED"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED"
-  | "REFUNDED";
+  "PAYMENT_CONFIRMED" | "LABEL_GENERATED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED";
 type ShipmentStatus =
   | "PENDING"
   | "PRE_TRANSIT"
@@ -78,14 +73,7 @@ interface OrdersListProps {
 }
 
 type BadgeVariant =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "error"
-  | "warning"
-  | "info"
-  | "neutral"
-  | "outline";
+  "primary" | "secondary" | "success" | "error" | "warning" | "info" | "neutral" | "outline";
 
 const STATUS_BADGE_VARIANT: Record<ShipmentStatus, BadgeVariant> = {
   PENDING: "neutral",

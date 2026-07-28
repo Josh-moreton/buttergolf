@@ -16,12 +16,7 @@ import {
 } from "@tamagui/lucide-icons";
 
 type OrderStatus =
-  | "PAYMENT_CONFIRMED"
-  | "LABEL_GENERATED"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED"
-  | "REFUNDED";
+  "PAYMENT_CONFIRMED" | "LABEL_GENERATED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED";
 
 type ShipmentStatus =
   | "PENDING"
@@ -34,11 +29,7 @@ type ShipmentStatus =
   | "CANCELLED";
 
 type PaymentHoldStatus =
-  | "HELD"
-  | "PENDING_SELLER_ONBOARDING"
-  | "RELEASED"
-  | "DISPUTED"
-  | "REFUNDED";
+  "HELD" | "PENDING_SELLER_ONBOARDING" | "RELEASED" | "DISPUTED" | "REFUNDED";
 
 interface Order {
   id: string;

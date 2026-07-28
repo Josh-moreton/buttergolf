@@ -17,18 +17,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { formatCurrency } from "../../utils/format-currency";
 
 type OrderStatus =
-  | "PAYMENT_CONFIRMED"
-  | "LABEL_GENERATED"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED"
-  | "REFUNDED";
+  "PAYMENT_CONFIRMED" | "LABEL_GENERATED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED";
 type PaymentHoldStatus =
-  | "HELD"
-  | "PENDING_SELLER_ONBOARDING"
-  | "RELEASED"
-  | "DISPUTED"
-  | "REFUNDED";
+  "HELD" | "PENDING_SELLER_ONBOARDING" | "RELEASED" | "DISPUTED" | "REFUNDED";
 
 interface OrderProduct {
   id: string;
@@ -85,12 +76,7 @@ export interface OrdersScreenProps {
 }
 
 type OrderStatusColorToken =
-  | "$secondary"
-  | "$warning"
-  | "$primary"
-  | "$success"
-  | "$error"
-  | "$textSecondary";
+  "$secondary" | "$warning" | "$primary" | "$success" | "$error" | "$textSecondary";
 
 function getStatusConfig(status: OrderStatus): {
   label: string;

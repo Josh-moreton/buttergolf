@@ -19,12 +19,7 @@ import { Alert } from "react-native";
 import { formatCurrencyFromPence as formatCurrency } from "../../utils/format-currency";
 
 type OrderStatus =
-  | "PENDING_SHIPPING"
-  | "SHIPPED"
-  | "IN_TRANSIT"
-  | "DELIVERED"
-  | "CONFIRMED"
-  | "CANCELLED";
+  "PENDING_SHIPPING" | "SHIPPED" | "IN_TRANSIT" | "DELIVERED" | "CONFIRMED" | "CANCELLED";
 
 interface OrderItem {
   id: string;

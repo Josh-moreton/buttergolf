@@ -32,12 +32,7 @@ import { formatCurrency } from "../../utils/format-currency";
 import { Alert, Linking } from "react-native";
 
 type OrderStatus =
-  | "PAYMENT_CONFIRMED"
-  | "LABEL_GENERATED"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED"
-  | "REFUNDED";
+  "PAYMENT_CONFIRMED" | "LABEL_GENERATED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED";
 type ShipmentStatus =
   | "PENDING"
   | "PRE_TRANSIT"
@@ -48,11 +43,7 @@ type ShipmentStatus =
   | "FAILED"
   | "CANCELLED";
 type PaymentHoldStatus =
-  | "HELD"
-  | "PENDING_SELLER_ONBOARDING"
-  | "RELEASED"
-  | "DISPUTED"
-  | "REFUNDED";
+  "HELD" | "PENDING_SELLER_ONBOARDING" | "RELEASED" | "DISPUTED" | "REFUNDED";
 
 interface Address {
   id: string;

@@ -7,11 +7,7 @@ import { Row, Column } from "./Layout";
 import { Tag, ArrowRight, Check, X } from "@tamagui/lucide-icons";
 
 type MessageType =
-  | "OFFER"
-  | "COUNTER_OFFER"
-  | "OFFER_ACCEPTED"
-  | "OFFER_REJECTED"
-  | "OFFER_EXPIRED";
+  "OFFER" | "COUNTER_OFFER" | "OFFER_ACCEPTED" | "OFFER_REJECTED" | "OFFER_EXPIRED";
 type OfferStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "EXPIRED" | "COUNTERED";
 
 interface OfferCardProps {
