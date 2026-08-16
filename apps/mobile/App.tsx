@@ -1795,8 +1795,8 @@ function PushTokenRegistration() {
  * Custom navigation theme that matches ButterGolf brand colors
  * Based on React Navigation's DefaultTheme/DarkTheme
  *
- * Uses shared brand colors from @buttergolf/constants for single source of truth.
- * @see packages/config/src/tamagui.config.ts (brandColors)
+ * Uses shared brand colors from @buttergolf/config for single source of truth.
+ * @see packages/config/src/brand-colors.ts
  */
 const LightNavigationTheme: NavigationTheme = {
   ...DefaultTheme,
