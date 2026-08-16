@@ -5,8 +5,8 @@
  * Provides consistent, accessible, and themeable components for web and mobile.
  */
 
-// Curated Tamagui re-exports — the only raw Tamagui surface exposed through
-// this package. Everything else must use a design-system component below.
+// Curated pass-throughs of tamagui-native names consumers use directly. DS
+// wrapper components below also re-export primitives (View, XStack, Image, ...).
 export { Theme, Separator, useTheme, useMedia } from "tamagui";
 
 // Button Components

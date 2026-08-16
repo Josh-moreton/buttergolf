@@ -46,9 +46,8 @@ export const reactImportPaths = [
   },
   {
     name: "@tamagui/sheet",
-    importNames: ["Sheet", "Handle", "Overlay", "Frame", "SheetScrollView"],
     message:
-      "Import Sheet from '@buttergolf/ui' instead of '@tamagui/sheet' directly — deep imports bypass the design-system barrel.",
+      "Import Sheet from '@buttergolf/ui' instead of '@tamagui/sheet' — deep imports bypass the design-system barrel.",
   },
   {
     name: "jsdom",
