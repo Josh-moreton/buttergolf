@@ -1,8 +1,8 @@
 // Brand colours - base/hover/press shades per family (status colours add Light/Dark)
 // Brand colours from Figma - Pure Butter Golf Theme (sRGB)
 // Single source of truth: these feed the Tamagui tokens/themes below and are
-// exported for the rare contexts that need raw hex values (React Navigation
-// themes, Stripe appearance objects, WebView inline styles).
+// exported for the rare contexts that need raw colour values (React Navigation
+// themes, Stripe appearance objects, WebView inline styles); includes hex and rgba strings.
 export const brandColors = {
   // Primary - Spiced Clementine (vibrant orange)
   spicedClementine: "#F45314",

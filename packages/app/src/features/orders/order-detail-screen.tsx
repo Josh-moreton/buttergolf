@@ -12,9 +12,9 @@ import {
   ScrollView,
   Badge,
   View,
+  TextArea,
 } from "@buttergolf/ui";
 import { Avatar } from "tamagui";
-import { TextArea } from "@buttergolf/ui";
 import {
   ArrowLeft,
   Package,

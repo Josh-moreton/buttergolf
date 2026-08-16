@@ -1,7 +1,6 @@
 import { useState, useCallback, memo } from "react";
-import { Sheet } from "@buttergolf/ui";
 import { InteractionManager } from "react-native";
-import { Column, Row, Text, Button, Heading, Card, Spinner } from "@buttergolf/ui";
+import { Button, Card, Column, Heading, Row, Sheet, Spinner, Text } from "@buttergolf/ui";
 import {
   SHIPPING_OPTIONS,
   calculateBuyerProtectionFeeInPence,
