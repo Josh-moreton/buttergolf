@@ -45,6 +45,12 @@ export const reactImportPaths = [
       "Import UI components from '@buttergolf/ui' instead of 'tamagui' directly. Our UI package provides custom variants and consistent theming.",
   },
   {
+    name: "@tamagui/sheet",
+    importNames: ["Sheet"],
+    message:
+      "Import Sheet from '@buttergolf/ui' instead of '@tamagui/sheet' directly — deep imports bypass the design-system barrel.",
+  },
+  {
     name: "jsdom",
     message: "jsdom is web-only and contains SharedArrayBuffer which React Native doesn't support.",
   },
