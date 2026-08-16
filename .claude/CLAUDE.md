@@ -33,9 +33,7 @@ buttergolf/
 - **Database**: Prisma 6.x with PostgreSQL
 - **React**: 19.1.0 (aligned across web and mobile)
 - **TypeScript**: 5.9.2 (strict mode enabled)
-- **Styling**:
-  - Web: Tailwind CSS v4 + Tamagui
-  - Mobile: Tamagui only
+- **Styling**: Tamagui (web + mobile)
 - **Navigation**: Solito 5.0.0 for unified routing
 - **Auth**: Clerk 6.34.1 (`@clerk/nextjs` for web, `@clerk/clerk-expo` for mobile)
 - **Payments**: Stripe 19.2.1 (platform-specific implementations)
@@ -156,7 +154,6 @@ export default async function Layout({ children }) {
 
 - **Config Package**: `packages/config/src/tamagui.config.ts` (source of truth)
 - **Base Config**: Extends `@tamagui/config/v4`
-- **Re-export**: `packages/ui/tamagui.config.ts` for backward compatibility
 
 ### Color Tokens
 

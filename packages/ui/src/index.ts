@@ -30,17 +30,15 @@ export type {
   ViewProps,
 } from "./components/Layout";
 
-// Card Components
-export { Card, CardHeader, CardBody, CardFooter } from "./components/Card";
-export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from "./components/Card";
+// Card Components (use compound form: Card.Header, Card.Body, Card.Footer)
+export { Card } from "./components/Card";
+export type { CardProps } from "./components/Card";
 export { GlassmorphismCard, getGlassmorphismStyles } from "./components/GlassmorphismCard";
 export type { GlassmorphismCardProps } from "./components/GlassmorphismCard";
 
 // Form Components
 export { Input } from "./components/Input";
 export type { InputProps } from "./components/Input";
-export { Select } from "./components/Select";
-export type { SelectProps } from "./components/Select";
 export { TextArea } from "./components/TextArea";
 export type { TextAreaProps } from "./components/TextArea";
 export { Radio, RadioGroup, RadioIndicator } from "./components/Radio";
@@ -49,13 +47,12 @@ export { Autocomplete } from "./components/Autocomplete";
 export type { AutocompleteProps, AutocompleteSuggestion } from "./components/Autocomplete";
 export { Checkbox } from "./components/Checkbox";
 export type { CheckboxProps } from "./components/Checkbox";
-export { Slider, RangeSlider } from "./components/Slider";
+export { Slider } from "./components/Slider";
 export type {
   SliderProps,
   SliderTrackProps,
   SliderTrackActiveProps,
   SliderThumbProps,
-  RangeSliderProps,
 } from "./components/Slider";
 export { Switch, SwitchWithLabel } from "./components/Switch";
 export type { SwitchProps, SwitchThumbProps, SwitchWithLabelProps } from "./components/Switch";
@@ -83,27 +80,16 @@ export { ScrollView } from "./components/ScrollView";
 export type { ScrollViewProps } from "./components/ScrollView";
 
 // Error Handling
-export { ErrorBoundary, useErrorBoundary } from "./components/ErrorBoundary";
+export { ErrorBoundary } from "./components/ErrorBoundary";
 export type { ErrorBoundaryProps, ErrorBoundaryState } from "./components/ErrorBoundary";
 
-// Sheet Components
-export {
-  Sheet,
-  Handle as SheetHandle,
-  Overlay as SheetOverlay,
-  Frame as SheetFrame,
-  SheetScrollView,
-} from "./components/Sheet";
+// Sheet Components (use compound form: Sheet.Handle, Sheet.Overlay, Sheet.Frame)
+export { Sheet, SheetScrollView } from "./components/Sheet";
 export type { SheetProps } from "./components/Sheet";
 
-// Popover Components
+// Popover Components (use compound form: Popover.Trigger, Popover.Content, ...)
 export {
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverAnchor,
-  PopoverArrow,
-  PopoverClose,
   PopoverAdapt,
   PopoverSheet,
   PopoverSheetOverlay,
@@ -115,14 +101,10 @@ export {
 export type { PopoverProps, PopoverSheetProps } from "./components/Popover";
 
 // Chat Components
-export { ChatBubble } from "./components/ChatBubble";
-export type { ChatBubbleProps } from "./components/ChatBubble";
 export { ChatInput } from "./components/ChatInput";
 export type { ChatInputProps } from "./components/ChatInput";
 export { ChatMessageList } from "./components/ChatMessageList";
 export type { ChatMessageListProps, ChatMessage } from "./components/ChatMessageList";
-export { OfferCard } from "./components/OfferCard";
-export type { OfferCardProps } from "./components/OfferCard";
 export { ConversationListItem } from "./components/ConversationListItem";
 export type { ConversationListItemProps } from "./components/ConversationListItem";
 

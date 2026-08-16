@@ -7,7 +7,7 @@ export * from "./features/sell";
 export * from "./features/auth";
 export * from "./features/account";
 export * from "./features/messages";
-// Note: onboarding is mobile-only and uses react-native-reanimated
+// Note: onboarding is mobile-only.
 // Import directly from './features/onboarding' in mobile app only
 
 export * from "./navigation";

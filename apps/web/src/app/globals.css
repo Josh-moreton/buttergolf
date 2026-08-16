@@ -106,7 +106,17 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .offer-popover-content {
+  .offer-popover-content,
+  .spin {
     animation: none !important;
   }
+}
+/* Spin animation for inline loading indicators (was Tailwind animate-spin) */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 1s linear infinite;
 }

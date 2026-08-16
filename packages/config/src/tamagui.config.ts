@@ -662,72 +662,6 @@ const dark_active = {
   backgroundPress: brandColors.burntOlivePress,
 };
 
-// Sub-theme for error states (light mode)
-const light_error = {
-  ...lightTheme,
-  color: brandColors.errorBase,
-  colorHover: brandColors.errorDark,
-  colorPress: brandColors.errorPress,
-  background: brandColors.errorLight,
-  backgroundHover: brandColors.errorLight,
-  border: brandColors.errorHover,
-};
-
-// Sub-theme for error states (dark mode)
-const dark_error = {
-  ...darkTheme,
-  color: brandColors.errorBase,
-  colorHover: brandColors.errorHover,
-  colorPress: brandColors.errorDark,
-  background: brandColors.ironstone,
-  backgroundHover: brandColors.ironstoneHover,
-  border: brandColors.errorBase,
-};
-
-// Sub-theme for success states (light mode)
-const light_success = {
-  ...lightTheme,
-  color: brandColors.successBase,
-  colorHover: brandColors.successDark,
-  colorPress: brandColors.successPress,
-  background: brandColors.successLight,
-  backgroundHover: brandColors.successLight,
-  border: brandColors.successHover,
-};
-
-// Sub-theme for success states (dark mode)
-const dark_success = {
-  ...darkTheme,
-  color: brandColors.successBase,
-  colorHover: brandColors.successHover,
-  colorPress: brandColors.successDark,
-  background: brandColors.ironstone,
-  backgroundHover: brandColors.ironstoneHover,
-  border: brandColors.successBase,
-};
-
-// Sub-theme for warning states (light mode)
-const light_warning = {
-  ...lightTheme,
-  color: brandColors.warningDark,
-  colorHover: brandColors.spicedClementinePress,
-  colorPress: brandColors.ironstone,
-  background: brandColors.warningLight,
-  backgroundHover: brandColors.warningLight,
-  border: brandColors.warningBase,
-};
-
-// Sub-theme for warning states (dark mode)
-const dark_warning = {
-  ...darkTheme,
-  color: brandColors.warningBase,
-  colorHover: brandColors.spicedClementineHover,
-  colorPress: brandColors.warningDark,
-  background: brandColors.ironstone,
-  backgroundHover: brandColors.ironstoneHover,
-  border: brandColors.warningBase,
-};
-
 export const config = createTamagui({
   ...defaultConfig,
   tokens: customTokens,
@@ -739,18 +673,6 @@ export const config = createTamagui({
     // Active state sub-themes
     light_active,
     dark_active,
-
-    // Error state sub-themes
-    light_error,
-    dark_error,
-
-    // Success state sub-themes
-    light_success,
-    dark_success,
-
-    // Warning state sub-themes
-    light_warning,
-    dark_warning,
   },
   // Urbanist fonts for Pure Butter brand
   fonts: {

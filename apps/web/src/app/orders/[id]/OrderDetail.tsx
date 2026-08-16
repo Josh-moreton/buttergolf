@@ -275,7 +275,7 @@ function ParticipantCard({ title, user }: { title: string; user: Order["seller"]
             alt={fullName}
             width={40}
             height={40}
-            className="rounded-full"
+            style={{ borderRadius: "50%" }}
           />
         )}
         <Column gap="$xs">
@@ -598,7 +598,8 @@ export function OrderDetail({ order: initialOrder }: OrderDetailProps) {
                       disabled={isLoadingTracking}
                       icon={
                         <span
-                          className={isLoadingTracking ? "inline-flex animate-spin" : "inline-flex"}
+                          className={isLoadingTracking ? "spin" : undefined}
+                          style={{ display: "inline-flex" }}
                         >
                           <RefreshCw size={14} color="$primary" />
                         </span>

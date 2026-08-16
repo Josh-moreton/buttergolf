@@ -47,7 +47,7 @@ export default [
             },
             {
               element: "select",
-              message: "Use <Select> from @buttergolf/ui instead of raw <select>.",
+              message: "No raw <select> — no DS Select exists; use tamagui Select directly with DS tokens (see SortDropdown).",
             },
             {
               element: "textarea",

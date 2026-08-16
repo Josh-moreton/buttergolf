@@ -511,10 +511,7 @@ import { Theme } from "tamagui";
   <Text>Menu Item</Text>  {/* Gets active theme colors */}
 </Theme>
 
-// Available sub-themes: active, error, success, warning
-<Theme name="error">
-  <Text>Error message</Text>
-</Theme>
+// Available sub-theme: active
 
 // ❌ WRONG - Don't use conditional variants
 <Text color={isActive ? "primary" : "default"}>Menu</Text>

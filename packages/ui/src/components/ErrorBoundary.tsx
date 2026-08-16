@@ -14,7 +14,7 @@
 
 "use client";
 
-import { Component, type ReactNode, type ErrorInfo, useCallback, useEffect, useState } from "react";
+import { Component, type ReactNode, type ErrorInfo } from "react";
 import { Column, Row } from "./Layout";
 import { Text, Heading } from "./Text";
 import { Button } from "./Button";
@@ -161,27 +161,4 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     return this.props.children;
   }
-}
-
-/**
- * Hook-based error boundary for functional components
- * Note: This doesn't catch errors in event handlers or async code
- */
-export function useErrorBoundary() {
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    if (error) {
-      throw error;
-    }
-  }, [error]);
-
-  const reset = useCallback(() => {
-    setError(null);
-  }, []);
-
-  return {
-    showError: setError,
-    reset,
-  };
 }

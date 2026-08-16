@@ -64,7 +64,6 @@
     "@buttergolf/eslint-config": "workspace:*",
     "@next/bundle-analyzer": "catalog:",
     "@prisma/nextjs-monorepo-workaround-plugin": "7.4.1",
-    "@tailwindcss/postcss": "^4",
     "@tamagui/next-plugin": "catalog:",
     "@types/canvas-confetti": "catalog:",
     "@types/node": "catalog:",
@@ -73,7 +72,6 @@
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "react-native": "catalog:",
-    "tailwindcss": "^4",
     "typescript": "catalog:"
   }
 }

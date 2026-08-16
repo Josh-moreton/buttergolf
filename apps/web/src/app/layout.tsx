@@ -103,7 +103,7 @@ export default function RootLayout({
               {/* TODO: Restore <AppPromoBanner /> once App Store / Play Store IDs are confirmed and app is publicly published. */}
             </ConditionalLayout>
             {/* Main content wrapper */}
-            <main className="bg-white">{children}</main>
+            <main>{children}</main>
           </CartProvider>
         </NextTamaguiProvider>
         <Analytics />

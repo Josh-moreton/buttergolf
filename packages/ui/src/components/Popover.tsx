@@ -11,20 +11,20 @@
  *
  * @see https://tamagui.dev/ui/popover
  *
- * @example Basic usage:
+ * @example Basic usage (compound form — flat aliases are no longer exported):
  * ```tsx
  * <Popover>
- *   <PopoverTrigger asChild>
+ *   <Popover.Trigger asChild>
  *     <Button>Open Popover</Button>
- *   </PopoverTrigger>
- *   <PopoverContent>
+ *   </Popover.Trigger>
+ *   <Popover.Content>
  *     <Column padding="$4" gap="$2">
  *       <Text>Popover content here</Text>
- *       <PopoverClose asChild>
+ *       <Popover.Close asChild>
  *         <Button size="$3">Close</Button>
- *       </PopoverClose>
+ *       </Popover.Close>
  *     </Column>
- *   </PopoverContent>
+ *   </Popover.Content>
  * </Popover>
  * ```
  *

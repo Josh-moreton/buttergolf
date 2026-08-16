@@ -107,7 +107,7 @@ export const config = [
             {
               element: "select",
               message:
-                "Use <Select> from @buttergolf/ui instead of raw <select>. Tamagui Select provides size variants and matches Input styling.",
+                "No raw <select> — no DS Select exists; use tamagui Select directly with DS tokens (see SortDropdown) until one is built.",
             },
             {
               element: "textarea",

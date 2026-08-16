@@ -54,7 +54,11 @@ export function NextTamaguiProvider({ children }: Readonly<{ children: ReactNode
     const rnwStyle = StyleSheet.getSheet();
     return (
       <>
-        {/* Prevent theme flash on load by hiding until JS runs */}
+        {/* Gate Tamagui enterStyle CSS pre-hydration: `.t_unmounted` is Tamagui's
+            built-in selector (@tamagui/web pseudoDescriptors); TamaguiProvider's
+            UnmountedClassName removes the class after mount. Removing this script
+            reintroduces a flash of entering-state content (restored once before
+            in 852b3805). */}
         <script
           dangerouslySetInnerHTML={{
             __html: `document.documentElement.classList.add('t_unmounted')`,

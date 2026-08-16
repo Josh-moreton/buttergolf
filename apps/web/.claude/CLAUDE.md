@@ -22,11 +22,10 @@ apps/web/
 │   │   └── layout.tsx    # Root layout
 │   ├── components/       # Web-specific components
 │   ├── lib/              # Utilities & helpers
-│   ├── styles/           # Global styles (Tailwind v4)
+│   ├── styles/           # Global styles
 │   └── proxy.ts          # Middleware (NOT middleware.ts)
 ├── public/               # Static assets
-├── next.config.ts        # Next.js configuration
-└── tailwind.config.ts    # Tailwind configuration
+└── next.config.js        # Next.js configuration
 ```
 
 ## Critical Next.js 16+ Conventions
@@ -284,21 +283,9 @@ export function Component() {
 }
 ```
 
-### Tailwind CSS v4 (For Web-Specific Styling)
+### CSS Modules / globals.css (Avoid if Possible)
 
-```tsx
-export function Component() {
-  return (
-    <div className="bg-vanillaCream p-4">
-      <h1 className="text-ironstone text-2xl font-bold">Golf Courses</h1>
-    </div>
-  );
-}
-```
-
-### CSS Modules (Avoid if Possible)
-
-Only use for complex web-specific styling that can't be done with Tamagui or Tailwind.
+No Tailwind in this app. Only use plain CSS for complex web-specific styling that can't be done with Tamagui.
 
 ## Component Import Patterns
 
@@ -561,7 +548,7 @@ pnpm test:e2e
 
 **Solution**:
 
-1. Check `next.config.ts` has correct `transpilePackages`
+1. Check `next.config.js` has correct `transpilePackages`
 2. Run `pnpm install` at root
 3. Restart dev server
 
@@ -574,8 +561,7 @@ pnpm test:e2e
 **Solution**:
 
 1. Check `TamaguiProvider` is in root layout
-2. Verify `next.config.ts` webpack aliases for react-native
-3. Ensure Tailwind config is correct
+2. Verify `next.config.js` webpack aliases for react-native
 
 ### Issue: Database queries failing
 
