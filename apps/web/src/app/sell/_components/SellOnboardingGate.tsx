@@ -161,7 +161,7 @@ export function SellOnboardingGate({ initialStatus, children }: SellOnboardingGa
             colorPrimary: brandColors.spicedClementine,
             colorBackground: brandColors.pureWhite,
             colorText: brandColors.ironstone,
-            colorDanger: brandColors.error,
+            colorDanger: brandColors.errorBase,
             fontFamily: "system-ui, -apple-system, sans-serif",
             spacingUnit: "12px", // Stripe requires 8px-20px
             borderRadius: "10px",

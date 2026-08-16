@@ -110,7 +110,7 @@ export default function MobileOnboardingPage() {
             colorPrimary: brandColors.spicedClementine,
             colorBackground: brandColors.pureWhite,
             colorText: brandColors.ironstone,
-            colorDanger: brandColors.error,
+            colorDanger: brandColors.errorBase,
             fontFamily: "system-ui, -apple-system, sans-serif",
             spacingUnit: "12px",
             borderRadius: "10px",
@@ -314,7 +314,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: brandColors.pureWhite,
   },
   errorTitle: {
-    color: brandColors.error,
+    color: brandColors.errorBase,
     fontSize: 20,
     fontWeight: 600,
     marginBottom: 12,

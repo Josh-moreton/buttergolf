@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MessageCircle, AlertTriangle } from "@tamagui/lucide-icons";
 import { MobileBottomNav } from "../../components/mobile";
 import { formatDistanceToNow } from "date-fns";
-import { brandColors } from "@buttergolf/constants";
+import { brandColors } from "@buttergolf/config";
 
 export interface Conversation {
   id: string;

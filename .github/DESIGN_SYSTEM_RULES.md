@@ -19,50 +19,12 @@ Design tokens are defined in a dedicated configuration package:
 
 All colors use a semantic naming convention with brand-specific base colors:
 
-```typescript
-// Brand Colors (Source of Truth)
-const brandColors = {
-  // Primary - Spiced Clementine (vibrant orange)
-  spicedClementine: "#F45314",
-  spicedClementineHover: "#D9450F",
-  spicedClementinePress: "#BF3A0D",
-
-  // Primary Light - Vanilla Cream (light background)
-  vanillaCream: "#FFFAD2",
-  vanillaCreamHover: "#FFF8C5",
-  vanillaCreamPress: "#FFF6B8",
-
-  // Secondary - Burnt Olive (dark accent)
-  burntOlive: "#3E3B2C",
-  burntOliveHover: "#353226",
-  burntOlivePress: "#2C291F",
-
-  // Tertiary - Lemon Haze (subtle accent)
-  lemonHaze: "#EDECC3",
-  lemonHazeHover: "#E5E4B5",
-  lemonHazePress: "#DDDBA7",
-
-  // Neutral Light - Cloud Mist (borders/dividers)
-  cloudMist: "#EDEDED",
-  cloudMistHover: "#E0E0E0",
-  cloudMistPress: "#D3D3D3",
-
-  // Neutral Medium - Slate Smoke (secondary text)
-  slateSmoke: "#545454",
-
-  // Neutral Dark - Ironstone (primary text)
-  ironstone: "#323232",
-
-  // Pure White
-  pureWhite: "#FFFFFF",
-
-  // Status Colors
-  success: "#02aaa4", // Teal
-  error: "#dc2626", // Red
-  warning: "#F45314", // Uses primary (Spiced Clementine)
-  info: "#3c50e0", // Blue
-};
-```
+Brand colour values live in **`packages/config/src/brand-colors.ts`** — the single
+source of truth. Do not copy hex values into this document (previous copies here
+drifted from the real palette). Key families: Spiced Clementine (primary),
+Vanilla Cream, Lemon Haze, Burnt Olive, Cloud Mist, Slate Smoke, Ironstone,
+Pure White, plus status colours (`successBase`, `errorBase`, `warningBase`,
+`infoBase`) — each with `Hover`/`Press` interaction shades where applicable.
 
 #### Semantic Token Mapping
 

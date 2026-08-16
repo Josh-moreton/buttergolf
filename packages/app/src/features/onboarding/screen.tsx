@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Text, YStack, View, Image, Button, useTheme } from "@buttergolf/ui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { brandColors } from "@buttergolf/constants";
+import { brandColors } from "@buttergolf/config";
 
 // Logo variants for light/dark mode
 const LogoOrangeSvg =
