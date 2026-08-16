@@ -454,6 +454,7 @@ The design system rules above are enforced. Before committing, verify:
 - [ ] No `fontSize` prop on Text components (use `size` instead) - ESLint blocks this
 - [ ] No hardcoded hex colors (use semantic tokens like `$primary`, `$text`)
 - [ ] No raw pixel values for spacing (use `$xs`, `$sm`, `$md`, `$lg`, `$xl`, `$2xl`, `$3xl`)
+- [ ] Named spacing scale is canonical for padding/margin/gap; numeric space tokens (`$1`-`$20`) are legacy — don't add new ones, migrate opportunistically
 - [ ] All form inputs use design system components (Input, Select, TextArea, Radio)
 - [ ] Brand colours (Vanilla Cream, Lemon Haze) used where appropriate for visual interest
 
