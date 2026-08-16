@@ -173,7 +173,6 @@ Uses numeric tokens `$1` through `$16`:
 | `Heading`      | `Text.tsx`         | h1-h6 headings with level prop         |
 | `Label`        | `Text.tsx`         | Form labels                            |
 | `Input`        | `Input.tsx`        | Text inputs with size variants         |
-| `Select`       | `Select.tsx`       | Dropdown select                        |
 | `TextArea`     | `TextArea.tsx`     | Multi-line text input                  |
 | `Checkbox`     | `Checkbox.tsx`     | Checkbox control                       |
 | `Radio`        | `Radio.tsx`        | Radio button group                     |
@@ -227,7 +226,6 @@ Uses numeric tokens `$1` through `$16`:
 ### Styling Libraries
 
 - **Tamagui** - Primary styling (tokens, themes, variants)
-- **Tailwind CSS v4** - Web-only supplementary styling
 
 ### Build Systems
 
