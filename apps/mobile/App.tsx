@@ -9,7 +9,8 @@ import {
 } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { brandColors, LISTING_PRICE_LIMITS } from "@buttergolf/constants";
+import { LISTING_PRICE_LIMITS } from "@buttergolf/constants";
+import { brandColors } from "@buttergolf/config";
 import {
   Provider,
   RoundsScreen,
@@ -1795,7 +1796,7 @@ function PushTokenRegistration() {
  * Based on React Navigation's DefaultTheme/DarkTheme
  *
  * Uses shared brand colors from @buttergolf/constants for single source of truth.
- * @see packages/constants/src/brandColors.ts
+ * @see packages/config/src/tamagui.config.ts (brandColors)
  */
 const LightNavigationTheme: NavigationTheme = {
   ...DefaultTheme,

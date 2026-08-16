@@ -5,7 +5,6 @@
  * This package has no external dependencies and can be safely imported in React Native.
  */
 
-export * from "./brandColors";
 export * from "./categories";
 export * from "./checkout";
 export * from "./errorIds";

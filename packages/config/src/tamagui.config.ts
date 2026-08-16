@@ -179,7 +179,10 @@ const bodyFont = createFont({
 
 // Brand Colors - 10-shade scales for all color families
 // Brand colors from Figma - Pure Butter Golf Theme (sRGB)
-const brandColors = {
+// Single source of truth: these feed the Tamagui tokens/themes below and are
+// exported for the rare contexts that need raw hex values (React Navigation
+// themes, Stripe appearance objects, WebView inline styles).
+export const brandColors = {
   // Primary - Spiced Clementine (vibrant orange)
   spicedClementine: "#F45314",
   spicedClementineHover: "#D9450F", // 12% darker for hover
@@ -785,6 +788,7 @@ export const config = createTamagui({
 });
 
 export type AppConfig = typeof config;
+export type BrandColor = keyof typeof brandColors;
 
 declare module "tamagui" {
   interface TamaguiCustomConfig extends AppConfig {}
