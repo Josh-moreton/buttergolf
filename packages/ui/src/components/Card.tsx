@@ -7,15 +7,15 @@
  * @example
  * ```tsx
  * <Card variant="elevated" padding="$lg">
- *   <CardHeader>
+ *   <Card.Header>
  *     <Heading level={3}>Card Title</Heading>
- *   </CardHeader>
- *   <CardBody>
+ *   </Card.Header>
+ *   <Card.Body>
  *     <Text>Card content goes here</Text>
- *   </CardBody>
- *   <CardFooter>
+ *   </Card.Body>
+ *   <Card.Footer>
  *     <Button>Action</Button>
- *   </CardFooter>
+ *   </Card.Footer>
  * </Card>
  * ```
  */
