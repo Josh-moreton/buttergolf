@@ -127,19 +127,19 @@ Uses numeric tokens `$1` through `$16`:
 
 #### Core Components
 
-| Component      | Location           | Description                            |
-| -------------- | ------------------ | -------------------------------------- |
-| `Button`       | `Button.tsx`       | Primary/secondary buttons with shadows |
-| `AuthButton`   | `AuthButton.tsx`   | Authentication-specific buttons        |
+| Component      | Location           | Description                                 |
+| -------------- | ------------------ | ------------------------------------------- |
+| `Button`       | `Button.tsx`       | Primary/secondary buttons with shadows      |
+| `AuthButton`   | `AuthButton.tsx`   | Authentication-specific buttons             |
 | `Text`         | `Text.tsx`         | Body text (use native fontWeight/textAlign) |
-| `Heading`      | `Text.tsx`         | h1-h6 headings with level prop         |
-| `Label`        | `Text.tsx`         | Form labels                            |
-| `Input`        | `Input.tsx`        | Text inputs with size variants         |
-| `TextArea`     | `TextArea.tsx`     | Multi-line text input                  |
-| `Checkbox`     | `Checkbox.tsx`     | Checkbox control                       |
-| `Radio`        | `Radio.tsx`        | Radio button group                     |
-| `Slider`       | `Slider.tsx`       | Slider control                         |
-| `Autocomplete` | `Autocomplete.tsx` | Autocomplete input                     |
+| `Heading`      | `Text.tsx`         | h1-h6 headings with level prop              |
+| `Label`        | `Text.tsx`         | Form labels                                 |
+| `Input`        | `Input.tsx`        | Text inputs with size variants              |
+| `TextArea`     | `TextArea.tsx`     | Multi-line text input                       |
+| `Checkbox`     | `Checkbox.tsx`     | Checkbox control                            |
+| `Radio`        | `Radio.tsx`        | Radio button group                          |
+| `Slider`       | `Slider.tsx`       | Slider control                              |
+| `Autocomplete` | `Autocomplete.tsx` | Autocomplete input                          |
 
 #### Layout Components
 
