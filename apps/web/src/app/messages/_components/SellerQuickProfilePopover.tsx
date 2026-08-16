@@ -124,17 +124,17 @@ export function SellerQuickProfilePopover({
                 justifyContent="center"
                 backgroundColor="$backgroundHover"
               >
-                <Text size="$4" weight="bold" color="$textSecondary">
+                <Text size="$4" fontWeight="700" color="$textSecondary">
                   {getInitials(sellerName)}
                 </Text>
               </Column>
             )}
 
             <Column flex={1} gap="$xs">
-              <Text size="$5" weight="semibold" color="$text" numberOfLines={1}>
+              <Text size="$5" fontWeight="600" color="$text" numberOfLines={1}>
                 {sellerName}
               </Text>
-              <Text size="$2" color="$textSecondary" textTransform="uppercase" weight="semibold">
+              <Text size="$2" color="$textSecondary" textTransform="uppercase" fontWeight="600">
                 {userRole === "buyer" ? "Seller" : "Buyer"}
               </Text>
             </Column>
@@ -143,7 +143,7 @@ export function SellerQuickProfilePopover({
           {userRole === "buyer" ? (
             <Row alignItems="center" gap="$xs">
               <Star size={14} color="$warning" />
-              <Text size="$3" weight="semibold" color="$text">
+              <Text size="$3" fontWeight="600" color="$text">
                 {formatRating(averageRating)}
               </Text>
               {safeRatingCount > 0 && (

@@ -26,13 +26,13 @@ export function TrustBar() {
       }}
     >
       <Row alignItems="center" justifyContent="center" flexWrap="wrap" gap="$xs">
-        <Text size="$3" weight="medium" color="$text">
+        <Text size="$3" fontWeight="500" color="$text">
           Give 10%, Get 10%.
         </Text>
         <Link href="/refer-a-friend" style={{ textDecoration: "none" }}>
           <Text
             size="$3"
-            weight="medium"
+            fontWeight="500"
             color="$primary"
             textDecorationLine="underline"
             cursor="pointer"

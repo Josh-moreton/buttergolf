@@ -15,10 +15,10 @@ export function HeroSection() {
       borderBottomColor="$border"
     >
       <Column alignItems="center" gap="$sm" maxWidth={800}>
-        <Heading level={1} size="$10" align="center" fontWeight="700">
+        <Heading level={1} size="$10" textAlign="center" fontWeight="700">
           Ready to declutter your golf bag?
         </Heading>
-        <Heading level={3} size="$6" align="center" color="$textSecondary" fontWeight="400">
+        <Heading level={3} size="$6" textAlign="center" color="$textSecondary" fontWeight="400">
           Buy and sell pre-owned golf equipment with ease
         </Heading>
       </Column>

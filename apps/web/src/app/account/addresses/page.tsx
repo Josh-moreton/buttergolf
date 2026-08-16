@@ -54,7 +54,7 @@ function formatUKPostcode(postcode: string): string {
 // Form Label component
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text size="$3" weight="medium" color="$text">
+    <Text size="$3" fontWeight="500" color="$text">
       {children}
     </Text>
     {required && <Text color="$error">*</Text>}
@@ -436,7 +436,7 @@ export default function AddressesPage() {
                 <Row justifyContent="space-between" alignItems="flex-start">
                   <Column gap="$sm" flex={1}>
                     <Row gap="$sm" alignItems="center">
-                      <Text size="$6" weight="semibold">
+                      <Text size="$6" fontWeight="600">
                         {address.firstName && address.lastName
                           ? `${address.firstName} ${address.lastName}`
                           : address.name}

@@ -317,7 +317,7 @@ function CheckoutSuccessContent() {
                 />
               )}
               <Column gap="$xs" flex={1}>
-                <Text weight="bold" size="$5" numberOfLines={2}>
+                <Text fontWeight="700" size="$5" numberOfLines={2}>
                   {order.productTitle}
                 </Text>
                 {order.productBrand && (
@@ -334,7 +334,7 @@ function CheckoutSuccessContent() {
 
           {/* Order Progress Tracker */}
           <Column gap="$md" fullWidth paddingVertical="$md">
-            <Text weight="semibold" size="$5">
+            <Text fontWeight="600" size="$5">
               Order Status
             </Text>
             <Row gap="$sm" alignItems="center" fullWidth>
@@ -375,7 +375,7 @@ function CheckoutSuccessContent() {
                 <Text
                   size="$2"
                   color="$primary"
-                  weight="semibold"
+                  fontWeight="600"
                   textAlign="center"
                   marginTop="$xs"
                 >
@@ -434,14 +434,14 @@ function CheckoutSuccessContent() {
             <Column gap="$md">
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Order ID</Text>
-                <Text weight="bold" fontFamily="$body">
+                <Text fontWeight="700" fontFamily="$body">
                   #{order.id.slice(0, 8).toUpperCase()}
                 </Text>
               </Row>
 
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Item Price</Text>
-                <Text weight="medium">
+                <Text fontWeight="500">
                   £
                   {(
                     order.amountTotal -
@@ -453,7 +453,7 @@ function CheckoutSuccessContent() {
 
               <Row justifyContent="space-between" alignItems="center">
                 <Text color="$textSecondary">Shipping</Text>
-                <Text weight="medium">£{order.shippingCost.toFixed(2)}</Text>
+                <Text fontWeight="500">£{order.shippingCost.toFixed(2)}</Text>
               </Row>
 
               {order.buyerProtectionFee && order.buyerProtectionFee > 0 && (
@@ -462,7 +462,7 @@ function CheckoutSuccessContent() {
                     <Text color="$textSecondary">Buyer Protection</Text>
                     <ShieldCheck size={14} color="$textSecondary" />
                   </Row>
-                  <Text weight="medium">£{order.buyerProtectionFee.toFixed(2)}</Text>
+                  <Text fontWeight="500">£{order.buyerProtectionFee.toFixed(2)}</Text>
                 </Row>
               )}
 
@@ -473,10 +473,10 @@ function CheckoutSuccessContent() {
                 borderTopWidth={1}
                 borderTopColor="$border"
               >
-                <Text weight="bold" size="$5">
+                <Text fontWeight="700" size="$5">
                   Total Paid
                 </Text>
-                <Text weight="bold" size="$7" color="$primary">
+                <Text fontWeight="700" size="$7" color="$primary">
                   £{order.amountTotal.toFixed(2)}
                 </Text>
               </Row>
@@ -490,7 +490,7 @@ function CheckoutSuccessContent() {
                 borderTopColor="$border"
               >
                 <Text color="$textSecondary">Est. Delivery</Text>
-                <Text weight="semibold" color="$success">
+                <Text fontWeight="600" color="$success">
                   {new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString("en-GB", {
                     weekday: "short",
                     month: "short",
@@ -548,7 +548,7 @@ function CheckoutSuccessContent() {
             <Column gap="$sm">
               <Row gap="$sm" alignItems="center">
                 <MapPin size={18} color="$text" />
-                <Text weight="semibold">Shipping To</Text>
+                <Text fontWeight="600">Shipping To</Text>
               </Row>
               <Text color="$textSecondary">{order.shippingAddress.name}</Text>
               <Text color="$textSecondary">

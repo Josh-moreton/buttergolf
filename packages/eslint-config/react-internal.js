@@ -142,6 +142,13 @@ export const config = [
           paths: reactImportPaths,
         },
       ],
+      // Spacing convention: the NAMED scale ($xs-$3xl) is canonical for
+      // padding/margin/gap; numeric space tokens ($1-$20) are legacy and
+      // migrated opportunistically. Not lint-enforced: ESLint flat config
+      // REPLACES no-restricted-syntax per-rule rather than merging, so adding
+      // a selector here would clobber the British-spelling and PrismaClient
+      // selectors from base.js. Revisit as a dedicated plugin rule if drift
+      // continues. Convention documented in .claude/CLAUDE.md.
     },
   },
 ];

@@ -132,14 +132,14 @@ export function OfferCard({
           {/* Label row */}
           <Row alignItems="center" gap="$xs">
             {getStatusIcon(type)}
-            <Text size="$3" color="$textSecondary" weight="medium">
+            <Text size="$3" color="$textSecondary" fontWeight="500">
               {getOfferLabel(type, isOwnMessage)}
             </Text>
           </Row>
 
           {/* Amount */}
           {offerAmount != null && (
-            <Text size="$8" weight="bold" color={statusColor}>
+            <Text size="$8" fontWeight="700" color={statusColor}>
               £{offerAmount.toFixed(2)}
             </Text>
           )}

@@ -166,7 +166,7 @@ export function ListingDetailsPanel({
       >
         <Column padding="$lg" gap="$lg" minHeight="100%">
           <Row alignItems="center" justifyContent="space-between">
-            <Text id="listing-details-panel-title" size="$6" weight="bold" color="$text">
+            <Text id="listing-details-panel-title" size="$6" fontWeight="700" color="$text">
               Listing Details
             </Text>
             <Button chromeless size="$3" onPress={onClose}>
@@ -201,7 +201,7 @@ export function ListingDetailsPanel({
             )}
 
             <Column gap="$xs">
-              <Text size="$6" weight="bold" color="$text">
+              <Text size="$6" fontWeight="700" color="$text">
                 {productTitle}
               </Text>
               <Text size="$3" color="$textSecondary">
@@ -210,7 +210,7 @@ export function ListingDetailsPanel({
             </Column>
 
             <Row alignItems="center" justifyContent="space-between">
-              <Text size="$7" weight="bold" color="$primary">
+              <Text size="$7" fontWeight="700" color="$primary">
                 {formattedPrice}
               </Text>
               {productSold ? (
@@ -240,7 +240,7 @@ export function ListingDetailsPanel({
               }}
             >
               <Row alignItems="center" gap="$xs">
-                <Text color="$textInverse" weight="semibold">
+                <Text color="$textInverse" fontWeight="600">
                   Open Listing
                 </Text>
                 <ExternalLink size={14} color="$textInverse" />

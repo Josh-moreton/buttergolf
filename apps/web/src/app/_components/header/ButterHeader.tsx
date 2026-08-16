@@ -154,7 +154,7 @@ export function ButterHeader() {
                     transition: "all 200ms ease-out",
                   }}
                 >
-                  <Text size="$6" weight={isActive("/") ? "bold" : "normal"} color="$text">
+                  <Text size="$6" fontWeight={isActive("/") ? "700" : "400"} color="$text">
                     Home
                   </Text>
                 </Row>
@@ -173,7 +173,7 @@ export function ButterHeader() {
                     transition: "all 200ms ease-out",
                   }}
                 >
-                  <Text size="$6" weight={isActive("/listings") ? "bold" : "normal"} color="$text">
+                  <Text size="$6" fontWeight={isActive("/listings") ? "700" : "400"} color="$text">
                     Buying
                   </Text>
                 </Row>
@@ -192,7 +192,7 @@ export function ButterHeader() {
                     transition: "all 200ms ease-out",
                   }}
                 >
-                  <Text size="$6" weight={isActive("/sell") ? "bold" : "normal"} color="$text">
+                  <Text size="$6" fontWeight={isActive("/sell") ? "700" : "400"} color="$text">
                     Selling
                   </Text>
                 </Row>
@@ -314,7 +314,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/") ? "bold" : "normal"}
+              fontWeight={isActive("/") ? "700" : "400"}
               color={isActive("/") ? "$primary" : "$text"}
             >
               Home
@@ -327,7 +327,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/listings") ? "bold" : "normal"}
+              fontWeight={isActive("/listings") ? "700" : "400"}
               color={isActive("/listings") ? "$primary" : "$text"}
             >
               Buying
@@ -340,7 +340,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/sell") ? "bold" : "normal"}
+              fontWeight={isActive("/sell") ? "700" : "400"}
               color={isActive("/sell") ? "$primary" : "$text"}
             >
               Selling
@@ -355,7 +355,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/favourites") ? "bold" : "normal"}
+              fontWeight={isActive("/favourites") ? "700" : "400"}
               color={isActive("/favourites") ? "$primary" : "$text"}
             >
               Wishlist
@@ -369,7 +369,7 @@ export function ButterHeader() {
             <Row alignItems="center" gap="$2">
               <Text
                 size="$7"
-                weight={isActive("/messages") ? "bold" : "normal"}
+                fontWeight={isActive("/messages") ? "700" : "400"}
                 color={isActive("/messages") ? "$primary" : "$text"}
               >
                 Messages
@@ -398,7 +398,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/orders") ? "bold" : "normal"}
+              fontWeight={isActive("/orders") ? "700" : "400"}
               color={isActive("/orders") ? "$primary" : "$text"}
             >
               Orders
@@ -411,7 +411,7 @@ export function ButterHeader() {
           >
             <Text
               size="$7"
-              weight={isActive("/account") ? "bold" : "normal"}
+              fontWeight={isActive("/account") ? "700" : "400"}
               color={isActive("/account") ? "$primary" : "$text"}
             >
               Account
@@ -423,7 +423,7 @@ export function ButterHeader() {
 
           {/* Category Navigation - Mobile Only */}
           <Column gap="$4">
-            <Text size="$5" weight="semibold" color="$textSecondary">
+            <Text size="$5" fontWeight="600" color="$textSecondary">
               Shop by Category
             </Text>
             {NAV_CATEGORIES.map((category) => (
@@ -436,7 +436,7 @@ export function ButterHeader() {
                 <Row minHeight={44} alignItems="center" paddingVertical="$2">
                   <Text
                     size="$6"
-                    weight={isActive(category.href) ? "bold" : "normal"}
+                    fontWeight={isActive(category.href) ? "700" : "400"}
                     color={isActive(category.href) ? "$primary" : "$text"}
                   >
                     {category.name}
@@ -449,7 +449,7 @@ export function ButterHeader() {
           {/* Theme Switcher - Mobile */}
           <Row height={1} backgroundColor="$border" marginVertical="$2" width="100%" />
           <Row alignItems="center" justifyContent="space-between" paddingVertical="$2">
-            <Text size="$5" weight="semibold" color="$textSecondary">
+            <Text size="$5" fontWeight="600" color="$textSecondary">
               Theme
             </Text>
             <ThemeSwitcher showLabels />

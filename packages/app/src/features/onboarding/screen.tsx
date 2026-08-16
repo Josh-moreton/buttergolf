@@ -197,10 +197,10 @@ export function OnboardingScreen({
 
         {/* Tagline */}
         <YStack gap={4} alignItems="center">
-          <Text size="$10" fontWeight="500" align="center" color={textColor} lineHeight={32}>
+          <Text size="$10" fontWeight="500" textAlign="center" color={textColor} lineHeight={32}>
             The Marketplace to
           </Text>
-          <Text size="$10" fontWeight="500" align="center" color={textColor} lineHeight={32}>
+          <Text size="$10" fontWeight="500" textAlign="center" color={textColor} lineHeight={32}>
             Buy, Sell & Upgrade
           </Text>
         </YStack>

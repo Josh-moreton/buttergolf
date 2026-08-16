@@ -202,7 +202,7 @@ export function ConversationListItem({
           <Row justifyContent="space-between" alignItems="center">
             <Text
               size="$5"
-              weight={hasUnread ? "bold" : "semibold"}
+              fontWeight={hasUnread ? "700" : "600"}
               numberOfLines={1}
               flex={1}
               color={hasUnread ? "$text" : "$text"}
@@ -236,7 +236,7 @@ export function ConversationListItem({
             <Text
               size="$4"
               color={hasUnread ? "$text" : "$textSecondary"}
-              weight={hasUnread ? "semibold" : "normal"}
+              fontWeight={hasUnread ? "600" : "400"}
               numberOfLines={1}
               flex={1}
             >
@@ -247,7 +247,7 @@ export function ConversationListItem({
             )}
             {hasUnread && !latestOfferStatus && (
               <UnreadDot>
-                <Text size="$1" color="$textInverse" weight="bold">
+                <Text size="$1" color="$textInverse" fontWeight="700">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </Text>
               </UnreadDot>

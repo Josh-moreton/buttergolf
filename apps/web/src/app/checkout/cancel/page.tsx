@@ -34,7 +34,7 @@ export default function CheckoutCancelPage() {
           {/* Cancel Message */}
           <Column gap="$sm" alignItems="center">
             <Heading level={2}>Checkout Cancelled</Heading>
-            <Text color="$textSecondary" align="center">
+            <Text color="$textSecondary" textAlign="center">
               Your payment was cancelled. No charges were made to your account.
             </Text>
           </Column>
@@ -42,7 +42,7 @@ export default function CheckoutCancelPage() {
           {/* Information */}
           <Card variant="outlined" padding="$lg" fullWidth>
             <Column gap="$md">
-              <Text weight="semibold">Why was my checkout cancelled?</Text>
+              <Text fontWeight="600">Why was my checkout cancelled?</Text>
               <Column gap="$xs" paddingLeft="$md">
                 <Text color="$textSecondary" size="$3">
                   • You clicked the back button
@@ -59,7 +59,7 @@ export default function CheckoutCancelPage() {
 
           {/* What's Next */}
           <Column gap="$sm" paddingTop="$md" fullWidth>
-            <Text weight="semibold" size="$4">
+            <Text fontWeight="600" size="$4">
               What would you like to do?
             </Text>
             <Column gap="$xs" paddingLeft="$md">

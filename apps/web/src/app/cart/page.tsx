@@ -16,7 +16,7 @@ export default function CartPage() {
         gap="$4"
         paddingHorizontal="$4"
       >
-        <Text size="$7" weight="bold">
+        <Text size="$7" fontWeight="700">
           Your cart is empty
         </Text>
         <Text color="$textSecondary">Browse our marketplace to find great deals</Text>
@@ -39,7 +39,7 @@ export default function CartPage() {
       width="100%"
     >
       <Row alignItems="center" justifyContent="space-between">
-        <Text size="$7" weight="bold">
+        <Text size="$7" fontWeight="700">
           Shopping Cart ({items.length} {items.length === 1 ? "item" : "items"})
         </Text>
         <Button chromeless onPress={clearCart}>
@@ -62,10 +62,10 @@ export default function CartPage() {
                   alt={item.title}
                 />
                 <Column flex={1} gap="$2">
-                  <Text size="$4" weight="semibold">
+                  <Text size="$4" fontWeight="600">
                     {item.title}
                   </Text>
-                  <Text size="$6" weight="bold" color="$primary">
+                  <Text size="$6" fontWeight="700" color="$primary">
                     £{item.price.toFixed(2)}
                   </Text>
                 </Column>
@@ -97,7 +97,7 @@ export default function CartPage() {
         {/* Order Summary */}
         <Card variant="elevated" padding="$lg" minWidth={300} width="100%" maxWidth={400}>
           <Column gap="$4">
-            <Text size="$6" weight="bold">
+            <Text size="$6" fontWeight="700">
               Order Summary
             </Text>
             <Column gap="$2">
@@ -117,10 +117,10 @@ export default function CartPage() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text size="$6" weight="bold">
+              <Text size="$6" fontWeight="700">
                 Total
               </Text>
-              <Text size="$7" weight="bold" color="$primary">
+              <Text size="$7" fontWeight="700" color="$primary">
                 £{totalPrice.toFixed(2)}
               </Text>
             </Row>

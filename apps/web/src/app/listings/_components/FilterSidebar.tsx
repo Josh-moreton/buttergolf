@@ -46,7 +46,7 @@ export function FilterSidebar({
       display="none"
       $gtLg={{ display: "flex" }}
     >
-      <Text weight="bold" size="$6">
+      <Text fontWeight="700" size="$6">
         Filters
       </Text>
 

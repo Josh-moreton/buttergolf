@@ -64,46 +64,9 @@ export const Text = styled(TamaguiParagraph, {
   // The size prop (e.g., size="$5") automatically applies the correct lineHeight from tokens
   // This fixes text overlap issues caused by unitless multipliers overriding token values
 
-  variants: {
-    weight: {
-      normal: {
-        fontWeight: "400",
-      },
-      medium: {
-        fontWeight: "500",
-      },
-      semibold: {
-        fontWeight: "600",
-      },
-      bold: {
-        fontWeight: "700",
-      },
-    },
-
-    align: {
-      left: {
-        textAlign: "left",
-      },
-      center: {
-        textAlign: "center",
-      },
-      right: {
-        textAlign: "right",
-      },
-    },
-
-    truncate: {
-      true: {
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    weight: "normal",
-  },
+  // No custom weight/align variants — use the native fontWeight/textAlign
+  // props directly (the variants duplicated them and lost 3:1 in practice).
+  fontWeight: "400",
 });
 
 /**
@@ -150,18 +113,6 @@ export const Heading = styled(TamaguiParagraph, {
       6: {
         tag: "h6",
         fontSize: "$5", // 20px heading
-      },
-    },
-
-    align: {
-      left: {
-        textAlign: "left",
-      },
-      center: {
-        textAlign: "center",
-      },
-      right: {
-        textAlign: "right",
       },
     },
   } as const,

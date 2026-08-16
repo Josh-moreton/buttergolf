@@ -124,7 +124,7 @@ export function ProductsGrid({
   if (!isLoading && !isPaginating && products.length === 0) {
     return (
       <Column alignItems="center" justifyContent="center" paddingVertical="$10" gap="$md">
-        <Text size="$7" weight="semibold" color="$textSecondary">
+        <Text size="$7" fontWeight="600" color="$textSecondary">
           No products found
         </Text>
         <Text color="$text">Try adjusting your filters or search query</Text>

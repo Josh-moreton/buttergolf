@@ -116,7 +116,7 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
       <Column gap="$sm">
         <Row justifyContent="space-between" alignItems="center">
           <Column gap="$xs" flex={1}>
-            <Text size="$3" color="$textSecondary" weight="bold">
+            <Text size="$3" color="$textSecondary" fontWeight="700">
               Posted by {`${product.user.firstName} ${product.user.lastName}`.trim() || "Unknown"}
             </Text>
             <Text size="$2" color="$textSecondary">
@@ -127,7 +127,7 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
                 <Text size="$3" color="$primary">
                   ★
                 </Text>
-                <Text size="$3" color="$text" weight="semibold">
+                <Text size="$3" color="$text" fontWeight="600">
                   {averageRating.toFixed(1)}
                 </Text>
                 <Text size="$2" color="$textSecondary">
@@ -148,16 +148,16 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
       {/* Product Specifications */}
       <Row gap="$md">
         <Column gap="$sm" flex={1}>
-          <Text size="$3" color="$text" weight="bold" lineHeight="$3">
+          <Text size="$3" color="$text" fontWeight="700" lineHeight="$3">
             Category
           </Text>
-          <Text size="$3" color="$text" weight="bold" lineHeight="$3">
+          <Text size="$3" color="$text" fontWeight="700" lineHeight="$3">
             Brand
           </Text>
-          <Text size="$3" color="$text" weight="bold" lineHeight="$3">
+          <Text size="$3" color="$text" fontWeight="700" lineHeight="$3">
             Model
           </Text>
-          <Text size="$3" color="$text" weight="bold" lineHeight="$3">
+          <Text size="$3" color="$text" fontWeight="700" lineHeight="$3">
             Condition
           </Text>
         </Column>
@@ -182,7 +182,7 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
 
       {/* Product Description */}
       <Column gap="$md">
-        <Text size="$3" color="$text" weight="bold">
+        <Text size="$3" color="$text" fontWeight="700">
           Product Description
         </Text>
         <Text size="$3" color="$text">
