@@ -103,11 +103,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           gap="$lg"
         >
           <Column alignItems="center" gap="$md" maxWidth={400}>
-            <Heading level={2} align="center" color="$error">
+            <Heading level={2} textAlign="center" color="$error">
               Something went wrong
             </Heading>
 
-            <Text align="center" color="$textSecondary">
+            <Text textAlign="center" color="$textSecondary">
               We&apos;re sorry for the inconvenience. The error has been logged and we&apos;ll look
               into it.
             </Text>
@@ -121,7 +121,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 width="100%"
                 gap="$sm"
               >
-                <Text weight="semibold" color="$error" size="$3">
+                <Text fontWeight="600" color="$error" size="$3">
                   Error: {this.state.error.message}
                 </Text>
                 {this.state.errorInfo && (

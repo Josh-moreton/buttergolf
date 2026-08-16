@@ -224,7 +224,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
             <Column gap="$lg" padding="$lg">
               {/* Images */}
               <Column gap="$xs">
-                <Text weight="medium">Photos *</Text>
+                <Text fontWeight="500">Photos *</Text>
                 <ImageUpload
                   onUploadComplete={handleImageUploadComplete}
                   onRemoveImage={handleRemoveImage}
@@ -236,7 +236,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
               {/* Title */}
               <Column gap="$xs">
-                <Text weight="medium">Title *</Text>
+                <Text fontWeight="500">Title *</Text>
                 <Input
                   value={formData.title}
                   onChangeText={(value) => setFormData({ ...formData, title: value })}
@@ -248,7 +248,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
               {/* Description */}
               <Column gap="$xs">
-                <Text weight="medium">Description *</Text>
+                <Text fontWeight="500">Description *</Text>
                 {/* eslint-disable-next-line react/forbid-elements */}
                 <textarea
                   value={formData.description}
@@ -273,7 +273,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
               {/* Price & Condition */}
               <Row gap="$md" flexWrap="wrap">
                 <Column gap="$xs" flex={1} minWidth={200}>
-                  <Text weight="medium">Price (£) *</Text>
+                  <Text fontWeight="500">Price (£) *</Text>
                   <Input
                     value={formData.price}
                     onChangeText={(value) => setFormData({ ...formData, price: value })}
@@ -290,7 +290,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
                 </Column>
 
                 <Column gap="$xs" flex={1} minWidth={200}>
-                  <Text weight="medium">Condition *</Text>
+                  <Text fontWeight="500">Condition *</Text>
                   {/* eslint-disable-next-line react/forbid-elements */}
                   <select
                     value={formData.condition}
@@ -330,7 +330,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
               {/* Brand */}
               <Column gap="$xs">
-                <Text weight="medium">Brand *</Text>
+                <Text fontWeight="500">Brand *</Text>
                 {/* eslint-disable-next-line react/forbid-elements */}
                 <select
                   value={formData.brandId}
@@ -369,7 +369,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
               {/* Model */}
               <Column gap="$xs">
-                <Text weight="medium">Model</Text>
+                <Text fontWeight="500">Model</Text>
                 <Input
                   value={formData.model}
                   onChangeText={(value) => setFormData({ ...formData, model: value })}
@@ -380,7 +380,7 @@ export function EditProductModal({ product, onClose, onSave }: EditProductModalP
 
               {/* Category */}
               <Column gap="$xs">
-                <Text weight="medium">Category *</Text>
+                <Text fontWeight="500">Category *</Text>
                 {/* eslint-disable-next-line react/forbid-elements */}
                 <select
                   value={formData.categoryId}

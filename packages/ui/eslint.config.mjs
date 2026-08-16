@@ -37,6 +37,9 @@ export default [
         },
       ],
       // Allow raw <input> in Checkbox since it's a hidden form integration element
+      // The named-spacing warn rule targets app code; the DS layer itself uses
+      // numeric space tokens deliberately (aligned with component size tokens).
+      "no-restricted-syntax": "off",
       "react/forbid-elements": [
         "warn",
         {

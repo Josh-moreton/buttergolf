@@ -45,7 +45,7 @@ export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
                     borderWidth={0}
                     hoverStyle={{ backgroundColor: "$backgroundHover" }}
                   >
-                    <Text size="$3" weight="medium" whiteSpace="nowrap">
+                    <Text size="$3" fontWeight="500" whiteSpace="nowrap">
                       {menuItem.title}
                     </Text>
                     <Column
@@ -94,7 +94,7 @@ export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
                             borderRadius="$md"
                             hoverStyle={{ backgroundColor: "$backgroundHover" }}
                           >
-                            <Text size="$3" weight="medium">
+                            <Text size="$3" fontWeight="500">
                               {subItem.title}
                             </Text>
                           </Row>
@@ -113,7 +113,7 @@ export function DesktopMenu({ menuData }: Readonly<DesktopMenuProps>) {
                     borderRadius="$md"
                     hoverStyle={{ backgroundColor: "$backgroundHover" }}
                   >
-                    <Text size="$3" weight="medium">
+                    <Text size="$3" fontWeight="500">
                       {menuItem.title}
                     </Text>
                   </Row>

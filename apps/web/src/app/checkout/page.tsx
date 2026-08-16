@@ -168,7 +168,7 @@ function CheckoutPageContent() {
                       />
                     )}
                     <Column gap="$xs" flex={1}>
-                      <Text size="$5" weight="semibold" numberOfLines={2}>
+                      <Text size="$5" fontWeight="600" numberOfLines={2}>
                         {product.title}
                       </Text>
                       {product.brand && (
@@ -191,7 +191,7 @@ function CheckoutPageContent() {
                     borderTopColor="$border"
                   >
                     <Text color="$textSecondary">Subtotal</Text>
-                    <Text weight="bold" size="$6" color="$primary">
+                    <Text fontWeight="700" size="$6" color="$primary">
                       £{product.price.toFixed(2)}
                     </Text>
                   </Row>

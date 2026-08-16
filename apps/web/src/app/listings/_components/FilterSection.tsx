@@ -25,7 +25,7 @@ export function FilterSection({
         cursor="pointer"
         onPress={() => setIsExpanded(!isExpanded)}
       >
-        <Text weight="semibold" size="$3">
+        <Text fontWeight="600" size="$3">
           {title}
         </Text>
         <Text color="$textSecondary" size="$3">

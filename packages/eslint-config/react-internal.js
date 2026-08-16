@@ -142,6 +142,18 @@ export const config = [
           paths: reactImportPaths,
         },
       ],
+      // Spacing convention: the NAMED scale ($xs/$sm/$md/$lg/$xl/$2xl/$3xl) is
+      // canonical for padding/margin/gap. Numeric space tokens ($1-$20) remain
+      // valid Tamagui but are being migrated out — warn to steer new code.
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector:
+            'JSXAttribute[name.name=/^(padding|paddingHorizontal|paddingVertical|paddingTop|paddingBottom|paddingLeft|paddingRight|margin|marginHorizontal|marginVertical|marginTop|marginBottom|marginLeft|marginRight|gap|rowGap|columnGap)$/] > Literal[value=/^\\$\\d/]',
+          message:
+            'Use the named spacing scale ($xs/$sm/$md/$lg/$xl/$2xl/$3xl) instead of numeric space tokens ($1-$20) for padding/margin/gap. The two scales don\'t align; named is canonical.',
+        },
+      ],
     },
   },
 ];

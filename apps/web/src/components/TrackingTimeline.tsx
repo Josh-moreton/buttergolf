@@ -90,7 +90,7 @@ export function TrackingTimeline({ order, events }: TrackingTimelineProps) {
             <Text size="$3" color="$textSecondary">
               Tracking Number
             </Text>
-            <Text size="$5" weight="semibold" color="$text">
+            <Text size="$5" fontWeight="600" color="$text">
               {trackingCode || "Not available"}
             </Text>
           </Column>
@@ -107,7 +107,7 @@ export function TrackingTimeline({ order, events }: TrackingTimelineProps) {
             <CheckCircle size={16} color="$success" />
             <Text size="$4" color="$textSecondary">
               Est. Delivery:{" "}
-              <Text weight="semibold" color="$text">
+              <Text fontWeight="600" color="$text">
                 {formatDate(estimatedDelivery.toString())}
               </Text>
             </Text>
@@ -146,7 +146,7 @@ export function TrackingTimeline({ order, events }: TrackingTimelineProps) {
               <Column gap="$xs" flex={1}>
                 <Text
                   size="$5"
-                  weight={isCompleted ? "semibold" : "normal"}
+                  fontWeight={isCompleted ? "600" : "400"}
                   color={isCompleted ? "$text" : "$textSecondary"}
                 >
                   {stage.label}
@@ -165,7 +165,7 @@ export function TrackingTimeline({ order, events }: TrackingTimelineProps) {
       {/* Detailed Events */}
       {events.length > 0 && (
         <Column gap="$md" marginTop="$lg">
-          <Text size="$6" weight="semibold" color="$text">
+          <Text size="$6" fontWeight="600" color="$text">
             Tracking History
           </Text>
 
@@ -180,7 +180,7 @@ export function TrackingTimeline({ order, events }: TrackingTimelineProps) {
                 borderLeftWidth={3}
                 borderLeftColor="$primary"
               >
-                <Text size="$4" weight="semibold" color="$text">
+                <Text size="$4" fontWeight="600" color="$text">
                   {event.description}
                 </Text>
 

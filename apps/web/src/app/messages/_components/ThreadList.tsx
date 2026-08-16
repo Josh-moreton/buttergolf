@@ -108,7 +108,7 @@ export function ThreadList({
           <Link href="/listings" style={{ textDecoration: "none" }}>
             <Text
               color="$primary"
-              weight="semibold"
+              fontWeight="600"
               hoverStyle={{ textDecorationLine: "underline" }}
             >
               Browse listings →
@@ -248,7 +248,7 @@ function ConversationRow({
               >
                 <Text
                   size="$5"
-                  weight="semibold"
+                  fontWeight="600"
                   color={isActive ? "$textInverse" : "$textSecondary"}
                 >
                   {getInitials(conversation.otherUserName)}
@@ -263,7 +263,7 @@ function ConversationRow({
         <Row alignItems="center" gap="$xs">
           <Text
             size="$5"
-            weight={hasUnread ? "bold" : "medium"}
+            fontWeight={hasUnread ? "700" : "500"}
             color="$text"
             numberOfLines={1}
             flex={1}
@@ -305,7 +305,7 @@ function ConversationRow({
           </Button>
 
           {conversationStatus && (
-            <Text size="$2" color={conversationStatus.color} weight="semibold" flexShrink={0}>
+            <Text size="$2" color={conversationStatus.color} fontWeight="600" flexShrink={0}>
               {conversationStatus.label}
             </Text>
           )}
@@ -315,7 +315,7 @@ function ConversationRow({
           <Text
             size="$4"
             color={hasUnread ? "$text" : "$textSecondary"}
-            weight={hasUnread ? "semibold" : "normal"}
+            fontWeight={hasUnread ? "600" : "400"}
             numberOfLines={1}
             flex={1}
           >
@@ -333,7 +333,7 @@ function ConversationRow({
                 justifyContent="center"
                 paddingHorizontal="$xs"
               >
-                <Text size="$1" color="$textInverse" weight="bold">
+                <Text size="$1" color="$textInverse" fontWeight="700">
                   {conversation.unreadCount > 9 ? "9+" : conversation.unreadCount}
                 </Text>
               </View>

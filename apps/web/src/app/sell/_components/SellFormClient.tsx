@@ -129,7 +129,7 @@ const CONDITION_LABELS: Record<number, string> = {
 // Label component for form fields
 const FormLabel = ({ children, required }: { children: React.ReactNode; required?: boolean }) => (
   <Row gap="$xs" marginBottom="$xs">
-    <Text size="$3" weight="medium" color="$text">
+    <Text size="$3" fontWeight="500" color="$text">
       {children}
     </Text>
     {required && <Text color="$error">*</Text>}
@@ -989,10 +989,10 @@ export function SellFormClient({ draftId }: SellFormClientProps) {
                     {/* Grip Condition */}
                     <Column gap="$xs" width="100%">
                       <Row justifyContent="space-between" alignItems="center">
-                        <Text size="$4" weight="medium" color="$text">
+                        <Text size="$4" fontWeight="500" color="$text">
                           Grip
                         </Text>
-                        <Text size="$4" color="$primary" weight="semibold">
+                        <Text size="$4" color="$primary" fontWeight="600">
                           {formData.gripCondition} - {getConditionLabel(formData.gripCondition)}
                         </Text>
                       </Row>
@@ -1015,10 +1015,10 @@ export function SellFormClient({ draftId }: SellFormClientProps) {
                     {/* Head Condition */}
                     <Column gap="$xs" width="100%">
                       <Row justifyContent="space-between" alignItems="center">
-                        <Text size="$4" weight="medium" color="$text">
+                        <Text size="$4" fontWeight="500" color="$text">
                           Head
                         </Text>
-                        <Text size="$4" color="$primary" weight="semibold">
+                        <Text size="$4" color="$primary" fontWeight="600">
                           {formData.headCondition} - {getConditionLabel(formData.headCondition)}
                         </Text>
                       </Row>
@@ -1041,10 +1041,10 @@ export function SellFormClient({ draftId }: SellFormClientProps) {
                     {/* Shaft Condition */}
                     <Column gap="$xs" width="100%">
                       <Row justifyContent="space-between" alignItems="center">
-                        <Text size="$4" weight="medium" color="$text">
+                        <Text size="$4" fontWeight="500" color="$text">
                           Shaft
                         </Text>
-                        <Text size="$4" color="$primary" weight="semibold">
+                        <Text size="$4" color="$primary" fontWeight="600">
                           {formData.shaftCondition} - {getConditionLabel(formData.shaftCondition)}
                         </Text>
                       </Row>
@@ -1198,7 +1198,7 @@ export function SellFormClient({ draftId }: SellFormClientProps) {
                   <Column gap="$xs" width="100%">
                     <FormLabel required>Price</FormLabel>
                     <Row gap="$sm" alignItems="center">
-                      <Text size="$6" weight="semibold">
+                      <Text size="$6" fontWeight="600">
                         £
                       </Text>
                       <Input

@@ -26,7 +26,7 @@ export function EmptyConversation() {
       >
         <MessageSquare size={36} color="$textTertiary" />
       </Column>
-      <Text size="$6" weight="medium" color="$textSecondary">
+      <Text size="$6" fontWeight="500" color="$textSecondary">
         Select a conversation
       </Text>
       <Text size="$4" color="$textTertiary" textAlign="center" maxWidth={280}>

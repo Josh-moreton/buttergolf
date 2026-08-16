@@ -77,7 +77,7 @@ export function NewsletterSection() {
         alignItems="center"
       >
         <Column gap="$sm" alignItems="center">
-          <Text size="$8" weight="bold" color="$text" textAlign="center">
+          <Text size="$8" fontWeight="700" color="$text" textAlign="center">
             Don&apos;t miss deals
           </Text>
           <Text color="$textSecondary" size="$5" textAlign="center">
@@ -133,7 +133,7 @@ export function NewsletterSection() {
               {status === "submitting" ? (
                 <Row alignItems="center" justifyContent="center" gap="$sm" width="100%">
                   <Spinner size="sm" color="$white" alignSelf="center" />
-                  <Text size="$5" color="$white" weight="bold">
+                  <Text size="$5" color="$white" fontWeight="700">
                     Subscribing...
                   </Text>
                 </Row>
@@ -151,7 +151,7 @@ export function NewsletterSection() {
                   <Text
                     size="$5"
                     color="$white"
-                    weight="bold"
+                    fontWeight="700"
                     animation="quick"
                     opacity={status === "successTick" ? 0 : 1}
                     x={status === "successTick" ? 8 : 0}

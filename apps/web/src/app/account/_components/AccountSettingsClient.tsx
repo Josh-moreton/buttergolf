@@ -176,12 +176,12 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
           <Column gap="$md">
             <Heading level={3}>Account Information</Heading>
             <Column gap="$xs">
-              <Text weight="medium">Email</Text>
+              <Text fontWeight="500">Email</Text>
               <Text color="$textSecondary">{user.email}</Text>
             </Column>
             {(user.firstName || user.lastName) && (
               <Column gap="$xs">
-                <Text weight="medium">Name</Text>
+                <Text fontWeight="500">Name</Text>
                 <Text color="$textSecondary">
                   {`${user.firstName || ""} ${user.lastName || ""}`.trim()}
                 </Text>
@@ -189,7 +189,7 @@ export function AccountSettingsClient({ user }: AccountSettingsClientProps) {
             )}
             {user.phone && (
               <Column gap="$xs">
-                <Text weight="medium">Phone</Text>
+                <Text fontWeight="500">Phone</Text>
                 <Text color="$textSecondary">{user.phone}</Text>
               </Column>
             )}

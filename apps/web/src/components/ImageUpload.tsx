@@ -334,7 +334,7 @@ export function ImageUpload({
                 <Text size="$12">+</Text>
               </Column>
               <Column gap="$xs" alignItems="center">
-                <Text size="$6" weight="semibold" textAlign="center" color="$text">
+                <Text size="$6" fontWeight="600" textAlign="center" color="$text">
                   Upload photos
                 </Text>
                 <Text size="$3" color="$textSecondary" textAlign="center" lineHeight={20}>
@@ -362,7 +362,7 @@ export function ImageUpload({
                 <Text size="$7">+</Text>
               </Column>
               <Column gap="$xs">
-                <Text size="$4" weight="semibold" color="$text">
+                <Text size="$4" fontWeight="600" color="$text">
                   Add more photos
                 </Text>
                 <Text size="$2" color="$primary">

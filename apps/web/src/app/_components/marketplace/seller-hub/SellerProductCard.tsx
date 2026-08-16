@@ -187,7 +187,7 @@ export function SellerProductCard({
             >
               <Text
                 size="$5"
-                weight="semibold"
+                fontWeight="600"
                 color="$text"
                 numberOfLines={2}
                 hoverStyle={{ color: "$primary" }}
@@ -196,7 +196,7 @@ export function SellerProductCard({
               </Text>
             </Link>
             <Row gap="$sm" alignItems="center">
-              <Text size="$6" weight="bold" color="$primary">
+              <Text size="$6" fontWeight="700" color="$primary">
                 £{product.price.toFixed(2)}
               </Text>
               <Text size="$3" color="$textSecondary">
@@ -253,7 +253,7 @@ export function SellerProductCard({
               >
                 <Row gap="$xs" alignItems="center">
                   <Zap size={14} color="$text" />
-                  <Text color="$text" weight="semibold">
+                  <Text color="$text" fontWeight="600">
                     Boost
                   </Text>
                 </Row>
@@ -267,7 +267,7 @@ export function SellerProductCard({
                 <Button butterVariant="primary" size="$4" width="100%" disabled={isDeleting}>
                   <Row gap="$xs" alignItems="center">
                     <Edit3 size={14} color="$textInverse" />
-                    <Text color="$textInverse" weight="semibold">
+                    <Text color="$textInverse" fontWeight="600">
                       Continue Editing
                     </Text>
                   </Row>
@@ -284,7 +284,7 @@ export function SellerProductCard({
                 >
                   <Row gap="$xs" alignItems="center">
                     <Edit3 size={14} color="$text" />
-                    <Text color="$text" weight="semibold">
+                    <Text color="$text" fontWeight="600">
                       Edit
                     </Text>
                   </Row>

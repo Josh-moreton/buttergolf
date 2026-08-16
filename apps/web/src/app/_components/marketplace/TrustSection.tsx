@@ -85,10 +85,10 @@ export function TrustSection() {
 
               {/* Text */}
               <Column gap="$xs">
-                <Text size="$7" weight="bold" color="$text">
+                <Text size="$7" fontWeight="700" color="$text">
                   {item.title}
                 </Text>
-                <Text size="$7" weight="bold" color="$text">
+                <Text size="$7" fontWeight="700" color="$text">
                   {item.subtitle}
                 </Text>
               </Column>

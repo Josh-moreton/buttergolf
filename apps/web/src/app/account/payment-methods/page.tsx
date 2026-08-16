@@ -55,7 +55,7 @@ export default function PaymentMethodsPage() {
           <Row gap="$md" alignItems="flex-start">
             <Lightbulb size={20} color="$secondary" />
             <Column gap="$xs" flex={1}>
-              <Text weight="medium" color="$secondary">
+              <Text fontWeight="500" color="$secondary">
                 Looking for payout settings?
               </Text>
               <Text size="$4" color="$textSecondary">

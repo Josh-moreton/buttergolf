@@ -32,7 +32,7 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
 
         {/* Product Details */}
         <Column flex={1} gap="$xs">
-          <Text weight="semibold" numberOfLines={1} size="$3">
+          <Text fontWeight="600" numberOfLines={1} size="$3">
             {product.title}
           </Text>
           <Row gap="$2" alignItems="center" flexWrap="wrap">
@@ -48,7 +48,7 @@ export function SearchResultItem({ product, onSelect }: SearchResultItemProps) {
         </Column>
 
         {/* Price */}
-        <Text weight="bold" {...{ color: "$primary" }} flexShrink={0}>
+        <Text fontWeight="700" {...{ color: "$primary" }} flexShrink={0}>
           £{product.price.toFixed(2)}
         </Text>
       </Row>

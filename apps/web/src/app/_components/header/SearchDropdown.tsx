@@ -69,7 +69,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (query.trim().length < 2) {
     return (
       <Column padding="$4" gap="$3">
-        <Text size="$3" weight="medium" {...{ color: "$textMuted" }}>
+        <Text size="$3" fontWeight="500" {...{ color: "$textMuted" }}>
           Type to search for golf equipment...
         </Text>
         <Column gap="$2">
@@ -111,7 +111,7 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (error) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text size="$4" weight="semibold" {...{ color: "$error" }}>
+        <Text size="$4" fontWeight="600" {...{ color: "$error" }}>
           Search Error
         </Text>
         <Text {...{ color: "$textMuted" }} size="$3">
@@ -125,10 +125,10 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
   if (results.length === 0) {
     return (
       <Column padding="$6" alignItems="center" gap="$2">
-        <Text size="$4" weight="semibold">
+        <Text size="$4" fontWeight="600">
           No results found
         </Text>
-        <Text {...{ color: "$textMuted" }} size="$3" align="center">
+        <Text {...{ color: "$textMuted" }} size="$3" textAlign="center">
           Try a different search term or browse our categories
         </Text>
       </Column>
@@ -157,9 +157,9 @@ export function SearchDropdown({ query, onSelect }: SearchDropdownProps) {
           <Link href={`/listings?q=${encodeURIComponent(query)}`} onClick={onSelect}>
             <Text
               size="$3"
-              weight="medium"
+              fontWeight="500"
               {...{ color: "$primary" }}
-              align="center"
+              textAlign="center"
               hoverStyle={{ textDecoration: "underline" }}
               cursor="pointer"
             >

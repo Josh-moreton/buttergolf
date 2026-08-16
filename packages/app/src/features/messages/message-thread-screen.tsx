@@ -707,7 +707,7 @@ export function MessageThreadScreen({
                 />
 
                 <Column gap="$2" width={240}>
-                  <Text size="$5" weight="semibold" color="$text" numberOfLines={1}>
+                  <Text size="$5" fontWeight="600" color="$text" numberOfLines={1}>
                     {otherUserName}
                   </Text>
                   {userRole === "buyer" ? (
@@ -817,7 +817,7 @@ export function MessageThreadScreen({
               <Text
                 size="$3"
                 color="$error"
-                weight="semibold"
+                fontWeight="600"
                 cursor="pointer"
                 onPress={handleRetry}
               >
@@ -827,7 +827,7 @@ export function MessageThreadScreen({
               <Text
                 size="$3"
                 color="$error"
-                weight="semibold"
+                fontWeight="600"
                 cursor="pointer"
                 onPress={() => setError(null)}
               >

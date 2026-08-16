@@ -52,7 +52,7 @@ export function MobileFilterSheet({
           borderBottomColor="$fieldBorder"
         >
           <Row alignItems="center" justifyContent="space-between">
-            <Text id={headingId} weight="bold" size="$6">
+            <Text id={headingId} fontWeight="700" size="$6">
               Filters
             </Text>
             <Text color="$primary" size="$3" cursor="pointer" onPress={onClearAll}>

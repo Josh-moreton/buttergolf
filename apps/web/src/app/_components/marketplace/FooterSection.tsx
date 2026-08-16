@@ -79,7 +79,7 @@ export function FooterSection() {
                 <Text
                   color="$vanillaCream"
                   size="$4"
-                  weight="bold"
+                  fontWeight="700"
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}
                 >
@@ -90,7 +90,7 @@ export function FooterSection() {
                 <Text
                   color="$vanillaCream"
                   size="$4"
-                  weight="bold"
+                  fontWeight="700"
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}
                 >
@@ -101,7 +101,7 @@ export function FooterSection() {
                 <Text
                   color="$vanillaCream"
                   size="$4"
-                  weight="bold"
+                  fontWeight="700"
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}
                 >
@@ -172,7 +172,7 @@ export function FooterSection() {
             alignItems="center"
             gap="$sm"
           >
-            <Text size="$4" weight="semibold" color="$success">
+            <Text size="$4" fontWeight="600" color="$success">
               ★ Trustpilot
             </Text>
             <Text size="$3" color="$textSecondary">

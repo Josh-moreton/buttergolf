@@ -278,7 +278,7 @@ export function SellerHub() {
           <Heading level={2} textAlign="center">
             Ready to list your first item?
           </Heading>
-          <Text size="$5" align="center" color="$textSecondary">
+          <Text size="$5" textAlign="center" color="$textSecondary">
             Listing your golf equipment is quick and easy — it takes under 60 seconds to get
             started.
           </Text>
@@ -314,7 +314,7 @@ export function SellerHub() {
             <Button butterVariant="primary" size="$5">
               <Row gap="$sm" alignItems="center">
                 <Plus size={20} color="white" />
-                <Text color="$textInverse" weight="semibold">
+                <Text color="$textInverse" fontWeight="600">
                   New Listing
                 </Text>
               </Row>
@@ -325,7 +325,7 @@ export function SellerHub() {
         {successMessage && (
           <Card variant="filled" padding="$md" backgroundColor="$successLight" borderRadius="$md">
             <Row alignItems="center" justifyContent="space-between" gap="$md" flexWrap="wrap">
-              <Text color="$success" weight="semibold">
+              <Text color="$success" fontWeight="600">
                 {successMessage}
               </Text>
               <Row gap="$sm" alignItems="center">
@@ -351,7 +351,7 @@ export function SellerHub() {
                   <Package size={20} color="$primary" />
                   <Text color="$textSecondary">Total Listings</Text>
                 </Row>
-                <Text size="$9" weight="bold">
+                <Text size="$9" fontWeight="700">
                   {data.stats.totalListings}
                 </Text>
                 <Text size="$3" color="$textSecondary">
@@ -366,7 +366,7 @@ export function SellerHub() {
                   <Eye size={20} color="$secondary" />
                   <Text color="$textSecondary">Total Views</Text>
                 </Row>
-                <Text size="$9" weight="bold">
+                <Text size="$9" fontWeight="700">
                   {data.stats.totalViews}
                 </Text>
                 <Text size="$3" color="$textSecondary">
@@ -381,7 +381,7 @@ export function SellerHub() {
                   <Heart size={20} color="$error" />
                   <Text color="$textSecondary">Total Favourites</Text>
                 </Row>
-                <Text size="$9" weight="bold">
+                <Text size="$9" fontWeight="700">
                   {data.stats.totalFavourites}
                 </Text>
                 <Text size="$3" color="$textSecondary">
@@ -396,7 +396,7 @@ export function SellerHub() {
                   <Tag size={20} color="$warning" />
                   <Text color="$textSecondary">Pending Offers</Text>
                 </Row>
-                <Text size="$9" weight="bold">
+                <Text size="$9" fontWeight="700">
                   {data.stats.pendingOffers}
                 </Text>
                 <Text size="$3" color="$textSecondary">
@@ -412,7 +412,7 @@ export function SellerHub() {
           <Row gap="$md" alignItems="center" flexWrap="wrap" justifyContent="space-between">
             {/* Status Filter */}
             <Row gap="$sm" alignItems="center" flexWrap="wrap">
-              <Text weight="medium">Status:</Text>
+              <Text fontWeight="500">Status:</Text>
               <Row gap="$xs">
                 {(["all", "active", "sold", "draft"] as const).map((status) => (
                   <Theme key={status} name={statusFilter === status ? "active" : null}>
@@ -442,7 +442,7 @@ export function SellerHub() {
 
             {/* Sort */}
             <Row gap="$sm" alignItems="center">
-              <Text weight="medium">Sort:</Text>
+              <Text fontWeight="500">Sort:</Text>
               {/* eslint-disable-next-line react/forbid-elements */}
               <select
                 value={sortBy}
