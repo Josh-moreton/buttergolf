@@ -155,10 +155,7 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
             Brand
           </Text>
           <Text size="$3" color="$text" weight="bold" lineHeight="$3">
-            Product
-          </Text>
-          <Text size="$3" color="$text" weight="bold" lineHeight="$3">
-            Product
+            Model
           </Text>
           <Text size="$3" color="$text" weight="bold" lineHeight="$3">
             Condition
@@ -170,9 +167,6 @@ export function ProductInformation({ product, onBuyNow, onSubmitOffer }: Product
           </Text>
           <Text size="$3" color="$text" lineHeight="$3">
             {product.brand || "N/A"}
-          </Text>
-          <Text size="$3" color="$text" lineHeight="$3">
-            {product.model || "N/A"}
           </Text>
           <Text size="$3" color="$text" lineHeight="$3">
             {product.model || "N/A"}
