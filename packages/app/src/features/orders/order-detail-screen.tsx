@@ -460,7 +460,7 @@ export function OrderDetailScreen({
                   width={28}
                   height={28}
                   borderRadius="$full"
-                  backgroundColor={step.completed ? "$primary" : "$gray200"}
+                  backgroundColor={step.completed ? "$primary" : "$backgroundHover"}
                   alignItems="center"
                   justifyContent="center"
                 >
@@ -527,7 +527,12 @@ export function OrderDetailScreen({
 
         {/* Payment Released */}
         {order.paymentHoldStatus === "RELEASED" && (
-          <Column backgroundColor="$gray100" borderRadius="$lg" padding="$4" marginBottom="$4">
+          <Column
+            backgroundColor="$backgroundHover"
+            borderRadius="$lg"
+            padding="$4"
+            marginBottom="$4"
+          >
             <Row alignItems="center" gap="$2">
               <CheckCircle size={20} color="$success" />
               <Text size="$4" fontWeight="600" color="$success">
@@ -563,14 +568,14 @@ export function OrderDetailScreen({
                 width={90}
                 height={90}
                 borderRadius="$md"
-                backgroundColor="$gray100"
+                backgroundColor="$backgroundHover"
               />
             ) : (
               <View
                 width={90}
                 height={90}
                 borderRadius="$md"
-                backgroundColor="$gray100"
+                backgroundColor="$backgroundHover"
                 alignItems="center"
                 justifyContent="center"
               >
@@ -588,7 +593,7 @@ export function OrderDetailScreen({
                 </Text>
               )}
               {order.product.condition && (
-                <Badge backgroundColor="$gray200" alignSelf="flex-start" marginTop="$1">
+                <Badge backgroundColor="$backgroundHover" alignSelf="flex-start" marginTop="$1">
                   <Text size="$2" color="$text">
                     {order.product.condition}
                   </Text>
@@ -824,7 +829,7 @@ export function OrderDetailScreen({
                 width={44}
                 height={44}
                 borderRadius="$full"
-                backgroundColor="$gray200"
+                backgroundColor="$backgroundHover"
                 alignItems="center"
                 justifyContent="center"
               >

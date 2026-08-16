@@ -35,7 +35,8 @@ singletonPackages.forEach((pkg) => {
 // Configure SVG support with react-native-svg-transformer
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: require.resolve("react-native-svg-transformer"),
+  // Use the /expo entry so Expo's own babel transformer stays in the chain
+  babelTransformerPath: require.resolve("react-native-svg-transformer/expo"),
 };
 
 config.resolver = {
