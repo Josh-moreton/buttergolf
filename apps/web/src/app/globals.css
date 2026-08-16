@@ -106,7 +106,8 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .offer-popover-content {
+  .offer-popover-content,
+  .spin {
     animation: none !important;
   }
 }
