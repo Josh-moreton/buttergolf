@@ -177,8 +177,10 @@ module.exports = () => {
         "@tamagui/web": require.resolve("@tamagui/web"),
         // Explicit alias for @tamagui/polyfill-dev to fix webpack resolution in pnpm monorepo
         "@tamagui/polyfill-dev": require.resolve("@tamagui/polyfill-dev"),
-        // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules
-        "@buttergolf/config": resolve(__dirname, "../../packages/config/src/tamagui.config.ts"),
+        // Enforce single instance of config to prevent "Missing theme" errors from duplicate modules.
+        // Must point at the package index (not tamagui.config.ts directly) so named exports
+        // like brandColors keep resolving.
+        "@buttergolf/config": resolve(__dirname, "../../packages/config/src/index.ts"),
       };
 
       // Add .web.ts/.web.tsx extensions for platform-specific files (React Native pattern)
