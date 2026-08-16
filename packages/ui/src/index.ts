@@ -5,8 +5,9 @@
  * Provides consistent, accessible, and themeable components for web and mobile.
  */
 
-// Re-export all Tamagui primitives
-export * from "tamagui";
+// Curated pass-throughs of tamagui-native names consumers use directly. DS
+// wrapper components below also re-export primitives (View, XStack, Image, ...).
+export { Theme, Separator, useTheme, useMedia } from "tamagui";
 
 // Button Components
 export { Button } from "./components/Button";

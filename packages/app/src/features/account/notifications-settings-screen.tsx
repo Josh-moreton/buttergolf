@@ -10,7 +10,7 @@ import {
   Heading,
   ScrollView,
 } from "@buttergolf/ui";
-import { Switch } from "tamagui";
+import { Switch } from "@buttergolf/ui";
 import { ArrowLeft, Bell, ShoppingBag, MessageCircle, Tag, Mail } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Alert } from "react-native";

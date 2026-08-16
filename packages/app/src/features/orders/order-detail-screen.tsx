@@ -13,7 +13,8 @@ import {
   Badge,
   View,
 } from "@buttergolf/ui";
-import { Avatar, TextArea } from "tamagui";
+import { Avatar } from "tamagui";
+import { TextArea } from "@buttergolf/ui";
 import {
   ArrowLeft,
   Package,

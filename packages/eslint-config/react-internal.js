@@ -28,9 +28,26 @@ export const reactImportPaths = [
       "View",
       "XStack",
       "YStack",
+      "TextArea",
+      "Switch",
+      "Sheet",
+      "Popover",
+      "Slider",
+      "Checkbox",
+      "Badge",
+      "Label",
+      "Radio",
+      "RadioGroup",
+      "Separator",
+      "Theme",
     ],
     message:
       "Import UI components from '@buttergolf/ui' instead of 'tamagui' directly. Our UI package provides custom variants and consistent theming.",
+  },
+  {
+    name: "@tamagui/sheet",
+    message:
+      "Import Sheet from '@buttergolf/ui' instead of '@tamagui/sheet' — deep imports bypass the design-system barrel.",
   },
   {
     name: "jsdom",

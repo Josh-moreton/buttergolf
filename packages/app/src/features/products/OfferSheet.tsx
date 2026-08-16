@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Sheet } from "@tamagui/sheet";
+import { Sheet } from "@buttergolf/ui";
 import { Column, Row, Text, Button, Heading, Input } from "@buttergolf/ui";
 import { Tag } from "@tamagui/lucide-icons";
 

@@ -1,5 +1,5 @@
 import { useState, useCallback, memo } from "react";
-import { Sheet } from "@tamagui/sheet";
+import { Sheet } from "@buttergolf/ui";
 import { InteractionManager } from "react-native";
 import { Column, Row, Text, Button, Heading, Card, Spinner } from "@buttergolf/ui";
 import {
