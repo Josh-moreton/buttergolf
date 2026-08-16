@@ -1,4 +1,4 @@
-// Brand Colors - 10-shade scales for all color families
+// Brand Colors - base/hover/press shades per family (status colours add Light/Dark)
 // Brand colors from Figma - Pure Butter Golf Theme (sRGB)
 // Single source of truth: these feed the Tamagui tokens/themes below and are
 // exported for the rare contexts that need raw hex values (React Navigation
