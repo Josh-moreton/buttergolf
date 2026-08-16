@@ -266,7 +266,7 @@ A container component with multiple variants.
 ```tsx
 import { Card } from '@buttergolf/ui'
 
-<Card variant="elevated" padding="lg">
+<Card variant="elevated" padding="$lg">
   <Card.Header>
     <Heading level={3}>Card Title</Heading>
   </Card.Header>
@@ -283,7 +283,7 @@ import { Card } from '@buttergolf/ui'
   <Card.Header noBorder>
     <Heading level={4}>No Border</Heading>
   </Card.Header>
-  <Card.Body padding="lg">
+  <Card.Body padding="$lg">
     <Text>Content</Text>
   </Card.Body>
   <Card.Footer align="center">

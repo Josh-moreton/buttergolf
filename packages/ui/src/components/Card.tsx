@@ -6,7 +6,7 @@
  *
  * @example
  * ```tsx
- * <Card variant="elevated" padding="lg">
+ * <Card variant="elevated" padding="$lg">
  *   <CardHeader>
  *     <Heading level={3}>Card Title</Heading>
  *   </CardHeader>

@@ -25,7 +25,6 @@ apps/web/
 │   ├── styles/           # Global styles
 │   └── proxy.ts          # Middleware (NOT middleware.ts)
 ├── public/               # Static assets
-├── next.config.ts        # Next.js configuration
 └── next.config.js        # Next.js configuration
 ```
 
@@ -549,7 +548,7 @@ pnpm test:e2e
 
 **Solution**:
 
-1. Check `next.config.ts` has correct `transpilePackages`
+1. Check `next.config.js` has correct `transpilePackages`
 2. Run `pnpm install` at root
 3. Restart dev server
 
