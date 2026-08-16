@@ -1,18 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import {
-  Column,
-  Row,
-  Text,
-  Button,
-  SwitchWithLabel,
-  Sheet,
-  Handle,
-  Overlay,
-  Frame,
-  SheetScrollView,
-} from "@buttergolf/ui";
+import { Column, Row, Text, Button, SwitchWithLabel, Sheet, SheetScrollView } from "@buttergolf/ui";
 import { FilterSection } from "./FilterSection";
 import { CategoryFilter } from "./CategoryFilter";
 import { ConditionFilter } from "./ConditionFilter";
@@ -45,15 +34,15 @@ export function MobileFilterSheet({
 
   return (
     <Sheet modal open={open} onOpenChange={onOpenChange} snapPoints={[85]} dismissOnSnapToBottom>
-      <Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-      <Frame
+      <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+      <Sheet.Frame
         aria-modal={true}
         aria-labelledby={headingId}
         backgroundColor="$surface"
         borderTopLeftRadius="$2xl"
         borderTopRightRadius="$2xl"
       >
-        <Handle backgroundColor="$fieldBorder" />
+        <Sheet.Handle backgroundColor="$fieldBorder" />
 
         {/* Header */}
         <Column
@@ -142,7 +131,7 @@ export function MobileFilterSheet({
             </Button>
           </Row>
         </Column>
-      </Frame>
+      </Sheet.Frame>
     </Sheet>
   );
 }

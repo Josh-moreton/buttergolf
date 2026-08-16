@@ -1,7 +1,8 @@
 "use client";
 
 import { Check, ChevronDown } from "@tamagui/lucide-icons";
-import { Select, Adapt, Sheet } from "tamagui";
+import { Select, Adapt } from "tamagui";
+import { Sheet } from "@buttergolf/ui";
 import { useMemo } from "react";
 
 export interface SortOption {

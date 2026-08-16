@@ -13,7 +13,7 @@ import {
   Input,
   View,
 } from "@buttergolf/ui";
-import { Switch } from "tamagui";
+import { Switch } from "@buttergolf/ui";
 import { ArrowLeft, Plus, MapPin, Check, Trash2, Edit3 } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Alert } from "react-native";
