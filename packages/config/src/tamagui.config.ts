@@ -178,7 +178,7 @@ const bodyFont = createFont({
   face: urbanistFace,
 });
 
-// Brand colours live in ./brand-colors.ts (a dependency-free module). Raw-hex
+// Brand colours live in ./brand-colors.ts (a dependency-free module). Raw-colour
 // consumers should import from "./brand-colors" directly to stay free of
 // tamagui/createTamagui; importing via this module or the package barrel still
 // loads the full config (the web webpack singleton alias forces that anyway).

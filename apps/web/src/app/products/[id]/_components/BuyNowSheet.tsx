@@ -2,8 +2,7 @@
 
 import { useState, useCallback, memo } from "react";
 import { useRouter } from "next/navigation";
-import { Sheet } from "@buttergolf/ui";
-import { Column, Row, Text, Button, Heading, Image } from "@buttergolf/ui";
+import { Button, Column, Heading, Image, Row, Sheet, Text } from "@buttergolf/ui";
 import { Lock, Package, CheckCircle } from "@tamagui/lucide-icons";
 import { StripePaymentForm } from "@/app/checkout/_components/StripePaymentForm";
 import type { Product } from "../ProductDetailClient";

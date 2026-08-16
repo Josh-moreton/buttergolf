@@ -29,7 +29,7 @@ This guide also documents our authentication setup using Clerk for both platform
 - **React Native**: 0.81.5
 - **React Native Web**: 0.21.2 (enables React Native components on web)
 - **TypeScript**: 5.9.2 (strict mode)
-- **Styling**: Tailwind CSS v4 (web), Tamagui (cross-platform)
+- **Styling**: Tamagui (cross-platform)
 - **Navigation**: Solito 5.0.0 for unified cross-platform routing
 - **Bundlers**:
   - Metro (mobile) - custom workspace-aware configuration
@@ -1208,13 +1208,9 @@ Each app extends this base configuration.
 </View>
 ```
 
-### Tailwind CSS (Web Only)
+### No Tailwind
 
-Used in Next.js for web-specific styling when Tamagui doesn't fit:
-
-```tsx
-<div className="container mx-auto px-4">{/* Tailwind classes */}</div>
-```
+Tailwind was removed (never emitted CSS — it was installed but never imported). Web-specific styling Tamagui can't express goes in `globals.css` or scoped `<style>` blocks.
 
 ## Build & Compilation
 
@@ -2127,7 +2123,7 @@ Use the Context7 MCP server for up-to-date library documentation. Always call `r
 6. **ALWAYS use layout components** - Use `<Row>`, `<Column>`, `<Container>` instead of raw `<XStack>`/`<YStack>`
 7. **NEVER use numbered colors** - Don't use `$color9`, `$color11`, `$blue10`, etc.
 8. **NEVER use old token names** - Don't use `$borderColor`, `$textDark`, `$bg`, `$color`, etc.
-9. **NEVER mix Tamagui and Tailwind** - Keep Tamagui for components, Tailwind for page layouts only
+9. **NEVER add Tailwind** - Removed from the repo; Tamagui only (globals.css for rare web-only CSS)
 
 ### 🚨 NEVER Use Tamagui Components in Server Components
 
@@ -2204,7 +2200,7 @@ export default async function Layout({ children }) {
 23. **Define variants for common patterns** - If you're writing the same props 3+ times, make it a variant
 24. **Use direct tokens for one-offs** - Don't create variants for rarely-used combinations
 25. **Avoid `style` prop in shared code** - In `packages/ui` and `packages/app`, use Tamagui's native props so the compiler can optimize. In web-only files (`apps/web`), you may use `style` for genuine web-only CSS like `position: sticky` or `overflow: auto`.
-26. **Use Tamagui Text with size tokens** - In shared cross-platform code, use `<Text size="$5">` with numeric tokens (NOT `fontSize`). For web-only custom typography (like CSS clamp), create dedicated components in `apps/web` or use Tailwind classes.
+26. **Use Tamagui Text with size tokens** - In shared cross-platform code, use `<Text size="$5">` with numeric tokens (NOT `fontSize`). For web-only custom typography (like CSS clamp), create dedicated components in `apps/web`.
 
 ### British Spelling Convention
 

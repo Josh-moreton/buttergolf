@@ -25,7 +25,7 @@ All internal packages use the `@buttergolf/` namespace and the `workspace:*` pro
 ## Stack
 
 - **Build**: Turborepo + pnpm workspaces
-- **UI**: Tamagui (web + native); Tailwind CSS v4 on web
+- **UI**: Tamagui (web + native)
 - **Navigation**: Next.js App Router (web), React Navigation + Solito (mobile)
 - **Database**: Prisma 6 + PostgreSQL (Neon)
 - **Auth**: Clerk
