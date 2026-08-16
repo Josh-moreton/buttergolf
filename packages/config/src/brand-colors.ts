@@ -91,6 +91,6 @@ export const brandColors = {
   // Button-specific borders (for depth on filled buttons)
   primaryBorder: "#F04300", // Darker than spicedClementine
   secondaryBorder: "#000000", // Pure black for Ironstone buttons
-};
+} as const;
 
 export type BrandColor = keyof typeof brandColors;
