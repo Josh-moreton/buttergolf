@@ -3,7 +3,7 @@ name: OpenWiki Update
 on:
   workflow_dispatch:
   schedule:
-    # GitHub schedules use UTC; 08:00 UTC is midnight PST.
+    # GitHub Actions cron is always UTC. 08:00 UTC daily.
     - cron: "0 8 * * *"
 
 permissions:
@@ -12,12 +12,16 @@ permissions:
 
 jobs:
   update:
+    # Schedule already runs on the default branch; keep manual dispatch there too
+    # so unreviewed workflow edits on feature branches cannot use repo secrets.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          persist-credentials: true
+          # Do not leave the job token in .git for the documentation agent.
+          persist-credentials: false
           # Full history so `openwiki code --update` can diff HEAD against the
           # commit it last documented; a shallow clone hides that commit and the
           # update runs against an empty change summary.
@@ -39,10 +43,9 @@ jobs:
           # OpenWiki sends anonymous reliability telemetry from CI runs.
           # Uncomment to disable:
           # OPENWIKI_TELEMETRY_DISABLED: "1"
-          # TODO: Replace with your preferred inference provider and model
           OPENWIKI_PROVIDER: openrouter
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          OPENWIKI_MODEL_ID: z-ai/glm-5.2
+          OPENWIKI_MODEL_ID: z-ai/glm-5.3
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
           LANGCHAIN_PROJECT: openwiki
           LANGCHAIN_TRACING_V2: "true"
@@ -54,7 +57,6 @@ jobs:
             openwiki
             AGENTS.md
             CLAUDE.md
-            .github/workflows/openwiki-update.yml
           branch: openwiki/update
           commit-message: "docs: update OpenWiki"
           title: "docs: update OpenWiki"

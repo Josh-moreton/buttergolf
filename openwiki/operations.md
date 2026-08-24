@@ -17,7 +17,7 @@ Triggers: `pull_request` (all) and `push` to `main`, with per-ref concurrency ca
 2. `pnpm db:generate` (Prisma client — required before type-check)
 3. `pnpm format:check` → `pnpm lint` → `pnpm typecheck` → `pnpm test`
 
-No build or deploy step in CI — Vercel handles deploys from branch activity. There is also an `openwiki-update.yml` workflow (manual dispatch + daily 08:00 UTC) that runs an OpenWiki docs update and opens a PR onto `openwiki/update`.
+No build or deploy step in CI — Vercel handles deploys from branch activity. There is also an `openwiki-update.yml` workflow (manual dispatch + daily 08:00 UTC, `main` only) that runs an OpenWiki docs update and opens a PR onto `openwiki/update`. `.openwikiignore` excludes secrets and generated/build output and restricts host `execute` during those runs.
 
 ## Quality Gates
 

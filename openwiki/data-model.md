@@ -69,11 +69,11 @@ All money fields (`price`, `amountTotal`, fees, `offerAmount`) are `Float`. Know
 
 - Singleton `prisma` created in an IIFE, cached on `globalThis` outside production
 - **React Native guard**: if running under RN, returns a `Proxy` stub that throws on model access — mobile must call backend APIs, never Prisma directly
-- Top-level import of `@prisma/client` is type-only; the runtime client is CommonJS-`require`d to keep it out of RN bundles
+- Type-only import of `PrismaClient` comes from the custom generated client (`../generated/client`); the same generated client is CommonJS-`require`d at runtime to keep Prisma out of RN bundles
 
 ## Scripts (`packages/db/package.json`)
 
-`db:generate`, `db:push`, `db:migrate:dev`, `db:migrate:deploy`, `db:studio`, `db:seed` (tsx `prisma/seed.ts`), `postinstall` → `prisma generate`. Note: `db:fix-payment-hold` points at a script that was moved to `/scripts/fix-payment-hold-status.ts` — run it from there.
+`db:generate`, `db:migrate:dev`, `db:migrate:deploy`, `db:studio`, `db:seed` (tsx `prisma/seed.ts`), `postinstall` → `prisma generate`. `db:push` is defined but forbidden for schema changes (migration drift). Note: `db:fix-payment-hold` points at a script that was moved to `/scripts/fix-payment-hold-status.ts` — run it from there.
 
 Seed: 3 demo users, 9 categories (from `@buttergolf/constants`), 33 brands, verified `ClubModel` rows from `prisma/fixtures/clubModels.json`, 8 sample products.
 

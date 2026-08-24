@@ -15,7 +15,7 @@ ButterGolf is a Turborepo + pnpm workspace monorepo with two deployable apps and
 | `@buttergolf/constants` | `packages/constants/` | Zero-dependency constants: categories, checkout, pricing, error IDs |
 | `@buttergolf/assets`    | `packages/assets/`    | Shared images, SVG icons, fonts                                     |
 
-Turbo orchestration (`turbo.json`) defines tasks: `build`, `dev`, `lint`, `check-types`, `test`, `db:generate`, `db:migrate:dev`, `db:push`, `db:studio`, `db:seed`. The `build` task depends on `^build` and `db:generate`.
+Turbo orchestration (`turbo.json`) defines tasks: `build`, `dev`, `lint`, `check-types`, `test`, `db:generate`, `db:migrate:dev`, `db:push`, `db:studio`, `db:seed`. The `build` task depends on `^build` and `db:generate`. `db:push` is a Turbo task only — schema changes must go through `db:migrate:dev`; `db:push` causes migration drift and is forbidden.
 
 ## Cross-Platform Navigation (Solito, Not Expo Router)
 

@@ -70,7 +70,6 @@ pnpm test:watch      # Vitest in watch mode
 
 pnpm db:generate     # generate Prisma client
 pnpm db:migrate:dev  # create & apply a migration (development)
-pnpm db:push         # push schema changes without migration
 pnpm db:studio       # open Prisma Studio
 pnpm db:seed         # seed the database
 pnpm build           # build all apps
