@@ -6,18 +6,18 @@ The web app (`apps/web/`) is a Next.js 16 App Router application deployed on Ver
 
 All routes live under `apps/web/src/app/`. Key ones:
 
-| Route | Notes |
-|---|---|
-| `/` | Marketplace home |
-| `/listings`, `/category/[slug]` | SSR listing pages sharing query logic via `lib/listings.ts` |
-| `/products/[id]` | Product detail (`generateMetadata` + Product JSON-LD) |
-| `/checkout`, `/checkout/success`, `/checkout/cancel` | Success page polls order by session/payment-intent |
-| `/cart`, `/favourites`, `/orders`, `/orders/[id]` | Buyer surfaces |
-| `/sell`, `/seller/*` | Seller surfaces (protected routes — see proxy below) |
-| `/messages`, `/messages/[conversationId]` | Messaging with Supabase Realtime |
-| `/mobile-onboarding` | **WebView-only page** for Stripe Connect embedded onboarding (RN `postMessage` bridge; auth via `?token=` mobile-session JWT) |
-| `/sign-in/[[...sign-in]]`, `/sign-up/[[...sign-up]]` | Clerk catch-all routes |
-| `/coming-soon` | Pre-launch landing (`noindex`), active only when `NEXT_PUBLIC_COMING_SOON_ENABLED=true` |
+| Route                                                | Notes                                                                                                                         |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                                  | Marketplace home                                                                                                              |
+| `/listings`, `/category/[slug]`                      | SSR listing pages sharing query logic via `lib/listings.ts`                                                                   |
+| `/products/[id]`                                     | Product detail (`generateMetadata` + Product JSON-LD)                                                                         |
+| `/checkout`, `/checkout/success`, `/checkout/cancel` | Success page polls order by session/payment-intent                                                                            |
+| `/cart`, `/favourites`, `/orders`, `/orders/[id]`    | Buyer surfaces                                                                                                                |
+| `/sell`, `/seller/*`                                 | Seller surfaces (protected routes — see proxy below)                                                                          |
+| `/messages`, `/messages/[conversationId]`            | Messaging with Supabase Realtime                                                                                              |
+| `/mobile-onboarding`                                 | **WebView-only page** for Stripe Connect embedded onboarding (RN `postMessage` bridge; auth via `?token=` mobile-session JWT) |
+| `/sign-in/[[...sign-in]]`, `/sign-up/[[...sign-up]]` | Clerk catch-all routes                                                                                                        |
+| `/coming-soon`                                       | Pre-launch landing (`noindex`), active only when `NEXT_PUBLIC_COMING_SOON_ENABLED=true`                                       |
 
 Error pages: `error.tsx` / `global-error.tsx` are Sentry-instrumented client components; `not-found.tsx` is a **plain server component with inline styles** — deliberately no Tamagui (see [Architecture](architecture.md) "never import Tamagui in server components").
 
@@ -48,47 +48,52 @@ Routes authenticated with Bearer headers and GET semantics (`/api/favourites`, `
 57 route handlers under `apps/web/src/app/api/`. Grouped by domain:
 
 ### Catalog & search
-| Route | Purpose |
-|---|---|
-| `POST /api/products` | Create listing (maps condition slider → `ProductCondition`; enforces price limits) |
-| `GET /api/products/[id]` / `/similar` / `/recent` | Detail / similar / recent products (`recent` is a thin wrapper over the `getRecentProducts` server action) |
-| `GET /api/listings` | Paginated feed — shares filter/sort/card logic with the SSR pages via `lib/listings.ts` |
-| `GET /api/search`, `/api/brands`, `/api/models`, `/api/categories` | Search, brand autocomplete, model suggestions, categories |
+
+| Route                                                              | Purpose                                                                                                    |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `POST /api/products`                                               | Create listing (maps condition slider → `ProductCondition`; enforces price limits)                         |
+| `GET /api/products/[id]` / `/similar` / `/recent`                  | Detail / similar / recent products (`recent` is a thin wrapper over the `getRecentProducts` server action) |
+| `GET /api/listings`                                                | Paginated feed — shares filter/sort/card logic with the SSR pages via `lib/listings.ts`                    |
+| `GET /api/search`, `/api/brands`, `/api/models`, `/api/categories` | Search, brand autocomplete, model suggestions, categories                                                  |
 
 ### Checkout & payments
-| Route | Purpose |
-|---|---|
-| `POST /api/checkout/create-checkout-session` | Stripe Embedded Checkout Session (web; optionally from an accepted `offerId`) |
-| `POST /api/checkout/create-payment-intent` | PaymentIntent for the PaymentElement/mobile flow — IP rate-limited |
-| `POST /api/stripe/webhook` | Payment webhook: `checkout.session.completed`, `payment_intent.succeeded` (order creation via `createOrderFromPaymentIntent`), refunds, disputes |
-| `POST /api/stripe/connect/webhook` | Connect webhook: `account.updated` → `processPendingTransfersForSeller()` |
-| `POST /api/promotions/purchase` | Buy Bump (£0.99/24h) or Pro Shop Feature (£4.99/7d) |
+
+| Route                                        | Purpose                                                                                                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `POST /api/checkout/create-checkout-session` | Stripe Embedded Checkout Session (web; optionally from an accepted `offerId`)                                                                    |
+| `POST /api/checkout/create-payment-intent`   | PaymentIntent for the PaymentElement/mobile flow — IP rate-limited                                                                               |
+| `POST /api/stripe/webhook`                   | Payment webhook: `checkout.session.completed`, `payment_intent.succeeded` (order creation via `createOrderFromPaymentIntent`), refunds, disputes |
+| `POST /api/stripe/connect/webhook`           | Connect webhook: `account.updated` → `processPendingTransfersForSeller()`                                                                        |
+| `POST /api/promotions/purchase`              | Buy Bump (£0.99/24h) or Pro Shop Feature (£4.99/7d)                                                                                              |
 
 See [Payments & Escrow](payments.md) for the money flow.
 
 ### Orders
-| Route | Purpose |
-|---|---|
-| `GET /api/orders` | List buyer/seller orders |
-| `GET /api/orders/[id]` | Order detail |
-| `POST /api/orders/[id]/confirm-receipt` | Buyer confirms → releases held payment |
-| `POST/GET /api/orders/[id]/label` | Generate/fetch ShipEngine label (seller only) |
-| `GET/POST /api/orders/[id]/rating` | Seller rating (rate-limited) |
-| `PATCH /api/orders/[id]/shipment-status` | Update shipment status; DELIVERED sets `autoReleaseAt = +14 days` |
-| `GET /api/orders/[id]/tracking` | Live ShipEngine tracking (5-min cache) |
-| `GET /api/orders/by-session/[sessionId]` | Lookup by Stripe Checkout Session (success page) |
+
+| Route                                                 | Purpose                                                                                                                                              |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/orders`                                     | List buyer/seller orders                                                                                                                             |
+| `GET /api/orders/[id]`                                | Order detail                                                                                                                                         |
+| `POST /api/orders/[id]/confirm-receipt`               | Buyer confirms → releases held payment                                                                                                               |
+| `POST/GET /api/orders/[id]/label`                     | Generate/fetch ShipEngine label (seller only)                                                                                                        |
+| `GET/POST /api/orders/[id]/rating`                    | Seller rating (rate-limited)                                                                                                                         |
+| `PATCH /api/orders/[id]/shipment-status`              | Update shipment status; DELIVERED sets `autoReleaseAt = +14 days`                                                                                    |
+| `GET /api/orders/[id]/tracking`                       | Live ShipEngine tracking (5-min cache)                                                                                                               |
+| `GET /api/orders/by-session/[sessionId]`              | Lookup by Stripe Checkout Session (success page)                                                                                                     |
 | `GET /api/orders/by-payment-intent/[paymentIntentId]` | Lookup by PaymentIntent — **fallback that creates the order client-side if the webhook was delayed/missed**, guarded by fail-closed ownership checks |
 
 ### Conversations & offers
-| Route | Purpose |
-|---|---|
-| `GET/POST /api/conversations` | Inbox / start conversation |
-| `GET/POST /api/conversations/[id]/messages` | Cursor-paginated messages (POST rate-limited) |
-| `POST /api/conversations/[id]/messages/mark-read` | Mark read |
-| `POST /api/conversations/[id]/offer` (+ `/accept`, `/counter`, `/reject`) | Offer lifecycle (see [Domain](domain.md)) |
-| `GET /api/conversations/unread-count` | Unread badge |
+
+| Route                                                                     | Purpose                                       |
+| ------------------------------------------------------------------------- | --------------------------------------------- |
+| `GET/POST /api/conversations`                                             | Inbox / start conversation                    |
+| `GET/POST /api/conversations/[id]/messages`                               | Cursor-paginated messages (POST rate-limited) |
+| `POST /api/conversations/[id]/messages/mark-read`                         | Mark read                                     |
+| `POST /api/conversations/[id]/offer` (+ `/accept`, `/counter`, `/reject`) | Offer lifecycle (see [Domain](domain.md))     |
+| `GET /api/conversations/unread-count`                                     | Unread badge                                  |
 
 ### Seller, users, misc
+
 `/api/seller/listings` (seller stats), `/api/seller/products/[id]` (PATCH/DELETE own product), `/api/users/seller-status`, `/api/users/push-tokens` (Expo registration), `/api/user/phone`, `/api/addresses` (+ `[id]`, `/default`), `/api/favourites` (+ `[productId]`), `/api/upload` (Cloudinary, self-managed auth + CORS), `/api/images/[id]` (DELETE), `/api/clerk/webhook` (svix user sync), `/api/newsletter`, `/api/waitlist`, `/api/shipping/calculate` (rate-limited), `/api/shipengine/webhook` (HMAC-verified, monotonic status).
 
 Cron endpoints (`/api/cron/*`) are listed in [Operations](operations.md).
@@ -99,19 +104,19 @@ Exactly one file: `apps/web/src/app/actions/products.ts` — `getRecentProducts(
 
 ## Key `lib/` Utilities
 
-| File | Purpose |
-|---|---|
-| `listings.ts` | Shared listing-query builder — the single source of truth for filters/sort/card shape used by `/listings`, `/category/[slug]`, and `/api/listings` so the three surfaces can't drift |
-| `pricing.ts` | Buyer-protection fee math (re-exported from `@buttergolf/constants`), `AUTO_RELEASE_DAYS`, promotion prices/durations |
-| `checkout-session-ownership.ts` / `payment-intent-ownership.ts` | Fail-closed BOLA guards proving requester ownership of Stripe objects |
-| `create-order-from-payment-intent.ts` | Shared order creation from a succeeded PaymentIntent; returns `"ok" \| "refunded_duplicate" \| "pending"` (double-sell guard auto-refunds the loser) |
-| `mobile-session.ts` | Mobile WebView JWT create/verify (see auth model above) |
-| `shipengine.ts` | ShipEngine client: rates, labels, tracking |
-| `supabase-realtime.ts` | Realtime channel → `EventSourceLike` adapter for message threads |
-| `email.ts` | Resend transactional email (20+ templates) |
-| `address-validation.ts` | UK postcode/phone/address validation |
-| `auth.ts` / `auth-helpers.ts` | The triple-credential resolver + Clerk→Prisma user upsert |
-| `middleware/rate-limit.ts` | In-memory per-instance rate limiting (resets on cold start — accepted trade-off) |
+| File                                                            | Purpose                                                                                                                                                                              |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `listings.ts`                                                   | Shared listing-query builder — the single source of truth for filters/sort/card shape used by `/listings`, `/category/[slug]`, and `/api/listings` so the three surfaces can't drift |
+| `pricing.ts`                                                    | Buyer-protection fee math (re-exported from `@buttergolf/constants`), `AUTO_RELEASE_DAYS`, promotion prices/durations                                                                |
+| `checkout-session-ownership.ts` / `payment-intent-ownership.ts` | Fail-closed BOLA guards proving requester ownership of Stripe objects                                                                                                                |
+| `create-order-from-payment-intent.ts`                           | Shared order creation from a succeeded PaymentIntent; returns `"ok" \| "refunded_duplicate" \| "pending"` (double-sell guard auto-refunds the loser)                                 |
+| `mobile-session.ts`                                             | Mobile WebView JWT create/verify (see auth model above)                                                                                                                              |
+| `shipengine.ts`                                                 | ShipEngine client: rates, labels, tracking                                                                                                                                           |
+| `supabase-realtime.ts`                                          | Realtime channel → `EventSourceLike` adapter for message threads                                                                                                                     |
+| `email.ts`                                                      | Resend transactional email (20+ templates)                                                                                                                                           |
+| `address-validation.ts`                                         | UK postcode/phone/address validation                                                                                                                                                 |
+| `auth.ts` / `auth-helpers.ts`                                   | The triple-credential resolver + Clerk→Prisma user upsert                                                                                                                            |
+| `middleware/rate-limit.ts`                                      | In-memory per-instance rate limiting (resets on cold start — accepted trade-off)                                                                                                     |
 
 ## `next.config.js` Highlights
 

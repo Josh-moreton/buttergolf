@@ -6,22 +6,22 @@ Prisma 6 + PostgreSQL (Neon). Schema lives in `packages/db/prisma/schema.prisma`
 
 **17 models**, **9 enums**. All tables map to snake_case plural names (`@@map`); all PKs are cuid strings.
 
-| Model | Purpose |
-|---|---|
-| `User` | Clerk identity (`clerkId` unique) + Stripe Connect seller state + denormalized reputation. Soft-delete via `isDeleted`/`deletedAt`. `pushTokens String[]` — an inline Postgres array, **not** a relation |
-| `Category`, `Brand` | Reference data (unique name+slug, sortOrder) |
-| `ClubModel` | Verified equipment models for listing dropdowns. Unique `[brandId, name, kind]`. **Not FK-linked to Product** — suggestion data only; `Product.model` stays free text |
-| `Product` | Core listing: price, condition enum, brand/model, flex/loft, per-part condition scores, `isSold`, `isDraft`, `requestId` idempotency |
-| `ProductImage` | `url` + `sortOrder`, cascades from Product |
-| `Conversation` | One thread per `[productId, buyerId, sellerId]` (unique); optional `orderId` |
-| `Message` | `type` (MessageType), `content`, `isRead`, denormalized `offerAmount` |
-| `Offer` / `CounterOffer` | Negotiation (`amount`, `status`, `expiresAt`); counter chains to an Offer |
-| `Favourite` | Unique `[userId, productId]` |
-| `Order` | The heavyweight commerce record — see below |
-| `Address` | User address book (UK-oriented, `isDefault`) |
-| `SellerRating` | Buyer rates seller; `orderId` unique (one rating per order) |
-| `ProductPromotion` | Paid boost (`BUMP` \| `PRO_SHOP_FEATURE`), `stripePaymentId` unique |
-| `Waitlist` / `NewsletterSubscriber` | Two separate lead-capture tables with identical shape but distinct funnels (`source` differs) |
+| Model                               | Purpose                                                                                                                                                                                                  |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `User`                              | Clerk identity (`clerkId` unique) + Stripe Connect seller state + denormalized reputation. Soft-delete via `isDeleted`/`deletedAt`. `pushTokens String[]` — an inline Postgres array, **not** a relation |
+| `Category`, `Brand`                 | Reference data (unique name+slug, sortOrder)                                                                                                                                                             |
+| `ClubModel`                         | Verified equipment models for listing dropdowns. Unique `[brandId, name, kind]`. **Not FK-linked to Product** — suggestion data only; `Product.model` stays free text                                    |
+| `Product`                           | Core listing: price, condition enum, brand/model, flex/loft, per-part condition scores, `isSold`, `isDraft`, `requestId` idempotency                                                                     |
+| `ProductImage`                      | `url` + `sortOrder`, cascades from Product                                                                                                                                                               |
+| `Conversation`                      | One thread per `[productId, buyerId, sellerId]` (unique); optional `orderId`                                                                                                                             |
+| `Message`                           | `type` (MessageType), `content`, `isRead`, denormalized `offerAmount`                                                                                                                                    |
+| `Offer` / `CounterOffer`            | Negotiation (`amount`, `status`, `expiresAt`); counter chains to an Offer                                                                                                                                |
+| `Favourite`                         | Unique `[userId, productId]`                                                                                                                                                                             |
+| `Order`                             | The heavyweight commerce record — see below                                                                                                                                                              |
+| `Address`                           | User address book (UK-oriented, `isDefault`)                                                                                                                                                             |
+| `SellerRating`                      | Buyer rates seller; `orderId` unique (one rating per order)                                                                                                                                              |
+| `ProductPromotion`                  | Paid boost (`BUMP` \| `PRO_SHOP_FEATURE`), `stripePaymentId` unique                                                                                                                                      |
+| `Waitlist` / `NewsletterSubscriber` | Two separate lead-capture tables with identical shape but distinct funnels (`source` differs)                                                                                                            |
 
 ### Enums
 

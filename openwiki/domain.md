@@ -4,18 +4,18 @@ ButterGolf is a peer-to-peer marketplace for used golf equipment. This page maps
 
 ## Core Domains
 
-| Domain | Key Files | Description |
-|---|---|---|
-| Listings | `apps/web/src/app/api/products/`, `apps/web/src/app/api/listings/`, `apps/web/src/app/api/brands/`, `apps/web/src/app/api/categories/`, `apps/web/src/app/api/models/`, `packages/app/src/features/sell/` | Product creation, browsing, search, filtering |
-| Offers & Counter-Offers | `apps/web/src/app/api/conversations/`, schema: `Offer`, `CounterOffer` | Buyer-to-seller negotiation on a product |
-| Messaging | `apps/web/src/app/api/conversations/`, `packages/app/src/features/messages/` | Per-product buyer-seller chat threads |
-| Orders & Escrow | `apps/web/src/app/api/orders/`, `apps/web/src/app/api/checkout/`, `apps/web/src/lib/create-order-from-payment-intent.ts` | Purchase transactions with Stripe Connect escrow |
-| Shipping | `apps/web/src/app/api/shipping/`, `apps/web/src/app/api/shipengine/`, `apps/web/src/lib/shipengine.ts` | UK shipping via ShipEngine, label generation, tracking |
-| Promotions | `apps/web/src/app/api/promotions/` | Paid product promotions (BUMP, PRO_SHOP_FEATURE) |
-| Favourites | `apps/web/src/app/api/favourites/`, `packages/app/src/features/favourites/` | User product bookmarks |
-| Seller Onboarding | `apps/web/src/app/api/stripe/connect/`, `apps/web/src/app/api/users/seller-status/` | Stripe Connect embedded onboarding |
-| Auth | `apps/web/src/app/api/clerk/`, `packages/app/src/features/auth/` | Clerk-based auth, webhook sync |
-| Addresses | `apps/web/src/app/api/addresses/`, `apps/web/src/lib/address-validation.ts` | UK shipping address management |
+| Domain                  | Key Files                                                                                                                                                                                                 | Description                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Listings                | `apps/web/src/app/api/products/`, `apps/web/src/app/api/listings/`, `apps/web/src/app/api/brands/`, `apps/web/src/app/api/categories/`, `apps/web/src/app/api/models/`, `packages/app/src/features/sell/` | Product creation, browsing, search, filtering          |
+| Offers & Counter-Offers | `apps/web/src/app/api/conversations/`, schema: `Offer`, `CounterOffer`                                                                                                                                    | Buyer-to-seller negotiation on a product               |
+| Messaging               | `apps/web/src/app/api/conversations/`, `packages/app/src/features/messages/`                                                                                                                              | Per-product buyer-seller chat threads                  |
+| Orders & Escrow         | `apps/web/src/app/api/orders/`, `apps/web/src/app/api/checkout/`, `apps/web/src/lib/create-order-from-payment-intent.ts`                                                                                  | Purchase transactions with Stripe Connect escrow       |
+| Shipping                | `apps/web/src/app/api/shipping/`, `apps/web/src/app/api/shipengine/`, `apps/web/src/lib/shipengine.ts`                                                                                                    | UK shipping via ShipEngine, label generation, tracking |
+| Promotions              | `apps/web/src/app/api/promotions/`                                                                                                                                                                        | Paid product promotions (BUMP, PRO_SHOP_FEATURE)       |
+| Favourites              | `apps/web/src/app/api/favourites/`, `packages/app/src/features/favourites/`                                                                                                                               | User product bookmarks                                 |
+| Seller Onboarding       | `apps/web/src/app/api/stripe/connect/`, `apps/web/src/app/api/users/seller-status/`                                                                                                                       | Stripe Connect embedded onboarding                     |
+| Auth                    | `apps/web/src/app/api/clerk/`, `packages/app/src/features/auth/`                                                                                                                                          | Clerk-based auth, webhook sync                         |
+| Addresses               | `apps/web/src/app/api/addresses/`, `apps/web/src/lib/address-validation.ts`                                                                                                                               | UK shipping address management                         |
 
 ## Listings
 
@@ -54,6 +54,7 @@ Buyers can make offers on products. The offer lifecycle:
 5. Accepted offers can lead to checkout
 
 API routes under `apps/web/src/app/api/conversations/`:
+
 - `GET/POST /api/conversations` — inbox list / start a conversation
 - `POST /api/conversations/[id]/offer` — buyer makes an offer (rate-limited)
 - `POST /api/conversations/[id]/offer/accept` — accept the active offer
@@ -76,12 +77,14 @@ Messages are scoped to `Conversation` entities. A conversation is unique per `[p
 Orders are the transaction record connecting a buyer, seller, product, and payment. See [Payments & Escrow](payments.md) for the full Stripe Connect flow.
 
 Key fields on `Order`:
+
 - `paymentHoldStatus`: `HELD`, `PENDING_SELLER_ONBOARDING`, `RELEASED`, `DISPUTED`, `REFUNDED`
 - `status`: `PAYMENT_CONFIRMED`, `LABEL_GENERATED`, `SHIPPED`, `DELIVERED`, `CANCELLED`, `REFUNDED`
 - Stripe payment references, ShipEngine shipping fields, addresses (from/to)
 - `SellerRating` — buyer rates seller after order (unique per orderId)
 
 Order API routes:
+
 - `GET /api/orders` — list user's orders (as buyer or seller)
 - `GET /api/orders/[id]` — order details
 - `POST /api/orders/[id]/confirm-receipt` — buyer confirms delivery, triggers fund release
@@ -122,6 +125,7 @@ API: `apps/web/src/app/api/favourites/` | Web page: `/favourites` | Mobile: `pac
 Sellers onboard with Stripe Connect **only when they need to receive funds** — never required to list or sell. Uses Stripe Connect Embedded Components with controller settings (`stripe_dashboard: "none"`, `fees: "application"`, `losses: "application"`, `requirement_collection: "application"`). Capabilities: `card_payments` + `transfers`. Country: GB.
 
 API routes:
+
 - `POST /api/stripe/connect/account-session` — create embedded component session
 - `POST /api/stripe/connect/mobile-onboard` — mobile onboarding flow
 - `POST /api/stripe/connect/mobile-session` — mobile session token

@@ -30,6 +30,7 @@ A seller creates a listing immediately after signing up with Clerk. Zero Stripe 
 When a buyer purchases, a Stripe Checkout Session or PaymentIntent is created. The payment goes to the **platform account** — not the seller. No `transfer_data` is used.
 
 Payment includes:
+
 - Product price
 - Buyer protection fee (5% + £0.70, min £0.70 — from `packages/constants/src/checkout.ts`)
 - Shipping (£4.99 Standard / £6.99 Express / £8.99 NextDay)
@@ -37,6 +38,7 @@ Payment includes:
 **Pricing model**: Buyer pays product + shipping + buyer protection fee. **Seller fee is 0%** — seller receives 100% of (product price + shipping). Platform revenue = buyer protection fee.
 
 Key files:
+
 - `apps/web/src/app/api/checkout/create-checkout-session/route.ts` — Stripe Checkout Session creation
 - `apps/web/src/app/api/checkout/create-payment-intent/route.ts` — PaymentIntent creation
 - `apps/web/src/lib/pricing.ts` — server-side pricing calculations
@@ -52,6 +54,7 @@ When payment succeeds, an `Order` record is created linking buyer, seller, produ
 ### Step 4: Delivery & Confirmation
 
 When buyer confirms receipt (`POST /api/orders/[id]/confirm-receipt`):
+
 - If seller **is onboarded** → `stripe.transfers.create()` with `source_transaction` linking to the original charge → order `paymentHoldStatus` becomes `RELEASED`
 - If seller **not onboarded** → funds held as `PENDING_SELLER_ONBOARDING`
 
@@ -67,28 +70,28 @@ When seller completes onboarding, the Stripe Connect `account.updated` webhook t
 
 `PaymentHoldStatus` enum on `Order`:
 
-| Status | Meaning |
-|---|---|
-| `HELD` | Funds held on platform, awaiting delivery confirmation |
+| Status                      | Meaning                                                 |
+| --------------------------- | ------------------------------------------------------- |
+| `HELD`                      | Funds held on platform, awaiting delivery confirmation  |
 | `PENDING_SELLER_ONBOARDING` | Buyer confirmed, but seller hasn't onboarded Stripe yet |
-| `RELEASED` | Funds transferred to seller |
-| `DISPUTED` | Chargeback or dispute opened |
-| `REFUNDED` | Payment refunded to buyer |
+| `RELEASED`                  | Funds transferred to seller                             |
+| `DISPUTED`                  | Chargeback or dispute opened                            |
+| `REFUNDED`                  | Payment refunded to buyer                               |
 
 ## Key API Routes
 
-| Route | Purpose |
-|---|---|
-| `POST /api/checkout/create-checkout-session` | Create Stripe Checkout Session (web) |
-| `POST /api/checkout/create-payment-intent` | Create PaymentIntent (mobile/custom flow) |
-| `POST /api/stripe/webhook` | Stripe payment webhook (checkout completed, payment failed, etc.) |
-| `POST /api/stripe/connect/webhook` | Stripe Connect webhook (account.updated → process pending transfers) |
-| `POST /api/stripe/connect/account-session` | Create embedded component session for seller onboarding |
-| `POST /api/stripe/connect/mobile-onboard` | Mobile onboarding flow |
-| `POST /api/stripe/connect/mobile-session` | Mobile session token for Stripe onboarding |
-| `POST /api/orders/[id]/confirm-receipt` | Buyer confirms delivery → triggers fund release |
-| `GET /api/orders/by-session/[sessionId]` | Order lookup by Stripe checkout session |
-| `GET /api/orders/by-payment-intent/[paymentIntentId]` | Order lookup by PaymentIntent |
+| Route                                                 | Purpose                                                              |
+| ----------------------------------------------------- | -------------------------------------------------------------------- |
+| `POST /api/checkout/create-checkout-session`          | Create Stripe Checkout Session (web)                                 |
+| `POST /api/checkout/create-payment-intent`            | Create PaymentIntent (mobile/custom flow)                            |
+| `POST /api/stripe/webhook`                            | Stripe payment webhook (checkout completed, payment failed, etc.)    |
+| `POST /api/stripe/connect/webhook`                    | Stripe Connect webhook (account.updated → process pending transfers) |
+| `POST /api/stripe/connect/account-session`            | Create embedded component session for seller onboarding              |
+| `POST /api/stripe/connect/mobile-onboard`             | Mobile onboarding flow                                               |
+| `POST /api/stripe/connect/mobile-session`             | Mobile session token for Stripe onboarding                           |
+| `POST /api/orders/[id]/confirm-receipt`               | Buyer confirms delivery → triggers fund release                      |
+| `GET /api/orders/by-session/[sessionId]`              | Order lookup by Stripe checkout session                              |
+| `GET /api/orders/by-payment-intent/[paymentIntentId]` | Order lookup by PaymentIntent                                        |
 
 ## Stripe Webhooks
 
@@ -101,23 +104,24 @@ Two webhook endpoints handle Stripe events:
 
 Configured in `vercel.json`. All cron endpoints are protected by `CRON_SECRET` (bearer token).
 
-| Endpoint | Schedule | Purpose |
-|---|---|---|
-| `/api/cron/release-payments` | `0 3 * * *` (03:00 UTC daily) | Auto-release escrowed funds 14 days post-delivery |
-| `/api/cron/payment-reminders` | `0 10 * * *` (10:00 UTC daily) | Send payment reminder emails |
-| `/api/cron/expire-offers` | `0 6 * * *` (06:00 UTC daily) | Expire stale offers past their `expiresAt` |
+| Endpoint                      | Schedule                       | Purpose                                           |
+| ----------------------------- | ------------------------------ | ------------------------------------------------- |
+| `/api/cron/release-payments`  | `0 3 * * *` (03:00 UTC daily)  | Auto-release escrowed funds 14 days post-delivery |
+| `/api/cron/payment-reminders` | `0 10 * * *` (10:00 UTC daily) | Send payment reminder emails                      |
+| `/api/cron/expire-offers`     | `0 6 * * *` (06:00 UTC daily)  | Expire stale offers past their `expiresAt`        |
 
 ## Security & Ownership Guards
 
 Several ownership/visibility guards prevent unauthorized access to payment objects (BOLA protection):
 
-| File | Guard |
-|---|---|
-| `apps/web/src/lib/checkout-session-ownership.ts` | Verifies who owns a Stripe Checkout Session |
-| `apps/web/src/lib/payment-intent-ownership.ts` | Verifies who owns a Stripe PaymentIntent |
-| `apps/web/src/lib/payment-intent-visibility.ts` | `create-payment-intent` uses `findFirst` (not `findUnique`), requires `isDraft: false` + `user.isDeleted: false` |
+| File                                             | Guard                                                                                                            |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `apps/web/src/lib/checkout-session-ownership.ts` | Verifies who owns a Stripe Checkout Session                                                                      |
+| `apps/web/src/lib/payment-intent-ownership.ts`   | Verifies who owns a Stripe PaymentIntent                                                                         |
+| `apps/web/src/lib/payment-intent-visibility.ts`  | `create-payment-intent` uses `findFirst` (not `findUnique`), requires `isDraft: false` + `user.isDeleted: false` |
 
 These guards are tested in:
+
 - `tests/checkout-session-ownership.test.ts`
 - `tests/payment-intent-ownership.test.ts`
 - `tests/payment-intent-visibility.test.ts`
@@ -144,6 +148,7 @@ Mobile uses a different checkout flow than web:
 ## Stripe Onboarding Configuration
 
 Stripe Connect Embedded Components with `controller` settings:
+
 - `stripe_dashboard: "none"` — sellers don't see Stripe dashboard
 - `fees: "application"` — platform handles fees
 - `losses: "application"` — platform bears losses

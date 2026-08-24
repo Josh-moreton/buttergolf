@@ -4,19 +4,19 @@ ButterGolf is a cross-platform peer-to-peer marketplace for buying and selling u
 
 ## Tech Stack
 
-| Area | Technology |
-|---|---|
+| Area     | Technology                                                                                               |
+| -------- | -------------------------------------------------------------------------------------------------------- |
 | Monorepo | Turborepo + pnpm workspaces (all internal packages use `@buttergolf/` namespace, `workspace:*` protocol) |
-| Web | Next.js 16 (App Router), deployed on Vercel |
-| Mobile | Expo (iOS/Android), React Navigation + Solito |
-| UI | Tamagui (cross-platform components, design tokens, themes) |
-| Database | Prisma 6 + PostgreSQL (Neon) |
-| Auth | Clerk (`@clerk/nextjs` for web, `@clerk/clerk-expo` for mobile) |
-| Payments | Stripe Connect — Separate Charges and Transfers with escrow/payment hold |
-| Shipping | ShipEngine (UK) |
-| Images | Cloudinary |
-| Email | Resend |
-| Testing | Vitest |
+| Web      | Next.js 16 (App Router), deployed on Vercel                                                              |
+| Mobile   | Expo (iOS/Android), React Navigation + Solito                                                            |
+| UI       | Tamagui (cross-platform components, design tokens, themes)                                               |
+| Database | Prisma 6 + PostgreSQL (Neon)                                                                             |
+| Auth     | Clerk (`@clerk/nextjs` for web, `@clerk/clerk-expo` for mobile)                                          |
+| Payments | Stripe Connect — Separate Charges and Transfers with escrow/payment hold                                 |
+| Shipping | ShipEngine (UK)                                                                                          |
+| Images   | Cloudinary                                                                                               |
+| Email    | Resend                                                                                                   |
+| Testing  | Vitest                                                                                                   |
 
 ## Monorepo Layout
 

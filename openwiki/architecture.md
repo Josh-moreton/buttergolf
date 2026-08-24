@@ -4,16 +4,16 @@
 
 ButterGolf is a Turborepo + pnpm workspace monorepo with two deployable apps and six shared packages. All internal packages use the `@buttergolf/` namespace and `workspace:*` protocol.
 
-| App/Package | Path | Purpose |
-|---|---|---|
-| Web | `apps/web/` | Next.js 16 App Router, deployed on Vercel |
-| Mobile | `apps/mobile/` | Expo app (iOS/Android), React Navigation + Solito |
-| `@buttergolf/app` | `packages/app/` | Shared Solito screens, navigation routes, business logic |
-| `@buttergolf/ui` | `packages/ui/` | Tamagui cross-platform component library |
-| `@buttergolf/db` | `packages/db/` | Prisma client, schema, migrations, seeders |
-| `@buttergolf/config` | `packages/config/` | Tamagui config: tokens, themes, fonts, animations, brand colors |
+| App/Package             | Path                  | Purpose                                                             |
+| ----------------------- | --------------------- | ------------------------------------------------------------------- |
+| Web                     | `apps/web/`           | Next.js 16 App Router, deployed on Vercel                           |
+| Mobile                  | `apps/mobile/`        | Expo app (iOS/Android), React Navigation + Solito                   |
+| `@buttergolf/app`       | `packages/app/`       | Shared Solito screens, navigation routes, business logic            |
+| `@buttergolf/ui`        | `packages/ui/`        | Tamagui cross-platform component library                            |
+| `@buttergolf/db`        | `packages/db/`        | Prisma client, schema, migrations, seeders                          |
+| `@buttergolf/config`    | `packages/config/`    | Tamagui config: tokens, themes, fonts, animations, brand colors     |
 | `@buttergolf/constants` | `packages/constants/` | Zero-dependency constants: categories, checkout, pricing, error IDs |
-| `@buttergolf/assets` | `packages/assets/` | Shared images, SVG icons, fonts |
+| `@buttergolf/assets`    | `packages/assets/`    | Shared images, SVG icons, fonts                                     |
 
 Turbo orchestration (`turbo.json`) defines tasks: `build`, `dev`, `lint`, `check-types`, `test`, `db:generate`, `db:migrate:dev`, `db:push`, `db:studio`, `db:seed`. The `build` task depends on `^build` and `db:generate`.
 
@@ -57,20 +57,20 @@ Shared screens in `packages/app/src/features/` are **platform-agnostic "dumb" co
 
 ### Feature Areas in `packages/app/src/features/`
 
-| Feature | Key Screens |
-|---|---|
-| `home/` | `HomeScreen` — hero, category grid, search, buy/sell toggle |
-| `products/` | `detail-screen.tsx`, `list-screen.tsx` |
-| `auth/` | SignIn, SignUp, VerifyEmail, ForgotPassword, ResetPassword, TwoFactor |
-| `sell/` | `sell-screen.tsx`, `DetailsStep.tsx` |
-| `orders/` | `orders-screen.tsx`, `order-detail-screen.tsx` |
-| `messages/` | `messages-screen.tsx`, `message-thread-screen.tsx` |
-| `seller/` | `seller-dashboard-screen.tsx`, `seller-listings-screen.tsx`, `seller-sales-screen.tsx` |
-| `account/` | `addresses-screen.tsx`, `notifications-settings-screen.tsx` |
-| `categories/` | `category-list-screen.tsx` |
-| `favourites/` | favourites screen |
-| `rounds/` | `screen.tsx` |
-| `onboarding/` | `screen.tsx` (mobile Stripe onboarding gate) |
+| Feature       | Key Screens                                                                            |
+| ------------- | -------------------------------------------------------------------------------------- |
+| `home/`       | `HomeScreen` — hero, category grid, search, buy/sell toggle                            |
+| `products/`   | `detail-screen.tsx`, `list-screen.tsx`                                                 |
+| `auth/`       | SignIn, SignUp, VerifyEmail, ForgotPassword, ResetPassword, TwoFactor                  |
+| `sell/`       | `sell-screen.tsx`, `DetailsStep.tsx`                                                   |
+| `orders/`     | `orders-screen.tsx`, `order-detail-screen.tsx`                                         |
+| `messages/`   | `messages-screen.tsx`, `message-thread-screen.tsx`                                     |
+| `seller/`     | `seller-dashboard-screen.tsx`, `seller-listings-screen.tsx`, `seller-sales-screen.tsx` |
+| `account/`    | `addresses-screen.tsx`, `notifications-settings-screen.tsx`                            |
+| `categories/` | `category-list-screen.tsx`                                                             |
+| `favourites/` | favourites screen                                                                      |
+| `rounds/`     | `screen.tsx`                                                                           |
+| `onboarding/` | `screen.tsx` (mobile Stripe onboarding gate)                                           |
 
 ### Provider Stack
 
@@ -83,6 +83,7 @@ Uses `NextThemeProvider` from `@tamagui/next-theme` for SSR-safe theme switching
 ### Cross-Platform Hooks
 
 `packages/app/src/hooks/useTheme.ts` defines the `UseThemeResult` interface with platform-specific implementations:
+
 - `useTheme.native.ts` — uses React Native `useColorScheme`, `canToggle: false`
 - `useTheme.web.ts` — uses `@tamagui/next-theme`'s `useThemeSetting`, `canToggle: true`
 
@@ -95,6 +96,7 @@ Bundlers resolve the correct variant automatically. Also exports `useMobileFavou
 The single Tamagui configuration shared by both web (Next.js plugin) and mobile (Babel plugin). Extends `@tamagui/config/v4`'s `defaultConfig`.
 
 Key elements:
+
 - **Fonts**: Urbanist typeface (weights 100–900), separate `headingFont` and `bodyFont` via `createFont()` with explicit pixel `size` ($1–$16) and `lineHeight` scales
 - **Tokens** (`createTokens`): Brand colors from `brandColors`, plus semantic aliases (`primary`, `secondary`, `success`, `error`, `warning`, `info`, `background`, `text`, `border`, etc.)
 - **Themes**: Four themes — `light`, `dark`, `light_active`, `dark_active`. Dark theme inverts backgrounds/text and adjusts card elevation.
@@ -105,35 +107,35 @@ Key elements:
 
 Dependency-free module defining all brand color hex values. This is the **single source of truth** for brand colors across the monorepo. Exported for non-Tamagui consumers (React Navigation themes, Stripe appearance, WebView styles).
 
-| Token | Hex | Usage |
-|---|---|---|
-| Spiced Clementine | `#F45314` | Primary brand color |
-| Vanilla Cream | `#FFFAD2` | Light backgrounds |
-| Lemon Haze | `#EDECC3` | Subtle accent |
-| Burnt Olive | `#3E3B2C` | Dark accent / secondary |
-| Cloud Mist | `#EDEDED` | Borders/dividers |
-| Slate Smoke | `#545454` | Secondary text |
-| Ironstone | `#323232` | Primary text / dark background |
-| Pure White | `#FFFFFF` | Base white |
+| Token             | Hex       | Usage                          |
+| ----------------- | --------- | ------------------------------ |
+| Spiced Clementine | `#F45314` | Primary brand color            |
+| Vanilla Cream     | `#FFFAD2` | Light backgrounds              |
+| Lemon Haze        | `#EDECC3` | Subtle accent                  |
+| Burnt Olive       | `#3E3B2C` | Dark accent / secondary        |
+| Cloud Mist        | `#EDEDED` | Borders/dividers               |
+| Slate Smoke       | `#545454` | Secondary text                 |
+| Ironstone         | `#323232` | Primary text / dark background |
+| Pure White        | `#FFFFFF` | Base white                     |
 
 ### UI Components (`packages/ui/src/index.ts`)
 
 The barrel is **curated** — it re-exports only the design-system surface consumers should use (plus pass-throughs of `Theme`, `Separator`, `useTheme`, `useMedia` from `tamagui`). ESLint blocks direct `tamagui` component imports (`packages/eslint-config/react-internal.js`). Roughly 30 components built on Tamagui's `styled()` API:
 
-| Category | Components |
-|---|---|
-| Buttons | `Button` (with `butterVariant`: primary/secondary/icon), `BuySellToggle` |
-| Typography | `Text`, `Heading`, `Label` (native `fontWeight`/`textAlign` props — no custom weight/align variants) |
-| Layout | `Row`, `Column`, `Container`, `Spacer`, `XStack`, `YStack`, `View` |
-| Cards | `Card` (compound: `.Header`, `.Body`, `.Footer`), `GlassmorphismCard` |
-| Forms | `Input`, `TextArea`, `Radio`/`RadioGroup`, `Autocomplete`, `Checkbox`, `Slider`, `Switch`/`SwitchWithLabel` |
-| Feedback | `Badge`, `Spinner` |
-| Navigation | `SegmentedTabs`, `CategorySelector` |
-| Media | `Image`, `ScrollView` |
-| Overlays | `Sheet`/`SheetScrollView`, `Popover` (compound) |
-| Chat | `ChatInput`, `ChatMessageList`, `ConversationListItem` |
-| Theme | `ThemeSwitcher`, `ThemeToggleButton` |
-| Error | `ErrorBoundary` |
+| Category   | Components                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| Buttons    | `Button` (with `butterVariant`: primary/secondary/icon), `BuySellToggle`                                    |
+| Typography | `Text`, `Heading`, `Label` (native `fontWeight`/`textAlign` props — no custom weight/align variants)        |
+| Layout     | `Row`, `Column`, `Container`, `Spacer`, `XStack`, `YStack`, `View`                                          |
+| Cards      | `Card` (compound: `.Header`, `.Body`, `.Footer`), `GlassmorphismCard`                                       |
+| Forms      | `Input`, `TextArea`, `Radio`/`RadioGroup`, `Autocomplete`, `Checkbox`, `Slider`, `Switch`/`SwitchWithLabel` |
+| Feedback   | `Badge`, `Spinner`                                                                                          |
+| Navigation | `SegmentedTabs`, `CategorySelector`                                                                         |
+| Media      | `Image`, `ScrollView`                                                                                       |
+| Overlays   | `Sheet`/`SheetScrollView`, `Popover` (compound)                                                             |
+| Chat       | `ChatInput`, `ChatMessageList`, `ConversationListItem`                                                      |
+| Theme      | `ThemeSwitcher`, `ThemeToggleButton`                                                                        |
+| Error      | `ErrorBoundary`                                                                                             |
 
 ### Critical UI Rules
 
@@ -152,28 +154,28 @@ The barrel is **curated** — it re-exports only the design-system surface consu
 
 ### Mobile-Only Files
 
-| File | Purpose |
-|---|---|
-| `apps/mobile/lib/apiClient.ts` | Deferred fetch helpers with secure-store token injection |
-| `apps/mobile/lib/wrapperActions.ts` | Stripe onboarding, label actions, checkout flow hooks |
-| `apps/mobile/lib/notifications.ts` | expo-notifications registration + backend sync |
-| `apps/mobile/lib/secureStore.ts` | Expo SecureStore wrapper for auth tokens |
-| `apps/mobile/lib/stripe-safe.tsx` | Graceful Stripe provider for Expo Go |
-| `apps/mobile/context/SellerStatusContext.tsx` | Fetches seller status once on sign-in; shared via React context |
-| `apps/mobile/components/MobileCheckoutSheet.tsx` | Native bottom-sheet checkout UI |
+| File                                             | Purpose                                                         |
+| ------------------------------------------------ | --------------------------------------------------------------- |
+| `apps/mobile/lib/apiClient.ts`                   | Deferred fetch helpers with secure-store token injection        |
+| `apps/mobile/lib/wrapperActions.ts`              | Stripe onboarding, label actions, checkout flow hooks           |
+| `apps/mobile/lib/notifications.ts`               | expo-notifications registration + backend sync                  |
+| `apps/mobile/lib/secureStore.ts`                 | Expo SecureStore wrapper for auth tokens                        |
+| `apps/mobile/lib/stripe-safe.tsx`                | Graceful Stripe provider for Expo Go                            |
+| `apps/mobile/context/SellerStatusContext.tsx`    | Fetches seller status once on sign-in; shared via React context |
+| `apps/mobile/components/MobileCheckoutSheet.tsx` | Native bottom-sheet checkout UI                                 |
 
 ## Shared Constants (`packages/constants/`)
 
 Zero-dependency, Prisma-free constants safe for import in React Native, web, and server. Tested with Vitest.
 
-| File | Contents |
-|---|---|
-| `categories.ts` | `CATEGORIES` array (9 golf product categories with slug, description, image URL, sort order), `getCategoryBySlug()` |
-| `checkout.ts` | `SHIPPING_OPTIONS` (Standard/Express/NextDay with pence pricing), `calculateBuyerProtectionFeeInPence` (5% + £0.70, min £0.70). Canonical functions used by both server charge math and client display. |
-| `pricing.ts` | `LISTING_PRICE_LIMITS` (GBP 1–10,000), `getListingPriceBoundsMessage()` |
-| `errorIds.ts` | Structured error ID constants for Sentry grouping |
-| `logging.ts` | `logError()`, `logDebug()`, `logWarning()` with structured `LogContext` |
-| `images.ts` | `PLACEHOLDER_IMAGE_URL`, `PRODUCT_IMAGE_ASPECT_RATIO` (4:3) |
+| File            | Contents                                                                                                                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `categories.ts` | `CATEGORIES` array (9 golf product categories with slug, description, image URL, sort order), `getCategoryBySlug()`                                                                                     |
+| `checkout.ts`   | `SHIPPING_OPTIONS` (Standard/Express/NextDay with pence pricing), `calculateBuyerProtectionFeeInPence` (5% + £0.70, min £0.70). Canonical functions used by both server charge math and client display. |
+| `pricing.ts`    | `LISTING_PRICE_LIMITS` (GBP 1–10,000), `getListingPriceBoundsMessage()`                                                                                                                                 |
+| `errorIds.ts`   | Structured error ID constants for Sentry grouping                                                                                                                                                       |
+| `logging.ts`    | `logError()`, `logDebug()`, `logWarning()` with structured `LogContext`                                                                                                                                 |
+| `images.ts`     | `PLACEHOLDER_IMAGE_URL`, `PRODUCT_IMAGE_ASPECT_RATIO` (4:3)                                                                                                                                             |
 
 ## Build & Tooling
 

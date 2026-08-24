@@ -21,25 +21,25 @@ No build or deploy step in CI — Vercel handles deploys from branch activity. T
 
 ## Quality Gates
 
-| Gate | What runs |
-|---|---|
-| `.husky/pre-commit` | `pnpm lint-staged` |
-| `.husky/pre-push` | `pnpm typecheck` (fast local guard; CI runs the full set) |
-| `pnpm check` | `format` + `lint` + `check-types` — the mandated pre-push gate |
+| Gate                | What runs                                                      |
+| ------------------- | -------------------------------------------------------------- |
+| `.husky/pre-commit` | `pnpm lint-staged`                                             |
+| `.husky/pre-push`   | `pnpm typecheck` (fast local guard; CI runs the full set)      |
+| `pnpm check`        | `format` + `lint` + `check-types` — the mandated pre-push gate |
 
 ## Testing (Vitest, two layers)
 
 **Root** (`vitest.config.ts`, `tests/`) — pure, dependency-free domain logic, no RN/Next/Prisma bootstrap:
 
-| Test file | Covers |
-|---|---|
-| `auth-utils.test.ts` | Auth form validation, password strength, Clerk error mapping |
-| `categories.test.ts` | Category set/slug lookups |
-| `checkout-session-ownership.test.ts` | Checkout-session BOLA guard |
-| `payment-intent-ownership.test.ts` | PaymentIntent BOLA guard |
-| `payment-intent-visibility.test.ts` | **Source-guard test** — reads `create-payment-intent/route.ts` source and asserts `findFirst` + `isDraft: false` + `user.isDeleted: false` |
-| `pricing.test.ts` | Listing price bounds (£1–£10,000) |
-| `sell-conditions.test.ts` | Condition labels/enum mapping |
+| Test file                            | Covers                                                                                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `auth-utils.test.ts`                 | Auth form validation, password strength, Clerk error mapping                                                                               |
+| `categories.test.ts`                 | Category set/slug lookups                                                                                                                  |
+| `checkout-session-ownership.test.ts` | Checkout-session BOLA guard                                                                                                                |
+| `payment-intent-ownership.test.ts`   | PaymentIntent BOLA guard                                                                                                                   |
+| `payment-intent-visibility.test.ts`  | **Source-guard test** — reads `create-payment-intent/route.ts` source and asserts `findFirst` + `isDraft: false` + `user.isDeleted: false` |
+| `pricing.test.ts`                    | Listing price bounds (£1–£10,000)                                                                                                          |
+| `sell-conditions.test.ts`            | Condition labels/enum mapping                                                                                                              |
 
 **Package-level**: `packages/constants` has its own vitest config testing the canonical fee/shipping math in `checkout.ts` (penny rounding, minimum fee floor, shipping option integrity).
 
@@ -49,11 +49,11 @@ No build or deploy step in CI — Vercel handles deploys from branch activity. T
 
 Defined in `vercel.json`; all protected by `CRON_SECRET` bearer token (fail closed).
 
-| Endpoint | Schedule | Purpose |
-|---|---|---|
-| `/api/cron/release-payments` | `0 3 * * *` (03:00 UTC) | Auto-release escrow 14 days post-delivery; drains `PENDING_SELLER_ONBOARDING`; verifies charge not refunded/disputed before transferring |
-| `/api/cron/expire-offers` | `0 6 * * *` (06:00 UTC) | Expire offers past `expiresAt` |
-| `/api/cron/payment-reminders` | `0 10 * * *` (10:00 UTC) | Payment reminder emails |
+| Endpoint                      | Schedule                 | Purpose                                                                                                                                  |
+| ----------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `/api/cron/release-payments`  | `0 3 * * *` (03:00 UTC)  | Auto-release escrow 14 days post-delivery; drains `PENDING_SELLER_ONBOARDING`; verifies charge not refunded/disputed before transferring |
+| `/api/cron/expire-offers`     | `0 6 * * *` (06:00 UTC)  | Expire offers past `expiresAt`                                                                                                           |
+| `/api/cron/payment-reminders` | `0 10 * * *` (10:00 UTC) | Payment reminder emails                                                                                                                  |
 
 ## Environment Variables
 
@@ -72,13 +72,13 @@ Note: `SENTRY_AUTH_TOKEN` and `SUPABASE_SERVICE_ROLE_KEY` appear in `turbo.json`
 
 ## Useful Scripts
 
-| Command | Purpose |
-|---|---|
-| `pnpm reset-stripe` | Reset a user's Stripe Connect onboarding (testing) |
-| `pnpm upload:images` | Seed Cloudinary sample images |
-| `pnpm optimize:site-images` | Optimize site images (`--dry-run` variant) |
-| `pnpm lighthouse` | Local perf audits against `lighthouserc.js` |
-| `pnpm db:migrate:deploy` | Apply migrations — run at promote time |
+| Command                     | Purpose                                            |
+| --------------------------- | -------------------------------------------------- |
+| `pnpm reset-stripe`         | Reset a user's Stripe Connect onboarding (testing) |
+| `pnpm upload:images`        | Seed Cloudinary sample images                      |
+| `pnpm optimize:site-images` | Optimize site images (`--dry-run` variant)         |
+| `pnpm lighthouse`           | Local perf audits against `lighthouserc.js`        |
+| `pnpm db:migrate:deploy`    | Apply migrations — run at promote time             |
 
 `scripts/` also contains one-off data-fix and debug scripts (some with **hardcoded user emails/product IDs** — read before running), plus design-system codemods (`migrate-layouts.sh` for XStack→Row, YStack→Column).
 
